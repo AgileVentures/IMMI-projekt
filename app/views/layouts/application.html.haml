@@ -1,0 +1,22 @@
+!!!
+%html
+  %head
+    %meta{:content => 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
+    %title SHF-Members
+    = csrf_meta_tags
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload'
+    = stylesheet_link_tag 'style.css', media: 'all'
+    = stylesheet_link_tag 'custom.css', media: 'all'
+    = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+  %body.page.page-template.page-template-page-sidebar-none
+    = render 'partials/top'
+    #wrap
+      #content.site-content.container
+        .page-gutter.col-xs-12
+          %section#primary.content-area
+            %main#main.site-main{role: 'main'}
+              %article#post-11.post-11.page.type-page.status-publish.has-post-thumbnail.hentry
+                .featured
+                  = yield
+                  = render 'partials/page_footer'
+    = render 'partials/bottom'

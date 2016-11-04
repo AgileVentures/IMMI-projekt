@@ -1,0 +1,11 @@
+@startuml
+
+!include plantuml-ae-style.iuml
+
+(*)-right-> "Read about the project\nat our main project page:\n**http://agileventures.org/sfh-project**"
+-right-> "Join AgileVentures\n(?)"
+-right-> "Join our **Slack** channel\nin the AgileVentures team:\n**agileventures.slack.com**"
+-right-> Ask to join this project\non our Slack channel.
+-down-> A project member will add you to the team.\n You'll be added to our \n**PivotalTracking** project and **GitHub** repo.
+-right-> Start contributing!
+@enduml

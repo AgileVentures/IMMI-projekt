@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+development:
+  <<: *default
+  database: shf_project_development
+
+test: &test
+  <<: *default
+  database: shf_project_test
+
+production:
+  <<: *default
+  database: shf_project_production
+  username: shf_project
+  password: <%= ENV['SHF_PROJECT_DATABASE_PASSWORD'] %>
+
+cucumber:
+  <<: *test

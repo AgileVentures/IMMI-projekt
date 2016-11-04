@@ -1,0 +1,39 @@
+.scroll-to-top
+  %a{href: '#'}
+    = icon('angle-up')
+.container-fluid.hfeed.site
+  %header#masthead.site-header{role: 'banner'}
+    %a.skip-link.screen-reader-text{href: '#content'} Skip to content
+    / main navigation
+    %nav#site-navigation.main-navigation.fixed-nav{role: 'navigation'}
+      .nav-wrapper
+        %a.menu-toggle{href: '#'}
+          %span.bars
+            %span.bar.bar-1
+            %span.bar.bar-2
+            %span.bar.bar-3
+        .menu
+          %ul
+            %li
+              = link_to 'Hem', 'http://sverigeshundforetagare.se/'
+            %li.page_item.page-item-11.current_page_item
+              = link_to 'Om', 'http://sverigeshundforetagare.se/'
+            %li.page_item.page-item-2
+              = link_to 'Mer', 'http://sverigeshundforetagare.se/'
+    / Social profiles
+    .social-nav
+      .tb
+        .tb-cell
+          %a.social-nav-facebook{href: 'http://www.facebook.com/sverigeshundforetagare', target:'_blank'}
+            = icon('facebook')
+          %a.social-nav-twitter{href: 'http://www.twitter.com/sverigeshundftg', target:'_blank'}
+            = icon('twitter')
+          %a.social-nav-instagram{href: 'http://www.instagram.com/sverigeshundforetagare', target:'_blank'}
+            = icon('instagram')
+          %a.social-nav-linkedin{href: 'http://www.linkedin.com/sverigeshundforetagare', target:'_blank'}
+            = icon('linkedin')
+          %a.social-nav-youtube{href: 'http://www.google.com/sverigeshundforetagare', target:'_blank'}
+            = icon('youtube')
+    #site-logo
+      %a{href: 'http://sverigeshundforetagare.se/'}
+        %img{alt: 'logo', src: 'http://media.sverigeshundforetagare.se/2016/10/SH_logo_RGB.png'}/

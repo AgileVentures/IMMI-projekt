@@ -1,0 +1,39 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+title Github workflow
+
+|master|
+floating note: This is the current working version of the project.
+:Current version of the project.;
+'-> Project managers\nkeep master and develop branches synced as needed;
+|develop|
+:This is where all work happens
+(where all changes should be made). ;
+|your_repo/sfh-project|
+-> Fork or sync the project
+when you're ready to work on a task.;
+
+:Create a branch to do your work:
+**799_user_needs_last_name**;
+note: This is where you do your work.
+:Create acceptance and/or unit tests;
+
+while (Get your tests passing)
+  :Create a PR against the develop branch.
+   Title = "[WIP] User Needs Last Name"
+   reference the issue # in it;
+  :Input from the project manager
+  and other team members;
+  :Do your revisions;
+endwhile
+
+:Rename this PR: remove 'WIP';
+|develop|
+:Project manager merges your PR;
+:This is now the current working version.;
+
+caption : \n\n**An example for working on issue #799 "User needs a last name"**
+
+
+@enduml
