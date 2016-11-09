@@ -1,0 +1,14 @@
+%header.entry-header
+  %h1.entry-title Skicka upplåsningsinstruktioner
+.post-title-divider
+  %span
+.entry-content
+  = form_for(resource, as: resource_name, url: unlock_path(resource_name), html: { method: :post }) do |f|
+    = devise_error_messages!
+    .field
+      = f.label :email
+      %br/
+      = f.email_field :email, autofocus: true
+    .actions
+      = f.submit 'Skicka'
+  = render 'devise/shared/links'

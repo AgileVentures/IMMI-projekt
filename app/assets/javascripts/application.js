@@ -31,3 +31,5 @@ jQuery(document).ready(function() {
         }
     });
 });
+//Set timeout for flashes
+setTimeout("$('.flashes').fadeOut('slow')", 5000)

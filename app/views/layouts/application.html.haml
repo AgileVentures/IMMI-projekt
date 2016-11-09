@@ -10,13 +10,15 @@
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body.page.page-template.page-template-page-sidebar-none
     = render 'partials/top'
+    .flashes
+      - flash.each do |key, value|
+        %div{:class => "alert alert-#{flash_class(key)} center"}= value
     #wrap
       #content.site-content.container
         .page-gutter.col-xs-12
           %section#primary.content-area
             %main#main.site-main{role: 'main'}
               %article#post-11.post-11.page.type-page.status-publish.has-post-thumbnail.hentry
-                .featured
-                  = yield
-                  = render 'partials/page_footer'
+                = yield
+                = render 'partials/page_footer'
     = render 'partials/bottom'
