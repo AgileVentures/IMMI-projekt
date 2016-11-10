@@ -17,6 +17,11 @@ RSpec.describe MembershipApplication, type: :model do
   end
 
   describe 'Validations' do
+    it { is_expected.to validate_presence_of :company_name}
+    it { is_expected.to validate_presence_of :company_number}
+    it { is_expected.to validate_presence_of :contact_person}
+    it { is_expected.to validate_presence_of :company_email}
+
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10)}
   end
 end
