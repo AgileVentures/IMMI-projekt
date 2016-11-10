@@ -8,7 +8,7 @@ gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
 gem 'bcrypt', '~> 3.1.7'
-gem 'haml'
+gem 'haml-rails'
 gem 'bootstrap-sass', '~> 3.3.6'
 gem 'font-awesome-sass'
 
