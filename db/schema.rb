@@ -17,7 +17,7 @@ ActiveRecord::Schema.define(version: 20161110203212) do
 
   create_table "membership_applications", force: :cascade do |t|
     t.string   "company_name"
-    t.bigint   "company_number"
+    t.string   "company_number"
     t.string   "contact_person"
     t.string   "phone_number"
     t.string   "company_email"

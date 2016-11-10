@@ -14,7 +14,9 @@ RSpec.describe MembershipApplication, type: :model do
     it {is_expected.to have_db_column :contact_person}
     it {is_expected.to have_db_column :phone_number}
     it {is_expected.to have_db_column :company_email}
+  end
 
-
+  describe 'Validations' do
+    it { is_expected.to validate_length_of(:company_number).is_equal_to(10)}
   end
 end
