@@ -9,7 +9,7 @@ Feature: As a visitor
     Given I am on the landing page
     And I click on "Apply for membership"
     And I fill in "Company Name" with "Craft Academy"
-    And I fill in "Company Number" with "123456-1234"
+    And I fill in "Company Number" with "1234561234"
     And I fill in "Contact Person" with "Thomas"
     And I fill in "Company Email" with "info@craft.se"
     And I fill in "Phone Number" with "031-1234567"

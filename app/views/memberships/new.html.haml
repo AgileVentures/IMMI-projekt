@@ -1,2 +1,4 @@
-%h1 Memberships#new
-%p Find me in app/views/memberships/new.html.haml
+%h1 New Membership Application
+= form_for @membership do |f|
+  = f.label :company_name
+  = f.text_field :company_name
