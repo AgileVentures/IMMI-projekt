@@ -10,6 +10,8 @@
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body.page.page-template.page-template-page-sidebar-none
     = render 'partials/top'
+    - flash.each do |key, value|
+      = value
     #wrap
       #content.site-content.container
         .page-gutter.col-xs-12
