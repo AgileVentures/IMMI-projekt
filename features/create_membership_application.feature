@@ -16,3 +16,6 @@ Feature: As a visitor
     And I click on "Submit"
     Then I should be on the landing page
     And I should see "Thank you, Your application has been submitted"
+
+
+  #TODO: Add sad path scenarios. 
