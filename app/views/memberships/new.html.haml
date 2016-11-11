@@ -1,21 +1,26 @@
-%h1 New Membership Application
-= form_for @membership, url: memberships_path do |f|
-  - if @membership.errors.any?
-    - @membership.errors.full_messages.each do |msg|
-      = msg
-  = f.label :company_name, 'Company Name'
-  = f.text_field :company_name
+%header.entry-header
+  %h1.entry-title Ansök om medlemskap
+.post-title-divider
+  %span
+.entry-content.wpcf7
+  = form_for @membership, url: memberships_path do |f|
+    - if @membership.errors.any?
+      - @membership.errors.full_messages.each do |msg|
+        .wpcf7-response-output
+          = msg
+    = f.label :company_name, 'Company Name'
+    = f.text_field :company_name, class: 'wpcf7-form-control'
 
-  = f.label :company_number, 'Company Number'
-  = f.number_field :company_number
+    = f.label :company_number, 'Company Number'
+    = f.number_field :company_number, class: 'wpcf7-form-control'
 
-  = f.label :contact_person, 'Contact Person'
-  = f.text_field :contact_person
+    = f.label :contact_person, 'Contact Person'
+    = f.text_field :contact_person, class: 'wpcf7-form-control'
 
-  = f.label :company_email, 'Company Email'
-  = f.email_field :company_email
+    = f.label :company_email, 'Company Email'
+    = f.email_field :company_email, class: 'wpcf7-form-control'
 
-  = f.label :phone_number, 'Phone Number'
-  = f.telephone_field :phone_number
+    = f.label :phone_number, 'Phone Number'
+    = f.telephone_field :phone_number, class: 'wpcf7-form-control'
 
-  = f.submit 'Submit'
+    = f.submit 'Submit'
