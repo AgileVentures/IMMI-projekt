@@ -14,7 +14,3 @@ When(/^I fill in the form with data :$/) do |table|
     end
   end
 end
-
-Then(/^show me the page$/) do
-  save_and_open_page
-end
