@@ -17,7 +17,7 @@ Feature: As a visitor
     Then I should be on the landing page
     And I should see "Thank you, Your application has been submitted"
 
-  Scenario Outline: Apply for membership sad path
+  Scenario Outline: Apply for membership - when things go wrong
     Given I am on the landing page
     And I click on "Apply for membership"
     When I fill in the form with data :
