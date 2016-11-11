@@ -12,7 +12,7 @@
     = render 'partials/top'
     .flashes
       - flash.each do |key, value|
-        %div{:class => "alert alert-#{flash_class(key)} center"}= value
+        %div{class: "alert alert-#{flash_class(key)} center"}= value
     #wrap
       #content.site-content.container
         .page-gutter.col-xs-12
