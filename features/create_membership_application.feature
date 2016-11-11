@@ -17,5 +17,29 @@ Feature: As a visitor
     Then I should be on the landing page
     And I should see "Thank you, Your application has been submitted"
 
+  Scenario: Visitor can submit a new Membership Application
+    Given I am on the landing page
+    And I click on "Apply for membership"
+    And I fill in "Company Name" with "Craft Academy"
+    And I fill in "Company Number" with "123454"
+    And I fill in "Contact Person" with "Thomas"
+    And I fill in "Company Email" with "info@craft.se"
+    And I fill in "Phone Number" with "031-1234567"
+    And I click on "Submit"
+    Then show me the page
+    Then I should see "Too few digits"
 
-  #TODO: Add sad path scenarios. 
+
+  # Scenario Outline: Apply for membership sad path
+  #   Given I am on the landing page
+  #   And I click on "Apply for membership"
+  #   When I fill in the form with data :
+  #   | Company Name | Company Number | Contact Person | Company Email | Phone Number |
+  #   | <c_name>     | <c_number>     | <c_person>     | <c_email>     | <phone>      |
+  #   When I click on "Submit"
+  #   Then I should see <error>
+  #   Then show me the page
+  #
+  # Scenarios:
+  #   | c_name     | c_number     | c_person     | c_email       | phone        | error                      |
+  #   | HappyMutts |  00          | Kicki        | kicki@immi.nu | 0706898525   | "Too few numers in org nr" |

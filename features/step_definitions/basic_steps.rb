@@ -5,3 +5,16 @@ end
 And(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
 end
+
+When(/^I fill in the form with data :$/) do |table|
+  data = table.hashes.first
+  data.each do |label, value|
+    if !value.empty?
+      fill_in label, with: value
+    end
+  end
+end
+
+Then(/^show me the page$/) do
+  save_and_open_page
+end
