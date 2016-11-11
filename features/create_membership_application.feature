@@ -33,5 +33,5 @@ Feature: As a visitor
     | HappyMutts | 1234567890   |              | kicki@immi.nu | 0706898525   | "Contact person can't be blank" |
     | HappyMutts | 1234567890   | Kicki        |               | 0706898525   | "Company email can't be blank" |
     |            | 1234567890   | Kicki        | kicki@immi.nu | 0706898525   | "Company name can't be blank" |
-    | HappyMutts | 1234567890   | Kicki        | kicki@imminu  | 0706898525   | "Company email wrong format" |
-    | HappyMutts | 1234567890   | Kicki        | kickiimmi.nu | 0706898525    | "Company email wrong format" |
+    | HappyMutts | 1234567890   | Kicki        | kicki@imminu  | 0706898525   | "Company email is invalid" |
+    | HappyMutts | 1234567890   | Kicki        | kickiimmi.nu | 0706898525    | "Company email is invalid" |

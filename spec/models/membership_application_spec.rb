@@ -22,6 +22,9 @@ RSpec.describe MembershipApplication, type: :model do
     it { is_expected.to validate_presence_of :contact_person}
     it { is_expected.to validate_presence_of :company_email}
 
+    it {is_expected.to allow_value('user@example.com').for(:company_email )}
+    it {is_expected.not_to allow_value('userexample.com').for(:company_email )}
+
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10)}
   end
 end

@@ -4,6 +4,6 @@ FactoryGirl.define do
     company_number 1111111111
     contact_person "MyString"
     phone_number "MyString"
-    company_email "MyString"
+    company_email "MyString@email.com"
   end
 end
