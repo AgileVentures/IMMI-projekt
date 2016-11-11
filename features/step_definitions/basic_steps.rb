@@ -9,7 +9,7 @@ end
 When(/^I fill in the form with data :$/) do |table|
   data = table.hashes.first
   data.each do |label, value|
-    if !value.empty?
+    unless value.empty?
       fill_in label, with: value
     end
   end
