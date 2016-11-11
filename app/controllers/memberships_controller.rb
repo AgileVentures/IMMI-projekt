@@ -8,6 +8,8 @@ class MembershipsController < ApplicationController
     if @membership.save
       flash[:notice] = 'Thank you, Your application has been submitted'
       redirect_to root_path
+    else
+      render new_membership_path
     end
   end
 
