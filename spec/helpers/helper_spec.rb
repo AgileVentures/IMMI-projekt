@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
-  describe 'flashes' do
+  describe '#flash_class' do
     it 'adds correct class on notice' do
       expect(helper.flash_class(:notice)).to eq 'success'
     end
