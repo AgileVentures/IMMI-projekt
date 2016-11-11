@@ -7,15 +7,15 @@
   = f.text_field :company_name
 
   = f.label :company_number, 'Company Number'
-  = f.text_field :company_number
+  = f.number_field :company_number
 
   = f.label :contact_person, 'Contact Person'
   = f.text_field :contact_person
 
   = f.label :company_email, 'Company Email'
-  = f.text_field :company_email
+  = f.email_field :company_email
 
   = f.label :phone_number, 'Phone Number'
-  = f.text_field :phone_number
+  = f.telephone_field :phone_number
 
   = f.submit 'Submit'
