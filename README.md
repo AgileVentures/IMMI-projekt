@@ -1,4 +1,4 @@
-A Membership system for 
+A Membership system for
 the Sveriges Hundföretagare
 (Swedish Dog Industry Association)
 ======================================================================================
@@ -12,6 +12,7 @@ _This is a project of [AgileVentures](http://www.agileventures.org), a non-profi
 
 Sempahore status: [![Build Status](https://semaphoreci.com/api/v1/lollypop27/shf-project/branches/develop/badge.svg)](https://semaphoreci.com/lollypop27/shf-project)
 
+Codeclimate: [![Code Climate](https://codeclimate.com/github/AgileVentures/shf-project/badges/gpa.svg)](https://codeclimate.com/github/AgileVentures/shf-project)
 
 ## Requirements and Dependencies
 
@@ -39,8 +40,8 @@ _(TODO: do you need to be a member of AgileVentures to contribute?  a paid membe
 
 ## Problems?
 
-If have any problems, please  **[search through the issues](https://github.com/AgileVentures/shf-project/issues) first** to see if it's already been addressed. If you do not find an existing issue, then open a new issue. 
-Please describe the problem in detail including information about your operating system (platforms), version, etc.  The more detail you can provide, the more likely we can address it. 
+If have any problems, please  **[search through the issues](https://github.com/AgileVentures/shf-project/issues) first** to see if it's already been addressed. If you do not find an existing issue, then open a new issue.
+Please describe the problem in detail including information about your operating system (platforms), version, etc.  The more detail you can provide, the more likely we can address it.
 
 
 
