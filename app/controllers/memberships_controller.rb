@@ -1,4 +1,6 @@
 class MembershipsController < ApplicationController
+before_action :get_membership_application, only: [:show, :edit]
+before_action :authorize_membership_application, only: [:show, :edit]
   def new
     @membership = MembershipApplication.new
   end
@@ -18,11 +20,11 @@ class MembershipsController < ApplicationController
   end
 
   def show
-    @membership = MembershipApplication.find(params[:id])
+
   end
 
   def edit
-    @membership = current_user.membership_applications.last
+
   end
 
   def update
@@ -37,5 +39,13 @@ class MembershipsController < ApplicationController
                                                    :contact_person,
                                                    :company_email,
                                                    :phone_number)
+  end
+
+  def get_membership_application
+    @membership = MembershipApplication.find(params[:id])
+  end
+
+  def authorize_membership_application
+    authorize @membership
   end
 end

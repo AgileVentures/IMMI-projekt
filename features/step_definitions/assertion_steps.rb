@@ -24,7 +24,7 @@ Then(/^I should see:$/) do |table|
 end
 
 
-Then(/^I should be on tha application page for "([^"]*)"$/) do |company_name|
+Then(/^I should be on the application page for "([^"]*)"$/) do |company_name|
   membership = MembershipApplication.find_by(company_name: company_name)
   expect(current_path).to eq membership_path(membership)
 end

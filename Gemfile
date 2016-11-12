@@ -13,10 +13,12 @@ gem 'bootstrap-sass', '~> 3.3.6'
 gem 'font-awesome-sass'
 
 gem 'devise'
+gem 'pundit'
 
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
+  gem 'pundit-matchers'
   gem 'factory_girl_rails'
   gem 'pry'
   gem 'pry-byebug'

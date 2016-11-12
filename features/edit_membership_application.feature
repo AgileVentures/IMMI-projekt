@@ -26,3 +26,6 @@ Feature: As an applicant
 
 
   Scenario: Applicant can not edit applications not created by him
+    Given I am logged in as "applicant_1@random.com"
+    And I navigate to the edit page for "Other Dog Business"
+    Then I should see "You are not authorized to perform this action."

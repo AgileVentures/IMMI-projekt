@@ -16,11 +16,14 @@ Feature: As an Admin
       | DoggieZone   | 2345678901     | Pam Andersson  | 0234-234567  | din@mail.se   | applicant_2@random.com |
       | Tassa-in AB  | 1234367890     | Anna Knutsson  | 1234-234569  | sin@mail.se   | applican3_2@random.com |
 
+    # We need to login a user to access the resource since there is no admin class yet but the authorization is implemented
+    And I am logged in as "applicant_2@random.com"
+
   Scenario: Listing incoming Applications
     Given I am on the list applications page
     Then I should see "3" applications
     When I click on "DoggieZone"
-    Then I should be on tha application page for "DoggieZone"
+    Then I should be on the application page for "DoggieZone"
     And I should see:
       | content       |
       | 2345678901    |

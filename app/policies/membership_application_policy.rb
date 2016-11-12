@@ -1,0 +1,3 @@
+class MembershipApplicationPolicy < ApplicationPolicy
+
+end
