@@ -152,3 +152,11 @@ a, a:hover {
 .center {
 	text-align: center;
 }
+.companies a {
+	line-height:22px;
+	display:block;
+	padding:6px;
+	min-width:100%;
+	background: #fafafa;
+	border-bottom:1px solid #efefef;
+}

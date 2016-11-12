@@ -1,0 +1,10 @@
+%header.entry-header
+  %h1.entry-title= "Ansökan från #{@membership.company_name}"
+.post-title-divider
+  %span
+.entry-content
+  %h1= @membership.company_number
+  %h2= @membership.contact_person
+  - if @membership.phone_number
+    %p= @membership.phone_number
+  %p= mail_to @membership.company_email, @membership.company_email

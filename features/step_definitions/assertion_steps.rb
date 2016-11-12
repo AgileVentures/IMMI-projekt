@@ -16,3 +16,9 @@ Then(/^I should be on "([^"]*)" page$/) do |page|
   expect(current_path).to eq path
 end
 
+
+Then(/^I should see:$/) do |table|
+  table.hashes.each do |hash|
+    expect(page).to have_content hash[:content]
+  end
+end
