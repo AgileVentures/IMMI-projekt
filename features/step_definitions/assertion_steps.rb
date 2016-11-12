@@ -22,3 +22,13 @@ Then(/^I should see:$/) do |table|
     expect(page).to have_content hash[:content]
   end
 end
+
+
+Then(/^I should be on tha application page for "([^"]*)"$/) do |company_name|
+  membership = MembershipApplication.find_by(company_name: company_name)
+  expect(current_path).to eq membership_path(membership)
+end
+
+Then(/^I should see "([^"]*)" applications$/) do |number|
+  expect(page).to have_selector('.companies', count: number)
+end

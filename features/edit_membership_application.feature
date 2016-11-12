@@ -11,7 +11,7 @@ Feature: As an applicant
       | applicant_1@random.com |
       | applicant_2@random.com |
 
-    And the following applications exist
+    And the following applications exist:
       | company_name       | user_email             |
       | My Dog Business    | applicant_1@random.com |
       | Other Dog Business | applicant_2@random.com |
