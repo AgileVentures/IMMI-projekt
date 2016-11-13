@@ -10,8 +10,12 @@ class ApplicationPolicy
     edit?
   end
 
+  def index?
+    @user.admin?
+  end
+
   def update?
-    @record.user == @user
+    @record.user == @user || @user.admin?
   end
 
   def edit?

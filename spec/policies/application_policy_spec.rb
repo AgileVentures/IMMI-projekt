@@ -4,6 +4,7 @@ RSpec.describe ApplicationPolicy do
 
   let(:user_1) { create(:user, email: 'user_1@random.com') }
   let(:user_2) { create(:user, email: 'user_2@random.com') }
+  let(:admin) { create(:user, email: 'admin@sgf.com', admin: true) }
   let(:application) { create(:membership_application,
                              user: user_1) }
 
@@ -19,5 +20,12 @@ RSpec.describe ApplicationPolicy do
 
     it { is_expected.to forbid_action :show }
     it { is_expected.to forbid_action :edit }
+  end
+
+  describe 'For admins' do
+    subject { described_class.new(admin, application) }
+
+    it { is_expected.to permit_action :show }
+    it { is_expected.to permit_action :edit }
   end
 end
