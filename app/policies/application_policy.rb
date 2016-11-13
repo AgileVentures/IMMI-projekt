@@ -6,22 +6,10 @@ class ApplicationPolicy
     @record = record
   end
 
-  def index?
-    false
-  end
-
   def show?
     edit?
   end
-
-  def create?
-    false
-  end
-
-  def new?
-    create?
-  end
-
+  
   def update?
     @record.user == @user
   end
@@ -30,7 +18,4 @@ class ApplicationPolicy
     update?
   end
 
-  def destroy?
-    false
-  end
 end
