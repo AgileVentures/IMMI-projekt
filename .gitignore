@@ -16,6 +16,9 @@
 # Ignore Byebug command history file.
 .byebug_history
 
+# Ignore Coveralls report results
+coverage/
+
 
 .idea/
 /design-thoughts
