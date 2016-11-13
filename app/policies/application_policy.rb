@@ -9,7 +9,7 @@ class ApplicationPolicy
   def show?
     edit?
   end
-  
+
   def update?
     @record.user == @user
   end

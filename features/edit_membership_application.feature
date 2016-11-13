@@ -2,7 +2,7 @@ Feature: As an applicant
   In order to be able to edit my application
   I want to be allowed to do that
 
-  PT Feature: https://www.pivotaltracker.com/story/show/134078325
+  PT: https://www.pivotaltracker.com/story/show/134078325
 
 
   Background:
