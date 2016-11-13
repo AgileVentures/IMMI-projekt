@@ -26,7 +26,7 @@ Feature: As an Admin
 
 
   Scenario: Listing incoming Applications open for Admin
-    Given I am logged in as "applicant_2@random.com"
+    Given I am logged in as "admin@sgf.com "
     And I am on the list applications page
     Then I should see "3" applications
     When I click on "DoggieZone"
@@ -41,4 +41,4 @@ Feature: As an Admin
   Scenario: Listing incoming Applications restricted for Non-admins
     Given I am logged in as "applicant_2@random.com"
     And I am on the list applications page
-    Then I should see "You are not authorized to perform this action."
+    Then I should see "You are not authorized to prform this action."
