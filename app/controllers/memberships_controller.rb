@@ -16,6 +16,7 @@ before_action :authorize_membership_application, only: [:show, :edit]
   end
 
   def index
+    authorize MembershipApplication
     @membership_applications = MembershipApplication.all
   end
 
