@@ -55,6 +55,7 @@ GEM
       rack (>= 1.0.0)
       rack-test (>= 0.5.4)
       xpath (~> 2.0)
+    chronic (0.10.2)
     coderay (1.1.1)
     concurrent-ruby (1.0.2)
     coveralls (0.8.15)
@@ -79,6 +80,10 @@ GEM
       mime-types (>= 1.16, < 4)
       nokogiri (~> 1.5)
       railties (>= 3, < 5.1)
+    cucumber-timecop (0.0.5)
+      chronic
+      cucumber
+      timecop
     cucumber-wire (0.0.1)
     database_cleaner (1.5.3)
     debug_inspector (0.0.2)
@@ -247,6 +252,7 @@ GEM
     thor (0.19.1)
     thread_safe (0.3.5)
     tilt (2.0.5)
+    timecop (0.8.1)
     tins (1.12.0)
     turbolinks (5.0.1)
       turbolinks-source (~> 5)
@@ -276,6 +282,7 @@ DEPENDENCIES
   bootstrap-sass (~> 3.3.6)
   coveralls
   cucumber-rails
+  cucumber-timecop
   database_cleaner
   devise
   erb2haml

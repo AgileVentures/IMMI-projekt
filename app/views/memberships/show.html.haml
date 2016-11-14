@@ -8,3 +8,9 @@
   - if @membership.phone_number
     %p= @membership.phone_number
   %p= mail_to @membership.company_email, @membership.company_email
+  - if @membership.status.to_i == 2
+    %p Membership accepted at #{@membership.updated_at.strftime('%F')}
+  - elsif @membership.status.to_i == 3
+    %p Membership rejected at #{@membership.updated_at.strftime('%F')}
+  - else
+    %p Membership pending

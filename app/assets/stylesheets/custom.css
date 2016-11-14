@@ -160,3 +160,20 @@ a, a:hover {
 	background: #fafafa;
 	border-bottom:1px solid #efefef;
 }
+select {
+    height: 49px;
+    font-size: 18px;
+    min-width: 150px;
+    max-width:100%;
+    border-radius:0;
+    border:none !important;
+    background-color:#f4f4f8;
+    font-weight:normal;
+    line-height: 27px !important;
+    color:#888;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+
+

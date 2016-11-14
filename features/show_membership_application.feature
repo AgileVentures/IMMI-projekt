@@ -30,7 +30,7 @@ Feature: As an Admin
     And I am on the list applications page
     Then I should see "3" applications
     When I click on "DoggieZone"
-    Then I should be on the application page for "DoggieZone"
+    Then I should be on the management page for "DoggieZone"
     And I should see:
       | content       |
       | 2345678901    |

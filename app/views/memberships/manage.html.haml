@@ -1,0 +1,28 @@
+%header.entry-header
+  %h1.entry-title= "Ansökan från #{@membership.company_name}"
+.post-title-divider
+  %span
+.entry-content
+  %h1= @membership.company_number
+  %h2= @membership.contact_person
+  - if @membership.phone_number
+    %p= @membership.phone_number
+  %p= mail_to @membership.company_email, @membership.company_email
+  .wpcf7
+    = form_for @membership, url: membership_update_status_path(@membership) do |f|
+      - if @membership.status.to_i == 2
+        - chosen = 2
+      - elsif @membership.status.to_i == 3
+        - chosen = 3
+      - else
+        - chosen = 1
+      = f.select(:status, options_for_select([['Pending', 1],
+                                              ['Accepted', 2],
+                                              ['Rejected', 3]],
+                                              chosen))
+
+      = f.submit 'Update', class: 'wpcf7-submit'
+      - if chosen == 2
+        %p Membership accepted at #{@membership.updated_at.strftime('%F')}
+      - if chosen == 3
+        %p Membership rejected at #{@membership.updated_at.strftime('%F')}

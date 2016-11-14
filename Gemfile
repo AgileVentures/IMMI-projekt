@@ -27,6 +27,7 @@ group :development, :test do
   gem 'rake'
   gem 'coveralls', require: false
   gem 'launchy'
+  gem 'cucumber-timecop', require: false
 end
 
 group :development do
