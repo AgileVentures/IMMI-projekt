@@ -1,0 +1,38 @@
+%header.entry-header
+  %h1.entry-title Companies
+.post-title-divider
+  %span
+.entry-content
+  %table
+    %thead
+      %tr
+        %th Name
+        %th Organization Number
+        %th Phone Number
+        %th Email
+        %th Street
+        %th Post Code
+        %th City
+        %th Region
+        %th Website
+        %th
+        %th
+        %th
+    %tbody
+      - @companies.each do |company|
+        %tr
+          %td= company.name
+          %td= company.company_number
+          %td= company.phone_number
+          %td= company.email
+          %td= company.street
+          %td= company.post_code
+          %td= company.city
+          %td= company.region
+          %td= company.website
+          %td= link_to 'Show', company
+          %td= link_to 'Edit', edit_company_path(company)
+          %td= link_to 'Delete', company, method: :delete, data: { :confirm => 'Are you sure?' }
+  %br
+  .center
+    = link_to 'Create a Company', new_company_path

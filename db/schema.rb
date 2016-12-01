@@ -29,6 +29,20 @@ ActiveRecord::Schema.define(version: 20161201022139) do
     t.index ["membership_application_id"], name: "index_on_applications", using: :btree
   end
 
+  create_table "companies", force: :cascade do |t|
+    t.string   "name"
+    t.string   "company_number"
+    t.string   "phone_number"
+    t.string   "email"
+    t.string   "street"
+    t.string   "post_code"
+    t.string   "city"
+    t.string   "region"
+    t.string   "website"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
+
   create_table "membership_applications", force: :cascade do |t|
     t.string   "company_number"
     t.string   "phone_number"
@@ -72,5 +86,4 @@ ActiveRecord::Schema.define(version: 20161201022139) do
   end
 
   add_foreign_key "membership_applications", "users"
-  add_foreign_key "uploaded_files", "membership_applications"
 end

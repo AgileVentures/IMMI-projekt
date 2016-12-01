@@ -1,20 +1,5 @@
-class BusinessCategoryPolicy < ApplicationPolicy
+class CompanyPolicy < ApplicationPolicy
 
-  def new?
-    is_admin?
-  end
-
-  def create?
-    new?
-  end
-
-  def new?
-    is_admin?
-  end
-
-  def create?
-    new?
-  end
 
   def show?
     true
@@ -26,13 +11,21 @@ class BusinessCategoryPolicy < ApplicationPolicy
   end
 
 
-  def update?
+  def new?
     is_admin?
+  end
+
+  def create?
+    new?
+  end
+
+  def update?
+    is_admin? || @user
   end
 
 
   def edit?
-    is_admin?
+    update?
   end
 
 

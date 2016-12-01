@@ -1,0 +1,36 @@
+= form_for @company do |f|
+  - if @company.errors.any?
+    .wpcf7-response-output
+      - @company.errors.full_messages.each do |msg|
+        = msg
+
+  = f.label :name, 'Name', class: 'required'
+  = f.text_field :name, class: 'wpcf7-form-control'
+
+  = f.label :company_number, 'Organization Number', class: 'required'
+  = f.text_field :company_number, class: 'wpcf7-form-control'
+
+  = f.label :phone_number, 'Phone Number'
+  = f.text_field :phone_number, class: 'wpcf7-form-control'
+
+  = f.label :email, 'Email'
+  = f.text_field :email, class: 'wpcf7-form-control'
+
+  %p Address:
+  = f.label :street, 'Street'
+  = f.text_field :street, class: 'wpcf7-form-control'
+
+  = f.label :post_code, 'Post Code'
+  = f.text_field :post_code, class: 'wpcf7-form-control'
+
+  = f.label :city, 'City'
+  = f.text_field :city, class: 'wpcf7-form-control'
+
+  = f.label :region, 'Region'
+  = f.text_field :region, class: 'wpcf7-form-control'
+
+  = f.label :website, 'Website'
+  = f.text_field :website, class: 'wpcf7-form-control'
+
+
+  = f.submit 'Submit'

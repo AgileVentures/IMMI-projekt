@@ -5,5 +5,5 @@ Rails.application.routes.draw do
 
   resources :business_categories
   resources :membership_applications, only: [:new, :create, :edit, :update, :index, :show]
-
+  resources :companies, only: [:new, :create, :edit, :update, :index, :show]
 end

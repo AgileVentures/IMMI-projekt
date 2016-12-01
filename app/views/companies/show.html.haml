@@ -1,0 +1,46 @@
+%header.entry-header
+  %h1.entry-title= 'Company: ' "#{@company.name}"
+.post-title-divider
+  %span
+.entry-content
+  %p
+    %b Name:
+    = @company.name
+  %p
+    %b Organization Number:
+    = @company.company_number
+
+  %p
+    %b Phone Number:
+    = @company.phone_number
+
+  %p
+    %b Email:
+    = @company.email
+
+  %h3 Address
+  %p
+    %b Street:
+    = @company.street
+
+  %p
+    %b Post Code:
+    = @company.post_code
+
+  %p
+    %b City:
+    = @company.city
+
+  %p
+    %b Region:
+    = @company.region
+
+  %p
+    %b Website:
+    = @company.website
+
+
+  .center
+  = link_to 'Edit', edit_company_path(@company)
+  \|
+  = link_to 'All Companies', companies_path

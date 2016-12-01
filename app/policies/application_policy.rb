@@ -15,7 +15,7 @@ class ApplicationPolicy
   end
 
   def update?
-    @record.user == @user || @user.admin?
+    @user.admin? ||  @record.user == @user
   end
 
   def edit?
