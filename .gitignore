@@ -24,6 +24,7 @@ coverage/
 /design-thoughts
 /log
 .DS_Store
+.env
 
 #Ignore test-uploaded-files
 spec/test_paperclip_files/
