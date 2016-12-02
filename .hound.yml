@@ -1,5 +1,8 @@
 ruby:
   config_file: .rubocop.yml
 
+haml:
+  config_file: .haml-lint.yml
+
 jshint:
   ignore_file: .jshintignore
