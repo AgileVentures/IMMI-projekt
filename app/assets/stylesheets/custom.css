@@ -1,22 +1,22 @@
 #site-logo {
-	padding-top: 0;
-	padding-bottom: 0;
+    padding-top: 41px;
+    padding-bottom: 1px;
 }
 .site-title {
-	font-family: 'Open Sans', serif;
-	line-height: 75px;
-	font-weight: 400;
-	font-style: normal;
-	color: #222;
-	font-size: 50px;
+    font-family: 'Open Sans', serif;
+    line-height: 75px;
+    font-weight: 400;
+    font-style: normal;
+    color: #222;
+    font-size: 50px;
 }
 .site-description {
-	font-family: 'Open Sans', serif;
-	line-height: 18px;
-	font-weight: 400;
-	font-style: normal;
-	color: #666;
-	font-size: 12px;
+    font-family: 'Open Sans', serif;
+    line-height: 18px;
+    font-weight: 400;
+    font-style: normal;
+    color: #666;
+    font-size: 12px;
 }
 #site-navigation {
 	background-color: #fff;
@@ -110,19 +110,19 @@ body {
 	color: #000;
 }
 a, a:hover {
-	color: #002bad;
+	color: #003a78;
 }
 .widget .post-categories a, .widget .post-categories a:hover, .cat-links, .post-social a:hover, .post-comments a:hover .comments-number, .cat-item a:hover, .widget_archive a:hover, .wordchef .popular-title a:hover, .wordchef .recent-post-title a:hover, .recent-comment-excerpt a:hover, .site-info a, .footer-social a:hover, .paging-navigation a:hover, #author-area .author-social-profiles a:hover, #related-posts .related-post-title a:hover, #cancel-comment-reply-link:hover, .toggle-sub-menu:hover, .toggle-sub-menu-active, blockquote p:before, .recent-comment-excerpt a, .read-more-link a:hover, .featured-read-more a:hover, button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover, .widget_recent_comments a, .scroll-to-top a, .post-categories a, .post-categories a:hover, .entry-header a:hover {
-	color: #52a8ff;
+	color: #5692CE;
 }
 .lSSlideOuter .lSPager.lSpg>li:hover a, .lSSlideOuter .lSPager.lSpg>li.active a, #respond .form-submit .submit:hover, input.wpcf7-submit:hover, #wp-calendar caption, .cat-item a:hover+.categories-post-count, .widget_archive a:hover+.archives-post-count, .wordchef-pagination li a:hover, .wordchef-pagination .active a, .tagcloud a:hover, .tags-links a:hover, .comment-reply-link:hover, .page-links>.post-page-nav, .page-links .post-page-nav:hover, #wp-calendar #today, .wordchef-social a:before, .social-share a:before, #author-area .author-social-profiles a:before, button, input[type="button"], input[type="reset"], input[type="submit"], .read-more-link a:before, .read-more-link a:after, .featured-post-panel, .featured a:before, .featured-page-meta, .list-image:before, .featured-posts-prev:after, .featured-posts-next:after, #loading-screen .square-1, #loading-screen .square-2, #loading-screen .square-3, #loading-screen .square-4 {
-	background-color: #52a8ff;
+	background-color: #5692CE;
 }
 .cat-item a:hover+.categories-post-count, .widget_archive a:hover+.archives-post-count, .page-links>.post-page-nav, .page-links .post-page-nav:hover, button, input[type="button"], input[type="reset"], input[type="submit"], .widget, #site-navigation .sub-menu, .results-title, .archive-title {
-	border-color: #52a8ff;
+	border-color: #5692CE;
 }
 .site-info {
-	background-color: #111;
+	background-color: #7a7966;
 }
 #footer-logo {
 	padding-top: 15px;
@@ -133,15 +133,17 @@ a, a:hover {
 	line-height: 18px;
 	font-weight: normal;
 	font-style: normal;
-	color: #888;
+	color: #212121;
 	font-size: 12px;
 }
 .footer-social {
-	background-color: #1c1c1c;
+	background-color: transparent;
 }
 .footer-social a {
-	color: #fff;
+	color: #353535;
 }
+
+/* End of WP-settings */
 .menu {
 	background: #fff;
 }
@@ -235,7 +237,7 @@ select {
     display: none;
 }
 .text-nicelabel:checked + label {
-    background-color: #52a8ff;
+    background-color: #5692CE;
     color: #fff;
 }
 .text-nicelabel:checked + label > span.nicelabel-unchecked-image {
@@ -255,3 +257,7 @@ select {
     padding:0 !important;
     margin:0 !important;
 }
+.admin {
+    padding-top:80px;
+}
+/* FROM SHF SITE */

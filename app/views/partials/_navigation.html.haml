@@ -1,0 +1,123 @@
+.scroll-to-top
+  %a{ href: '#' }
+    = icon('angle-up')
+.container-fluid.hfeed.site
+  %header.site-header#masthead{role: 'banner'}
+    %a.skip-link.screen-reader-text{href: '#content'} Skip to content
+    / main navigation
+    %nav.main-navigation.fixed-nav#site-navigation{role: 'navigation'}
+      .nav-wrapper
+        %a.menu-toggle{href: '#'}
+          %span.bars
+            %span.bar.bar-1
+            %span.bar.bar-2
+            %span.bar.bar-3
+        -# Visitor navigation
+        - unless current_user
+          .menu#menu-menu-1-container
+            %ul.menu#menu-menu-1
+              %li.menu-item
+                = link_to 'Hem', 'http://sverigeshundforetagare.se/'
+              %li.menu-item
+                = link_to 'Broschyr', 'http://sverigeshundforetagare.se/broschyr/'
+              %li.menu-item.menu-item-has-children
+                = link_to 'Hundägare', 'http://sverigeshundforetagare.se/agare/'
+                %ul.sub-menu
+                  %li.menu-item
+                    = link_to 'Om oss', 'http://sverigeshundforetagare.se/agare/om-sveriges-hundforetagare/'
+                  %li.menu-item
+                    = link_to 'H-märket', 'http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/'
+                  %li.menu-item
+                    = link_to 'Kunskapsbank', 'http://sverigeshundforetagare.se/category/kunskapsbank-hundagare/'
+                  %li.menu-item
+                    = link_to 'Är du inte nöjd?', 'http://sverigeshundforetagare.se/agare/ar-du-inte-nojd/'
+                  %li.menu-item
+                    = link_to 'Bli stödmedlem', 'http://sverigeshundforetagare.se/agare/bli-stodmedlem/'
+                  %li.menu-item
+                    = link_to 'Att vara hundägare', 'http://sverigeshundforetagare.se/agare/att-vara-hundagare/'
+              %li.menu-item.menu-item-has-children
+                = link_to 'Hundföretagare', 'http://sverigeshundforetagare.se/foretag/'
+                %ul.sub-menu
+                  %li.menu-item
+                    = link_to 'Om oss', 'http://sverigeshundforetagare.se/foretag/om-sveriges-hundforetagare/'
+                  %li.menu-item
+                    = link_to 'Bli medlem', 'http://sverigeshundforetagare.se/foretag/bli-medlem/'
+                  %li.menu-item
+                    = link_to 'Bli H-märkt', 'http://sverigeshundforetagare.se/foretag/bli-h-markt/'
+                  %li.menu-item
+                    = link_to 'Medlemskriterier', 'http://sverigeshundforetagare.se/medlemskriterier/'
+                  %li.menu-item
+                    = link_to 'Medlemsförmåner', 'http://sverigeshundforetagare.se/foretag/detta-far-du-som-medlem/'
+                  %li.menu-item
+                    = link_to 'Kvalitetskontroll', 'http://sverigeshundforetagare.se/foretag/kvalitetskontroll/'
+                  %li.menu-item
+                    = link_to 'Kunskapsbank', 'http://sverigeshundforetagare.se/category/kunskapsbank-foretagare/'
+              %li.menu-item.menu-item-has-children
+                = link_to 'Kunskapsbank', '#'
+                %ul.sub-menu
+                  %li.menu-item
+                    = link_to 'Bloggar', 'http://sverigeshundforetagare.se/category/bloggar/'
+                  %li.menu-item
+                    = link_to 'Böcker', 'http://sverigeshundforetagare.se/category/bocker/'
+                  %li.menu-item
+                    = link_to 'Forskning', 'http://sverigeshundforetagare.se/category/forskning/'
+                  %li.menu-item
+                    = link_to 'Pod', 'http://sverigeshundforetagare.se/category/pod/'
+                  %li.menu-item
+                    = link_to 'Populärvetenskap', 'http://sverigeshundforetagare.se/category/popularvetenskap/'
+                  %li.menu-item
+                    = link_to 'Video', 'http://sverigeshundforetagare.se/category/video/'
+              %li.menu-item
+                = link_to 'Kontakt', 'http://sverigeshundforetagare.se/kontakt/'
+              %li.menu-item
+                = link_to 'Hitta hundföretagare', root_path
+        - if current_user && !current_user.try(:admin)
+          .menu#menu-menu-2-container
+            %ul.menu#menu-menu-2
+              %li.menu-item
+                = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
+              - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
+                %li.menu-item.menu-item-has-children
+                  = link_to 'Medlemssidor', page_path('index')
+                  %ul.sub-menu
+                    - HighVoltage.page_ids.each do |page|
+                      - unless page == 'index'
+                        %li.menu-item
+                          = link_to page.capitalize, page_path(page)
+                %li.menu-item
+                  = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
+                - if member_has_company?
+                  %li.menu-item.menu-item-has-children
+                    = link_to 'Hantera företag', company_path(current_user.membership_applications.last.company)
+                    %ul.sub-menu
+                      %li.menu-item
+                        = link_to 'Visa företagssida', company_path(current_user.membership_applications.last.company)
+                      %li.menu-item
+                        = link_to 'Redigera företag', edit_company_path(current_user.membership_applications.last.company)
+              - else
+                - if current_user && !current_user.try(:admin)
+                  %li.menu-item
+                    = link_to 'Ansök om medlemsskap', new_membership_application_path
+
+        - if current_user && current_user.try(:admin)
+          .menu#menu-menu-3-container
+            %ul.menu#menu-menu-3
+              %li.menu-item
+                = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
+              %li.menu-item
+                = link_to 'Hantera ansökningar', membership_applications_path
+              %li.menu-item.menu-item-has-children
+                = link_to 'Kategorier', business_categories_path
+                %ul.sub-menu
+                  %li.menu-item
+                    = link_to 'Lista kategorier', business_categories_path
+                  %li.menu-item
+                    = link_to 'Ny kategori', new_business_category_path
+              %li.menu-item.menu-item-has-children
+                = link_to 'Företag', companies_path
+                %ul.sub-menu
+                  %li.menu-item
+                    = link_to 'Lista kategorier', companies_path
+                  %li.menu-item
+                    = link_to 'Ny kategori', new_company_path
+        = render 'partials/social_nav'

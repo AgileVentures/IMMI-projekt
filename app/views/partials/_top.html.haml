@@ -1,53 +1,9 @@
-.scroll-to-top
-  %a{href: '#'}
-    = icon('angle-up')
-.container-fluid.hfeed.site
-  %header#masthead.site-header{role: 'banner'}
-    %a.skip-link.screen-reader-text{href: '#content'} Skip to content
-    / main navigation
-    %nav#site-navigation.main-navigation.fixed-nav{role: 'navigation'}
-      .nav-wrapper
-        %a.menu-toggle{href: '#'}
-          %span.bars
-            %span.bar.bar-1
-            %span.bar.bar-2
-            %span.bar.bar-3
-        .menu
-          %ul
-            %li
-              = link_to 'Hem', 'http://sverigeshundforetagare.se/'
-            %li
-              = link_to 'Om', 'http://sverigeshundforetagare.se/'
-            %li
-              = link_to 'Mer', 'http://sverigeshundforetagare.se/'
-            - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
-              %li
-                = link_to 'Medlemssidor', page_path('index')
-            %li
-              - if current_user.try(:membership_applications).try(:any?) && current_user.try(:membership_applications).try(:last).try(:persisted?)
-                = link_to 'Min ansökan', edit_membership_application_path(current_user.membership_applications.last)
-                - if member_has_company?
-                  = link_to 'Mitt företag', edit_company_path(current_user.membership_applications.last.company)
-              - else
-                - if current_user && !current_user.try(:admin)
-                  = link_to 'Ansök om medlemsskap', new_membership_application_path
-
-
-    / Social profiles
-    .social-nav
-      .tb
-        .tb-cell
-          %a.social-nav-facebook{href: 'http://www.facebook.com/sverigeshundforetagare', target:'_blank'}
-            = icon('facebook')
-          %a.social-nav-twitter{href: 'http://www.twitter.com/sverigeshundftg', target:'_blank'}
-            = icon('twitter')
-          %a.social-nav-instagram{href: 'http://www.instagram.com/sverigeshundforetagare', target:'_blank'}
-            = icon('instagram')
-          %a.social-nav-linkedin{href: 'http://www.linkedin.com/sverigeshundforetagare', target:'_blank'}
-            = icon('linkedin')
-          %a.social-nav-youtube{href: 'http://www.google.com/sverigeshundforetagare', target:'_blank'}
-            = icon('youtube')
-          = render 'partials/login_items'
-    #site-logo
-      %a{href: 'http://sverigeshundforetagare.se/'}
-        %img{alt: 'logo', src: 'http://media.sverigeshundforetagare.se/2016/10/SH_logo_RGB.png'}/
+= render 'partials/navigation'
+- unless current_user.try(:admin)
+  #site-logo
+    %a{ href: 'http://sverigeshundforetagare.se/' }
+      %img{ alt: 'logo', src: 'http://media.sverigeshundforetagare.se/2016/10/SH_logo_RGB.png' }
+- else
+  #site-logo
+    %p.admin
+      Du är inloggad som admin

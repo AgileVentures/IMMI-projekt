@@ -16,20 +16,72 @@
 //= require turbolinks
 //= require_tree .
 
-jQuery(document).ready(function() {
+jQuery(document).ready(function () {
     "use strict";
 
     // Slide mobile navigation from left
-    jQuery('#site-navigation .menu-toggle').on('click', function() {
+    jQuery('#site-navigation .menu-toggle').on('click', function () {
         jQuery(this).toggleClass('active');
-        if ( jQuery(this).hasClass('active') ) {
-            jQuery('#site-navigation .menu').animate({left:0}, {duration: 225, easing: 'swing'});
+        if (jQuery(this).hasClass('active')) {
+            jQuery('#site-navigation .menu').animate({left: 0}, {
+                duration: 225,
+                easing: 'swing'
+            });
             return false;
         } else {
-            jQuery('#site-navigation .menu').animate({left:-291}, {duration: 225, easing: 'linear'});
+            jQuery('#site-navigation .menu').animate({left: -291}, {
+                duration: 225,
+                easing: 'linear'
+            });
             return false;
         }
     });
+
+
+    /*------------------
+     Main navigation
+     ------------------*/
+    // Add toggle button for mobile navigation sub menus
+    jQuery('.menu-item-has-children > a').after('<span class="toggle-sub-menu"></span>');
+
+    // Mobile nav sub menu toggle button click
+    jQuery('#site-navigation .toggle-sub-menu').on('click', function () {
+        jQuery(this).toggleClass('toggle-sub-menu-active');
+        jQuery(this).next().slideToggle('fast');
+    });
+
+    // Add mobile class to menu on load or resize
+    if (jQuery('body').width() <= 1200) {
+        jQuery('#site-navigation .menu').addClass('mobile-menu');
+    }
+    jQuery(window).on('resize', function () {
+        if (jQuery('body').width() <= 1200) {
+            jQuery('#site-navigation .menu').addClass('mobile-menu');
+        }
+    });
+
+    // Hide sub menus on desktop nav on resize
+    jQuery(window).on('resize', function () {
+        if (jQuery('body').width() > 1200) {
+            jQuery('#site-navigation .sub-menu').removeAttr('style');
+            jQuery('#site-navigation .toggle-sub-menu-active').removeClass('toggle-sub-menu-active');
+            jQuery('#site-navigation .menu').removeClass('mobile-menu');
+        }
+    });
+
+    // Add shadow to fixed nav after scroll
+    jQuery(window).scroll(function () {
+        if (jQuery(window).scrollTop() > 0) {
+            jQuery('#site-navigation.fixed-nav').addClass('nav-shadow');
+            jQuery('#site-navigation.fixed-nav .sub-menu').addClass('nav-shadow-sub');
+            jQuery('#site-navigation.fixed-nav ~ .search-toggle-container').addClass('nav-shadow-sub');
+        } else {
+            jQuery('#site-navigation.fixed-nav').removeClass('nav-shadow');
+            jQuery('#site-navigation.fixed-nav .sub-menu').removeClass('nav-shadow-sub');
+            jQuery('#site-navigation.fixed-nav ~ .search-toggle-container').removeClass('nav-shadow-sub');
+        }
+    });
+
 });
 //Set timeout for flashes
 setTimeout("$('.flashes').fadeOut('slow')", 5000)
