@@ -16,7 +16,7 @@
 //= require turbolinks
 //= require_tree .
 
-jQuery(document).ready(function () {
+document.addEventListener("turbolinks:load", function() {
     "use strict";
 
     // Slide mobile navigation from left
