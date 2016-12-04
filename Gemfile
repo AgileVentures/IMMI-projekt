@@ -31,6 +31,8 @@ group :development, :test do
   gem 'coveralls', require: false
   gem 'launchy'
   gem 'cucumber-timecop', require: false
+
+  gem 'smarter_csv'
 end
 
 group :development do

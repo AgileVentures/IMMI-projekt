@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    %meta{content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type'}/
+    %meta{ charset: 'utf-8' }
     %title SHF-Members
     = csrf_meta_tags
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
@@ -15,7 +15,7 @@
       #content.site-content.container
         .page-gutter.col-xs-12
           %section#primary.content-area
-            %main#main.site-main{role: 'main'}
+            %main#main.site-main{ role: 'main' }
               %article
                 = yield
                 = render 'partials/page_footer'

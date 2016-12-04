@@ -32,3 +32,5 @@ spec/test_paperclip_files/
 #ignore dev test files
 public/system/
 public/storage
+
+/lib/seeds/imported-data

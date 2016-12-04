@@ -41,7 +41,7 @@ Feature: As a visitor
       | Emma       | emma@happymutts.com   | 5562252998     | approved | Groomer       |
       | Lars       | lars@happymutts.com   | 5562252998     | approved | Trainer       |
       | Anna       | anna@happymutts.com   | 5562252998     | approved | Psychologist  |
-      | Bowser     | bowser@snarkybarky.se | 2120000142     | approved | Agility       |
+      | Bowser     | bowser@snarkybarky.se | 2120000142     | approved | Agility!       |
 
 
   Scenario: Categories of 3 employees all show for a company
@@ -51,4 +51,3 @@ Feature: As a visitor
     And I should see "Trainer"
     And I should see "Psychologist"
     And I should not see "Rehab"
-

@@ -1,0 +1,164 @@
+this is text copyied from https://foretagsfakta.bolagsverket.se/fpl-dft-ext-web/home.seam?actionMethod=home.xhtml%3Asearch.sokning.prevPage&cid=234026
+to get some real company numbers.
+Only companies with 'hund' in their name and numbers NOT starting with 19- (so
+no personal numbers are used, hopefully
+
+This can be parsed to get valid company numbers
+
+page 25
+* Harptjärnens Dog and Health PartnershipsHarptjärnens Dog and Health PartnershipsOrg no969717-7294Foretagscity FormTRADING COMPANYplaceJärpenLanJämtland CountyFirmatypCompanyStatus
+* Dog and cat boarding Small Paws TradingDog and cat boarding Small Paws TradingOrg no969719-7698Foretagscity FormTRADING COMPANYplaceGranbergsdalLanÖrebro CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dog & cat magazine in Hässleholm TradingDog & cat magazine in Hässleholm TradingOrg no969724-1090Foretagscity FormTRADING COMPANYplaceHässleholmLanSkåne CountyFirmatypCompanyStatus
+* Haddebo Dog and Deer TradingHaddebo Dog and Deer TradingOrg no969724-1538Foretagscity FormTRADING COMPANYplaceSköllerstaLanÖrebro CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dog & Cat Magazine Laholm TradingDog & Cat Magazine Laholm TradingOrg no969724-1694Foretagscity FormTRADING COMPANYplaceLaholmLanHalland CountyFirmatypCompanyStatus
+* Activate your dog in Segerstad TradingActivate your dog in Segerstad TradingOrg no969726-3243Foretagscity FormTRADING COMPANYplaceVålbergLanVärmland CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* HI's Horse & Dog Sports PartnershipsHI's Horse & Dog Sports PartnershipsOrg no969729-4289Foretagscity FormTRADING COMPANYplaceOsmoLanStockholm CountyFirmatypCompanyStatus
+* Blanck Dog & Leisure TradingBlanck Dog & Leisure TradingOrg no969729-6789Foretagscity FormTRADING COMPANYplaceNorrköpingLanTexasFirmatypCompanyStatusDeregistered due to discontinued operations
+* Gran Fallet dog and cat boarding kennel and PartnershipsGran Fallet dog and cat boarding kennel and PartnershipsOrg no969734-4639Foretagscity FormTRADING COMPANYplaceFinnerödjaLanÖrebro CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Bröddarps horse and dog center handelsbolagBröddarps horse and dog center handelsbolagOrg no969738-2050Foretagscity FormTRADING COMPANYplaceVellingeLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Bromley DogBromley DogOrg no969739-1424Foretagscity FormTRADING COMPANYplaceBromleyLanSkåne CountyFirmatypsecondary nameStatus
+* Mine Dog and Cat Skinnskatteberg TradingMine Dog and Cat Skinnskatteberg TradingOrg no969745-6920Foretagscity FormTRADING COMPANYplaceSkinnskattebergLanVästmanlandFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dogs and Pets Skåne HandelsbolagDogs and Pets Skåne HandelsbolagOrg no969746-7919Foretagscity FormTRADING COMPANYplaceMarieholmLanSkåne CountyFirmatypCompanyStatus
+* Flush Point Dog Hunting and TradingFlush Point Dog Hunting and TradingOrg no969752-2218Foretagscity FormTRADING COMPANYplaceGrästorpLanBay StateFirmatypCompanyStatusDeregistered due to discontinued operations
+* Emil's Dog & Cat Shop TradingEmil's Dog & Cat Shop TradingOrg no969754-6977Foretagscity FormTRADING COMPANYplaceVålbergLanVärmland CountyFirmatypCompanyStatus
+* GO Horse & Hound TradingGO Horse & Hound TradingOrg no969760-6763Foretagscity FormTRADING COMPANYplaceAlingsåsLanBay StateFirmatypCompanyStatusDeregistered due to discontinued operations
+* Eketorpet Dog TradingEketorpet Dog TradingOrg no969766-8466Foretagscity FormTRADING COMPANYplaceSösdalaLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading Brogård Dog & EducationThe trading Brogård Dog & EducationOrg no969768-6260Foretagscity FormTRADING COMPANYplaceSmedstorpLanSkåne CountyFirmatypCompanyStatus
+* Your dog & cat Uppsala PartnershipsYour dog & cat Uppsala PartnershipsOrg no969772-5209Foretagscity FormKOMMANDITBOLAGplaceUppsalaLanUppsala CountyFirmatypCompanyStatus
+* Dog & cat jumps in Söderköping partnershipDog & cat jumps in Söderköping partnershipOrg no969773-7154Foretagscity FormTRADING COMPANYplaceSoderkopingLanÖstergötland CountyFirmatypCompanyStatus
+
+page 24
+* Hotel Sassi Bell Dog and Cat Guest PartnershipsHotel Sassi Bell Dog and Cat Guest PartnershipsOrg no969616-3394Foretagscity FormTRADING COMPANYplaceHaningeLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* CEPA Forest and Dog TradingCEPA Forest and Dog TradingOrg no969621-1599Foretagscity FormTRADING COMPANYplaceSoderkopingLanÖstergötland CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* HOMEPETS Cat & Dog TradingHOMEPETS Cat & Dog TradingOrg no969635-3516Foretagscity FormTRADING COMPANYplaceSandvikenLanMichiganFirmatypCompanyStatusbankruptcy closed
+* Dog and cat veterinarian in Asa TradingDog and cat veterinarian in Asa TradingOrg no969635-4589Foretagscity FormTRADING COMPANYplaceAsaLanHalland CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Bärsta dog and cat handelsbolagBärsta dog and cat handelsbolagOrg no969635-4944Foretagscity FormTRADING COMPANYplaceStigtomtaLanTexasFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dog Ace Limited partnershipDog Ace Limited partnershipOrg no969636-1980Foretagscity FormKOMMANDITBOLAGplaceHÃ¤sselbyLanStockholm CountyFirmatypCompanyStatus
+* Bucken & Dollan Dog and Hästkäk The kind of the TradingBucken & Dollan Dog and Hästkäk The kind of the TradingOrg no969641-8129Foretagscity FormTRADING COMPANYplaceBrottbyLanStockholm CountyFirmatypCompanyStatusDeasserted according to § 17 Trade Register Act
+* Berga troll's Dog and Cat Shop TradingBerga troll's Dog and Cat Shop TradingOrg no969655-0376Foretagscity FormTRADING COMPANYplaceTrangsundLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* HDF - Dog, Data and Outdoor Activities in Täby TradingHDF - Dog, Data and Outdoor Activities in Täby TradingOrg no969675-1016Foretagscity FormTRADING COMPANYplaceVallentunaLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dog & Leisure in Orsa PartnershipsDog & Leisure in Orsa PartnershipsOrg no969676-6253Foretagscity FormKOMMANDITBOLAGplaceOrsaLanDalarna CountyFirmatypCompanyStatus
+* Partnerships Risebo Dog & ChickenPartnerships Risebo Dog & ChickenOrg no969678-5758Foretagscity FormTRADING COMPANYplaceLoftahammarLanKalmar CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* DognCat DNC ​​Dog & Cat Food TradingDognCat DNC ​​Dog & Cat Food TradingOrg no969684-3375Foretagscity FormTRADING COMPANYplaceBjärnumLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Anna your pet StudioAnna your pet StudioOrg no969688-9725Foretagscity FormTRADING COMPANYplaceTyresoLanStockholm CountyFirmatypsecondary nameStatusDeregistered due to discontinued operations
+* Berga Dog & Cat TradingBerga Dog & Cat TradingOrg no969689-6308Foretagscity FormTRADING COMPANYplaceHogsbyLanKalmar CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Balsta Dog & Cat Guest PartnershipsBalsta Dog & Cat Guest PartnershipsOrg no969692-4407Foretagscity FormTRADING COMPANYplaceBalstaLanUppsala CountyFirmatypCompanyStatusDeasserted according to § 17 Trade Register Act
+* Akelas Dog and Cat Guest PartnershipsAkelas Dog and Cat Guest PartnershipsOrg no969696-0005Foretagscity FormTRADING COMPANYplaceUppsalaLanUppsala CountyFirmatypCompanyStatusDeasserted according to § 17 Trade Register Act
+* Caballus Horse & Hound TradingCaballus Horse & Hound TradingOrg no969696-8065Foretagscity FormTRADING COMPANYplaceAskimLanBay StateFirmatypCompanyStatusDeregistered due to discontinued operations
+* Ekeby dog ​​and cat boarding handelsbolagEkeby dog ​​and cat boarding handelsbolagOrg no969699-9060Foretagscity FormTRADING COMPANYplaceEkebyLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dog & Hunting Nyköping HandelsbolagDog & Hunting Nyköping HandelsbolagOrg no969700-0611Foretagscity FormTRADING COMPANYplaceNykopingLanTexasFirmatypCompanyStatusDeregistered due to discontinued operations
+* Belgeslunds Everything Dog TradingBelgeslunds Everything Dog TradingOrg no969711-7316Foretagscity FormTRADING COMPANYplaceHallabroLanBlekinge countyFirmatypCompanyStatusDeregistered due to discontinued operations
+
+page 23
+* DOG AND CAT HEMFODER TRADING
+        * DOG AND CAT HEMFODER TRADINGOrg no916766-3948Foretagscity FormTRADING COMPANYplaceDalbyLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+        * The trading company FRESH & HEALTHY - FOREST & DOGSThe trading company FRESH & HEALTHY - FOREST & DOGSOrg no916767-8649Foretagscity FormTRADING COMPANYplaceGothenburgLanBay StateFirmatypCompanyStatus
+        * Anemonen DOG AND CAT TRADINGAnemonen DOG AND CAT TRADINGOrg no916773-2073Foretagscity FormTRADING COMPANYplaceHelsingborgLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+        * EMRAX DOG AND HORSE TRADINGEMRAX DOG AND HORSE TRADINGOrg no916835-9546Foretagscity FormTRADING COMPANYplaceLysekilLanBay StateFirmatypCompanyStatusDeregistered due to discontinued operations
+        * FROM Torp DOG & CAT TRADINGFROM Torp DOG & CAT TRADINGOrg no916836-7317Foretagscity FormTRADING COMPANYplaceGothenburgLanBay StateFirmatypCompanyStatusDeregistered due to discontinued operations
+        * Ekuddens Dog & Cat Food Trading companyEkuddens Dog & Cat Food Trading companyOrg no916841-1628Foretagscity FormTRADING COMPANYplaceHärrydaLanBay StateFirmatypCompanyStatusbankruptcy closed
+        * Gothenburg Dog & Cat Centre Limited partnershipGothenburg Dog & Cat Centre Limited partnershipOrg no916847-5565Foretagscity FormKOMMANDITBOLAGplaceGothenburgLanBay StateFirmatypCompanyStatus
+        * Hound of the Baskervilles & LEISURE TRADINGHound of the Baskervilles & LEISURE TRADINGOrg no916850-7268Foretagscity FormTRADING COMPANYplaceGothenburgLanBay StateFirmatypCompanyStatusDeasserted according to § 17 Trade Register Act
+        * GRÅBO HORSE & DOG TRADINGGRÅBO HORSE & DOG TRADINGOrg no916895-0021Foretagscity FormTRADING COMPANYplaceMugwortLanBay StateFirmatypCompanyStatus
+        * Anki Dog's TradingAnki Dog's TradingOrg no916898-5894Foretagscity FormTRADING COMPANYplaceBjörketorpLanBay StateFirmatypCompanyStatusDeregistered due to discontinued operations
+        * Have Horse and Dog TradingHave Horse and Dog TradingOrg no916961-4386Foretagscity FormTRADING COMPANYplaceSundsvallLanTennesseeFirmatypCompanyStatusDeregistered due to discontinued operations
+        * Dog & Cat Shop TradingDog & Cat Shop TradingOrg no916981-2378Foretagscity FormTRADING COMPANYplaceObbolaLanVästerbotten CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+        * BJ's horse, dog and cat handelsbolagBJ's horse, dog and cat handelsbolagOrg no969605-2787Foretagscity FormTRADING COMPANYplaceBjörklingeLanUppsala CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+        * Dog and Cat Express TradingDog and Cat Express TradingOrg no969606-4956Foretagscity FormTRADING COMPANYplaceMalmöLanSkåne CountyFirmatypCompanyStatusbankruptcy closed
+        * Holmberg's Dog & Cat TradingHolmberg's Dog & Cat TradingOrg no969607-7198Foretagscity FormTRADING COMPANYplaceTyresoLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+        * BelgJack's Dog and Cat Shop TradingBelgJack's Dog and Cat Shop TradingOrg no969607-9533Foretagscity FormTRADING COMPANYplaceSolnaLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+        * Annika's Horse and Dog TradingAnnika's Horse and Dog TradingOrg no969610-8613Foretagscity FormTRADING COMPANYplaceKavlingeLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+        * Hornborgasjön Dog & Game TradingHornborgasjön Dog & Game TradingOrg no969611-7937Foretagscity FormTRADING COMPANYplaceSkaraLanBay StateFirmatypCompanyStatusDeregistered due to discontinued operations
+    * EY Dog & cat partnershipsEY Dog & cat partnershipsOrg no969613-0237Foretagscity FormTRADING COMPANYplaceHelsingborgLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+    * Doghouse TradingDoghouse TradingOrg no969614-1176Foretagscity FormTRADING COMPANYplaceVällingbyLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+
+page 22
+* Dog 24/7Dog 24/7Org no916528-2147Foretagscity FormTRADING COMPANYplaceMohedaLanKronoberg CountyFirmatypsecondary nameStatus
+* The trading Ebonn's Dog & Cat BoutiqueThe trading Ebonn's Dog & Cat BoutiqueOrg no916536-9084Foretagscity FormTRADING COMPANYplaceÄngelholmLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading doghouse AFPThe trading doghouse AFPOrg no916549-2118Foretagscity FormTRADING COMPANYplaceHelsingborgLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* DOG BIT DOG SHOP TRADINGDOG BIT DOG SHOP TRADINGOrg no916560-1791Foretagscity FormTRADING COMPANYplaceGothenburgLanBay StateFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dog & Cat Corner Mischmasch TradingDog & Cat Corner Mischmasch TradingOrg no916580-4015Foretagscity FormTRADING COMPANYplaceHebyLanVästmanlandFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading Khalil's Dog & HobbiesThe trading Khalil's Dog & HobbiesOrg no916596-2862Foretagscity FormTRADING COMPANYplaceBodenLanNorrbotten CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Handelsbolaget horse and dog, Quadrille RIDINGHandelsbolaget horse and dog, Quadrille RIDINGOrg no916597-2028Foretagscity FormTRADING COMPANYplaceGallivareLanNorrbotten CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Canis Lupus Dog & Leisure TradingCanis Lupus Dog & Leisure TradingOrg no916598-7521Foretagscity FormTRADING COMPANYplaceArvidsjaurLanNorrbotten CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading company TUNA DOG AND CAT FOODThe trading company TUNA DOG AND CAT FOODOrg no916602-9620Foretagscity FormTRADING COMPANYplaceÖsterskärLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Handelsbolaget UPPLANDS horse, DOGS AND CATSHandelsbolaget UPPLANDS horse, DOGS AND CATSOrg no916611-6559Foretagscity FormTRADING COMPANYplaceNorrtäljeLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* CARA BELLA DOG & LEISURE TRADINGCARA BELLA DOG & LEISURE TRADINGOrg no916615-3040Foretagscity FormTRADING COMPANYplaceHaningeLanStockholm CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* DOG AND CAT EXPRESSEN TRADINGDOG AND CAT EXPRESSEN TRADINGOrg no916619-1008Foretagscity FormTRADING COMPANYplaceLidingöLanStockholm CountyFirmatypCompanyStatusDeasserted according to § 17 Trade Register Act
+* AVANCE DOG & LEISURE TRADINGAVANCE DOG & LEISURE TRADINGOrg no916641-7874Foretagscity FormTRADING COMPANYplaceVallentunaLanStockholm CountyFirmatypCompanyStatus
+* Finspångs Dog & Alarm Security PartnershipsFinspångs Dog & Alarm Security PartnershipsOrg no916695-3753Foretagscity FormTRADING COMPANYplaceFinspångLanÖstergötland CountyFirmatypCompanyStatusbankruptcy closed
+* Talking Dog TradingTalking Dog TradingOrg no916695-6467Foretagscity FormTRADING COMPANYplaceVintrosaLanÖrebro CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading Dog and Cat Food in ÖstergötlandThe trading Dog and Cat Food in ÖstergötlandOrg no916696-5617Foretagscity FormTRADING COMPANYplaceMantorpLanÖstergötland CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dog and Cat house Smålandsstenar TradingDog and Cat house Smålandsstenar TradingOrg no916702-2228Foretagscity FormTRADING COMPANYplaceSmalandsstenarLanJönköping CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Ekekullens Dog and Cat Shop TradingEkekullens Dog and Cat Shop TradingOrg no916703-0825Foretagscity FormTRADING COMPANYplaceAnderstorpLanJönköping CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading Ahus Dog and Cat ServiceThe trading Ahus Dog and Cat ServiceOrg no916752-5907Foretagscity FormTRADING COMPANYplaceAhusLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Your pet Malmö Hotel KOMMANDITBOLAGYour pet Malmö Hotel KOMMANDITBOLAGOrg no916761-9643Foretagscity FormKOMMANDITBOLAGplaceMalmöLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+
+page 21
+* You & Your Dog products HJ ABYou & Your Dog products HJ ABOrg no556871-3068Foretagscity FormLIMITED COMPANYplaceHärrydaLanBay StateFirmatypCompanyStatus
+* Fyrislund dog & cat ABFyrislund dog & cat ABOrg no556887-9653Foretagscity FormLIMITED COMPANYplaceUpplands VäsbyLanStockholm CountyFirmatypCompanyStatus
+* Gota Dog ABGota Dog ABOrg no556892-2099Foretagscity FormLIMITED COMPANYplaceKullavikLanHalland CountyFirmatypCompanyStatus
+* Emil's dog and cat shop in Valberg ABEmil's dog and cat shop in Valberg ABOrg no556899-8792Foretagscity FormLIMITED COMPANYplaceVålbergLanVärmland CountyFirmatypCompanyStatus
+* Dog wet and dry ABDog wet and dry ABOrg no556905-2508Foretagscity FormLIMITED COMPANYplaceBrommaLanStockholm CountyFirmatypCompanyStatus
+* Dog running smoothly Kungsbacka ABDog running smoothly Kungsbacka ABOrg no556928-5801Foretagscity FormLIMITED COMPANYplaceValldaLanHalland CountyFirmatypCompanyStatus
+* Hornstulls Dog & Cat ABHornstulls Dog & Cat ABOrg no556966-3254Foretagscity FormLIMITED COMPANYplaceStockholmLanStockholm CountyFirmatypCompanyStatus
+* Dog & Concrete Western ABDog & Concrete Western ABOrg no556970-8117Foretagscity FormLIMITED COMPANYplaceTrollhättanLanBay StateFirmatypCompanyStatus
+* AEN Dog In Town ABAEN Dog In Town ABOrg no559002-4559Foretagscity FormLIMITED COMPANYplaceFairfieldLanStockholm CountyFirmatypCompanyStatus
+* Amanda Fitness and Rehabilitation Dog Yngsjö ABAmanda Fitness and Rehabilitation Dog Yngsjö ABOrg no559003-0184Foretagscity FormLIMITED COMPANYplaceYngsjöLanSkåne CountyFirmatypCompanyStatus
+* Gothenburg dog in downtown ABGothenburg dog in downtown ABOrg no559070-1396Foretagscity FormLIMITED COMPANYplaceGothenburgLanBay StateFirmatypCompanyStatus
+* Hagavik Farm - Dog & Horse Health ABHagavik Farm - Dog & Horse Health ABOrg no559073-4108Foretagscity FormLIMITED COMPANYplaceVellingeLanSkåne CountyFirmatypCompanyStatus
+* Dog & Construction Ytterstfors ABDog & Construction Ytterstfors ABOrg no559076-0418Foretagscity FormLIMITED COMPANYplaceByskeLanVästerbotten CountyFirmatypCompanyStatus
+* Dog & Video Mine Product PartnershipsDog & Video Mine Product PartnershipsOrg no916408-1979Foretagscity FormKOMMANDITBOLAGplaceJärlåsaLanUppsala CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading company KINDA DOG & CAT GUESTThe trading company KINDA DOG & CAT GUESTOrg no916412-7152Foretagscity FormTRADING COMPANYplaceRimforsaLanÖstergötland CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading Dog and leisure services in LinköpingThe trading Dog and leisure services in LinköpingOrg no916413-3754Foretagscity FormTRADING COMPANYplaceLinkopingLanÖstergötland CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Trading company HELSINGBORGS DOGS AND CATSTrading company HELSINGBORGS DOGS AND CATSOrg no916436-4441Foretagscity FormTRADING COMPANYplaceHelsingborgLanSkåne CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* GGR o Dog Cat Food TradingGGR o Dog Cat Food TradingOrg no916459-9079Foretagscity FormTRADING COMPANYplaceValskogLanVästmanlandFirmatypCompanyStatusDeregistered due to discontinued operations
+* The trading Dogs and cats shed in SöderköpingThe trading Dogs and cats shed in SöderköpingOrg no916518-5431Foretagscity FormTRADING COMPANYplaceSoderkopingLanÖstergötland CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+* Dinos your pet PartnershipsDinos your pet PartnershipsOrg no916524-9211Foretagscity FormTRADING COMPANYplaceRydaholmLanJönköping CountyFirmatypCompanyStatusDeregistered due to discontinued operations
+
+page 19
+* Aeris Dog & Horse ABAeris Dog & Horse ABOrg no556559-5849Foretagscity FormLIMITED COMPANYplaceCoffinLanNorrbotten CountyFirmatypCompanyStatus
+* Helena Dog Hotel AktiebolagHelena Dog Hotel AktiebolagOrg no556566-2532Foretagscity FormLIMITED COMPANYplaceMärstaLanStockholm CountyFirmatypCompanyStatus
+* Dog & Horse riding in ÖrebroDog & Horse riding in ÖrebroOrg no556569-6886Foretagscity FormLIMITED COMPANYplaceOrebroLanÖrebro CountyFirmatypsecondary nameStatus
+* Canine, feline and equine products, HRH Products ABCanine, feline and equine products, HRH Products ABOrg no556585-1929Foretagscity FormLIMITED COMPANYplaceKnivstaLanUppsala CountyFirmatypCompanyStatusbankruptcy closed
+* Dog & Cat Shop Roslag NasbyDog & Cat Shop Roslag NasbyOrg no556594-4328Foretagscity FormLIMITED COMPANYplaceEnskedeLanStockholm CountyFirmatypsecondary nameStatusbankruptcy closed
+* Dog & Cat Shop TallkrogenDog & Cat Shop TallkrogenOrg no556594-4328Foretagscity FormLIMITED COMPANYplaceEnskedeLanStockholm CountyFirmatypsecondary nameStatusbankruptcy closed
+* Bina's Dog & Cat Shop and Clinic LimitedBina's Dog & Cat Shop and Clinic LimitedOrg no556596-0803Foretagscity FormLIMITED COMPANYplaceKungsbackaLanHalland CountyFirmatypCompanyStatus
+* Dog and Hunting Wholesaler in Haparanda ABDog and Hunting Wholesaler in Haparanda ABOrg no556629-0234Foretagscity FormLIMITED COMPANYplaceHaparandaLanNorrbotten CountyFirmatypCompanyStatus
+* Hipico Horse, Dog, Cat ABHipico Horse, Dog, Cat ABOrg no556632-1690Foretagscity FormLIMITED COMPANYplaceNybroLanKalmar CountyFirmatypCompanyStatusBankruptcy closedWinding Established
+
+* Dog & Cat chain in Farsta ABDog & Cat chain in Farsta ABOrg no556640-0148Foretagscity FormLIMITED COMPANYplaceTäbyLanStockholm CountyFirmatypCompanyStatusbankruptcy closed
+* Fyrfotat Cat and Dog ABFyrfotat Cat and Dog ABOrg no556652-7072Foretagscity FormLIMITED COMPANYplaceAlingsåsLanBay StateFirmatypCompanyStatus
+* Andersson's Horse & Hound ABAndersson's Horse & Hound ABOrg no556663-3714Foretagscity FormLIMITED COMPANYplaceÅkersbergaLanStockholm CountyFirmatypCompanyStatusBankruptcy initiatedLiquidation approved
+
+* Gefle Dogs & Cats Internship ABGefle Dogs & Cats Internship ABOrg no556665-2524Foretagscity FormLIMITED COMPANYplaceGavleLanMichiganFirmatypCompanyStatusdissolved through fusion
+* Dog & Cat Shop in Ramlösa ABDog & Cat Shop in Ramlösa ABOrg no556671-0058Foretagscity FormLIMITED COMPANYplaceHelsingborgLanSkåne CountyFirmatypCompanyStatus
+* Anki's Carlsson Dog ABAnki's Carlsson Dog ABOrg no556677-1704Foretagscity FormLIMITED COMPANYplaceGothenburgLanBay StateFirmatypCompanyStatusWinding closed
+* CHK City Dog and Cat Clinic LtdCHK City Dog and Cat Clinic LtdOrg no556683-1052Foretagscity FormLIMITED COMPANYplaceGothenburgLanBay StateFirmatypCompanyStatusdissolved through fusion
+* Dog, Cat o Horse Balsta ABDog, Cat o Horse Balsta ABOrg no556691-0344Foretagscity FormLIMITED COMPANYplaceBalstaLanUppsala CountyFirmatypCompanyStatus
+* Fruängens Dog & Cat Center ABFruängens Dog & Cat Center ABOrg no556711-3161Foretagscity FormLIMITED COMPANYplaceStockholmLanStockholm CountyFirmatypCompanyStatusBankruptcy closedWinding Established
+
+* Active dogs in UpplandActive dogs in UpplandOrg no556711-6313Foretagscity FormLIMITED COMPANYplaceUppsalaLanUppsala CountyFirmatypsecondary nameStatus
+* Dog & Cat pros in Karlskoga ABDog & Cat pros in Karlskoga ABOrg no556726-1283Foretagscity FormLIMITED COMPANYplaceKarlskogaLanÖrebro CountyFirmatypCompanyStatusbankruptcy closed
+
+page 18
+* Dog & Cat Specialist in Örebro AktiebolagDog & Cat Specialist in Örebro AktiebolagOrg no556320-4675Foretagscity FormLIMITED COMPANYplaceOrebroLanÖrebro CountyFirmatypCompanyStatus
+* Dog and Cat Clinic Bista AktiebolagDog and Cat Clinic Bista AktiebolagOrg no556342-2210Foretagscity FormLIMITED COMPANYplaceKumlaLanÖrebro CountyFirmatypCompanyStatusdissolved through fusion
+* Black'n Danger Dogs & CatsBlack'n Danger Dogs & CatsOrg no556357-3046Foretagscity FormLIMITED COMPANYplaceStockholmLanStockholm CountyFirmatypsecondary nameStatus
+* Ellios Dog & Cat ABEllios Dog & Cat ABOrg no556357-3046Foretagscity FormLIMITED COMPANYplaceStockholmLanStockholm CountyFirmatypCompanyStatus
+* Dog & Cat in Vällingby ABDog & Cat in Vällingby ABOrg no556376-4298Foretagscity FormLIMITED COMPANYplaceHÃ¤sselbyLanStockholm CountyFirmatypCompanyStatusbankruptcy closed
+* Dog and Cat in Skelleftea AktiebolagDog and Cat in Skelleftea AktiebolagOrg no556423-4374Foretagscity FormLIMITED COMPANYplaceSkellefteaLanVästerbotten CountyFirmatypCompanyStatusbankruptcy closed
+* Balsta Dog & Cat Guest AktiebolagBalsta Dog & Cat Guest AktiebolagOrg no556427-0477Foretagscity FormLIMITED COMPANYplaceBalstaLanUppsala CountyFirmatypCompanyStatusbankruptcy closed
+* CHK City Dog and Cat ClinicCHK City Dog and Cat ClinicOrg no556453-6067Foretagscity FormLIMITED COMPANYplaceKålleredLanBay StateFirmatypsecondary nameStatusdissolved through fusion
+* Dog and Cat Health in KålleredDog and Cat Health in KålleredOrg no556453-6067Foretagscity FormLIMITED COMPANYplaceKålleredLanBay StateFirmatypsecondary nameStatusdissolved through fusion
+* Cashen dog, cat and horse people in Stockholm, AktiebolagCashen dog, cat and horse people in Stockholm, AktiebolagOrg no556463-2767Foretagscity FormLIMITED COMPANYplaceStockholmLanStockholm CountyFirmatypCompanyStatusbankruptcy closed
+* Active Dog of Trollhattan ABActive Dog of Trollhattan ABOrg no556468-0089Foretagscity FormLIMITED COMPANYplaceTrollhättanLanBay StateFirmatypCompanyStatus
+* Arninge Dog & Cat Center AktiebolagArninge Dog & Cat Center AktiebolagOrg no556469-9576Foretagscity FormLIMITED COMPANYplaceTäbyLanStockholm CountyFirmatypCompanyStatusbankruptcy closed
+* Dog Alarm & Security in Norrköping AktiebolagDog Alarm & Security in Norrköping AktiebolagOrg no556474-9645Foretagscity FormLIMITED COMPANYplaceNorrköpingLanÖstergötland CountyFirmatypCompanyStatusbankruptcy closed
+* Dog & Cat gadgets in Piteå AktiebolagDog & Cat gadgets in Piteå AktiebolagOrg no556478-7124Foretagscity FormLIMITED COMPANYplacePiteaLanNorrbotten CountyFirmatypCompanyStatus
+* Dog & Mountain adventure in Dalarna AktiebolagDog & Mountain adventure in Dalarna AktiebolagOrg no556486-0335Foretagscity FormLIMITED COMPANYplaceIdreLanDalarna CountyFirmatypCompanyStatusbankruptcy closed
+* Dog and Cat Emergency in Greater Stockholm, AktiebolagDog and Cat Emergency in Greater Stockholm, AktiebolagOrg no556489-9036Foretagscity FormLIMITED COMPANYplaceStockholmLanStockholm CountyFirmatypCompanyStatus
+* Dog & Hunting in Haparanda ABDog & Hunting in Haparanda ABOrg no556497-0084Foretagscity FormLIMITED COMPANYplaceHaparandaLanNorrbotten CountyFirmatypCompanyStatusdissolved through fusion
+* Charlie Horse & Hound ABCharlie Horse & Hound ABOrg no556503-3585Foretagscity FormLIMITED COMPANYplaceJonkopingLanJönköping CountyFirmatypCompanyStatus
+* DOGTAG Dogs & CatsDOGTAG Dogs & CatsOrg no556548-3707Foretagscity FormLIMITED COMPANYplaceStockholmLanStockholm CountyFirmatypsecondary nameStatus
+* Hand with Dog AktiebolagHand with Dog AktiebolagOrg no556551-7603Foretagscity FormLIMITED COMPANYplaceStaffordLanSkåne CountyFirmatypCompanyStatus

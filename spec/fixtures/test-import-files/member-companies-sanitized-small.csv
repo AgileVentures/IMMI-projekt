@@ -1,0 +1,5 @@
+membership_number;email;company_number;first_name;last_name;company_name;street;post_code;stad;region;phone_number;website;category1;category2
+3;info@doggies.com;9697391424;Emma;Svensson;Hundlycka;Hagalundsvägen 9;632 30;Eskilstuna;Södermanland;;http://www.hundlycka.com;Träning;
+43;info@hund.se;9697668466;Hans;Knutsson;Heart of gold Hundcenter;Arremdevägen 9, 4 tr;175 94;Järfälla;Stockholm;;http://www.heartofgold.se;Träning;Psykologi
+45;hej.hund@hehe.com;9696896308;Ebba;Antonsson;Nättraby Hund;Skillingevägen 26;370 24;Nättraby;Blekinge;;http://www.nattrabyhund.se;Träning;Psykologi
+48;hejs.hund@hehe.com;9696896308;Eskil;Antonsson;Nättraby Hund;Skillingevägen 26;370 24;Nättraby;Blekinge;;http://www.nattrabyhund.se;Träning;Psykologi
