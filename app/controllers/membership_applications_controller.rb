@@ -81,7 +81,7 @@ class MembershipApplicationsController < ApplicationController
 
 
   def changed_to_accepted?(params)
-    params.include?('status') && params['status'] =='Accepted'
+    params.include?('status') && params['status'] =='Godkänd'
   end
 
 

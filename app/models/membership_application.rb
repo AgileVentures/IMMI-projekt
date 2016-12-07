@@ -16,6 +16,6 @@ class MembershipApplication < ApplicationRecord
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
 
   def swedish_organisationsnummer
-    errors.add(:company_number, "#{self.company_number} is not a valid company number") unless Orgnummer.new(self.company_number).valid?
+    errors.add(:company_number, "#{self.company_number} är inte ett svenskt organisationsnummer") unless Orgnummer.new(self.company_number).valid?
   end
 end

@@ -18,17 +18,17 @@ Feature: As an applicant
   Scenario: Upload a file during a new application
     Given I am logged in as "applicant_2@random.com"
     And I am on the "submit new membership application" page
-    And I fill in "First Name" with "Hans"
-    And I fill in "Last Name" with "Newfoundland"
-    And I fill in "Company Number" with "5560360793"
-    And I fill in "Contact Email" with "applicant_2@random.com"
-    And I fill in "Phone Number" with "031-1234567"
+    And I fill in "Förnamn" with "Hans"
+    And I fill in "Efternamn" with "Newfoundland"
+    And I fill in "Org nr" with "5560360793"
+    And I fill in "E-post" with "applicant_2@random.com"
+    And I fill in "Telefon" with "031-1234567"
     And I choose a file named "diploma.pdf" to upload
     And I click on "Submit"
     And I should see "Tack, din ansökan har skickats."
     And I should see "Filen laddades upp: diploma.pdf"
     And I am on the "edit my application" page
-    Then I should see "Files uploaded for this application:"
+    Then I should see "Uppladdade filer för denna ansökan:"
     And I should see "diploma.pdf" uploaded for this membership application
 
   Scenario: Upload a file for an existing application
@@ -36,7 +36,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     When I choose a file named "diploma.pdf" to upload
     And I click on "Submit"
-    Then I should see "Files uploaded for this application:"
+    Then I should see "Uppladdade filer för denna ansökan:"
     And I should see "diploma.pdf" uploaded for this membership application
     And I should see "Ansökan har uppdaterats."
     And I should see "Filen laddades upp: diploma.pdf"
@@ -51,7 +51,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     When I choose a file named "picture.jpg" to upload
     And I click on "Submit"
-    Then I should see "Files uploaded for this application:"
+    Then I should see "Uppladdade filer för denna ansökan:"
     And I should see "diploma.pdf" uploaded for this membership application
     And I should see "picture.jpg" uploaded for this membership application
     And I should see 2 uploaded files listed
@@ -61,7 +61,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     When I choose the files named ["picture.jpg", "picture.png", "diploma.pdf"] to upload
     And I click on "Submit"
-    Then I should see "Files uploaded for this application:"
+    Then I should see "Uppladdade filer för denna ansökan:"
     And I should see "diploma.pdf" uploaded for this membership application
     And I should see "picture.jpg" uploaded for this membership application
     And I should see "picture.png" uploaded for this membership application
@@ -89,7 +89,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     When I choose a file named "diploma.pdf" to upload
     And I click on "Submit"
-    Then I should see "Files uploaded for this application:"
+    Then I should see "Uppladdade filer för denna ansökan:"
     And I should see "diploma.pdf" uploaded for this membership application
 
 

@@ -28,8 +28,8 @@
   #uploaded_files
     = render 'uploaded_files_list', membership_application: @membership_application
 
-  %p Application Status:
+  %p Status:
   - if edit_status?
     = render partial: 'application_status_form'
 
-  %p Membership #{@membership_application.status.downcase} at #{@membership_application.updated_at.strftime('%F')}
+  %p Status: #{@membership_application.status} - #{@membership_application.updated_at.strftime('%F')}

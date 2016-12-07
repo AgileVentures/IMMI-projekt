@@ -13,7 +13,7 @@ Feature: As an Admin
     And the following applications exist:
       | company_number | user_email  | status   |
       | 5562252998     | din@mail.se | Pending  |
-      | 2120000142     | min@mail.se | Accepted |
+      | 2120000142     | min@mail.se | Godkänd  |
 
     And I am logged in as "admin@sgf.com"
 
@@ -23,4 +23,4 @@ Feature: As an Admin
     Then I should see "2" applications
     And I should see "Status"
     And I should see "Pending"
-    And I should see "Accepted"
+    And I should see "Godkänd"

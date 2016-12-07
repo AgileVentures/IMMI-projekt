@@ -21,7 +21,7 @@ Feature: As an applicant
     And I am on the "landing" page
     And I click on "Min ansökan"
     Then I should be on "Edit My Application" page
-    And I fill in "First Name" with "Anna"
+    And I fill in "Förnamn" with "Anna"
     And I click on "Submit"
     Then I should see "Ansökan har uppdaterats."
     And I should be on the application page for "Anna"
@@ -32,7 +32,7 @@ Feature: As an applicant
     And I am on the "landing" page
     And I click on "Min ansökan"
     Then I should be on "Edit My Application" page
-    And I fill in "Contact Email" with "sussimmi.nu"
+    And I fill in "E-post" with "sussimmi.nu"
     And I click on "Submit"
     Then I should see "Ett eller flera problem hindrade din ansökan från att sparas."
     And I should be on "Edit My Application" page

@@ -15,7 +15,7 @@ Feature: As an admin
 
   Scenario Outline: Admin creates a new Business Category
     Given I am on the "business categories" page
-    And I click on "Create a new business category"
+    And I click on "Skapa ny företagstyp (kategori)"
     When I fill in the form with data :
       | Category Name    | Category Description   |
       | <category_name>  | <category_description> |
@@ -30,9 +30,9 @@ Feature: As an admin
       | dog psychology   | addresses behavioural issues of dogs, including the emotional, cognitive, and psycho-social aspects |
       | carting/drafting |                                                                                                     |
 
-  Scenario Outline: Create a new business category - when things go wrong
+  Scenario Outline: Create a new category - when things go wrong
     Given I am on the "business categories" page
-    And I click on "Create a new business category"
+    And I click on "Skapa ny företagstyp (kategori)"
     When I fill in the form with data :
       | Category Name    | Category Description   |
       | <category_name>  | <category_description> |
@@ -46,7 +46,7 @@ Feature: As an admin
 
   Scenario: Indicate required field
     Given I am on the "business categories" page
-    And I click on "Create a new business category"
+    And I click on "Skapa ny företagstyp (kategori)"
     Then the field "Category Name" should have a required field indicator
 
   Scenario: Listing Business Categories restricted for Non-admins

@@ -37,15 +37,14 @@ Feature: As an admin
 
   Scenario: Admin approves, no company exists so one is created
     Given I am on "Emma" application page
-    When I set "membership_application_status" to "Accepted"
+    When I set "membership_application_status" to "Godkänd"
     And I click on "Update"
     And I should be on the edit application page for "Emma"
     And I should see "Var god ange medlemsnummer och spara."
-    And I should see "Membership number"
-    And I fill in "Membership number" with "901"
+    And I fill in "Medlemsnummer" with "901"
     And I click on "Submit"
     Then I should see "Ansökan har uppdaterats."
-    And I should see "Accepted"
+    And I should see "Godkänd"
     And I should see "901"
     And I am on the "all companies" page
     And I should see "5562252998"
@@ -53,43 +52,41 @@ Feature: As an admin
 
   Scenario: Admin approves, member is added to existing company
     Given I am on "Anna" application page
-    When I set "membership_application_status" to "Accepted"
+    When I set "membership_application_status" to "Godkänd"
     And I click on "Update"
     And I should be on the edit application page for "Anna"
     And I should see "Var god ange medlemsnummer och spara."
-    And I should see "Membership number"
-    And I fill in "Membership number" with "902"
+    And I fill in "Medlemsnummer" with "902"
     And I click on "Submit"
     Then I should see "Ansökan har uppdaterats."
-    And I should see "Accepted"
+    And I should see "Godkänd"
     And I should see "902"
     And I am on the "all companies" page
     And I should see "No More Snarky Barky"
 
   Scenario: Admin approves, but then changes it to Rejected
     Given I am on "Emma" application page
-    When I set "membership_application_status" to "Accepted"
+    When I set "membership_application_status" to "Godkänd"
     And I click on "Update"
     And I should be on the edit application page for "Emma"
     And I should see "Var god ange medlemsnummer och spara."
-    And I should see "Membership number"
-    And I fill in "Membership number" with "901"
+    And I fill in "Medlemsnummer" with "901"
     And I click on "Submit"
     Then I should see "Ansökan har uppdaterats."
-    And I should see "Accepted"
+    And I should see "Godkänd"
     And I should see "901"
     And I am on the "all companies" page
     And I should see "5562252998"
     And I am on "Emma" application page
-    And I set "membership_application_status" to "Rejected"
+    And I set "membership_application_status" to "Avböjd"
     And I click on "Update"
-    Then I should see "Rejected"
+    Then I should see "Avböjd"
     And I am Logged out
     And I am on the "landing" page
     Then I should see "5562252998"
     And I am logged in as "emma@happymutts.se"
     And I navigate to the edit page for "Emma"
     Then I should be on "Edit My Application" page
-    And I should not see "Member number"
+    And I should not see "MMedlemsnummer"
 
 

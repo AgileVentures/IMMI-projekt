@@ -20,7 +20,7 @@ Feature: As an admin
   Scenario: Admin wants to delete an existing business category
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
-    And I click the "Delete" action for the row with "dog grooming"
+    And I click the "Ta bort" action for the row with "dog grooming"
     Then I should see "Kategori raderad"
     And I should not see "doggy grooming"
 

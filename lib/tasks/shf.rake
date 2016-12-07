@@ -18,7 +18,7 @@ namespace :shf do
     usage = 'rake shf:import_membership_apps["./spec/fixtures/test-import-files/member-companies-sanitized-small.csv"]'
 
     DEFAULT_PASSWORD = 'whatever'
-    ACCEPTED_STATUS = 'Accepted'
+    ACCEPTED_STATUS = 'Godkänd'
 
     headers_to_columns_mapping = {
         membership_number: :membership_number,

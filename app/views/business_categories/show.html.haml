@@ -1,15 +1,15 @@
 %header.entry-header
-  %h1.entry-title= 'Business Category: ' "#{@business_category.name}"
+  %h1.entry-title= 'Företagstyp: ' "#{@business_category.name}"
 .post-title-divider
   %span
 .entry-content
   %p
-    %b Name:
+    %b Namn:
     = @business_category.name
   %p
-    %b Description:
+    %b Beskrivning:
     = @business_category.description
 .center
-  = link_to 'Edit', edit_business_category_path(@business_category)
+  = link_to 'Redigera', edit_business_category_path(@business_category)
   \|
-  = link_to 'All Business Categories', business_categories_path
+  = link_to 'Alla kategorier', business_categories_path

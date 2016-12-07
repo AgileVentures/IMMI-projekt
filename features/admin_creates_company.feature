@@ -24,7 +24,7 @@ Feature: As an admin
 
     And the following applications exist:
       | first_name | user_email                 | company_number | status   |
-      | Emma       | applicant_1@happymutts.com | 5562252998     | Accepted |
+      | Emma       | applicant_1@happymutts.com | 5562252998     | Godkänd  |
 
     And the following business categories exist
       | name         |

@@ -16,9 +16,9 @@
         %tr.business_category
           %td= business_category.name
           %td= business_category.description
-          %td= link_to 'Show', business_category
-          %td= link_to 'Edit', edit_business_category_path(business_category)
-          %td= link_to 'Delete', business_category, method: :delete, data: { :confirm => 'Are you sure?' }
+          %td= link_to 'Visa', business_category
+          %td= link_to 'Redigera', edit_business_category_path(business_category)
+          %td= link_to 'Ta bort', business_category, method: :delete, data: { :confirm => 'Are you sure?' }
   %br
   .center
-    = link_to 'Create a new business category', new_business_category_path
+    = link_to 'Skapa ny företagstyp (kategori)', new_business_category_path

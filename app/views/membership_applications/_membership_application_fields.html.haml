@@ -1,34 +1,38 @@
-- if current_user.admin? && @membership_application.status == 'Accepted'
-  = f.label :membership_number, 'Membership number', class: 'required'
+- if current_user.admin? && @membership_application.status == 'Godkänd'
+  = f.label :membership_number, 'Medlemsnummer', class: 'required'
   = f.text_field :membership_number, class: 'wpcf7-form-control'
 
-= f.label :first_name, 'First Name', class: 'required'
+= f.label :first_name, 'Förnamn', class: 'required'
 = f.text_field :first_name, class: 'wpcf7-form-control'
 
-= f.label :last_name, 'Last Name', class: 'required'
+= f.label :last_name, 'Efternamn', class: 'required'
 = f.text_field :last_name, class: 'wpcf7-form-control'
 
-= f.label :company_number, 'Company Number', class: 'required'
+= f.label :company_number, 'Org nr', class: 'required'
 = f.number_field :company_number, class: 'wpcf7-form-control'
+%em Endast siffror (ej bindestreck)
+%br
 
-= f.label :contact_email, 'Contact Email', class: 'required'
+= f.label :contact_email, 'E-post', class: 'required'
 = f.email_field :contact_email, class: 'wpcf7-form-control'
+%em Kan vara samma som du loggar in med, men behöver inte vara det.
+%br
 
-= f.label :phone_number, 'Phone Number'
+= f.label :phone_number, 'Telefonnummer'
 = f.telephone_field :phone_number, class: 'wpcf7-form-control'
 
 - unless assocation_empty?(@all_business_categories)
   %h3 Ansöker som hund-*
+  %p Blå fält = valda kategorier
   .checkbox
     = f.collection_check_boxes :business_category_ids, @all_business_categories, :id, :name do |b|
       = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label
-  %p Blå fält = valda kategorier
 
 #uploaded_files
   = render 'uploaded_files_list', membership_application: @membership_application
 
-
-%p Upload a file for this membership application:
+%p Ladda upp en fil:
+%em Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
 = f.file_field 'actual_files[]', multiple: true, name: 'uploaded_file[actual_files][]'
 
 = f.submit 'Submit'

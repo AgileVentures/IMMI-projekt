@@ -20,8 +20,8 @@ Feature: As an admin
   Scenario: Admin wants to edit a business category
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
-    And I click the "Edit" action for the row with "dog grooming"
-    Then I should see "Editing Business Category: dog grooming"
+    And I click the "Redigera" action for the row with "dog grooming"
+    Then I should see "Redigerar: dog grooming"
     And I fill in "Category Name" with "doggy grooming"
     And I click on "Save"
     Then I should see "Kategori uppdaterad"
@@ -33,8 +33,8 @@ Feature: As an admin
     And I am on the "business categories" page
     Then I should see "dog crooning"
     And I should see "dog grooming"
-    And I click the "Edit" action for the row with "dog crooning"
-    Then I should see "Editing Business Category: dog crooning"
+    And I click the "Redigera" action for the row with "dog crooning"
+    Then I should see "Redigerar: dog crooning"
     And I fill in "Category Name" with ""
     And I click on "Save"
     Then I should see "Name can't be blank"

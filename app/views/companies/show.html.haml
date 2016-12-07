@@ -6,36 +6,36 @@
     = render 'business_categories/as_list', categories: @categories
 .entry-content
   %p
-    %b Name:
+    %b Namn:
     = @company.name
   %p
-    %b Organization Number:
+    %b Org nr:
     = @company.company_number
   %p
-    %b Phone Number:
+    %b Telefon:
     = @company.phone_number
   %p
-    %b Email:
+    %b Företagets e-postadress:
     = mail_to @company.email
   %p
-    %b Website:
+    %b Företagets webbplats:
     = link_to @company.website
-  %h2 Address
+  %h2 Adress
   %p
-    %b Street:
+    %b Gata:
     = @company.street
   %p
-    %b Post Code:
+    %b Postnr:
     = @company.post_code
   %p
-    %b City:
+    %b Ort:
     = @company.city
   %p
-    %b Region:
+    %b Verksamhetslän:
     = @company.region
 
   - if current_user.try(:admin)
     .center
-      = link_to 'Edit', edit_company_path(@company)
+      = link_to 'Redigera företag', edit_company_path(@company)
       \|
-      = link_to 'All Companies', companies_path
+      = link_to 'Alla företag', companies_path

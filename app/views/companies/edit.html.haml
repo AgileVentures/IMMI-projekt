@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= 'Editing Company: ' "#{@company.name}"
+  %h1.entry-title= 'Redigerar: ' "#{@company.name}"
   .post-title-divider
     %span
   - unless assocation_empty?(@all_business_categories)
@@ -7,6 +7,6 @@
 .entry-content.wpcf7
   = render 'form'
   .center
-    = link_to 'Show', @company
+    = link_to 'Visa företagssida', @company
     \|
-    = link_to 'Back', companies_path
+    = link_to 'Lista alla företag', companies_path

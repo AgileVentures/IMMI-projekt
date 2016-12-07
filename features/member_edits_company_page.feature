@@ -16,7 +16,7 @@ Feature: As a member
 
     And the following applications exist:
       | first_name | user_email          | company_number | status   | category_name |
-      | Emma       | emma@happymutts.com | 5562252998     | Accepted | Awesome       |
+      | Emma       | emma@happymutts.com | 5562252998     | Godkänd  | Awesome       |
 
     And the following business categories exist
       | name         |
