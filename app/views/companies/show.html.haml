@@ -19,7 +19,10 @@
     = mail_to @company.email
   %p
     %b Företagets webbplats:
-    = link_to @company.website, @company.website, target: '_blank'
+    - uri = @company.website
+    - uri = (uri =~ %r(https?://) ? uri : "http://#{uri}")
+    %a{ href: uri, target: '_blank' } #{@company.website}
+
   %h2 Adress
   %p
     %b Gata:
