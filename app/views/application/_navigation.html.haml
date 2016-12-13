@@ -1,0 +1,69 @@
+.scroll-to-top
+  %a{ href: '#' }
+    = icon('angle-up')
+.container-fluid.hfeed.site
+  %header.site-header#masthead{role: 'banner'}
+    %a.skip-link.screen-reader-text{href: '#content'} Skip to content
+    / main navigation
+    %nav.main-navigation.fixed-nav#site-navigation{role: 'navigation'}
+      .nav-wrapper
+        %a.menu-toggle{href: '#'}
+          %span.bars
+            %span.bar.bar-1
+            %span.bar.bar-2
+            %span.bar.bar-3
+        -# Visitor navigation
+        - unless current_user
+          .menu#menu-menu-1-container
+            = render 'navigation_visitor'
+
+        - if current_user && !current_user.try(:admin)
+          .menu#menu-menu-2-container
+            %ul.menu#menu-menu-2
+              %li.menu-item
+                = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
+
+              %li.menu-item
+                = link_to 'SHF-företag', root_path
+
+              - if current_user.is_member_or_admin?
+                %li.menu-item.menu-item-has-children
+                  = link_to 'Medlemssidor', page_path('index')
+                  %ul.sub-menu
+                    - HighVoltage.page_ids.each do |page|
+                      - unless page == 'index'
+                        %li.menu-item
+                          = link_to page.capitalize, page_path(page)
+
+                - if current_user.has_company?
+                  %li.menu-item.menu-item-has-children
+                    = link_to 'Hantera företag', company_path(current_user.membership_applications.last.company)
+                    %ul.sub-menu
+                      %li.menu-item
+                        = link_to 'Visa företagssida', company_path(current_user.membership_applications.last.company)
+                      %li.menu-item
+                        = link_to 'Redigera företag', edit_company_path(current_user.membership_applications.last.company)
+
+                = render 'navigation_edit_my_application', membership_app: current_user.membership_applications.last
+
+              - else
+                - if current_user.has_membership_application?
+                  = render 'navigation_edit_my_application', membership_app: current_user.membership_applications.last
+                - else
+                  %li.menu-item
+                    = link_to 'Ansök om medlemsskap', new_membership_application_path
+
+        - if current_user && current_user.admin?
+          .menu#menu-menu-3-container
+            %ul.menu#menu-menu-3
+              %li.menu-item.menu-item-has-children
+                = link_to 'Medlemssidor', page_path('index')
+                %ul.sub-menu
+                  - HighVoltage.page_ids.each do |page|
+                    - unless page == 'index'
+                      %li.menu-item
+                        = link_to page.capitalize, page_path(page)
+
+              = render 'navigation_admin'
+
+        = render 'social_nav'

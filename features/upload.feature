@@ -24,8 +24,8 @@ Feature: As an applicant
     And I fill in "E-post" with "applicant_2@random.com"
     And I fill in "Telefon" with "031-1234567"
     And I choose a file named "diploma.pdf" to upload
-    And I click on "Submit"
-    And I should see "Tack, din ansökan har skickats."
+    When I click on "Submit"
+    Then I should see "Tack, din ansökan har skickats."
     And I should see "Filen laddades upp: diploma.pdf"
     And I am on the "edit my application" page
     Then I should see "Uppladdade filer för denna ansökan:"

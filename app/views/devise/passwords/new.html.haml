@@ -11,5 +11,5 @@
       = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
     .actions
       = f.submit 'Skicka återställningsinstruktioner'
-  = render partial: 'partials/required_fields'
+  = render 'required_fields'
   = render 'devise/shared/links'

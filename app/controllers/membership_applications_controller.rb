@@ -37,6 +37,7 @@ class MembershipApplicationsController < ApplicationController
     else
       helpers.flash_message(:alert,
                             'Ett eller flera problem hindrade din ansökan från att skickas.')
+      current_user.membership_applications.reload
       render :new
     end
   end

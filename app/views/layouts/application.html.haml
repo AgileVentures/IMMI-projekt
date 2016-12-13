@@ -9,8 +9,8 @@
     = stylesheet_link_tag 'custom.css', media: 'all'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
   %body.page.page-template.page-template-page-sidebar-none
-    = render 'partials/top'
-    = render 'partials/flash'
+    = render 'top'
+    = render 'flash'
     #wrap
       #content.site-content.container
         .page-gutter.col-xs-12
@@ -18,5 +18,5 @@
             %main#main.site-main{role: 'main'}
               %article
                 = yield
-                = render 'partials/page_footer'
-    = render 'partials/bottom'
+                = render 'page_footer'
+    = render 'bottom'

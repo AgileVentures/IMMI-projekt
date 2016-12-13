@@ -22,5 +22,5 @@
       = f.password_field :password_confirmation, autocomplete: 'off', class: 'wpcf7-form-control'
     .actions
       = f.submit 'Sign up'
-  = render partial: 'partials/required_fields'
+  = render 'required_fields'
   = render 'devise/shared/links'

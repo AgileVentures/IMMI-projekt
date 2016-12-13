@@ -5,7 +5,8 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
     when 'login'
       path = new_user_session_path
     when 'edit my application'
-      path = edit_membership_application_path(@user.membership_applications.last)
+      user = User.find_by_email @user.email if @user
+      path = edit_membership_application_path(user.membership_applications.last)
     when 'business categories'
       path = business_categories_path
     when 'all companies'
@@ -16,11 +17,14 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
       path = new_membership_application_path
     when 'edit my company'
       if @user
-        if @user.membership_applications.last &&
-            @user.membership_applications.last.company
-          path = edit_company_path(@user.membership_applications.last.company)
+        user = User.find_by_email @user.email
+        if user.membership_applications.last &&
+            user.membership_applications.last.company
+          path = edit_company_path(user.membership_applications.last.company)
         end
       end
+    when 'static workgroups'
+      path = page_path('arbetsgrupper')
     else
       path = 'no path set'
   end
@@ -72,4 +76,3 @@ When(/^I fail to visit the "([^"]*)" page$/) do |page|
   visit path
   expect(current_path).not_to be path
 end
-

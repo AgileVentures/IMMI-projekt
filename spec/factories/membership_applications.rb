@@ -27,6 +27,17 @@ FactoryGirl.define do
           membership_app.business_categories << build(:business_category, name: "#{evaluator.category_name} #{cat_num + 1}")
         end
       end
+
+      if evaluator.status == 'Godkänd'
+        membership_app.status = 'Godkänd'
+        membership_app.user.is_member = true
+
+        company = Company.find_by(company_number: evaluator.company_number)
+        unless company
+          company = FactoryGirl.create(:company, company_number: evaluator.company_number)
+        end
+        membership_app.company = company
+      end
     end
 
 

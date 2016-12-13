@@ -38,10 +38,10 @@ Feature: As a visitor
 
     And the following applications exist:
       | first_name | user_email            | company_number | status   | category_name |
-      | Emma       | emma@happymutts.com   | 5562252998     | Accepted | Groomer       |
-      | Lars       | lars@happymutts.com   | 5562252998     | Accepted | Trainer       |
-      | Anna       | anna@happymutts.com   | 5562252998     | Accepted | Psychologist  |
-      | Bowser     | bowser@snarkybarky.se | 2120000142     | Accepted | Agility       |
+      | Emma       | emma@happymutts.com   | 5562252998     | Godkänd | Groomer       |
+      | Lars       | lars@happymutts.com   | 5562252998     | Godkänd | Trainer       |
+      | Anna       | anna@happymutts.com   | 5562252998     | Godkänd | Psychologist  |
+      | Bowser     | bowser@snarkybarky.se | 2120000142     | Godkänd | Agility       |
 
 
   Scenario: Categories of 3 employees all show for a company

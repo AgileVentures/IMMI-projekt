@@ -1,0 +1,21 @@
+%li.menu-item
+  = link_to 'SHF-sajten', 'http://sverigeshundforetagare.se/'
+
+%li.menu-item
+  = link_to 'Hantera ansökningar', membership_applications_path
+
+%li.menu-item.menu-item-has-children
+  = link_to 'Kategorier', business_categories_path
+  %ul.sub-menu
+    %li.menu-item
+      = link_to 'Lista kategorier', business_categories_path
+    %li.menu-item
+      = link_to 'Ny kategori', new_business_category_path
+
+%li.menu-item.menu-item-has-children
+  = link_to 'Företag', companies_path
+  %ul.sub-menu
+    %li.menu-item
+      = link_to 'Lista företag', companies_path
+    %li.menu-item
+      = link_to 'Nytt företag', new_company_path
