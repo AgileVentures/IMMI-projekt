@@ -1,15 +1,28 @@
 %header.entry-header
-  %h1.entry-title= 'Företagstyp: ' "#{@business_category.name}"
+  %h1.entry-title
+    Hundföretag av typen
+    = @business_category.name
 .post-title-divider
   %span
 .entry-content
-  %p
-    %b Namn:
-    = @business_category.name
-  %p
-    %b Beskrivning:
-    = @business_category.description
-.center
-  = link_to 'Redigera', edit_business_category_path(@business_category)
-  \|
-  = link_to 'Alla kategorier', business_categories_path
+  - unless @business_category.description.nil?
+    %p
+      %b Beskrivning:
+      = @business_category.description
+  %table
+    %thead
+      %tr
+        %th Namn
+        %th Län
+        - if current_user.try(:admin)
+          %th Org nr
+          %th
+    %tbody
+      - @business_category.companies.distinct.sort {|cp1, cp2| cp1.name <=> cp2.name}.each do |company|
+        - if company_complete? company
+          %tr.company
+            %td= link_to company.name, company
+            %td= company.region
+            - if current_user.try(:admin)
+              %td= company.company_number
+              %td= link_to 'Edit', edit_company_path(company)

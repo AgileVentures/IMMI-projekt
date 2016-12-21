@@ -13,3 +13,8 @@ end
 And(/^I select "([^"]*)" Category/) do |element|
   page.check(element)
 end
+
+Given(/^I am on the business category "([^"]*)"$/) do |name|
+  business_category = BusinessCategory.find_by(name: name)
+  visit business_category_path(business_category)
+end

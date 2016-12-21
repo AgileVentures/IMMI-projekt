@@ -10,6 +10,7 @@ class BusinessCategoriesController < ApplicationController
 
 
   def show
+    @companies = Company.all
   end
 
 
