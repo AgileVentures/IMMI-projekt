@@ -89,7 +89,7 @@ RSpec.describe MembershipApplication, type: :model do
     end
   end
 
-  describe 'test category assignment' do
+  describe 'test factories' do
 
     it '1 category with default category name' do
       member_app = create(:membership_application, num_categories: 1)
