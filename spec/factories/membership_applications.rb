@@ -37,7 +37,6 @@ FactoryGirl.define do
           company = FactoryGirl.create(:company, company_number: evaluator.company_number)
         end
         membership_app.company = company
-        membership_app.save
       end
     end
 
