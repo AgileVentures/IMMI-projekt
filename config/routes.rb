@@ -10,11 +10,13 @@ Rails.application.routes.draw do
     end
   end
 
-  get "/pages/*id" => 'pages#show', as: :page, format: false
+  get '/pages/*id', to: 'pages#show', as: :page, format: false
 
-  resources :business_categories
-  resources :membership_applications, only: [:new, :create, :edit, :update, :index, :show]
-  resources :companies, only: [:new, :create, :edit, :update, :index, :show]
+  scope(path_names: { new: 'ny', edit: 'redigera' }) do
+    resources :business_categories, path: 'kategori'
+    resources :membership_applications, path: 'ansokan'
+    resources :companies, path: 'hundforetag'
+  end
 
   get 'information', to: 'membership_applications#information'
 
