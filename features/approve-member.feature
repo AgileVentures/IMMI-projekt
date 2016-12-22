@@ -29,9 +29,9 @@ Feature: As an admin
 
     And the following applications exist:
       | first_name | user_email            | company_number | status  | category_name |
-      | Emma       | emma@happymutts.se    | 5562252998     | pending | Rehab         |
-      | Hans       | hans@happymutts.se    | 5562252998     | pending | grooming      |
-      | Anna       | anna@nosnarkybarky.se | 5560360793     | pending | Rehab         |
+      | Emma       | emma@happymutts.se    | 5562252998     | Pending | rehab         |
+      | Hans       | hans@happymutts.se    | 5562252998     | Pending | dog grooming  |
+      | Anna       | anna@nosnarkybarky.se | 5560360793     | Pending | rehab         |
 
     And I am logged in as "admin@shf.com"
 
@@ -65,7 +65,7 @@ Feature: As an admin
     And I am Logged out
     And I am on the "landing" page
     And I should see "No More Snarky Barky"
-    And I should see "Rehab"
+    And I should see "rehab"
     And I am logged in as "anna@nosnarkybarky.se"
     And I am on the "landing" page
     Then I should see "Hantera företag"
@@ -97,5 +97,3 @@ Feature: As an admin
     And I navigate to the edit page for "Emma"
     Then I should be on "Edit My Application" page
     And I should not see t("membership_applications.show.membership_number")
-
-

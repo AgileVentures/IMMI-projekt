@@ -14,16 +14,16 @@ Feature: As a member
       | name                 | company_number | email                  |
       | No More Snarky Barky | 2120000142     | snarky@snarkybarky.com |
 
-    And the following applications exist:
-      | first_name | user_email          | company_number | status  | category_name |
-      | Emma       | emma@happymutts.com | 5562252998     | Godkänd | Awesome       |
-
     And the following business categories exist
       | name         |
       | Groomer      |
       | Psychologist |
       | Trainer      |
       | Awesome      |
+
+    And the following applications exist:
+      | first_name | user_email          | company_number | status  | category_name |
+      | Emma       | emma@happymutts.com | 5562252998     | Godkänd | Awesome       |
 
   Scenario: Member goes to company page after membership approval
     Given I am logged in as "emma@happymutts.com"
@@ -57,5 +57,3 @@ Feature: As a member
     And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the landing page
     And I should see t("errors.not_permitted")
-
-

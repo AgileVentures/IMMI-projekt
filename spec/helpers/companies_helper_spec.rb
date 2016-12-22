@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CompaniesHelper, type: :helper do
-  let(:company) { create(:company) }
+  let!(:company) { create(:company) }
 
   describe '#company_complete?' do
     it 'returns false if company is nil' do
@@ -34,16 +34,24 @@ RSpec.describe CompaniesHelper, type: :helper do
     let(:employee2) { create(:user) }
     let(:employee3) { create(:user) }
 
-    let!(:ma1) { create(:membership_application, user: employee1,
-                        status: 'Godkänd', category_name: 'cat1',
-                        company_number: company.company_number) }
-    let!(:ma2) { create(:membership_application, user: employee2,
-                        status: 'Godkänd', category_name: 'cat2',
-                        company_number: company.company_number) }
-    let!(:ma3) { create(:membership_application, user: employee3,
-                        status: 'Godkänd', category_name: 'cat3',
-                        company_number: company.company_number) }
-
+    let!(:ma1) do
+      ma = create(:membership_application, user: employee1,
+                  status: 'Godkänd', company_number: company.company_number)
+      ma.business_categories << create(:business_category, name: 'cat1')
+      ma
+    end
+    let!(:ma2) do
+      ma = create(:membership_application, user: employee2,
+                  status: 'Godkänd', company_number: company.company_number)
+      ma.business_categories << create(:business_category, name: 'cat2')
+      ma
+    end
+    let!(:ma3) do
+      ma = create(:membership_application, user: employee3,
+                  status: 'Godkänd', company_number: company.company_number)
+      ma.business_categories << create(:business_category, name: 'cat3')
+      ma
+    end
 
     before(:all) do
       Company.delete_all

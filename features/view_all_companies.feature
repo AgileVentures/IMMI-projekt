@@ -14,15 +14,15 @@ Feature: As a visitor,
       | a@happymutts.com    |       |
       | admin@shf.se        | true  |
 
-    And the following applications exist:
-      | first_name | user_email          | company_number | status   | category_name |
-      | Emma       | emma@happymutts.com | 5560360793     | Godkänd | Groomer       |
-      | Anna       | a@happymutts.com    | 2120000142     | Godkänd | Groomer       |
-
     And the following business categories exist
       | name         |
       | Groomer      |
       | Psychologist |
+
+    And the following applications exist:
+      | first_name | user_email          | company_number | status  | category_name |
+      | Emma       | emma@happymutts.com | 5560360793     | Godkänd | Groomer       |
+      | Anna       | a@happymutts.com    | 2120000142     | Godkänd | Groomer       |
 
   Scenario: Visitor sees all companies
     Given I am Logged out
