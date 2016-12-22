@@ -100,7 +100,7 @@ RSpec.describe MembershipApplication, type: :model do
         "but instead was '#{member_app.business_categories.first.name}'"
     end
 
-    it '2 categories' do
+    it '2 categories with sequence names' do
       member_app = create(:membership_application, num_categories: 2)
       expect(member_app.business_categories.count).to eq(2), "The number of categories should have been 2 but instead was #{member_app.business_categories.count}"
       expect(member_app.business_categories.first.name).to eq("Business Category 1"), "The first category name should have been 'Business Category 1' but instead was '#{member_app.business_categories.first.name}'"
