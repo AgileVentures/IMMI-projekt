@@ -1,8 +1,8 @@
 %header.entry-header
-  %h1.entry-title Ny företagstyp (kategori)
+  %h1.entry-title= t('.title')
 .post-title-divider
   %span
 .entry-content.wpcf7
   = render 'form'
 .center
-  = link_to 'Alla kategorier', business_categories_path
+  = link_to t('business_categories.all_business_categories'), business_categories_path

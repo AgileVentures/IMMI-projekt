@@ -50,7 +50,7 @@ Feature: As any type of visitor
   Scenario: Categories list no businesses
     Given I am Logged out
     And I am on the business category "Goodies"
-    Then I should see "Ingen har ansökt om medlemsskap i denna kategori ännu."
+    Then I should see t("business_categories.show.no_one_applied_category")
     And I should not see "No More Snarky Barky"
     And I should not see "Sad Sad Snarky Barky"
 

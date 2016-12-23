@@ -28,9 +28,9 @@ Feature: As a member
   Scenario: Visitor tries to edit a company
     Given I am Logged out
     And I am on the edit company page for "5560360793"
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")
 
   Scenario: User can not edit someone elses company
     Given I am logged in as "applicant_3@happymutts.com"
     And I am on the edit company page for "5560360793"
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")

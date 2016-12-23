@@ -23,23 +23,23 @@ Feature: As the owner of a company (or an admin)
   Scenario: Visitor does not see edit link for a company
     Given I am Logged out
     And I am the page for company number "5562252998"
-    Then I should see "Företagets e-postadress:"
-    And I should not see "Redigera detta företag"
+    Then I should see t("companies.show.email")
+    And I should not see t("companies.edit_company")
 
   Scenario: Admin does see edit link for company
     Given I am logged in as "admin@shf.se"
     And I am the page for company number "5562252998"
-    Then I should see "Företagets e-postadress:"
-    And I should see "Redigera detta företag"
+    Then I should see t("companies.show.email")
+    And I should see t("companies.edit_company")
 
   Scenario: Other user does not see edit link for a company
     Given I am logged in as "bowser@snarkybarky.se"
     And I am the page for company number "5562252998"
-    Then I should see "Företagets e-postadress:"
-    And I should not see "Redigera detta företag"
+    Then I should see t("companies.show.email")
+    And I should not see t("companies.edit_company")
 
   Scenario: User related to company does see edit link for company
     Given I am logged in as "emma@happymutts.com"
     And I am the page for company number "5562252998"
-    Then I should see "Företagets e-postadress:"
-    And I should see "Redigera detta företag"
+    Then I should see t("companies.show.email")
+    And I should see t("companies.edit_company")

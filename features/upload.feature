@@ -39,8 +39,8 @@ Feature: As an applicant
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.uploads.files_uploaded")
     And I should see "diploma.pdf" uploaded for this membership application
-    And I should see "Ansökan har uppdaterats."
-    And I should see "Filen laddades upp: diploma.pdf"
+    And I should see t("membership_applications.update.success")
+    And I should see t("membership_applications.uploads.file_was_uploaded", filename: 'diploma.pdf')
     And I should see t("membership_applications.update.success")
 
 

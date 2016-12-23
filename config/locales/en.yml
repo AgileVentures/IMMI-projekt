@@ -15,11 +15,14 @@ en:
   is_required_field: Indicates a required field
 
   user: &user user
+
+  view: &view View
   edit: &edit Edit
   manage: &manage Manage
   update: &update Update
   submit: &submit Submit
   delete: &delete Delete
+  remove: &remove Remove
   send: &send Send
   new: &new New
   change: &change Change
@@ -39,12 +42,18 @@ en:
   name: &name Name
   org_nr: &org_nr Org no.
 
-  # Automatic and manual lookup for ActiveRecords:
+
+ # Automatic and manual lookup for ActiveRecords:
   activerecord:
     models:
       membership_application:
         one: Membership
         other: Memberships
+
+      business_category:
+        one: &business_category Category
+        other: &business_categories Categories
+
 
     attributes:
 
@@ -70,12 +79,15 @@ en:
         post_code: Post code
         city: City
         region: Region
+        region_short: &region_short Län
         website: Website
         org_nr: *org_nr
 
+
       business_category:
-        name: *name
-        description: Description
+        name: &business_category_name Name
+        description: &description Description
+
 
     errors:
       models:
@@ -101,12 +113,13 @@ en:
       contact_email: *contact_email
 
       can_be_same_email: Can be the same that you logged in with, but need not be.
-      application_dog_category: Dog service category -*
-      clue_selected_categories: Blue box = selected categories
+      application_dog_category: &application_dog_category "Dog service category -*"
+      clue_selected_categories: &clue_selected_categories "Blue box = selected categories"
       upload_a_file: 'Upload a file:'
       upload_more_files: 'You can upload more files. After you submit your application, edit it and you can upload more there.'
 
       submit_button_label: *submit
+
 
     create:
       success: Thank You. Your membership application has been submitted.
@@ -120,7 +133,7 @@ en:
       success: The application was updated.
       error: One or more problems prevented your application from being updated.
       enter_member_number: Please enter the member number and save.
-      
+
     show:
       title: Application from %{member_full_name}
       first_name: *first_name
@@ -133,7 +146,7 @@ en:
       with_categories: Categories
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
-      
+
     index:
       title: All incoming applications
       name: Name
@@ -142,7 +155,7 @@ en:
       manage: *manage
 
     information:
-      title: About membership
+      title: About Membership
       member:
         title: Välkommen
         using_the_logo: "It is important that we all follow our graphic identity,
@@ -168,12 +181,16 @@ en:
                         If your application is approved, we'll give you a link
                         so you can describe and list your business here."
 
+
+
+
     accepted: &status_accepted Accepted
     rejected: &status_rejected Rejected
     pending: &status_pending Pending
     pending_completion: &pending_completion Pending completion
     treated: Reviewed
     awaiting_payment: Awaiting payment
+
     all_membership_applications: All applications
     edit_membership_application: Edit application
     view_membership_application: View application
@@ -234,11 +251,69 @@ en:
     edit_company: Edit company
     view_company: View company
     list_all_companies: List all companies
+    new_company: Create new company
+
+
+
+  business_categories:
+
+    index:
+      title: '*business_category / Company categories'
+      name: *business_category_name
+      description: *description
+      view: *view
+      edit: *edit
+      delete: *remove
+      delete_confirm: *are_you_sure_confirm
+
+    show:
+      title: Business category (type of dog-related service)
+      description: *description
+      no_one_applied_category: &category_no_one_applied No one has applied for membership in this category yet.
+
+    new:
+      title: New business category
+      description: *description
+      no_one_applied_category: *category_no_one_applied
+
+    create:
+      success: Category created.
+
+    edit:
+      title: 'Edit: %{category_name}'
+      submit_button_label: *save
+      name: *name
+
+    update:
+      success: Category updated.
+
+    destroy:
+      success: Category deleted.
+
+    form:
+      category_name: '*business_category *name'
+      category_description: '*business_category *description'
+      save: *save
+
+    form_collection_checkboxes:
+      title: *application_dog_category
+      clue_selected_categories: &clue_selected_categories Blue box = selected categories
+
+    new_business_category: New business category
+    all_business_categories: All categories
+
+
 
   admin:
     index:
       title: 'Admin: All incoming applications'
+      name: *name
+      org_nr: *org_nr
+      status: *status
+      manage: *manage
+
     all_applications_received: All applications received
+
 
   devise:
     min_length: '(at least %{minimum_length} characters)'

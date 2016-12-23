@@ -15,11 +15,14 @@ sv:
   is_required_field: Indikerar ett obligatoriskt fält
 
   user: användare
+
+  view: &view Visa
   edit: &edit Redigera
   manage: &manage Hantera
   update: &update Uppdatera
   submit: &submit Skicka
   delete: &delete Radera
+  remove: &remove Ta bort
   send: &send Skicka
   new: &new Nytt
   change: &change Byt
@@ -46,6 +49,11 @@ sv:
         one: Medlemskap
         other: Medlemskap
 
+      business_category:
+        one: &business_category Kategori
+        other: &business_categories Kategorier
+
+
     attributes:
 
       user:
@@ -64,20 +72,22 @@ sv:
       company:
         company_number: *org_nr
         name: *name
-        phone_number: Telefon
+        phone_number: &company_phone Telefon
         email: *email
-        street: Gata
-        post_code: Post nr
-        city: Ort
-        region: Verksamhetslän
+        street: &street Gata
+        post_code: &post_code Post nr
+        city: &city Ort
+        region: &region Verksamhetslän
+        region_short: &region_short Län
         website: Webbplats
         org_nr: *org_nr
 
       business_category:
-        name: *name
-        description: Beskrivning
+        name: &business_category_name Namn
+        description: &description Beskrivning
 
     errors:
+
       models:
         company:
           company_number:
@@ -89,11 +99,14 @@ sv:
           has_one: Kan inte ta bort post då beroende %{record} finns
           has_many: Kan inte ta bort poster då beroende %{record} finns
 
- # Automatisk och manuell sökning för views:
+
+  # Automatisk och manuell sökning för views:
   membership_applications:
     new:
       title: Ansök om medlemskap
       submit: *submit
+      company_number: *company_number
+      phone_number: &phone_number Telefonnummer
       first_name: *first_name
       last_name: *last_name
       phone_number: &phone_number Telefonnummer
@@ -101,8 +114,8 @@ sv:
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
-      application_dog_category: Ansöker som hund-*
-      clue_selected_categories: Blå fält = valda kategorier
+      application_dog_category: &application_dog_category "Ansöker som hund-*"
+      clue_selected_categories: &clue_selected_categories "Blå fält = valda kategorier"
       upload_a_file: 'Ladda upp en fil:'
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
 
@@ -173,6 +186,7 @@ sv:
     pending_completion: &status_pending_completion Väntar på sökande
     treated: Behandlas
     awaiting_payment: Inväntar betalning
+
     all_membership_applications: Alla ansökningar
     edit_membership_application: Redigera ansökan
     view_membership_application: Visa ansökan
@@ -203,28 +217,28 @@ sv:
     show:
       company_number: *org_nr
       name: *name
-      phone_number: *phone_number
-      email: Företagets e-postadress
-      address: Adress
-      street: Gata
-      post_code: Post nr
-      city: Ort
-      region: Verksamhetslän
+      phone_number: *company_phone
+      email: &company_email Företagets e-postadress
+      address: &address Adress
+      street: *street
+      post_code: *post_code
+      city: *city
+      region: *region
       website: Företagets webbplats
       org_nr: *org_nr
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
-      category: Kategori
+      category: *business_category
       name: *name
       company_number: *org_nr
-      region_land: Län
+      region_land: *region_short
       h_companies_listed_below: Nedan listas anslutna H-märkta företag
       how_to_search: Du kan söka i listan på datorn med ctrl+F(PC) eller cmd+F(mac)
       confirm_are_you_sure: *are_you_sure_confirm
     company_name: Företagsnamn
     telephone_number: Telefonnummer
-    operations_region: Verksamhetslän
+    operations_region: *region
     op_region_multiple_use_sweden: Skriv Sverige om företaget är verksamt i flera delar av landet
     website_include_http: Företagets webbplats
     org_nr_no_hyphens: Endast siffror (ej bindestreck)
@@ -233,11 +247,69 @@ sv:
     edit_company: Redigera detta företag
     view_company: Visa företagssida
     list_all_companies: Lista alla företag
+    new_company: Skapa nytt företag
+
+
+  business_categories:
+
+    index:
+      title: '*business_category / Företagstyp'
+      name: *business_category_name
+      description: *description
+      view: *view
+      edit: *edit
+      delete: *remove
+      delete_confirm: *are_you_sure_confirm
+
+    show:
+      title: Hundföretag av typen
+      description: *description
+      no_one_applied_category: &category_no_one_applied Ingen har ansökt om medlemsskap i denna kategori ännu.
+
+    new:
+      title: Ny företagstyp (kategori)
+      description: *description
+      no_one_applied_category: *category_no_one_applied
+
+
+    create:
+      success: Kategori skapad.
+
+    edit:
+      title: 'Redigerar: %{category_name}'
+      submit_button_label: *save
+      name: *name
+
+    update:
+      success: Kategori uppdaterad.
+
+    destroy:
+      success: Kategori raderad.
+
+    form:
+      category_name: '*business_category *name'
+      category_description: '*business_category *description'
+      save: *save
+
+    form_collection_checkboxes:
+      title: *application_dog_category
+      clue_selected_categories: *clue_selected_categories
+
+    new_business_category: Skapa ny företagstyp (kategori)
+    all_business_categories: Alla kategorier
+
+
 
   admin:
     index:
       title: 'Admin: Alla inkomna ansökningar'
+      name: *name
+      org_nr: *org_nr
+      status: *status
+      manage: *manage
+
     all_applications_received: Alla inkomna ansökningar
+
 
   devise:
     min_length: '(minst %{minimum_length} tecken)'

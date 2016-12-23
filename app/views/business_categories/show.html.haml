@@ -1,24 +1,24 @@
 %header.entry-header
   %h1.entry-title
-    Hundföretag av typen
+    = t('.title')
     = @business_category.name
 .post-title-divider
   %span
 .entry-content
   - unless @business_category.description.nil?
     %p
-      %b Beskrivning:
+      %b #{t('.description')}:
       = @business_category.description
   - if @business_category.companies.empty?
-    %p Ingen har ansökt om medlemsskap i denna kategori ännu.
+    %p= t('.no_one_applied_category')
   - else
     %table
       %thead
         %tr
-          %th Namn
-          %th Län
+          %th= t('companies.index.name')
+          %th= t('companies.index.region_land')
           - if current_user.try(:admin)
-            %th Org nr
+            %th= t('companies.index.company_number')
             %th
       %tbody
         - @business_category.companies.distinct.sort {|cp1, cp2| cp1.name <=> cp2.name}.each do |company|
@@ -28,4 +28,4 @@
               %td= company.region
               - if current_user.try(:admin)
                 %td= company.company_number
-                %td= link_to 'Edit', edit_company_path(company)
+                %td= link_to t('edit'), edit_company_path(company)

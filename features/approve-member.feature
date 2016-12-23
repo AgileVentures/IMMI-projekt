@@ -80,7 +80,7 @@ Feature: As an admin
     When I set "membership_application_status" to t("membership_applications.accepted")
     And I click on t("update")
     And I should be on the edit application page for "Emma"
-    And I should see "Var god ange medlemsnummer och spara."
+    And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "901"
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.success")

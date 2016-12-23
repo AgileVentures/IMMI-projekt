@@ -16,11 +16,11 @@ Feature: As an admin
   Scenario Outline: Admin creates a new Business Category
     Given I am on the "business categories" page
     And I click on "Skapa ny företagstyp (kategori)"
-    When I fill in the form with data :
-      | Category Name    | Category Description   |
-      | <category_name>  | <category_description> |
-    And I click on "Save"
-    And I should see "Kategori skapad."
+    When I fill in the translated form with data:
+      | business_categories.form.category_name | business_categories.form.category_description |
+      | <category_name>                        | <category_description>                        |
+    And I click on t("business_categories.form.save")
+    And I should see t("business_categories.create.success")
     And I should see "<category_name>"
 
     Scenarios:
@@ -33,28 +33,28 @@ Feature: As an admin
   Scenario Outline: Create a new category - when things go wrong
     Given I am on the "business categories" page
     And I click on "Skapa ny företagstyp (kategori)"
-    When I fill in the form with data :
-      | Category Name    | Category Description   |
-      | <category_name>  | <category_description> |
-    When I click on "Save"
+    When I fill in the translated form with data:
+      | business_categories.form.category_name | business_categories.form.category_description |
+      | <category_name>                        | <category_description>                        |
+    When I click on t("business_categories.form.save")
     Then I should see <error>
 
     Scenarios:
-      | category_name | category_description | error                 |
+      | category_name | category_description | error                      |
       |               |                      | t("errors.messages.blank") |
       |               | some description     | t("errors.messages.blank") |
 
   Scenario: Indicate required field
     Given I am on the "business categories" page
     And I click on "Skapa ny företagstyp (kategori)"
-    Then the field "Category Name" should have a required field indicator
+    Then the field t("business_categories.form.category_name") should have a required field indicator
 
   Scenario: Listing Business Categories restricted for Non-admins
     Given I am logged in as "applicant@random.com"
     And I am on the "business categories" page
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")
 
   Scenario: Listing Business Categories restricted for visitors
     Given I am Logged out
     And I am on the "business categories" page
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")

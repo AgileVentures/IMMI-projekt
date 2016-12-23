@@ -4,10 +4,10 @@
       - @business_category.errors.full_messages.each do |msg|
         = msg
 
-  = f.label :name, 'Category Name', class: 'required'
+  = f.label :name, t('business_categories.form.category_name'), class: 'required'
   = f.text_field :name, class: 'wpcf7-form-control'
 
-  = f.label :description, 'Category Description'
+  = f.label :description, t('business_categories.form.category_description')
   = f.text_field :description, class: 'wpcf7-form-control'
 
-  = f.submit 'Save'
+  = f.submit t('business_categories.form.save')

@@ -29,7 +29,7 @@ class BusinessCategoriesController < ApplicationController
     @business_category = BusinessCategory.new(business_category_params)
 
     if @business_category.save
-      redirect_to @business_category, notice: 'Kategori skapad.'
+      redirect_to @business_category, notice: t('.success')
     else
       render :new
     end
@@ -38,7 +38,7 @@ class BusinessCategoriesController < ApplicationController
 
   def update
     if @business_category.update(business_category_params)
-      redirect_to @business_category, notice: 'Kategori uppdaterad.'
+      redirect_to @business_category, notice: t('.success')
     else
       render :edit
     end
@@ -49,7 +49,7 @@ class BusinessCategoriesController < ApplicationController
   def destroy
     @business_category.destroy
 
-    redirect_to business_categories_url, notice: 'Kategori raderad.'
+    redirect_to business_categories_url, notice: t('.success')
 
   end
 

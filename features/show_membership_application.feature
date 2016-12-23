@@ -80,20 +80,20 @@ Feature: As an Admin
     Given I am logged in as "emma@random.com"
     And I am on the "landing" page
     And I click on "Min ansökan"
-    Then I should see "Medlemsnummer"
+    Then I should see t("membership_applications.show.membership_number")
 
   Scenario: Listing incoming Applications restricted for Non-admins
     Given I am logged in as "hans@random.com"
     And I am on the list applications page
-    Then I should see "Du har inte behörighet att göra detta."
+    Then I should see t("errors.not_permitted")
 
   Scenario: Clicking the edit button on show page
     Given I am logged in as "admin@sgf.com"
     When I am on the application page for "Emma"
-    And I click on "Redigera ansökan"
+    And I click on t("membership_applications.edit_membership_application")
     Then I should be on the edit application page for "Emma"
 
   Scenario: User does not see edit-link
     Given I am logged in as "emma@random.com"
     When I am on the application page for "Emma"
-    Then I should not see "Redigera ansökan"
+    Then I should not see t("membership_applications.edit_membership_application")

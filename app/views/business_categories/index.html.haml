@@ -1,13 +1,13 @@
 %header.entry-header
-  %h1.entry-title Business Categories
+  %h1.entry-title= t('.title')
 .post-title-divider
   %span
 .entry-content
   %table#business_categories
     %thead
       %tr
-        %th Name
-        %th Description
+        %th= t('.name')
+        %th= t('.description')
         %th
         %th
         %th
@@ -16,9 +16,9 @@
         %tr.business_category
           %td= business_category.name
           %td= business_category.description
-          %td= link_to 'Visa', business_category
-          %td= link_to 'Redigera', edit_business_category_path(business_category)
-          %td= link_to 'Ta bort', business_category, method: :delete, data: { :confirm => 'Are you sure?' }
+          %td= link_to t('.view'), business_category
+          %td= link_to t('.edit'), edit_business_category_path(business_category)
+          %td= link_to t('.delete'), business_category, method: :delete, data: { :confirm => t('.delete_confirm') }
   %br
   .center
-    = link_to 'Skapa ny företagstyp (kategori)', new_business_category_path
+    = link_to t('business_categories.new_business_category'), new_business_category_path

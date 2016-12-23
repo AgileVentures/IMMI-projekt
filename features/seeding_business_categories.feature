@@ -14,7 +14,7 @@ Feature: As an Admin
     Given There are no "BusinessCategories" records in the db
     When the system is seeded with initial data
     And I am on the "business categories" page
-    Then I should see "Business Categories"
+    Then I should see t("business_categories.index.title")
     And I should see 11 business_category rows
 
   Scenario: only 11 business categories are ever created, even if it's seeded multiple times

@@ -1,14 +1,14 @@
 %header.entry-header
-  %h1.entry-title Admin: Alla inkomna ansökningar
+  %h1.entry-title= t('.title')
 .post-title-divider
   %span
 .entry-content
   %table
     %thead
       %tr
-        %th Namn
-        %th Org nr
-        %th Status
+        %th= t('.name')
+        %th= t('.org_nr')
+        %th= t('.status')
         %th
     %tbody
       - @membership_applications.each do | membership_application |
@@ -16,4 +16,4 @@
           %td= link_to "#{membership_application.first_name + ' ' + membership_application.last_name}", membership_application_path(membership_application.id)
           %td= membership_application.company_number
           %td= membership_application.status
-          %td= link_to 'Manage', membership_application_path(membership_application.id)
+          %td= link_to t('.manage'), membership_application_path(membership_application.id)

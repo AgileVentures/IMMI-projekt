@@ -32,7 +32,7 @@ Feature: As a visitor,
     And I should see "No More Snarky Barky"
     And I should see "Groomer"
     And I should not see "Psychologist"
-    And I should not see "Skapa nytt företag"
+    And I should not see t("companies.new_company")
 
   Scenario: User sees all the companies
     Given I am logged in as "emma@happymutts.com"
@@ -40,4 +40,4 @@ Feature: As a visitor,
     Then I should see t("companies.index.title")
     And I should see "Bowsers"
     And I should see "No More Snarky Barky"
-    And I should not see "Skapa nytt företag"
+    And I should not see t("companies.new_company")

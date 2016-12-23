@@ -1,8 +1,8 @@
 %header.entry-header
-  %h1.entry-title= 'Redigerar: ' "#{@business_category.name}"
+  %h1.entry-title= t('.title', category_name: @business_category.name)
 .post-title-divider
   %span
 .entry-content.wpcf7
   = render 'form'
 .center
-  = link_to 'Tillbaks', business_categories_path
+  = link_to t('back'), business_categories_path

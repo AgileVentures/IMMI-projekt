@@ -32,7 +32,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
-    flash[:alert] = 'Du har inte behörighet att göra detta..'
+    flash[:alert] = t('errors.not_permitted')
     redirect_back(fallback_location: root_path)
   end
 end
