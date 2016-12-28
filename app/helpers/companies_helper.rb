@@ -1,7 +1,8 @@
 module CompaniesHelper
 
   def company_complete? company
-    company&.name.blank? || company&.region.blank? ? false : true
+    company&.name.blank? ||
+    (company&.region.blank? && company&.old_region.blank?) ? false : true
   end
 
 
