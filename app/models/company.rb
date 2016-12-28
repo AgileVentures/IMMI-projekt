@@ -12,4 +12,6 @@ class Company < ApplicationRecord
 
   has_many :membership_applications
 
+  belongs_to :region
+
 end

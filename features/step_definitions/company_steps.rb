@@ -4,6 +4,12 @@ And(/^the following companies exist:$/) do |table|
   end
 end
 
+And(/^the following regions exist:$/) do |table|
+  table.hashes.each do |region|
+    FactoryGirl.create(:region, name: region)
+  end
+end
+
 And(/^I am the page for company number "([^"]*)"$/) do |company_number|
   company = Company.find_by_company_number(company_number)
   visit path_with_locale(company_path company)

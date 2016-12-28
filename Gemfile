@@ -22,6 +22,7 @@ gem 'paperclip', '~> 5.0.0'
 gem 'routing-filter'   # for handling locale filters around routes
 
 gem 'ransack'
+gem 'city-state'
 
 group :development, :test do
   gem 'rspec-rails'

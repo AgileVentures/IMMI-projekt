@@ -77,3 +77,8 @@ end
 And(/^I click on t\("([^"]*)"\) button$/) do |element|
   click_button i18n_content("#{element}")
 end
+
+When(/^(?:I|they) select "([^"]*)" in select list t\("([^"]*)"\)$/) do |item, lst|
+  lst = i18n_content("#{lst}")
+  find(:select, lst).find(:option, item).select_option
+end

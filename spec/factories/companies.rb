@@ -7,7 +7,7 @@ FactoryGirl.define do
     street '123 1st Street'
     post_code '00000'
     city 'Hundborg'
-    region 'D'
+    region
     website 'http://www.example.com'
   end
 end

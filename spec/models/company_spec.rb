@@ -17,7 +17,7 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :street }
     it { is_expected.to have_db_column :post_code }
     it { is_expected.to have_db_column :city }
-    it { is_expected.to have_db_column :region }
+    it { is_expected.to have_db_column :region_id }
     it { is_expected.to have_db_column :website }
   end
 
@@ -34,6 +34,7 @@ RSpec.describe Company, type: :model do
   describe 'Associations' do
     it { is_expected.to have_many(:business_categories).through(:membership_applications) }
     it { is_expected.to have_many(:membership_applications) }
+    it { is_expected.to belong_to(:region) }
   end
 
 

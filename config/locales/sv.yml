@@ -239,7 +239,9 @@ sv:
     company_name: Företagsnamn
     telephone_number: Telefonnummer
     operations_region: *region
-    op_region_multiple_use_sweden: Skriv Sverige om företaget är verksamt i flera delar av landet
+    old_region: Gamla Län
+    op_region_multiple_use_sweden: Välj "Sverige" om företaget är verksamt i
+      flera län, eller "Online" om det fungerar oftast (eller uteslutande) på nätet.
     website_include_http: Företagets webbplats
     org_nr_no_hyphens: Endast siffror (ej bindestreck)
 

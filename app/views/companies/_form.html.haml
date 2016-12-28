@@ -28,12 +28,16 @@
   = f.label :city, "#{t('companies.show.city')}", class: 'required'
   = f.text_field :city, class: 'wpcf7-form-control'
 
-  = f.label :region, "#{t('companies.operations_region')}", class: 'required'
-  = f.text_field :region, class: 'wpcf7-form-control'
+  = f.label :region_id, "#{t('companies.operations_region')}", class: 'required'
+  = f.collection_select(:region_id, Region.all, :id, :name)
+  - if @company.old_region
+    (#{t('companies.old_region')}: #{@company.old_region})
+
+  %br
   %em= t('companies.op_region_multiple_use_sweden')
   %br
 
-  = f.label :website, "#{t('companies.website_include_http')})", class: 'required'
+  = f.label :website, "#{t('companies.website_include_http')}", class: 'required'
   = f.text_field :website, class: 'wpcf7-form-control'
 
   = f.submit "#{t('submit')}"

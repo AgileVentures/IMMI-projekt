@@ -43,6 +43,21 @@ csv.each do |row|
   end
 end
 
+# This populates the 'regions' table for Swedish regions (aka counties),
+# as well as 'Sweden' and 'Online'.  This is used to specify the primary
+# region in which a company operates.
+#
+# This uses the 'city-state' gem for a list of regions (name and ISO code).
+# (That gem will also return a list of cities within region)
+#
+# If the regions table is not empty, do not run this code unless there
+# are also no companies, as the region ID's will be reset.
+if Region.exists?
+  CS.states(:se).each_pair { |k,v| Region.create(name: v, code: k.to_s) }
+  Region.create(name: 'Sweden', code: nil)
+  Region.create(name: 'Online', code: nil)
+end
+
 business_categories = %w(Träning Psykologi Rehab Butik Trim Friskvård Dagis Pensionat Skola)
 business_categories.each { |b_category| BusinessCategory.find_or_create_by(name: b_category) }
 BusinessCategory.find_or_create_by(name: 'Sociala tjänstehundar', description: 'Terapi-, vård- & skolhund dvs hundar som jobbar tillsammans med sin förare/ägare inom vård, skola och omsorg.')
