@@ -30,6 +30,7 @@
 
   = f.label :region_id, "#{t('companies.operations_region')}", class: 'required'
   = f.collection_select(:region_id, Region.all, :id, :name)
+
   - if @company.old_region && ! @company.region
     (#{t('companies.old_region')}: #{@company.old_region})
 
