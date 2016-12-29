@@ -22,7 +22,7 @@ RSpec.describe CompaniesHelper, type: :helper do
     it 'returns false if company name or old_region is empty string' do
       company.name = ''
       expect(helper.company_complete?(company)).to eq false
-      company_name = 'test'
+      company.name = 'test'
       company.old_region = ''
       expect(helper.company_complete?(company)).to eq false
     end
