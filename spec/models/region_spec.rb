@@ -12,4 +12,8 @@ RSpec.describe Region, type: :model do
     it { is_expected.to have_db_column :name }
     it { is_expected.to have_db_column :code }
   end
+
+  describe 'Associations' do
+    it { is_expected.to have_many :companies }
+  end
 end
