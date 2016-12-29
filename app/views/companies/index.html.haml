@@ -31,7 +31,7 @@
           %tr.company
             %td= last_category_name company
             %td= link_to company.name, company
-            %td= company.region.name
+            %td= company.region.name if company.region
             - if current_user.try(:admin)
               %td= company.company_number
               %td= link_to "#{t('edit')}", edit_company_path(company)
