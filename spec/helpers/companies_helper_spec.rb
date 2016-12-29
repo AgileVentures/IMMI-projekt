@@ -27,7 +27,7 @@ RSpec.describe CompaniesHelper, type: :helper do
       company.name = 'test'
       company.old_region = ''
       expect(helper.company_complete?(company)).to eq false
-      company_name = 'test'
+      company.name = 'test'
       company.old_region = ''
       expect(helper.company_complete?(company)).to eq false
     end
