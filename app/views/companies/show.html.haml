@@ -35,7 +35,7 @@
     = @company.city
   %p
     %b #{t('.region')}:
-    = @company.region.name
+    = @company.region.name if @company.region
 
   - if policy(@company).update?
     .center
