@@ -5,10 +5,14 @@
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
     %title Medlemmar i Sveriges Hundföretagare
     = csrf_meta_tags
+    = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/' + |
+                          'select2/4.0.2/css/select2.min.css'         |
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload'
     = stylesheet_link_tag 'style.css', media: 'all'
     = stylesheet_link_tag 'custom.css', media: 'all'
     = javascript_include_tag 'application', 'data-turbolinks-track': 'reload'
+    = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/' + |
+                             'select2/4.0.2/js/select2.full.min.js'      |
   %body.page.page-template.page-template-page-sidebar-none
     = render 'top'
     = render 'flash'

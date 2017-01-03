@@ -19,6 +19,8 @@
 document.addEventListener("turbolinks:load", function() {
     "use strict";
 
+    $('.company_search').select2();
+
     // Slide mobile navigation from left
     jQuery('#site-navigation .menu-toggle').on('click', function () {
         jQuery(this).toggleClass('active');

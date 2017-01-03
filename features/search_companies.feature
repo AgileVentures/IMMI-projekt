@@ -17,7 +17,6 @@ Background:
     | Groomer      |
     | Psychologist |
     | Trainer      |
-    | Walker       |
 
   Given the following regions exist:
     | name         |
@@ -32,6 +31,7 @@ Background:
     | HappyMutts  | 2120000142     | woof@happymutts.com  | Västerbotten | Kusmark     |
     | Dogs R Us   | 5562252998     | chief@dogsrus.com    | Norrbotten   | Morjarv     |
     | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       |             |
+
 
   And the following applications exist:
     | first_name | user_email          | company_number | status  | category_name |
@@ -111,3 +111,80 @@ Scenario: Search by category and region
   Then I select "Sweden" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "We Luv Dogs"
+=======
+  And show me the page
+
+@javascript
+Scenario: Search by region
+  Given I am on the home page
+  And I click the "Jobs" link
+  And I click the "Search Jobs" button
+  And I fill in "Description contains any" with "Job1., Job3."
+  And I click the "Search Jobs" button
+  Then I should see "Job1"
+  And I should see "Job3"
+  And I should not see "Job2"
+  And I should not see "Job4"
+
+@javascript
+Scenario: Search by company
+  Given I am on the home page
+  And I click the "Jobs" link
+  And I click the "Search Jobs" button
+  And I select "Skill1" in select list "Skills"
+  And I select "Skill3" in select list "Skills"
+  And I click the "Search Jobs" button
+  Then I should see "Job1"
+  And I should see "Job3"
+  And I should see "Job2"
+  And I should not see "Job4"
+
+@javascript
+Scenario: Search by city
+  Given I am on the home page
+  And I click the "Jobs" link
+  And I click the "Search Jobs" button
+  And I select "city1" in select list "City"
+  And I select "city4" in select list "City"
+  And I click the "Search Jobs" button
+  Then I should see "Job1"
+  And I should see "Job4"
+  And I should not see "Job2"
+  And I should not see "Job3"
+
+@javascript
+Scenario: Search by category and region
+  Given I am on the home page
+  And I click the "Jobs" link
+  And I click the "Search Jobs" button
+  And I fill in "Title contains all" with "Job4"
+  And I fill in "Description contains any" with "Job1., Job2, Job3."
+  And I click the "Search Jobs" button
+  Then I should not see "Job1"
+  And I should not see "Job3"
+  And I should not see "Job2"
+  And I should not see "Job4"
+  And I fill in "Title contains all" with "Job1"
+  And I click the "Search Jobs" button
+  Then I should see "Job1"
+  And I should not see "Job3"
+  And I should not see "Job2"
+  And I should not see "Job4"
+
+@javascript
+Scenario: Search by category and city
+  Given I am on the home page
+  And I click the "Jobs" link
+  And I click the "Search Jobs" button
+  And I select "Widgets Inc." in select list "Company"
+  And I click the "Search Jobs" button
+  Then I should see "Job1"
+  And I should see "Job2"
+  And I should not see "Job3"
+  And I should not see "Job4"
+  Then I select "Feature Inc." in select list "Company"
+  And I click the "Search Jobs" button
+  Then I should see "Job1"
+  And I should see "Job2"
+  And I should see "Job3"
+  And I should see "Job4"

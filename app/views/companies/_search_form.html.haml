@@ -1,0 +1,49 @@
+= search_form_for @search_params, method: :get, url: companies_path,
+                                        class: 'form-horizontal' do |f|
+  .form-group
+    .col-sm-5
+      = f.label :business_categories_id_in,
+                "#{t('activerecord.models.business_category.one')}",
+                class: 'control-label',
+                style: 'text-align: left; font-size: 12px;'
+      = f.collection_select :business_categories_id_in,
+                      BusinessCategory.order(:name).distinct,
+                      :id, :name, {include_blank: false},
+                      {multiple: true, size: 5, style: 'width: 100%;',
+                       class: 'form-control company_search'}
+    .col-sm-4
+      = f.label :region_id_in,
+                "#{t('activerecord.attributes.company.region')}",
+                class: 'control-label',
+                style: 'text-align: left; font-size: 12px;'
+      = f.collection_select :region_id_in,
+                      Region.all,
+                      :id, :name, {include_blank: false},
+                      {multiple: true, size: 5, style: 'width: 100%;',
+                       class: 'form-control company_search'}
+
+    .col-sm-3
+      = f.label :city_in,
+                "#{t('activerecord.attributes.company.city')}",
+               class: 'control-label',
+               style: 'text-align: left; font-size: 12px;'
+      = f.collection_select :city_in,
+                     Company.order(:city).distinct,
+                     :city, :city, {include_blank: false},
+                     {multiple: true, size: 5, style: 'width: 100%;',
+                      class: 'form-control company_search'}
+  .form-group
+    .col-sm-8
+      = f.label :name_in,
+                "#{t('activerecord.models.company.one')}",
+                class: 'control-label',
+                style: 'text-align: left; font-size: 12px;'
+      = f.collection_select :name_in,
+                      Company.order(:name),
+                      :name, :name, {include_blank: false},
+                      {multiple: true, size: 5, style: 'width: 100%;',
+                       class: 'form-control company_search'}
+
+    .col-sm-3.col-sm-offset-1{style: 'position: absolute; right: 30px'}
+      %br
+      = submit_tag "#{t('search')}", class: 'btn btn-primary'

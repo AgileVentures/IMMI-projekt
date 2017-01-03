@@ -2,6 +2,7 @@ require 'coveralls'
 Coveralls.wear_merged!('rails')
 require 'cucumber/rails'
 require 'cucumber/timecop'
+require 'capybara/poltergeist'
 
 ActionController::Base.allow_rescue = false
 
@@ -30,3 +31,6 @@ end
 def i18n_content(content, locale=I18n.locale)
   I18n.t(content, locale)
 end
+
+# For tests requiring javascript, headless
+Capybara.javascript_driver = :poltergeist

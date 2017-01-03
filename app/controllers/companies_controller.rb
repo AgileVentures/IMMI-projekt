@@ -5,7 +5,13 @@ class CompaniesController < ApplicationController
 
   def index
     authorize Company
-    @companies = Company.all
+    @search_params = Company.ransack(params[:q]) # object for search form
+    if params['commit']
+      # User is executing a search
+      @companies = @search_params.result
+    else
+      @companies = Company.all
+    end
   end
 
 

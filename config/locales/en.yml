@@ -28,6 +28,7 @@ en:
   change: &change Change
   save: &save Save
   back: &back Back
+  search: &search Search
 
   confirm_are_you_sure: &are_you_sure_confirm Are you sure
 
@@ -53,6 +54,10 @@ en:
       business_category:
         one: &business_category Category
         other: &business_categories Categories
+
+      company:
+        one: Company
+        other: Companies
 
 
     attributes:
@@ -239,7 +244,7 @@ en:
       category: Category
       region_land: Region
       h_companies_listed_below: H-labeled companies are listed below.
-      how_to_search: To search the list, use Ctrl + F (PC) or Command + F (Mac)
+      how_to_search: Search by specifying or more of the search parameters below.
       confirm_are_you_sure: *are_you_sure_confirm
     company_name: Company name
     telephone_number: Phone number

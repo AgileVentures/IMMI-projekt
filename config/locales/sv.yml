@@ -28,6 +28,7 @@ sv:
   change: &change Byt
   save: &save Save
   back: &back Tillbaks
+  search: &search Sök
 
   confirm_are_you_sure: &are_you_sure_confirm Är du säker
 
@@ -53,6 +54,9 @@ sv:
         one: &business_category Kategori
         other: &business_categories Kategorier
 
+      company:
+        one: Företag
+        other: Företag
 
     attributes:
 
@@ -234,7 +238,7 @@ sv:
       company_number: *org_nr
       region_land: *region_short
       h_companies_listed_below: Nedan listas anslutna H-märkta företag
-      how_to_search: Du kan söka i listan på datorn med ctrl+F(PC) eller cmd+F(mac)
+      how_to_search: Sök genom att ange eller flera av sökparametrarna nedan.
       confirm_are_you_sure: *are_you_sure_confirm
     company_name: Företagsnamn
     telephone_number: Telefonnummer
