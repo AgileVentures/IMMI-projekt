@@ -3,10 +3,15 @@ Feature: As a visitor,
   I want to see all companies
 
   Background:
+    Given the following regions exist:
+      | name         |
+      | Stockholm    |
+      | Västerbotten |
+
     Given the following companies exist:
-      | name                 | company_number | email                  |
-      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com |
-      | Bowsers              | 2120000142     | bowwow@bowsersy.com    |
+      | name                 | company_number | email                  | region       |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm    |
+      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten |
 
     And the following users exists
       | email               | admin |
@@ -24,10 +29,11 @@ Feature: As a visitor,
       | Emma       | emma@happymutts.com | 5560360793     | Godkänd | Groomer       |
       | Anna       | a@happymutts.com    | 2120000142     | Godkänd | Groomer       |
 
+  @javascript
   Scenario: Visitor sees all companies
     Given I am Logged out
     And I am on the "landing" page
-    Then I should see t("companies.index.title")
+    Then I should see t("companies.index.h_companies_listed_below")
     And I should see "Bowsers"
     And I should see "No More Snarky Barky"
     And I should see "Groomer"

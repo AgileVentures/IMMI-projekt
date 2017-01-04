@@ -21,10 +21,13 @@ Feature: As an admin
       | dog crooning | crooning to dogs                |
       | rehab        | physcial rehabitation           |
 
+    Given the following regions exist:
+      | name         |
+      | Stockholm    |
 
     Given the following companies exist:
-      | name                 | company_number | email                 |
-      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.se |
+      | name                 | company_number | email                 | region    |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.se | Stockholm |
 
 
     And the following applications exist:

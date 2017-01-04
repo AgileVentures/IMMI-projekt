@@ -53,3 +53,7 @@ group :development do
   gem 'capistrano-ssh-doctor', '~> 1.0'
   gem 'capistrano-env-config'
 end
+
+group :test do
+  gem 'poltergeist'
+end
