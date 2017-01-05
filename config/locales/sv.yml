@@ -237,8 +237,8 @@ sv:
       name: *name
       company_number: *org_nr
       region_land: *region_short
-      h_companies_listed_below: Nedan listas anslutna H-märkta företag
-      how_to_search: Sök genom att ange eller flera av sökparametrarna nedan.
+      h_companies_listed_below: Nedan listas anslutna företag.
+      how_to_search: Sök genom att ange en eller flera av sökparametrarna nedan.
       confirm_are_you_sure: *are_you_sure_confirm
     company_name: Företagsnamn
     telephone_number: Telefonnummer
