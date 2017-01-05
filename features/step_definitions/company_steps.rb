@@ -2,8 +2,10 @@ And(/^the following companies exist:$/) do |table|
   table.hashes.each do |company|
     region = company.delete('region')
     cmpy = FactoryGirl.create(:company, company)
-    cmpy.region = Region.find_by_name(region)
-    cmpy.save
+    if cmpy.region
+      cmpy.region = Region.find_by_name(region)
+      cmpy.save
+    end
   end
 end
 
