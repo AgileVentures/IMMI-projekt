@@ -74,8 +74,9 @@ if Rails.env.development? || Rails.env.staging?
 
   applications = []
 
-  2.times do |idx|
+  2.times do
     r.rand(1..USERS).times do
+
       company_number = r.rand(1000000000..9999999999).to_s
 
       ma = MembershipApplication.new(first_name: FFaker::NameSE.first_name,
@@ -83,7 +84,7 @@ if Rails.env.development? || Rails.env.staging?
                                      contact_email: FFaker::InternetSE.free_email,
                                      company_number: company_number,
                                      status: 'Pending',
-                                     user: users[idx])
+                                     user: users[r.rand(0..USERS-1)])
       idx1 = r.rand(0..num_cats-1)
       ma.business_categories << business_categories[idx1]
       idx2 = r.rand(0..num_cats-1)
@@ -98,8 +99,11 @@ if Rails.env.development? || Rails.env.staging?
   puts "Applications created: #{MembershipApplication.all.count}"
 
   # Accept some of the membership applications
-  r.rand(0..(applications.size-1)).times do |idx|
-    ma = applications[idx]
+  r.rand(1..applications.size).times do
+    ma = applications[r.rand(0..(applications.size-1))]
+
+    next if ma.status == 'Godkänd'
+    
     ma.status = 'Godkänd'
     ma.user.is_member = true
     ma.user.save
