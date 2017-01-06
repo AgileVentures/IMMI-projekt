@@ -1,8 +1,8 @@
 Feature: Search Companies
 
-As an SHF user
+As a visitor to the site
 In order to find companies that I might want to work with
-I want to search available companies by various criteria
+I want to search for available companies by various criteria
 
 Background:
   Given the following users exists
