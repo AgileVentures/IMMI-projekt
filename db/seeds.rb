@@ -58,7 +58,7 @@ if Rails.env.development? || Rails.env.staging?
 
   # Create users
   users = []
-  confirmed_at = DateTime.now
+
   USERS.times do
     users << User.create(email: FFaker::InternetSE.free_email,
                          password: 'password')
