@@ -20,7 +20,7 @@ document.addEventListener("turbolinks:load", function() {
     "use strict";
 
     $.each($('.company_search'), function (index, ele) {
-      if ($(ele).data('select2') == undefined &&
+      if ($(ele).data('select2') === undefined &&
           $(ele).next().hasClass('select2-container')) {
         $(ele).next().remove();
       }
