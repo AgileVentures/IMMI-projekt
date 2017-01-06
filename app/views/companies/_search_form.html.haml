@@ -28,8 +28,8 @@
                class: 'control-label',
                style: 'text-align: left; font-size: 12px;'
       = f.collection_select :city_in,
-                     Company.order(:city).distinct,
-                     :city, :city, { include_blank: false },
+                     Company.distinct.order(:city).pluck(:city),
+                     :to_s, :to_s, { include_blank: false },
                      { multiple: true, size: 5, style: 'width: 100%;',
                        class: 'form-control company_search' }
   .form-group
