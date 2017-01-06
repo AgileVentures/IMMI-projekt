@@ -19,7 +19,16 @@
 document.addEventListener("turbolinks:load", function() {
     "use strict";
 
-    $('.company_search').select2();
+    $.each($('.company_search'), function (index, ele) {
+      if ($(ele).data('select2') == undefined &&
+          $(ele).next().hasClass('select2-container')) {
+        $(ele).next().remove();
+      }
+      $(ele).select2();
+    });
+    // Above logic due to problem with using back arrow in browser - see:
+    // http://stackoverflow.com/questions/36497723/
+    // select2-with-ajax-gets-initialized-several-times-with-rails-turbolinks-events
 
     // Slide mobile navigation from left
     jQuery('#site-navigation .menu-toggle').on('click', function () {
