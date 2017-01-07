@@ -18,7 +18,8 @@
     = render 'search_form'
 
   - if @companies.empty?
-    %strong No records matched your search criteria.
+    %strong
+      #{t('.no_search_results')}
   - else
     %table.table.table-hover
       %thead
