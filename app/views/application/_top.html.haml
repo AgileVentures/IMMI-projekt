@@ -1,9 +1,5 @@
 = render 'navigation'
-- unless current_user.try(:admin)
-  #site-logo
-    %a{ href: 'http://sverigeshundforetagare.se/' }
-      %img{ alt: 'logo', src: 'http://media.sverigeshundforetagare.se/2016/10/SH_logo_RGB.png' }
-- else
+- if current_user.try(:admin)
   #site-logo
     %p.admin
       = t('info.logged_in_as_admin')

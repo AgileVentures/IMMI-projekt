@@ -3,8 +3,7 @@
     %h1.entry-title= t('.title')
   - if current_user.try(:admin)
     %h1.entry-title= t('.admin_title')
-.post-title-divider
-  %span
+
 .entry-content
   - unless current_user.try(:admin)
     %p
