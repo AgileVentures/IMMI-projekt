@@ -30,8 +30,10 @@ private def get_company_number(r)
     next unless org_number.valid?
 
     # keep going if number already used
-    company_number = org_number.number
-    break unless MembershipApplication.find_by_company_number(company_number)
+    unless MembershipApplication.find_by_company_number(org_number.number)
+      company_number = org_number.number
+      break
+    end
   end
   company_number
 end
