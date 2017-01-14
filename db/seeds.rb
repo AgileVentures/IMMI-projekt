@@ -22,6 +22,21 @@ private def env_invalid_blank(env_key)
   env_val
 end
 
+private def get_company_number(r)
+  company_number = nil
+  20.times do
+    # loop until done or we find a valid Org number
+    org_number = Orgnummer.new(r.rand(1000000000..9999999999).to_s)
+    next unless org_number.valid?
+
+    # keep going if number already used
+    company_number = org_number.number
+    break unless MembershipApplication.find_by_company_number(company_number)
+  end
+  company_number
+end
+
+
 
 if Rails.env.production?
   begin
@@ -56,22 +71,6 @@ BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: '
 
 if Rails.env.development? || Rails.env.staging?
 
-  class OrgNumber
-    def self.get_number(r)
-      company_number = nil
-      20.times do
-        # loop until done or we find a valid Org number
-        org_number = Orgnummer.new(r.rand(1000000000..9999999999).to_s)
-        next unless org_number.valid?
-
-        # keep going if number already used
-        company_number = org_number.number
-        break unless MembershipApplication.find_by_company_number(company_number)
-      end
-      company_number
-    end
-  end
-
   # NOTE: rake task 'rake shf:load_regions' must have been run before seeding
 
   r = Random.new
@@ -100,7 +99,7 @@ if Rails.env.development? || Rails.env.staging?
   2.times do
     r.rand(1..NUM_USERS).times do
 
-      next unless (company_number = OrgNumber.get_number(r))
+      next unless (company_number = get_company_number(r))
 
       ma = MembershipApplication.new(first_name: FFaker::NameSE.first_name,
                                      last_name: FFaker::NameSE.last_name,
