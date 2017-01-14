@@ -13,6 +13,10 @@ end
 
 SEED_ERROR_MSG = 'Seed ERROR: Could not load either admin email or password. NO ADMIN was created!'
 
+DEFAULT_PASSWORD = 'whatever'
+
+MA_ACCEPTED_STATUS = 'Godkänd'
+
 private def env_invalid_blank(env_key)
   raise SeedAdminENVError, SEED_ERROR_MSG if (env_val = ENV.fetch(env_key)).blank?
   env_val
@@ -41,7 +45,7 @@ csv_text = File.read(Rails.root.join('lib', 'seeds', 'user_table.csv'))
 csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
 csv.each do |row|
   User.find_or_create_by(email: row['email']) do |user|
-    user.password = 'whatever'
+    user.password = DEFAULT_PASSWORD
   end
 end
 
@@ -51,20 +55,39 @@ BusinessCategory.find_or_create_by(name: 'Sociala tjänstehundar', description: 
 BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: 'Assistanshundar dvs hundar som jobbar åt sin ägare som service-, signal, diabetes, PH-hund mm')
 
 if Rails.env.development? || Rails.env.staging?
+
+  class OrgNumber
+    def self.get_number(r)
+      company_number = nil
+      20.times do
+        # loop until done or we find a valid Org number
+        org_number = Orgnummer.new(r.rand(1000000000..9999999999).to_s)
+        next unless org_number.valid?
+
+        # keep going if number already used
+        company_number = org_number.number
+        break unless MembershipApplication.find_by_company_number(company_number)
+      end
+      company_number
+    end
+  end
+
+  # NOTE: rake task 'rake shf:load_regions' must have been run before seeding
+
   r = Random.new
-  USERS = 40
-  regions = Region.all.to_a # regions are created in a migration file
+  NUM_USERS = 40
+  regions = Region.all.to_a
   num_regions = regions.size
 
   # Create users
   users = []
 
-  USERS.times do
+  NUM_USERS.times do
     users << User.create(email: FFaker::InternetSE.free_email,
-                         password: 'password')
+                         password: DEFAULT_PASSWORD)
   end
 
-  puts "Users created: #{User.all.count}"
+  puts "Users created: #{NUM_USERS}"
 
   # Create membership application for some users
   # (two rounds - so some of the users have more than one application)
@@ -75,22 +98,22 @@ if Rails.env.development? || Rails.env.staging?
   applications = []
 
   2.times do
-    r.rand(1..USERS).times do
+    r.rand(1..NUM_USERS).times do
 
-      company_number = r.rand(1000000000..9999999999).to_s
+      next unless (company_number = OrgNumber.get_number(r))
 
       ma = MembershipApplication.new(first_name: FFaker::NameSE.first_name,
                                      last_name: FFaker::NameSE.last_name,
                                      contact_email: FFaker::InternetSE.free_email,
                                      company_number: company_number,
                                      status: 'Pending',
-                                     user: users[r.rand(0..USERS-1)])
+                                     user: users[r.rand(0..NUM_USERS-1)])
       idx1 = r.rand(0..num_cats-1)
       ma.business_categories << business_categories[idx1]
       idx2 = r.rand(0..num_cats-1)
       ma.business_categories << business_categories[idx2] if idx2 != idx1
 
-      ma.save(validate: false)
+      ma.save
 
       applications << ma
     end
@@ -99,12 +122,13 @@ if Rails.env.development? || Rails.env.staging?
   puts "Applications created: #{MembershipApplication.all.count}"
 
   # Accept some of the membership applications
+
   r.rand(1..applications.size).times do
     ma = applications[r.rand(0..(applications.size-1))]
 
-    next if ma.status == 'Godkänd'
-    
-    ma.status = 'Godkänd'
+    next if ma.is_accepted?
+
+    ma.status = MA_ACCEPTED_STATUS
     ma.user.is_member = true
     ma.user.save
 
@@ -117,11 +141,23 @@ if Rails.env.development? || Rails.env.staging?
                        post_code: FFaker::AddressSE.zip_code,
                        website: FFaker::InternetSE.http_url,
                        region: regions[r.rand(0..num_regions-1)])
-    company.save(validate: false)
+    company.save
     ma.company = company
-    ma.save(validate: false)
+    ma.save
   end
 
   puts "Applications accepted: #{MembershipApplication
-    .where(status: 'Godkänd').count}"
+    .where(status: MA_ACCEPTED_STATUS).count}"
+end
+
+class GetNumber
+  def self.org_number
+    company_number = nil
+    20.times do
+      company_number = Orgnummer.new(r.rand(1000000000..9999999999).to_s)
+      next unless company_number.valid?
+      break unless MembershipApplication.find_by_company_number(company_number)
+    end
+    company_number
+  end
 end
