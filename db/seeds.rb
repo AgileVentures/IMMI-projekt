@@ -73,92 +73,84 @@ BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: '
 
 if Rails.env.development? || Rails.env.staging?
 
-  # NOTE: rake task 'rake shf:load_regions' must have been run before seeding
-
-  r = Random.new
-  NUM_USERS = 40
   regions = Region.all.to_a
-  num_regions = regions.size
+  
+  if regions.empty?
+    puts "Run task 'shf:load_regions' before seeding if you want records created for"
+    puts 'users, members, membership_applications, business categories and companies.'
+  else
+    r = Random.new
+    NUM_USERS = 40
+    num_regions = regions.size
 
-  # Create users
-  users = []
+    # Create users
+    users = []
 
-  NUM_USERS.times do
-    users << User.create(email: FFaker::InternetSE.free_email,
-                         password: DEFAULT_PASSWORD)
-  end
+    NUM_USERS.times do
+      users << User.create(email: FFaker::InternetSE.free_email,
+                           password: DEFAULT_PASSWORD)
+    end
 
-  puts "Users created: #{NUM_USERS}"
+    puts "Users created: #{NUM_USERS}"
 
-  # Create membership application for some users
-  # (two rounds - so some of the users have more than one application)
+    # Create membership application for some users
+    # (two rounds - so some of the users have more than one application)
 
-  business_categories = BusinessCategory.all.to_a
-  num_cats = business_categories.size
+    business_categories = BusinessCategory.all.to_a
+    num_cats = business_categories.size
 
-  applications = []
+    applications = []
 
-  2.times do
-    r.rand(1..NUM_USERS).times do
+    2.times do
+      r.rand(1..NUM_USERS).times do
 
-      next unless (company_number = get_company_number(r))
+        next unless (company_number = get_company_number(r))
 
-      ma = MembershipApplication.new(first_name: FFaker::NameSE.first_name,
-                                     last_name: FFaker::NameSE.last_name,
-                                     contact_email: FFaker::InternetSE.free_email,
-                                     company_number: company_number,
-                                     status: 'Pending',
-                                     user: users[r.rand(0..NUM_USERS-1)])
-      idx1 = r.rand(0..num_cats-1)
-      ma.business_categories << business_categories[idx1]
-      idx2 = r.rand(0..num_cats-1)
-      ma.business_categories << business_categories[idx2] if idx2 != idx1
+        ma = MembershipApplication.new(first_name: FFaker::NameSE.first_name,
+                                       last_name: FFaker::NameSE.last_name,
+                                       contact_email: FFaker::InternetSE.free_email,
+                                       company_number: company_number,
+                                       status: 'Pending',
+                                       user: users[r.rand(0..NUM_USERS-1)])
+        idx1 = r.rand(0..num_cats-1)
+        ma.business_categories << business_categories[idx1]
+        idx2 = r.rand(0..num_cats-1)
+        ma.business_categories << business_categories[idx2] if idx2 != idx1
 
+        ma.save
+
+        applications << ma
+      end
+    end
+
+    puts "Applications created: #{MembershipApplication.all.count}"
+
+    # Accept some of the membership applications
+
+    r.rand(1..applications.size).times do
+      ma = applications[r.rand(0..(applications.size-1))]
+
+      next if ma.is_accepted?
+
+      ma.status = MA_ACCEPTED_STATUS
+      ma.user.is_member = true
+      ma.user.save
+
+      company = Company.new(company_number: ma.company_number,
+                         email: FFaker::InternetSE.free_email,
+                         name: FFaker::CompanySE.name,
+                         phone_number: FFaker::PhoneNumberSE.phone_number,
+                         city: FFaker::AddressSE.city,
+                         street: FFaker::AddressSE.street_address,
+                         post_code: FFaker::AddressSE.zip_code,
+                         website: FFaker::InternetSE.http_url,
+                         region: regions[r.rand(0..num_regions-1)])
+      company.save
+      ma.company = company
       ma.save
-
-      applications << ma
     end
-  end
 
-  puts "Applications created: #{MembershipApplication.all.count}"
-
-  # Accept some of the membership applications
-
-  r.rand(1..applications.size).times do
-    ma = applications[r.rand(0..(applications.size-1))]
-
-    next if ma.is_accepted?
-
-    ma.status = MA_ACCEPTED_STATUS
-    ma.user.is_member = true
-    ma.user.save
-
-    company = Company.new(company_number: ma.company_number,
-                       email: FFaker::InternetSE.free_email,
-                       name: FFaker::CompanySE.name,
-                       phone_number: FFaker::PhoneNumberSE.phone_number,
-                       city: FFaker::AddressSE.city,
-                       street: FFaker::AddressSE.street_address,
-                       post_code: FFaker::AddressSE.zip_code,
-                       website: FFaker::InternetSE.http_url,
-                       region: regions[r.rand(0..num_regions-1)])
-    company.save
-    ma.company = company
-    ma.save
-  end
-
-  puts "Applications accepted: #{MembershipApplication
-    .where(status: MA_ACCEPTED_STATUS).count}"
-end
-
-class GetNumber
-  def self.org_number
-    company_number = nil
-    20.times do
-      company_number = Orgnummer.new(r.rand(1000000000..9999999999).to_s)
-      next unless company_number.valid?
-      break unless MembershipApplication.find_by_company_number(company_number)
-    end
-    company_number
+    puts "Applications accepted: #{MembershipApplication
+      .where(status: MA_ACCEPTED_STATUS).count}"
   end
 end

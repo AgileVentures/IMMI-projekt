@@ -123,7 +123,7 @@ namespace :shf do
 
     logfile = 'log/shf-rake.log'
     start_time = Time.now
-    log = start_logging(start_time, logfile)
+    log = start_logging(start_time, logfile, "Regions create")
 
     # Populate the 'regions' table for Swedish regions (aka counties),
     # as well as 'Sweden' and 'Online'.  This is used to specify the primary
@@ -158,7 +158,7 @@ namespace :shf do
                                     "converted to region reference"
 
     log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
-    finish_and_close_log(log, start_time, Time.now)
+    finish_and_close_log(log, start_time, Time.now, "Regions create")
   end
 
   def import_a_member_app_csv(row, log)
@@ -255,9 +255,11 @@ namespace :shf do
   end
 
 
-  def start_logging(start_time = Time.now, log_fn = 'log/import.log')
+  def start_logging(start_time = Time.now,
+                    log_fn = 'log/import.log',
+                    action = "Import")
     log = ActiveSupport::Logger.new(log_fn)
-    log_and_show log, Logger::INFO, "Import started at #{start_time}"
+    log_and_show log, Logger::INFO, "#{action} started at #{start_time}"
     log
   end
 
@@ -289,9 +291,9 @@ namespace :shf do
   end
 
 
-  def finish_and_close_log(log, start_time, end_time)
+  def finish_and_close_log(log, start_time, end_time, action = "Import")
     duration = (start_time - end_time) / 1.minute
-    log_and_show log, Logger::INFO, "Import finished at #{start_time}."
+    log_and_show log, Logger::INFO, "#{action} finished at #{start_time}."
     log.close
     log
   end
