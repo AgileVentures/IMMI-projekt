@@ -168,10 +168,3 @@ Scenario: Search by category and region 2
   Then I select "Sweden" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "We Luv Dogs"
-
-@javascript
-Scenario: Search messages are translated
-  Given I am Logged out
-  And I am on the "landing" page
-  Then I select "Groomer" in select list t("activerecord.models.business_category.one")
-  # And I fill in "Kategori" with "ddddd"
