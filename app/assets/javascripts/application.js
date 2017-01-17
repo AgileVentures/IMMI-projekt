@@ -24,7 +24,9 @@ document.addEventListener("turbolinks:load", function() {
           $(ele).next().hasClass('select2-container')) {
         $(ele).next().remove();
       }
-      $(ele).select2();
+      $(ele).select2({
+        language: $(ele).data('language')
+      });
     });
     // Above logic due to problem with using back arrow in browser - see:
     // http://stackoverflow.com/questions/36497723/

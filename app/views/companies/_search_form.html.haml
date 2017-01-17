@@ -10,7 +10,8 @@
                       BusinessCategory.order(:name).distinct,
                       :id, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control company_search' }
+                        class: 'form-control company_search',
+                        data: {language: "#{@locale}" } }
     .col-sm-4
       = f.label :region_id_in,
                 "#{t('activerecord.attributes.company.region')}",
@@ -20,7 +21,8 @@
                       Region.all,
                       :id, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control company_search' }
+                        class: 'form-control company_search',
+                        data: {language: "#{@locale}" } }
 
     .col-sm-3
       = f.label :city_in,
@@ -31,7 +33,8 @@
                      Company.distinct.order(:city).pluck(:city),
                      :to_s, :to_s, { include_blank: false },
                      { multiple: true, size: 5, style: 'width: 100%;',
-                       class: 'form-control company_search' }
+                       class: 'form-control company_search',
+                       data: {language: "#{@locale}" } }
   .form-group
     .col-sm-8
       = f.label :name_in,
@@ -42,7 +45,8 @@
                       Company.order(:name),
                       :name, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control company_search' }
+                        class: 'form-control company_search',
+                        data: {language: "#{@locale}" } }
 
     .col-sm-4
       %br

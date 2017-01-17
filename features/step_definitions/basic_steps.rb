@@ -7,6 +7,7 @@ And(/^I click on t\("([^"]*)"\)$/) do |element|
 end
 
 And(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
+  debugger
   fill_in field, with: value
 end
 
@@ -87,6 +88,8 @@ And(/^I uncheck the checkbox with id"([^"]*)"$/) do |element_id|
 end
 
 When(/^(?:I|they) select "([^"]*)" in select list t\("([^"]*)"\)$/) do |item, lst|
+  debugger
   lst = i18n_content("#{lst}")
   find(:select, lst).find(:option, item).select_option
+  a=1
 end
