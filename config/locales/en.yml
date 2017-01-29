@@ -48,7 +48,6 @@ en:
       hide: Hide the search form
       show: Show the search form
 
-
  # Automatic and manual lookup for ActiveRecords:
   activerecord:
     models:
@@ -298,8 +297,6 @@ en:
       confirm_are_you_sure: *are_you_sure_confirm
       no_search_results: No records matched your search criteria.
       delete: *delete
-      hide_form: Hide Form
-      show_form: Show Form
 
     destroy:
       success: Company deleted.

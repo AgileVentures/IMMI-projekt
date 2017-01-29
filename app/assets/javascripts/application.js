@@ -54,9 +54,6 @@ document.addEventListener("turbolinks:load", function() {
         }
     });
 
-    // Bind show/hide search form toggle switch
-    $('#toggle_search_form').click(Utility.toggle);
-
     /*------------------
      Main navigation
      ------------------*/

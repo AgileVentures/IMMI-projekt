@@ -296,8 +296,6 @@ sv:
       confirm_are_you_sure: *are_you_sure_confirm
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
       delete: *delete
-      hide_form: Hide Sökfunktionen
-      show_form: Visa Sökfunktionen
 
     destroy:
       success: Företaget raderat.

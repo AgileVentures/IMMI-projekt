@@ -12,8 +12,10 @@
     %p
       #{t('.h_companies_listed_below')}
       #{t('.how_to_search')}
+      (
       %a(id='toggle_search_form' href='#company_search_form' class='text-danger')
-        #{t('companies.index.hide_form')}
+        #{t('toggle.show')}
+      )
 
   .panel.panel-default{ style: 'padding-left: 5px; padding-right: 5px; display: none;',
                        id: 'company_search_form' }
