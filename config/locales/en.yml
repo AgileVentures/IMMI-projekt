@@ -294,10 +294,12 @@ en:
       category: Category
       region_land: Region
       h_companies_listed_below: Member companies are listed below.
-      how_to_search: Search for companies using the search form.
+      how_to_search: Search for companies in search form.
       confirm_are_you_sure: *are_you_sure_confirm
       no_search_results: No records matched your search criteria.
       delete: *delete
+      hide_form: Hide Form
+      show_form: Show Form
 
     destroy:
       success: Company deleted.

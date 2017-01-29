@@ -292,10 +292,12 @@ sv:
       company_number: *org_nr
       region_land: *region_short
       h_companies_listed_below: Nedan listas anslutna företag.
-      how_to_search: Sök efter företag genom att använda sökfunktionen.
+      how_to_search: Sök efter företag i sökfunktionen.
       confirm_are_you_sure: *are_you_sure_confirm
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
       delete: *delete
+      hide_form: Hide Sökfunktionen
+      show_form: Visa Sökfunktionen
 
     destroy:
       success: Företaget raderat.
