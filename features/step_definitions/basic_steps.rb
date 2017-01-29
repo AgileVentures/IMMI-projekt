@@ -99,3 +99,7 @@ When(/^(?:I|they) select "([^"]*)" in select list t\("([^"]*)"\)$/) do |item, ls
   lst = i18n_content("#{lst}")
   find(:select, lst).find(:option, item).select_option
 end
+
+Then(/^I wait(?: for)? (\d+) second(?:s)?$/) do |seconds|
+  sleep seconds.to_i.seconds
+end

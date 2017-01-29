@@ -16,6 +16,13 @@
     = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/sv.js'
 
   %body.page.page-template.page-template-page-sidebar-none
+    // This embedded script sets the locale for I18n on the client side.
+    // It needs to be in the body since only the body will be re-rendered
+    // by default when turbolinks is enabled.
+    %script(type='text/javascript')
+      I18n.defaultLocale = "#{I18n.default_locale}";
+      I18n.locale = "#{I18n.locale}";
+      
     = render 'top'
     = render 'flash'
     #wrap

@@ -14,6 +14,7 @@
 //= require jquery_ujs
 //= require bootstrap-sprockets
 //= require turbolinks
+//= require i18n/translations
 //= require_tree .
 
 document.addEventListener("turbolinks:load", function() {
@@ -32,6 +33,9 @@ document.addEventListener("turbolinks:load", function() {
     // http://stackoverflow.com/questions/36497723/
     // select2-with-ajax-gets-initialized-several-times-with-rails-turbolinks-events
 
+    // Bind "show/hide" search form toggle switch
+    $('#toggle_search_form').click(Utility.toggle);
+
     // Slide mobile navigation from left
     jQuery('#site-navigation .menu-toggle').on('click', function () {
         jQuery(this).toggleClass('active');
@@ -49,9 +53,6 @@ document.addEventListener("turbolinks:load", function() {
             return false;
         }
     });
-
-    // Bind show/hide search form toggle switch
-    $('#toggle_search_form').click(Utility.toggle);
 
     /*------------------
      Main navigation

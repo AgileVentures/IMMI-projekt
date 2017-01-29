@@ -23,6 +23,7 @@ gem 'routing-filter'   # for handling locale filters around routes
 
 gem 'ransack'
 gem 'city-state'
+gem 'i18n-js', '>= 3.0.0.rc11'
 
 
 gem 'aasm', '~> 4.11.1'  # state machine ()acts as state machine)

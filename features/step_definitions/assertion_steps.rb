@@ -254,3 +254,11 @@ And(/^I should see (\d+) t\("([^"]*)"\)$/) do |n, content |
   expect(page).to have_text("#{i18n_content(content)}", count: n)
   expect(page).not_to have_text("#{i18n_content(content)}", count: n+1)
 end
+
+Then(/^t\("([^"]*)"\) should( not)? be visible$/) do |string, not_see|
+  unless not_see
+    expect(has_text?(:visible, "#{i18n_content(string)}")).to be true
+  else
+    expect(has_text?(:visible, "#{i18n_content(string)}")).to be false
+  end
+end

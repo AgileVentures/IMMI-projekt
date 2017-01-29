@@ -168,3 +168,15 @@ Scenario: Search by category and region 2
   Then I select "Sweden" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "We Luv Dogs"
+
+@javascript
+Scenario: Toggle Hide/Show search form
+  Given I am Logged out
+  And I am on the "landing" page
+  Then I should see t("companies.index.how_to_search")
+  And I should see t("toggle.show")
+  Then t("activerecord.models.company.one") should not be visible
+  Then I click on t("toggle.show")
+  Then I wait for 2 seconds
+  And I should see t("toggle.hide")
+  Then t("activerecord.models.company.one") should be visible
