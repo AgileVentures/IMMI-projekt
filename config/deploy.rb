@@ -14,7 +14,7 @@ set :linked_files, %w{config/database.yml config/secrets.yml .env}
 
 set :linked_dirs, %w{
   bin log tmp/pids tmp/cache tmp/sockets vendor/bundle public/system
-  public/uploads public/.well-known
+  public/uploads public/.well-known public/storage
 }
 
 set :keep_releases, 5
