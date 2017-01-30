@@ -44,7 +44,7 @@ sv:
   org_nr: &org_nr Org no.
 
   toggle:
-    hide: Dölja
+    hide: Dölj
     show: Visa
 
   # Automatisk och manuell sökning för Active Records
