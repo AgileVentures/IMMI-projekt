@@ -1,0 +1,21 @@
+graph:
+  graph_style:
+    bgcolor: white
+  node_style:
+    fontname: Verdana
+    fontsize: 11
+    fontcolor: blue
+    #color: blue
+    penwidth: 2
+  edge_style:
+    fontname: Arial
+    fontsize: 10
+  start_node_style:
+    fontsize: 7
+    fontname: Ariel
+    fillcolor: green
+    style: filled
+  end_node_style:
+    fontsize: 7
+    fontname: Ariel
+    fillcolor: blue
