@@ -110,7 +110,11 @@ Scenario: Search by city and region
 Scenario: Search by category and region
   Given I am Logged out
   And I am on the "landing" page
+<<<<<<< HEAD
   Then I click on t("toggle.company_search_form.show")
+=======
+  Then I click on t("toggle.show")
+>>>>>>> cut wait time to 2 seconds cmpy search feature test
   Then I wait 2 seconds
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
