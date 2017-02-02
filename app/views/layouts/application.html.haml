@@ -3,6 +3,7 @@
   %head
     %meta{ content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes', name: 'viewport' }/
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
+    = content_for :no_cache
     %title Medlemmar i Sveriges Hundföretagare
     = csrf_meta_tags
     = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/' + |

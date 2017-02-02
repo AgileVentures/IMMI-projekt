@@ -1,3 +1,6 @@
+- content_for :no_cache do
+  %meta(name='turbolinks-cache-control' content='no-cache')
+
 %header.entry-header
   - unless current_user.try(:admin)
     %h1.entry-title= t('.title')
@@ -17,8 +20,8 @@
         #{t('toggle.company_search_form.show')}
       )
 
-  .panel.panel-default{ style: 'padding-left: 5px; padding-right: 5px; display: none;',
-                       id: 'company_search_form' }
+  .panel.panel-default.hidden{ style: 'padding-left: 5px; padding-right: 5px;',
+                        id: 'company_search_form' }
     = render 'search_form'
 
   - if @companies.empty?
@@ -55,4 +58,5 @@
                 %td= company.company_number
                 %td= link_to "#{t('edit')}", edit_company_path(company)
                 %td= link_to "#{t('delete')}", company, method: :delete, data: { :confirm => "#{t('.confirm_are_you_sure')}" }
+    = will_paginate @companies, class: 'digg_pagination'
     %br

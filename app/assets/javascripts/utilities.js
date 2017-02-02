@@ -11,11 +11,17 @@ var Utility = {
     var regex = new RegExp(I18n.t(showStr));
 
     if (regex.test($(this).text())) {
-      $(toggleId).show(800);
+      $(toggleId).removeClass('hidden');
+      $(toggleId).show(600, function() {
+        $(toggleId).addClass('show');
+      });
       $(this).text($(this).text().replace(I18n.t(showStr),
                                           I18n.t(hideStr)));
     } else {
-      $(toggleId).hide(800);
+      $(toggleId).removeClass('show');
+      $(toggleId).hide(400, function () {
+        $(toggleId).addClass('hidden');
+      });
       $(this).text($(this).text().replace(I18n.t(hideStr),
                                           I18n.t(showStr)));
     }
