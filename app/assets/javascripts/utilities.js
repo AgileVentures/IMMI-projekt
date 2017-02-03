@@ -5,17 +5,19 @@ var Utility = {
     // 'click' event.  The 'href' attribute of the element is the
     // id of the content (table, div, etc.) to be toggled
     var toggleId = $(this).attr('href');
+    var showStr = 'toggle.' + toggleId.replace('#','') + '.show';
+    var hideStr = 'toggle.' + toggleId.replace('#','') + '.hide';
 
-    var regex = new RegExp(I18n.t('toggle.show'));
+    var regex = new RegExp(I18n.t(showStr));
 
     if (regex.test($(this).text())) {
       $(toggleId).show(800);
-      $(this).text($(this).text().replace(I18n.t('toggle.show'),
-                                          I18n.t('toggle.hide')));
+      $(this).text($(this).text().replace(I18n.t(showStr),
+                                          I18n.t(hideStr)));
     } else {
       $(toggleId).hide(800);
-      $(this).text($(this).text().replace(I18n.t('toggle.hide'),
-                                          I18n.t('toggle.show')));
+      $(this).text($(this).text().replace(I18n.t(hideStr),
+                                          I18n.t(showStr)));
     }
     return(false);
   }

@@ -44,8 +44,9 @@ sv:
   org_nr: &org_nr Org no.
 
   toggle:
-    hide: Dölj
-    show: Visa
+    company_search_form:
+      hide: Dölja sökfunktionen
+      show: Visa sökfunktionen
 
   # Automatisk och manuell sökning för Active Records
   activerecord:
@@ -283,7 +284,7 @@ sv:
       company_number: *org_nr
       region_land: *region_short
       h_companies_listed_below: Nedan listas anslutna företag.
-      how_to_search: Sök efter företag i sökfunktionen.
+      how_to_search: Sök efter företag som använder sökfunktionen.
       confirm_are_you_sure: *are_you_sure_confirm
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
       delete: *delete
