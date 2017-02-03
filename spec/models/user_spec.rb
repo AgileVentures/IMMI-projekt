@@ -180,20 +180,21 @@ RSpec.describe User, type: :model do
 
   describe '#is_member?' do
     describe 'user: no application' do
-      subject { create(:user, is_member: false) }
+      subject { create(:user) }
       it { expect(subject.is_member?).to be_falsey }
     end
 
-    describe 'user: 1 saved application' do
+    describe 'user: 1 new application' do
       subject { create(:user_with_membership_app) }
       it { expect(subject.is_member?).to be_falsey }
     end
-    describe 'user: 2 application' do
+
+    describe 'user: 2 new applications ' do
       subject { create(:user_with_2_membership_apps) }
       it { expect(subject.is_member?).to be_falsey }
     end
 
-    describe 'member with 1 app' do
+    describe 'member with 1 accepted app' do
       let(:member) { create(:member_with_membership_app) }
       it { expect(member.is_member?).to be_truthy }
     end

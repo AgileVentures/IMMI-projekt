@@ -32,7 +32,7 @@ class User < ApplicationRecord
 
 
   def is_member?
-    is_member
+    has_membership_application? && (membership_applications.select{|m| m.is_member? }.count > 0 )
   end
 
 

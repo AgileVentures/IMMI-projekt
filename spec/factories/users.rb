@@ -5,7 +5,6 @@ FactoryGirl.define do
     email
     password 'my_password'
     admin false
-    is_member false
 
     transient do
       company_number 5712213304
@@ -26,7 +25,6 @@ FactoryGirl.define do
     end
 
     factory :member_with_membership_app do
-      is_member true
 
       transient do
         company_number 5562728336

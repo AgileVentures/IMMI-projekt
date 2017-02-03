@@ -37,7 +37,6 @@ FactoryGirl.define do
 
       if (evaluator.state) && evaluator.state.to_sym == :accepted
         membership_app.state = :accepted
-        membership_app.user.is_member = true
 
         company = Company.find_by(company_number: evaluator.company_number)
         unless company
