@@ -33,7 +33,7 @@ class MembershipApplicationsController < ApplicationController
       helpers.flash_message(:notice, t('.success'))
       redirect_to root_path
     else
-      helpers.flash_message(:alert, t('.error') )
+      helpers.flash_message(:alert, t('.error'))
       current_user.membership_applications.reload
       render :new
     end
@@ -68,6 +68,7 @@ class MembershipApplicationsController < ApplicationController
   def information
 
   end
+
 
   def destroy
     @membership_application.destroy
@@ -133,7 +134,7 @@ class MembershipApplicationsController < ApplicationController
         @uploaded_file = @membership_application.uploaded_files.create(actual_file: upload_file)
         if @uploaded_file.valid?
           helpers.flash_message(:notice, t('membership_applications.uploads.file_was_uploaded',
-                                           filename: @uploaded_file.actual_file_file_name ))
+                                           filename: @uploaded_file.actual_file_file_name))
         else
           helpers.flash_message :alert, @uploaded_file.errors.messages
         end
@@ -153,6 +154,7 @@ class MembershipApplicationsController < ApplicationController
       render :show
     end
   end
+
 
 
 end

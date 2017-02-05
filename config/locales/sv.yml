@@ -219,18 +219,26 @@ sv:
       success: Din ansökan har lämnats in för en annan granskning.
       error: Det uppstod ett fel när du försöker att skicka in din ansökan för en annan granskning.
 
-    new_status: &status_new Nytt
+    state:
+      new: &status_new Nytt
+      under_review: &status_under_review Behandlas
+      waiting_for_applicant: &status_waiting_for_applicant  Väntar på sökande
+      ready_for_review: &status_ready_for_review Redo för granskning
+      accepted: &status_accepted Godkänd
+      rejected: &status_rejected Avböjd
+
+    new_status: *status_new
     accept: &event_accept Godkänn
-    accepted: &status_accepted Godkänd
+    accepted: *status_accepted
     reject: &event_reject Avböj
-    rejected: &status_rejected Avböjd
-    under_review: &status_under_review Behandlas
+    rejected: *status_rejected
+    under_review: *status_under_review
     pending_completion: &status_pending_completion Väntar på sökande
     ask_applicant_for_info: &event_ask_applicant_for_info Behöver kompletteras
     cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Ångra Behöver kompletteras
-    waiting_for_applicant: &status_waiting_for_applicant  Väntar på sökande
+    waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
-    ready_for_review: &status_ready_for_review Redo för granskning
+    ready_for_review: *status_ready_for_review
     start_review: &start_review Starta omdöme
 
     awaiting_payment: Inväntar betalning
@@ -366,9 +374,13 @@ sv:
       org_nr: *org_nr
       manage: *manage
       state: *state
+      export: Export all applications to a CSV file
 
     all_applications_received: Alla inkomna ansökningar
 
+    export_ansokan_csv:
+      success: Export successful. Check your browser downloads for the file.
+      error: There was a problem with the export.
 
   devise:
     min_length: '(minst %{minimum_length} tecken)'

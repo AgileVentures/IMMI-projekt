@@ -3,6 +3,9 @@
 .post-title-divider
   %span
 .entry-content
+
+  = button_to t('.export'), admin_export_ansokan_csv_url, {class: 'btn export-ansokan'}
+
   %table
     %thead
       %tr

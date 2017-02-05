@@ -6,6 +6,10 @@ Rails.application.routes.draw do
 
   as :user do
     authenticated :user, lambda {|u| u.admin? }  do
+      post 'admin/export-ansokan-csv'
+
+      get 'admin', to: 'admin#index'
+
       root to: 'admin#index', as: :admin_root
     end
   end
@@ -29,7 +33,6 @@ Rails.application.routes.draw do
         post 'need-info', to: 'membership_applications#need_info'
         get 'cancel-need-info', to: 'membership_applications#show'
         post 'cancel-need-info', to: 'membership_applications#cancel_need_info'
-
       end
 
     end

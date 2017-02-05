@@ -221,18 +221,26 @@ en:
       success: Your application has been submitted for another review.
       error: There was an error when trying to submit your application for another review.
 
-    new_status: &status_new New
+    state:
+      new: &status_new New
+      under_review: &status_under_review Under Review
+      waiting_for_applicant: &status_waiting_for_applicant  Waiting for applicant
+      ready_for_review: &status_ready_for_review Ready For Review
+      accepted: &status_accepted Accepted
+      rejected: &status_rejected Rejected
+
+    new_status: *status_new
     accept: &event_accept Accept
-    accepted: &status_accepted Accepted
+    accepted: *status_accepted
     reject: &event_reject Reject
-    rejected: &status_rejected Rejected
-    under_review: &status_under_review Under Review
+    rejected: *status_rejected
+    under_review: *status_under_review
     pending_completion: &pending_completion Pending completion
     ask_applicant_for_info: &event_ask_applicant_for_info Ask Applicant for Info
     cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Cancel Waiting for Applicant Info
-    waiting_for_applicant: &status_waiting_for_applicant  Waiting for applicant
+    waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Applicant Updated Info
-    ready_for_review: &status_ready_for_review Ready For Review
+    ready_for_review: *status_ready_for_review
     start_review: &start_review Start Review
 
     awaiting_payment: Awaiting payment
@@ -368,8 +376,13 @@ en:
       org_nr: *org_nr
       manage: *manage
       state: *state
+      export: Export all applications to a CSV file
 
     all_applications_received: All applications received
+
+    export_ansokan_csv:
+      success: Export successful. Check your browser downloads for the file.
+      error: There was a problem with the export.
 
 
   devise:

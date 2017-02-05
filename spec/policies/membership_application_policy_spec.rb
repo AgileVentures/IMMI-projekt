@@ -171,6 +171,7 @@ describe MembershipApplicationPolicy do
       it 'forbids cancel_need_info' do
         is_expected.to forbid_action :cancel_need_info
       end
+
     end
 
     describe 'For other users of MembershipApplication' do
@@ -213,6 +214,7 @@ describe MembershipApplicationPolicy do
       it 'forbids cancel_need_info' do
         is_expected.to forbid_action :cancel_need_info
       end
+
     end
 
     describe 'For Creator of MembershipApplication' do
@@ -255,6 +257,7 @@ describe MembershipApplicationPolicy do
       it 'forbids cancel_need_info' do
         is_expected.to forbid_action :cancel_need_info
       end
+
     end
 
 
@@ -298,7 +301,6 @@ describe MembershipApplicationPolicy do
       it 'permits cancel_need_info' do
         is_expected.to permit_action :cancel_need_info
       end
-
     end
   end
 

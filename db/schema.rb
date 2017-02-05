@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170104233630) do
+ActiveRecord::Schema.define(version: 20170124073440) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -60,6 +60,7 @@ ActiveRecord::Schema.define(version: 20170104233630) do
     t.string   "membership_number"
     t.string   "state",             default: "new"
     t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
+    t.index ["state"], name: "index_membership_applications_on_state", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
 
