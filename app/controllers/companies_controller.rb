@@ -7,9 +7,8 @@ class CompaniesController < ApplicationController
     authorize Company
 
     @search_params = Company.ransack(params[:q])
-    @companies = @search_params.result(distinct: true)
+    @companies = @search_params.result
       .includes(:region, :business_categories)
-      .joins(:region, :business_categories)
       .page(params[:page]).per_page(10)
 
     render partial: 'companies_list' if request.xhr?
