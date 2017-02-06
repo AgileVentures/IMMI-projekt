@@ -48,8 +48,6 @@ Scenario: Go to companies index page, see all companies, search by category
   And I should see "HappyMutts"
   And I should see "Dogs R Us"
   And I should see "We Luv Dogs"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   And I click on t("search") button
   And I should see "Barky Boys"
@@ -61,8 +59,6 @@ Scenario: Go to companies index page, see all companies, search by category
 Scenario: Search by region
   Given I am Logged out
   And I am on the "landing" page
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   Then I should see "HappyMutts"
@@ -74,8 +70,6 @@ Scenario: Search by region
 Scenario: Search by company
   Given I am Logged out
   And I am on the "landing" page
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "We Luv Dogs" in select list t("activerecord.models.company.one")
   And I click on t("search") button
   And I should see "We Luv Dogs"
@@ -87,21 +81,15 @@ Scenario: Search by company
 Scenario: Search by city and region
   Given I am Logged out
   And I am on the "landing" page
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Kusmark" in select list t("activerecord.attributes.company.city")
   And I click on t("search") button
   And I should see "HappyMutts"
   And I should not see "HWe Luv Dogs"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Norrbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should not see "HappyMutts"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "HappyMutts"
@@ -110,8 +98,6 @@ Scenario: Search by city and region
 Scenario: Search by category and region
   Given I am Logged out
   And I am on the "landing" page
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
@@ -119,13 +105,9 @@ Scenario: Search by category and region
   And I should not see "We Luv Dogs"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Stockholm" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "Barky Boys"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Sweden" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "We Luv Dogs"
@@ -134,8 +116,6 @@ Scenario: Search by category and region
 Scenario: Search by region
   Given I am Logged out
   And I am on the "landing" page
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   Then I should see "HappyMutts"
@@ -147,8 +127,6 @@ Scenario: Search by region
 Scenario: Search by company
   Given I am Logged out
   And I am on the "landing" page
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "We Luv Dogs" in select list t("activerecord.models.company.one")
   And I click on t("search") button
   And I should see "We Luv Dogs"
@@ -160,21 +138,15 @@ Scenario: Search by company
 Scenario: Search by city and region
   Given I am Logged out
   And I am on the "landing" page
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Kusmark" in select list t("activerecord.attributes.company.city")
   And I click on t("search") button
   And I should see "HappyMutts"
   And I should not see "HWe Luv Dogs"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Norrbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should not see "HappyMutts"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "HappyMutts"
@@ -183,8 +155,6 @@ Scenario: Search by city and region
 Scenario: Search by category and region 2
   Given I am Logged out
   And I am on the "landing" page
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Groomer" in select list t("activerecord.models.business_category.one")
   Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
@@ -192,13 +162,9 @@ Scenario: Search by category and region 2
   And I should not see "We Luv Dogs"
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Stockholm" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "Barky Boys"
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
   Then I select "Sweden" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should see "We Luv Dogs"
@@ -208,9 +174,9 @@ Scenario: Toggle Hide/Show search form
   Given I am Logged out
   And I am on the "landing" page
   Then I should see t("companies.index.how_to_search")
+  And I should see t("toggle.company_search_form.hide")
+  And t("activerecord.models.company.one") should be visible
+  Then I click on t("toggle.company_search_form.hide")
+  Then I wait 2 seconds
   And I should see t("toggle.company_search_form.show")
   Then t("activerecord.models.company.one") should not be visible
-  Then I click on t("toggle.company_search_form.show")
-  Then I wait 2 seconds
-  And I should see t("toggle.company_search_form.hide")
-  Then t("activerecord.models.company.one") should be visible

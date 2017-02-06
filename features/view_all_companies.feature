@@ -79,6 +79,5 @@ Feature: As a visitor,
     And I should see "No More Snarky Barky"
     And I should see "Company10"
     And I should not see "Company11"
-    And show me the page
     Then I click on t("will_paginate.next_label") link
     And I should see "Company11"

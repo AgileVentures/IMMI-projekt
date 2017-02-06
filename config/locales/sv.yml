@@ -45,8 +45,8 @@ sv:
 
   toggle:
     company_search_form:
-      hide: Dölj sökfunktionen
-      show: Visa sökfunktionen
+      hide: Dölj Sökfunktionen
+      show: Visa Sökfunktionen
 
   will_paginate:
     previous_label: "<< Tidigare"
