@@ -1,0 +1,40 @@
+#companies_list
+  %table.table.table-hover
+    %thead
+      %tr
+        %th
+          = sort_link(@search_params, :business_categories_name, t('.category'))
+        %th
+          = sort_link(@search_params, :name, t('.name'))
+        %th
+          = sort_link(@search_params, :region_name, t('.region_land'))
+        %th
+          = sort_link(@search_params, :city,
+                      t('activerecord.attributes.company.city'))
+        - if current_user.try(:admin)
+          %th
+            = sort_link(@search_params, :company_number, t('.company_number'))
+          %th
+          %th
+
+    %tbody
+      - @companies.each do |company|
+        - if company_complete? company
+          %tr.company
+            %td= last_category_name company
+            %td= link_to company.name, company
+            %td= company.region&.name
+            %td= company.city
+            - if current_user.try(:admin)
+              %td= company.company_number
+              %td= link_to "#{t('edit')}", edit_company_path(company)
+              %td= link_to "#{t('delete')}", company, method: :delete, data: { :confirm => "#{t('.confirm_are_you_sure')}" }
+  .center
+    = will_paginate @companies,
+                    renderer: BootstrapPagination::Rails,
+                    link_options: { 'data-remote': true,
+                                    class: 'companies_pagination' }
+
+-# for background on above statement, see:
+-# https://gist.github.com/jeroenr/3142686, and
+-# https://github.com/bootstrap-ruby/will_paginate-bootstrap

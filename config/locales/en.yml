@@ -45,8 +45,13 @@ en:
 
   toggle:
     company_search_form:
-      hide: Hide the search form
-      show: Show the search form
+      hide: Hide form
+      show: Show form
+
+  will_paginate:
+      previous_label: "<< Previous"
+      next_label: "Next >>"
+      page_gap: "&hellip;"
 
  # Automatic and manual lookup for ActiveRecords:
   activerecord:

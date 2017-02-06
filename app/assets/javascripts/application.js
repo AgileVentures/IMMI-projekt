@@ -36,6 +36,13 @@ document.addEventListener("turbolinks:load", function() {
     // Bind "show/hide" search form toggle switch
     $('#toggle_search_form').click(Utility.toggle);
 
+    // Paginate link sends AJAX request to controller, which renders new page
+    // in JS response.  This callback executes at that point and replaces
+    // the prior pagination page with the new page.
+    $('body').on('ajax:success', '.companies_pagination', function (e, data) {
+      $('#companies_list').html(data);
+    });
+
     // Slide mobile navigation from left
     jQuery('#site-navigation .menu-toggle').on('click', function () {
         jQuery(this).toggleClass('active');

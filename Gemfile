@@ -26,6 +26,7 @@ gem 'city-state'
 gem 'i18n-js', '>= 3.0.0.rc11'
 
 gem 'will_paginate'
+gem 'will_paginate-bootstrap'
 
 gem 'aasm', '~> 4.11.1'  # state machine ()acts as state machine)
 

@@ -48,6 +48,11 @@ sv:
       hide: Dölj sökfunktionen
       show: Visa sökfunktionen
 
+  will_paginate:
+    previous_label: "<< Tidigare"
+    next_label: "Nästa >>"
+    page_gap: "&hellip;"
+
   # Automatisk och manuell sökning för Active Records
   activerecord:
     models:

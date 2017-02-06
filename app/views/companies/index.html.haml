@@ -1,6 +1,3 @@
-- content_for :no_cache do
-  %meta(name='turbolinks-cache-control' content='no-cache')
-
 %header.entry-header
   - unless current_user.try(:admin)
     %h1.entry-title= t('.title')
@@ -15,48 +12,18 @@
     %p
       #{t('.h_companies_listed_below')}
       #{t('.how_to_search')}
-      (
-      %a.text-danger{ id: 'toggle_search_form', href: '#company_search_form' }
-        #{t('toggle.company_search_form.show')}
-      )
 
-  .panel.panel-default.hidden{ style: 'padding-left: 5px; padding-right: 5px;',
-                               id: 'company_search_form' }
+      %button.btn.btn-success.btn-xs.pull-right{ id: 'toggle_search_form',
+                                                 href: '#company_search_form',
+                                                 style: 'color:black;' }
+        #{t('toggle.company_search_form.hide')}
+
+  .panel.panel-default{ style: 'padding-left: 5px; padding-right: 5px;',
+                        id: 'company_search_form' }
     = render 'search_form'
 
   - if @companies.empty?
     %strong
       #{t('.no_search_results')}
   - else
-    %table.table.table-hover
-      %thead
-        %tr
-          %th
-            = sort_link(@search_params, :business_categories_name, t('.category'))
-          %th
-            = sort_link(@search_params, :name, t('.name'))
-          %th
-            = sort_link(@search_params, :region_name, t('.region_land'))
-          %th
-            = sort_link(@search_params, :city,
-                        t('activerecord.attributes.company.city'))
-          - if current_user.try(:admin)
-            %th
-              = sort_link(@search_params, :company_number, t('.company_number'))
-            %th
-            %th
-
-      %tbody
-        - @companies.each do |company|
-          - if company_complete? company
-            %tr.company
-              %td= last_category_name company
-              %td= link_to company.name, company
-              %td= company.region&.name
-              %td= company.city
-              - if current_user.try(:admin)
-                %td= company.company_number
-                %td= link_to "#{t('edit')}", edit_company_path(company)
-                %td= link_to "#{t('delete')}", company, method: :delete, data: { :confirm => "#{t('.confirm_are_you_sure')}" }
-    = will_paginate @companies, class: 'digg_pagination'
-    %br
+    = render partial: 'companies_list'
