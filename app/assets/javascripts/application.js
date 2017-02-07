@@ -17,8 +17,8 @@
 //= require i18n/translations
 //= require_tree .
 
-document.addEventListener("turbolinks:load", function() {
-    "use strict";
+document.addEventListener('turbolinks:load', function() {
+    'use strict';
 
     $.each($('.company_search'), function (index, ele) {
       if ($(ele).data('select2') === undefined &&
@@ -33,7 +33,7 @@ document.addEventListener("turbolinks:load", function() {
     // http://stackoverflow.com/questions/36497723/
     // select2-with-ajax-gets-initialized-several-times-with-rails-turbolinks-events
 
-    // Bind "show/hide" search form toggle switch
+    // Bind 'show/hide' search form toggle switch
     $('#toggle_search_form').click(Utility.toggle);
 
     // Paginate link sends AJAX request to controller, which renders new page
@@ -107,4 +107,4 @@ document.addEventListener("turbolinks:load", function() {
 
 });
 //Set timeout for flashes
-setTimeout("$('.flashes').fadeOut('slow')", 5000)
+setTimeout('$(".flashes").fadeOut("slow")', 5000)

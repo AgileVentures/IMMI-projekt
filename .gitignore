@@ -19,6 +19,9 @@
 # Ignore Coveralls report results
 coverage/
 
+# Ignore translations file for use in client
+public/javascripts/translations.js
+
 
 .idea/
 /design-thoughts
