@@ -1,9 +1,12 @@
 Given(/^the following users exists$/) do |table|
   table.hashes.each do |user|
+
+    is_member = user.delete('is_member')
+
     if user['admin'] == 'true'
       FactoryGirl.create(:user, user)
     else
-      if user['is_member'] == 'true'
+      if is_member == 'true'
         FactoryGirl.create(:member_with_membership_app, user)
       else
         if ! user['company_number'].nil?

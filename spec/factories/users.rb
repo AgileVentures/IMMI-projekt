@@ -31,7 +31,6 @@ FactoryGirl.define do
       end
 
       after(:create) do |user, evaluator|
-        user.is_member = true
         create_list(:membership_application, 1, :accepted, user: user,
                     first_name: evaluator.email,
                     contact_email: evaluator.email,

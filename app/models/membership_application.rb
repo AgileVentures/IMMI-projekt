@@ -111,8 +111,6 @@ class MembershipApplication < ApplicationRecord
 
   def accept_membership
     begin
-      user.update(is_member: true)
-
       begin
         company = Company.find_or_create_by!(company_number: company_number) { | co| co.email = contact_email }
       rescue ActiveRecord::RecordNotUnique

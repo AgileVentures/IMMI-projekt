@@ -3,82 +3,13 @@ require 'active_support/logger'
 
 namespace :shf do
 
-  ACCEPTED_STATUS = 'Godkänd'
-
-
-
-  desc "set state based on status ('state' is the new column, 'status' is the old one)"
-  task :set_state_from_status => [:environment] do
-
-    logfile = 'log/shf-rake.log'
-    start_time = Time.now
-    log = start_logging(start_time, logfile)
-
-    num_changed = 0
-
-    status_to_state = {pending: 'under_review',
-                       behandlas: 'under_review',
-                       'inväntar betalning': 'waiting_for_applicant',
-                       'inväntar komplettering': 'waiting_for_applicant',
-                       'godkänd': 'accepted',
-                       accepted: 'accepted',
-                       'avböjd': 'rejected',
-                       rejected: 'rejected'
-    }
-
-
-    pending_apps = MembershipApplication.all
-    pending_apps.each do |mem_app|
-      old_status = mem_app.status.strip
-      mem_app.state = status_to_state.fetch(old_status.downcase.to_sym, 'under_review')
-      mem_app.save
-      puts "mem_app = #{mem_app.inspect}"
-      log_and_show log, Logger::INFO, "membership_app.id #{mem_app.id} status was #{old_status}, is now updated to #{mem_app.state}"
-      num_changed += 1
-    end
-
-    log_and_show log, Logger::INFO, "\nFinished setting the state for #{num_changed} membership applications based on their status."
-    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
-    finish_and_close_log(log, start_time, Time.now)
-  end
-
+  ACCEPTED_STATE = 'accepted'
 
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
     tasks = ['db:drop', 'db:setup', 'db:migrate', 'db:seed']
     tasks.each { |t| Rake::Task["#{t}"].invoke }
   end
-
-
-  # This will associate ALL membership_applications
-  #   where status == '#{ACCEPTED_STATUS}' in the DB with their companies.
-  # It will set the membership_application.company_id
-  # It will OVERWRITE the existing membership_application.company_id
-  # Use this in case you don't want to import again and you need to
-  # fix the imported data.
-  desc 'connect membership to company'
-  task :connect_membership_to_company => [:environment] do
-
-    logfile = 'log/import.log'
-    start_time = Time.now
-    log = start_logging(start_time, logfile)
-
-    num_connected = 0
-
-    MembershipApplication.where(status:ACCEPTED_STATUS).find_each do |mem_app|
-      if (connected_co = Company.find_by_company_number(mem_app.company_number))
-        mem_app.company = connected_co
-        mem_app.save
-        log_and_show log, Logger::INFO, "membership_app.id #{mem_app.id} now connected to company_id #{mem_app.company_id} (company number: #{connected_co.company_number})"
-        num_connected += 1
-      end
-    end
-
-    log_and_show log, Logger::INFO, "\nFinished connecting #{num_connected} membership applications to companies, where membership_application.status == #{ACCEPTED_STATUS}."
-    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
-    finish_and_close_log(log, start_time, Time.now)
-  end
-
 
   desc "import membership apps from csv file. Provide the full filename (with path)"
   task :import_membership_apps, [:csv_filename] => [:environment] do |t, args|
@@ -156,7 +87,7 @@ namespace :shf do
     finish_and_close_log(log, start_time, Time.now)
   end
 
-  desc "load regions data (counties plus 'Sweden' and 'Online')"
+  desc "load regions data (counties plus 'Sverige' and 'Online')"
   task :load_regions => [:environment] do
 
     logfile = 'log/shf-rake.log'
@@ -164,8 +95,8 @@ namespace :shf do
     log = start_logging(start_time, logfile, "Regions create")
 
     # Populate the 'regions' table for Swedish regions (aka counties),
-    # as well as 'Sweden' and 'Online'.  This is used to specify the primary
-    # region in which a company operates.
+    # as well as 'Sverige' (Sweden) and 'Online'.  This is used to specify
+    # the primary region in which a company operates.
     #
     # This uses the 'city-state' gem for a list of regions (name and ISO code).
 
@@ -173,7 +104,7 @@ namespace :shf do
       log_and_show log, Logger::WARN, "Regions table not empty"
     else
       CS.states(:se).each_pair { |k,v| Region.create(name: v, code: k.to_s) }
-      Region.create(name: 'Sweden', code: nil)
+      Region.create(name: 'Sverige', code: nil)
       Region.create(name: 'Online', code: nil)
 
       log_and_show log, Logger::INFO, "Regions created"
@@ -220,30 +151,28 @@ namespace :shf do
                                      website: row[:website])
 
     if (membership = MembershipApplication.find_by(user: user.id))
-      puts_already_exists('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
+      puts_already_exists('Membership application', " org number: #{row[:company_number]}")
     else
       membership = MembershipApplication.create!(company_number: row[:company_number],
                                                  first_name: row[:first_name],
                                                  last_name: row[:last_name],
                                                  contact_email: user.email,
-                                                 status: ACCEPTED_STATUS,
+                                                 state: ACCEPTED_STATE,
                                                  membership_number: row[:membership_number],
                                                  user: user,
                                                  company: company
       )
 
-      puts_created('Membership application', " org number: #{row[:company_number]}, status: #{row[:status]}")
+      puts_created('Membership application', " org number: #{row[:company_number]}")
 
     end
-
 
     membership = find_or_create_category( row[:category1], membership) unless row[:category1].nil?
     membership = find_or_create_category( row[:category2], membership) unless row[:category2].nil?
     membership.save!
 
-    if membership.status == ACCEPTED_STATUS
+    if membership.accepted?
       membership.company = company
-      user.is_member = true
       user.save!
     end
 
@@ -276,6 +205,7 @@ namespace :shf do
     if company
       puts_already_exists 'Company', "#{company_num}"
     else
+      region = Region.find_by name: region
       Company.create!(company_number: company_num,
                       email: email,
                       name: name,

@@ -74,7 +74,7 @@ BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: '
 if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
   regions = Region.all.to_a
-  
+
   if regions.empty?
     puts "Run task 'shf:load_regions' before seeding if you want records created for"
     puts 'users, members, membership_applications, business categories and companies.'
@@ -132,7 +132,6 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
       next if ma.is_accepted?
 
       ma.state = MA_ACCEPTED_STATE
-      ma.user.is_member = true
       ma.user.save
 
       company = Company.new(company_number: ma.company_number,

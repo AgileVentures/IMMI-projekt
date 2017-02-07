@@ -19,7 +19,6 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_db_column :id }
     it { is_expected.to have_db_column :email }
     it { is_expected.to have_db_column :admin }
-    it { is_expected.to have_db_column :is_member }
   end
 
   describe 'Associations' do
@@ -36,14 +35,13 @@ RSpec.describe User, type: :model do
     subject { create(:user, admin: false) }
 
     it { is_expected.not_to be_admin }
-    it { expect(subject.is_member).to be_falsey }
   end
 
 
   describe '#has_membership_application?' do
 
     describe 'user: no application' do
-      subject { create(:user, is_member: false) }
+      subject { create(:user) }
       it { expect(subject.has_membership_application?).to be_falsey }
     end
 
@@ -64,7 +62,7 @@ RSpec.describe User, type: :model do
     end
 
     describe 'member with 0 app (should not happen)' do
-      let(:member) { create(:user, is_member: true) }
+      let(:member) { create(:user) }
       it { expect(member.has_membership_application?).to be_falsey }
     end
 
@@ -84,7 +82,7 @@ RSpec.describe User, type: :model do
     }
 
     describe 'user: no application' do
-      subject { create(:user, is_member: false) }
+      subject { create(:user) }
       it { expect(subject.has_company?).to be_falsey }
     end
 
@@ -104,7 +102,7 @@ RSpec.describe User, type: :model do
     end
 
     describe 'member with 0 apps (should not happen)' do
-      let(:member) { create(:user, is_member: true) }
+      let(:member) { create(:user) }
       it { expect(member.has_company?).to be_falsey }
     end
 
@@ -117,7 +115,7 @@ RSpec.describe User, type: :model do
   describe '#membership_application' do
 
     describe 'user: no application' do
-      subject { create(:user, is_member: false) }
+      subject { create(:user) }
       it { expect(subject.membership_application).to be_nil }
     end
 
@@ -137,7 +135,7 @@ RSpec.describe User, type: :model do
     end
 
     describe 'member with 0 apps (should not happen)' do
-      let(:member) { create(:user, is_member: true) }
+      let(:member) { create(:user) }
       it { expect(member.membership_application).to be_falsey }
     end
 
@@ -149,7 +147,7 @@ RSpec.describe User, type: :model do
 
   describe '#company' do
     describe 'user: no application' do
-      subject { create(:user, is_member: false) }
+      subject { create(:user) }
       it { expect(subject.company).to be_nil }
     end
 
@@ -168,7 +166,7 @@ RSpec.describe User, type: :model do
     end
 
     describe 'member with 0 apps (should not happen)' do
-      let(:member) { create(:user, is_member: true) }
+      let(:member) { create(:user) }
       it { expect(member.company).to be_nil }
     end
 
@@ -178,42 +176,10 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#is_member?' do
-    describe 'user: no application' do
-      subject { create(:user) }
-      it { expect(subject.is_member?).to be_falsey }
-    end
-
-    describe 'user: 1 new application' do
-      subject { create(:user_with_membership_app) }
-      it { expect(subject.is_member?).to be_falsey }
-    end
-
-    describe 'user: 2 new applications ' do
-      subject { create(:user_with_2_membership_apps) }
-      it { expect(subject.is_member?).to be_falsey }
-    end
-
-    describe 'member with 1 accepted app' do
-      let(:member) { create(:member_with_membership_app) }
-      it { expect(member.is_member?).to be_truthy }
-    end
-
-    describe 'member with 0 apps (should not happen)' do
-      let(:member) { create(:user) }
-      it { expect(member.is_member?).to be_falsey }
-    end
-
-    describe 'admin' do
-      subject { create(:user, admin: true) }
-      it { expect(subject.is_member?).to be_falsey }
-    end
-  end
-
   describe '#is_member_or_admin?' do
 
     describe 'user: no application' do
-      subject { create(:user, is_member: false) }
+      subject { create(:user) }
       it { expect(subject.is_member_or_admin?).to be_falsey }
     end
 
@@ -248,7 +214,7 @@ RSpec.describe User, type: :model do
     describe 'not yet a member, so not in any full companies' do
 
       describe 'user: no applications, so not in any companies' do
-        subject { create(:user, is_member: false) }
+        subject { create(:user) }
         it { expect(subject.is_in_company_numbered?(default_co_number)).to be_falsey }
       end
 
@@ -310,7 +276,7 @@ RSpec.describe User, type: :model do
     describe 'not yet a member, so not in any full companies' do
 
       describe 'user: no applications, so not in any companies' do
-        subject { create(:user, is_member: false) }
+        subject { create(:user) }
         it { expect(subject.companies.size).to eq(0) }
       end
 
@@ -385,7 +351,7 @@ RSpec.describe User, type: :model do
 
   describe '#admin?' do
     describe 'user: no application' do
-      subject { create(:user, is_member: false) }
+      subject { create(:user) }
       it { expect(subject.admin?).to be_falsey }
     end
 
