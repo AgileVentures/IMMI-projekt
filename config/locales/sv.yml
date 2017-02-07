@@ -104,6 +104,15 @@ sv:
     errors:
 
       models:
+
+        uploaded_file:
+          attributes:
+            actual_file_file_size:
+              file_too_large: 'Den uppladdade är alltför stor.'
+            actual_file:
+              file_too_large: 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
+
+
         company:
           company_number:
             taken: Detta företag (org nr) finns redan i systemet.
@@ -260,6 +269,8 @@ sv:
       file_was_uploaded: 'Filen laddades upp: %{filename}'
       confirm_delete: 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
+      file_too_large: 'Filen måste vara mindre än %{max_size}'
+
 
     update_the_status: Uppdatera status
     application_deleted: Ansökan raderad.

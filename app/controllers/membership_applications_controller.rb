@@ -29,11 +29,18 @@ class MembershipApplicationsController < ApplicationController
   def create
     @membership_application = current_user.membership_applications.build(membership_application_params)
     if @membership_application.save
-      new_upload_file params['uploaded_file'] if params['uploaded_file']
-      helpers.flash_message(:notice, t('.success'))
-      redirect_to root_path
+
+      if new_file_uploaded(params)
+        helpers.flash_message(:notice, t('.success'))
+        redirect_to root_path
+      else
+        helpers.flash_message(:alert, t('.error'))
+        current_user.membership_applications.reload
+        render :new
+      end
+
     else
-      helpers.flash_message(:alert, t('.error') )
+      helpers.flash_message(:alert, t('.error'))
       current_user.membership_applications.reload
       render :new
     end
@@ -43,14 +50,18 @@ class MembershipApplicationsController < ApplicationController
   def update
     if @membership_application.update(membership_application_params)
 
-      new_upload_file params['uploaded_file'] if params['uploaded_file']
+      if new_file_uploaded params
 
+        check_and_mark_if_ready_for_review params['membership_application'] if params.fetch('membership_application', false)
 
-      check_and_mark_if_ready_for_review params['membership_application'] if params.fetch('membership_application', false)
+        helpers.flash_message(:notice, t('.success'))
+        render :show
 
+      else
+        helpers.flash_message(:alert, t('.error'))
+        redirect_to edit_membership_application_path(@membership_application)
+      end
 
-      helpers.flash_message(:notice, t('.success'))
-      render :show
     else
       helpers.flash_message(:alert, t('.error'))
       redirect_to edit_membership_application_path(@membership_application)
@@ -68,6 +79,7 @@ class MembershipApplicationsController < ApplicationController
   def information
 
   end
+
 
   def destroy
     @membership_application.destroy
@@ -126,20 +138,32 @@ class MembershipApplicationsController < ApplicationController
   end
 
 
-  def new_upload_file(upload_file_param)
-    if upload_file_param['actual_files']
-      upload_file_param['actual_files'].each do |upload_file|
+  def new_file_uploaded(params)
 
-        @uploaded_file = @membership_application.uploaded_files.create(actual_file: upload_file)
+    successful = true
+
+    if params.fetch('uploaded_file', false) && params['uploaded_file'].fetch('actual_files', false)
+
+      params['uploaded_file']['actual_files'].each do |uploaded_file|
+
+        @uploaded_file = @membership_application.uploaded_files.create(actual_file: uploaded_file)
+
         if @uploaded_file.valid?
           helpers.flash_message(:notice, t('membership_applications.uploads.file_was_uploaded',
-                                           filename: @uploaded_file.actual_file_file_name ))
+                                           filename: @uploaded_file.actual_file_file_name))
+          successful = successful & true
         else
-          helpers.flash_message :alert, @uploaded_file.errors.messages
+          helpers.flash_message :alert, @uploaded_file.errors.messages.values.uniq.flatten.join(' ')
+          successful = successful & false
         end
+
       end
 
+    else # no file to upload, so all is OK. (no errors encountered since we didn't do anything)
+      successful
     end
+
+    successful
   end
 
 

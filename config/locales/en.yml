@@ -106,6 +106,14 @@ en:
 
     errors:
       models:
+
+        uploaded_file:
+          attributes:
+            actual_file_file_size:
+              file_too_large: 'The uploaded file is too big.'
+            actual_file:
+              file_too_large: 'The uploaded file size must be smaller than %{max}. (Your file is %{value} bytes.)'
+
         company:
           company_number:
             taken: This company (organization number) already exists in the system.
@@ -261,6 +269,9 @@ en:
       file_was_uploaded: 'This file was uploaded: %{filename}'
       confirm_delete: 'Are you sure you want to delete %{filename}?'
       invalid_upload_type: Sorry, this is not a file type you can upload.
+      file_too_large: 'The uploaded file size must be smaller than %{max_size}'
+
+
 
     update_the_status: Update the status
     application_deleted: Application deleted.

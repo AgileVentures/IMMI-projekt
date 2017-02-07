@@ -41,14 +41,6 @@ And(/^I should not see t\("([^"]*)", locale: :(.*)\)$/) do |content, l|
   expect(page).not_to have_content i18n_content(content, l)
 end
 
-And(/^I should see t\("([^"]*)"\), locale: :sv$/) do |content|
-  expect(page).to have_content i18n_content(content, :sv)
-end
-
-And(/^I should not see t\("([^"]*)"\), locale: :sv$/) do |content|
-  expect(page).not_to have_content i18n_content(content, :sv)
-end
-
 And(/^I should see t\("([^"]*)", ([^:]*): ([^)]*)\), locale: :(.*)\)$/) do |content, key, value, l|
   expect(page).to have_content I18n.t("#{content}", key.to_sym => value, locale: l.to_sym)
 end
@@ -261,4 +253,14 @@ Then(/^t\("([^"]*)"\) should( not)? be visible$/) do |string, not_see|
   else
     expect(has_text?(:visible, "#{i18n_content(string)}")).to be false
   end
+end
+
+
+And(/^I should see t\("([^"]*)"\), locale: :(\w\w)$/) do |i18n_key, locale|
+  expect(page).to have_content I18n.t(i18n_key, locale: locale)
+end
+
+
+And(/^I should not see t\("([^"]*)"\), locale: :(\w\w)$/) do |i18n_key, locale|
+  expect(page).not_to have_content I18n.t(i18n_key, locale: locale)
 end
