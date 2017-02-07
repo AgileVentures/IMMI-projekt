@@ -107,4 +107,4 @@ document.addEventListener('turbolinks:load', function() {
 
 });
 //Set timeout for flashes
-setTimeout("$('.flashes').fadeOut('slow')", 5000);
+setTimeout("$('.flashes').fadeOut('slow');", 5000);
