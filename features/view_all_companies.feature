@@ -87,7 +87,6 @@ Feature: As a visitor,
     Given I am Logged out
     And I am on the "landing" page
     Then I should see t("companies.index.h_companies_listed_below")
-    And I set the locale to "sv"
     Then I click on t("toggle.company_search_form.hide") button
     And I should see "Verksamhetslän"
     And I should see "Kategori"
@@ -101,4 +100,3 @@ Feature: As a visitor,
     And I should see "Category"
     And I should not see "Verksamhetslän"
     And I should not see "Kategori"
-    And show me the page
