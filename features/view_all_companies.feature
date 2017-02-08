@@ -85,6 +85,7 @@ Feature: As a visitor,
   @javascript
   Scenario: I18n translations
     Given I am Logged out
+    And I set the locale to "sv"
     And I am on the "landing" page
     Then I should see t("companies.index.h_companies_listed_below")
     Then I click on t("toggle.company_search_form.hide") button
