@@ -81,3 +81,24 @@ Feature: As a visitor,
     And I should not see "Company11"
     Then I click on t("will_paginate.next_label") link
     And I should see "Company11"
+
+  @javascript
+  Scenario: I18n translations
+    Given I am Logged out
+    And I am on the "landing" page
+    Then I should see t("companies.index.h_companies_listed_below")
+    And I set the locale to "sv"
+    Then I click on t("toggle.company_search_form.hide") button
+    And I should see "Verksamhetslän"
+    And I should see "Kategori"
+    And I should not see "Region"
+    And I should not see "Category"
+    Then I click on "change-lang-to-english"
+    And I set the locale to "en"
+    Then I click on t("toggle.company_search_form.hide") button
+    And I wait 1 second
+    And I should see "Region"
+    And I should see "Category"
+    And I should not see "Verksamhetslän"
+    And I should not see "Kategori"
+    And show me the page

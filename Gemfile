@@ -24,6 +24,7 @@ gem 'routing-filter'   # for handling locale filters around routes
 gem 'ransack'
 gem 'city-state'
 gem 'i18n-js', '>= 3.0.0.rc11'
+gem 'i18n-tasks', '~> 0.9.11'
 
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'

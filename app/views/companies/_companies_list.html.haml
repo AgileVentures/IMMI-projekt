@@ -3,17 +3,21 @@
     %thead
       %tr
         %th
-          = sort_link(@search_params, :business_categories_name, t('.category'))
+          = sort_link(@search_params, :business_categories_name,
+                      t('activerecord.models.business_category.one'))
         %th
-          = sort_link(@search_params, :name, t('.name'))
+          = sort_link(@search_params, :name,
+                      t('activerecord.attributes.company.name'))
         %th
-          = sort_link(@search_params, :region_name, t('.region_land'))
+          = sort_link(@search_params, :region_name,
+                      t('activerecord.attributes.company.region'))
         %th
           = sort_link(@search_params, :city,
                       t('activerecord.attributes.company.city'))
         - if current_user.try(:admin)
           %th
-            = sort_link(@search_params, :company_number, t('.company_number'))
+            = sort_link(@search_params, :company_number,
+                      t('activerecord.attributes.company.company_number'))
           %th
           %th
 
@@ -28,7 +32,8 @@
             - if current_user.try(:admin)
               %td= company.company_number
               %td= link_to "#{t('edit')}", edit_company_path(company)
-              %td= link_to "#{t('delete')}", company, method: :delete, data: { :confirm => "#{t('.confirm_are_you_sure')}" }
+              %td= link_to "#{t('delete')}", company, method: :delete,
+                            data: { :confirm => "#{t('confirm_are_you_sure')}" }
   .center
     = will_paginate @companies,
                     renderer: BootstrapPagination::Rails,
