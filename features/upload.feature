@@ -115,6 +115,15 @@ Feature: As an applicant
     And I click on "diploma.pdf"
 
 
+  Scenario: Link to file uses _blank to open a new window
+    Given I am logged in as "applicant_1@random.com"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma.pdf" to upload
+    And I click on t("membership_applications.edit.submit_button_label")
+    Then I should see link "uploaded-file-link-1" with target = "_blank"
+
+
+
   Scenario: Admin can click on a file name to see the file
     Given I am logged in as "applicant_1@random.com"
     And I am on the "edit my application" page

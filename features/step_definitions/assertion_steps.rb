@@ -262,3 +262,8 @@ Then(/^t\("([^"]*)"\) should( not)? be visible$/) do |string, not_see|
     expect(has_text?(:visible, "#{i18n_content(string)}")).to be false
   end
 end
+
+
+Then(/^I should see link "([^"]*)" with target = "([^"]*)"$/) do |link_identifier, target_value|
+  expect(find_link(link_identifier)[:target]).to eq(target_value)
+end
