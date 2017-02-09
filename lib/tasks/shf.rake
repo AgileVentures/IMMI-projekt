@@ -7,7 +7,7 @@ namespace :shf do
 
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
-    tasks = ['db:drop', 'db:setup', 'db:migrate', 'db:seed']
+    tasks = ['db:drop', 'db:create', 'db:migrate', 'shf:load_regions', 'db:seed']
     tasks.each { |t| Rake::Task["#{t}"].invoke }
   end
 
