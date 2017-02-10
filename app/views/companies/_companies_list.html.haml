@@ -3,8 +3,7 @@
     %thead
       %tr
         %th
-          = sort_link(@search_params, :business_categories_name,
-                      t('activerecord.models.business_category.one'))
+          = t('activerecord.models.business_category.one')
         %th
           = sort_link(@search_params, :name,
                       t('activerecord.attributes.company.name'))
@@ -25,7 +24,15 @@
       - @companies.each do |company|
         - if company_complete? company
           %tr.company
-            %td= last_category_name company
+            %td
+              - first = true
+              - company.business_categories.order(:name).distinct.each do |bc|
+                - if first
+                  - first = false
+                  = bc.name
+                - else
+                  <br/>
+                  = bc.name
             %td= link_to company.name, company
             %td= company.region&.name
             %td= company.city

@@ -34,11 +34,18 @@ Feature: As a visitor,
       | name         |
       | Groomer      |
       | Psychologist |
+      | Trainer      |
+      | Rehab        |
+      | Walker       |
 
     And the following applications exist:
       | first_name | user_email          | company_number | category_name | state    |
       | Emma       | emma@happymutts.com | 5560360793     | Groomer       | accepted |
       | Anna       | a@happymutts.com    | 2120000142     | Groomer       | accepted |
+      | Anna       | a@happymutts.com    | 2120000142     | Trainer       | accepted |
+      | Anna       | a@happymutts.com    | 2120000142     | Rehab         | accepted |
+      | Emma       | emma@happymutts.com | 2120000142     | Psychologist  | accepted |
+      | Emma       | emma@happymutts.com | 2120000142     | Groomer       | accepted |
       | Anna       | a@happymutts.com    | 6613265393     | Groomer       | accepted |
       | Anna       | a@happymutts.com    | 6222279082     | Groomer       | accepted |
       | Anna       | a@happymutts.com    | 8025085252     | Groomer       | accepted |
@@ -59,7 +66,7 @@ Feature: As a visitor,
     And I should see "Bowsers"
     And I should see "No More Snarky Barky"
     And I should see "Groomer"
-    And I should not see "Psychologist"
+    And I should not see "Walker"
     And I should not see t("companies.new_company")
 
   Scenario: User sees all the companies
@@ -81,6 +88,7 @@ Feature: As a visitor,
     And I should not see "Company11"
     Then I click on t("will_paginate.next_label") link
     And I should see "Company11"
+    And I should not see "Company10"
 
   @javascript
   Scenario: I18n translations
@@ -101,3 +109,15 @@ Feature: As a visitor,
     And I should see "Category"
     And I should not see "Verksamhetslän"
     And I should not see "Kategori"
+
+  @javascript
+  Scenario: See all categories for each company
+    Given I am Logged out
+    And I am on the "landing" page
+    Then I select "Bowsers" in select list t("activerecord.models.company.one")
+    And I click on t("search") button
+    And I should see "Bowsers"
+    And I should see "Groomer"
+    And I should see "Trainer"
+    And I should see "Rehab"
+    And I should see "Psychologist"
