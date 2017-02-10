@@ -37,10 +37,12 @@ Feature: As a visitor,
       | Trainer      |
       | Rehab        |
       | Walker       |
+      | JustForFun   |
 
     And the following applications exist:
       | first_name | user_email          | company_number | category_name | state    |
       | Emma       | emma@happymutts.com | 5560360793     | Groomer       | accepted |
+      | Emma       | emma@happymutts.com | 5560360793     | JustForFun    | accepted |
       | Anna       | a@happymutts.com    | 2120000142     | Groomer       | accepted |
       | Anna       | a@happymutts.com    | 2120000142     | Trainer       | accepted |
       | Anna       | a@happymutts.com    | 2120000142     | Rehab         | accepted |
@@ -114,6 +116,7 @@ Feature: As a visitor,
   Scenario: See all categories for each company
     Given I am Logged out
     And I am on the "landing" page
+    And I should see "JustForFun"
     Then I select "Bowsers" in select list t("activerecord.models.company.one")
     And I click on t("search") button
     And I should see "Bowsers"
@@ -121,3 +124,4 @@ Feature: As a visitor,
     And I should see "Trainer"
     And I should see "Rehab"
     And I should see "Psychologist"
+    And I should not see "JustForFun"
