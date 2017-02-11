@@ -24,7 +24,7 @@
       - @companies.each do |company|
         - if company_complete? company
           %tr.company
-            %td
+            %td(style='white-space: nowrap')
               - first = true
               - company.business_categories.order(:name).distinct.each do |bc|
                 - if first
