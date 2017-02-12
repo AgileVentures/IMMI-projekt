@@ -51,7 +51,7 @@ Feature: As an applicant
     And I am Logged out
     And I am logged in as "admin@shf.com"
     And I am on "Emma" application page
-    Then I click on t("membership_applications.ask_applicant_for_info")
+    Then I click on t("membership_applications.ask_applicant_for_info_btn")
     And  I am logged in as "applicant_1@random.com"
     And I am on the "edit my application" page
     When I choose a file named "picture.jpg" to upload
@@ -91,7 +91,7 @@ Feature: As an applicant
     And I am Logged out
     And I am logged in as "admin@shf.com"
     And I am on "Emma" application page
-    Then I click on t("membership_applications.ask_applicant_for_info")
+    Then I click on t("membership_applications.ask_applicant_for_info_btn")
     And  I am logged in as "applicant_1@random.com"
     And I am on the "edit my application" page
     And I click on trash icon for "diploma.pdf"
@@ -134,4 +134,3 @@ Feature: As an applicant
     And I am on the list applications page
     And I click the t("manage") action for the row with "5562252998"
     And I click on "diploma.pdf"
-

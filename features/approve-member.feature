@@ -40,7 +40,7 @@ Feature: As an admin
 
   Scenario: Admin approves, no company exists so one is created
     Given I am on "Emma" application page
-    When I click on t("membership_applications.accept")
+    When I click on t("membership_applications.accept_btn")
     And I should be on the edit application page for "Emma"
     And I should see t("membership_applications.accept.success")
     And I should see t("membership_applications.update.enter_member_number")
@@ -54,7 +54,7 @@ Feature: As an admin
 
   Scenario: Admin approves, member is added to existing company
     Given I am on "Anna" application page
-    When I click on t("membership_applications.accept")
+    When I click on t("membership_applications.accept_btn")
     And I should be on the edit application page for "Anna"
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "902"
@@ -79,7 +79,7 @@ Feature: As an admin
 
   Scenario: Admin approves, but then rejects it
     Given I am on "Emma" application page
-    When I click on t("membership_applications.accept")
+    When I click on t("membership_applications.accept_btn")
     And I should be on the edit application page for "Emma"
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "901"
@@ -88,7 +88,7 @@ Feature: As an admin
     And I should see t("membership_applications.accepted")
     And I should see "901"
     When I am on "Emma" application page
-    And I click on t("membership_applications.reject")
+    And I click on t("membership_applications.reject_btn")
     Then I should see status line with status t("membership_applications.rejected")
     And I am Logged out
     And I am on the "landing" page

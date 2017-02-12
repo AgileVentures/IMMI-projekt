@@ -204,7 +204,6 @@ sv:
       success: Granskningen har påbörjats.
       error: Det fanns ett problem med att påbörja granskning för denna applikation.
 
-
     accept:
       success: Medlemsansökan har godkänts.
       error: Det uppstod ett fel vid godkännande av medlemskap.
@@ -234,18 +233,18 @@ sv:
       rejected: &status_rejected Avböjd
 
     new_status: *status_new
-    accept: &event_accept Godkänn
+    accept_btn: Godkänn
     accepted: *status_accepted
-    reject: &event_reject Avböj
+    reject_btn: Avböj
     rejected: *status_rejected
     under_review: *status_under_review
     pending_completion: &status_pending_completion Väntar på sökande
-    ask_applicant_for_info: &event_ask_applicant_for_info Behöver kompletteras
-    cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Ångra Behöver kompletteras
+    ask_applicant_for_info_btn: Behöver kompletteras
+    cancel_waiting_for_applicant_btn: Ångra Behöver kompletteras
     waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
     ready_for_review: *status_ready_for_review
-    start_review: &start_review Påbörja granskning
+    start_review_btn: Påbörja granskning
 
     awaiting_payment: Inväntar betalning
 

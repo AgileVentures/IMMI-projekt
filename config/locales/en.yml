@@ -200,10 +200,9 @@ en:
                         If your application is approved, we'll give you a link
                         so you can describe and list your business here."
 
-
     start_review:
       success: The review has been started.
-      error: There was a problemm starting the review for this application.
+      error: There was a problem starting the review for this application.
 
     accept:
       success: The membership has been approved.
@@ -234,18 +233,18 @@ en:
       rejected: &status_rejected Rejected
 
     new_status: *status_new
-    accept: &event_accept Accept
+    accept_btn: Accept
     accepted: *status_accepted
-    reject: &event_reject Reject
+    reject_btn: Reject
     rejected: *status_rejected
     under_review: *status_under_review
     pending_completion: &pending_completion Pending completion
-    ask_applicant_for_info: &event_ask_applicant_for_info Ask Applicant for Info
-    cancel_waiting_for_applicant: &event_cancel_waiting_for_applicant Cancel Waiting for Applicant Info
+    ask_applicant_for_info_btn: Ask Applicant for Info
+    cancel_waiting_for_applicant_btn: Cancel Waiting for Applicant Info
     waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Applicant Updated Info
     ready_for_review: *status_ready_for_review
-    start_review: &start_review Start Reviewing
+    start_review_btn: Start Reviewing
 
     awaiting_payment: Awaiting payment
 
