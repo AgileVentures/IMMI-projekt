@@ -1,4 +1,4 @@
-Given(/^the following users exists$/) do |table|
+Given(/^the following users exist(?:s|)$/) do |table|
   table.hashes.each do |user|
 
     is_member = user.delete('is_member')

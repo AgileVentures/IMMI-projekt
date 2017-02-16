@@ -29,6 +29,8 @@ en:
   save: &save Save
   back: &back Back
   search: &search Search
+  'yes': &yes 'Yes'
+  'no': &no 'No'
 
   confirm_are_you_sure: &are_you_sure_confirm Are you sure
 
@@ -74,6 +76,7 @@ en:
       user:
         email: &email Email
         password: *password
+        created: &created Created
 
       membership_application:
         company_number: &company_number Company number
@@ -378,6 +381,19 @@ en:
     new_business_category: New business category
     all_business_categories: All categories
 
+  users:
+    index:
+      title: All Users
+      email: *email
+      created: *created
+      last_login: Last login
+      logged_in_count: Logins
+      member: Member
+      applications: Applications
+      'yes': *yes  # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
+      'no': *no
+
+
 
 
   admin:
@@ -516,6 +532,8 @@ en:
           submenu_title: Companies
           list_companies: List Companies
           new_company: New Company
+        users:
+          list_users: Users
 
 
   #----------

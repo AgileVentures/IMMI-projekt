@@ -1,0 +1,31 @@
+%header.entry-header
+  %h1.entry-title= t('.title')
+.post-title-divider
+  %span
+.entry-content
+  %table
+    %thead
+      %tr
+        %th= t('.email')
+        %th= t('.created')
+        %th= t('.last_login')
+        %th= t('.logged_in_count')
+        %th= t('.applications')
+        %th= t('.member')
+    %tbody
+      - @users.each do | user |
+        %tr
+          %td= user.email
+          %td
+            %small= "#{time_ago_in_words(user.created_at)} ago"
+          %td
+            %small= user.last_sign_in_at ?                          |
+              "#{time_ago_in_words(user.last_sign_in_at)} ago" : '' |
+          %td= user.sign_in_count
+          %td= user.membership_applications.count
+          - if user.is_member?
+            %td
+              %span{style: 'background-color: LightGreen;'}= t('.yes')
+          - else
+            %td
+              %span{style: 'background-color: LemonChiffon;'}= t('.no')

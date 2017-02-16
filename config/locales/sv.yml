@@ -29,6 +29,8 @@ sv:
   save: &save Save
   back: &back Tillbaks
   search: &search Sök
+  'yes': &yes Ja
+  'no': &no Nej
 
   confirm_are_you_sure: &are_you_sure_confirm Är du säker
 
@@ -73,6 +75,7 @@ sv:
       user:
         email: &email E-post
         password: *password
+        created: &created Skapad
 
       membership_application:
         company_number: &company_number Organisationsnummer
@@ -378,6 +381,17 @@ sv:
     new_business_category: Skapa ny företagstyp (kategori)
     all_business_categories: Alla kategorier
 
+  users:
+    index:
+      title: Alla Unvändare
+      email: *email
+      created: *created
+      last_login: Senaste inloggning
+      logged_in_count: Inloggningar
+      member: Medlem
+      applications: Tillämpningar
+      'yes': *yes
+      'no': *no
 
 
   admin:
@@ -515,6 +529,8 @@ sv:
           submenu_title: Företag
           list_companies: Lista företag
           new_company: Nytt företag
+        users:
+          list_users: Användare
 
 
   #----------

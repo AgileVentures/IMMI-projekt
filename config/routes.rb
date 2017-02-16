@@ -39,6 +39,8 @@ Rails.application.routes.draw do
     end
 
     resources :companies, path: 'hundforetag'
+
+    resources :users, path: 'anvandare', only: [:index]
   end
 
   get 'information', to: 'membership_applications#information'

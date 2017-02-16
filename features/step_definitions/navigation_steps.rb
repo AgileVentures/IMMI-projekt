@@ -33,6 +33,8 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
       path = new_user_registration_path
     when 'edit registration for a user'
       path = edit_user_registration_path
+    when 'all users'
+      path = users_path
     else
       path = 'no path set'
   end
