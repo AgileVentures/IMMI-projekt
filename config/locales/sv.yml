@@ -383,13 +383,13 @@ sv:
 
   users:
     index:
-      title: Alla Unvändare
+      title: Alla Användare
       email: *email
       created: *created
-      last_login: Senaste inloggning
+      last_login: Senast inloggad
       logged_in_count: Inloggningar
       member: Medlem
-      applications: Tillämpningar
+      applications: Ansökningar
       'yes': *yes
       'no': *no
 
