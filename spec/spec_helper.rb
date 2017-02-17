@@ -1,4 +1,5 @@
 require 'coveralls'
+require 'pundit/rspec'
 
 Coveralls.wear_merged!('rails')
 
