@@ -3,21 +3,20 @@ require 'rails_helper'
 RSpec.describe Company, type: :model do
 
   let(:no_name) do
-    c = create(:company, name: '', company_number: '2120000142')
+    create(:company, name: '', company_number: '2120000142')
   end
 
   let(:nil_region) do
-    c = create(:company, name: 'Nil Region',
-                         company_number: '6112107039', region: nil)
+    create(:company, name: 'Nil Region',
+                     company_number: '6112107039', region: nil)
   end
 
-  let(:complete_co) { create(:company, name: 'Complete Company',
-                                       company_number: '4268582063') }
-
-
-  let!(:complete_companies) do
-    complete_cos = [complete_co]
+  let(:complete_co) do
+    create(:company, name: 'Complete Company',
+                     company_number: '4268582063')
   end
+
+  let!(:complete_companies) { [complete_co] }
 
   let!(:incomplete_companies) do
     incomplete_cos = []
@@ -25,7 +24,6 @@ RSpec.describe Company, type: :model do
     incomplete_cos << nil_region
     incomplete_cos
   end
-
 
   describe 'Factory' do
     it 'has a valid factory' do
