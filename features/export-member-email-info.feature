@@ -18,11 +18,10 @@ Feature: As an Admin
       | Norrbotten   |
 
 
-    # old_region is currently required so that company_complete? is true
     And the following companies exist:
-      | name                 | company_number | email                 | region       | old_region |
-      | Happy Mutts          | 2120000142     | woof@happymutts.com   | Stockholm    | Sweden     |
-      | WOOF                 | 5569467466     | woof@woof.com         | Västerbotten | Sweden     |
+      | name                 | company_number | email                 | region       |
+      | Happy Mutts          | 2120000142     | woof@happymutts.com   | Stockholm    |
+      | WOOF                 | 5569467466     | woof@woof.com         | Västerbotten |
 
     And the following applications exist:
       | first_name | last_name   | user_email          | company_number | state    |

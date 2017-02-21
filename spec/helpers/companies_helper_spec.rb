@@ -13,52 +13,14 @@ RSpec.describe CompaniesHelper, type: :helper do
       expect(helper.company_complete?(company)).to eq false
     end
 
-    it 'returns false if company old_region and region are nil' do
-      company.old_region = nil
+    it 'returns false if company region is nil' do
       company.region = nil
       expect(helper.company_complete?(company)).to eq false
-    end
-
-    it 'returns false if company name or old_region is empty string' do
-      company.name = ''
-      company.old_region = 'test'
-      company.region = nil
-      expect(helper.company_complete?(company)).to eq false
-      company.name = 'test'
-      company.old_region = ''
-      expect(helper.company_complete?(company)).to eq false
-      company.name = 'test'
-      company.old_region = ''
-      expect(helper.company_complete?(company)).to eq false
-    end
-
-    it 'returns true if company name and old_region are non-empty string' do
-      company.region = nil
-      company.old_region = 'test'
-      expect(helper.company_complete?(company)).to eq true
     end
 
     it 'returns true if company name not empty and region not nil' do
-      company.old_region = ''
       expect(helper.company_complete?(company)).to eq true
     end
-
-    it 'returns true if company name and old_region are non-empty string' do
-      company.region = nil
-      company.old_region = 'test'
-      expect(helper.company_complete?(company)).to eq true
-    end
-
-    it 'returns true if company name not empty and region not nil' do
-      company.old_region = ''
-      expect(helper.company_complete?(company)).to eq true
-    end
-
-    it 'returns true if company name, old_region not empty and region not nil' do
-      company.old_region = 'test'
-      expect(helper.company_complete?(company)).to eq true
-    end
-
   end
 
   describe 'companies' do

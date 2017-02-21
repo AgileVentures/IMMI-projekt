@@ -110,22 +110,6 @@ namespace :shf do
       log_and_show log, Logger::INFO, "Regions created"
     end
 
-    # Create company reference to region using 'old_region'
-    num_companies = 0
-    Company.all.each do |cmpy|
-      next if cmpy.region
-      region = Region.where(name: cmpy.old_region)[0]
-      if region
-        cmpy.region = region
-        cmpy.save
-        num_companies += 1
-      else
-        log_and_show log, Logger::INFO, "No region match for company : #{cmpy.name}"
-      end
-    end
-    log_and_show log, Logger::INFO, "#{num_companies} companies " \
-                                    "converted to region reference"
-
     log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
     finish_and_close_log(log, start_time, Time.now, "Regions create")
   end

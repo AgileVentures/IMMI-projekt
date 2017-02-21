@@ -96,7 +96,6 @@ en:
         post_code: Post code
         city: City
         region: Region
-        old_region: Old Region
         region_short: &region_short Län
         website: Website
         org_nr: *org_nr
@@ -322,7 +321,6 @@ en:
     company_name: Company name
     telephone_number: Phone number
     operations_region: County of operations
-    old_region: Old Region
     op_region_multiple_use_sweden: Choose "Sweden" if the company operates
       in several counties, or "Online" if it operates mostly (or solely) online.
     website_include_http: Company website

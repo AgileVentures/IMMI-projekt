@@ -49,16 +49,15 @@ Feature: As an admin
       | Norrbotten   |
 
 
-    # old_region is currently required so that company_complete? is true
     And the following companies exist:
-      | name                 | company_number | email                 | region       | old_region |
-      | Happy Mutts          | 2120000142     | woof@happymutts.com   | Stockholm    | Sweden     |
-      | No More Snarky Barky | 5560360793     | bark@snarkybarky.com  | Stockholm    | Sweden     |
-      | WOOF                 | 5569467466     | woof@woof.com         | Västerbotten | Sweden     |
-      | Sad Sad Snarky Barky | 5562252998     | sad@sadmutts.com      | Norrbotten   | Sweden     |
-      | Unassociated Company | 0000000000     | none@unassociated.com | Norrbotten   | Sweden     |
-      | Kitties              | 5906055081     | kitties@kitties.com   | Stockholm    | Sweden     |
-      | Kats                 | 9697222900     | kats@kats.com         | Stockholm    | Sweden     |
+      | name                 | company_number | email                 | region       |
+      | Happy Mutts          | 2120000142     | woof@happymutts.com   | Stockholm    |
+      | No More Snarky Barky | 5560360793     | bark@snarkybarky.com  | Stockholm    |
+      | WOOF                 | 5569467466     | woof@woof.com         | Västerbotten |
+      | Sad Sad Snarky Barky | 5562252998     | sad@sadmutts.com      | Norrbotten   |
+      | Unassociated Company | 0000000000     | none@unassociated.com | Norrbotten   |
+      | Kitties              | 5906055081     | kitties@kitties.com   | Stockholm    |
+      | Kats                 | 9697222900     | kats@kats.com         | Stockholm    |
 
 
     And the following applications exist:

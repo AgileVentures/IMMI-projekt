@@ -25,12 +25,11 @@ Feature: As an admin
       | Västerbotten |
       | Norrbotten   |
 
-    # old_region is currently required so that company_complete? is true
     And the following companies exist:
-      | name        | company_number | email               | region       | old_region |
-      | Happy Mutts | 2120000142     | woof@happymutts.com | Stockholm    | Sweden     |
-      | Bowsers     | 5560360793     | bark@bowsers.com    | Stockholm    | Sweden     |
-      | WOOF        | 5569467466     | woof@woof.com       | Västerbotten | Sweden     |
+      | name        | company_number | email               | region       |
+      | Happy Mutts | 2120000142     | woof@happymutts.com | Stockholm    |
+      | Bowsers     | 5560360793     | bark@bowsers.com    | Stockholm    |
+      | WOOF        | 5569467466     | woof@woof.com       | Västerbotten |
 
 
     And the following applications exist:
@@ -91,5 +90,3 @@ Feature: As an admin
     When I am on the "all companies" page
     Then I should see "2" companies
     And I should not see "WOOF"
-    
-    

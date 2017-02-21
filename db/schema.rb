@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170207191717) do
+ActiveRecord::Schema.define(version: 20170220223441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -37,7 +37,6 @@ ActiveRecord::Schema.define(version: 20170207191717) do
     t.string   "street"
     t.string   "post_code"
     t.string   "city"
-    t.string   "old_region"
     t.string   "website"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
@@ -49,17 +48,16 @@ ActiveRecord::Schema.define(version: 20170207191717) do
   create_table "membership_applications", force: :cascade do |t|
     t.string   "company_number"
     t.string   "phone_number"
-    t.datetime "created_at",                                 null: false
-    t.datetime "updated_at",                                 null: false
+    t.datetime "created_at",                        null: false
+    t.datetime "updated_at",                        null: false
     t.integer  "user_id"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
     t.integer  "company_id"
     t.string   "membership_number"
-    t.string   "state",             default: "under_review"
+    t.string   "state",             default: "new"
     t.index ["company_id"], name: "index_membership_applications_on_company_id", using: :btree
-    t.index ["state"], name: "index_membership_applications_on_state", using: :btree
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
 

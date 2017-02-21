@@ -96,7 +96,6 @@ sv:
         city: &city Ort
         region: &region Verksamhetslän
         region_short: &region_short Län
-        old_region: Gamla Länet
         website: Webbplats
         org_nr: *org_nr
 
@@ -322,7 +321,6 @@ sv:
     company_name: Företagsnamn
     telephone_number: Telefonnummer
     operations_region: *region
-    old_region: Gamla Län
     op_region_multiple_use_sweden: Välj "Sverige" om företaget är verksamt i
       flera län, eller "Online" om det fungerar oftast (eller uteslutande) på nätet.
     website_include_http: Företagets webbplats

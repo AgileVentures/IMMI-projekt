@@ -44,23 +44,8 @@ And(/^the name for region "([^"]*)" is changed to "([^"]*)"$/) do | old_name, ne
   region.save!  # do not do validations in case we're putting this into a bad state on purpose
 end
 
-
-And(/^the old region for company named "([^"]*)" is changed to "([^"]*)"$/) do | company_name, old_region |
-  co = Company.find_by_name(company_name)
-  co.update(old_region: old_region)
-  co.save!  # do not do validations in case we're putting this into a bad state on purpose
-end
-
-
 And(/^the region for company named "([^"]*)" is set to nil$/) do | company_name |
   co = Company.find_by_name(company_name)
   co.update(region: nil)
-  co.save!  # do not do validations in case we're putting this into a bad state on purpose
-end
-
-
-And(/^the old region for company named "([^"]*)" is set to nil$/) do |company_name|
-  co = Company.find_by_name(company_name)
-  co.update(old_region: nil)
   co.save!  # do not do validations in case we're putting this into a bad state on purpose
 end
