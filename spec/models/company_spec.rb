@@ -132,32 +132,4 @@ RSpec.describe Company, type: :model do
           .to contain_exactly('cat1')
     end
   end
-
-
-  describe '#complete?' do
-
-    it 'no name == not complete' do
-      expect(no_name.complete?).to be_falsey
-    end
-
-    it 'nil region' do
-      expect(nil_region.complete?).to be_falsey
-    end
-
-    it 'select complete? returns only the complete ones' do
-
-      complete_using_method = Company.all.select(&:complete?)
-
-      expect(complete_using_method).to match_array(complete_companies)
-
-    end
-
-    it 'reject complete? returns only the incomplete ones' do
-
-      incomplete_using_method = Company.all.reject(&:complete?)
-
-      expect(incomplete_using_method).to match_array(incomplete_companies)
-
-    end
-  end
 end

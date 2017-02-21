@@ -3,26 +3,6 @@ require 'rails_helper'
 RSpec.describe CompaniesHelper, type: :helper do
   let!(:company) { create(:company) }
 
-  describe '#company_complete?' do
-    it 'returns false if company is nil' do
-      expect(helper.company_complete?(nil)).to eq false
-    end
-
-    it 'returns false if company name is nil' do
-      company.name = nil
-      expect(helper.company_complete?(company)).to eq false
-    end
-
-    it 'returns false if company region is nil' do
-      company.region = nil
-      expect(helper.company_complete?(company)).to eq false
-    end
-
-    it 'returns true if company name not empty and region not nil' do
-      expect(helper.company_complete?(company)).to eq true
-    end
-  end
-
   describe 'companies' do
     let(:employee1) { create(:user) }
     let(:employee2) { create(:user) }

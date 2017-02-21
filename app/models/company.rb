@@ -45,10 +45,4 @@ class Company < ApplicationRecord
     true
 
   end
-
-
-  def complete?
-    (name.blank? || region.blank?) ? false : true
-  end
-
 end
