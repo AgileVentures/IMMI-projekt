@@ -17,7 +17,7 @@
         %tr
           %td= user.email
           %td
-            %small= #{time_ago_in_words(user.created_at)} ago
+            %small= "#{time_ago_in_words(user.created_at)} ago"
           %td
             %small= user.last_sign_in_at ?                          |
               "#{time_ago_in_words(user.last_sign_in_at)} ago" : '' |
