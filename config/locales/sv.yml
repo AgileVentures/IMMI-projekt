@@ -390,7 +390,7 @@ sv:
       last_login: Senast inloggad
       logged_in_count: Inloggningar
       member: Medlem
-      applications: Ansökningar
+      applications: Öppen Ansökningar
       'yes': *yes
       'no': *no
 

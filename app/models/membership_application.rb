@@ -32,6 +32,7 @@ class MembershipApplication < ApplicationRecord
 
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
 
+  scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
   include AASM
 
@@ -115,7 +116,7 @@ class MembershipApplication < ApplicationRecord
       company = Company.find_or_create_by!(company_number: company_number) do |co|
         co.email = contact_email
       end
-      
+
       update(company: company)
 
     rescue => e
