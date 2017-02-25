@@ -10,7 +10,9 @@
         %th= t('.created')
         %th= t('.last_login')
         %th= t('.logged_in_count')
-        %th= t('.applications')
+        %th
+          = t('.applications')
+          %span.glyphicon.glyphicon-info-sign{ title: "#{t('.applications_tooltip')}" }
         %th= t('.member')
     %tbody
       - @users.each do |user|

@@ -390,7 +390,8 @@ sv:
       last_login: Senast inloggad
       logged_in_count: Inloggningar
       member: Medlem
-      applications: Öppen Ansökningar
+      applications: Ansökningar
+      applications_tooltip: Antal öppna program
       'yes': *yes
       'no': *no
 

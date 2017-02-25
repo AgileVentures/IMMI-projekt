@@ -390,7 +390,8 @@ en:
       last_login: Last login
       logged_in_count: Logins
       member: Member
-      applications: Open Applications
+      applications: Applications
+      applications_tooltip: Number of open applications
       'yes': *yes  # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
 
