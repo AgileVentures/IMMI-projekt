@@ -13,7 +13,7 @@
                       t('membership_applications.index.state'))
         %th
     %tbody
-      - @membership_applications.each do | membership_application |
+      - @membership_applications.each do |membership_application|
         %tr.applicant
           %td.name= link_to "#{membership_application.last_name + ', ' + membership_application.first_name}", membership_application_path(membership_application.id)
           %td.company_number= membership_application.company_number
