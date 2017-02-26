@@ -49,6 +49,9 @@ sv:
     company_search_form:
       hide: Dölj Sökfunktionen
       show: Visa Sökfunktionen
+    application_search_form:
+      hide: Dölj Sökfunktionen
+      show: Visa Sökfunktionen
 
   will_paginate:
     previous_label: "« Föregående"

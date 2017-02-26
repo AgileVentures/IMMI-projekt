@@ -9,6 +9,8 @@ Given(/^I am on the "([^"]*)" page$/) do |page|
       path = edit_membership_application_path(user.membership_applications.last)
     when 'business categories'
       path = business_categories_path
+    when 'membership applications'
+      path = membership_applications_path
     when 'all companies'
       path = companies_path
     when 'create a new company'

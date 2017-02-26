@@ -1,0 +1,27 @@
+#membership_applications_list
+  %table
+    %thead
+      %tr
+        %th
+          = sort_link(@search_params, :last_name,
+                      t('membership_applications.index.name'))
+        %th
+          = sort_link(@search_params, :company_number,
+                      t('membership_applications.index.org_nr'))
+        %th
+          = sort_link(@search_params, :state,
+                      t('membership_applications.index.state'))
+        %th
+    %tbody
+      - @membership_applications.each do | membership_application |
+        %tr.applicant
+          %td.name= link_to "#{membership_application.last_name + ', ' + membership_application.first_name}", membership_application_path(membership_application.id)
+          %td.company_number= membership_application.company_number
+          %td.state= t("membership_applications.state.#{membership_application.state}")
+          %td.action= link_to "#{t('manage')}", membership_application_path(membership_application.id)
+
+  .center
+    = will_paginate @membership_applications,
+                    renderer: BootstrapPagination::Rails,
+                    link_options: { 'data-remote': true,
+                                    class: 'applications_pagination' }

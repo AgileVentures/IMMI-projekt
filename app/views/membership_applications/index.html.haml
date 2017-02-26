@@ -3,17 +3,20 @@
 .post-title-divider
   %span
 .entry-content
-  %table
-    %thead
-      %tr
-        %th= t('.name')
-        %th= t('.org_nr')
-        %th= t('.state')
-        %th
-    %tbody
-      - @membership_applications.each do | membership_application |
-        %tr.applicant
-          %td.name= link_to "#{membership_application.first_name + ' ' + membership_application.last_name}", membership_application_path(membership_application.id)
-          %td.company_number= membership_application.company_number
-          %td.state= t("membership_applications.state.#{membership_application.state}")
-          %td.action= link_to "#{t('.manage')}", membership_application_path(membership_application.id)
+  %p{ style: 'margin-bottom: 30px;' }
+    %button.btn.btn-success.btn-xs.pull-right{ id: 'toggle_search_form',
+                                      href: '#application_search_form',
+                                      style: 'color:black; text-transform:none;' }
+      #{t('toggle.application_search_form.hide')}
+
+  .clearfix
+
+  .panel.panel-default{ style: 'padding-left: 5px; padding-right: 5px;',
+                    id: 'application_search_form' }
+    = render 'search_form'
+
+  - if @membership_applications.empty?
+    %strong
+      #{t('.no_search_results')}
+  - else
+    = render partial: 'membership_applications_list'

@@ -49,6 +49,9 @@ en:
     company_search_form:
       hide: Hide Form
       show: Show Form
+    application_search_form:
+      hide: Hide Form
+      show: Show Form
 
   will_paginate:
       previous_label: "« Previous"

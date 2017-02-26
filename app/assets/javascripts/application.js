@@ -20,7 +20,7 @@
 document.addEventListener('turbolinks:load', function() {
     'use strict';
 
-    $.each($('.company_search'), function (index, ele) {
+    $.each($('.search_field'), function (index, ele) {
       if ($(ele).data('select2') === undefined &&
           $(ele).next().hasClass('select2-container')) {
         $(ele).next().remove();
@@ -37,10 +37,14 @@ document.addEventListener('turbolinks:load', function() {
     $('#toggle_search_form').click(Utility.toggle);
 
     // Paginate link sends AJAX request to controller, which renders new page
-    // in JS response.  This callback executes at that point and replaces
-    // the prior pagination page with the new page.
+    // in JS response.  These callbacks execute at that point and replaces
+    // the prior pagination page (DOM element) with the new page.
     $('body').on('ajax:success', '.companies_pagination', function (e, data) {
       $('#companies_list').html(data);
+    });
+
+    $('body').on('ajax:success', '.applications_pagination', function (e, data) {
+      $('#membership_applications_list').html(data);
     });
 
     // Slide mobile navigation from left

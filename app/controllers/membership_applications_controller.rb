@@ -12,7 +12,12 @@ class MembershipApplicationsController < ApplicationController
 
   def index
     authorize MembershipApplication
-    @membership_applications = MembershipApplication.all
+
+    @search_params = MembershipApplication.ransack(params[:q])
+
+    @membership_applications = @search_params.result.page(params[:page]).per_page(10)
+
+    render partial: 'membership_applications_list' if request.xhr?
   end
 
 

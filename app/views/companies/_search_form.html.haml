@@ -10,7 +10,7 @@
                       BusinessCategory.order(:name).distinct,
                       :id, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control company_search',
+                        class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
     .col-sm-4
       = f.label :region_id_in,
@@ -21,7 +21,7 @@
                       Region.all,
                       :id, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control company_search',
+                        class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
 
     .col-sm-3
@@ -33,7 +33,7 @@
                      Company.complete.distinct.order(:city).pluck(:city),
                      :to_s, :to_s, { include_blank: false },
                      { multiple: true, size: 5, style: 'width: 100%;',
-                       class: 'form-control company_search',
+                       class: 'form-control search_field',
                        data: {language: "#{@locale}" } }
   .form-group
     .col-sm-8
@@ -45,7 +45,7 @@
                       Company.complete.order(:name),
                       :name, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control company_search',
+                        class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
 
     .col-sm-4
