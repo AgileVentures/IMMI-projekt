@@ -391,7 +391,7 @@ sv:
       logged_in_count: Inloggningar
       member: Medlem
       applications: Ansökningar
-      applications_tooltip: Antal öppna program
+      applications_tooltip: Antal öppna ansökningar
       'yes': *yes
       'no': *no
 
