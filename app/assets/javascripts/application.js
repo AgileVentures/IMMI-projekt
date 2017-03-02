@@ -47,6 +47,9 @@ document.addEventListener('turbolinks:load', function() {
       $('#membership_applications_list').html(data);
     });
 
+    // Enable all Bootstrap tooltips
+    $('[data-toggle="tooltip"]').tooltip();
+
     // Slide mobile navigation from left
     jQuery('#site-navigation .menu-toggle').on('click', function () {
         jQuery(this).toggleClass('active');
