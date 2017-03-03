@@ -1,6 +1,6 @@
 class MembershipApplicationsController < ApplicationController
   before_action :get_membership_application, except: [:information, :index, :new, :create]
-  before_action :authorize_membership_application, only: [:update, :show, :edit, :destroy]
+  before_action :authorize_membership_application, only: [:update, :show, :edit]
 
 
   def new
@@ -15,7 +15,10 @@ class MembershipApplicationsController < ApplicationController
 
     @search_params = MembershipApplication.ransack(params[:q])
 
-    @membership_applications = @search_params.result.page(params[:page]).per_page(10)
+    @membership_applications = @search_params
+                                   .result
+                                   .includes(:business_categories)
+                                   .page(params[:page]).per_page(10)
 
     render partial: 'membership_applications_list' if request.xhr?
   end
@@ -87,6 +90,7 @@ class MembershipApplicationsController < ApplicationController
 
 
   def destroy
+    @membership_application = MembershipApplication.find(params[:id])  # we don't need to fetch the categories
     @membership_application.destroy
     redirect_to membership_applications_url, notice: t('membership_applications.application_deleted')
   end
@@ -135,6 +139,7 @@ class MembershipApplicationsController < ApplicationController
 
   def get_membership_application
     @membership_application = MembershipApplication.find(params[:id])
+    @categories = @membership_application.business_categories
   end
 
 
