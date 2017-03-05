@@ -1,0 +1,56 @@
+%header.entry-header
+  - if @user.admin?
+    %h1.entry-title.is-admin
+      = @user.email
+      %span.small
+        (#{t('.is_an_admin')})
+
+  - else
+    %h1.entry-title=  @user.email
+
+
+.entry-content
+  %p
+    %b #{t('.email')}:
+    = @user.email
+
+  - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
+    %p #{@user.email} #{t('.user_has_never_signed_in')}
+
+  - else
+    %p
+      %b #{t('.last_login')}:
+      #{ most_recent_login_time @user}
+      (#{i18n_time_ago_in_words(most_recent_login_time @user)})
+
+    %p
+      %b #{t('.logged_in_count')}:
+      = @user.sign_in_count
+
+  %p
+    - if @user.reset_password_sent_at.blank?
+      = t('.password_never_reset')
+    - else
+      %b #{t('.reset_password_sent_at')}:
+      #{@user.reset_password_sent_at}
+      #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
+
+
+  %p
+    %b #{t('.created')}:
+    = @user.created_at
+    (#{i18n_time_ago_in_words(@user.created_at)})
+
+
+  %hr
+
+  %button.btn.alert-danger.admin-set-new-password{ id: 'toggle_admin_set_password_form',
+               href: '#set_new_password_form',
+               style: 'text-transform:none;' }
+
+    #{ t('toggle.set_new_password_form.show') }
+
+  .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form' ,
+                        style: 'display: none;'}
+
+    = render 'password_form'

@@ -32,6 +32,9 @@ sv:
   'yes': &yes Ja
   'no': &no Nej
 
+  time_ago: '%{amount_of_time} sedan'
+
+
   confirm_are_you_sure: &are_you_sure_confirm Är du säker
 
   info:
@@ -52,6 +55,10 @@ sv:
     application_search_form:
       hide: Dölj Sökfunktionen
       show: Visa Sökfunktionen
+    set_new_password_form:
+      hide: "Dölj the 'Change Password' info"
+      show: "Change the User's Password"
+
 
   will_paginate:
     previous_label: "« Föregående"
@@ -79,6 +86,14 @@ sv:
         email: &email E-post
         password: *password
         created: &created Skapad
+        current_sign_in_at: &user_current_signed_in_time Inloggad
+        current_sign_in_ip: &user_current_ip Inloggad med IP
+        last_login: &user_last_login Senast inloggad
+        last_login_ip: &user_last_login_ip Senast inloggad med IP
+        sign_in_count: &sign_in_count Inloggningar
+        created: *created
+        reset_password_sent_at: &user_reset_password_sent_at Information angående återställning av lösenord sändes
+
 
       membership_application:
         company_number: &company_number Organisationsnummer
@@ -193,6 +208,7 @@ sv:
       org_nr: *org_nr
       manage: *manage
       state: *state
+      no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
 
     information:
       title: Om medlemsskap
@@ -388,19 +404,45 @@ sv:
     new_business_category: Skapa ny företagstyp (kategori)
     all_business_categories: Alla kategorier
 
+
   users:
     index:
       title: Alla Användare
       email: *email
       created: *created
-      last_login: Senast inloggad
-      logged_in_count: Inloggningar
+      last_login: *user_last_login
+      logged_in_count: *sign_in_count
       member: Medlem
       applications: Ansökningar
       applications_tooltip: Antal öppna ansökningar
-      'yes': *yes
+      'yes': *yes  # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
 
+    show:
+      email: *email
+      current_sign_in_at: *user_current_signed_in_time
+      current_sign_in_ip: *user_current_ip
+      last_login: *user_last_login
+      last_login_ip: *user_last_login_ip
+      logged_in_count: *sign_in_count
+      created: *created
+      reset_password_sent_at: *user_reset_password_sent_at
+      password_never_reset: Lösenord har aldrig återställts.
+      user_has_never_signed_in: har aldrig loggat in.
+      is_an_admin: Är en admin
+      'yes': *yes
+      'no': *no
+      reset_password: Change the Password
+      confirm_reset_password: "Are you sure?  This will over-write the current password for this user!\n  (If you have not recorded the password yet, choose Cancel.)"
+      new_password: Nytt Password
+      re_enter_new_password: Re-Enter the Password
+      please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
+      submit_new_password: Save the New Password
+
+    update:
+      passwords_dont_match: "The two passwords entered don't match."
+      success: Användar uppdaterad.
+      error: Ett problem hindrade användar från att raderas.
 
   admin:
     index:

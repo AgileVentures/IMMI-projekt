@@ -32,4 +32,10 @@ module ApplicationHelper
     assoc.reload unless assoc.nil? || assoc.loaded?
     assoc.nil? ? true : assoc.size == 0
   end
+
+
+  def i18n_time_ago_in_words(past_time)
+    "#{t('time_ago', amount_of_time: time_ago_in_words(past_time) )}"
+  end
+
 end

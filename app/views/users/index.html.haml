@@ -18,7 +18,7 @@
     %tbody
       - @users.each do |user|
         %tr
-          %td= user.email
+          %td= link_to user.email, user
           %td
             %small= "#{time_ago_in_words(user.created_at)} ago"
           %td

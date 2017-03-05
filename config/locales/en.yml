@@ -32,6 +32,8 @@ en:
   'yes': &yes 'Yes'
   'no': &no 'No'
 
+  time_ago: '%{amount_of_time} ago'
+
   confirm_are_you_sure: &are_you_sure_confirm Are you sure
 
   info:
@@ -52,6 +54,9 @@ en:
     application_search_form:
       hide: Hide Form
       show: Show Form
+    set_new_password_form:
+      hide: "Hide the Change Password info"
+      show: "Change the User's Password"
 
   will_paginate:
       previous_label: "« Previous"
@@ -80,6 +85,14 @@ en:
         email: &email Email
         password: *password
         created: &created Created
+        current_sign_in_at: &user_current_signed_in_time Currently signed in at
+        current_sign_in_ip: &user_current_ip Currently signed in from IP address
+        last_login: &user_last_login Last login
+        last_login_ip: &user_last_login_ip Last logged in from IP address
+        sign_in_count: &sign_in_count Logins
+        created: *created
+        reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
+
 
       membership_application:
         company_number: &company_number Company number
@@ -192,6 +205,7 @@ en:
       org_nr: *org_nr
       state: *state
       manage: *manage
+      no_search_results: No records matched your search criteria.
 
     information:
       title: About Membership
@@ -389,21 +403,45 @@ en:
     new_business_category: New business category
     all_business_categories: All categories
 
+
   users:
     index:
       title: All Users
       email: *email
       created: *created
-      last_login: Last login
-      logged_in_count: Logins
+      last_login: *user_last_login
+      logged_in_count: *sign_in_count
       member: Member
       applications: Applications
       applications_tooltip: Number of open applications
       'yes': *yes  # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
 
+    show:
+      email: *email
+      current_sign_in_at: *user_current_signed_in_time
+      current_sign_in_ip: *user_current_ip
+      last_login: *user_last_login
+      last_login_ip: *user_last_login_ip
+      logged_in_count: *sign_in_count
+      created: *created
+      reset_password_sent_at: *user_reset_password_sent_at
+      password_never_reset: Password has never been reset.
+      user_has_never_signed_in: has never logged in.
+      is_an_admin: Is an Admin
+      'yes': *yes
+      'no': *no
+      reset_password: Change the Password
+      confirm_reset_password: "Are you sure?\rThis will overwrite the current password for this user!\r(If you have not recorded the password yet, choose Cancel.)"
+      new_password: New Password
+      re_enter_new_password: Re-Enter the Password
+      please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
+      submit_new_password: Save the New Password
 
-
+    update:
+      passwords_dont_match: "The two passwords entered don't match."
+      success: The user was updated.
+      error: A problem kept the user from being updated.
 
   admin:
     index:
