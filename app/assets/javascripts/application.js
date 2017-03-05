@@ -36,6 +36,9 @@ document.addEventListener('turbolinks:load', function() {
     // Bind 'show/hide' search form toggle switch
     $('#toggle_search_form').click(Utility.toggle);
 
+    $('#toggle_admin_set_password_form').click(Utility.toggle);
+
+
     // Paginate link sends AJAX request to controller, which renders new page
     // in JS response.  These callbacks execute at that point and replaces
     // the prior pagination page (DOM element) with the new page.

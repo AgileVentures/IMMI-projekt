@@ -54,6 +54,9 @@ en:
     application_search_form:
       hide: Hide Form
       show: Show Form
+    set_new_password_form:
+      hide: "Hide the Change Password info"
+      show: "Change the User's Password"
 
   will_paginate:
       previous_label: "« Previous"
@@ -422,11 +425,22 @@ en:
       logged_in_count: *sign_in_count
       created: *created
       reset_password_sent_at: *user_reset_password_sent_at
-      password_never_reset: Password has never been reset.
+      password_never_reset: Password has never been reset by the user.
       user_has_never_signed_in: has never logged in.
       is_an_admin: Is an Admin
       'yes': *yes
       'no': *no
+      reset_password: Change the Password
+      confirm_reset_password: "Are you sure?\rThis will overwrite the current password for this user!\r(If you have not recorded the password yet, choose Cancel.)"
+      new_password: New Password
+      re_enter_new_password: Re-Enter the Password
+      please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
+      submit_new_password: Save the New Password
+
+    update:
+      passwords_dont_match: "The two passwords entered don't match."
+      success: The user was updated.
+      error: A problem kept the user from being updated.
 
 
 

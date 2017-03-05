@@ -40,7 +40,7 @@ Rails.application.routes.draw do
 
     resources :companies, path: 'hundforetag'
 
-    resources :users, path: 'anvandare', only: [:index, :show]
+    resources :users, path: 'anvandare'
   end
 
   get 'information', to: 'membership_applications#information'

@@ -55,6 +55,10 @@ sv:
     application_search_form:
       hide: Dölj Sökfunktionen
       show: Visa Sökfunktionen
+    set_new_password_form:
+      hide: "Dölj the 'Change Password' info"
+      show: "Change the User's Password"
+
 
   will_paginate:
     previous_label: "« Föregående"
@@ -422,11 +426,22 @@ sv:
       logged_in_count: *sign_in_count
       created: *created
       reset_password_sent_at: *user_reset_password_sent_at
-      password_never_reset: Lösenord har aldrig återställts.
+      password_never_reset: Användaren har aldrig återställt lösenordet.
       user_has_never_signed_in: har aldrig loggat in.
       is_an_admin: Är en admin
       'yes': *yes
       'no': *no
+      reset_password: Byt lösenord
+      confirm_reset_password: "Är du säker? Detta skriver över nuvarande lösenord för denna användare!\n (Om du inte har noterat lösenordet, välj Avbryt.)"
+      new_password: Nytt lösenord
+      re_enter_new_password: Skriv in lösenordet igen
+      please_note_new_password: Spara detta på ett säkert ställe. När du klickar på spara nedan kommer du inte att kunna se lösenordet igen och det finns ingen möjlighet att åter visa det.
+      submit_new_password: Spara det nya lösenordet
+
+    update:
+      passwords_dont_match: De två lösenord du angivit matchar inte.
+      success: Användarens information uppdaterad.
+      error: Ett problem hindrade användarinformationen från att uppdateras.
 
 
 

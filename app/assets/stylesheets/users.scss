@@ -4,3 +4,19 @@ $admin-color: #ff0000;
   color: $admin-color;
   font-weight: bold;
 }
+
+.panel.admin-set-new-password-form {
+  margin-left: 2em;
+  margin-right: 2em;
+  margin-top: 1em;
+}
+
+.form-horizontal.edit-user.admin-set-password {
+
+  padding: 1em;
+
+  .field.form-group {
+    margin-left: 0;
+  }
+
+}
