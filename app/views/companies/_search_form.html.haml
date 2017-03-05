@@ -25,13 +25,13 @@
                         data: {language: "#{@locale}" } }
 
     .col-sm-3
-      = f.label :addresses_city_in,
-                "#{t('activerecord.attributes.address.city')}",
+      = f.label :addresses_kommun_id_in,
+                "#{t('activerecord.attributes.address.kommun')}",
                class: 'control-label',
                style: 'text-align: left; font-size: 12px;'
-      = f.collection_select :addresses_city_in,
-                     Address.has_region.distinct.order(:city).pluck(:city),
-                     :to_s, :to_s, { include_blank: false },
+      = f.collection_select :addresses_kommun_id_in,
+                     Kommun.all,
+                     :id, :name, { include_blank: false },
                      { multiple: true, size: 5, style: 'width: 100%;',
                        class: 'form-control search_field',
                        data: {language: "#{@locale}" } }

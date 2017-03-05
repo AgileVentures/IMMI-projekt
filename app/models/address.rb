@@ -4,6 +4,8 @@ class Address < ApplicationRecord
 
   belongs_to :region
 
+  belongs_to :kommun
+
 
   validates_presence_of :addressable
 

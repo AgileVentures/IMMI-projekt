@@ -35,6 +35,9 @@
     %b #{t('.city')}:
     = @company.addresses.first.city
   %p
+    %b #{t('.kommun')}:
+    = @company.addresses.first.kommun.name
+  %p
     %b #{t('.region')}:
     = @company.addresses.first.region.name if @company.addresses.first.region
 

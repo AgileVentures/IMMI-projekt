@@ -8,11 +8,12 @@
           = sort_link(@search_params, :name,
                       t('activerecord.attributes.company.name'))
         %th
-          = sort_link(@search_params, :region_name,
+          = sort_link(@search_params, :addresses_region_id,
                       t('activerecord.attributes.address.region'))
         %th
-          = sort_link(@search_params, :city,
-                      t('activerecord.attributes.address.city'))
+          = sort_link(@search_params, :addresses_kommun_id,
+                      t('activerecord.attributes.address.kommun'))
+
         - if current_user.try(:admin)
           %th
             = sort_link(@search_params, :company_number,
@@ -34,7 +35,7 @@
                 = bc.name
           %td= link_to company.name, company
           %td= company.addresses.first.region&.name
-          %td= company.addresses.first.city
+          %td= company.addresses.first.kommun&.name
           - if current_user.try(:admin)
             %td= company.company_number
             %td= link_to "#{t('edit')}", edit_company_path(company)

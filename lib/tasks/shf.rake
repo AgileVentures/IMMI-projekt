@@ -7,7 +7,8 @@ namespace :shf do
 
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
-    tasks = ['db:drop', 'db:create', 'db:migrate', 'shf:load_regions', 'db:seed']
+    tasks = ['db:drop', 'db:create', 'db:migrate',
+             'shf:load_regions', 'shf:load_kommuns', 'db:seed']
     tasks.each { |t| Rake::Task["#{t}"].invoke }
   end
 
@@ -90,7 +91,7 @@ namespace :shf do
   desc "load regions data (counties plus 'Sverige' and 'Online')"
   task :load_regions => [:environment] do
 
-    logfile = 'log/shf-rake.log'
+    logfile = 'log/shf-regions.log'
     start_time = Time.now
     log = start_logging(start_time, logfile, "Regions create")
 
@@ -114,7 +115,30 @@ namespace :shf do
     finish_and_close_log(log, start_time, Time.now, "Regions create")
   end
 
+  desc "load kommuns data (290 Swedish municipalities)"
+  task :load_kommuns => [:environment] do
 
+    require 'csv'
+    require 'smarter_csv'
+
+    logfile = 'log/shf-kommuns.log'
+    start_time = Time.now
+    log = start_logging(Time.now, logfile, "Kommuns create")
+
+    if Kommun.exists?
+      log_and_show log, Logger::WARN, "Kommuns table not empty"
+    else
+      SmarterCSV.process('lib/seeds/kommuner.csv').each do |kommun|
+        Kommun.create(name: kommun[:name])
+      end
+
+      log_and_show log, Logger::INFO, "#{Kommun.count} kommuns created"
+    end
+
+    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
+
+    finish_and_close_log(log, start_time, Time.now, "Kommuns create")
+  end
 
   def import_a_member_app_csv(row, log)
 

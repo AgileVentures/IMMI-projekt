@@ -108,6 +108,7 @@ en:
         street: &street Street
         post_code: &post_code Post code
         city: &city City
+        kommun: &kommun Municipality
         region: &region Region
         region_short: &region_short Län
 
@@ -327,6 +328,7 @@ en:
       street: *street
       post_code: *post_code
       city: *city
+      kommun: *kommun
       region: *region
       website: Company website
       org_nr: *org_nr

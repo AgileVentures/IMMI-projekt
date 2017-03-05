@@ -12,7 +12,6 @@ RSpec.describe Address, type: :model do
     it { is_expected.to have_db_column :id }
     it { is_expected.to have_db_column :street_address }
     it { is_expected.to have_db_column :post_code }
-    it { is_expected.to have_db_column :kommun }
     it { is_expected.to have_db_column :post_code }
     it { is_expected.to have_db_column :city }
     it { is_expected.to have_db_column :region_id }
@@ -27,6 +26,7 @@ RSpec.describe Address, type: :model do
 
   describe 'Associations' do
     it { is_expected.to belong_to(:region) }
+    it { is_expected.to belong_to(:kommun) }
     it { is_expected.to belong_to(:addressable) }
   end
 

@@ -34,11 +34,16 @@
     = address_form.label :city, "#{t('companies.show.city')}", class: 'required'
     = address_form.text_field :city, class: 'wpcf7-form-control'
 
-    = address_form.label :region_id, "#{t('companies.operations_region')}", class: 'required'
-    = address_form.collection_select(:region_id, Region.all, :id, :name)
+    .form-group
+      .col-sm-5
+        = address_form.label :kommun, "#{t('companies.show.kommun')}"
+        = address_form.collection_select(:kommun_id, Kommun.all, :id, :name)
+      .col-sm-7
+        = address_form.label :region_id, "#{t('companies.operations_region')}",
+                             class: 'wpcf7-form-control'
+        = address_form.collection_select(:region_id, Region.all, :id, :name)
 
-
-
+  %br
   %br
   %em= t('companies.op_region_multiple_use_sweden')
   %br
