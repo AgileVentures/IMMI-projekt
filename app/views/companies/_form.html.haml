@@ -36,7 +36,7 @@
 
     .form-group
       .col-sm-5
-        = address_form.label :kommun, "#{t('companies.show.kommun')}"
+        = address_form.label :kommun_id, "#{t('companies.show.kommun')}"
         = address_form.collection_select(:kommun_id, Kommun.all, :id, :name)
       .col-sm-7
         = address_form.label :region_id, "#{t('companies.operations_region')}",

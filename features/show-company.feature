@@ -16,21 +16,26 @@ Feature: As a visitor,
       | Stockholm    |
       | Västerbotten |
 
+    Given the following kommuns exist:
+      | name      |
+      | Alingsås  |
+      | Bromölla  |
+
     Given the following companies exist:
-      | name                 | company_number | email                  | region       |
-      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm    |
-      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten |
-      | Company3             | 6613265393     | cmpy3@mail.com         | Stockholm    |
-      | Company4             | 6222279082     | cmpy4@mail.com         | Stockholm    |
-      | Company5             | 8025085252     | cmpy5@mail.com         | Stockholm    |
-      | Company6             | 6914762726     | cmpy6@mail.com         | Stockholm    |
-      | Company7             | 7661057765     | cmpy7@mail.com         | Stockholm    |
-      | Company8             | 7736362901     | cmpy8@mail.com         | Stockholm    |
-      | Company9             | 6112107039     | cmpy9@mail.com         | Stockholm    |
-      | Company10            | 3609340140     | cmpy10@mail.com        | Stockholm    |
-      | Company11            | 2965790286     | cmpy11@mail.com        | Stockholm    |
-      | Company12            | 4268582063     | cmpy12@mail.com        | Stockholm    |
-      | Company13            | 8028973322     | cmpy13@mail.com        | Stockholm    |
+      | name                 | company_number | email                  | region       | kommun   |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm    | Alingsås |
+      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten | Bromölla |
+      | Company3             | 6613265393     | cmpy3@mail.com         | Stockholm    | Alingsås |
+      | Company4             | 6222279082     | cmpy4@mail.com         | Stockholm    | Alingsås |
+      | Company5             | 8025085252     | cmpy5@mail.com         | Stockholm    | Alingsås |
+      | Company6             | 6914762726     | cmpy6@mail.com         | Stockholm    | Alingsås |
+      | Company7             | 7661057765     | cmpy7@mail.com         | Stockholm    | Alingsås |
+      | Company8             | 7736362901     | cmpy8@mail.com         | Stockholm    | Alingsås |
+      | Company9             | 6112107039     | cmpy9@mail.com         | Stockholm    | Alingsås |
+      | Company10            | 3609340140     | cmpy10@mail.com        | Stockholm    | Alingsås |
+      | Company11            | 2965790286     | cmpy11@mail.com        | Stockholm    | Alingsås |
+      | Company12            | 4268582063     | cmpy12@mail.com        | Stockholm    | Alingsås |
+      | Company13            | 8028973322     | cmpy13@mail.com        | Stockholm    | Alingsås |
 
     And the following users exists
       | email               | admin |

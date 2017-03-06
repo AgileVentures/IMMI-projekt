@@ -26,12 +26,19 @@ Background:
     | Norrbotten   |
     | Sweden       |
 
+  Given the following kommuns exist:
+    | name      |
+    | Alingsås  |
+    | Bromölla  |
+    | Laxå      |
+    | Östersund |
+
   And the following companies exist:
-    | name        | company_number | email                | region       | city        |
-    | Barky Boys  | 5560360793     | barky@barkyboys.com  | Stockholm    | Bagarmossen |
-    | HappyMutts  | 2120000142     | woof@happymutts.com  | Västerbotten | Kusmark     |
-    | Dogs R Us   | 5562252998     | chief@dogsrus.com    | Norrbotten   | Morjarv     |
-    | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       |             |
+    | name        | company_number | email                | region       | kommun    |
+    | Barky Boys  | 5560360793     | barky@barkyboys.com  | Stockholm    | Alingsås  |
+    | HappyMutts  | 2120000142     | woof@happymutts.com  | Västerbotten | Bromölla  |
+    | Dogs R Us   | 5562252998     | chief@dogsrus.com    | Norrbotten   | Östersund |
+    | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       | Laxå      |
 
   And the following applications exist:
     | first_name | user_email          | company_number | state    | category_name |
@@ -78,21 +85,21 @@ Scenario: Search by company
   And I should not see "Dogs R Us"
 
 @javascript
-Scenario: Search by city and region
+Scenario: Search by kommun and region
   Given I am Logged out
   And I am on the "landing" page
-  Then I select "Kusmark" in select list t("activerecord.attributes.company.city")
+  Then I select "Alingsås" in select list t("activerecord.attributes.company.kommun")
   And I click on t("search") button
-  And I should see "HappyMutts"
-  And I should not see "HWe Luv Dogs"
-  And I should not see "Barky Boys"
+  And I should not see "HappyMutts"
+  And I should not see "We Luv Dogs"
+  And I should see "Barky Boys"
   And I should not see "Dogs R Us"
   Then I select "Norrbotten" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
   And I should not see "HappyMutts"
-  Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
+  Then I select "Stockholm" in select list t("activerecord.attributes.company.region")
   And I click on t("search") button
-  And I should see "HappyMutts"
+  And I should see "Barky Boys"
 
 @javascript
 Scenario: Search by category and region
@@ -135,21 +142,21 @@ Scenario: Search by company
   And I should not see "Dogs R Us"
 
 @javascript
-Scenario: Search by city and region
+Scenario: Search by kommun
   Given I am Logged out
   And I am on the "landing" page
-  Then I select "Kusmark" in select list t("activerecord.attributes.company.city")
+  Then I select "Alingsås" in select list t("activerecord.attributes.company.kommun")
   And I click on t("search") button
-  And I should see "HappyMutts"
-  And I should not see "HWe Luv Dogs"
-  And I should not see "Barky Boys"
-  And I should not see "Dogs R Us"
-  Then I select "Norrbotten" in select list t("activerecord.attributes.company.region")
-  And I click on t("search") button
+  And I should see "Barky Boys"
   And I should not see "HappyMutts"
-  Then I select "Västerbotten" in select list t("activerecord.attributes.company.region")
+  And I should not see "We Luv Dogs"
+  And I should not see "Dogs R Us"
+  Then I select "Laxå" in select list t("activerecord.attributes.company.kommun")
   And I click on t("search") button
-  And I should see "HappyMutts"
+  And I should see "Barky Boys"
+  And I should not see "HappyMutts"
+  And I should see "We Luv Dogs"
+  And I should not see "Dogs R Us"
 
 @javascript
 Scenario: Search by category and region 2

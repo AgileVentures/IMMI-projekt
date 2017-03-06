@@ -15,6 +15,10 @@ Feature: As a member
       | Stockholm    |
       | Västerbotten |
 
+    Given the following kommuns exist:
+      | name      |
+      | Alingsås  |
+
     And the following companies exist:
       | name                 | company_number | email                  |
       | No More Snarky Barky | 2120000142     | snarky@snarkybarky.com |
@@ -37,11 +41,13 @@ Feature: As a member
       | companies.company_name | companies.show.company_number | companies.show.street | companies.show.post_code | companies.show.city | companies.show.email | companies.website_include_http |
       | Happy Mutts            | 5562252998                    | Ålstensgatan 4        | 123 45                   | Bromma              | kicki@gladajyckar.se | http://www.gladajyckar.se      |
     And I select "Stockholm" in select list t("companies.operations_region")
+    And I select "Alingsås" in select list t("companies.show.kommun")
     And I click on t("submit")
     Then I should see t("companies.update.success")
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
+    And I should see "Alingsås"
 
   Scenario: Another tries to edit your company page (gets rerouted)
     Given I am logged in as "emma@happymutts.com"

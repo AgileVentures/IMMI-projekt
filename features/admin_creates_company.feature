@@ -24,6 +24,10 @@ Feature: As an admin
       | Västerbotten |
       | Norrbotten   |
 
+    Given the following kommuns exist:
+      | name      |
+      | Bromölla  |
+
     And the following companies exist:
       | name                 | company_number | email                  | region     |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
@@ -65,11 +69,13 @@ Feature: As an admin
       | companies.company_name | companies.show.company_number | companies.show.street | companies.show.post_code | companies.show.city | companies.show.email | companies.website_include_http |
       | Happy Mutts            | 5569467466                    | Ålstensgatan 4        | 123 45                   | Bromma              | kicki@gladajyckar.se | http://www.gladajyckar.se      |
     And I select "Stockholm" in select list t("companies.operations_region")
+    And I select "Bromölla" in select list t("companies.show.kommun")
     And I click on t("submit")
     Then I should see t("companies.create.success")
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
+    And I should see "Bromölla"
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
 
   Scenario Outline: Admin creates company - when things go wrong

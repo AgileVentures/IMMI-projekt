@@ -1,10 +1,12 @@
 And(/^the following companies exist:$/) do |table|
   table.hashes.each do |company|
     region = company.delete('region')
+    kommun = company.delete('kommun')
 
     cmpy = FactoryGirl.create(:company, company)
 
-    cmpy.addresses.first.update(region: (Region.find_by_name(region)))  if  Region.find_by_name(region)
+    cmpy.addresses.first.update(region: Region.find_by_name(region),
+                                kommun: Kommun.find_by_name(kommun))
 
   end
 end
@@ -12,6 +14,12 @@ end
 And(/^the following regions exist:$/) do |table|
   table.hashes.each do |region|
     FactoryGirl.create(:region, region)
+  end
+end
+
+And(/^the following kommuns exist:$/) do |table|
+  table.hashes.each do |kommun|
+    FactoryGirl.create(:kommun, kommun)
   end
 end
 

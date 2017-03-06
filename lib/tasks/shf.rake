@@ -108,7 +108,7 @@ namespace :shf do
       Region.create(name: 'Sverige', code: nil)
       Region.create(name: 'Online', code: nil)
 
-      log_and_show log, Logger::INFO, "Regions created"
+      log_and_show log, Logger::INFO, "#{Region.count} Regions created"
     end
 
     log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"

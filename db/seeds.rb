@@ -78,12 +78,14 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
     puts "Run task 'shf:load_regions' before seeding if you want records created for"
     puts 'users, members, membership_applications, business categories and companies.'
   else
+    kommuns = Kommun.all.to_a
 
-    puts '\nSeeding the db with users...'
+    puts 'Seeding the db with users...'
 
     r = Random.new
     NUM_USERS = 100
     num_regions = regions.size
+    num_kommuns = kommuns.size
 
     # Create users
     users = []
@@ -169,8 +171,9 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
                             city: FFaker::AddressSE.city,
                             street_address: FFaker::AddressSE.street_address,
                             post_code: FFaker::AddressSE.zip_code,
-                            region: regions[r.rand(0..num_regions-1)]
-      )
+                            region: regions[r.rand(0..num_regions-1)],
+                            kommun: kommuns[r.rand(0..num_kommuns-1)])
+
       address.save
 
       ma.company = company

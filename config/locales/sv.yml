@@ -122,6 +122,7 @@ sv:
         org_nr: *org_nr
         post_code: *post_code
         city: *city
+        kommun: *kommun
         region: *region
         region_short: *region_short
 

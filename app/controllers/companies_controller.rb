@@ -94,7 +94,7 @@ class CompaniesController < ApplicationController
         addresses_attributes: [:id,
                                 :street_address,
                                 :post_code,
-                                :kommun,
+                                :kommun_id,
                                 :city,
                                 :region_id,
                                 :country])

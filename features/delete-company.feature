@@ -48,16 +48,21 @@ Feature: As an admin
       | Västerbotten |
       | Norrbotten   |
 
+    Given the following kommuns exist:
+      | name      |
+      | Alingsås  |
+      | Bromölla  |
+      | Laxå      |
 
     And the following companies exist:
-      | name                 | company_number | email                 | region       |
-      | Happy Mutts          | 2120000142     | woof@happymutts.com   | Stockholm    |
-      | No More Snarky Barky | 5560360793     | bark@snarkybarky.com  | Stockholm    |
-      | WOOF                 | 5569467466     | woof@woof.com         | Västerbotten |
-      | Sad Sad Snarky Barky | 5562252998     | sad@sadmutts.com      | Norrbotten   |
-      | Unassociated Company | 0000000000     | none@unassociated.com | Norrbotten   |
-      | Kitties              | 5906055081     | kitties@kitties.com   | Stockholm    |
-      | Kats                 | 9697222900     | kats@kats.com         | Stockholm    |
+      | name                 | company_number | email                 | region       | kommun   |
+      | Happy Mutts          | 2120000142     | woof@happymutts.com   | Stockholm    | Alingsås |
+      | No More Snarky Barky | 5560360793     | bark@snarkybarky.com  | Stockholm    | Alingsås |
+      | WOOF                 | 5569467466     | woof@woof.com         | Västerbotten | Bromölla |
+      | Sad Sad Snarky Barky | 5562252998     | sad@sadmutts.com      | Norrbotten   | Laxå     |
+      | Unassociated Company | 0000000000     | none@unassociated.com | Norrbotten   | Laxå     |
+      | Kitties              | 5906055081     | kitties@kitties.com   | Stockholm    | Alingsås |
+      | Kats                 | 9697222900     | kats@kats.com         | Stockholm    | Alingsås |
 
 
     And the following applications exist:
