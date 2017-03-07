@@ -16,6 +16,8 @@
     = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.full.min.js'
     = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/sv.js'
 
+    = yield :head_content if content_for?(:head_content)
+
   %body.page.page-template.page-template-page-sidebar-none
     // This embedded script sets the locale for I18n on the client side.
     // It needs to be in the body since only the body will be re-rendered
@@ -35,3 +37,6 @@
                 = yield
                 = render 'page_footer'
     = render 'bottom'
+
+
+    = yield :last_content if content_for?(:last_content)
