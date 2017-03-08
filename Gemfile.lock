@@ -143,6 +143,7 @@ GEM
     ffi (1.9.17)
     font-awesome-sass (4.7.0)
       sass (>= 3.2)
+    geocoder (1.4.3)
     gherkin (4.0.0)
     globalid (0.3.7)
       activesupport (>= 4.1.0)
@@ -378,6 +379,7 @@ DEPENDENCIES
   factory_girl_rails
   ffaker
   font-awesome-sass
+  geocoder
   haml-rails
   high_voltage (~> 3.0.0)
   i18n-js (>= 3.0.0.rc11)

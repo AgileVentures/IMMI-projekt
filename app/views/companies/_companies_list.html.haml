@@ -34,8 +34,8 @@
                 <br/>
                 = bc.name
           %td= link_to company.name, company
-          %td= company.addresses.first.region&.name
-          %td= company.addresses.first.kommun&.name
+          %td= company.main_address.region&.name
+          %td= company.main_address.kommun&.name
           - if current_user.try(:admin)
             %td= company.company_number
             %td= link_to "#{t('edit')}", edit_company_path(company)

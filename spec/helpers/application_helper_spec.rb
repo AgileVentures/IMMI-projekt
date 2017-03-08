@@ -72,4 +72,29 @@ RSpec.describe ApplicationHelper, type: :helper do
     expect(helper.i18n_time_ago_in_words(t)).to eq("#{I18n.t('time_ago', amount_of_time: time_ago_in_words(t))}")
   end
 
+
+  describe '#field_or_none' do
+
+    it 'empty value returns an empty string' do
+      expect(helper.field_or_none('some label', '')).to eq ''
+    end
+
+    it 'non-empty value == <p><span class="field-label">labelseparator</span><span class="field-value">value</span></p>' do
+      expect(helper.field_or_none('label', 'value')).to eq('<p><span class="field-label">label: </span><span class="field-value">value</span></p>')
+    end
+
+    it "has default separator ': ' " do
+      expect(helper.field_or_none('label', 'value')).to eq('<p><span class="field-label">label: </span><span class="field-value">value</span></p>')
+    end
+
+    it 'can set a custom separator' do
+      expect(helper.field_or_none('label', 'value', separator: '???')).to eq('<p><span class="field-label">label???</span><span class="field-value">value</span></p>')
+    end
+
+    it 'can set html options for the surrounding <div>' do
+      expect(helper.field_or_none('label', 'value', tag_options:{class: "blorf", id: "blorfid"})).to eq('<p class="blorf" id="blorfid"><span class="field-label">label: </span><span class="field-value">value</span></p>')
+      #eq("<p class=\"blorf\" id=\"blorfid\"><b>label</b>: value</p>")
+    end
+
+  end
 end

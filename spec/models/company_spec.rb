@@ -133,4 +133,17 @@ RSpec.describe Company, type: :model do
           .to contain_exactly('cat1')
     end
   end
+
+
+  describe '#main_address' do
+
+    let(:company) { create(:company, num_addresses: 3) }
+
+    it 'returns the first address for the company' do
+      expect(company.addresses.count).to eq 3
+      expect(company.main_address).to eq(company.addresses.first)
+    end
+
+  end
+
 end

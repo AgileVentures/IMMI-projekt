@@ -43,7 +43,7 @@ class CompaniesController < ApplicationController
 
 
     @company = Company.new(company_params)
-    @company.addresses.first.addressable = @company  # not sure why Rails doesn't assign this automatically
+    @company.main_address.addressable = @company  # not sure why Rails doesn't assign this automatically
 
     if @company.save
       redirect_to @company, notice: t('.success')
@@ -82,6 +82,10 @@ class CompaniesController < ApplicationController
   # Use callbacks to share common setup or constraints between actions.
   def set_company
     @company = Company.includes(:addresses).find(params[:id])
+
+    needs_geocoding = @company.addresses.reject(&:geocoded?)
+    needs_geocoding.each(&:geocode_best_possible)
+    @company.save!
   end
 
 

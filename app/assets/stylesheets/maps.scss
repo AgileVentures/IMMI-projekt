@@ -1,0 +1,32 @@
+
+#map-container {
+
+  border-color: #fff;
+  border-radius: 16px 16px;
+  border-style: solid;
+  border-width: 7px;
+
+  box-shadow: 2px 2px 10px #b1b1b1;
+
+  height: 400px;
+
+  margin-top: 25px;
+
+  width: 45%;
+}
+
+#map-canvas {
+  height: 384px;
+  /* width:80%; */
+}
+
+#map-container #map-canvas label {
+  display:inline;
+  width: auto;
+}
+
+
+#map {
+  width: 85%;
+  height: 300px;  /* doesn't work with 100% */
+}

@@ -37,6 +37,8 @@ gem 'backup'
 gem 'dotenv'  # used in our backup definition file
 gem 'whenever'
 
+gem 'geocoder'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'

@@ -1,51 +1,48 @@
-%header.entry-header
-  %h1.entry-title= @company.name
-  .post-title-divider
-    %span
-  - unless @categories.nil?
-    = render 'business_categories/as_list', categories: @categories
-.entry-content
-  %p
-    %b #{t('.name')}:
-    = @company.name
-  - if current_user && current_user.admin?
-    %p
-      %b #{t('.org_nr')}:
-      = @company.company_number
-  %p
-    %b #{t('.phone_number')}:
-    = @company.phone_number
-  %p
-    %b #{t('.email')}:
-    = mail_to @company.email
-  %p
-    %b #{t('.website')}:
-    - uri = @company.website
-    - uri = (uri =~ %r(https?://) ? uri : "http://#{uri}")
-    %a{ href: uri, target: '_blank' } #{@company.website}
+%div{ :id => "#{@company.class.name.downcase}-#{@company.id}", class: "show-item #{@company.class.name.downcase} #{@company.class.name.downcase}-#{@company.id}" }
 
-  %h2 #{t('.address')}:
-  %p
-    %b #{t('.street')}:
-    = @company.addresses.first.street_address
-  %p
-    %b #{t('.post_code')}:
-    = @company.addresses.first.post_code
-  %p
-    %b #{t('.city')}:
-    = @company.addresses.first.city
-  %p
-    %b #{t('.kommun')}:
-    = @company.addresses.first.kommun.name
-  %p
-    %b #{t('.region')}:
-    = @company.addresses.first.region.name if @company.addresses.first.region
+  %header.entry-header
+    %h1.entry-title= @company.name
+    .post-title-divider
+      %span
 
-  - if current_user.try(:admin)
-    = link_to "#{t('.delete')}", @company, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }
+    - unless @categories.nil?
+      .categories
+        = render 'business_categories/as_list', categories: @categories
 
-  - if policy(@company).update?
-    .center
-      = link_to "#{t('companies.edit_company')}", edit_company_path(@company)
-      \|
-      = link_to "#{t('companies.all_companies')}", companies_path
+  .entry-content
+
+    .row
+      .col-md-6
+        = field_or_none t('.name'), @company.name, tag_options: {class: 'hidden', id: 'location-text'}
+
+        - if current_user && current_user.admin?
+          = field_or_none t('.org_nr'), @company.company_number, tag_options: {class: 'company-number'}
+
+        = field_or_none t('.phone_number'), @company.phone_number, tag_options: {class: 'phone-number'}
+
+        = field_or_none t('.email'), mail_to(@company.email), tag_options: {class: 'email'}
+
+        = field_or_none t('.website'),link_to(@company.website, full_uri(@company), target: '_blank'), tag_options: {class: 'website'}
+
+        .address
+          %h2 #{t('.address')}:
+
+          = field_or_none t('.street'), @company.main_address.street_address, tag_options: {class: 'street'}
+
+          = field_or_none t('.city'), @company.main_address.city, tag_options: {class: 'city'}
+
+          = field_or_none t('.kommun'), @company.main_address.kommun.name, tag_options: {class: 'kommun'}
+
+          = field_or_none t('.region'), @company.main_address.region.name, tag_options: {class: 'region'}
+
+      .col-md-6
+        = render partial: 'map', locals: { marker_text: html_marker_text(@company), address: @company.main_address}
+
+
+    .row.center#bottom-nav-buttons
+      - if policy(@company).update?
+        = link_to "#{t('companies.edit_company')}", edit_company_path(@company), class: 'btn btn-default edit-company'
+        = link_to "#{t('companies.all_companies')}", companies_path, class: 'btn btn-default all-companies'
+
+      - if current_user.try(:admin)
+        = link_to "#{t('.delete')}", @company, method: :delete, class:'btn btn-danger delete-company', data: { confirm: "#{t('.confirm_are_you_sure')}" }

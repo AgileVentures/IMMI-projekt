@@ -61,4 +61,10 @@ class Company < ApplicationRecord
     true
 
   end
+
+  def main_address
+    addresses.first
+  end
+
+
 end

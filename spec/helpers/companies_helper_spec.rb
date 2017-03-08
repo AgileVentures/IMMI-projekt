@@ -45,4 +45,26 @@ RSpec.describe CompaniesHelper, type: :helper do
       expect(helper.list_categories(company)).not_to include 'Träning'
     end
   end
+
+
+  describe '#full_uri' do
+
+    let(:company) { create(:company)}
+
+    it 'website = "https://happymutts.se"' do
+      company.website = "https://happymutts.se"
+      expect(helper.full_uri(company)).to eq "https://happymutts.se"
+    end
+
+    it 'website = "http://happymutts.se"' do
+      company.website = "http://happymutts.se"
+      expect(helper.full_uri(company)).to eq "http://happymutts.se"
+    end
+
+    it 'website = "happymutts.se"' do
+      company.website = "happymutts.se"
+      expect(helper.full_uri(company)).to eq "http://happymutts.se"
+    end
+  end
+
 end

@@ -1,4 +1,4 @@
 .post-category
   %ul.post-categories
     - @company.business_categories.distinct.each do | business_category |
-      %li= business_category.name
+      %li.name= business_category.name

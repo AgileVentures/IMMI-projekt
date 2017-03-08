@@ -1,0 +1,81 @@
+.field-label {
+  font-weight: bold
+}
+
+.show-item.company {
+
+  .entry-header {
+
+    font-weight: bold;
+
+    h1 {
+      font-weight: bold;
+    }
+  }
+
+  .entry-content {
+    margin-bottom: 0;
+    padding-top: 1rem;
+
+    p {
+      margin-bottom: 0;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+      font-weight: normal;
+    }
+    .post-category .post-categories {
+      margin: 0px;
+      list-style: none;
+      display: inline-block;
+
+    }
+
+    .address {
+      margin-top: 2em;
+
+      h2 {
+        margin-bottom: 0;
+      }
+
+      margin-bottom: 1em;
+    }
+  }
+
+  #bottom-nav-buttons {
+
+    margin-top: 3em;
+  }
+
+  #map {
+
+    width: 100%;
+    margin: 0;
+    padding: 0;
+
+    #company-map-marker {
+
+      p {
+        margin-bottom: 0.5rem;
+      }
+
+      .name {
+        font-weight: bold;
+        font-size: larger;
+      }
+
+      .entire-address {
+      }
+
+      .categories {
+        font-style: italic;
+      }
+    }
+  }
+
+}
+
+
+
+

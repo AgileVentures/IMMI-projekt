@@ -24,7 +24,7 @@
         - @companies.each do | company |
           %tr.company
             %td= link_to company.name, company
-            %td= company.addresses.first.region ?  company.addresses.first.region.name  : ''
+            %td= company.main_address.region ?  company.main_address.region.name  : ''
             - if current_user.try(:admin)
               %td= company.company_number
               %td= link_to t('edit'), edit_company_path(company)

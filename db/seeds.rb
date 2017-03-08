@@ -105,6 +105,10 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
     applications = []
 
+    puts "Now creating membership applications."
+    puts "  As companies are created for accepted applications, their address has to be geocoded/located."
+    puts "  This takes time to do. Be patient. (You can look at the /log/development.log to be sure that things are happening and this is not stuck.)"
+
     2.times do
       r.rand(1..NUM_USERS).times do |i|
 
