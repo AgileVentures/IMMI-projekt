@@ -86,6 +86,9 @@ GEM
     chronic (0.10.2)
     city-state (0.0.13)
       rubyzip (~> 1.1)
+    ckeditor (4.2.2)
+      cocaine
+      orm_adapter (~> 0.5.0)
     climate_control (0.1.0)
     cliver (0.3.2)
     cocaine (0.5.8)
@@ -376,6 +379,7 @@ DEPENDENCIES
   capistrano-rbenv (~> 2.0)
   capistrano-ssh-doctor (~> 1.0)
   city-state
+  ckeditor
   coveralls
   cucumber-rails
   cucumber-timecop

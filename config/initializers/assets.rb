@@ -15,3 +15,4 @@ Rails.application.config.assets.precompile += %w( custom-membership-application-
 Rails.application.config.assets.precompile += %w( users.scss )
 Rails.application.config.assets.precompile += %w{ maps.scss }
 Rails.application.config.assets.precompile += %w{ companies.scss }
+Rails.application.config.assets.precompile += %w( ckeditor/config.js )

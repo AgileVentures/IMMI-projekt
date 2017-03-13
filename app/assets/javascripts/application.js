@@ -53,6 +53,11 @@ document.addEventListener('turbolinks:load', function() {
     // Enable all Bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip();
 
+    // CKeditor initialization
+    $.each($('.ckeditor'), function (index, ele) {
+      CKEDITOR.replace ($(ele).attr('id'))
+    });
+
     // Slide mobile navigation from left
     jQuery('#site-navigation .menu-toggle').on('click', function () {
         jQuery(this).toggleClass('active');

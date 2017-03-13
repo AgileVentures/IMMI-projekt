@@ -4,12 +4,13 @@
     %h1.entry-title= @company.name
     .post-title-divider
     %span
-
     - unless @categories.nil?
       .categories
         = render 'business_categories/as_list', categories: @categories
 
   .entry-content
+    .row
+      != @company.info
 
     .row
       .col-md-5

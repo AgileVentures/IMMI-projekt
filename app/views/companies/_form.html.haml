@@ -49,4 +49,9 @@
   = f.label :website, "#{t('companies.website_include_http')}", class: 'required'
   = f.text_field :website, class: 'wpcf7-form-control'
 
+  %hr
+  = f.label :info, "#{t('companies.info')}", class: 'required'
+  = f.cktext_area :info, ckeditor: { language: 'sv',
+                                     height: 250 }
+
   = f.submit "#{t('submit')}"

@@ -96,6 +96,7 @@ class CompaniesController < ApplicationController
     params.require(:company).permit(:name, :company_number, :phone_number,
                                     :email,
                                     :website,
+                                    :info,
                                     {business_category_ids: []},
         addresses_attributes: [:id,
                                 :street_address,

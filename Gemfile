@@ -29,6 +29,8 @@ gem 'i18n-js', '>= 3.0.0.rc11'
 gem 'will_paginate'
 gem 'will_paginate-bootstrap'
 
+gem 'ckeditor'
+
 gem 'aasm', '~> 4.11.1'  # state machine ()acts as state machine)
 
 gem 'ffaker'  # Fake data for DB seeding

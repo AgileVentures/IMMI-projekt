@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170310224421) do
+ActiveRecord::Schema.define(version: 20170312125058) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -46,6 +46,19 @@ ActiveRecord::Schema.define(version: 20170310224421) do
     t.index ["membership_application_id"], name: "index_on_applications", using: :btree
   end
 
+  create_table "ckeditor_assets", force: :cascade do |t|
+    t.string   "data_file_name",               null: false
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.string   "data_fingerprint"
+    t.string   "type",              limit: 30
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.index ["type"], name: "index_ckeditor_assets_on_type", using: :btree
+  end
+
   create_table "companies", force: :cascade do |t|
     t.string   "name"
     t.string   "company_number"
@@ -54,6 +67,7 @@ ActiveRecord::Schema.define(version: 20170310224421) do
     t.string   "website"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.text     "info"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true, using: :btree
   end
 

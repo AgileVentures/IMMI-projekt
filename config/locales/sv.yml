@@ -23,6 +23,8 @@ sv:
   submit: &submit Skicka
   delete: &delete Radera
   remove: &remove Ta bort
+  cancel: &cancel Annullera
+  upload: &upload Ladda upp
   send: &send Skicka
   new: &new Nytt
   change: &change Byt
@@ -33,7 +35,6 @@ sv:
   'no': &no Nej
 
   time_ago: '%{amount_of_time} sedan'
-
 
   confirm_are_you_sure: &are_you_sure_confirm Är du säker
 
@@ -59,11 +60,19 @@ sv:
       hide: "Dölj the 'Change Password' info"
       show: "Ändra användarens lösenord"
 
-
   will_paginate:
     previous_label: "« Föregående"
     next_label: "Nästa »"
     page_gap: "&hellip;"
+
+  ckeditor:
+      page_title: 'CKEditor Filer Chef'
+      confirm_delete: 'Radera fil?'
+      buttons:
+        cancel: *cancel
+        upload: *upload
+        delete: *delete
+        next: 'Nästa'
 
   # Automatisk och manuell sökning för Active Records
   activerecord:
@@ -359,6 +368,7 @@ sv:
       flera län, eller "Online" om det fungerar oftast (eller uteslutande) på nätet.
     website_include_http: Företagets webbplats
     org_nr_no_hyphens: Endast siffror (ej bindestreck)
+    info: Företagsinformation
 
     all_companies: Alla företag
     edit_company: Redigera detta företag
