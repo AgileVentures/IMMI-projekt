@@ -36,10 +36,9 @@ spec/test_paperclip_files/
 public/system/
 public/storage
 /public/assets/
-
+public/ckeditor_assets
 
 /lib/seeds/imported-data
 
 # do not put config/secrets.yml into repository
 config/secrets.yml
-
