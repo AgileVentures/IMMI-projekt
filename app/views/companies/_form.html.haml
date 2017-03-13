@@ -51,7 +51,9 @@
 
   %hr
   = f.label :info, "#{t('companies.info')}", class: 'required'
-  = f.cktext_area :info, ckeditor: { language: 'sv',
-                                     height: 250 }
+  = f.cktext_area :info,
+                  ckeditor: { language: 'en',
+                              height: 250,
+                              contentsCss: '/assets/ckeditor/contents.css' }
 
   = f.submit "#{t('submit')}"
