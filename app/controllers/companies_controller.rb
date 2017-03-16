@@ -37,6 +37,9 @@ class CompaniesController < ApplicationController
 
   def edit
     @all_business_categories = BusinessCategory.all
+
+    Ckeditor::Picture.images_category = 'company_' + @company.id.to_s
+    Ckeditor::Picture.for_company_id  = @company.id
   end
 
 

@@ -24,11 +24,8 @@ ActiveRecord::Schema.define(version: 20170312125058) do
     t.string  "addressable_type"
     t.integer "addressable_id"
     t.integer "kommun_id"
-    t.float   "latitude"
-    t.float   "longitude"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", using: :btree
     t.index ["kommun_id"], name: "index_addresses_on_kommun_id", using: :btree
-    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", using: :btree
     t.index ["region_id"], name: "index_addresses_on_region_id", using: :btree
   end
 
@@ -54,6 +51,7 @@ ActiveRecord::Schema.define(version: 20170312125058) do
     t.string   "type",              limit: 30
     t.integer  "width"
     t.integer  "height"
+    t.integer  "company_id"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
     t.index ["type"], name: "index_ckeditor_assets_on_type", using: :btree
