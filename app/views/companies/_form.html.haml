@@ -21,7 +21,7 @@
   %p #{t('companies.show.address')}:
 
 
-  = f.fields_for :addresses  do | address_form |
+  = f.fields_for :addresses  do |address_form|
 
     = address_form.label :street_address, "#{t('companies.show.street')}", class: 'required'
     = address_form.text_field :street_address, class: 'wpcf7-form-control'
@@ -52,8 +52,13 @@
   %hr
   = f.label :info, "#{t('companies.info')}", class: 'required'
   = f.cktext_area :info,
-                  ckeditor: { language: 'sv',
+                  ckeditor: { language: "#{@locale}",
                               height: 250,
-                              contentsCss: '/assets/ckeditor/contents.css' }
+                              contentsCss: '/assets/ckeditor/contents.css',
+                              linkShowAdvancedTab: false,
+                              linkShowTargetTab: false,
+                              filebrowserWindowWidth: '500',
+                              filebrowserWindowHeight: '400',
+                              removeDialogTabs: 'image:advanced' }
 
   = f.submit "#{t('submit')}"

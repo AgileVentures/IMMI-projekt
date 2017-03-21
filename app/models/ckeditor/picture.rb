@@ -11,12 +11,14 @@ class Ckeditor::Picture < Ckeditor::Asset
   validates_attachment_content_type :data, content_type: /\Aimage/
 
   belongs_to :company
+  validates_presence_of :company
 
   def url_content
     url(:content)
   end
 
   @@category = nil
+  @@company_id = nil
 
   def self.images_category=(category)
     @@category = category
@@ -27,14 +29,13 @@ class Ckeditor::Picture < Ckeditor::Asset
   end
 
   def save
-    company_id = for_company_id
+    self.company_id = @@company_id if @@company_id
     super
   end
 
-  # def self.all
-  #   @@company_id ? super
-  #   super
-  # end
+  def self.all
+    @@company_id ? super.where(company_id: @@company_id) : super
+  end
 
   private
   def url_for_images

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170312125058) do
+ActiveRecord::Schema.define(version: 20170316182702) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -23,9 +23,12 @@ ActiveRecord::Schema.define(version: 20170312125058) do
     t.integer "region_id"
     t.string  "addressable_type"
     t.integer "addressable_id"
+    t.float   "latitude"
+    t.float   "longitude"
     t.integer "kommun_id"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", using: :btree
     t.index ["kommun_id"], name: "index_addresses_on_kommun_id", using: :btree
+    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", using: :btree
     t.index ["region_id"], name: "index_addresses_on_region_id", using: :btree
   end
 
@@ -51,9 +54,10 @@ ActiveRecord::Schema.define(version: 20170312125058) do
     t.string   "type",              limit: 30
     t.integer  "width"
     t.integer  "height"
-    t.integer  "company_id"
     t.datetime "created_at",                   null: false
     t.datetime "updated_at",                   null: false
+    t.integer  "company_id"
+    t.index ["company_id"], name: "index_ckeditor_assets_on_company_id", using: :btree
     t.index ["type"], name: "index_ckeditor_assets_on_type", using: :btree
   end
 
@@ -129,6 +133,7 @@ ActiveRecord::Schema.define(version: 20170312125058) do
 
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
+  add_foreign_key "ckeditor_assets", "companies"
   add_foreign_key "membership_applications", "users"
   add_foreign_key "uploaded_files", "membership_applications"
 end

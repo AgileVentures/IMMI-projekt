@@ -18,6 +18,8 @@ class Company < ApplicationRecord
 
   has_many :addresses, as: :addressable, dependent: :destroy
 
+  has_many :pictures, dependent: :destroy
+
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
 
