@@ -26,6 +26,8 @@ RSpec.configure do |config|
     end
   end
 
+  config.file_fixture_path = 'spec/fixtures/uploaded_files'
+
 
   config.use_transactional_fixtures = false
 

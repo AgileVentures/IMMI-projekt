@@ -23,9 +23,9 @@ ActiveRecord::Schema.define(version: 20170316182702) do
     t.integer "region_id"
     t.string  "addressable_type"
     t.integer "addressable_id"
+    t.integer "kommun_id"
     t.float   "latitude"
     t.float   "longitude"
-    t.integer "kommun_id"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", using: :btree
     t.index ["kommun_id"], name: "index_addresses_on_kommun_id", using: :btree
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", using: :btree

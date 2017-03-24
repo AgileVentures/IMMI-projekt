@@ -42,13 +42,12 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :phone_number }
     it { is_expected.to have_db_column :email }
     it { is_expected.to have_db_column :website }
+    it { is_expected.to have_db_column :info }
   end
 
   describe 'Validations' do
     it { is_expected.to validate_presence_of :company_number }
-
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
-
     it { is_expected.to allow_value('user@example.com').for(:email) }
     it { is_expected.not_to allow_value('userexample.com').for(:email) }
 
@@ -57,8 +56,8 @@ RSpec.describe Company, type: :model do
   describe 'Associations' do
     it { is_expected.to have_many(:business_categories).through(:membership_applications) }
     it { is_expected.to have_many(:membership_applications) }
-
     it { is_expected.to have_many(:addresses) }
+    it { is_expected.to have_many(:pictures) }
   end
 
 
