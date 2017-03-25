@@ -35,8 +35,8 @@ spec/test_paperclip_files/
 # do not check in files that are uploaded or assets
 public/system/
 public/storage
-/public/assets/
 public/ckeditor_assets
+/public/assets/
 
 /lib/seeds/imported-data
 
