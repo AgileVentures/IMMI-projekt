@@ -39,10 +39,11 @@ ratings:
   - "**.php"
   - "**.py"
 exclude_paths:
-- config/
-- db/
-- features/
-- script/
-- spec/
-- vendor/
-- public/javascripts/
+- "config/"
+- "db/"
+- "features/"
+- "script/"
+- "spec/"
+- "vendor/"
+- "public/javascripts/"
+- "javascripts/ckeditor/"
