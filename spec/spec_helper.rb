@@ -1,5 +1,6 @@
 require 'coveralls'
 require 'pundit/rspec'
+require 'paperclip/matchers'
 
 Coveralls.wear_merged!('rails')
 
@@ -13,6 +14,8 @@ RSpec.configure do |config|
   end
 
   config.shared_context_metadata_behavior = :apply_to_host_groups
+
+  config.include Paperclip::Shoulda::Matchers
 
   config.after(:suite) do
     FileUtils.rm_rf(Dir["#{Rails.root}/spec/test_paperclip_files/"]) if Object.const_defined?('Rails')

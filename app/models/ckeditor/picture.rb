@@ -1,4 +1,6 @@
 class Ckeditor::Picture < Ckeditor::Asset
+  attr_accessor :data
+
   has_attached_file :data,
                     url: :url_for_images,
                     path: :path_for_images,
@@ -6,14 +8,10 @@ class Ckeditor::Picture < Ckeditor::Asset
 
   validates_attachment_presence :data
   validates_attachment_size :data, less_than: 2.megabytes
-  validates_attachment_content_type :data, content_type: /\Aimage/
+  validates_attachment_content_type :data, content_type: /\Aimage\//
 
   belongs_to :company
   validates_presence_of :company
-
-  def url_content
-    url(:content)
-  end
 
   @@category = nil
   @@company_id = nil
