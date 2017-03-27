@@ -336,3 +336,13 @@ end
 And(/^I should see xpath "([^"]*)"$/) do | xp |
   expect(page).to have_xpath(xp)
 end
+
+Then(/^I should( not)? see "([^"]*)" before "([^"]*)"$/) do |not_see, toSearch, last|
+  assert_text toSearch
+  regex = /#{Regexp.quote("#{toSearch}")}.+#{Regexp.quote("#{last}")}/
+  if not_see
+    assert_no_text regex
+  else
+    assert_text regex
+  end
+end
