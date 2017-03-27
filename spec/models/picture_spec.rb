@@ -9,6 +9,7 @@ RSpec.describe Ckeditor::Picture, type: :model do
   let(:picture2) { Ckeditor::Picture.create(data: file_fixture('image.png').open) }
   let(:picture3) { Ckeditor::Picture.create(data: file_fixture('image.png').open) }
   let(:picture4) { Ckeditor::Picture.create(data: file_fixture('image.png').open) }
+  let(:file)     { Ckeditor::Picture.create(data: file_fixture('diploma.pdf').open) }
 
   describe 'DB Table' do
     it { is_expected.to have_db_column :company_id }
@@ -21,7 +22,7 @@ RSpec.describe Ckeditor::Picture, type: :model do
   describe 'Validations' do
     it { is_expected.to have_attached_file :data }
     it { is_expected.to validate_attachment_presence :data }
-    it { is_expected.to validate_attachment_size(:data).less_than(2.megabytes) }
+    it { is_expected.to validate_attachment_size(:data).in(0..2.megabytes) }
     it { is_expected.to validate_presence_of :company }
   end
 

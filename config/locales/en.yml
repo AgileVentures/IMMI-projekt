@@ -24,7 +24,7 @@ en:
   delete: &delete Delete
   remove: &remove Remove
   cancel: &cancel Cancel
-  upload: &upload
+  upload: &upload Upload
   send: &send Send
   new: &new New
   change: &change Change
@@ -370,7 +370,7 @@ en:
       in several counties, or "Online" if it operates mostly (or solely) online.
     website_include_http: Company website
     org_nr_no_hyphens: Numbers only (no hyphens)
-    info: Company Information
+    description: Customized Company Description
 
     all_companies: All companies
     edit_company: Edit company

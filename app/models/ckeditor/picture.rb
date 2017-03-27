@@ -7,8 +7,8 @@ class Ckeditor::Picture < Ckeditor::Asset
                     styles: { content: '600>', thumb: '118x100#' }
 
   validates_attachment_presence :data
-  validates_attachment_size :data, less_than: 2.megabytes
-  validates_attachment_content_type :data, content_type: /\Aimage\//
+  validates_attachment_size :data, in: 0..2.megabytes
+  validates_attachment_content_type :data, content_type: /\Aimage/
 
   belongs_to :company
   validates_presence_of :company

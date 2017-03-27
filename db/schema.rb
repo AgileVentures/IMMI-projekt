@@ -69,7 +69,7 @@ ActiveRecord::Schema.define(version: 20170316182702) do
     t.string   "website"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
-    t.text     "info"
+    t.text     "description"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true, using: :btree
   end
 

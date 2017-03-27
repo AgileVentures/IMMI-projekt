@@ -368,7 +368,7 @@ sv:
       flera län, eller "Online" om det fungerar oftast (eller uteslutande) på nätet.
     website_include_http: Företagets webbplats
     org_nr_no_hyphens: Endast siffror (ej bindestreck)
-    info: Företagsinformation
+    description: Anpassade Beskrivning av företaget
 
     all_companies: Alla företag
     edit_company: Redigera detta företag

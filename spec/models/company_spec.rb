@@ -42,7 +42,7 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :phone_number }
     it { is_expected.to have_db_column :email }
     it { is_expected.to have_db_column :website }
-    it { is_expected.to have_db_column :info }
+    it { is_expected.to have_db_column :description }
   end
 
   describe 'Validations' do
