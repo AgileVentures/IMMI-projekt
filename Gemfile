@@ -57,6 +57,9 @@ group :development, :test do
   gem 'launchy'
   gem 'cucumber-timecop', require: false
 
+  gem 'better_errors'
+  gem 'binding_of_caller'  # needed to make better_errors work well
+
 end
 
 group :development do
