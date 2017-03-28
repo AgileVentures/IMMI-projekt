@@ -48,7 +48,28 @@ Background:
     | Emma       | emma@weluvdogs.com  | 5569467466     | accepted | Groomer       |
 
 @javascript
-Scenario: Go to companies index page, see all companies, search by category
+Scenario: View all companies, sort by columns
+  Given I am Logged out
+  And I am on the "landing" page
+  And I should see "Barky Boys"
+  And I should see "HappyMutts"
+  And I should see "Dogs R Us"
+  And I should see "We Luv Dogs"
+  And I click on t("activerecord.attributes.company.region") link
+  And I should see "Norrbotten" before "Stockholm"
+  And I should see "Stockholm" before "Sweden"
+  And I should see "Sweden" before "Västerbotten"
+  And I click on t("activerecord.attributes.company.name") link
+  And I should see "Barky Boys" before "Dogs R Us"
+  And I should see "Dogs R Us" before "HappyMutts"
+  And I should see "HappyMutts" before "We Luv Dogs"
+  And I click on t("activerecord.attributes.company.kommun") link
+  And I should see "Alingsås" before "Bromölla"
+  And I should see "Bromölla" before "Laxå"
+  And I should see "Laxå" before "Östersund"
+
+@javascript
+Scenario: Search by category
   Given I am Logged out
   And I am on the "landing" page
   And I should see "Barky Boys"

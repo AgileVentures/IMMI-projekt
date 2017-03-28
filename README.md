@@ -27,7 +27,13 @@ _TODO: any other main technical pieces right now?  any java dependencies for the
 
 ## Installation
 
-_(TODO)_
+Sensitive or secret information (e.g. Google map API key) in maintained in this file in the project home directory
+```
+.env
+```
+That file will not be present in the environment when you first clone it because it is not maintained in git - and thus is not pulled down from github. Contact one of the project members to get the contents of that file (for example via private message in Slack, or general message in the project's Slack channel).
+
+_(TODO: more information on installation process)_
 
 
 ## Contributing:
