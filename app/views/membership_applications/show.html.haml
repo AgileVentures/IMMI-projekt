@@ -1,39 +1,42 @@
-%header.entry-header
-  %h1.entry-title= t('.title', member_full_name: member_full_name)
-.post-title-divider
-  %span
-.entry-content
+%div{ :id => "#{unique_css_id(@membership_application)}", class: "#{item_view_class(@membership_application, controller.action_name)}" }
 
-  %h2= member_full_name
-
-  = render 'membership_number'
-
-  %p= mail_to @membership_application.contact_email, @membership_application.contact_email
-
-  - if @membership_application.phone_number
-    %p #{t('.phone_number')}: #{@membership_application.phone_number}
-
-  %p #{t('.company_number')}: #{@membership_application.company_number}
-
-  - unless assocation_empty?(@categories)
-    %h4 #{t('.with_categories')}:
-    %strong
-      %ul
-        - @categories.each do | business_category |
-          %li= business_category.name
-
+  %header.entry-header
+    %h1.entry-title= t('.title', member_full_name: member_full_name)
   .post-title-divider
     %span
+  .entry-content
 
-  #uploaded_files
-    = render 'uploaded_files_list', membership_application: @membership_application
+    %h2= member_full_name
 
-  %p #{t('.app_status')}: #{t("membership_applications.state.#{@membership_application.state}")}  - #{@membership_application.updated_at.strftime('%F')}
+    = render 'membership_number'
 
-  - if current_user.admin?
-    = render partial: 'application_status_form'
+    %p= mail_to @membership_application.contact_email, @membership_application.contact_email
+
+    - if @membership_application.phone_number
+      %p #{t('.phone_number')}: #{@membership_application.phone_number}
+
+    %p #{t('.company_number')}: #{@membership_application.company_number}
+
+    - unless assocation_empty?(@categories)
+      %h4 #{t('.with_categories')}:
+      %strong
+        %ul
+          - @categories.each do | business_category |
+            %li= business_category.name
+
+    .post-title-divider
+      %span
+
+    #supporting-files
+      = render 'uploaded_files_list', membership_application: @membership_application, show_delete: false
 
 
-  - if current_user && current_user.admin?
-    = link_to "#{t('membership_applications.edit_membership_application')}", edit_membership_application_path(@membership_application), class:'btn btn-warning'
-    = link_to "#{t('.delete')}", @membership_application, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }
+    %h3.app-status #{t('.app_status')}: #{t("membership_applications.state.#{@membership_application.state}")}  - #{@membership_application.updated_at.strftime('%F')}
+
+    - if current_user.admin?
+      = render partial: 'application_status_form'
+
+
+    - if current_user && current_user.admin?
+      = link_to "#{t('membership_applications.edit_membership_application')}", edit_membership_application_path(@membership_application), class:'btn btn-warning'
+      = link_to "#{t('.delete')}", @membership_application, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }

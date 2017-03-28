@@ -1,19 +1,30 @@
-- if membership_application.uploaded_files.count < 1
-  %p= t('membership_applications.uploads.no_files')
-- else
-  %p
-    %strong= t('membership_applications.uploads.files_uploaded')
+.uploaded-files#uploaded-files
+  - warning = content_tag(:p, icon('warning') + t('membership_applications.uploads.no_files'))
 
-  %table
-    %thead
-      %tr
-        %th= t('membership_applications.uploads.filename')
-        %th.action= t('delete').downcase
 
-    %tbody
-      - membership_application.uploaded_files.each do |uploaded_file|
-        %tr.uploaded-files
-          %td.uploaded-file
-            = link_to uploaded_file.actual_file_file_name, uploaded_file.actual_file.url, target: "_blank", id: "uploaded-file-link-#{uploaded_file.id}", class: "uploaded-file-link"
-          %td{class: "delete-uploaded-file-#{uploaded_file.id}"}
-            = link_to icon('trash'), membership_application_path(membership_application.id, membership_application: { uploaded_files_attributes: { id: uploaded_file.id,  '_destroy' => true }}), method: :put, id: "uploaded-file-#{uploaded_file.id}", class: "action-delete", data: { confirm: "#{t('membership_applications.uploads.confirm_delete', filename: uploaded_file.actual_file_file_name)}" }
+  - if @membership_application.uploaded_files.count < 1
+
+    %p.no-files-uploaded-warn
+      = icon('warning') + t('membership_applications.uploads.no_files')
+
+
+  - else
+    %h4.files-uploaded-list-title= t('membership_applications.uploads.files_uploaded')
+
+    - show_delete = true if show_delete.nil?
+    %table
+      %thead
+        %tr
+          %th= t('membership_applications.uploads.filename')
+          - if show_delete
+            %th.action= t('delete')
+
+      %tbody
+        - @membership_application.uploaded_files.each do |uploaded_file|
+          %tr.uploaded-files
+            %td.uploaded-file
+              = link_to uploaded_file.actual_file_file_name, uploaded_file.actual_file.url, target: "_blank", id: "uploaded-file-link-#{uploaded_file.id}", class: "uploaded-file-link"
+
+            - if show_delete
+              %td{ class: "delete-uploaded-file-#{uploaded_file.id}" }
+                = link_to icon('trash'), membership_application_path(@membership_application.id, membership_application: { uploaded_files_attributes: { id: uploaded_file.id,  '_destroy' => true }}), method: :put, id: "uploaded-file-#{uploaded_file.id}", class: "action-delete", data: { confirm: "#{t('membership_applications.uploads.confirm_delete', filename: uploaded_file.actual_file_file_name)}" }

@@ -29,6 +29,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     Then I should see t("membership_applications.uploads.files_uploaded")
     And I should see "diploma.pdf" uploaded for this membership application
+    And I should see the file delete action
 
 
   Scenario: Upload a file for an existing application
@@ -134,3 +135,21 @@ Feature: As an applicant
     And I am on the list applications page
     And I click the t("manage") action for the row with "5562252998"
     And I click on "diploma.pdf"
+
+  Scenario: Applicant doesn't see delete action when just viewing application with 1 file uploaded
+    Given I am logged in as "applicant_1@random.com"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma.pdf" to upload
+    And I click on t("membership_applications.edit.submit_button_label")
+    When I am on the "application" page for "applicant_1@random.com"
+    Then I should not see the file delete action
+
+  Scenario: Admin doesn't see delete action when just viewing application with 1 file uploaded
+    Given I am logged in as "applicant_1@random.com"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma.pdf" to upload
+    And I click on t("membership_applications.edit.submit_button_label")
+    And I am Logged out
+    And I am logged in as "admin@shf.com"
+    When I am on the "application" page for "applicant_1@random.com"
+    Then I should not see the file delete action

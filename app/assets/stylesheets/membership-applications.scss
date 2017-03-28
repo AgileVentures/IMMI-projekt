@@ -1,0 +1,166 @@
+$no-files-warn-color: #ff0000;
+
+$btn-background: #ffffff;
+
+$btn-choose-files-text: #ffffff;
+
+$border-med-blue: rgb(86, 146, 206);
+$border-med-blue-a-light: rgba(86, 146, 206, 0.2);
+
+$files-table-background: #ffffff;
+
+.membershipapplication {
+
+  .entry-content.wpcf7 {
+    margin-top: 1em !important;
+    padding-top: 0;
+  }
+
+  .required-field-explanation {
+    font-weight: bold;
+    margin-top: 2em;
+  }
+
+  .instructions {
+    text-align: center;
+  }
+
+  .app-section {
+
+    text-align: left;
+
+    .instructions {
+      text-align: left;
+    }
+
+    h2 {
+      border-top: 3pt solid rgba(86, 146, 206, 0.2);
+      font-weight: bold;
+      margin-top: 3em;
+      padding-top: 1em;
+    }
+
+    h2.first {
+      margin-top: 1em;
+    }
+
+    .answers {
+
+      margin-left: 1em;
+
+      .field-instruction {
+        font-size: smaller;
+        font-style: italic;
+      }
+
+    }
+  }
+
+  #supporting-files {
+
+    margin-bottom: 1em;
+
+    .files {
+      background: $border-med-blue-a-light;
+      border: 1px solid $border-med-blue;
+      margin-left: 1em;
+      padding: 2em;
+
+    }
+
+    table {
+      margin-left: 1em;
+      margin-right: 1em;
+
+      // not striped
+      tr:nth-child(odd), tr:nth-child(even) {
+        background-color: $files-table-background;
+      }
+
+      th,
+      td {
+        margin: 0;
+        padding-bottom: 0;
+        padding-top: 0;
+      }
+
+      th {
+        border-bottom: 0;
+        font-weight: bold;
+      }
+    }
+
+    #upload-files {
+
+      .files-to-upload-title {
+        font-weight: normal;
+        margin-bottom: 0;
+      }
+
+    }
+
+    p.upload-button-pre {
+      margin-bottom: 0;
+    }
+
+    #uploaded-files {
+
+      margin-top: 1em;
+
+      .no-files-uploaded-warn {
+        color: $no-files-warn-color;
+        font-size: larger;
+        font-weight: bold;
+      }
+
+      .files-uploaded-list-title {
+        margin-bottom: 0.5em;
+        margin-top: 1em;
+      }
+
+    }
+
+    .upload-more-note {
+      margin-top: 1em;
+    }
+
+  }
+
+  .btn-file {
+
+    border: 0;
+
+    color: $btn-choose-files-text;
+    font-size: 1.1em;
+
+    line-height: 2em;
+
+    margin-bottom: 1em;
+    margin-left: 1em;
+
+    overflow: hidden;
+    position: relative;
+
+  }
+
+  .btn-file input[type=file] {
+    background: $btn-background;
+    cursor: inherit;
+    display: block;
+    filter: alpha(opacity=0);
+    opacity: 0;
+    outline: none;
+    position: absolute;
+    right: 0;
+    text-align: right;
+    top: 0;
+  }
+}
+
+.show.membershipapplication,
+.update.membershipapplication {
+
+  #uploaded-files h4.files-uploaded-list-title {
+    font-weight: bold;
+  }
+}

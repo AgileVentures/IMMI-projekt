@@ -1,15 +1,18 @@
-%header.entry-header
-  %h1.entry-title= t('.title')
-.post-title-divider
-  %span
-.entry-content.wpcf7
-  = form_for @membership_application, html: {multipart: true}, url: membership_applications_path do |f|
-    - if @membership_application.errors.any?
-      - @membership_application.errors.full_messages.each do |msg|
-        .wpcf7-response-output
-          = msg
-    = render partial: 'membership_application_fields', locals: {f: f}
-    = render 'application/required_fields'
+%div{ :id => "#{@membership_application.class.name.downcase}", class: "new-item #{@membership_application.class.name.downcase}" }
 
-    = f.submit t('.submit_button_label')
+  %header.entry-header
+    %h1.entry-title= t('.title')
+  .post-title-divider
+    %span
+  .instructions= t('membership_applications.new.instructions')
 
+  .entry-content.wpcf7
+    = form_for @membership_application, html: {multipart: true}, url: membership_applications_path do |f|
+      - if @membership_application.errors.any?
+        - @membership_application.errors.full_messages.each do |msg|
+          .wpcf7-response-output
+            = msg
+      = render partial: 'membership_application_fields', locals: {f: f}
+      = render 'application/required_fields'
+
+      = f.submit t('.submit_button_label')

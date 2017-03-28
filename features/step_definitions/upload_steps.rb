@@ -32,3 +32,11 @@ end
 Then(/^I should not see t\("([^"]*)", max_size: '([^']*)'\)$/) do | error_message, size |
   expect(page).not_to have_content I18n.t("#{error_message}", max_size: size)
 end
+
+Then(/^I should see the file delete action$/) do
+  expect(page).to have_xpath("//th[contains(., #{I18n.t('delete')})][@class='action']")
+end
+
+Then(/^I should not see the file delete action$/) do
+  expect(page).not_to have_xpath("//th[contains(., #{I18n.t('delete')})][@class='action']")
+end
