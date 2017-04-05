@@ -3,13 +3,13 @@
 # This information is loaded in application.rb:
 #  module SHFProject
 #     class Application < Rails::Application
-#       config.shf = config_for(:shf)
+#       config.x.shf = config_for(:shf)
 #     end
 #   end
 #
 #
 # The values can be accessed like this:
-#  Rails.configuration.shf['var'] #=> some value
+#  Rails.configuration.x.shf['var'] #=> some value
 #
 #
 
@@ -18,7 +18,8 @@ default: &default
 
 
 development:
-  <<: *default
+  google_maps_js_api: "https://maps.googleapis.com/maps/api/js"
+  # <<: *default
 
 test:
   <<: *default

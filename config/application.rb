@@ -41,8 +41,7 @@ module SHFProject
 
 
     # load settings from the shf.yml file:
-    config.shf = config_for(:shf)
-
+    config.x.shf = config_for(:shf)
 
     config.after_initialize do
       config.x.google_key = "#{Geocoder.config[:api_key]}"
