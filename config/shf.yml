@@ -18,8 +18,7 @@ default: &default
 
 
 development:
-  google_maps_js_api: "https://maps.googleapis.com/maps/api/js"
-  # <<: *default
+  <<: *default
 
 test:
   <<: *default
