@@ -35,7 +35,7 @@ end
 
 private def get_company_number(r)
   company_number = nil
-  20.times do
+  100.times do
     # loop until done or we find a valid Org number
     org_number = Orgnummer.new(r.rand(1000000000..9999999999).to_s)
     next unless org_number.valid?
@@ -124,16 +124,17 @@ private def make_new_company(company_number)
                         name: FFaker::CompanySE.name,
                         phone_number: FFaker::PhoneNumberSE.phone_number,
                         website: FFaker::InternetSE.http_url)
-  company.save
+  if(company.save)
 
-  address = Address.new(addressable: company,
-                        city: FFaker::AddressSE.city,
-                        street_address: FFaker::AddressSE.street_address,
-                        post_code: FFaker::AddressSE.zip_code,
-                        region: regions[FFaker.rand(0..num_regions-1)],
-                        kommun: kommuns[FFaker.rand(0..num_kommuns-1)])
+    address = Address.new(addressable: company,
+                          city: FFaker::AddressSE.city,
+                          street_address: FFaker::AddressSE.street_address,
+                          post_code: FFaker::AddressSE.zip_code,
+                          region: regions[FFaker.rand(0..num_regions-1)],
+                          kommun: kommuns[FFaker.rand(0..num_kommuns-1)])
 
-  address.save
+    address.save
+  end
 
   company
 end

@@ -18,6 +18,7 @@
     = javascript_include_tag Ckeditor.cdn_url
     = javascript_include_tag "#{Rails.configuration.x.shf['google_maps_js_api']}?key=#{Rails.configuration.x.google_key}"
 
+
     - if Rails.env.test?
       -#
         Disable jQuery animations in the test environment to
