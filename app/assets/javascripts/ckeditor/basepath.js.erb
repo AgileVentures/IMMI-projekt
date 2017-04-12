@@ -4,6 +4,6 @@
     base_path << "/#{Rails.root.basename.to_s}/"
   end
   base_path << Rails.application.config.assets.prefix
-  base_path << 'javascripts/ckeditor/'
+  base_path << '/javascripts/ckeditor/'
 %>
 var CKEDITOR_BASEPATH = '<%= base_path %>';
