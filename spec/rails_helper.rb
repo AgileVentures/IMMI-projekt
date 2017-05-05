@@ -76,4 +76,32 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+
+  # - - - - - -
+  # Geocoding
+
+  geocoding_orig_lookup = Geocoder.config[:lookup]
+
+  # don't use the real Geocoder API; switch it to testing mode
+  # unless there is the tag
+  config.before(:all) do
+    Geocoder.configure(lookup: :test)
+    require Rails.root.join("spec/support/geocoder_stubs")
+  end
+
+
+  # if the type is :real_geocoder
+  #  then use the real Geocoding API, not the testing lookup
+  config.before(:each, type: :real_geocoder) do
+    Geocoder.configure(lookup: geocoding_orig_lookup)
+  end
+
+  config.after(:each, type: :read_geocoder) do
+    Geocoder.configure(lookup: :test)
+  end
+
+  config.after(:all) do
+    Geocoder.configure(lookup: geocoding_orig_lookup)
+  end
+
 end

@@ -35,3 +35,18 @@ end
 
 # For tests requiring javascript, headless
 Capybara.javascript_driver = :poltergeist
+
+
+
+# Geocoding: use the stubbed values instead of actually hitting the API
+#
+geocoding_orig_lookup = Geocoder.config[:lookup]
+
+Before do
+  Geocoder.configure(lookup: :test)
+  require Rails.root.join("spec/support/geocoder_stubs") # load the stubbed results
+end
+
+After do
+  Geocoder.configure(lookup: geocoding_orig_lookup)
+end

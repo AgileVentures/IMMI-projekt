@@ -82,7 +82,8 @@ RSpec.describe Address, type: :model do
   end
 
 
-  describe 'gecoding' do
+  describe 'gecoding', :type => :real_geocoder do
+
 
     let(:expected_streetaddress) { 'Kvarnliden 10' }
     let(:expected_postcode) { '310 40' }
@@ -101,6 +102,7 @@ RSpec.describe Address, type: :model do
     it 'Geocoder is configured to raise all errors in test environment' do
       expect(Geocoder.config[:always_raise]).to eq(:all)
     end
+
 
     it 'geocode from address' do
       addr = Address.new(street_address: expected_streetaddress,
