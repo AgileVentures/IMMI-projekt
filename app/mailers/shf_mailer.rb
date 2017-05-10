@@ -1,0 +1,2 @@
+class ShfMailer < ApplicationMailer
+end

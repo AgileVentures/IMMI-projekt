@@ -59,8 +59,17 @@ Rails.application.configure do
 
   # Ignore bad email addresses and do not raise email delivery errors.
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.raise_delivery_errors = false
 
+  # Mail templates will need to use "_url" helpers rather than "_path" helpers
+  # since the template will not have the context of a request
+  # (as a controller does) and thus the full URL will be required to create
+  # links in the email.  This setting defines the host (domain) for the URL.
+  config.action_mailer.default_url_options = { :host => ENV['DEFAULT_HOST'] ||
+                                                        'sverigeshundforetagare.se'}
+
+  config.action_mailer.delivery_method = :mailgun
+  
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true
