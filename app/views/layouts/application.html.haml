@@ -5,7 +5,7 @@
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
     %title Medlemmar i Sveriges Hundföretagare
     = csrf_meta_tags
-    
+
     = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/' + |
                           'select2/4.0.2/css/select2.min.css'         |
     = stylesheet_link_tag 'application', media: 'all'
@@ -14,7 +14,9 @@
     = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.full.min.js'
     = javascript_include_tag 'https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/i18n/sv.js'
     = javascript_include_tag Ckeditor.cdn_url
-    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{Geocoder.config[:api_key]}"
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=" + |
+                             "#{Geocoder.config[:api_key]}&language=#{I18n.locale}" + |
+                             "&region=SE" |
 
 
     - if Rails.env.test?
