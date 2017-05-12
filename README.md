@@ -18,38 +18,98 @@ Codeclimate: [![Code Climate](https://codeclimate.com/github/AgileVentures/shf-p
 
 This project runs on a Ruby on Rails stack with postgreSQL as the repository.
 
-- ruby v. xxx _(TODO)_
+- ruby version - check Gemfile (2.3.1 as of May 12, 2017)
 - rails >= v. 5.0.0
-- postgreSQL >=  v. _(TODO what is the minimum version of postgres?)_
-
-_TODO: any other main technical pieces right now?  any java dependencies for the front end (like node, angular, etc)?_
-
+- Postgresql DB
 
 ## Installation
 
-Sensitive or secret information (e.g. Google map API key) in maintained in this file in the project home directory
+### Step 1: Fork the repository
+
+Forking the project creates a copy of the code base which you can modify without
+affecting the main code base. Once you are satisfied with your changes, you can
+make a pull request to the main repository.
+
+Visit the project homepage on GitHub at:
+<https://github.com/AgileVentures/shf-project>
+
+Fork the project by clicking the Fork button on the top-right hand corner.
+
+Now that you have a fork of the project, copy the URL for the repository
+(just below the sidebar on the right) and clone the forked project using Git:
+```shell
+$ cd to/some/directory
+$ git clone https://github.com/<your-github-username>/shf-project.git
+```
+This will create a directory (under the directory where you are currently)
+called `shf-project`.  That is the "home" directory for the app.
+
+You also need to configure a remote repo to point to the main project
+repository in order to get latest updates. (This will be required at a later
+  stage when submitting your features)
+
+```shell
+$ cd shf-project
+$ git remote add upstream https://github.com/AgileVentures/shf-project
+```
+
+### Step 2: Install Project dependencies
+
+```shell
+$ bundle install
+```
+
+### Step 3: Get "super secret" data
+
+Sensitive or secret information (e.g. Google map API key) is maintained in this
+file in the project home directory:
 ```
 .env
 ```
-That file will not be present in the environment when you first clone it because it is not maintained in git - and thus is not pulled down from github. Contact one of the project members to get the contents of that file (for example via private message in Slack, or general message in the project's Slack channel).
+That file will not be present in the environment when you first clone it because
+it is not maintained in git - and thus is not pulled down from github. Contact
+one of the project members to get the contents of that file (for example via
+private message in Slack, or general message in the project's Slack channel).
 
-_(TODO: more information on installation process)_
+### Step 4: Update the database
+```shell
+$ bundle exec rake shf:db_recreate
+```
+The rake task `db_recreate` creates the development DB, creates the application
+schema, loads foundation data table (e.g. list of Swedish counties) and then
+runs seed.db to populate the DB with data for development.
 
+When this completes, initialize the test DB:
+```shell
+$ bundle exec rake db:test:prepare
+```
+
+### Step 5: Run the tests
+
+```shell
+$ bundle exec rspec
+$ bundle exec rake cucumber
+```
+Discuss any errors with the team.
+
+### Step 6. Start the server
+
+```shell
+$ bundle exec rails s
+```
+
+### Step 7. Get access to Pivotal Tracker
+We use Pivotal Tracker (PT) for bug and story tracking.  Please contact a
+project team member (via Slack) to be added to our story board on PT.
 
 ## Contributing:
 
-Interested? Our contribution guidelines describes how to contribute, including information about our git workflow and our standards for using GitHub issues and pull requests (PRs).
-
-_(TODO: create and then link the contribution guidelines here)_
-
-_(TODO: do you need to be a member of AgileVentures to contribute?  a paid member? A line here about AV would be helpful since not all will take the time to go read more in our contribution guildelines.)_
+Please see our github wiki for articles aboud how to contribute to the project.
 
 ## Problems?
 
 If have any problems, please  **[search through the issues](https://github.com/AgileVentures/shf-project/issues) first** to see if it's already been addressed. If you do not find an existing issue, then open a new issue.
-Please describe the problem in detail including information about your operating system (platforms), version, etc.  The more detail you can provide, the more likely we can address it.
-
-
+Please describe the problem in detail including information about your operating system (platforms), version, etc.  The more detail you can provide, the sooner we can address it.
 
 ##License
 
