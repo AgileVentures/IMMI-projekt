@@ -97,6 +97,7 @@ Discuss any errors with the team.
 ```shell
 $ bundle exec rails s
 ```
+Point your browser to `localhost:3000` and confirm that the website is running.
 
 ### Step 7. Get access to Pivotal Tracker
 We use Pivotal Tracker (PT) for bug and story tracking.  Please contact a
@@ -104,7 +105,8 @@ project team member (via Slack) to be added to our story board on PT.
 
 ## Contributing:
 
-Please see our github wiki for articles aboud how to contribute to the project.
+Please see our github [wiki](https://github.com/AgileVentures/shf-project/wiki)
+for articles about contributing to the project.
 
 ## Problems?
 
