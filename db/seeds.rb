@@ -22,7 +22,7 @@ unless Rails.env.development? || Rails.env.production? ||
   abort SEED_STOP_MSG
 end
 
-puts ">>> SEEDING ENVIRONMENT: #{Rails.env.to_s}"
+puts ">>> SEEDING ENVIRONMENT: #{Rails.env}"
 
 puts 'Creating admin user'
 if Rails.env.production?
@@ -46,13 +46,11 @@ if Region.all.empty?
   puts 'Loading regions'
   Rake::Task['shf:load_regions'].invoke
 end
-regions = Region.all.to_a
 
 if Kommun.all.empty?
   puts 'Loading kommuns'
   Rake::Task['shf:load_kommuns'].invoke
 end
-kommuns = Kommun.all.to_a
 
 puts 'Creating business categories'
 business_categories = %w(Träning Psykologi Rehab Butik Trim Friskvård Dagis Pensionat Skola)
@@ -64,18 +62,14 @@ unless Rails.env.production? || Rails.env.test?
 
   puts 'Creating users ...'
 
-  r = Random.new
-
   # Create users
   users = []
-
   NUM_USERS.times do
     users << User.create(email: FFaker::InternetSE.free_email,
                          password: DEFAULT_PASSWORD)
   end
 
-  puts "Users created: #{NUM_USERS}"
-
+  puts "Users created: #{users.length}"
 
   puts "\nCreating membership applications ..."
   puts "  As companies are created for accepted applications, their address has to be geocoded/located."

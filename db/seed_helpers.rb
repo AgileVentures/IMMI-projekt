@@ -184,7 +184,6 @@ module SeedHelper
     r = Random.new
 
     business_categories = BusinessCategory.all.to_a
-    num_cats = business_categories.size
 
     first_n, last_n = get_app_names(u)
 
