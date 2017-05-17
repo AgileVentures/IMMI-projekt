@@ -3,7 +3,7 @@ require 'active_support/logger'
 
 namespace :shf do
 
-  ACCEPTED_STATE = 'accepted'
+  ACCEPTED_STATE = 'accepted' unless defined?(ACCEPTED_STATE)
 
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
@@ -309,7 +309,8 @@ namespace :shf do
 
 
 # Severity label for logging (max 5 chars).
-  LOG_LEVEL_LABEL = %w(DEBUG INFO WARN ERROR FATAL ANY).each(&:freeze).freeze
+  LOG_LEVEL_LABEL = %w(DEBUG INFO WARN ERROR FATAL ANY)
+    .each(&:freeze).freeze unless defined?(LOG_LEVEL_LABEL)
 
 
   def log_level_text(log_level)
