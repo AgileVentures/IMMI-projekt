@@ -1,5 +1,4 @@
 require 'rails_helper'
-require 'rake'
 
 RSpec.describe 'load admin.email and admin.password from ENV in production' do
 
