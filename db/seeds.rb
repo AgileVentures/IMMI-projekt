@@ -48,21 +48,11 @@ if Region.all.empty?
 end
 regions = Region.all.to_a
 
-# if regions.empty?
-#   puts "Run task 'shf:load_regions' before seeding to load regions"
-#   abort SEED_STOP_MSG
-# end
-
 if Kommun.all.empty?
   puts 'Loading kommuns'
   Rake::Task['shf:load_kommuns'].invoke
 end
 kommuns = Kommun.all.to_a
-
-# if kommuns.empty?
-#   puts "Run task 'shf:load_kommuns' before seeding to load kommuns"
-#   abort SEED_STOP_MSG
-# end
 
 puts 'Creating business categories'
 business_categories = %w(Träning Psykologi Rehab Butik Trim Friskvård Dagis Pensionat Skola)
