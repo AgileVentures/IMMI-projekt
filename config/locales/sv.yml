@@ -546,8 +546,6 @@ sv:
 
     contents_access_error: 'Det uppstod ett fel att komma åt filen: %{message}'
 
-    missing_special_letters: 'Vi beklagar, men för tillfället kan systemet inte visa åäö i undersidornas titlar.'
-
     index:
       page_title: 'Styrelseprotokoll'
       instructions: 'Här hittar du våra senaste styrelsemötesprotokoll. Klicka på titeln på ett dokument för att visa det. Beroende på dina webbläsarinställningar kan det öppnas i ett nytt fönster eller så laddas det ner.'

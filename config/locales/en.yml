@@ -546,8 +546,6 @@ en:
 
     contents_access_error: 'There was an error accessing the file: %{message}'
 
-    missing_special_letters: 'In the document titles above, letters å, ä and ö are shown as a, a and o, respectively.'
-
     index:
       page_title: 'Historical Documents: Board Meeting Minutes'
       instructions: 'These are SHF Board meeting minutes.  Click on the title of a document to view it.  Depending on your browser settings, it might open in a new window or it might download.'
