@@ -42,13 +42,13 @@ class User < ApplicationRecord
 
 
   def is_in_company_numbered?(company_num)
-    is_member? && !(companies.detect { |c| c.company_number == company_num }).nil?
+    is_member? && companies.map(&:company_number).include?(company_num)
   end
 
 
   def companies
     if admin?
-      Company.all
+      Company.all.to_a
     elsif is_member_or_admin? && has_membership_application?
       cos = membership_applications.reload.map(&:company).compact
       cos.uniq(&:company_number)
@@ -57,4 +57,3 @@ class User < ApplicationRecord
     end
   end
 end
-
