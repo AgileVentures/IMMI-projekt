@@ -3,7 +3,8 @@ require 'active_support/logger'
 
 namespace :shf do
 
-  ACCEPTED_STATE = 'accepted' unless defined?(ACCEPTED_STATE)
+  ACCEPTED_STATE = 'accepted'
+  LOG_FILE = 'log/shf_tasks'
 
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
@@ -48,9 +49,7 @@ namespace :shf do
         key_mapping: headers_to_columns_mapping
     }
 
-    logfile = 'log/import.log'
-    start_time = Time.now
-    log = start_logging(start_time, logfile)
+    log = ActivityLogger.new(LOG_FILE, 'SHF_TASK', 'Import CSV')
 
     if args.has_key? :csv_filename
 
@@ -67,33 +66,35 @@ namespace :shf do
             num_read += 1
           rescue ActiveRecord::RecordInvalid => invalid_info
             error_rows += 1
-            log_and_show(log, Logger::ERROR, "#{invalid_info.record.errors.full_messages.join(", ")}")
+            log.record('error', "#{invalid_info.record.errors.full_messages.join(", ")}")
           end
         end
 
-        log_and_show log, Logger::INFO, "\nFinished.  Read #{num_read + error_rows} rows.\n  #{num_read} were valid and their information was imported.\n  #{error_rows} had errors."
+        msg = "\nRead #{num_read + error_rows} rows.\n" +
+              "#{num_read} were valid and their information was imported.\n" +
+              "#{error_rows} had errors."
+        log.record('info', msg)
 
       else
-        log_file_doesnt_exist_and_close(log, args[:csv_filename], start_time)
-        finish_and_close_log(log, start_time, Time.now)
+        log.record('error', "#{args[:csv_filename]} does not exist. Nothing imported")
+        log.close
         raise LoadError
       end
 
     else
-      log_must_provide_filename_and_close(log, usage, start_time)
+      msg = "You must specify a .csv filename to import.\n  Ex: #{usage}"
+      log.record('error', msg)
+      log.close
       raise "ERROR: You must specify a .csv filename to import. Ex: #{usage}"
     end
 
-    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
-    finish_and_close_log(log, start_time, Time.now)
+    log.close
   end
 
   desc "load regions data (counties plus 'Sverige' and 'Online')"
   task :load_regions => [:environment] do
 
-    logfile = 'log/shf-regions.log'
-    start_time = Time.now
-    log = start_logging(start_time, logfile, "Regions create")
+    log = ActivityLogger.new(LOG_FILE, 'SHF_TASK', 'Load Regions')
 
     # Populate the 'regions' table for Swedish regions (aka counties),
     # as well as 'Sverige' (Sweden) and 'Online'.  This is used to specify
@@ -102,17 +103,16 @@ namespace :shf do
     # This uses the 'city-state' gem for a list of regions (name and ISO code).
 
     if Region.exists?
-      log_and_show log, Logger::WARN, "Regions table not empty"
+      log.record('warn', 'Regions table not empty.')
     else
       CS.states(:se).each_pair { |k, v| Region.create(name: v, code: k.to_s) }
       Region.create(name: 'Sverige', code: nil)
       Region.create(name: 'Online', code: nil)
 
-      log_and_show log, Logger::INFO, "#{Region.count} Regions created"
+      log.record('info', "#{Region.count} Regions created.")
     end
 
-    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
-    finish_and_close_log(log, start_time, Time.now, "Regions create")
+    log.close
   end
 
   desc "load kommuns data (290 Swedish municipalities)"
@@ -121,23 +121,19 @@ namespace :shf do
     require 'csv'
     require 'smarter_csv'
 
-    logfile = 'log/shf-kommuns.log'
-    start_time = Time.now
-    log = start_logging(Time.now, logfile, "Kommuns create")
+    log = ActivityLogger.new(LOG_FILE, 'SHF_TASK', 'Load Kommuns')
 
     if Kommun.exists?
-      log_and_show log, Logger::WARN, "Kommuns table not empty"
+      log.record('warn', 'Kommuns table not empty.')
     else
       SmarterCSV.process('lib/seeds/kommuner.csv').each do |kommun|
         Kommun.create(name: kommun[:name])
       end
 
-      log_and_show log, Logger::INFO, "#{Kommun.count} kommuns created"
+      log.record('info', "#{Kommun.count} Regions created.")
     end
 
-    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
-
-    finish_and_close_log(log, start_time, Time.now, "Kommuns create")
+    log.close
   end
 
 
@@ -188,19 +184,21 @@ namespace :shf do
 
     Geocoder.configure( timeout: 20)   # geocoding service timeout (secs)
 
-    logfile = 'log/shf-geocode.log'
-    start_time = Time.now
-    log = start_logging(start_time, logfile, "Geocode All Addresses (RAILS_ENV = #{Rails.env} arguments = #{args.each { |arg| arg.inspect} }  )")
+    log = ActivityLogger.new(LOG_FILE, 'SHF_TASK', 'Geocode Addresses')
 
     not_geocoded = Address.not_geocoded
-    log_and_show log, Logger::INFO, "  #{not_geocoded.count} Addresses are not yet geocoded.  Will now geocode them..."
+
+    msg = " #{not_geocoded.count} Addresses are not yet geocoded.  Will geocode."
+    log.record('info', msg)
+
     Address.geocode_all_needed(sleep_between: args[:sleep_time].to_f, num_per_batch: args[:batch_num].to_i)
 
-    log_and_show log, Logger::INFO, "  After running Address.geocode_all_needed(sleep_between: #{args[:sleep_time].to_f}, num_per_batch: #{args[:batch_num].to_i}), #{Address.not_geocoded.count} Addresses are not geocoded."
+    msg = " After running Address.geocode_all_needed(sleep_between: " +
+          "#{args[:sleep_time].to_f}, num_per_batch: #{args[:batch_num].to_i})"+
+          ", #{Address.not_geocoded.count} Addresses are not geocoded."
+    log.record('info', msg)
 
-    log_and_show log, Logger::INFO, "Information was logged to: #{logfile}"
-    finish_and_close_log(log, start_time, Time.now, "Geocode All Addresses")
-
+    log.close
   end
 
 
@@ -208,7 +206,9 @@ namespace :shf do
 
   def import_a_member_app_csv(row, log)
 
-    log_and_show log, Logger::INFO, "Importing row: #{row.inspect}"
+    log.record('info', "Importing row: #{row.inspect}")
+
+    # log_and_show log, Logger::INFO, "Importing row: #{row.inspect}"
 
     if (user = User.find_by(email: row[:email]))
       puts_already_exists 'User', row[:email]
@@ -285,64 +285,20 @@ namespace :shf do
       Company.create!(company_number: company_num,
                       email: email,
                       name: name,
-                      street: street,
-                      post_code: post_code,
-                      city: city,
-                      region: region,
                       phone_number: phone_number,
                       website: website)
 
       company = Company.find_by_company_number(company_num)
+
+      company.addresses << Address.new(street_address: street,
+                                       post_code: post_code,
+                                       city: city,
+                                       region: region)
+
       puts_created 'Company', company.company_number
     end
     company
   end
-
-
-  def start_logging(start_time = Time.now,
-                    log_fn = 'log/import.log',
-                    action = "Import")
-    log = ActiveSupport::Logger.new(log_fn)
-    log_and_show log, Logger::INFO, "#{action} started at #{start_time}"
-    log
-  end
-
-
-# Severity label for logging (max 5 chars).
-  LOG_LEVEL_LABEL = %w(DEBUG INFO WARN ERROR FATAL ANY)
-    .each(&:freeze).freeze unless defined?(LOG_LEVEL_LABEL)
-
-
-  def log_level_text(log_level)
-    LOG_LEVEL_LABEL[log_level] || 'ANY'
-  end
-
-
-  def log_and_show(log, log_level, message)
-    log.add log_level, message
-    puts "#{log_level_text(log_level)}: #{message}"
-  end
-
-
-  def log_file_doesnt_exist_and_close(log, filename, start_time, end_time=Time.now)
-    log_and_show log, Logger::ERROR, "#{filename} does not exist. Nothing imported"
-    finish_and_close_log(log, start_time, end_time)
-  end
-
-
-  def log_must_provide_filename_and_close(log, usage_example, start_time, end_time=Time.now)
-    log_and_show(log, Logger::ERROR, "You must specify a .csv filename to import.\n  Ex: #{usage_example}")
-    finish_and_close_log(log, start_time, end_time)
-  end
-
-
-  def finish_and_close_log(log, start_time, end_time, action = "Import")
-    duration = (start_time - end_time) / 1.minute
-    log_and_show log, Logger::INFO, "=== #{action} finished at #{start_time}.\n"
-    log.close
-    log
-  end
-
 
   def puts_created(item_type, item_name)
     puts " #{item_type} created and saved: #{item_name}"
