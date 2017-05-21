@@ -120,7 +120,7 @@ namespace :shf do
     require 'csv'
     require 'smarter_csv'
 
-    log = ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Load Kommuns') do |log|
+    ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Load Kommuns') do |log|
 
       if Kommun.exists?
         log.record('warn', 'Kommuns table not empty.')

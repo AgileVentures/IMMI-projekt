@@ -5,8 +5,6 @@ RSpec.describe ActivityLogger do
   let(:filepath) { File.join(Rails.root, 'tmp', 'testfile') }
   let(:log)      { ActivityLogger.open(filepath, 'TEST', 'open', false) }
 
-  # open a log filename - without block
-  # assert existance of file at specific location
   describe 'log file' do
     context 'open without a block' do
 
@@ -59,8 +57,4 @@ RSpec.describe ActivityLogger do
       end
     end
   end
-
-  # open a log filename - with block
-  # assert existance of file at specific location
-
 end
