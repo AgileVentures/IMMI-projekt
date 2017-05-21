@@ -28,7 +28,7 @@ class ActivityLogger
   #    -- call log.close
 
   def self.open(filename, facility, activity, show=true)
-    log = new(filename, facility, activity, show=true)
+    log = new(filename, facility, activity, show)
 
     if block_given?
       begin
@@ -41,7 +41,7 @@ class ActivityLogger
     end
   end
 
-  def initialize(filename, facility, activity, show=true)
+  private def initialize(filename, facility, activity, show=true)
     @filename = filename
     @facility = facility
     @activity = activity
