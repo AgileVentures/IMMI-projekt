@@ -9,20 +9,37 @@ class ActivityLogger
   # [facility] [activity] [severity] <message>
   # Example log contents:
   # [SHF_TASK] [Load Kommuns] [info] Started at 2017-05-20 17:25:39 -0400
-  # [SHF_TASK] [Load Kommuns] [info] 290 Regions created.
+  # [SHF_TASK] [Load Kommuns] [info] 290 Kommuns created.
   # [SHF_TASK] [Load Kommuns] [info] Finished at 2017-05-20 17:25:39 -0400.
   # [SHF_TASK] [Load Kommuns] [info] Duration: 0.67 seconds.
   #
-  # Here, the facility is an SHF task file, the activity is loading Kommuns
+  # Here, the facility is an SHF task, the activity is loading Kommuns
   # into the DB, and the messages are all of INFO severity.
   #
   # Usage:
-  # 1) call log = ActivityLogger.new(logfile, facility, activity)
+  # 1) call ActivityLogger.open(logfile, facility, activity)
+  #    -- assign the logger instance value to a local var (e.g., "log = ..."), OR
+  #    -- pass a block which takes an argument (which is the logger instance)
   # 2) for each logged message during the activity,
-  #    call log.record(severity, message),
+  #    call log.record(severity, message), (log == logger instance)
   #    where severity is one of 'debug', 'info, 'warn', 'error', 'fatal', 'unknown'
   # 3) when the activity is complete,
-  #    call log.close
+  #    -- the log file will be closed automatically if opened with a block, OR
+  #    -- call log.close
+
+  def self.open(filename, facility, activity, show=true)
+    log = new(filename, facility, activity, show=true)
+
+    if block_given?
+      begin
+        yield log
+      ensure
+        log.close
+      end
+    else
+      log
+    end
+  end
 
   def initialize(filename, facility, activity, show=true)
     @filename = filename

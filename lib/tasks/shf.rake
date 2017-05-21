@@ -49,7 +49,7 @@ namespace :shf do
         key_mapping: headers_to_columns_mapping
     }
 
-    log = ActivityLogger.new(LOG_FILE, 'SHF_TASK', 'Import CSV')
+    log = ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Import CSV')
 
     if args.has_key? :csv_filename
 
@@ -94,25 +94,24 @@ namespace :shf do
   desc "load regions data (counties plus 'Sverige' and 'Online')"
   task :load_regions => [:environment] do
 
-    log = ActivityLogger.new(LOG_FILE, 'SHF_TASK', 'Load Regions')
+    ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Load Regions') do |log|
 
-    # Populate the 'regions' table for Swedish regions (aka counties),
-    # as well as 'Sverige' (Sweden) and 'Online'.  This is used to specify
-    # the primary region in which a company operates.
-    #
-    # This uses the 'city-state' gem for a list of regions (name and ISO code).
+      # Populate the 'regions' table for Swedish regions (aka counties),
+      # as well as 'Sverige' (Sweden) and 'Online'.  This is used to specify
+      # the primary region in which a company operates.
+      #
+      # This uses the 'city-state' gem for a list of regions (name and ISO code).
 
-    if Region.exists?
-      log.record('warn', 'Regions table not empty.')
-    else
-      CS.states(:se).each_pair { |k, v| Region.create(name: v, code: k.to_s) }
-      Region.create(name: 'Sverige', code: nil)
-      Region.create(name: 'Online', code: nil)
+      if Region.exists?
+        log.record('warn', 'Regions table not empty.')
+      else
+        CS.states(:se).each_pair { |k, v| Region.create(name: v, code: k.to_s) }
+        Region.create(name: 'Sverige', code: nil)
+        Region.create(name: 'Online', code: nil)
 
-      log.record('info', "#{Region.count} Regions created.")
+        log.record('info', "#{Region.count} Regions created.")
+      end
     end
-
-    log.close
   end
 
   desc "load kommuns data (290 Swedish municipalities)"
@@ -121,19 +120,18 @@ namespace :shf do
     require 'csv'
     require 'smarter_csv'
 
-    log = ActivityLogger.new(LOG_FILE, 'SHF_TASK', 'Load Kommuns')
+    log = ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Load Kommuns') do |log|
 
-    if Kommun.exists?
-      log.record('warn', 'Kommuns table not empty.')
-    else
-      SmarterCSV.process('lib/seeds/kommuner.csv').each do |kommun|
-        Kommun.create(name: kommun[:name])
+      if Kommun.exists?
+        log.record('warn', 'Kommuns table not empty.')
+      else
+        SmarterCSV.process('lib/seeds/kommuner.csv').each do |kommun|
+          Kommun.create(name: kommun[:name])
+        end
+
+        log.record('info', "#{Kommun.count} Kommuns created.")
       end
-
-      log.record('info', "#{Kommun.count} Regions created.")
     end
-
-    log.close
   end
 
 
@@ -184,21 +182,20 @@ namespace :shf do
 
     Geocoder.configure( timeout: 20)   # geocoding service timeout (secs)
 
-    log = ActivityLogger.new(LOG_FILE, 'SHF_TASK', 'Geocode Addresses')
+    ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Geocode Addresses') do |log|
 
-    not_geocoded = Address.not_geocoded
+      not_geocoded = Address.not_geocoded
 
-    msg = " #{not_geocoded.count} Addresses are not yet geocoded.  Will geocode."
-    log.record('info', msg)
+      msg = " #{not_geocoded.count} Addresses are not yet geocoded.  Will geocode."
+      log.record('info', msg)
 
-    Address.geocode_all_needed(sleep_between: args[:sleep_time].to_f, num_per_batch: args[:batch_num].to_i)
+      Address.geocode_all_needed(sleep_between: args[:sleep_time].to_f, num_per_batch: args[:batch_num].to_i)
 
-    msg = " After running Address.geocode_all_needed(sleep_between: " +
-          "#{args[:sleep_time].to_f}, num_per_batch: #{args[:batch_num].to_i})"+
-          ", #{Address.not_geocoded.count} Addresses are not geocoded."
-    log.record('info', msg)
-
-    log.close
+      msg = " After running Address.geocode_all_needed(sleep_between: " +
+            "#{args[:sleep_time].to_f}, num_per_batch: #{args[:batch_num].to_i})"+
+            ", #{Address.not_geocoded.count} Addresses are not geocoded."
+      log.record('info', msg)
+    end
   end
 
 
