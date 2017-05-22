@@ -6,11 +6,7 @@ module SeedHelper
   SEED_ERROR_MSG = 'Seed ERROR: Could not load either admin email or password.' +
                    ' NO ADMIN was created!' unless defined?(SEED_ERROR_MSG)
 
-  DEFAULT_PASSWORD = 'whatever' unless defined?(DEFAULT_PASSWORD)
-
   MA_ACCEPTED_STATE = :accepted unless defined?(MA_ACCEPTED_STATE)
-
-  NUM_USERS = 100 unless defined?(NUM_USERS)
 
   MAX_APPS_PER_USER = 4 unless defined?(MAX_APPS_PER_USER)
 
