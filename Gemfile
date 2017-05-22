@@ -52,6 +52,8 @@ gem 'geocoder'
 
 gem 'sanitize'
 
+gem 'mailgun_rails'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
