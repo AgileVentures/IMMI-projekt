@@ -41,7 +41,7 @@ class ActivityLogger
     end
   end
 
-  private def initialize(filename, facility, activity, show=true)
+  private def initialize(filename, facility, activity, show)
     @filename = filename
     @facility = facility
     @activity = activity
