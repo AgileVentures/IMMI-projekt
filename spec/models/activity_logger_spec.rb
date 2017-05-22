@@ -6,15 +6,16 @@ RSpec.describe ActivityLogger do
   let(:log)      { ActivityLogger.open(filepath, 'TEST', 'open', false) }
 
   describe 'log file' do
+
+    before(:each) do
+      File.delete(filepath) if File.file?(filepath)
+    end
+
+    after(:all) do
+      File.delete(File.join(Rails.root, 'tmp', 'testfile'))
+    end
+
     context 'open without a block' do
-
-      before(:each) do
-        File.delete(filepath) if File.file?(filepath)
-      end
-
-      after(:all) do
-        File.delete(File.join(Rails.root, 'tmp', 'testfile'))
-      end
 
       it 'creates log file' do
         log
@@ -31,14 +32,6 @@ RSpec.describe ActivityLogger do
     end
 
     context 'open with a block' do
-
-      before(:each) do
-        File.delete(filepath) if File.file?(filepath)
-      end
-
-      after(:all) do
-        File.delete(File.join(Rails.root, 'tmp', 'testfile'))
-      end
 
       it 'creates log file' do
         ActivityLogger.open(filepath, 'TEST', 'open', false) do |log|
