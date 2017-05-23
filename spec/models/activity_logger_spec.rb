@@ -44,9 +44,11 @@ RSpec.describe ActivityLogger do
         end
       end
       it 'records message to log file' do
-        log.record('info', 'this is another test message')
-        expect(File.read(filepath))
-          .to include '[TEST] [open] [info] this is another test message'
+        ActivityLogger.open(filepath, 'TEST', 'open', false) do |log|
+          log.record('info', 'this is another test message')
+          expect(File.read(filepath))
+            .to include '[TEST] [open] [info] this is another test message'
+        end
       end
     end
   end
