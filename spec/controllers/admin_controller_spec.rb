@@ -221,8 +221,8 @@ RSpec.describe AdminController, type: :controller do
         it 'three business categories, each separated by a comma then space' do
 
           member1.business_categories << create(:business_category, name: 'Category1')
-          member1.business_categories << create(:business_category, name: 'Category 2')
-          member1.business_categories << create(:business_category, name: 'Category the third')
+          member1.business_categories << create(:business_category, name: 'Category2')
+          member1.business_categories << create(:business_category, name: 'Category3')
 
           member1.save
 
