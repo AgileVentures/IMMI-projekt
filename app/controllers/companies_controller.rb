@@ -9,9 +9,17 @@ class CompaniesController < ApplicationController
     @search_params = Company.ransack(params[:q])
     # only select companies that are 'complete'; see the Company.complete scope
 
-    @all_companies =  @search_params.result
+    @all_companies =  @search_params.result(distinct: true)
                           .complete
-                          .includes(:addresses, :business_categories)
+                          .includes(:business_categories)
+                          .includes(addresses: [ :region, :kommun ])
+                          .joins(addresses: [ :region, :kommun ])
+
+    # The last qualifier ("joins") on above statement ("addresses: :region") is
+    # to get around a problem with DISTINCT queries used with ransack when also
+    # allowing sorting on an associated table column ("region" in this case)
+    # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
+
 
     @all_visible_companies = @all_companies.address_visible
 

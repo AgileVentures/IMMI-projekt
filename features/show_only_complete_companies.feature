@@ -9,6 +9,12 @@ Feature: So that I do not get frustrated by trying to find out more
       | Västerbotten          |
       | ThisNameWillBeDeleted |
 
+    Given the following kommuns exist:
+      | name      |
+      | Alingsås  |
+      | Bromölla  |
+      | Laxå      |
+
     And the following business categories exist
       | name    |
       | Groomer |
@@ -16,11 +22,11 @@ Feature: So that I do not get frustrated by trying to find out more
 
 
     Given the following companies exist:
-      | name                     | company_number | email                  | region                |
-      | Happy Mutts              | 5560360793     | snarky@snarkybarky.com | Stockholm             |
-      | Bowsers                  | 2120000142     | bowwow@bowsersy.com    | Västerbotten          |
-      | NoRegion                 | 8028973322     | hello@NoRegion.se      | ThisNameWillBeDeleted |
-      |                          | 5906055081     | hello@noName.se        | Stockholm             |
+      | name         | company_number | email                  | region                | kommun   |
+      | Happy Mutts  | 5560360793     | snarky@snarkybarky.com | Stockholm             | Alingsås |
+      | Bowsers      | 2120000142     | bowwow@bowsersy.com    | Västerbotten          | Bromölla |
+      | NoRegion     | 8028973322     | hello@NoRegion.se      | ThisNameWillBeDeleted | Laxå     |
+      |              | 5906055081     | hello@noName.se        | Stockholm             | Alingsås |
 
     And the following users exists
       | email                        | admin |

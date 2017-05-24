@@ -25,11 +25,17 @@ Feature: As an admin
       | Västerbotten |
       | Norrbotten   |
 
+    And the following kommuns exist:
+      | name      |
+      | Alingsås  |
+      | Bromölla  |
+      | Laxå      |
+
     And the following companies exist:
-      | name        | company_number | email               | region       |
-      | Happy Mutts | 2120000142     | woof@happymutts.com | Stockholm    |
-      | Bowsers     | 5560360793     | bark@bowsers.com    | Stockholm    |
-      | WOOF        | 5569467466     | woof@woof.com       | Västerbotten |
+      | name        | company_number | email               | region       | kommun   |
+      | Happy Mutts | 2120000142     | woof@happymutts.com | Stockholm    | Alingsås |
+      | Bowsers     | 5560360793     | bark@bowsers.com    | Stockholm    | Bromölla |
+      | WOOF        | 5569467466     | woof@woof.com       | Västerbotten | Laxå     |
 
 
     And the following applications exist:
