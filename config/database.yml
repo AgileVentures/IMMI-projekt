@@ -1,6 +1,9 @@
 default: &default
   adapter: postgresql
-  encoding: unicode
+  encoding: utf8
+  collation: sv_SE.UTF-8
+  ctype: sv_SE.UTF-8
+  template: template0
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
