@@ -208,6 +208,7 @@ sv:
       last_name: *last_name
       phone_number: &phone_number Telefonnummer
       company_number: *company_number
+      org_nr_no_hyphens: &orgnr_no_hyphen "Endast siffror (ej bindestreck)"
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
@@ -231,6 +232,7 @@ sv:
       title: Redigera ansökan om medlemskap
       is_ready_for_review: Redo för granskning
       submit_button_label: *save
+      org_nr_no_hyphens: *orgnr_no_hyphen
 
     update:
       success: Ansökan har uppdaterats.
@@ -243,9 +245,10 @@ sv:
       last_name: *last_name
       phone_number: *phone_number
       company_number: *company_number
+      org_nr_no_hyphens: *orgnr_no_hyphen
       contact_email: *contact_email
       app_status: Ansökans status
-      change_status: Ändra status
+      change_status: Ändra status för medlemskapsansökan
       membership_number: *membership_number
       with_categories: Ansöker som
       delete: *delete
@@ -300,6 +303,15 @@ sv:
       error: Det uppstod ett fel vid avslag av medlemskap.
 
     need_info:
+      reason_title: Anledning
+      reason:
+        need_documentation: "Behöver du dokumentation"
+        waiting_for_payment: "Väntar på betalning"
+        custom_reason: "Annat (skriv in orsaken)"
+
+      other_reason_label: "Annan orsak"
+      submit_button_label: "Spara orsaken"
+
       success: 'Ansökan har markerats som: "Behöver kompletteras". (Skicka e-post till den sökande.)'
       error: 'Det uppstod ett fel när systemet försökte sätta status: "Behöver kompletteras".'
 

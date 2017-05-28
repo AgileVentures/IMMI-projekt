@@ -112,3 +112,9 @@ end
 Then(/^I wait(?: for)? (\d+) second(?:s)?$/) do |seconds|
   sleep seconds.to_i.seconds
 end
+
+
+When(/^(?:I|they) select t\("([^"]*)"\) in select list "([^"]*)"$/) do |item, lst|
+  selected = i18n_content("#{item}")
+  find(:select, lst).find(:option, selected).select_option
+end

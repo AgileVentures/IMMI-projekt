@@ -1,18 +1,80 @@
-#admin-change-status-buttons
-  %p.header
-    = "#{t('membership_applications.show.change_status')}:"
+#application-status
+
+  #admin-change-status-buttons
+    .row
+      %h3.header
+        = "#{t('membership_applications.show.change_status')}:"
+
+    .row
+      = button_to t('membership_applications.start_review_btn'), start_review_membership_application_path(@membership_application), {class: 'btn start-review', disabled: !(@membership_application.may_start_review?)}
+
+      = button_to t('membership_applications.accept_btn'), accept_membership_application_path(@membership_application), {class: 'btn accept', disabled: !(@membership_application.may_accept?)}
+
+      = button_to t('membership_applications.reject_btn'), reject_membership_application_path(@membership_application), {class: 'btn reject', disabled: !(@membership_application.may_reject?)}
+
+      = button_to t('membership_applications.ask_applicant_for_info_btn'), need_info_membership_application_path(@membership_application), {class: 'btn need-info', disabled: !(@membership_application.may_ask_applicant_for_info?)}
+
+      - if @membership_application.waiting_for_applicant?
+
+        = form_for @membership_application, html: {multipart: true}, url: membership_application_path do |f|
+
+          .row
+            .col-sm-2.col-med-2.col-lg-2
+              .waiting_reason_title= t('membership_applications.need_info.reason_title')
+
+            .reason_waiting_information
+              .col-sm-4
+                = f.select( :reason_waiting, reasons_for_waiting )
 
 
-  = button_to t('membership_applications.start_review_btn'), start_review_membership_application_path(@membership_application), {class: 'btn start-review', disabled: !(@membership_application.may_start_review?)}
+              .col-sm-6
+                %div#other_text_field
+                  = f.label( :reason_waiting_custom_text, t('membership_applications.need_info.other_reason_label') )
+                  = f.text_field :reason_waiting_custom_text
 
-  = button_to t('membership_applications.accept_btn'), accept_membership_application_path(@membership_application), {class: 'btn accept', disabled: !(@membership_application.may_accept?)}
+          .row
+            .col-sm-offset-2.col-md-offset-2.col-lg-offset-2
+              = f.submit t('membership_applications.need_info.submit_button_label')
 
-  = button_to t('membership_applications.reject_btn'), reject_membership_application_path(@membership_application), {class: 'btn reject', disabled: !(@membership_application.may_reject?)}
 
-  = button_to t('membership_applications.ask_applicant_for_info_btn'), need_info_membership_application_path(@membership_application), {class: 'btn need-info', disabled: !(@membership_application.may_ask_applicant_for_info?)}
+    .row
+      = button_to t('membership_applications.cancel_waiting_for_applicant_btn'), cancel_need_info_membership_application_path(@membership_application), {class: 'btn cancel-need-info', disabled: !(@membership_application.may_cancel_waiting_for_applicant?)}
 
-  = button_to t('membership_applications.cancel_waiting_for_applicant_btn'), cancel_need_info_membership_application_path(@membership_application), {class: 'btn cancel-need-info', disabled: !(@membership_application.may_cancel_waiting_for_applicant?)}
 
-%br
-  - if !@membership_application.paid?
-    %p= t('membership_applications.show.waiting_for_payment')
+  %br
+    - if !@membership_application.paid?
+      %p= t('membership_applications.show.waiting_for_payment')
+
+
+:javascript
+
+  // hide or show the info based on the current values
+  let hideOrShow = function() {
+
+    let showEm;
+    let selected_reason = $('#membership_application_reason_waiting').find('option:selected').val();
+
+    showEm = 'custom_reason' == selected_reason;
+
+    if (!showEm) {
+        // clear out any custom reason if the selected reason is not the custom reason
+        document.getElementById("membership_application_reason_waiting_custom_text").value = "";
+    }
+
+    $('#other_text_field').toggle(showEm);
+  };
+
+
+  let set_up_depends = (function() {
+
+    $('#other_text_field').hide(); // start with this hidden.
+
+    $('#membership_application_reason_waiting').change(hideOrShow);
+
+    hideOrShow();
+  });
+
+
+  $(document).ready(set_up_depends);
+
+

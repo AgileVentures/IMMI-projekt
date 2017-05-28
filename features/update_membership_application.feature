@@ -55,8 +55,10 @@ Feature: As an Admin
   Scenario: Admin requests more info from user (from under_review to 'waiting for applicant')
     Given I am on "EmmaUnderReview" application page
     Then I should see "rehab"
+    And I should not see t("membership_applications.need_info.reason_title")
     When I click on t("membership_applications.ask_applicant_for_info_btn")
     Then I should see t("membership_applications.need_info.success")
+    And I should see t("membership_applications.need_info.reason_title")
     And I should see status line with status t("membership_applications.waiting_for_applicant")
     And I should not see t("membership_applications.update.enter_member_number")
     And I should see "rehab"
@@ -183,8 +185,10 @@ Feature: As an Admin
   Scenario: Admin changed from 'waiting for applicant' to 'under review'
     Given I am on "AnnaWaiting" application page
     And I should see "rehab"
+    And I should see t("membership_applications.need_info.reason_title")
     When I click on t("membership_applications.cancel_waiting_for_applicant_btn")
     Then I should see t("membership_applications.cancel_need_info.success")
+    And I should not see t("membership_applications.need_info.reason_title")
     And I should see status line with status t("membership_applications.under_review")
     And I should not see t("membership_applications.waiting_for_applicant")
     And I should not see t("membership_applications.update.enter_member_number")
@@ -217,6 +221,7 @@ Feature: As an Admin
     And I fill in t("membership_applications.show.last_name") with "AdminUpdated"
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.success")
+    And I should see t("membership_applications.need_info.reason_title")
     And I should see status line with status t("membership_applications.waiting_for_applicant")
     And I should not see status line with status t("membership_applications.under_review")
 

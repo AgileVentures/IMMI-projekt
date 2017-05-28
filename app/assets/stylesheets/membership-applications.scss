@@ -126,6 +126,38 @@ $files-table-background: #ffffff;
 
   }
 
+
+  #application-status {
+
+    border: 1pt solid rgb(142, 173, 206);
+    margin-left: 1rem;
+    padding-left: 1rem;
+
+    .button_to {
+      margin-bottom: 0.5rem;
+    }
+
+    .waiting_reason_title {
+      font-weight: bold;
+      text-align: right;
+    }
+
+
+    .row {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    #admin-change-status-buttons #other_text_field  input {
+      text-align: left;
+    }
+
+
+
+  }
+
+
+
   .btn-file {
 
     border: 0;
@@ -163,4 +195,8 @@ $files-table-background: #ffffff;
   #uploaded-files h4.files-uploaded-list-title {
     font-weight: bold;
   }
+}
+
+.action-buttons {
+  margin-top: 2rem;
 }

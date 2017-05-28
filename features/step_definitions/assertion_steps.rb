@@ -1,7 +1,7 @@
 
 # remove any leading locale path info
 def current_path_without_locale(path)
-  locale_pattern =  /^(\/)(en|sv)?(\/)?(.*)$/
+  locale_pattern = /^(\/)(en|sv)?(\/)?(.*)$/
   path.gsub(locale_pattern, '\1\4')
 end
 
@@ -112,7 +112,7 @@ end
 
 Then(/^I should be on "([^"]*)" page$/) do |page|
   case page.downcase
-    when  'login'
+    when 'login'
       path = new_user_session_path
     when 'landing'
       path = root_path
@@ -203,7 +203,7 @@ Then(/^I should see translated error (.*) (.*)$/) do |model_attribute, error|
 end
 
 Then(/^I should see t\("([^"]*)", member_full_name: '([^']*)'\)$/) do |i18n_key, name_value|
- expect(page).to have_content(I18n.t(i18n_key, member_full_name: name_value))
+  expect(page).to have_content(I18n.t(i18n_key, member_full_name: name_value))
 end
 
 And(/^I should see t\("([^"]*)", filename: '([^']*)'\)$/) do |i18n_key, filename_value|
@@ -253,6 +253,45 @@ Then(/^t\("([^"]*)"\) should( not)? be visible$/) do |string, not_see|
   else
     expect(has_text?(:visible, "#{i18n_content(string)}")).to be false
   end
+end
+
+
+# Have to be sure to wait for any javascript to execute since it may hide or show an item
+Then(/^item "([^"]*)" should( not)? be visible$/) do | item, negate|
+
+  if negate
+    expect(page).to have_field(item, visible: false)
+
+  else
+    expect( find_field(item).visible? ).to be_truthy
+  end
+
+end
+
+
+# Tests that an input or button with the given label is disabled.
+Then /^the "([^\"]*)" (field|button|item) should( not)? be disabled$/ do |label, kind, negate|
+
+  if kind == 'field'
+    element = find_field(label)
+  elsif kind == 'button'
+    element = find_button(label)
+  else
+    element = find(label)
+  end
+
+  expect(["false", "", nil]).send(negate ? :to : :not_to,  include(element[:disabled]) )
+
+end
+
+
+# Tests that an input or button with the given label is disabled.
+Then /^the "([^\"]*)" field should( not)? be set to "([^\"]*)"$/ do |label, negate, text_value|
+
+  element = find_field(label)
+
+  expect(["false", "", nil]).send(negate ? :to : :not_to,  have_content(text_value) )
+
 end
 
 
@@ -349,7 +388,7 @@ end
 
 
 And(/^I should be on the SHF document page for "([^"]*)"$/)  do | doc_title |
-    shf_doc = ShfDocument.find_by_title(doc_title)
+  shf_doc = ShfDocument.find_by_title(doc_title)
   expect(current_path_without_locale(current_path)).to eq shf_document_path(shf_doc)
 end
 
@@ -362,5 +401,28 @@ Then(/^all addresses for the company named "([^"]*)" should( not)? be geocoded$/
   else
     expect( co.addresses.reject(&:geocoded? ).count).to be 0
   end
+
+end
+
+
+# Checks that a certain option is selected for a text field (from https://github.com/makandra/spreewald)
+Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) selected$/ do | select_list, negate, expected_string |
+
+    field = find_field(select_list)
+
+    field_value = case field.tag_name
+                    when 'select'
+                      options = field.all('option')
+                      selected_option = options.detect(&:selected?) || options.first
+                      if selected_option && selected_option.text.present?
+                        selected_option.text.strip
+                      else
+                        ''
+                      end
+                    else
+                      field.value
+                  end
+
+   expect(field_value).send( (negate ? :not_to : :to),  eq(i18n_content(expected_string)) )
 
 end

@@ -25,6 +25,7 @@ html input:disabled {
   input {
     @extend .btn;
     margin-left: 1em;
+    margin-bottom: 1rem;
     text-transform: none;
   }
 
