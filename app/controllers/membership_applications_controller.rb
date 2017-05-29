@@ -17,6 +17,7 @@ class MembershipApplicationsController < ApplicationController
 
     @membership_applications = @search_params
                                    .result
+                                   .current
                                    .includes(:business_categories)
                                    .page(params[:page]).per_page(10)
 

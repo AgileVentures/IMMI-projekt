@@ -16,7 +16,7 @@ Feature: As an Admin
       | company_number | user_email                    | state                 |
       | 5562252998     | under_review@mail.se          | under_review          |
       | 2120000142     | accepted@mail.se              | accepted              |
-      | 0000000000     | rejected@mail.se              | rejected              |
+      | 5560360793     | rejected@mail.se              | rejected              |
       | 0000000000     | waiting_for_applicant@mail.se | waiting_for_applicant |
 
     And I am logged in as "admin@sgf.com"

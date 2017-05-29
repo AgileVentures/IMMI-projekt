@@ -3,7 +3,7 @@ class AdminController < ApplicationController
 
 
   def index
-    @membership_applications = MembershipApplication.all
+    @membership_applications = MembershipApplication.current
   end
 
 

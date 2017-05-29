@@ -1,7 +1,8 @@
 Feature: As an Admin
   So that we can accept or reject new Memberships,
   I need to review a Membership Application that has been submitted
-  PT: https://www.pivotaltracker.com/story/show/133950343
+  PT: https://www.pivotaltracker.com/story/show/133950343 (original)
+  PT: https://www.pivotaltracker.com/story/show/144954863 (refined)
 
   Secondary feature:
   As an admin
@@ -38,29 +39,30 @@ Feature: As an Admin
 
     And the following applications exist:
       | first_name         | user_email                          | company_number | state                 | category_name |
-      | Emma               | emma@random.com                     | 5562252998     | waiting_for_applicant | Psychologist  |
+      | EmmaWaiting        | emma@random.com                     | 5562252998     | waiting_for_applicant | Psychologist  |
       | Hans               | hans@random.com                     | 5560360793     | waiting_for_applicant | Psychologist  |
       | Anna               | anna_needs_info@random.com          | 2120000142     | waiting_for_applicant | Psychologist  |
       | LarsRejected       | lars_rejected@snarkybark.se         | 0000000000     | rejected              | dog crooning  |
       | NilsApproved       | nils_member@bowwowwow.se            | 0000000000     | accepted              | Groomer       |
       | EmmaUnderReview    | emma_under_review@happymutts.se     | 5562252998     | under_review          | rehab         |
-      | HansReadyForReview | hans_ready_for_review@happymutts.se | 5562252998     | ready_for_review      | dog grooming  |
+      | Emma               | hans_ready_for_review@happymutts.se | 5562252998     | ready_for_review      | dog grooming  |
+      | Anna               | anna_needs_info@random.com          | 2120000142     | rejected              | Psychologist  |
 
 
   @admin
   Scenario: Listing incoming Applications open for Admin
     Given I am logged in as "admin@shf.com"
     And I am on the list applications page
-    Then I should see "7" applications
-    And I should see 1 t("membership_applications.under_review")
+    Then I should see "4" applications
+    And I should see 1 t("membership_applications.ready_for_review")
     And I should see 1 t("membership_applications.accepted")
-    And I should see 3 t("membership_applications.waiting_for_applicant")
+    And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.rejected")
     And I click on "Lastname, Emma"
     Then I should be on the application page for "Emma"
     And I should see "Emma Lastname"
     And I should see "5562252998"
-    And I should see status line with status t("membership_applications.waiting_for_applicant")
+    And I should see status line with status t("membership_applications.ready_for_review")
 
 
   @admin
@@ -73,7 +75,7 @@ Feature: As an Admin
   #  And I am Logged out
     Given I am logged in as "admin@shf.com"
     And I am on the list applications page
-    Then I should see "7" applications
+    Then I should see "4" applications
     And I click on "Lastname, Hans"
     Then I should be on the application page for "Hans"
     And I should see "Hans Lastname"
@@ -85,7 +87,7 @@ Feature: As an Admin
 
   @admin
   Scenario: Admin can see an application with multiple business categories given
-    Given I am logged in as "emma@random.com"
+    Given I am logged in as "hans_ready_for_review@happymutts.se"
     And I am on the "landing" page
     And I click on t("menus.nav.members.my_application")
     And I select "Trainer" Category
@@ -94,7 +96,7 @@ Feature: As an Admin
     And I am Logged out
     And I am logged in as "admin@shf.com"
     And I am on the list applications page
-    Then I should see "7" applications
+    Then I should see "4" applications
     And I click on "Lastname, Emma"
     Then I should be on the application page for "Emma"
     And I should see "Emma Lastname"
@@ -141,15 +143,16 @@ Feature: As an Admin
   @admin
   Scenario: Admin sees business categories for user that is ready_for_review
     Given I am logged in as "admin@shf.se"
-    When I am on the application page for "HansReadyForReview"
+    When I am on the application page for "Emma"
     Then I should see "dog grooming"
+    And I should see "rehab"
+    And I should see "Psychologist"
 
   @admin
   Scenario: Admin sees business categories for user that is waiting_for_applicant
     Given I am logged in as "admin@shf.se"
-    When I am on the application page for "Emma"
+    When I am on the application page for "Hans"
     Then I should see "Psychologist"
-
 
   @admin
   Scenario: Admin sees business categories for user that is accepted

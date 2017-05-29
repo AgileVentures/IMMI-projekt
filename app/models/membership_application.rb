@@ -37,6 +37,7 @@ class MembershipApplication < ApplicationRecord
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
 
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
+  scope :current, -> { where('id IN (?)', unscoped.select('MAX(id) as id').group(:company_number).map { |application| application.id }) }
 
   include AASM
 

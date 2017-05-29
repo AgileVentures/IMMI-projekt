@@ -136,7 +136,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "11" applications
+    Then I should see "5" applications
     When I am on the "all companies" page
     Then I should see "8" companies
     When I click the t("delete") action for the row with "Kats"
@@ -147,7 +147,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "11" applications
+    Then I should see "5" applications
 
   @poltergeist
   Scenario: Admin cannot delete a company with 2 (accepted) membership applications
@@ -155,7 +155,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "11" applications
+    Then I should see "5" applications
     When I am on the "all companies" page
     Then I should see "8" companies
     When I am on the page for company number "2120000142"
@@ -170,7 +170,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "11" applications
+    Then I should see "5" applications
 
 
   @poltergeist
@@ -183,7 +183,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "11" applications
+    Then I should see "5" applications
     When I am on the "all companies" page
     Then I should see "8" companies
     When I click the t("delete") action for the row with "Kitties"
@@ -194,7 +194,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "9" applications
+    Then I should see "4" applications
 
 
   @poltergeist
@@ -203,7 +203,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "11" applications
+    Then I should see "5" applications
     When I am on the "all companies" page
     Then I should see "8" companies
     When I click the t("delete") action for the row with "No More Snarky Barky"
@@ -214,7 +214,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "9" applications
+    Then I should see "4" applications
 
 
   @poltergeist @focus
@@ -223,7 +223,7 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "11" applications
+    Then I should see "5" applications
     When I am on the "all companies" page
     Then I should see "8" companies
     When I click the t("delete") action for the row with "WOOF"
@@ -234,4 +234,4 @@ Feature: As an admin
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
-    Then I should see "10" applications
+    Then I should see "4" applications

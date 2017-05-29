@@ -30,10 +30,10 @@ Feature: As an Admin
     And the following applications exist:
       | first_name      | user_email                             | company_number | category_name | state                 |
       | EmmaUnderReview | emma_under_review@happymutts.se        | 5562252998     | rehab         | under_review          |
-      | HansUnderReview | hans_under_review@happymutts.se        | 5562252998     | dog grooming  | under_review          |
+      | HansUnderReview | hans_under_review@happymutts.se        | 2120000142     | dog grooming  | under_review          |
       | AnnaWaiting     | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
       | LarsRejected    | lars_rejected@snarkybark.se            | 0000000000     | rehab         | rejected              |
-      | NilsAccepted    | nils_member@bowwowwow.se               | 0000000000     | dog crooning  | accepted              |
+      | NilsAccepted    | nils_member@bowwowwow.se               | 2120000142     | dog crooning  | accepted              |
 
     And I am logged in as "admin@shf.se"
     And time is frozen at 2016-12-16
@@ -62,7 +62,7 @@ Feature: As an Admin
     And I should see "rehab"
     When I am on the "landing" page
     Then I should see 2 t("membership_applications.waiting_for_applicant")
-    And I should see 1 t("membership_applications.under_review")
+    And I should see 0 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
     And I am Logged out
@@ -80,7 +80,7 @@ Feature: As an Admin
     And I should see "rehab"
     When I am on the "landing" page
     Then I should see 1 t("membership_applications.waiting_for_applicant")
-    And I should see 1 t("membership_applications.under_review")
+    And I should see 0 t("membership_applications.under_review")
     And I should see 2 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
 
@@ -95,7 +95,7 @@ Feature: As an Admin
     And I should see "rehab"
     When I am on the "landing" page
     Then I should see 1 t("membership_applications.waiting_for_applicant")
-    And I should see 1 t("membership_applications.under_review")
+    And I should see 0 t("membership_applications.under_review")
     And I should see 2 t("membership_applications.rejected")
     And I should see 1 t("membership_applications.accepted")
 
@@ -115,7 +115,7 @@ Feature: As an Admin
     And I should see "rehab"
     When I am on the "landing" page
     Then I should see 2 t("membership_applications.rejected")
-    And I should see 1 t("membership_applications.under_review")
+    And I should see 0 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.accepted")
 
@@ -176,7 +176,7 @@ Feature: As an Admin
     And I am on the "landing" page
     And I should see 1 t("membership_applications.ready_for_review")
     And I should see 1 t("membership_applications.accepted")
-    And I should see 2 t("membership_applications.under_review")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.rejected")
 
   @admin
@@ -190,7 +190,7 @@ Feature: As an Admin
     And I should not see t("membership_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
-    And I should see 3 t("membership_applications.under_review")
+    And I should see 2 t("membership_applications.under_review")
     And I should not see t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
@@ -232,7 +232,7 @@ Feature: As an Admin
     And I should see status line with status t("membership_applications.rejected")
     And I should see "dog crooning"
     When I am on the "landing" page
-    And I should see 2 t("membership_applications.under_review")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 0 t("membership_applications.accepted")
     And I should see 2 t("membership_applications.rejected")
@@ -277,7 +277,7 @@ Feature: As an Admin
     And I should see status line with status t("membership_applications.rejected")
     And I should see "rehab"
     When I am on the "landing" page
-    And I should see 2 t("membership_applications.under_review")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 1 t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.accepted")
     And I should see 1 t("membership_applications.rejected")
@@ -297,7 +297,7 @@ Feature: As an Admin
     And I should see "rehab"
     When I am on the "landing" page
     Then I should see 1 t("membership_applications.waiting_for_applicant")
-    And I should see 2 t("membership_applications.under_review")
+    And I should see 1 t("membership_applications.under_review")
     And I should see 2 t("membership_applications.accepted")
     And I should see 0 t("membership_applications.rejected")
 
