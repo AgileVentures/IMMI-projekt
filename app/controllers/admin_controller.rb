@@ -46,7 +46,7 @@ class AdminController < ApplicationController
       out_str << ','
 
       # add the business categories, all surrounded by double-quotes
-      out_str << '"' + m_app.business_categories.order(:name).map(&:name).join(', ') + '"'
+      out_str << '"' + m_app.business_categories.map(&:name).join(', ') + '"'
       out_str << ','
 
       # a company name may have commas, so surround with quotes so spreadsheets recognize it as one string and not multiple comma-separated value
