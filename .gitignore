@@ -29,6 +29,9 @@ public/javascripts/translations.js
 .DS_Store
 .env
 
+# swaks is used to test sending SMTP email via CLI
+swaks
+
 #Ignore test-uploaded-files
 spec/test_paperclip_files/
 
