@@ -61,7 +61,7 @@ business_categories.each { |b_category| BusinessCategory.find_or_create_by(name:
 BusinessCategory.find_or_create_by(name: 'Sociala tjänstehundar', description: 'Terapi-, vård- & skolhund dvs hundar som jobbar tillsammans med sin förare/ägare inom vård, skola och omsorg.')
 BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: 'Assistanshundar dvs hundar som jobbar åt sin ägare som service-, signal, diabetes, PH-hund mm')
 
-if Rails.env.development? || ENV['HEROKU_STAGING']
+unless Rails.env.production? || Rails.env.test?
 
   puts 'Creating users ...'
 
