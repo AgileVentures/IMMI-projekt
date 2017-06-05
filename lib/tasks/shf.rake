@@ -198,6 +198,33 @@ namespace :shf do
     end
   end
 
+  desc 'add member page arg=[filename]'
+  task :add_member_page, [:filename] => :environment do |task_name, args|
+
+    ActivityLogger.open(LOG_FILE, 'SHF_TASK', task_name) do |log|
+
+      if args.has_key? :filename
+        
+        filename = args[:filename]  # Add html file type if not present
+        filename = filename + '.html' unless filename =~ /.*\.html$/
+
+        filepath = File.join(Rails.root, 'app', 'views', 'pages', filename)
+
+        unless File.file?(filepath)
+          File.new(filepath, 'w+')
+          log.record('info', "Created member page file: #{filename}")
+        else
+          log.record('error', 'File already exists in pages directory')
+          raise 'ERROR: File already exists in pages directory'
+        end
+
+      else
+        log.record('error', 'You must specify a file name')
+        raise 'ERROR: You must specify a file name to import'
+      end
+    end
+  end
+
 
   # -------------------------------------------------
 
