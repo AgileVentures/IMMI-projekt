@@ -476,7 +476,7 @@ DEPENDENCIES
   pundit
   pundit-matchers
   railroady
-  rails (~> 5.0.0, >= 5.0.0.1)
+  rails (= 5.0.1)
   rake
   ransack
   rb-readline
@@ -496,7 +496,7 @@ DEPENDENCIES
   will_paginate-bootstrap
 
 RUBY VERSION
-   ruby 2.3.1p112
+   ruby 2.4.0p0
 
 BUNDLED WITH
-   1.14.6
+   1.15.1
