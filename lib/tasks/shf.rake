@@ -204,7 +204,7 @@ namespace :shf do
     ActivityLogger.open(LOG_FILE, 'SHF_TASK', task_name) do |log|
 
       if args.has_key? :filename
-        
+
         filename = args[:filename]  # Add html file type if not present
         filename = filename + '.html' unless filename =~ /.*\.html$/
 
@@ -220,7 +220,7 @@ namespace :shf do
 
       else
         log.record('error', 'You must specify a file name')
-        raise 'ERROR: You must specify a file name to import'
+        raise 'ERROR: You must specify a file name'
       end
     end
   end
