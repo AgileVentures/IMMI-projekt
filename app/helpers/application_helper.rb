@@ -121,5 +121,13 @@ module ApplicationHelper
     "#{active_record_item.class.name.downcase}-#{unique_id}"
   end
 
+  # Returns 1) an array which contains an array of [text, value]
+  #  for each selectable pagination items count, and,
+  #  2) the current selected items count
+  def paginate_count_options(count=10)
+    ary = [ ['10', 10], ['25', 25], ['50', 50], ['All', 'All'] ]
+
+    options_for_select(ary, count)
+  end
 
 end

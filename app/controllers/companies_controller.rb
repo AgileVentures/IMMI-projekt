@@ -5,8 +5,28 @@ class CompaniesController < ApplicationController
 
   def index
     authorize Company
+    debugger
 
-    @search_params = Company.ransack(params[:q])
+    # We can invoke this action by 1) loading the index page,
+    # 2) executing a companies search from the index page, or
+    # 3) changing the number of items to show in the pagination table on that page.
+
+    # In the first case, params[:q] will be nil as no query has been executed.
+    # In the second case, params[:q] will specify the search criteria in a hash.
+    # In the third case, params[:q] will be nil, but params[:search_params] will
+    #   contain the latest search criteria - these will be used when we reload
+    #   the pagination table with the newly selected items count.
+
+    if params[:cached_params]
+      @cached_params = params[:cached_params]
+      controller_params = ActionController::Parameters.new(JSON.parse(@cached_params))
+    else
+      @cached_params = params[:q].to_json
+      controller_params = params[:q]
+    end
+
+    @search_params = Company.ransack(controller_params)
+
     # only select companies that are 'complete'; see the Company.complete scope
 
     @all_companies =  @search_params.result(distinct: true)
