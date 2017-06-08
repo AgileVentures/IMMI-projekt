@@ -25,7 +25,7 @@ class CompaniesController < ApplicationController
       controller_params = params[:q]
     end
 
-    @items_count = params[:items_count] ? params[:items_count].to_i : 10
+    @items = params[:items_count] ? params[:items_count].to_i : 10
 
     @search_params = Company.ransack(controller_params)
 
@@ -47,7 +47,7 @@ class CompaniesController < ApplicationController
 
     @all_visible_companies.each { | co | geocode_if_needed co  }
 
-    @companies = @all_companies.page(params[:page]).per_page(10)
+    @companies = @all_companies.page(params[:page]).per_page(@items)
 
     render partial: 'companies_list' if request.xhr?
   end
