@@ -17,13 +17,15 @@ class CompaniesController < ApplicationController
     #   contain the latest search criteria - these will be used when we reload
     #   the pagination table with the newly selected items count.
 
-    if params[:cached_params]
+    if params[:cached_params] && params[:cached_params] != 'null'
       @cached_params = params[:cached_params]
       controller_params = ActionController::Parameters.new(JSON.parse(@cached_params))
     else
       @cached_params = params[:q].to_json
       controller_params = params[:q]
     end
+
+    @items_count = params[:items_count] ? params[:items_count].to_i : 10
 
     @search_params = Company.ransack(controller_params)
 
