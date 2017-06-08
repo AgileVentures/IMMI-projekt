@@ -7,27 +7,40 @@ class CompaniesController < ApplicationController
     authorize Company
     debugger
 
-    # We can invoke this action by 1) loading the index page,
-    # 2) executing a companies search from the index page, or
-    # 3) changing the number of items to show in the pagination table on that page.
+    # This action is invoked by 1) loading the index page, or,
+    # 2) moving to another pagination page in the companies listing table, or,
+    # 3) sorting on one of the table columns, or,
+    # 4) executing a companies search from the index page, or
+    # 5) changing the number of items to show in the pagination table on that page.
 
-    # In the first case, params[:q] will be nil as no query has been executed.
-    # In the second case, params[:q] will specify the search criteria in a hash.
-    # In the third case, params[:q] will be nil, but params[:search_params] will
-    #   contain the latest search criteria - these will be used when we reload
-    #   the pagination table with the newly selected items count.
+    # In case #1, params[:q] will be nil as no query has been executed.
+    # In case #2, params[:q] will specify the search criteria in a hash (the
+    #             pagination links include the search criteria as URL query params).
+    # In case #3, params[:q] will contain a hash with a single key, "s", for which
+    #             the associated value will be a string that specifies the column
+    #             to be sorted and the sort order (asc or desc).
+    # In case #4, params[:q] will contain the search criteria from the search form.
+    # In case #5, params[:q] will be nil.  In this case, we will load the
+    #             cached search criteria from session.
 
-    if params[:cached_params] && params[:cached_params] != 'null'
-      @cached_params = params[:cached_params]
-      controller_params = ActionController::Parameters.new(JSON.parse(@cached_params))
+    if params[:items_count]  # << this is case 5
+      @items_count = params[:items_count].to_i
+      session[:company_items_count] = @items_count
+
+      search_criteria = JSON.parse(session[:company_search_criteria])
+
+      action_params = search_criteria ?
+        ActionController::Parameters.new(search_criteria) : nil
     else
-      @cached_params = params[:q].to_json
-      controller_params = params[:q]
+      @items_count = session[:company_items_count] ?
+        session[:company_items_count] : 10
+
+      session[:company_search_criteria] = params[:q].to_json
+
+      action_params = params[:q]
     end
 
-    @items = params[:items_count] ? params[:items_count].to_i : 10
-
-    @search_params = Company.ransack(controller_params)
+    @search_params = Company.ransack(action_params)
 
     # only select companies that are 'complete'; see the Company.complete scope
 
@@ -47,7 +60,7 @@ class CompaniesController < ApplicationController
 
     @all_visible_companies.each { | co | geocode_if_needed co  }
 
-    @companies = @all_companies.page(params[:page]).per_page(@items)
+    @companies = @all_companies.page(params[:page]).per_page(@items_count)
 
     render partial: 'companies_list' if request.xhr?
   end

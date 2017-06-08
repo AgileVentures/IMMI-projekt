@@ -45,17 +45,13 @@
     = will_paginate @companies,
                     renderer: BootstrapPagination::Rails,
                     link_options: { 'data-remote': true,
-                                    'data-params': "items_count=#{@items}",
                                     class: 'companies_pagination' }
 
-    = select_tag(:items_count, paginate_count_options(@items),
+    = select_tag(:items_count, paginate_count_options(@items_count),
                  prompt: 'Number of items to show',
                  data: { remote: true,
-                         url: companies_path,
-                         params: {cached_params: @cached_params}.to_query },
+                         url: companies_path },
                  class: 'companies_pagination' )
-
-    = "items = #{@items}"
 
 -#
   for background on will_paginate method args, see:

@@ -124,10 +124,11 @@ module ApplicationHelper
   # Returns 1) an array which contains an array of [text, value]
   #  for each selectable pagination items count, and,
   #  2) the current selected items count
-  def paginate_count_options(count=10)
-    ary = [ ['10', 10], ['25', 25], ['50', 50], ['All', 'All'] ]
 
-    options_for_select(ary, count)
+  ITEMS_COUNT = [ ['10', 10], ['25', 25], ['50', 50], ['All', 'All'] ].freeze
+  
+  def paginate_count_options(count=10)
+    options_for_select(ITEMS_COUNT, count)
   end
 
 end
