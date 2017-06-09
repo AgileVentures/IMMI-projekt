@@ -1,5 +1,10 @@
 module ApplicationHelper
 
+  # This constant is used to specify "all" items to be shown in a view that
+  # uses the will_paginate gem for listing a collection.
+  # Examples would be for companies index view and applications index view.
+  # See "index" action in example controllers to see usage.
+  ALL_ITEMS = 10_000.freeze
 
   def flash_class(level)
     case level.to_sym
@@ -126,7 +131,7 @@ module ApplicationHelper
   #  2) the current selected items count
 
   ITEMS_COUNT = [ ['10', 10], ['25', 25], ['50', 50], ['All', 'All'] ].freeze
-  
+
   def paginate_count_options(count=10)
     options_for_select(ITEMS_COUNT, count)
   end

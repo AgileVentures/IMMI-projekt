@@ -5,7 +5,6 @@ class CompaniesController < ApplicationController
 
   def index
     authorize Company
-    debugger
 
     # This action is invoked by 1) loading the index page, or,
     # 2) moving to another pagination page in the companies listing table, or,
@@ -16,21 +15,29 @@ class CompaniesController < ApplicationController
     # In case #1, params[:q] will be nil as no query has been executed.
     # In case #2, params[:q] will specify the search criteria in a hash (the
     #             pagination links include the search criteria as URL query params).
-    # In case #3, params[:q] will contain a hash with a single key, "s", for which
-    #             the associated value will be a string that specifies the column
-    #             to be sorted and the sort order (asc or desc).
+    # In case #3, params[:q] will specify the search criteria, the column
+    #             to be sorted, and the sort order (asc or desc). (the
+    #             sort links include the search and sort criteria)
     # In case #4, params[:q] will contain the search criteria from the search form.
     # In case #5, params[:q] will be nil.  In this case, we will load the
     #             cached search criteria from session.
 
     if params[:items_count]  # << this is case 5
-      @items_count = params[:items_count].to_i
+      items_count = params[:items_count]
+      @items_count = items_count == 'All' ? 'All' : items_count.to_i
+
       session[:company_items_count] = @items_count
 
       search_criteria = JSON.parse(session[:company_search_criteria])
 
       action_params = search_criteria ?
         ActionController::Parameters.new(search_criteria) : nil
+
+      # Reset params "hash" so that sort_link works correctly in the view
+      # (the sort links are built using, as one input, the controller params)
+      params[:q] = action_params
+      params.delete(:items_count)
+
     else
       @items_count = session[:company_items_count] ?
         session[:company_items_count] : 10
@@ -55,12 +62,16 @@ class CompaniesController < ApplicationController
     # allowing sorting on an associated table column ("region" in this case)
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
 
-
     @all_visible_companies = @all_companies.address_visible
 
     @all_visible_companies.each { | co | geocode_if_needed co  }
 
-    @companies = @all_companies.page(params[:page]).per_page(@items_count)
+    if @items_count == 'All'
+      @companies = @all_companies.page(params[:page])
+        .per_page(ApplicationHelper::ALL_ITEMS)
+    else
+      @companies = @all_companies.page(params[:page]).per_page(@items_count)
+    end
 
     render partial: 'companies_list' if request.xhr?
   end
