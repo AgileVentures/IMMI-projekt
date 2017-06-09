@@ -209,8 +209,8 @@ namespace :shf do
       end
 
       if filename =~ /[^\w\-\.]/
-        log.record('error', "Unacceptable filename: #{filename}")
-        log.record('error', "Filename can contain only chars: [a-zA-Z0-9_-.]")
+        log.record('error', "Unacceptable characters in filename: #{filename}")
+        log.record('error', "Acceptable characters are a-z, A-Z, 0-9, '_', '-' and '.'")
         raise 'ERROR: Unacceptable filename'
       end
 
