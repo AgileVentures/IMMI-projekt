@@ -208,14 +208,25 @@ namespace :shf do
         raise 'ERROR: You must specify a file name'
       end
 
+      if filename =~ /[^\w\-\.]/
+        log.record('error', "Unacceptable filename: #{filename}")
+        log.record('error', "Filename can contain only chars: [a-zA-Z0-9_-.]")
+        raise 'ERROR: Unacceptable filename'
+      end
+
       # Add html file type if not present
       filename = filename + '.html' unless filename =~ /.*\.html$/
 
       filepath = File.join(Rails.root, 'app', 'views', 'pages', filename)
 
       unless File.file?(filepath)
-        File.new(filepath, 'w+')
-        log.record('info', "Created member page file: #{filename}")
+        begin
+          File.new(filepath, 'w+')
+          log.record('info', "Created member page file: #{filename}")
+        rescue
+          log.record('error', "Cannot create file: #{filename}")
+          raise
+        end
       else
         log.record('error', 'File already exists in pages directory')
         raise 'ERROR: File already exists in pages directory'
