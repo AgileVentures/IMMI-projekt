@@ -124,15 +124,18 @@ Feature: As a visitor,
     And I should not see "Kategori"
 
   @javascript
-  Scenario: See all categories for each company
+  Scenario: Pagination: Items per-page == 10
     Given I am Logged out
     And I am on the "landing" page
-    And I should see "JustForFun"
-    Then I select "Bowsers" in select list t("activerecord.models.company.one")
-    And I click on t("search") button
+    Then I should see t("companies.index.h_companies_listed_below")
+    
     And I should see "Bowsers"
-    And I should see "Groomer"
-    And I should see "Trainer"
-    And I should see "Rehab"
-    And I should see "Psychologist"
-    And I should not see "JustForFun"
+    And I should not see "2120000142"
+    And I should see "No More Snarky Barky"
+    And I should not see "5560360793"
+    And I should see "Company10"
+    And I should not see "3609340140"
+    And I should not see "Company11"
+    Then I click on t("will_paginate.next_label") link
+    And I should see "Company11"
+    And I should not see "Company10"
