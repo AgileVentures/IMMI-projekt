@@ -41,17 +41,25 @@
             %td= link_to "#{t('edit')}", edit_company_path(company)
             %td= link_to "#{t('delete')}", company, method: :delete,
                             data: { :confirm => "#{t('confirm_are_you_sure')}" }
-  .center
-    = will_paginate @companies,
-                    renderer: BootstrapPagination::Rails,
-                    link_options: { 'data-remote': true,
-                                    class: 'companies_pagination' }
 
-    = select_tag(:items_count, paginate_count_options(@items_count),
-                 prompt: 'Number of items to show',
-                 data: { remote: true,
-                         url: companies_path },
-                 class: 'companies_pagination' )
+  .row.center-aligned-container
+
+    .col-sm-8.col-sm-offset-2{style: 'text-align: center;'}
+      = will_paginate @companies,
+                      renderer: BootstrapPagination::Rails,
+                      link_options: { 'data-remote': true,
+                                      class: ' center companies_pagination' }
+
+    .col-sm-2{style: 'text-align: right;'}
+      - # override min-width from 'custom.css' - too wide
+      = select_tag(:items_count, paginate_count_options(@items_count),
+                   data: { remote: true,
+                           url: companies_path },
+                   style: 'min-width: 50px;',
+                   class: 'companies_pagination' )
+
+      %span.glyphicon.glyphicon-info-sign{ title: "#{t('items_per_page_tooltip')}",
+                                         data: {toggle: 'tooltip'} }
 
 -#
   for background on will_paginate method args, see:

@@ -183,6 +183,15 @@ select {
     margin-top: 0;
 }
 
+/* style for row (div) using flex model, with contained elements
+* aligned horizontally by center.
+* https://www.w3schools.com/css/css3_flexbox.asp
+*/
+.center-aligned-container {
+  display: flex;
+  align-items: center;
+}
+
 /*!
  *nicelabel JQuery Plugin
  *

@@ -65,6 +65,8 @@ en:
       next_label: "Next »"
       page_gap: "&hellip;"
 
+  items_per_page_tooltip: 'Select number of items per page'
+
   ckeditor:
     page_title: 'CKEditor Files Manager'
     confirm_delete: 'Delete file?'
