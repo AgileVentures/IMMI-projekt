@@ -1,38 +1,36 @@
-.index.company#companies
+%header.entry-header
+  - unless current_user.try(:admin)
+    %h1.entry-title= t('.title')
+  - if current_user.try(:admin)
+    %h1.entry-title= t('.admin_title')
 
-  %header.entry-header
-    - unless current_user.try(:admin)
-      %h1.entry-title= t('.title')
-    - if current_user.try(:admin)
-      %h1.entry-title= t('.admin_title')
+.entry-content
 
-  .entry-content
-
-    .row
-      = render 'map_companies',
-               markers: location_and_markers_for(@all_visible_companies)
+  .row
+    = render 'map_companies',
+             markers: location_and_markers_for(@all_visible_companies)
 
 
-    - unless current_user.try(:admin)
+  - unless current_user.try(:admin)
 
-      .search-instructions
-        %h3
-          #{t('.h_companies_listed_below')}
-          %br
-          #{t('.how_to_search')}
+    .search-instructions
+      %h3
+        #{t('.h_companies_listed_below')}
+        %br
+        #{t('.how_to_search')}
 
-          %button.btn.hide-search-form.btn-success.btn-xs.pull-right{ id: 'toggle_search_form',
-                                            href: '#company_search_form',
-                                            style: 'color:black; text-transform:none;' }
-            #{t('toggle.company_search_form.hide')}
+        %button.btn.hide-search-form.btn-success.btn-xs.pull-right{ id: 'toggle_search_form',
+                                          href: '#company_search_form',
+                                          style: 'color:black; text-transform:none;' }
+          #{t('toggle.company_search_form.hide')}
 
-    .panel.panel-default.search-panel{ id: 'company_search_form' }
+  .panel.panel-default.search-panel{ id: 'company_search_form' }
 
-      = render 'search_form'
+    = render 'search_form'
 
 
-    - if @companies.empty?
-      %strong
-        #{t('.no_search_results')}
-    - else
-      = render partial: 'companies_list'
+  - if @companies.empty?
+    %strong
+      #{t('.no_search_results')}
+  - else
+    = render partial: 'companies_list'
