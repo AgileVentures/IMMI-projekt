@@ -194,7 +194,7 @@ RSpec.describe ApplicationHelper, type: :helper do
   end
 
   describe '#paginate_count_options' do
-    
+
     let(:expected_default) do
       "<option selected=\"selected\" value=\"10\">10</option>\n<option " +
       "value=\"25\">25</option>\n<option value=\"50\">50</option>\n<option " +
@@ -205,7 +205,6 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     it 'returns default select options for items per-page' do
       expect(default_options).to eq expected_default
-      expect(default_options).to match(/.*selected\" value=\"10\".*/)
     end
 
     it 'sets selected to 25' do
