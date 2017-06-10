@@ -87,12 +87,12 @@ Feature: As an admin
   Scenario: Admin deletes the only membership application associated with a company. Company is deleted
     Given I am logged in as "admin@shf.se"
     And I am on the "all companies" page
-    Then I should see "4" companies
+    Then I should see "3" companies
     And I should see "WOOF"
     And I am on the application page for "Wils"
     And I click on t("membership_applications.show.delete")
     Then I should see t("membership_applications.application_deleted")
     And I should not see "Wils"
     When I am on the "all companies" page
-    Then I should see "3" companies
+    Then I should see "2" companies
     And I should not see "WOOF"

@@ -165,15 +165,15 @@ end
 
 
 Then(/^I should see "([^"]*)" applications$/) do |number|
-  expect(page).to have_selector('.applicant', count: number)
+  expect(page).to have_selector('tr.applicant', count: number)
 end
 
 Then(/^I should see "([^"]*)" companies/) do |number|
-  expect(page).to have_selector('.company', count: number)
+  expect(page).to have_selector('tr.company', count: number)
 end
 
 Then(/^I should see "([^"]*)" business categories/) do |number|
-  expect(page).to have_selector('.business_category', count: number)
+  expect(page).to have_selector('tr.business_category', count: number)
 end
 
 Then(/^the field "([^"]*)" should have a required field indicator$/) do |label_text|
@@ -420,7 +420,8 @@ end
 
 
 # Checks that a certain option is selected for a text field (from https://github.com/makandra/spreewald)
-Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) selected$/ do | select_list, negate, expected_string |
+Then /^"([^"]*)" should( not)? have (t\()?"([^"]*)"(?:\))? selected$/ do |select_list,
+  negate, translate_start, expected_string|
 
     field = find_field(select_list)
 
@@ -437,9 +438,14 @@ Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) selected$/ do | select_list, 
                       field.value
                   end
 
-   expect(field_value).send( (negate ? :not_to : :to),  eq(i18n_content(expected_string)) )
+  if translate_start
+     expect(field_value).send( (negate ? :not_to : :to),  eq(i18n_content(expected_string)) )
+  else
+    expect(field_value).send( (negate ? :not_to : :to),  eq(expected_string) )
+  end
 
 end
+
 
 Then(/^I should be on the all member app waiting reasons page$/) do
   expect(current_path_without_locale(current_path)).to eq admin_only_member_app_waiting_reasons_path
