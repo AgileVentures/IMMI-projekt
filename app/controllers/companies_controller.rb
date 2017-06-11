@@ -8,7 +8,7 @@ class CompaniesController < ApplicationController
   def index
     authorize Company
 
-    action_params, @items_count = process_pagination_params('company')
+    action_params, @items_count, items_per_page = process_pagination_params('company')
 
     @search_params = Company.ransack(action_params)
 
@@ -29,12 +29,7 @@ class CompaniesController < ApplicationController
 
     @all_visible_companies.each { | co | geocode_if_needed co  }
 
-    if @items_count == 'All'
-      @companies = @all_companies.page(params[:page])
-        .per_page(ApplicationHelper::ALL_ITEMS)
-    else
-      @companies = @all_companies.page(params[:page]).per_page(@items_count)
-    end
+    @companies = @all_companies.page(params[:page]).per_page(items_per_page)
 
     render partial: 'companies_list' if request.xhr?
   end

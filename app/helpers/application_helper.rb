@@ -1,11 +1,5 @@
 module ApplicationHelper
 
-  # This constant is used to specify "all" items to be shown in a view that
-  # uses the will_paginate gem for listing a collection.
-  # Examples would be for companies index view and applications index view.
-  # See "index" action in example controllers to see usage.
-  ALL_ITEMS = 10_000.freeze
-
   def flash_class(level)
     case level.to_sym
       when :notice then
