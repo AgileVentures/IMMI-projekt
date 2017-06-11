@@ -1,4 +1,6 @@
 class CompaniesController < ApplicationController
+  include PaginationUtility
+
   before_action :set_company, only: [:show, :edit, :update, :destroy]
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
 
@@ -6,46 +8,7 @@ class CompaniesController < ApplicationController
   def index
     authorize Company
 
-    # This action is invoked by 1) loading the index page, or,
-    # 2) moving to another pagination page in the companies listing table, or,
-    # 3) sorting on one of the table columns, or,
-    # 4) executing a companies search from the index page, or
-    # 5) changing the number of items to show in the pagination table on that page.
-
-    # In case #1, params[:q] will be nil as no query has been executed.
-    # In case #2, params[:q] will specify the search criteria in a hash (the
-    #             pagination links include the search criteria as URL query params).
-    # In case #3, params[:q] will specify the search criteria, the column
-    #             to be sorted, and the sort order (asc or desc). (the
-    #             sort links include the search and sort criteria)
-    # In case #4, params[:q] will contain the search criteria from the search form.
-    # In case #5, params[:q] will be nil.  In this case, we will load the
-    #             cached search criteria from session.
-
-    if params[:items_count]  # << this is case 5
-      items_count = params[:items_count]
-      @items_count = items_count == 'All' ? 'All' : items_count.to_i
-
-      session[:company_items_count] = @items_count
-
-      search_criteria = JSON.parse(session[:company_search_criteria])
-
-      action_params = search_criteria ?
-        ActionController::Parameters.new(search_criteria) : nil
-
-      # Reset params "hash" so that sort_link works correctly in the view
-      # (the sort links are built using, as one input, the controller params)
-      params[:q] = action_params
-      params.delete(:items_count)
-
-    else
-      @items_count = session[:company_items_count] ?
-        session[:company_items_count] : 10
-
-      session[:company_search_criteria] = params[:q].to_json
-
-      action_params = params[:q]
-    end
+    action_params, @items_count = process_pagination_params('company')
 
     @search_params = Company.ransack(action_params)
 
