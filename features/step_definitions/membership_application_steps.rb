@@ -51,18 +51,3 @@ Given(/^I am on the list applications page$/) do
   locale_path = path_with_locale(membership_applications_path)
   visit locale_path
 end
-
-And(/^I override company number validation$/) do
-  class MembershipApplication
-    def swedish_organisationsnummer
-      puts 'returning true'
-      true
-    end
-  end
-
-  class Company
-    def swedish_organisationsnummer
-      true
-    end
-  end
-end
