@@ -32,7 +32,7 @@ module PaginationUtility
     # 4) executing a companies search from the index page, and,
     # 5) changing per-page items count in the pagination table on that page (XHR).
 
-    entity_items_selection = (entity + '_items_count').to_sym
+    entity_items_selection = (entity + '_items_selection').to_sym
     entity_search_criteria = (entity + '_search_criteria').to_sym
 
     if params[:items_count]  # << user has selected a per-page items count
