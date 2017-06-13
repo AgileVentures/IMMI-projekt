@@ -41,11 +41,11 @@ Background:
     | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       | Laxå      |
 
   And the following applications exist:
-    | first_name | user_email          | company_number | state    | categories   |
-    | Fred       | fred@barkyboys.com  | 5560360793     | accepted | Groomer      |
-    | John       | john@happymutts.com | 2120000142     | accepted | Psychologist |
-    | Anna       | anna@dogsrus.com    | 5562252998     | accepted | Trainer      |
-    | Emma       | emma@weluvdogs.com  | 5569467466     | accepted | Groomer      |
+    | first_name | user_email          | company_number | state    | categories      |
+    | Fred       | fred@barkyboys.com  | 5560360793     | accepted | Groomer, Trainer|
+    | John       | john@happymutts.com | 2120000142     | accepted | Psychologist    |
+    | Anna       | anna@dogsrus.com    | 5562252998     | accepted | Trainer         |
+    | Emma       | emma@weluvdogs.com  | 5569467466     | accepted | Groomer, Walker |
 
 @javascript
 Scenario: View all companies, sort by columns
@@ -82,6 +82,9 @@ Scenario: Search by category
   And I should see "We Luv Dogs"
   And I should not see "HappyMutts"
   And I should not see "Dogs R Us"
+  And I should see "Trainer"
+  And I should see "Walker"
+  And I should not see "Psychologist"
 
 @javascript
 Scenario: Search by region
