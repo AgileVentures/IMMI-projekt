@@ -1,8 +1,7 @@
 require 'coveralls'
+Coveralls.wear_merged!('rails')
 require 'pundit/rspec'
 require 'paperclip/matchers'
-
-Coveralls.wear_merged!('rails')
 
 RSpec.configure do |config|
   config.expect_with :rspec do |expectations|
