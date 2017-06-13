@@ -16,6 +16,9 @@
 # Ignore Byebug command history file.
 .byebug_history
 
+# Ignore prior ruby version files (RVM)
+.ruby-version.*
+
 # Ignore Coveralls report results
 coverage/
 

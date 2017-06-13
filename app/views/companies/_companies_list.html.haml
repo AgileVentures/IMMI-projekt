@@ -26,7 +26,7 @@
         %tr.company
           %td{ style: 'white-space: nowrap;' }
             - first = true
-            - company.business_categories.sort_by(&:name).uniq.each do | bc |
+            - company.business_categories.order(:name).distinct.each do | bc |
               - if first
                 - first = false
                 = bc.name
