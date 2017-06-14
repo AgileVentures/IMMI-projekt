@@ -6,7 +6,7 @@ RSpec.describe 'companies/index' do
 
   let(:member)  { FactoryGirl.create(:member_with_membership_app) }
 
-  let(:cmpy_id) { cmpy_id = member.membership_applications[0].company.id }
+  let(:cmpy_id) { member.membership_applications[0].company.id }
 
   before(:each) { view.lookup_context.prefixes << 'application' }
     # https://stackoverflow.com/questions/41762057/
