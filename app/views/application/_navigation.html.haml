@@ -40,7 +40,7 @@
                                   company_path(member_company)
                       %li.menu-item
                         = link_to t('menus.nav.members.manage_company.edit_company'),
-                                  edit_company_path(company_path(member_company))
+                                  edit_company_path(member_company)
 
                 = render 'navigation_edit_my_application', membership_app: current_user.membership_applications.last
 
