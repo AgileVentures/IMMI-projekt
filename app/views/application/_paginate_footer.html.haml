@@ -1,13 +1,13 @@
 .row.center-aligned-container
 
-  .col-sm-8.col-sm-offset-2{style: 'text-align: center;'}
+  .col-sm-8.col-sm-offset-2{ style: 'text-align: center;' }
     = will_paginate entities,
                     renderer: BootstrapPagination::Rails,
                     link_options: { 'data-remote': true,
                                     class: paginate_class }
 
-  .col-sm-2{style: 'text-align: right;'}
-    - # override min-width from 'custom.css' - too wide
+  .col-sm-2{ style: 'text-align: right;' }
+    -# override min-width from 'custom.css' - too wide
     = select_tag(:items_count, paginate_count_options(items_count),
                  data: { remote: true,
                          url: url },
