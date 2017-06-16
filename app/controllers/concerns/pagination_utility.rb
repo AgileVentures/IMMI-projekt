@@ -7,6 +7,8 @@ module PaginationUtility
   # items-per-page selection.
   ALL_ITEMS = 10_000.freeze
 
+  DEFAULT_ITEMS_SELECTION = 10.freeze # Default items-per-page setting
+
   def process_pagination_params(entity)
 
     # This method is used in controller actions involved in pagination of
@@ -53,7 +55,7 @@ module PaginationUtility
 
     else
       items_selection = session[entity_items_selection] ?
-        session[entity_items_selection] : 10
+        session[entity_items_selection] : DEFAULT_ITEMS_SELECTION
 
       session[entity_search_criteria] = params[:q].to_json
 
