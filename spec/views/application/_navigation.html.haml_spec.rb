@@ -8,6 +8,8 @@ RSpec.describe 'companies/index' do
 
   let(:cmpy_id) { member.membership_applications[0].company.id }
 
+  let(:app_id)  { member.membership_applications[0].id }
+
   before(:each) { view.lookup_context.prefixes << 'application' }
     # https://stackoverflow.com/questions/41762057/
     # rails-view-specs-referenced-partials-of-inherited-controllers-arent-found/
@@ -25,7 +27,37 @@ RSpec.describe 'companies/index' do
       render 'application/navigation'
     end
 
+    it 'renders link to main site' do
+      text = t('menus.nav.shf_main_site')
+      expect(rendered)
+        .to match %r{<a href=\"http:\/\/sverigeshundforetagare.se\/\">#{text}}
+    end
+
+    it 'renders link to companies index view' do
+      text = t('menus.nav.members.shf_companies')
+      expect(rendered).to match %r{<a href=\"\/\">#{text}}
+    end
+
+    it 'renders link to my application' do
+      text = t('menus.nav.users.my_application')
+      expect(rendered).to match %r{<a href=\"\/ansokan\/#{app_id}\">#{text}}
+    end
+
+    context 'member pages' do
+
+      it 'renders menu link == member pages index' do
+        text = t('menus.nav.members.member_pages')
+        expect(rendered).to match %r{<a href=\"\/member-pages\">#{text}}
+      end
+
+      it 'renders link to view SHF Board meeting minutes' do
+        text = t('menus.nav.members.shf_meeting_minutes')
+        expect(rendered).to match %r{<a href=\"\/shf_documents">#{text}}
+      end
+    end
+
     context 'manage my company menu' do
+
       it 'renders default menu link == view-my-company' do
         text = t('menus.nav.members.manage_company.submenu_title')
         expect(rendered)
