@@ -23,6 +23,20 @@ And(/^the following applications exist:$/) do |table|
  end
 end
 
+And(/^the following simple applications exist:$/) do |table|
+  table.hashes.each do |hash|
+    ma = FactoryGirl.build(:membership_application,
+                           first_name: 'Fred',
+                           last_name: 'Flintstone',
+                           company_number: hash['company_number'],
+                           contact_email: hash['user_email'],
+                           state: hash['state'])
+    ma.save(validate: false)
+  end
+end
+
+
+
 And(/^I navigate to the edit page for "([^"]*)"$/) do |first_name|
   membership_application = MembershipApplication.find_by(first_name: first_name)
   visit path_with_locale(edit_membership_application_path(membership_application))

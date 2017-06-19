@@ -1,4 +1,6 @@
 class CompaniesController < ApplicationController
+  include PaginationUtility
+
   before_action :set_company, only: [:show, :edit, :update, :destroy]
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
 
@@ -6,7 +8,10 @@ class CompaniesController < ApplicationController
   def index
     authorize Company
 
-    @search_params = Company.ransack(params[:q])
+    action_params, @items_count, items_per_page = process_pagination_params('company')
+
+    @search_params = Company.ransack(action_params)
+
     # only select companies that are 'complete'; see the Company.complete scope
 
     @all_companies =  @search_params.result(distinct: true)
@@ -20,12 +25,11 @@ class CompaniesController < ApplicationController
     # allowing sorting on an associated table column ("region" in this case)
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
 
-
     @all_visible_companies = @all_companies.address_visible
 
     @all_visible_companies.each { | co | geocode_if_needed co  }
 
-    @companies = @all_companies.page(params[:page]).per_page(10)
+    @companies = @all_companies.page(params[:page]).per_page(items_per_page)
 
     render partial: 'companies_list' if request.xhr?
   end

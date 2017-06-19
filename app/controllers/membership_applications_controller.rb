@@ -1,4 +1,6 @@
 class MembershipApplicationsController < ApplicationController
+  include PaginationUtility
+
   before_action :get_membership_application, except: [:information, :index, :new, :create]
   before_action :authorize_membership_application, only: [:update, :show, :edit]
 
@@ -13,12 +15,15 @@ class MembershipApplicationsController < ApplicationController
   def index
     authorize MembershipApplication
 
-    @search_params = MembershipApplication.ransack(params[:q])
+    action_params, @items_count, items_per_page =
+      process_pagination_params('membership_application')
+
+    @search_params = MembershipApplication.ransack(action_params)
 
     @membership_applications = @search_params
                                    .result
                                    .includes(:business_categories)
-                                   .page(params[:page]).per_page(10)
+                                   .page(params[:page]).per_page(items_per_page)
 
     render partial: 'membership_applications_list' if request.xhr?
   end

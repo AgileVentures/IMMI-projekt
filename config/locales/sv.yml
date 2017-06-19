@@ -65,6 +65,8 @@ sv:
     next_label: "Nästa »"
     page_gap: "&hellip;"
 
+  items_per_page_tooltip: 'Välj antal objekt per sida'
+
   ckeditor:
       page_title: 'CKEditor Filer'
       confirm_delete: 'Radera fil?'

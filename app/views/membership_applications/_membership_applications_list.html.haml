@@ -20,8 +20,8 @@
           %td.state= t("membership_applications.state.#{membership_application.state}")
           %td.action= link_to "#{t('manage')}", membership_application_path(membership_application.id)
 
-  .center
-    = will_paginate @membership_applications,
-                    renderer: BootstrapPagination::Rails,
-                    link_options: { 'data-remote': true,
-                                    class: 'applications_pagination' }
+  = render partial: 'application/paginate_footer',
+           locals: { entities: @membership_applications,
+                     paginate_class: 'applications_pagination',
+                     items_count: @items_count,
+                     url: membership_applications_path }

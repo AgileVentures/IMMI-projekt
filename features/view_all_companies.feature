@@ -28,38 +28,26 @@ Feature: As a visitor,
       | Company11            | 2965790286     | cmpy11@mail.com        | Stockholm    | Alingsås|
       | Company12            | 4268582063     | cmpy12@mail.com        | Stockholm    | Alingsås|
       | Company13            | 8028973322     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company14            | 8356502446     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company15            | 8394317054     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company16            | 8423893877     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company17            | 8589182768     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company18            | 8616006592     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company19            | 8764985894     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company20            | 8822107739     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company21            | 8853655168     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company22            | 8909248752     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company23            | 9074668568     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company24            | 9243957975     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company25            | 9267816362     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company26            | 9360289459     | cmpy13@mail.com        | Stockholm    | Alingsås|
+      | Company27            | 9475077674     | cmpy13@mail.com        | Stockholm    | Alingsås|
 
     And the following users exists
       | email               | admin |
       | emma@happymutts.com |       |
       | a@happymutts.com    |       |
       | admin@shf.se        | true  |
-
-    And the following business categories exist
-      | name         |
-      | Groomer      |
-      | Psychologist |
-      | Trainer      |
-      | Rehab        |
-      | Walker       |
-      | JustForFun   |
-
-    And the following applications exist:
-      | first_name | user_email          | company_number | categories              | state    |
-      | Emma       | emma@happymutts.com | 5560360793     | Groomer, JustForFun     | accepted |
-      | Anna       | a@happymutts.com    | 2120000142     | Groomer, Trainer, Rehab | accepted |
-      | Emma       | emma@happymutts.com | 2120000142     | Psychologist, Groomer   | accepted |
-      | Anna       | a@happymutts.com    | 6613265393     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 6222279082     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 8025085252     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 6914762726     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 7661057765     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 7736362901     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 6112107039     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 3609340140     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 2965790286     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 4268582063     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 8028973322     | Groomer                 | accepted |
 
   @javascript
   Scenario: Visitor sees all companies
@@ -70,10 +58,7 @@ Feature: As a visitor,
     And I should not see "2120000142"
     And I should see "No More Snarky Barky"
     And I should not see "5560360793"
-    And I should see "Groomer"
-    And I should not see "Walker"
     And I should not see t("companies.new_company")
-
 
   Scenario: User sees all the companies
     Given I am logged in as "emma@happymutts.com"
@@ -84,8 +69,6 @@ Feature: As a visitor,
     And I should see "No More Snarky Barky"
     And I should not see "5560360793"
     And I should not see t("companies.new_company")
-
-
 
   @javascript
   Scenario: Pagination
@@ -124,15 +107,23 @@ Feature: As a visitor,
     And I should not see "Kategori"
 
   @javascript
-  Scenario: See all categories for each company
+  Scenario: Pagination: Set number of items per page
     Given I am Logged out
     And I am on the "landing" page
-    And I should see "JustForFun"
-    Then I select "Bowsers" in select list t("activerecord.models.company.one")
-    And I click on t("search") button
-    And I should see "Bowsers"
-    And I should see "Groomer"
-    And I should see "Trainer"
-    And I should see "Rehab"
-    And I should see "Psychologist"
-    And I should not see "JustForFun"
+    Then I should see t("companies.index.h_companies_listed_below")
+    And "items_count" should have "10" selected
+    And I should see "10" companies
+    And I should see "Company10"
+    And I should not see "Company11"
+    And I should not see "Company26"
+    Then I set "items_count" to "25"
+    And I should see "25" companies
+    And "items_count" should have "25" selected
+    And I should see "Company10"
+    And I should see "Company11"
+    And I should see "Company25"
+    And I should not see "Company26"
+    Then I set "items_count" to "All"
+    And I should see "27" companies
+    And I should see "Company26"
+    And I should see "Company27"

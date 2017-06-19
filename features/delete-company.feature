@@ -122,12 +122,12 @@ Feature: As an admin
   Scenario: Admin deletes a company with no membership applications and no categories
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
-    Then I should see "8" companies
+    Then I should see "7" companies
     When I click the t("delete") action for the row with "Unassociated Company"
     And I confirm popup
     Then I should see t("companies.destroy.success")
     And I should not see "Unassociated Company"
-    And I should see "7" companies
+    And I should see "6" companies
 
 
   @poltergeist
@@ -138,12 +138,12 @@ Feature: As an admin
     When I am on the "landing" page
     Then I should see "11" applications
     When I am on the "all companies" page
-    Then I should see "8" companies
+    Then I should see "7" companies
     When I click the t("delete") action for the row with "Kats"
     And I confirm popup
     Then I should see t("companies.destroy.success")
     And I should not see "Kats"
-    And I should see "7" companies
+    And I should see "6" companies
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
@@ -157,7 +157,7 @@ Feature: As an admin
     When I am on the "landing" page
     Then I should see "11" applications
     When I am on the "all companies" page
-    Then I should see "8" companies
+    Then I should see "7" companies
     When I am on the page for company number "2120000142"
     And I click on t("companies.index.delete")
     And I confirm popup
@@ -166,7 +166,7 @@ Feature: As an admin
     And I should see t("activerecord.errors.models.company.company_has_active_memberships")
     When I am on the "all companies" page
     And I should see "Happy Mutts"
-    And I should see "8" companies
+    And I should see "7" companies
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
@@ -185,12 +185,12 @@ Feature: As an admin
     When I am on the "landing" page
     Then I should see "11" applications
     When I am on the "all companies" page
-    Then I should see "8" companies
+    Then I should see "7" companies
     When I click the t("delete") action for the row with "Kitties"
     And I confirm popup
     Then I should see t("companies.destroy.success")
     And I should not see "Kitties"
-    And I should see "7" companies
+    And I should see "6" companies
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
@@ -205,12 +205,12 @@ Feature: As an admin
     When I am on the "landing" page
     Then I should see "11" applications
     When I am on the "all companies" page
-    Then I should see "8" companies
+    Then I should see "7" companies
     When I click the t("delete") action for the row with "No More Snarky Barky"
     And I confirm popup
     Then I should see t("companies.destroy.success")
     And I should not see "No More Snarky Barky"
-    And I should see "7" companies
+    And I should see "6" companies
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
@@ -225,12 +225,12 @@ Feature: As an admin
     When I am on the "landing" page
     Then I should see "11" applications
     When I am on the "all companies" page
-    Then I should see "8" companies
+    Then I should see "7" companies
     When I click the t("delete") action for the row with "WOOF"
     And I confirm popup
     Then I should see t("companies.destroy.success")
     And I should not see "WOOF"
-    And I should see "7" companies
+    And I should see "6" companies
     When I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page

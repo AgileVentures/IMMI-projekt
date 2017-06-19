@@ -41,13 +41,9 @@
             %td= link_to "#{t('edit')}", edit_company_path(company)
             %td= link_to "#{t('delete')}", company, method: :delete,
                             data: { :confirm => "#{t('confirm_are_you_sure')}" }
-  .center
-    = will_paginate @companies,
-                    renderer: BootstrapPagination::Rails,
-                    link_options: { 'data-remote': true,
-                                    class: 'companies_pagination' }
 
--#
-  for background on above statement, see:
-  https://gist.github.com/jeroenr/3142686, and
-  https://github.com/bootstrap-ruby/will_paginate-bootstrap
+  = render partial: 'application/paginate_footer',
+           locals: { entities: @companies,
+                     paginate_class: 'companies_pagination',
+                     items_count: @items_count,
+                     url: companies_path }

@@ -1,6 +1,5 @@
 module ApplicationHelper
 
-
   def flash_class(level)
     case level.to_sym
       when :notice then
@@ -121,5 +120,15 @@ module ApplicationHelper
     "#{active_record_item.class.name.downcase}-#{unique_id}"
   end
 
+  # Returns a string of option tags for a 'select' element.
+  # The select element allows the user to select the number of items to
+  # appear on each pagination page.
+  # The 'count' argument is the currently-select items count.
+
+  ITEMS_COUNT = [ ['10', 10], ['25', 25], ['50', 50], ['All', 'All'] ].freeze
+
+  def paginate_count_options(count=10)
+    options_for_select(ITEMS_COUNT, count)
+  end
 
 end
