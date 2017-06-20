@@ -4,6 +4,7 @@ RSpec.describe BusinessCategoryPolicy do
 
   let(:user_1) { create(:user, email: 'user_1@random.com') }
   let(:admin) { create(:user, email: 'admin@sgf.com', admin: true) }
+  let(:visitor) { build(:visitor) }
   let(:category) { create(:business_category) }
 
   describe 'For admin' do
@@ -31,7 +32,7 @@ RSpec.describe BusinessCategoryPolicy do
   end
 
   describe 'For a visitor (not logged in)' do
-    subject { described_class.new(nil, category) }
+    subject { described_class.new(visitor, category) }
 
     it { is_expected.to forbid_action :index }
     it { is_expected.to permit_action :show }

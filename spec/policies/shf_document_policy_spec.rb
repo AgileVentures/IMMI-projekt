@@ -5,6 +5,7 @@ RSpec.describe ShfDocumentPolicy do
   let(:user_1) { create(:user, email: 'user@random.com') }
   let(:member) { create(:member_with_membership_app, email: 'member@random.com', company_number: '5562728336')}
   let(:admin)  { create(:user, email: 'admin@shf.se', admin: true) }
+  let(:visitor) { build(:visitor) }
   let(:shf_document) { create(:shf_document, uploader: (create(:user, email: 'admin2@shf.se', admin: true )) )}
 
   subject { described_class }
@@ -53,7 +54,7 @@ RSpec.describe ShfDocumentPolicy do
 
 
   describe 'For a visitor (not logged in)' do
-    subject { described_class.new(nil, shf_document) }
+    subject { described_class.new(visitor, shf_document) }
 
     it { is_expected.to forbid_action :index }
     it { is_expected.to forbid_action :show }
@@ -97,7 +98,7 @@ RSpec.describe ShfDocumentPolicy do
       it { is_expected.to forbid_action :contents_update }
     end
     context 'For a visitor (not logged in)' do
-      subject { described_class.new(nil, ShfDocument) }
+      subject { described_class.new(visitor, ShfDocument) }
 
       it { is_expected.to forbid_action :index }
       it { is_expected.to forbid_action :contents_show }

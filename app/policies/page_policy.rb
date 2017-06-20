@@ -1,7 +1,7 @@
 class PagePolicy < Struct.new(:user, :record)
 
   def destroy?
-    is_admin?
+    user.admin?
   end
 
   def show?
@@ -15,7 +15,7 @@ class PagePolicy < Struct.new(:user, :record)
 
 
   def new?
-    is_admin?
+    user.admin?
   end
 
 
@@ -25,7 +25,7 @@ class PagePolicy < Struct.new(:user, :record)
 
 
   def update?
-    is_admin?
+    user.admin?
   end
 
 
@@ -36,10 +36,7 @@ class PagePolicy < Struct.new(:user, :record)
 
   private
   def user_is_member?
-    (user.is_member? || user.admin?) if user
+    (user.is_member? || user.admin?)
   end
 
-  def is_admin?
-    user.admin? if user
-  end
 end

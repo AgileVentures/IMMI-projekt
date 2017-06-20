@@ -5,6 +5,7 @@ RSpec.describe PagePolicy do
   let(:user_1) { create(:user, email: 'user_1@random.com') }
   let(:member) { create(:member_with_membership_app, email: 'member@random.com')}
   let(:admin)  { create(:user, email: 'admin@sfh.com', admin: true) }
+  let(:visitor) { build(:visitor) }
   let (:page) {}
 
   describe 'For admin' do
@@ -44,7 +45,7 @@ RSpec.describe PagePolicy do
   end
 
   describe 'For a visitor (not logged in)' do
-    subject { described_class.new(nil, page) }
+    subject { described_class.new(visitor, page) }
 
     it { is_expected.to forbid_action :index }
     it { is_expected.to forbid_action :show }

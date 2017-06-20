@@ -10,7 +10,7 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def new?
-    is_admin?
+    user.admin?
   end
 
   def create?
@@ -18,17 +18,14 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def update?
-   is_admin? || is_in_company?
+   user.admin? || is_in_company?
   end
 
 
 
   private
-  def is_admin?
-    @user.admin? if @user
-  end
 
   def is_in_company?
-    @user && @user.is_in_company_numbered?(@record.company_number)
+    @user.is_in_company_numbered?(@record.company_number)
   end
 end

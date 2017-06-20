@@ -5,6 +5,7 @@ RSpec.describe CompanyPolicy do
   let(:user_1) { create(:user, email: 'user_1@random.com') }
   let(:member) { create(:member_with_membership_app, email: 'member@random.com', company_number: '5562728336')}
   let(:admin)  { create(:user, email: 'admin@sfh.com', admin: true) }
+  let(:visitor) { build(:visitor) }
   let(:company) { create(:company, company_number: '5712213304')}
 
   describe 'For admin' do
@@ -53,7 +54,7 @@ RSpec.describe CompanyPolicy do
   end
 
   describe 'For a visitor (not logged in)' do
-    subject { described_class.new(nil, company) }
+    subject { described_class.new(visitor, company) }
 
     it { is_expected.to permit_action :index }
     it { is_expected.to permit_action :show }

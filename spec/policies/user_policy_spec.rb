@@ -7,6 +7,7 @@ RSpec.describe UserPolicy do
                         email: 'member@random.com',
                         company_number: '5562728336') }
   let(:admin)  { create(:user, email: 'admin@sfh.com', admin: true) }
+  let(:visitor) { build(:visitor) }
 
   permissions :index? do
     it 'allows access to admin' do
@@ -22,7 +23,7 @@ RSpec.describe UserPolicy do
     end
 
     it 'denies access to visitor' do
-      expect(UserPolicy).not_to permit(nil)
+      expect(UserPolicy).not_to permit(visitor)
     end
   end
 end

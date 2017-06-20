@@ -5,6 +5,7 @@ RSpec.describe AdminOnly::AdminOnlyPolicy do
   let(:user_1) { create(:user, email: 'user@random.com') }
   let(:member) { create(:member_with_membership_app, email: 'member@random.com', company_number: '5562728336')}
   let(:admin)  { create(:user, email: 'admin@shf.com', admin: true) }
+  let(:visitor) { build(:visitor) }
 
   let(:simple_record) { create(:business_category) }
 
@@ -52,7 +53,7 @@ RSpec.describe AdminOnly::AdminOnlyPolicy do
   end
 
   describe 'Visitor (not logged in) is forbidden everything' do
-    subject { described_class.new(nil, simple_record) }
+    subject { described_class.new(visitor, simple_record) }
 
     it { is_expected.to forbid_action :index }
     it { is_expected.to forbid_action :show }

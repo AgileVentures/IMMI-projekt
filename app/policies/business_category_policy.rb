@@ -1,7 +1,7 @@
 class BusinessCategoryPolicy < ApplicationPolicy
 
   def new?
-    is_admin?
+    user.admin?
   end
 
 
@@ -16,17 +16,17 @@ class BusinessCategoryPolicy < ApplicationPolicy
 
 
   def index?
-    is_admin?
+    user.admin?
   end
 
 
   def update?
-    is_admin?
+    user.admin?
   end
 
 
   def edit?
-    is_admin?
+    user.admin?
   end
 
 

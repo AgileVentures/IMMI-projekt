@@ -123,12 +123,13 @@ describe MembershipApplicationPolicy do
 
     let(:user_1) { create(:user, email: 'user_1@random.com') }
     let(:user_2) { create(:user, email: 'user_2@random.com') }
-    let(:admin) { create(:user, email: 'admin@sgf.com', admin: true) }
+    let(:admin)  { create(:user, email: 'admin@sgf.com', admin: true) }
+    let(:visitor) { build(:visitor) }
     let(:application) { create(:membership_application,
                                user: user_1) }
 
     describe 'For visitors (not logged in)' do
-      subject { described_class.new(nil, application) }
+      subject { described_class.new(visitor, application) }
 
       it 'forbids new' do
         is_expected.to forbid_action :new

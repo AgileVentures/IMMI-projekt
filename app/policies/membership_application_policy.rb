@@ -38,7 +38,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def new?
-    is_admin?
+    user.admin?
   end
 
 
@@ -48,27 +48,27 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def information?
-    user
+    not_a_visitor
   end
 
 
   def accept?
-    is_admin?
+    user.admin?
   end
 
 
   def reject?
-    is_admin?
+    user.admin?
   end
 
 
   def need_info?
-    is_admin?
+    user.admin?
   end
 
 
   def cancel_need_info?
-    is_admin?
+    user.admin?
   end
 
 

@@ -6,12 +6,12 @@ class ShfDocumentPolicy < ApplicationPolicy
   end
 
   def update?
-    is_admin?
+    user.admin?
   end
 
 
   def show?
-    is_admin?
+    user.admin?
   end
 
   def contents_show?
@@ -32,7 +32,7 @@ class ShfDocumentPolicy < ApplicationPolicy
 
 
   def create?
-    is_admin?
+    user.admin?
   end
 
   def minutes_and_static_pages?

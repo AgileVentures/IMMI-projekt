@@ -5,17 +5,17 @@ module AdminOnly
 
 
     def index?
-      is_admin?
+      @user.admin?
     end
 
 
     def update?
-      is_admin?
+      @user.admin?
     end
 
 
     def create?
-      is_admin?
+      @user.admin?
     end
 
 

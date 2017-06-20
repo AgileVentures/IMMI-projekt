@@ -1,9 +1,5 @@
 class Visitor
 
-  def is_admin?
-    false
-  end
-
   def admin?
     false
   end
