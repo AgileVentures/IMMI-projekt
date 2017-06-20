@@ -137,7 +137,7 @@ RSpec.describe CompaniesHelper, type: :helper do
   describe '#show_address_fields' do
     let(:admin)   { create(:user, admin: true) }
     let(:member)  { create(:member_with_membership_app) }
-    let(:visitor) { create(:user) }
+    let(:visitor) { build(:visitor) }
     let(:company) { create(:company) }
 
     let(:all_fields) do

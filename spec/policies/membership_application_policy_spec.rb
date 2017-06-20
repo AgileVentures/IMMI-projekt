@@ -67,7 +67,7 @@ describe MembershipApplicationPolicy do
 
 
     describe 'for a visitor' do
-      subject { described_class.new(nil, application) }
+      subject { described_class.new(Visitor.new, application) }
 
       it 'forbits create' do
         is_expected.to forbid_mass_assignment_of(:state).for_action(:create)

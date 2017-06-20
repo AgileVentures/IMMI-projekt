@@ -12,7 +12,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def permitted_attributes_for_show
-    user ? all_attributes : []
+    not_a_visitor ? all_attributes : []
   end
 
 
@@ -107,18 +107,24 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def allowed_attribs_for_current_user
-    if user && user.admin?
+    if user.admin?
       all_attributes
-    elsif user && owner?
+    elsif owner?
       owner_attributes
-    else
+    elsif not_a_visitor
       user_owner_attributes
+    else
+      []
     end
   end
 
 
   def owner?
-    user && @record.respond_to?(:user) && @record.user == user
+    @record.respond_to?(:user) && @record.user == user
+  end
+
+  def not_a_visitor
+    ! user.is_a? Visitor
   end
 
 end

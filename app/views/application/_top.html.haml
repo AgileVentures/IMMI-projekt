@@ -1,5 +1,5 @@
 = render 'navigation'
 #site-logo
   %p.admin
-    - if current_user.try(:admin)
+    - if current_user.admin?
       = t('info.logged_in_as_admin')

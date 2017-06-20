@@ -1,7 +1,7 @@
 %header.entry-header
-  - unless current_user.try(:admin)
+  - unless current_user.admin?
     %h1.entry-title= t('.title')
-  - if current_user.try(:admin)
+  - if current_user.admin?
     %h1.entry-title= t('.admin_title')
 
 .entry-content
@@ -11,7 +11,7 @@
              markers: location_and_markers_for(@all_visible_companies)
 
 
-  - unless current_user.try(:admin)
+  - unless current_user.admin?
 
     .search-instructions
       %h3

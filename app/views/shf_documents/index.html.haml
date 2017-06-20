@@ -15,7 +15,7 @@
 
         %th= sort_link(@ransack_query_results, :description, t('.description'))
 
-        - if current_user.try(:admin)
+        - if current_user.admin?
           %th
           %th
 
@@ -26,11 +26,11 @@
 
           %td.description= shf_document.description
 
-          - if current_user.try(:admin)
+          - if current_user.admin?
             %td= link_to t('.view_details'), shf_document
             %td= link_to t('delete'), shf_document, :method => :delete, :data => { :confirm => t('.delete_confirm', document_title: shf_document.title) }
 
-  - if current_user.try(:admin)
+  - if current_user.admin?
     %br
     .center
       = link_to t('shf_documents.new_shf_minutes'), new_shf_document_path, class: 'btn btn-default btn-shf-document-new'

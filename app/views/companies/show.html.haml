@@ -18,7 +18,7 @@
       .col-md-5
         = field_or_none t('.name'), @company.name, tag_options: {class: 'hidden', id: 'location-text'}
 
-        - if current_user && current_user.admin?
+        - if current_user.admin?
           = field_or_none t('.org_nr'), @company.company_number, tag_options: {class: 'company-number'}
 
         = field_or_none t('.phone_number'), @company.phone_number, tag_options: {class: 'phone-number'}
@@ -71,7 +71,7 @@
         = link_to "#{t('companies.all_companies')}",
                   companies_path, class: 'btn btn-default all-companies'
 
-      - if current_user.try(:admin)
+      - if current_user.admin?
         = link_to "#{t('.delete')}", @company, method: :delete,
                   class:'btn btn-danger delete-company',
                   data: { confirm: "#{t('.confirm_are_you_sure')}" }

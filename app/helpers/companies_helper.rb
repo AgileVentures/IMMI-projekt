@@ -94,7 +94,7 @@ module CompaniesHelper
                    { name: 'kommun', label: 'kommun', method: 'name' },
                    { name: 'region', label: 'region', method: 'name' } ]
 
-    if user&.admin? || user&.is_in_company_numbered?(company.company_number)
+    if user.admin? || user.is_in_company_numbered?(company.company_number)
       return all_fields, true
     else
       start_index = all_fields.find_index do |field|

@@ -17,7 +17,7 @@
         %tr
           %th= t('companies.index.name')
           %th= t('companies.index.region_land')
-          - if current_user.try(:admin)
+          - if current_user.admin?
             %th= t('companies.index.company_number')
             %th
       %tbody
@@ -25,6 +25,6 @@
           %tr.company
             %td= link_to company.name, company
             %td= company.main_address.region ?  company.main_address.region.name  : ''
-            - if current_user.try(:admin)
+            - if current_user.admin?
               %td= company.company_number
               %td= link_to t('edit'), edit_company_path(company)

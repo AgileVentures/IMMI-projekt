@@ -36,7 +36,12 @@ class ApplicationController < ActionController::Base
     redirect_back(fallback_location: root_path)
   end
 
-  def current_user
+  def current_user  # Override Devise helper method (controller instance method)
     super || Visitor.new
+  end
+
+  def user_signed_in?  # Override Devise helper method
+    return false if current_user.is_a? Visitor
+    true
   end
 end
