@@ -35,4 +35,8 @@ class ApplicationController < ActionController::Base
     flash[:alert] = t('errors.not_permitted')
     redirect_back(fallback_location: root_path)
   end
+
+  def current_user
+    super || Visitor.new
+  end
 end

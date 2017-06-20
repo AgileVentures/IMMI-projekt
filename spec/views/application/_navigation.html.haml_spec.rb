@@ -2,8 +2,6 @@ require 'rails_helper'
 
 RSpec.describe 'companies/index' do
 
-  include Devise::Test::ControllerHelpers
-
   let(:member)  { FactoryGirl.create(:member_with_membership_app) }
 
   let(:admin)   { FactoryGirl.create(:user, admin: true) }
@@ -22,7 +20,7 @@ RSpec.describe 'companies/index' do
   describe 'member' do
 
     before(:each) do
-      sign_in member
+      allow(view).to receive(:current_user) { member }
 
       assign(:all_visible_companies, [])
       assign(:search_params, Company.ransack(nil))
@@ -85,7 +83,7 @@ RSpec.describe 'companies/index' do
   describe 'admin' do
 
     before(:each) do
-      sign_in admin
+      allow(view).to receive(:current_user) { admin }
 
       render 'application/navigation'
     end
@@ -179,18 +177,20 @@ RSpec.describe 'companies/index' do
 
   describe 'visitor' do
 
-    before(:each) { render 'application/navigation' }
+    before(:each) do
+      allow(view).to receive(:current_user) { Visitor.new }
+
+      render 'application/navigation'
+    end
 
     it 'renders link to main site' do
       text = t('menus.nav.home')
-      expect(rendered)
-        .to match %r{<a href=\"#{shf_site}\">#{text}}
+      expect(rendered).to match %r{<a href=\"#{shf_site}\">#{text}}
     end
 
     it 'renders brochure link' do
       text = t('menus.nav.visitor.brochure')
-      expect(rendered)
-        .to match %r{<a href=\"#{shf_site}broschyr\/\">#{text}}
+      expect(rendered).to match %r{<a href=\"#{shf_site}broschyr\/\">#{text}}
     end
 
     context 'for-dog-owners menu' do

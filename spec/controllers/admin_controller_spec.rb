@@ -1,16 +1,6 @@
 require 'rails_helper'
 
-
-RSpec.configure do |config|
-  config.include Devise::Test::ControllerHelpers, :type => :controller
-end
-
-
 RSpec.describe AdminController, type: :controller do
-
-  include Warden::Test::Helpers
-
-  include Devise::Test::ControllerHelpers
 
   # this will bypass Pundit policy access checks so logging in is not necessary
   before(:each) { Warden.test_mode! }
