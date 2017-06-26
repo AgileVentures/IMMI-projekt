@@ -3,6 +3,7 @@ class MembershipApplicationsController < ApplicationController
 
   before_action :get_membership_application, except: [:information, :index, :new, :create]
   before_action :authorize_membership_application, only: [:update, :show, :edit]
+  before_action :set_other_waiting_reason, only: [:show, :edit, :update]
 
 
   def new
@@ -16,7 +17,7 @@ class MembershipApplicationsController < ApplicationController
     authorize MembershipApplication
 
     action_params, @items_count, items_per_page =
-      process_pagination_params('membership_application')
+        process_pagination_params('membership_application')
 
     @search_params = MembershipApplication.ransack(action_params)
 
@@ -47,15 +48,11 @@ class MembershipApplicationsController < ApplicationController
         helpers.flash_message(:notice, t('.success'))
         redirect_to root_path
       else
-        helpers.flash_message(:alert, t('.error'))
-        current_user.membership_applications.reload
-        render :new
+        create_error(t('.error'))
       end
 
     else
-      helpers.flash_message(:alert, t('.error'))
-      current_user.membership_applications.reload
-      render :new
+      create_error(t('.error'))
     end
   end
 
@@ -67,18 +64,26 @@ class MembershipApplicationsController < ApplicationController
 
         check_and_mark_if_ready_for_review params['membership_application'] if params.fetch('membership_application', false)
 
-        helpers.flash_message(:notice, t('.success'))
-        render :show
+        respond_to do |format|
+          format.js do
+            head :ok   # just let the receiver know everything is OK. no need to render anything
+          end
+
+          format.html do
+            helpers.flash_message(:notice, t('.success'))
+            render :show
+          end
+
+        end
 
       else
-        helpers.flash_message(:alert, t('.error'))
-        redirect_to edit_membership_application_path(@membership_application)
+        update_error(t('.error'))
       end
 
     else
-      helpers.flash_message(:alert, t('.error'))
-      redirect_to edit_membership_application_path(@membership_application)
+      update_error(t('.error'))
     end
+
   end
 
 
@@ -95,7 +100,7 @@ class MembershipApplicationsController < ApplicationController
 
 
   def destroy
-    @membership_application = MembershipApplication.find(params[:id])  # we don't need to fetch the categories
+    @membership_application = MembershipApplication.find(params[:id]) # we don't need to fetch the categories
     @membership_application.destroy
     redirect_to membership_applications_url, notice: t('membership_applications.application_deleted')
   end
@@ -132,20 +137,29 @@ class MembershipApplicationsController < ApplicationController
 
 
   def cancel_need_info
+
+    # empty out the reason for waiting info
+    @membership_application.waiting_reason = nil
+    @membership_application.custom_reason_text = nil
+
     simple_state_change(:cancel_waiting_for_applicant!, t('.success'), t('.error'))
   end
+
 
   def need_payment
     simple_state_change(:ask_for_payment!, t('.success'), t('.error'))
   end
 
+
   def cancel_need_payment
     simple_state_change(:cancel_waiting_for_payment!, t('.success'), t('.error'))
   end
 
+
   def received_payment
     simple_state_change(:received_payment!, t('.success'), t('.error'))
   end
+
 
   private
   def membership_application_params
@@ -161,6 +175,11 @@ class MembershipApplicationsController < ApplicationController
 
   def authorize_membership_application
     authorize @membership_application
+  end
+
+
+  def set_other_waiting_reason
+    @other_waiting_reason_text = t('admin_only.member_app_waiting_reasons.other_custom_reason')
   end
 
 
@@ -202,6 +221,25 @@ class MembershipApplicationsController < ApplicationController
       helpers.flash_message(:error, error_msg + e.message)
       render :show
     end
+  end
+
+
+  def create_error(error_message)
+    helpers.flash_message(:alert, error_message)
+    current_user.membership_applications.reload
+    render :new
+  end
+
+
+  def update_error(error_message)
+
+    if request.xhr?
+      render json: @membership_application.errors.full_messages, status: :unprocessable_entity if request.xhr?
+    else
+      helpers.flash_message(:alert, error_message)
+      redirect_to edit_membership_application_path(@membership_application)
+    end
+
   end
 
 

@@ -48,6 +48,7 @@ RSpec.describe MembershipApplication, type: :model do
     it {is_expected.to have_db_column :contact_email}
     it {is_expected.to have_db_column :membership_number}
     it {is_expected.to have_db_column :state}
+    it {is_expected.to have_db_column :custom_reason_text}
   end
 
   describe 'Validations' do
@@ -81,6 +82,7 @@ RSpec.describe MembershipApplication, type: :model do
     it {is_expected.to belong_to :user}
     it {is_expected.to have_and_belong_to_many :business_categories}
     it {is_expected.to belong_to :company}
+    it {is_expected.to belong_to :waiting_reason}
   end
 
   describe "Uploaded Files" do
