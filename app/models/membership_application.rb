@@ -23,6 +23,11 @@ class MembershipApplication < ApplicationRecord
   has_and_belongs_to_many :business_categories
   has_many :uploaded_files
 
+  belongs_to :waiting_reason, optional: true,
+             foreign_key: "member_app_waiting_reasons_id",
+             class_name: 'AdminOnly::MemberAppWaitingReason'
+
+
   validates_presence_of :first_name,
                         :last_name,
                         :company_number,

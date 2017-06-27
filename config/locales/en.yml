@@ -313,13 +313,12 @@ en:
 
     need_info:
       reason_title: Reason
-
       other_reason_label: "other reason:"
-      submit_button_label: "Save the reason"
-
+      select_a_reason: "Select a reason..."
 
       success: 'The application has been marked as needing info. (Send email to the applicant.)'
       error: "There was an error when trying to set the application to 'needing information.'"
+
 
     cancel_need_info:
       success: The application has been changed to no longer needing information from the applicant.
@@ -677,6 +676,7 @@ en:
       list_all_member_app_waiting_reasons: "List all Waiting for Information Reasons"
 
       other_custom_reason: "Other (enter the reason)"
+      other_custom_reason_desc: ""
 
       delete_confirm: "Are you sure you want to delete the reason: %{name_sv} (%{name_en})?"
 
