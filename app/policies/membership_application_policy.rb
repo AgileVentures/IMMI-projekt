@@ -97,7 +97,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def all_attributes
-    owner_attributes + [:membership_number]
+    owner_attributes + [:membership_number, :waiting_reason, :custom_reason_text, :member_app_waiting_reasons_id]
   end
 
 

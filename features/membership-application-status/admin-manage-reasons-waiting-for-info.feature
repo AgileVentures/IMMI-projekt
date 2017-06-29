@@ -11,6 +11,7 @@ Feature: Admin manages the list of reasons why SHF is waiting for info from an a
 
 
   Background:
+
     Given the following users exists
       | email                                  | admin |
       | anna_waiting_for_info@nosnarkybarky.se |       |
@@ -244,3 +245,4 @@ Feature: Admin manages the list of reasons why SHF is waiting for info from an a
     Then I should see t("admin_only.member_app_waiting_reasons.update.success")
     And I should see t("yes")
     And I should not see t("no")
+

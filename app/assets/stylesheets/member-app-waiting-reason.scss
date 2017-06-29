@@ -1,7 +1,27 @@
-.member_app_waiting_reasons {
+#member-app-waiting-reasons {
 
-  input.wpcf7-form-control.is-custom {
-    width: 3rem;
+  margin-bottom: 1rem;
+  .row {
+    margin-top: 0;
+    margin-bottom: 0;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+
+  border-bottom: 1pt solid coral;
+
+
+  select {
+    height: 110%;
+  }
+
+  label {
+    font-weight: normal;
+  }
+
+  input[type="text"] {
+    padding: 0.3rem;
+    width: 35rem;
   }
 
 }

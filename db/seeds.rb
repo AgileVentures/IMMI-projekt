@@ -40,6 +40,8 @@ if !Kommun.exists?
   Rake::Task['shf:load_kommuns'].invoke
 end
 
+
+
 puts 'Creating business categories'
 business_categories = %w(Träning Psykologi Rehab Butik Trim Friskvård Dagis Pensionat Skola)
 business_categories.each { |b_category| BusinessCategory.find_or_create_by(name: b_category) }

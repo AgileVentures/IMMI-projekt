@@ -24,30 +24,5 @@ RSpec.describe AdminOnly::MemberAppWaitingReason, type: :model do
 
   end
 
-  describe '#other_reason_placeholder?' do
-
-    let(:reason) { subject }
-
-    it 'false if name_sv is empty' do
-      reason.name_sv = ''
-      expect(reason.other_reason_placeholder?).to be_falsey
-    end
-
-    it 'false if name_sv is nil' do
-      reason.name_sv = nil
-      expect(reason.other_reason_placeholder?).to be_falsey
-    end
-
-    it "false if name_sv is not the 'other reason' name" do
-      reason.name_sv = "blorf"
-      expect(reason.other_reason_placeholder?).to be_falsey
-    end
-
-    it "true if name_sv is equal to the 'other reason' name" do
-      reason.name_sv = reason.class.other_reason_name
-      expect(reason.other_reason_placeholder?).to be_truthy
-    end
-
-  end
 
 end

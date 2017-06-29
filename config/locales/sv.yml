@@ -316,12 +316,12 @@ sv:
 
     need_info:
       reason_title: Anledning
-
       other_reason_label: "Annan orsak"
-      submit_button_label: "Spara orsaken"
+      select_a_reason: "Välj en anledning..."
 
       success: 'Ansökan har markerats som: "Behöver kompletteras". (Skicka e-post till den sökande.)'
       error: 'Det uppstod ett fel när systemet försökte sätta status: "Behöver kompletteras".'
+
 
     cancel_need_info:
       success: Ansökan har ändrats och behöver ej längre kompletteras av sökande.
@@ -680,6 +680,7 @@ sv:
       list_all_member_app_waiting_reasons: "Lista alla orsaker"
 
       other_custom_reason: "Annat (skriv in orsaken)"
+      other_custom_reason_desc: ""
 
       delete_confirm: "Är du säker på att du vill radera orsaken: %{name_sv} (%{name_en})?"
 
