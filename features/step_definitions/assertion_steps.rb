@@ -283,6 +283,19 @@ Then(/^item "([^"]*)" should( not)? be visible$/) do | item, negate|
 end
 
 
+# Have to be sure to wait for any javascript to execute since it may hide or show an item
+Then(/^item t\("([^"]*)"\) should( not)? be visible$/) do | item, negate|
+
+  if negate
+    expect(page).to have_field(i18n_content(item), visible: false)
+
+  else
+    expect( find_field(i18n_content(item)).visible? ).to be_truthy
+  end
+
+end
+
+
 # Tests that an input or button with the given label is disabled.
 Then /^the "([^\"]*)" (field|button|item) should( not)? be disabled$/ do |label, kind, negate|
 
@@ -420,8 +433,7 @@ end
 
 
 # Checks that a certain option is selected for a text field (from https://github.com/makandra/spreewald)
-Then /^"([^"]*)" should( not)? have (t\()?"([^"]*)"(?:\))? selected$/ do |select_list,
-  negate, translate_start, expected_string|
+Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) selected$/ do |select_list, negate, expected_string |
 
     field = find_field(select_list)
 
@@ -438,13 +450,50 @@ Then /^"([^"]*)" should( not)? have (t\()?"([^"]*)"(?:\))? selected$/ do |select
                       field.value
                   end
 
-  if translate_start
-     expect(field_value).send( (negate ? :not_to : :to),  eq(i18n_content(expected_string)) )
-  else
-    expect(field_value).send( (negate ? :not_to : :to),  eq(expected_string) )
-  end
+
+    expect(field_value).send( (negate ? :not_to : :to),  eq(i18n_content(expected_string)) )
 
 end
+
+
+
+# Checks that a certain option is selected for a text field (from https://github.com/makandra/spreewald)
+Then /^"([^"]*)" should( not)? have "([^"]*)" selected$/ do | select_list, negate, expected_string |
+
+  field = find_field(select_list)
+
+  field_value = case field.tag_name
+                  when 'select'
+                    options = field.all('option')
+                    selected_option = options.detect(&:selected?) || options.first
+                    if selected_option && selected_option.text.present?
+                      selected_option.text.strip
+                    else
+                      ''
+                    end
+                  else
+                    field.value
+                end
+
+  expect(field_value).send( (negate ? :not_to : :to),  eq(expected_string) )
+
+end
+
+
+
+# Checks that a certain option does or does not exist in a select list
+Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) as an option/ do | select_list, negate, expected_string |
+
+  field = find_field(select_list)
+
+  select_options= case field.tag_name
+                  when 'select'
+                    options = field.all('option')
+                end
+  expect(select_options.map(&:text)).send( (negate ? :not_to : :to),  include( i18n_content expected_string) )
+
+end
+
 
 
 Then(/^I should be on the all member app waiting reasons page$/) do

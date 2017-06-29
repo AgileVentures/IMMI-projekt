@@ -1,0 +1,28 @@
+-# Submit the changed reason via javascript when a member_app_waiting_reasons_id is selected from the list or custom_reason_text is changed.
+  Do not make user press a "save" or "submit" button for these changes. (use AJAX)
+
+
+.row
+  .container
+    .reason-waiting-information
+      = label_tag :member_app_waiting_reasons, t('membership_applications.need_info.reason_title')
+      - collection = AdminOnly::MemberAppWaitingReason.all.to_a
+      - collection << AdminOnly::MemberAppWaitingReason.new(id: -1, "name_#{I18n.locale.to_s}": "#{@other_waiting_reason_text}")
+      - selected = ! @membership_application.custom_reason_text.blank? ? -1 : @membership_application.member_app_waiting_reasons_id
+      = select_tag(:member_app_waiting_reasons,
+                   options_from_collection_for_select(collection, :id, reason_name_method,
+                                      selected),
+                   { include_blank: t('membership_applications.need_info.select_a_reason'),
+                     class: 'reason-waiting-list',
+                     data: { remote: true,
+                             url: membership_application_path(@membership_application),
+                             method: 'put' } })
+
+.row
+  .container
+    #other-text-field{ style: "display: #{selected == -1 ? nil : 'none'}" }
+      = label_tag :custom_reason_text, t('membership_applications.need_info.other_reason_label')
+      = text_field_tag :custom_reason_text, @membership_application.custom_reason_text,
+              { data: { remote: true,
+                        url: membership_application_path(@membership_application),
+                        method: 'put' } }

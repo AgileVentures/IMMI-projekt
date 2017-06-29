@@ -53,6 +53,14 @@ $(function() {
       $('[data-toggle="tooltip"]').tooltip();
     });
 
+    $('#member_app_waiting_reasons').on('ajax:success', function (e, data) {
+      if (data === '-1') {
+        $('#other-text-field').show();
+      } else {
+        $('#other-text-field').hide();
+      }
+    });
+
     // Enable all Bootstrap tooltips
     $('[data-toggle="tooltip"]').tooltip();
 

@@ -28,6 +28,10 @@ And(/^I fill in "([^"]*)" with "([^"]*)"$/) do |field, value|
   fill_in field, with: value
 end
 
+And(/^I press enter in "([^"]*)"$/) do |field|
+  find_field(field).send_keys :enter
+end
+
 And(/^I fill in t\("([^"]*)"\) with "([^"]*)"$/) do |field, value|
   fill_in i18n_content(field), with: value
 end
@@ -106,6 +110,11 @@ end
 
 When(/^(?:I|they) select "([^"]*)" in select list t\("([^"]*)"\)$/) do |item, lst|
   lst = i18n_content("#{lst}")
+  find(:select, lst).find(:option, item).select_option
+end
+
+
+When(/^(?:I|they) select "([^"]*)" in select list "([^"]*)"$/) do |item, lst|
   find(:select, lst).find(:option, item).select_option
 end
 

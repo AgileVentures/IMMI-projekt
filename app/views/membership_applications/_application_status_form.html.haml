@@ -1,23 +1,31 @@
+- if @membership_application.waiting_for_applicant?
+  = render 'reason_waiting'
+
+
+
 #admin-change-status-buttons
   %p.header
     = "#{t('membership_applications.show.change_status')}:"
 
 
-  = button_to t('membership_applications.start_review_btn'), start_review_membership_application_path(@membership_application), {class: 'btn start-review', disabled: !(@membership_application.may_start_review?)}
+  .row
+    = button_to t('membership_applications.start_review_btn'), start_review_membership_application_path(@membership_application), {class: 'btn start-review', disabled: !(@membership_application.may_start_review?)}
 
-  = button_to t('membership_applications.accept_btn'), accept_membership_application_path(@membership_application), {class: 'btn accept', disabled: !(@membership_application.may_accept?)}
+    = button_to t('membership_applications.accept_btn'), accept_membership_application_path(@membership_application), {class: 'btn accept', disabled: !(@membership_application.may_accept?)}
 
-  = button_to t('membership_applications.reject_btn'), reject_membership_application_path(@membership_application), {class: 'btn reject', disabled: !(@membership_application.may_reject?)}
+    = button_to t('membership_applications.reject_btn'), reject_membership_application_path(@membership_application), {class: 'btn reject', disabled: !(@membership_application.may_reject?)}
 
-  = button_to t('membership_applications.ask_applicant_for_info_btn'), need_info_membership_application_path(@membership_application), {class: 'btn need-info', disabled: !(@membership_application.may_ask_applicant_for_info?)}
+    = button_to t('membership_applications.ask_applicant_for_info_btn'), need_info_membership_application_path(@membership_application), {class: 'btn need-info', disabled: !(@membership_application.may_ask_applicant_for_info?)}
 
-  = button_to t('membership_applications.cancel_waiting_for_applicant_btn'), cancel_need_info_membership_application_path(@membership_application), {class: 'btn cancel-need-info', disabled: !(@membership_application.may_cancel_waiting_for_applicant?)}
+  .row
+    = button_to t('membership_applications.cancel_waiting_for_applicant_btn'), cancel_need_info_membership_application_path(@membership_application), {class: 'btn cancel-need-info', disabled: !(@membership_application.may_cancel_waiting_for_applicant?)}
 
-  = button_to t('membership_applications.ask_applicant_for_payment_btn'), need_payment_membership_application_path(@membership_application), {class: 'btn need-payment', disabled: !(@membership_application.may_ask_for_payment?)}
+    = button_to t('membership_applications.ask_applicant_for_payment_btn'), need_payment_membership_application_path(@membership_application), {class: 'btn need-payment', disabled: !(@membership_application.may_ask_for_payment?)}
 
-  = button_to t('membership_applications.cancel_waiting_for_payment_btn'), cancel_need_payment_membership_application_path(@membership_application), {class: 'btn cancel_need-payment', disabled: !(@membership_application.may_cancel_waiting_for_payment?)}
+    = button_to t('membership_applications.cancel_waiting_for_payment_btn'), cancel_need_payment_membership_application_path(@membership_application), {class: 'btn cancel_need-payment', disabled: !(@membership_application.may_cancel_waiting_for_payment?)}
 
-  = button_to t('membership_applications.received_payment_btn'), received_payment_membership_application_path(@membership_application), {class: 'btn received-payment', disabled: !(@membership_application.may_received_payment?)}
+    = button_to t('membership_applications.received_payment_btn'), received_payment_membership_application_path(@membership_application), {class: 'btn received-payment', disabled: !(@membership_application.may_received_payment?)}
+
 
 %br
   - if !@membership_application.paid?
