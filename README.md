@@ -18,8 +18,8 @@ Codeclimate: [![Code Climate](https://codeclimate.com/github/AgileVentures/shf-p
 
 This project runs on a Ruby on Rails stack with postgreSQL as the repository.
 
-- ruby version - check Gemfile (2.3.1 as of May 12, 2017)
-- rails >= v. 5.0.0
+- ruby version - check Gemfile (2.4.1 as of July 04, 2017)
+- rails 5.1.0 (5.1.0 as of July 04, 2017)
 - Postgresql DB
 
 ## Installation
