@@ -2,7 +2,7 @@ class ShfDocumentPolicy < ApplicationPolicy
 
 
   def index?
-    @user.is_member_or_admin? if @user
+    user.is_member_or_admin? if user
   end
 
   def update?

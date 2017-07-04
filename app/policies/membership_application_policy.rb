@@ -120,7 +120,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
 
   def owner?
-    @record.respond_to?(:user) && @record.user == user
+    record.respond_to?(:user) && record.user == user
   end
 
   def not_a_visitor

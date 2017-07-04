@@ -11,11 +11,11 @@ class ApplicationPolicy
   end
 
   def index?
-    @user.admin?
+    user.admin?
   end
 
   def update?
-    @user.admin? ||  @record.user == @user
+    user.admin? || record.user == user
   end
 
   def edit?
@@ -24,7 +24,7 @@ class ApplicationPolicy
 
 
   def destroy?
-    @user.admin?
+    user.admin?
   end
 
 end
