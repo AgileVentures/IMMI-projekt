@@ -11,18 +11,6 @@ module MembershipApplicationsHelper
   end
 
 
-  def reasons_collection(other_reason_value, other_reason_text)
-    collection = AdminOnly::MemberAppWaitingReason.all.to_a
-    collection << AdminOnly::MemberAppWaitingReason.new(id: other_reason_value, "name_#{I18n.locale}" => "#{other_reason_text}")
-    collection
-  end
-
-
-  def selected_reason_value(member_app, other_reason_value)
-    (!member_app.custom_reason_text.blank?) ? other_reason_value : member_app.member_app_waiting_reasons_id
-  end
-
-
   # the method to use to get the name for a reason, given the locale
   # If no locale is given, the current locale is used.
   # If the locale given isn't found or defined, the default name method is used
@@ -57,7 +45,7 @@ module MembershipApplicationsHelper
 
   def reason_method(method_prefix, locale)
     possible_method = "#{method_prefix}_#{locale}".to_sym
-    (AdminOnly::MemberAppWaitingReason.new.respond_to?(possible_method) ? possible_method : AdminOnly::MemberAppWaitingReason.send("default_#{method_prefix}_method".to_sym))
+   (AdminOnly::MemberAppWaitingReason.new.respond_to?(possible_method) ? possible_method : AdminOnly::MemberAppWaitingReason.send("default_#{method_prefix}_method".to_sym))
   end
 
 

@@ -1,40 +1,104 @@
 -# Submit the changed reason via javascript when a member_app_waiting_reasons_id is selected from the list or custom_reason_text is changed.
   Do not make user press a "save" or "submit" button for these changes. (use AJAX)
-#reason-waiting
-  .row
-    .container
-      .reason-waiting-information
-        = label_tag :member_app_waiting_reasons, t('membership_applications.need_info.reason_title')
-        -# have to set selected into an interim variable because this needs to be evaluated before the collection
-        - selected = selected_reason_value(@membership_application, @other_waiting_reason_value)
-        = select_tag(:member_app_waiting_reasons,
-                         options_from_collection_for_select(reasons_collection(@other_waiting_reason_value, @other_waiting_reason_text),
-                                                            :id,
-                                                            reason_name_method,
-                                                            selected),
-                         { include_blank: t('membership_applications.need_info.select_a_reason'),
-                           class: 'reason-waiting-list',
-                           data: { remote: true,
-                                   url: membership_application_path(@membership_application),
-                                   method: 'put' } })
 
-  .row
-    .container
-      #other-text-field{ style: "display: #{selected == @other_waiting_reason_value ? nil : 'none'}" }
-        = label_tag :custom_reason_text, t('membership_applications.need_info.other_reason_label')
-        = text_field_tag :custom_reason_text, @membership_application.custom_reason_text,
-                    { data: { remote: true,
-                              url: membership_application_path(@membership_application),
-                              method: 'put' } }
 
+.row
+  .container
+    .reason-waiting-information
+      = label_tag :member_app_waiting_reasons, t('membership_applications.need_info.reason_title')
+      - collection = AdminOnly::MemberAppWaitingReason.all.to_a
+      - collection << AdminOnly::MemberAppWaitingReason.new(id: -1, "name_#{I18n.locale.to_s}": "#{@other_waiting_reason_text}")
+      - selected = ! @membership_application.custom_reason_text.blank? ? -1 : @membership_application.member_app_waiting_reasons_id
+      = select_tag(:member_app_waiting_reasons,
+                   options_from_collection_for_select(collection, :id, reason_name_method,
+                                      selected),
+                   { include_blank: t('membership_applications.need_info.select_a_reason'),
+                     class: 'reason-waiting-list' })
+
+.row
+  .container
+    #other-text-field
+      = label_tag :custom_reason_text, t('membership_applications.need_info.other_reason_label')
+      = text_field_tag :custom_reason_text, @membership_application.custom_reason_text
 
 
 :javascript
 
-  $('#member_app_waiting_reasons').on('ajax:success', function (e, data) {
-    if (data === "#{@other_waiting_reason_value}") {
-      $('#other-text-field').show();
-    } else {
-      $('#other-text-field').hide();
+  var reasons_list = $('#member_app_waiting_reasons');  // the select HTML element (list)
+  var custom_text_info = $('#other-text-field');
+  var custom_text_field = $('#custom_reason_text');
+
+  // this option is added to the list of reasons and is only used so we can show/hide the custom reason text field
+  var other_reason_text = "#{@other_waiting_reason_text}";
+  var other_reason_option = document.createElement("option");
+  other_reason_option.text = other_reason_text;
+  other_reason_option.value = -1;  // some value that will not be in the database or use by Rails
+
+
+
+  function selected_is_customOtherReason() {
+    return $('#member_app_waiting_reasons option:selected').text() === other_reason_option.text;
+  }
+
+
+  // send the reason selected to the server unless the 'custom/other' was selected
+  function changed_reason() {
+     // do not send a request if the reason selected is the "Other/custom... enter text" reason
+     //  wait until the text field with the custom reason is entered to send that data
+
+    if (!selected_is_customOtherReason()) {
+      custom_text_field.val('');
+      send_updated_reason( #{@membership_application.id}, $('#member_app_waiting_reasons').find('option:selected').val() , null );
     }
+    hideOrShowCustomReasonElements();
+
+   }
+
+
+  // Set the waiting_reason to nil because we instead have the info in the custom text field
+  function changed_custom_text() {
+    send_updated_reason( #{@membership_application.id}, null , custom_text_field.val() );
+    custom_text_info.show();
+   }
+
+
+  var hideOrShowCustomReasonElements = function() {
+
+    if (  custom_text_field.val() || selected_is_customOtherReason()) {
+      custom_text_info.show();
+      reasons_list.value = other_reason_option.value; // make sure this option is selected; important when first displaying the view
+    }
+    else {
+        // clear out any custom reason if the selected reason is not the custom reason
+        $('#custom_reason_text').val("");
+        custom_text_info.hide();
+    }
+
+  };
+
+
+  // Send information to the server
+  //  no need to do anything if it was successful
+  var send_updated_reason = function(app_id, reason_id, custom_text) {
+
+    $.ajax({
+      url: "#{membership_application_path}",
+      type: "PUT",
+      data: { membership_application: { member_app_waiting_reasons_id: reason_id,
+        custom_reason_text: custom_text },
+        id: app_id }
+    }).fail(function(evt, xhr, status, err) {
+      alert( "#{I18n.t('membership_applications.update.error')}: " + 'Status: ' + evt.statusText );
+    });
+
+  };
+
+
+  var initialize = (function() {
+    // reasons_list.options.add(other_reason_option);  // add the other_reason to the list
+    hideOrShowCustomReasonElements();
+    $('#member_app_waiting_reasons').on('change', changed_reason);
+    $('#custom_reason_text').on('change', changed_custom_text)
   });
+
+  $(document).ready(initialize);

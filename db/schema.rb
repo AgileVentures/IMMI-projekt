@@ -15,98 +15,98 @@ ActiveRecord::Schema.define(version: 20170615091313) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "addresses", force: :cascade do |t|
+  create_table "addresses", id: :bigserial, force: :cascade do |t|
     t.string "street_address"
     t.string "post_code"
     t.string "city"
-    t.string "country", default: "Sverige", null: false
+    t.string "country",          default: "Sverige", null: false
     t.bigint "region_id"
     t.string "addressable_type"
     t.bigint "addressable_id"
     t.bigint "kommun_id"
-    t.float "latitude"
-    t.float "longitude"
-    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
-    t.index ["kommun_id"], name: "index_addresses_on_kommun_id"
-    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude"
-    t.index ["region_id"], name: "index_addresses_on_region_id"
+    t.float  "latitude"
+    t.float  "longitude"
+    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id", using: :btree
+    t.index ["kommun_id"], name: "index_addresses_on_kommun_id", using: :btree
+    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", using: :btree
+    t.index ["region_id"], name: "index_addresses_on_region_id", using: :btree
   end
 
-  create_table "business_categories", force: :cascade do |t|
-    t.string "name"
-    t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+  create_table "business_categories", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.string   "description"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
-  create_table "business_categories_membership_applications", force: :cascade do |t|
+  create_table "business_categories_membership_applications", id: :bigserial, force: :cascade do |t|
     t.bigint "membership_application_id"
     t.bigint "business_category_id"
-    t.index ["business_category_id"], name: "index_on_categories"
-    t.index ["membership_application_id"], name: "index_on_applications"
+    t.index ["business_category_id"], name: "index_on_categories", using: :btree
+    t.index ["membership_application_id"], name: "index_on_applications", using: :btree
   end
 
-  create_table "ckeditor_assets", force: :cascade do |t|
-    t.string "data_file_name", null: false
-    t.string "data_content_type"
-    t.integer "data_file_size"
-    t.string "data_fingerprint"
-    t.string "type", limit: 30
-    t.integer "width"
-    t.integer "height"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "company_id"
-    t.index ["company_id"], name: "index_ckeditor_assets_on_company_id"
-    t.index ["type"], name: "index_ckeditor_assets_on_type"
+  create_table "ckeditor_assets", id: :bigserial, force: :cascade do |t|
+    t.string   "data_file_name",               null: false
+    t.string   "data_content_type"
+    t.integer  "data_file_size"
+    t.string   "data_fingerprint"
+    t.string   "type",              limit: 30
+    t.integer  "width"
+    t.integer  "height"
+    t.datetime "created_at",                   null: false
+    t.datetime "updated_at",                   null: false
+    t.bigint   "company_id"
+    t.index ["company_id"], name: "index_ckeditor_assets_on_company_id", using: :btree
+    t.index ["type"], name: "index_ckeditor_assets_on_type", using: :btree
   end
 
-  create_table "companies", force: :cascade do |t|
-    t.string "name"
-    t.string "company_number"
-    t.string "phone_number"
-    t.string "email"
-    t.string "website"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.text "description"
-    t.string "address_visibility", default: "street_address"
-    t.index ["company_number"], name: "index_companies_on_company_number", unique: true
+  create_table "companies", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.string   "company_number"
+    t.string   "phone_number"
+    t.string   "email"
+    t.string   "website"
+    t.datetime "created_at",                                    null: false
+    t.datetime "updated_at",                                    null: false
+    t.text     "description"
+    t.string   "address_visibility", default: "street_address"
+    t.index ["company_number"], name: "index_companies_on_company_number", unique: true, using: :btree
   end
 
-  create_table "kommuns", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
-  create_table "member_app_waiting_reasons", force: :cascade, comment: "reasons why SHF is waiting for more info from applicant. Add more columns when more locales needed." do |t|
-    t.string "name_sv", comment: "name of the reason in svenska/Swedish"
-    t.string "description_sv", comment: "description for the reason in svenska/Swedish"
-    t.string "name_en", comment: "name of the reason in engelsk/English"
-    t.string "description_en", comment: "description for the reason in engelsk/English"
-    t.boolean "is_custom", default: false, null: false, comment: "was this entered as a new 'custom' reason?"
+  create_table "kommuns", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "member_pages", force: :cascade do |t|
-    t.string "filename", null: false
-    t.string "title"
+  create_table "member_app_waiting_reasons", id: :bigserial, force: :cascade, comment: "reasons why SHF is waiting for more info from applicant. Add more columns when more locales needed." do |t|
+    t.string   "name_sv",                                     comment: "name of the reason in svenska/Swedish"
+    t.string   "description_sv",                              comment: "description for the reason in svenska/Swedish"
+    t.string   "name_en",                                     comment: "name of the reason in engelsk/English"
+    t.string   "description_en",                              comment: "description for the reason in engelsk/English"
+    t.boolean  "is_custom",      default: false, null: false, comment: "was this entered as a new 'custom' reason?"
+    t.datetime "created_at",                     null: false
+    t.datetime "updated_at",                     null: false
+  end
+
+  create_table "member_pages", id: :bigserial, force: :cascade do |t|
+    t.string   "filename",   null: false
+    t.string   "title"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "membership_applications", force: :cascade do |t|
+  create_table "membership_applications", id: :bigserial, force: :cascade do |t|
     t.string   "company_number"
     t.string   "phone_number"
     t.datetime "created_at",                                    null: false
     t.datetime "updated_at",                                    null: false
-    t.integer  "user_id"
+    t.bigint   "user_id"
     t.string   "first_name"
     t.string   "last_name"
     t.string   "contact_email"
-    t.integer  "company_id"
+    t.bigint   "company_id"
     t.string   "membership_number"
     t.string   "state",                         default: "new"
     t.integer  "member_app_waiting_reasons_id"
@@ -116,53 +116,53 @@ ActiveRecord::Schema.define(version: 20170615091313) do
     t.index ["user_id"], name: "index_membership_applications_on_user_id", using: :btree
   end
 
-  create_table "regions", force: :cascade do |t|
-    t.string "name"
-    t.string "code"
+  create_table "regions", id: :bigserial, force: :cascade do |t|
+    t.string   "name"
+    t.string   "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "shf_documents", force: :cascade do |t|
-    t.bigint "uploader_id", null: false
-    t.string "title"
-    t.text "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "actual_file_file_name"
-    t.string "actual_file_content_type"
-    t.integer "actual_file_file_size"
+  create_table "shf_documents", id: :bigserial, force: :cascade do |t|
+    t.bigint   "uploader_id",              null: false
+    t.string   "title"
+    t.text     "description"
+    t.datetime "created_at",               null: false
+    t.datetime "updated_at",               null: false
+    t.string   "actual_file_file_name"
+    t.string   "actual_file_content_type"
+    t.integer  "actual_file_file_size"
     t.datetime "actual_file_updated_at"
-    t.index ["uploader_id"], name: "index_shf_documents_on_uploader_id"
+    t.index ["uploader_id"], name: "index_shf_documents_on_uploader_id", using: :btree
   end
 
-  create_table "uploaded_files", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.string "actual_file_file_name"
-    t.string "actual_file_content_type"
-    t.integer "actual_file_file_size"
+  create_table "uploaded_files", id: :bigserial, force: :cascade do |t|
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.string   "actual_file_file_name"
+    t.string   "actual_file_content_type"
+    t.integer  "actual_file_file_size"
     t.datetime "actual_file_updated_at"
-    t.bigint "membership_application_id"
-    t.index ["membership_application_id"], name: "index_uploaded_files_on_membership_application_id"
+    t.bigint   "membership_application_id"
+    t.index ["membership_application_id"], name: "index_uploaded_files_on_membership_application_id", using: :btree
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "email", default: "", null: false
-    t.string "encrypted_password", default: "", null: false
-    t.string "reset_password_token"
+  create_table "users", id: :bigserial, force: :cascade do |t|
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
+    t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer "sign_in_count", default: 0, null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
-    t.inet "current_sign_in_ip"
-    t.inet "last_sign_in_ip"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "admin", default: false
-    t.index ["email"], name: "index_users_on_email", unique: true
-    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "admin",                  default: false
+    t.index ["email"], name: "index_users_on_email", unique: true, using: :btree
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
   end
 
   add_foreign_key "addresses", "kommuns"

@@ -283,6 +283,19 @@ Then(/^item "([^"]*)" should( not)? be visible$/) do | item, negate|
 end
 
 
+# Have to be sure to wait for any javascript to execute since it may hide or show an item
+Then(/^item t\("([^"]*)"\) should( not)? be visible$/) do | item, negate|
+
+  if negate
+    expect(page).to have_field(i18n_content(item), visible: false)
+
+  else
+    expect( find_field(i18n_content(item)).visible? ).to be_truthy
+  end
+
+end
+
+
 # Tests that an input or button with the given label is disabled.
 Then /^the "([^\"]*)" (field|button|item) should( not)? be disabled$/ do |label, kind, negate|
 
@@ -480,6 +493,7 @@ Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) as an option/ do | select_lis
   expect(select_options.map(&:text)).send( (negate ? :not_to : :to),  include( i18n_content expected_string) )
 
 end
+
 
 
 Then(/^I should be on the all member app waiting reasons page$/) do

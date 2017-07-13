@@ -16,7 +16,6 @@ RSpec.describe MembershipApplicationsHelper, type: :helper do
 
   end
 
-
   describe 'returns a list of reasons_for_waiting for the right locale' do
 
     before(:all) do
@@ -141,69 +140,6 @@ RSpec.describe MembershipApplicationsHelper, type: :helper do
         expect(first_item.is_a?(Enumerable)).to be_truthy
         expect(first_item.first.is_a?(Numeric)).to be_truthy
         expect(first_item.last.is_a?(String)).to be_truthy
-      end
-
-    end
-
-  end
-
-
-  describe "#reasons_collection appends an 'other' reason with name from the locale file" do
-
-    it 'other reason is at the end of the list' do
-
-      FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv1', name_en: 'name_en1', description_sv: 'desc_sv1', description_en: 'desc_en1')
-      FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv2', name_en: 'name_en2', description_sv: 'desc_sv2', description_en: 'desc_en2')
-
-      last_r = helper.reasons_collection(-999, 'other').last
-      expect(last_r.name_sv).to eq 'other'
-      expect(last_r.id).to eq -999
-
-    end
-
-    it "locale = default ( == sv); sets the name_sv" do
-      last_r = helper.reasons_collection(-999, 'other').last
-      expect(last_r.name_sv).to eq 'other'
-      expect(last_r.name_en).to be_nil
-    end
-
-    it 'locale = sv; sets the name_sv' do
-      last_r = helper.reasons_collection(-999, 'other').last
-      expect(last_r.name_sv).to eq 'other'
-      expect(last_r.name_en).to be_nil
-    end
-
-    it 'locale = en; sets the name_en' do
-      orig_locale = I18n.locale
-      I18n.locale = :en
-      last_r = helper.reasons_collection(-999, 'other').last
-      expect(last_r.name_sv).to be_nil
-      expect(last_r.name_en).to eq 'other'
-      I18n.locale = orig_locale
-    end
-
-  end
-
-  describe '#selected_reason_value' do
-
-    let(:member_app) { create(:membership_application) }
-
-    it '@other_reason_value if there is something in custom reason text' do
-      member_app.custom_reason_text = 'something'
-      expect(helper.selected_reason_value(member_app, -999)).to eq -999
-    end
-
-
-    describe 'member_app_waiting_reasons_id if there is not something in custom reason text' do
-
-      it 'member_app_waiting_reasons_id if custom_reason_text == empty string ' do
-        member_app.custom_reason_text = ''
-        expect(helper.selected_reason_value(member_app, -999)).to eq member_app.member_app_waiting_reasons_id
-      end
-
-      it 'member_app_waiting_reasons_id if custom_reason_text == nil' do
-        member_app.custom_reason_text = nil
-        expect(helper.selected_reason_value(member_app, -999)).to eq member_app.member_app_waiting_reasons_id
       end
 
     end

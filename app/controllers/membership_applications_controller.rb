@@ -3,7 +3,7 @@ class MembershipApplicationsController < ApplicationController
 
   before_action :get_membership_application, except: [:information, :index, :new, :create]
   before_action :authorize_membership_application, only: [:update, :show, :edit]
-  before_action :set_other_waiting_reason, only: [:show, :edit, :update, :need_info]
+  before_action :set_other_waiting_reason, only: [:show, :edit, :update]
 
 
   def new
@@ -17,7 +17,7 @@ class MembershipApplicationsController < ApplicationController
     authorize MembershipApplication
 
     action_params, @items_count, items_per_page =
-      process_pagination_params('membership_application')
+        process_pagination_params('membership_application')
 
     @search_params = MembershipApplication.ransack(action_params)
 
@@ -58,24 +58,7 @@ class MembershipApplicationsController < ApplicationController
 
 
   def update
-    if request.xhr?
-
-      if params[:member_app_waiting_reasons] && params[:member_app_waiting_reasons] != "#{@other_waiting_reason_value}"
-        @membership_application
-          .update(member_app_waiting_reasons_id: params[:member_app_waiting_reasons],
-                  custom_reason_text: nil)
-        head :ok
-      else
-        render plain: "#{@other_waiting_reason_value}"
-      end
-
-      if params[:custom_reason_text]
-        @membership_application.update(custom_reason_text: params[:custom_reason_text],
-                                       member_app_waiting_reasons_id: nil)
-        head :ok
-      end
-
-    elsif @membership_application.update(membership_application_params)
+    if @membership_application.update(membership_application_params)
 
       if new_file_uploaded params
 
@@ -196,7 +179,6 @@ class MembershipApplicationsController < ApplicationController
 
 
   def set_other_waiting_reason
-    @other_waiting_reason_value = '-1'
     @other_waiting_reason_text = t('admin_only.member_app_waiting_reasons.other_custom_reason')
   end
 

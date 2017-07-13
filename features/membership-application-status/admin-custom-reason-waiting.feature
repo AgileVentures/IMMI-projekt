@@ -13,6 +13,7 @@ Feature: "Other/Custom" waiting reason comes from locale file and Admin cannot e
   This requires that the system be seeded *before* any other information is entered (via other background statements).
 
 
+
   Background:
 
     # it is important that this statement is first so that tables are empty, so that things will be seeded
@@ -22,7 +23,6 @@ Feature: "Other/Custom" waiting reason comes from locale file and Admin cannot e
     Given the following users exists
       | email                                  | admin |
       | anna_waiting_for_info@nosnarkybarky.se |       |
-      | anna_under_review@nosnarkybarky.se     |       |
       | emma@happymutts.se                     |       |
       | admin@shf.se                           | true  |
 
@@ -41,10 +41,9 @@ Feature: "Other/Custom" waiting reason comes from locale file and Admin cannot e
 
 
     And the following applications exist:
-      | first_name      | user_email                             | company_number | category_name | state                 |
-      | AnnaWaiting     | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
-      | AnnaUnderReview | anna_under_review@nosnarkybarky.se     | 5560360793     | rehab         | under_review          |
-      | EmmaAccepted    | emma@happymutts.se                     | 2120000142     | rehab         | accepted              |
+      | first_name   | user_email                             | company_number | category_name | state                 |
+      | AnnaWaiting  | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
+      | EmmaAccepted | emma@happymutts.se                     | 2120000142     | rehab         | accepted              |
 
 
     And the following member app waiting reasons exist:
@@ -61,19 +60,8 @@ Feature: "Other/Custom" waiting reason comes from locale file and Admin cannot e
     Given I am on "AnnaWaiting" application page
     Then "member_app_waiting_reasons" should have t("admin_only.member_app_waiting_reasons.other_custom_reason") as an option
 
-  @admin @javascript
-  Scenario: "other/custom" reason is listed when the state is changed TO 'waiting for applicant'
-    Given I am on "AnnaUnderReview" application page
-    When I click on t("membership_applications.ask_applicant_for_info_btn")
-    Then "member_app_waiting_reasons" should have t("admin_only.member_app_waiting_reasons.other_custom_reason") as an option
 
-  @admin @javascript
-  Scenario: "other/custom" reason is listed when the language is changed
-    Given I am on "AnnaWaiting" application page
-    Then "member_app_waiting_reasons" should have t("admin_only.member_app_waiting_reasons.other_custom_reason") as an option
-
-
-  @admin @javascript
+  @admin
   Scenario: The "other/custom" reason doesn't appear in the list of all reasons
     Given I am on the "all waiting for info reasons" page
     Then I should see 2 reasons listed
