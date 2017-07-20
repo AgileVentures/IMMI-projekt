@@ -113,7 +113,7 @@ for articles about contributing to the project.
 If have any problems, please  **[search through the issues](https://github.com/AgileVentures/shf-project/issues) first** to see if it's already been addressed. If you do not find an existing issue, then open a new issue.
 Please describe the problem in detail including information about your operating system (platforms), version, etc.  The more detail you can provide, the sooner we can address it.
 
-##License
+## License
 
 The authors and contributors have agreed to license all other software
 under the MIT license, an open source free software license. See the
