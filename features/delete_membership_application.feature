@@ -14,8 +14,8 @@ Feature: As an admin
       | Hans       | hans@bowsers.com |       |
       | Nils       | nils@bowsers.com |       |
       | Wils       | wils@woof.com    |       |
-      |            | admin@shf.se     | true  |
-      |            | bob@bowsers.com  |       |
+      | Bob        | bob@bowsers.com  |       |
+      | admin      | admin@shf.se     | true  |
 
     And the following regions exist:
       | name         |

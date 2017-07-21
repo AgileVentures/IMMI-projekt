@@ -245,9 +245,9 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it 'adds a count of errors' do
-      expect(errors_html_sv).to match(/#{t('model_errors', count: 5)}/)
+      expect(errors_html_sv).to match(/#{t('model_errors', count: 4)}/)
 
-      expect(errors_html_en).to match(/#{t('model_errors', count: 5)}/)
+      expect(errors_html_en).to match(/#{t('model_errors', count: 4)}/)
     end
 
     it 'returns all model errors - swedish' do
@@ -255,9 +255,6 @@ RSpec.describe ApplicationHelper, type: :helper do
 
       expect(errors_html_sv).
         to match(/Organisationsnummer har fel längd \(ska vara 10 tecken\)/)
-
-      expect(errors_html_sv).
-        to match(/Organisationsnummer  är inte ett svenskt organisationsnummer/)
 
       expect(errors_html_sv).to match(/Kontakt e-post måste anges/)
 
@@ -270,9 +267,6 @@ RSpec.describe ApplicationHelper, type: :helper do
 
       expect(errors_html_en).
         to match(/Company number is the wrong length \(should be 10 characters\)/)
-
-      expect(errors_html_en).
-        to match(/Company number  är inte ett svenskt organisationsnummer/)
 
       expect(errors_html_en).to match(/Contact Email cannot be blank/)
 

@@ -41,7 +41,6 @@ FactoryGirl.define do
 
       after(:create) do |user, evaluator|
         create_list(:membership_application, 1, :accepted, user: user,
-                    first_name: evaluator.email,
                     contact_email: evaluator.email,
                     company_number:  evaluator.company_number)
       end

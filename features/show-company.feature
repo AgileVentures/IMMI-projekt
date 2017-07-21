@@ -32,11 +32,11 @@ Feature: As a visitor,
       | Company6             | 6914762726     | cmpy6@mail.com         | Stockholm    | Alingsås | none               |
 
     And the following users exists
-      | email               | admin |
-      | emma@happymutts.com |       |
-      | a@happymutts.com    |       |
-      | member@cmpy6.com    |       |
-      | admin@shf.se        | true  |
+      | first_name | email               | admin |
+      | Emma       | emma@happymutts.com |       |
+      | Anna       | a@happymutts.com    |       |
+      | Anna       | member@cmpy6.com    |       |
+      | admin      | admin@shf.se        | true  |
 
     And the following business categories exist
       | name         |
@@ -48,14 +48,14 @@ Feature: As a visitor,
       | JustForFun   |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | categories              | state    |
-      | Emma       | emma@happymutts.com | 5560360793     | Groomer, JustForFun     | accepted |
-      | Anna       | a@happymutts.com    | 2120000142     | Groomer, Trainer, Rehab | accepted |
-      | Emma       | emma@happymutts.com | 2120000142     | Psychologist, Groomer   | accepted |
-      | Anna       | a@happymutts.com    | 6613265393     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 6222279082     | Groomer                 | accepted |
-      | Anna       | a@happymutts.com    | 8025085252     | Groomer                 | accepted |
-      | Anna       | member@cmpy6.com    | 6914762726     | Groomer                 | accepted |
+      | user_email          | company_number | categories              | state    |
+      | emma@happymutts.com | 5560360793     | Groomer, JustForFun     | accepted |
+      | a@happymutts.com    | 2120000142     | Groomer, Trainer, Rehab | accepted |
+      | emma@happymutts.com | 2120000142     | Psychologist, Groomer   | accepted |
+      | a@happymutts.com    | 6613265393     | Groomer                 | accepted |
+      | a@happymutts.com    | 6222279082     | Groomer                 | accepted |
+      | a@happymutts.com    | 8025085252     | Groomer                 | accepted |
+      | member@cmpy6.com    | 6914762726     | Groomer                 | accepted |
 
   Scenario: Show company details to a visitor, but don't show the org nr.
     Given I am Logged out

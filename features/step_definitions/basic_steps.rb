@@ -48,9 +48,7 @@ end
 When(/^I fill in the translated form with data:$/) do |table|
   data = table.hashes.first
   data.each do |label, value|
-    unless value.empty?
-      fill_in i18n_content("#{label}"), with: value
-    end
+    fill_in i18n_content("#{label}"), with: value
   end
 end
 

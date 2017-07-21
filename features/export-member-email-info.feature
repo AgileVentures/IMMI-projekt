@@ -6,10 +6,10 @@ Feature: export member information to a CSV file so I can use it in other system
 
   Background:
     Given the following users exists
-      | email                       | admin |
-      | emma@happymutts.com         |       |
-      | wils@woof.com               |       |
-      | admin@shf.se                | true  |
+      | first_name | last_name   | email                       | admin |
+      | Emma       | Emmasdottir | emma@happymutts.com         |       |
+      | Wils       | Wilson      | wils@woof.com               |       |
+      | admin      | admin       | admin@shf.se                | true  |
 
 
     And the following regions exist:
@@ -25,9 +25,9 @@ Feature: export member information to a CSV file so I can use it in other system
       | WOOF                 | 5569467466     | woof@woof.com         | Västerbotten |
 
     And the following applications exist:
-      | first_name | last_name   | user_email          | company_number | state    |
-      | Emma       | Emmasdottir | emma@happymutts.com | 2120000142     | accepted |
-      | Wils       | Wilson      | wils@woof.com       | 5569467466     | new      |
+      | user_email          | company_number | state    |
+      | emma@happymutts.com | 2120000142     | accepted |
+      | wils@woof.com       | 5569467466     | new      |
 
 
 

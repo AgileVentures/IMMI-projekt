@@ -5,16 +5,16 @@ Feature: As an Admin
 
   Background:
     Given the following users exists
-      | email                                  | admin |
-      | applicant_1@random.com                 |       |
-      | applicant_2@random.com                 |       |
-      | emma_under_review@happymutts.se        |       |
-      | hans_under_review@happymutts.se        |       |
-      | lars_waiting_for_payment@happymutts.se |       |
-      | anna_waiting_for_info@nosnarkybarky.se |       |
-      | nils_member@bowwowwow.se               |       |
-      | lars_rejected@snarkybark.se            |       |
-      | admin@shf.se                           | true  |
+      | first_name            | email                                  | admin |
+      | EmmaUnderReview       | emma_under_review@happymutts.se        |       |
+      | HansUnderReview       | hans_under_review@happymutts.se        |       |
+      | AnnaWaiting           | anna_waiting_for_info@nosnarkybarky.se |       |
+      | LarsRejected          | lars_rejected@snarkybark.se            |       |
+      | NilsAccepted          | nils_member@bowwowwow.se               |       |
+      | LarsWaitingForPayment | lars_waiting_for_payment@happymutts.se |       |
+      | Applicant1            | applicant_1@random.com                 |       |
+      | Applicant2            | applicant_2@random.com                 |       |
+      | admin                 | admin@shf.se                           | true  |
 
     Given the following business categories exist
       | name         | description                     |
@@ -29,13 +29,13 @@ Feature: As an Admin
 
 
     And the following applications exist:
-      | first_name            | user_email                             | company_number | categories   | state                 |
-      | EmmaUnderReview       | emma_under_review@happymutts.se        | 5562252998     | rehab        | under_review          |
-      | HansUnderReview       | hans_under_review@happymutts.se        | 5562252998     | dog grooming | under_review          |
-      | AnnaWaiting           | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab        | waiting_for_applicant |
-      | LarsRejected          | lars_rejected@snarkybark.se            | 0000000000     | rehab        | rejected              |
-      | NilsAccepted          | nils_member@bowwowwow.se               | 0000000000     | dog crooning | accepted              |
-      | LarsWaitingForPayment | lars_waiting_for_payment@happymutts.se | 0000000000     | dog crooning | waiting_for_payment   |
+      | user_email                             | company_number | categories   | state                 |
+      | emma_under_review@happymutts.se        | 5562252998     | rehab        | under_review          |
+      | hans_under_review@happymutts.se        | 5562252998     | dog grooming | under_review          |
+      | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab        | waiting_for_applicant |
+      | lars_rejected@snarkybark.se            | 0000000000     | rehab        | rejected              |
+      | nils_member@bowwowwow.se               | 0000000000     | dog crooning | accepted              |
+      | lars_waiting_for_payment@happymutts.se | 0000000000     | dog crooning | waiting_for_payment   |
 
     And I am logged in as "admin@shf.se"
     And time is frozen at 2016-12-16

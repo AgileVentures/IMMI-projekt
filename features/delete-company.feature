@@ -14,21 +14,21 @@ Feature: As an admin
 
   Background:
     Given the following users exists
-      | email                          | admin |
-      | emma@happymutts.com            |       |
-      | hans@happymutts.com            |       |
-      | wils@woof.com                  |       |
-      | sam@snarkybarky.com            |       |
-      | lars@snarkybarky.com           |       |
-      | bob@bowsers.com                |       |
-      | kitty@kitties.com              |       |
-      | meow@kitties.com               |       |
-      | under_review@kats.com          |       |
-      | ready_for_review@kats.com      |       |
-      | waiting_for_review@kats.com    |       |
-      | new@kats.com                   |       |
-      | waiting_for_applicant@kats.com |       |
-      | admin@shf.se                   | true  |
+      | first_name       | email                          | admin |
+      | Emma             | emma@happymutts.com            |       |
+      | Hans             | hans@happymutts.com            |       |
+      | Wils             | wils@woof.com                  |       |
+      | Sam              | sam@snarkybarky.com            |       |
+      | Lars             | lars@snarkybarky.com           |       |
+      | Kitty            | kitty@kitties.com              |       |
+      | Meow             | meow@kitties.com               |       |
+      | Under_Review     | under_review@kats.com          |       |
+      | Ready for Review | ready_for_review@kats.com      |       |
+      | Waiting for A    | waiting_for_applicant@kats.com |       |
+      | New              | new@kats.com                   |       |
+      | Waiting for R    | waiting_for_review@kats.com    |       |
+      | Bob              | bob@bowsers.com                |       |
+      | admin            | admin@shf.se                   | true  |
 
     And the following business categories exist
       | name        | description                     |
@@ -67,18 +67,18 @@ Feature: As an admin
 
 
     And the following applications exist:
-      | first_name       | user_email                     | company_number | state                 | categories    |
-      | Emma             | emma@happymutts.com            | 2120000142     | accepted              | grooming      |
-      | Hans             | hans@happymutts.com            | 2120000142     | accepted              | training      |
-      | Sam              | sam@snarkybarky.com            | 5560360793     | rejected              | senior-play   |
-      | Lars             | lars@snarkybarky.com           | 5560360793     | rejected              | rehab         |
-      | Wils             | wils@woof.com                  | 5569467466     | rejected              | walking       |
-      | Kitty            | kitty@kitties.com              | 5906055081     | rejected              | training      |
-      | Meow             | meow@kitties.com               | 5906055081     | rejected              | training      |
-      | Under_Review     | under_review@kats.com          | 9697222900     | under_review          | psychology    |
-      | Ready for Review | ready_for_review@kats.com      | 9697222900     | ready_for_review      | psychology    |
-      | Waiting for A    | waiting_for_applicant@kats.com | 9697222900     | waiting_for_applicant | psychology    |
-      | New              | new@kats.com                   | 9697222900     | new                   | psychology    |
+      | user_email                     | company_number | state                 | categories    |
+      | emma@happymutts.com            | 2120000142     | accepted              | grooming      |
+      | hans@happymutts.com            | 2120000142     | accepted              | training      |
+      | wils@woof.com                  | 5569467466     | rejected              | walking       |
+      | sam@snarkybarky.com            | 5560360793     | rejected              | senior-play   |
+      | lars@snarkybarky.com           | 5560360793     | rejected              | rehab         |
+      | kitty@kitties.com              | 5906055081     | rejected              | training      |
+      | meow@kitties.com               | 5906055081     | rejected              | training      |
+      | under_review@kats.com          | 9697222900     | under_review          | psychology    |
+      | ready_for_review@kats.com      | 9697222900     | ready_for_review      | psychology    |
+      | waiting_for_applicant@kats.com | 9697222900     | waiting_for_applicant | psychology    |
+      | new@kats.com                   | 9697222900     | new                   | psychology    |
 
 
 

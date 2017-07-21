@@ -4,16 +4,16 @@ Feature: As a registered user
 
   Background:
     Given the following users exists
-      | email                | password | admin | is_member |
-      | emma@random.com      | password | false | true      |
-      | anne@random.com      | password | false | false     |
-      | lars-user@random.com | password | false | false     |
-      | arne@random.com      | password | true  | true      |
+      | first_name | email                | password | admin | is_member |
+      | Emma       | emma@random.com      | password | false | true      |
+      | Lars       | lars-user@random.com | password | false | false     |
+      | Anne       | anne@random.com      | password | false | false     |
+      | Arne       | arne@random.com      | password | true  | true      |
 
     And the following applications exist:
-      | first_name | user_email           | company_number | state    |
-      | Emma       | emma@random.com      | 5562252998     | accepted |
-      | Lars       | lars-user@random.com | 2120000142     | under_review |
+      | user_email           | company_number | state    |
+      | emma@random.com      | 5562252998     | accepted |
+      | lars-user@random.com | 2120000142     | under_review |
 
 
   Scenario: Logging in

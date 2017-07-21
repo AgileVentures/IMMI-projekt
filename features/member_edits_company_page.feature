@@ -6,9 +6,9 @@ Feature: As a member
 
   Background:
     Given the following users exists
-      | email               | admin | is_member |
-      | emma@happymutts.com |       | true      |
-      | admin@shf.se        | true  | true      |
+      | first_name | email               | admin | is_member |
+      | Emma       | emma@happymutts.com |       | true      |
+      | admin      | admin@shf.se        | true  | true      |
 
     Given the following regions exist:
       | name         |
@@ -31,8 +31,8 @@ Feature: As a member
       | Awesome      |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | categories | state    |
-      | Emma       | emma@happymutts.com | 5562252998     | Awesome    | accepted |
+      | user_email          | company_number | categories | state    |
+      | emma@happymutts.com | 5562252998     | Awesome    | accepted |
 
   Scenario: Member goes to company page after membership approval
     Given I am logged in as "emma@happymutts.com"

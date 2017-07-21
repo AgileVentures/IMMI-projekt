@@ -28,8 +28,6 @@ end
 And(/^the following simple applications exist:$/) do |table|
   table.hashes.each do |hash|
     ma = FactoryGirl.build(:membership_application,
-                           first_name: 'Fred',
-                           last_name: 'Flintstone',
                            company_number: hash['company_number'],
                            contact_email: hash['user_email'],
                            state: hash['state'])

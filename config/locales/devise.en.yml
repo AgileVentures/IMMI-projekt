@@ -19,8 +19,16 @@ en:
     mailer:
       confirmation_instructions:
         subject: "SHF Confirmation instructions"
+
       reset_password_instructions:
         subject: "SHF Reset password instructions"
+        hello: "Hello %{email}"
+        reset_requested: "Someone has requested a link to change your password.
+                          You can do this through the link below."
+        change_password: "Change my password"
+        ignore: "If you didn't request this, please ignore this email."
+        follow_link: "Your password won't change until you access the link above and create a new one."
+
       unlock_instructions:
         subject: "SHF Unlock instructions"
       password_change:
@@ -29,8 +37,10 @@ en:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
     passwords:
-      no_token: "You can't access this page without coming from a password reset email. If you do come from a password reset email, please make sure you used the full URL provided."
-      send_instructions: "You will receive an email with instructions on how to reset your password in a few minutes."
+      no_token: "You can't access the reset-password page without coming from a
+                 password reset email. And, you cannot change the language while
+                 on that page. Please click the link in the password-reset email."
+      send_instructions: "You will receive an email with instructions on how to reset your password."
       send_paranoid_instructions: "If your email address exists in our database, you will receive a password recovery link at your email address in a few minutes."
       updated: "Your password has been changed successfully. You are now signed in."
       updated_not_active: "Your password has been changed successfully."

@@ -6,7 +6,7 @@
   - if current_user.is_member?
     %h2
       = t('.member.title')
-      = current_user.membership_application.first_name
+      = current_user.first_name
     %p= t('.member.using_the_logo')
     %p "#{t('.member.upload_this_image')} http://www.sverigeshundforetagare.se"
     = image_tag('medlem.png')

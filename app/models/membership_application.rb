@@ -19,11 +19,6 @@ class MembershipApplication < ApplicationRecord
   #
   belongs_to :company, optional: true, inverse_of: :membership_applications
 
-  delegate :first_name, to: :user, allow_nil: true, prefix: false
-  delegate :last_name, to: :user, allow_nil: true, prefix: false
-  delegate :first_name=, to: :user, allow_nil: true, prefix: false
-  delegate :last_name=, to: :user, allow_nil: true, prefix: false
-
   has_and_belongs_to_many :business_categories
   has_many :uploaded_files
 
@@ -110,7 +105,7 @@ class MembershipApplication < ApplicationRecord
 
 
   def swedish_organisationsnummer
-    errors.add(:company_number, "#{self.company_number} är inte ett svenskt organisationsnummer") unless Orgnummer.new(self.company_number).valid?
+    errors.add(:company_number, :invalid, company_number: self.company_number) unless errors.include?(:company_number) || Orgnummer.new(self.company_number).valid?
   end
 
 

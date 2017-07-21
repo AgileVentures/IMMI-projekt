@@ -16,7 +16,7 @@
     %tbody
       - @membership_applications.each do | membership_application |
         %tr.applicant
-          %td.name= link_to "#{membership_application.first_name + ' ' + membership_application.last_name}", membership_application_path(membership_application.id)
+          %td.name= link_to "#{membership_application.user.first_name + ' ' + membership_application.user.last_name}", membership_application_path(membership_application.id)
           %td.company_number= membership_application.company_number
           %td.state= t("membership_applications.state.#{membership_application.state}")
           %td.action= link_to t('.manage'), membership_application_path(membership_application.id)

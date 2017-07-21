@@ -12,15 +12,15 @@ Feature: As an Admin
 
   Background:
     Given the following users exists
-      | email                               | admin |
-      | emma@personal.com                   |       |
-      | hans@random.com                     |       |
-      | anna_needs_info@random.com          |       |
-      | lars_rejected@snarkybark.se         |       |
-      | nils_member@bowwowwow.se            |       |
-      | admin@shf.com                       | true  |
-      | emma_under_review@happymutts.se     |       |
-      | hans_ready_for_review@happymutts.se |       |
+      | first_name         | email                               | admin |
+      | Emma               | emma@personal.com                   |       |
+      | Hans               | hans@random.com                     |       |
+      | Anna               | anna_needs_info@random.com          |       |
+      | LarsRejected       | lars_rejected@snarkybark.se         |       |
+      | NilsApproved       | nils_member@bowwowwow.se            |       |
+      | EmmaUnderReview    | emma_under_review@happymutts.se     |       |
+      | HansReadyForReview | hans_ready_for_review@happymutts.se |       |
+      | admin              | admin@shf.com                       | true  |
 
 
     And the following business categories exist
@@ -37,14 +37,14 @@ Feature: As an Admin
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.se |
 
     And the following applications exist:
-      | first_name         | user_email                          | contact_email   | company_number | state                 | categories   |
-      | Emma               | emma@personal.com                   | emma@cmpy.com   | 5562252998     | waiting_for_applicant | Psychologist |
-      | Hans               | hans@random.com                     |                 | 5560360793     | waiting_for_applicant | Psychologist |
-      | Anna               | anna_needs_info@random.com          |                 | 2120000142     | waiting_for_applicant | Psychologist |
-      | LarsRejected       | lars_rejected@snarkybark.se         |                 | 0000000000     | rejected              | dog crooning |
-      | NilsApproved       | nils_member@bowwowwow.se            |                 | 0000000000     | accepted              | Groomer      |
-      | EmmaUnderReview    | emma_under_review@happymutts.se     |                 | 5562252998     | under_review          | rehab        |
-      | HansReadyForReview | hans_ready_for_review@happymutts.se |                 | 5562252998     | ready_for_review      | dog grooming |
+      | user_email                          | contact_email   | company_number | state                 | categories   |
+      | emma@personal.com                   | emma@cmpy.com   | 5562252998     | waiting_for_applicant | Psychologist |
+      | hans@random.com                     |                 | 5560360793     | waiting_for_applicant | Psychologist |
+      | anna_needs_info@random.com          |                 | 2120000142     | waiting_for_applicant | Psychologist |
+      | lars_rejected@snarkybark.se         |                 | 0000000000     | rejected              | dog crooning |
+      | nils_member@bowwowwow.se            |                 | 0000000000     | accepted              | Groomer      |
+      | emma_under_review@happymutts.se     |                 | 5562252998     | under_review          | rehab        |
+      | hans_ready_for_review@happymutts.se |                 | 5562252998     | ready_for_review      | dog grooming |
 
 
   @admin

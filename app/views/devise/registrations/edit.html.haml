@@ -4,11 +4,24 @@
   %span
 .entry-content.wpcf7
   = form_for(resource, as: resource_name, url: registration_path(resource_name), html: { method: :put }) do |f|
-    = devise_error_messages!
+    - if resource.errors.any?
+      .wpcf7-response-output
+        - resource.errors.full_messages.each do |msg|
+          = msg
+          %br/
+      %br/
+    .field
+      = f.label :first_name
+      %br/
+      = f.text_field :first_name, autofocus: true, class: 'wpcf7-form-control'
+    .field
+      = f.label :last_name
+      %br/
+      = f.text_field :last_name, class: 'wpcf7-form-control'
     .field
       = f.label :email
       %br/
-      = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
+      = f.email_field :email, class: 'wpcf7-form-control'
     - if devise_mapping.confirmable? && resource.pending_reconfirmation?
       %div
         "#{t('.unconfirmed_email_for', unconfirmed_email: resource.unconfirmed_email )}"

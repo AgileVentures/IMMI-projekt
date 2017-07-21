@@ -15,12 +15,12 @@ Feature: As a visitor
   Background:
 
     Given the following users exists
-      | email                 | admin |
-      | emma@happymutts.com   |       |
-      | lars@happymutts.com   |       |
-      | anna@happymutts.com   |       |
-      | bowser@snarkybarky.se |       |
-      | admin@shf.se          | true  |
+      | first_name | email                 | admin |
+      | Emma       | emma@happymutts.com   |       |
+      | Lars       | lars@happymutts.com   |       |
+      | Anna       | anna@happymutts.com   |       |
+      | Bowser     | bowser@snarkybarky.se |       |
+      | admin      | admin@shf.se          | true  |
 
     And the following companies exist:
       | name                 | company_number | email                  |
@@ -37,11 +37,11 @@ Feature: As a visitor
       | Agility      |
 
     And the following applications exist:
-      | first_name | user_email            | company_number | categories    | state    |
-      | Emma       | emma@happymutts.com   | 5562252998     | Groomer       | accepted |
-      | Lars       | lars@happymutts.com   | 5562252998     | Trainer       | accepted |
-      | Anna       | anna@happymutts.com   | 5562252998     | Psychologist  | accepted |
-      | Bowser     | bowser@snarkybarky.se | 2120000142     | Agility       | accepted |
+      | user_email            | company_number | categories    | state    |
+      | emma@happymutts.com   | 5562252998     | Groomer       | accepted |
+      | lars@happymutts.com   | 5562252998     | Trainer       | accepted |
+      | anna@happymutts.com   | 5562252998     | Psychologist  | accepted |
+      | bowser@snarkybarky.se | 2120000142     | Agility       | accepted |
 
 
   Scenario: Categories of 3 employees all show for a company

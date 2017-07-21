@@ -13,7 +13,7 @@ Feature: As an admin
       | Emma       | emma@happymutts.se    |       |
       | Hans       | hans@happymutts.se    |       |
       | Anna       | anna@nosnarkybarky.se |       |
-      |            |admin@shf.com          | true  |
+      | admin      | admin@shf.com         | true  |
 
     Given the following business categories exist
       | name         | description                     |

@@ -34,6 +34,12 @@ Rails.application.configure do
   # ActionMailer::Base.deliveries array.
   config.action_mailer.delivery_method = :test
 
+  # Mail templates will need to use "_url" helpers rather than "_path" helpers
+  # since the template will not have the context of a request
+  # (as a controller does) and thus the full URL will be required to create
+  # links in the email.  This setting defines the host (domain) for the URL.
+  config.action_mailer.default_url_options = { :host => 'localhost' }
+
   # Print deprecation notices to the stderr.
   config.active_support.deprecation = :stderr
 

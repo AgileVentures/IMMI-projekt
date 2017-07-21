@@ -7,18 +7,18 @@ Feature: Admin uploads meeting PDFs
   Background:
 
     Given the following users exists
-      | email               | admin |
-      | emma@happymutts.se |       |
-      | bob@snarkybarky.se  |       |
-      | admin@shf.se        | true  |
+      | first_name | email               | admin |
+      | Emma       | emma@happymutts.se |       |
+      | Bob        | bob@snarkybarky.se  |       |
+      | admin      | admin@shf.se        | true  |
 
     And the following companies exist:
       | name        | company_number | email               |
       | Happy Mutts | 2120000142     | bowwow@bowsersy.com |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | state    |
-      | Emma       | emma@happymutts.se | 2120000142     | accepted |
+      | user_email          | company_number | state    |
+      | emma@happymutts.se  | 2120000142     | accepted |
 
 
     And I am logged in as "admin@shf.se"

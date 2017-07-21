@@ -4,10 +4,10 @@ Feature: As a member
 
   Background:
     Given the following users exists
-      | email                      | admin | is_member |
-      | applicant_1@happymutts.com |       | true      |
-      | applicant_3@happymutts.com |       | false     |
-      | admin@shf.se               | true  | true      |
+      | first_name | email                      | admin | is_member |
+      | Emma       | applicant_1@happymutts.com |       | true      |
+      | Anna       | applicant_3@happymutts.com |       | false     |
+      | admin      | admin@shf.se               | true  | true      |
 
     And the following companies exist:
       | name                 | company_number | email                  |
@@ -15,9 +15,9 @@ Feature: As a member
       | Bowsers              | 2120000142     | bowwow@bowsersy.com    |
 
     And the following applications exist:
-      | first_name | user_email                 | company_number | state    |
-      | Emma       | applicant_1@happymutts.com | 5560360793     | accepted |
-      | Anna       | applicant_3@happymutts.com | 2120000142     | accepted |
+      | user_email                 | company_number | state    |
+      | applicant_1@happymutts.com | 5560360793     | accepted |
+      | applicant_3@happymutts.com | 2120000142     | accepted |
 
 
   Scenario: Member can edit their company

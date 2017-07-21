@@ -6,7 +6,7 @@ module MembershipApplicationsHelper
 
 
   def member_full_name
-    @membership_application ? "#{@membership_application.first_name} #{@membership_application.last_name}" : '..'
+    @membership_application ? "#{@membership_application.user.first_name} #{@membership_application.user.last_name}" : '..'
 
   end
 

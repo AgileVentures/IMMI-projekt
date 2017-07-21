@@ -3,18 +3,18 @@ Feature: Only members and admins can see members only (hidden) pages
   Background:
 
     Given the following users exists
-      | email                    | admin | is_member |
-      | not_a_member@bowsers.com |       | false     |
-      | emma@happymutts.com      |       | true      |
-      | admin@shf.se             | true  | true      |
+      | first_name | email                    | admin | is_member |
+      | Emma       | emma@happymutts.com      |       | true      |
+      | NoMember   | not_a_member@bowsers.com |       | false     |
+      | admin      | admin@shf.se             | true  | true      |
 
     And the following business categories exist
       | name  |
       | Rehab |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | categories | state    |
-      | Emma       | emma@happymutts.com | 5562252998     | Rehab      | accepted |
+      | user_email          | company_number | categories | state    |
+      | emma@happymutts.com | 5562252998     | Rehab      | accepted |
 
 
   Scenario: Visitor cannot see members only pages

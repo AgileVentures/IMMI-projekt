@@ -198,6 +198,11 @@ en:
             actual_file:
               file_too_large: 'The uploaded file size must be smaller than %{max}. (Your file is %{value} bytes.)'
 
+        membership_application:
+          attributes:
+            company_number:
+              invalid: "%{company_number} is not a valid Swedish company number"
+
 
       messages:
         record_invalid: "Validation failed: %{errors}"
@@ -702,6 +707,7 @@ en:
         confirm_password: &confirm_password Confirm password
         forgot_password: Forgot password
         submit_button_label: Sign up
+        success: You have signed up successfully
       edit:
         title: Edit your login information
         unconfirmed_email_for: 'Unconfirmed email address for: %{unconfirmed_email}'
@@ -714,6 +720,7 @@ en:
         unregister: Unregister
         confirm_are_you_sure: *are_you_sure_confirm
         back: *back
+        success: Your account has been updated successfully
     sessions:
       new:
         log_in: &log_in Log In

@@ -4,11 +4,24 @@
   %span
 .entry-content.wpcf7
   = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
-    = devise_error_messages!
+    - if resource.errors.any?
+      .wpcf7-response-output
+        - resource.errors.full_messages.each do |msg|
+          = msg
+          %br/
+      %br/
+    .field
+      = f.label :first_name, class: 'required'
+      %br/
+      = f.text_field :first_name, autofocus: true, class: 'wpcf7-form-control'
+    .field
+      = f.label :last_name, class: 'required'
+      %br/
+      = f.text_field :last_name, class: 'wpcf7-form-control'
     .field
       = f.label :email, class: 'required'
       %br/
-      = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
+      = f.email_field :email, class: 'wpcf7-form-control'
     .field
       = f.label :password, class: 'required'
       = render 'devise/shared/min_password_length_info'

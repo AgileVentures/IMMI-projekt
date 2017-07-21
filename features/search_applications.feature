@@ -11,7 +11,7 @@ Background:
     | John       | Johanssen  | john@happymutts.com  |       |
     | Anna       | Anderson   | anna@dogsrus.com     |       |
     | Emma       | Eriksson   | emma@weluvdogs.com   |       |
-    |            |            | admin@shf.se         | true  |
+    | admin      | admin      | admin@shf.se         | true  |
 
   And the following business categories exist
     | name         |

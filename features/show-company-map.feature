@@ -8,8 +8,8 @@ Feature: As a visitor
   Background:
 
     Given the following users exist
-      | email               | admin |
-      | emma@happymutts.com |       |
+      | first_name | email               | admin |
+      | Emma       | emma@happymutts.com |       |
 
 
     And the following regions exist:
@@ -32,8 +32,8 @@ Feature: As a visitor
 
 
     And the following applications exist:
-      | first_name | user_email          | company_number | categories | state    |
-      | Emma       | emma@happymutts.com | 5560360793     | Groomer    | accepted |
+      | user_email          | company_number | categories | state    |
+      | emma@happymutts.com | 5560360793     | Groomer    | accepted |
 
 
   @javascript

@@ -5,11 +5,11 @@ Feature: As any type of visitor
 
   Background:
     Given the following users exists
-      | email               | admin | is_member |
-      | emma@happymutts.com |       | true      |
-      | anna@sadmutts.com   |       | true      |
-      | ernt@mutts.com      |       | true      |
-      | admin@shf.se        | true  | true      |
+      | first_name | email               | admin | is_member |
+      | Emma       | emma@happymutts.com |       | true      |
+      | Ernt       | ernt@mutts.com      |       | true      |
+      | Anna       | anna@sadmutts.com   |       | true      |
+      | admin      | admin@shf.se        | true  | true      |
 
     Given the following regions exist:
       | name         |
@@ -37,10 +37,10 @@ Feature: As any type of visitor
       | Extra   |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | categories | state    |
-      | Emma       | emma@happymutts.com | 5562252998     | Awesome    | accepted |
-      | Ernt       | ernt@mutts.com      | 5569467466     | Awesome    | accepted |
-      | Anna       | anna@sadmutts.com   | 2120000142     | Sadness    | accepted |
+      | user_email          | company_number | categories | state    |
+      | emma@happymutts.com | 5562252998     | Awesome    | accepted |
+      | ernt@mutts.com      | 5569467466     | Awesome    | accepted |
+      | anna@sadmutts.com   | 2120000142     | Sadness    | accepted |
 
   Scenario: Categories list multiple businesses
     Given I am Logged out

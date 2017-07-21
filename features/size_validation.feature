@@ -5,13 +5,13 @@ Feature: As an applicant
 
   Background:
     Given the following users exists
-      | email                 | admin |
-      | hans@new_applicant.se |       |
-      | emma@happymutts.se    |       |
+      | first_name | email                 | admin |
+      | Hans       | hans@new_applicant.se |       |
+      | Emma       | emma@happymutts.se    |       |
 
     And the following applications exist:
-      | first_name | user_email         | company_number | state        |
-      | Emma       | emma@happymutts.se | 5560360793     | under_review |
+      | user_email         | company_number | state        |
+      | emma@happymutts.se | 5560360793     | under_review |
 
 
   Scenario: New application - Uploads a file that is too large

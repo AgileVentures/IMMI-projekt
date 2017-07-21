@@ -128,6 +128,12 @@ Then(/^I should be on (?:the )*"([^"]*)" page$/) do |page|
       path = admin_only_member_app_waiting_reasons_path
     when 'new waiting for info reason'
       path = new_admin_only_member_app_waiting_reason_path
+    when 'new waiting for info reason'
+      path = new_admin_only_member_app_waiting_reason_path
+    when 'register as a new user'
+      path = new_user_registration_path
+    when 'edit registration for a user'
+      path = edit_user_registration_path
   end
 
   expect(current_path_without_locale(current_path)).to eq path

@@ -82,7 +82,7 @@ RSpec.describe AdminController, type: :controller do
                                    state:         app_state.name,
                                    user:          u
 
-            member1_info = "#{m.contact_email},#{m.first_name},#{m.last_name},#{m.membership_number},"+ I18n.t("membership_applications.state.#{app_state.name}")
+            member1_info = "#{m.contact_email},#{u.first_name},#{u.last_name},#{m.membership_number},"+ I18n.t("membership_applications.state.#{app_state.name}")
 
             result_str << member1_info + ','
             result_str << '"",'  # no business categories
@@ -136,7 +136,7 @@ RSpec.describe AdminController, type: :controller do
 
           result_str = csv_header
 
-          member1_info = "#{member1.contact_email},#{member1.first_name},#{member1.last_name},#{member1.membership_number},"+ I18n.t("membership_applications.state.#{member1.state}")
+          member1_info = "#{member1.contact_email},#{u1.first_name},#{u1.last_name},#{member1.membership_number},"+ I18n.t("membership_applications.state.#{member1.state}")
 
           result_str << member1_info + ','
           result_str << '"",'  # no business categories
@@ -174,7 +174,7 @@ RSpec.describe AdminController, type: :controller do
                              response.body
                            }
 
-        let(:member1_info) {  "#{member1.contact_email},#{member1.first_name},#{member1.last_name},#{member1.membership_number},"+ I18n.t("membership_applications.state.#{member1.state}") }
+        let(:member1_info) {  "#{member1.contact_email},#{u1.first_name},#{u1.last_name},#{member1.membership_number},"+ I18n.t("membership_applications.state.#{member1.state}") }
 
 
         it 'zero/nil business categories' do

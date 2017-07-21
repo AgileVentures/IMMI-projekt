@@ -9,9 +9,9 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
 
   Background:
     Given the following users exists
-      | email                                  | admin |
-      | anna_waiting_for_info@nosnarkybarky.se |       |
-      | admin@shf.com                          | true  |
+      | first_name  | email                                  | admin |
+      | AnnaWaiting | anna_waiting_for_info@nosnarkybarky.se |       |
+      | admin       | admin@shf.com                          | true  |
 
     Given the following business categories exist
       | name  | description           |
@@ -27,8 +27,8 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
 
 
     And the following applications exist:
-      | first_name  | user_email                             | company_number | category_name | state                 |
-      | AnnaWaiting | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
+      | user_email                             | company_number | category_name | state                 |
+      | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
 
 
     And the following member app waiting reasons exist
@@ -64,6 +64,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
   Scenario: Admin selects 'other' and enters text as the reason SHF is waiting_for_applicant
     Given I am on "AnnaWaiting" application page
     When I set "member_app_waiting_reasons" to t("admin_only.member_app_waiting_reasons.other_custom_reason")
+    And I wait for all ajax requests to complete
     When I fill in "custom_reason_text" with "This is my reason"
     And I press enter in "custom_reason_text"
     And I am on the list applications page
@@ -78,10 +79,12 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
   Scenario: Admin selects 'other' and fills in custom text but then changes reason to something else
     Given I am on "AnnaWaiting" application page
     When I set "member_app_waiting_reasons" to t("admin_only.member_app_waiting_reasons.other_custom_reason")
+    And I wait for all ajax requests to complete
     And I fill in "custom_reason_text" with "This is my reason"
     And I press enter in "custom_reason_text"
     And I wait for all ajax requests to complete
     And I set "member_app_waiting_reasons" to "waiting for payment"
+    And I wait for all ajax requests to complete
     And I am on the list applications page
     And I am on "AnnaWaiting" application page
     And "member_app_waiting_reasons" should have "waiting for payment" selected
@@ -90,13 +93,15 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
   @javascript @admin
   Scenario: When selected reason is not 'custom other,' the custom text is saved as blank (empty string)
     Given I am on "AnnaWaiting" application page
-
     When I set "member_app_waiting_reasons" to t("admin_only.member_app_waiting_reasons.other_custom_reason")
+    And I wait for all ajax requests to complete
     And I fill in "custom_reason_text" with "This is my reason"
     And I press enter in "custom_reason_text"
     And I set "member_app_waiting_reasons" to "need doc"
+    And I wait for all ajax requests to complete
     # change back so the custom reason field shows. it should be blank
     And I set "member_app_waiting_reasons" to t("admin_only.member_app_waiting_reasons.other_custom_reason")
+    And I wait for all ajax requests to complete
     Then I should not see "This is my reason"
 
 
@@ -105,3 +110,4 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the application page for "AnnaWaiting"
     Then I should not see t("membership_applications.need_info.reason_title")
+

@@ -5,15 +5,15 @@ Feature: As an applicant
 
   Background:
     Given the following users exists
-      | email                  | admin |
-      | applicant_1@random.com |       |
-      | applicant_2@random.com |       |
-      | admin@shf.com          | true  |
+      | first_name | email                  | admin |
+      | Emma       | applicant_1@random.com |       |
+      | Applicant2 | applicant_2@random.com |       |
+      | admin      | admin@shf.com          | true  |
 
 
     And the following applications exist:
-      | first_name | user_email             | company_number | state                 |
-      | Emma       | applicant_1@random.com | 5562252998     | waiting_for_applicant |
+      | user_email             | company_number | state                 |
+      | applicant_1@random.com | 5562252998     | waiting_for_applicant |
 
 
   Scenario: Upload a file during a new application

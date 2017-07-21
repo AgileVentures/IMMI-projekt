@@ -7,16 +7,16 @@ Feature: As an admin
   Background:
 
     Given the following users exists
-      | email                   | admin |
-      | emma@personal.com       |       |
-      | lars@personal.com       |       |
-      | hannah@personal.com     |       |
-      | nils@personal.se        |       |
-      | anna@personal.se        |       |
-      | sam@personal.se         |       |
-      | admin@shf.se            | true  |
-      | yesterday_admin@shf.se  | true  |
-      | lazy_admin@shf.se       | true  |
+      | first_name | email                   | admin |
+      | Emma       | emma@personal.com       |       |
+      | Lars       | lars@personal.com       |       |
+      | Hannah     | hannah@personal.com     |       |
+      | Nils       | nils@personal.se        |       |
+      | Anna       | anna@personal.se        |       |
+      | Sam        | sam@personal.se         |       |
+      | admin      | admin@shf.se            | true  |
+      | admin      | yesterday_admin@shf.se  | true  |
+      | admin      | lazy_admin@shf.se       | true  |
 
     And the following regions exist:
       | name         |
@@ -30,11 +30,11 @@ Feature: As an admin
 
 
     And the following applications exist:
-      | first_name | user_email          | contact_email         | company_number | state    |
-      | Emma       | emma@personal.com   | emma@happymutts.com   | 5560360793     | accepted |
-      | Lars       | lars@personal.com   | lars@happymutts.com   | 5560360793     | accepted |
-      | Hannah     | hannah@personal.com | hannah@happymutts.com | 5560360793     | accepted |
-      | Emma       | emma@personal.com   | emma@bowsers.com      | 2120000142     | new      |
+      | user_email          | contact_email         | company_number | state    |
+      | emma@personal.com   | emma@happymutts.com   | 5560360793     | accepted |
+      | lars@personal.com   | lars@happymutts.com   | 5560360793     | accepted |
+      | hannah@personal.com | hannah@happymutts.com | 5560360793     | accepted |
+      | emma@personal.com   | emma@bowsers.com      | 2120000142     | new      |
 
 
 

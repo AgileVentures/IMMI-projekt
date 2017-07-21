@@ -13,10 +13,10 @@ Feature: As an admin
 
   Background:
     Given the following users exists
-      | email                      | admin |
-      | applicant_1@happymutts.com |       |
-      | applicant_3@happymutts.com |       |
-      | admin@shf.se               | true  |
+      | first_name | email                      | admin |
+      | Emma       | applicant_1@happymutts.com |       |
+      | Anna       | applicant_3@happymutts.com |       |
+      | admin      | admin@shf.se               | true  |
 
     Given the following regions exist:
       | name         |
@@ -34,9 +34,9 @@ Feature: As an admin
       | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Norrbotten |
 
     And the following applications exist:
-      | first_name | user_email                 | company_number | state    |
-      | Emma       | applicant_1@happymutts.com | 5560360793     | accepted |
-      | Anna       | applicant_3@happymutts.com | 2120000142     | accepted |
+      | user_email                 | company_number | state    |
+      | applicant_1@happymutts.com | 5560360793     | accepted |
+      | applicant_3@happymutts.com | 2120000142     | accepted |
 
 
     And the following business categories exist

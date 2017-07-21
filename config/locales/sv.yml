@@ -28,7 +28,7 @@ sv:
   send: &send Skicka
   new: &new Nytt
   change: &change Byt
-  save: &save Save
+  save: &save Spara
   back: &back Tillbaks
   search: &search Sök
   'yes': &yes Ja
@@ -200,6 +200,10 @@ sv:
             actual_file:
               file_too_large: 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
 
+        membership_application:
+          attributes:
+            company_number:
+              invalid: "%{company_number} är inte ett svenskt organisationsnummer"
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
@@ -706,6 +710,7 @@ sv:
         forgot_password: Glömt lösenord
         confirm_password: &confirm_password Bekräfta lösenord
         submit_button_label: Skapa användare
+        success: Ett nytt konto har skapats
       edit:
         title: Redigera användare
         unconfirmed_email_for: 'Obekräftad mailadress för: %{unconfirmed_email}'
@@ -718,6 +723,7 @@ sv:
         unregister: Avregistrera dig
         confirm_are_you_sure: *are_you_sure_confirm
         back: *back
+        success: Ditt konto har uppdaterats
     sessions:
       new:
         log_in: &log_in Logga In

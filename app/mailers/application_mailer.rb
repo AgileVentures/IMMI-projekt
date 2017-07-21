@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: 'noreply@sverigeshundforetagare.se'
+  default from: ENV['SHF_NOREPLY_EMAIL']
   layout 'mailer'
 end

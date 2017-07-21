@@ -4,11 +4,11 @@ Feature: As an admin
 
   Background:
     Given the following users exist
-      | email               | admin |
-      | emma@happymutts.com |       |
-      | anna@sadmutts.com   |       |
-      | ernt@mutts.com      |       |
-      | admin@shf.se        | true  |
+      | first_name | email               | admin |
+      | Emma       | emma@happymutts.com |       |
+      | Anna       | anna@sadmutts.com   |       |
+      | Ernt       | ernt@mutts.com      |       |
+      | admin      | admin@shf.se        | true  |
 
     And the following business categories exist
       | name         |
@@ -17,10 +17,10 @@ Feature: As an admin
       | Trainer      |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | categories   | state    |
-      | Emma       | emma@happymutts.com | 5562252998     | Trainer      | accepted |
-      | Anna       | anna@sadmutts.com   | 2120000142     | Psychologist | accepted |
-      | Ernt       | ernt@mutts.com      | 2120000142     | Psychologist | new      |
+      | user_email          | company_number | categories   | state    |
+      | emma@happymutts.com | 5562252998     | Trainer      | accepted |
+      | anna@sadmutts.com   | 2120000142     | Psychologist | accepted |
+      | ernt@mutts.com      | 2120000142     | Psychologist | new      |
 
   Scenario: Admin can view all users
     Given I am logged in as "admin@shf.se"

@@ -1,3 +1,5 @@
+# Additional translations at https://github.com/plataformatec/devise/wiki/I18n
+
 sv:
   devise:
     confirmations:
@@ -17,8 +19,16 @@ sv:
     mailer:
       confirmation_instructions:
         subject: "SHF Instruktioner för att bekräfta konto"
+
       reset_password_instructions:
         subject: "SHF Instrukionter för att återställa lösenord"
+        hello: "Hallå %{email}"
+        reset_requested: "Någon har begärt en länk för att ändra ditt lösenord.
+                          Du kan göra det genom länken nedan."
+        change_password: "Ändra mitt lösenord"
+        ignore: "Om du inte begärt detta, ignorerar du det här e-postmeddelandet."
+        follow_link: "Ditt lösenord ändras inte förrän du kommer åt länken ovan och skapar en ny."
+
       unlock_instructions:
         subject: "Instruktioner för att låsa up konto"
       password_change:
@@ -27,8 +37,11 @@ sv:
       failure: "Kunde inte autentisera dig med %{kind} för \"%{reason}\"."
       success: "Autentiserat med %{kind}-konto."
     passwords:
-      no_token: "Du har endast tillgång till den här sidan via ett epost för att återställa ditt lösenord. Om detta är fallet, var god kontrollera att du använder den fullständiga adressen i meddelandet."
-      send_instructions: "Du kommer få epost med instruktioner om hur du kan återställa ditt lösenord inom några minuter."
+      no_token: "Du kan inte komma åt sidan om återställningslösenord utan att
+                 komma från ett e-postmeddelande för lösenordsåterställning.
+                 Och du kan inte ändra språket på den sidan. Vänligen klicka på
+                 länken i e-postadressen för lösenordsåterställning."
+      send_instructions: "Du kommer få epost med instruktioner om hur du kan återställa ditt lösenord inom."
       send_paranoid_instructions: "Om din email är i vår databas, kommer du att få en lösenordslänk till din mail."
       updated: "Ditt lösenord har uppdaterats. Du är nu inloggad."
       updated_not_active: "Ditt lösenord har uppdaterats."

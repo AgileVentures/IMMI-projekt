@@ -12,10 +12,10 @@ Feature: Admin manages the list of reasons why SHF is waiting for info from an a
 
   Background:
     Given the following users exists
-      | email                                  | admin |
-      | anna_waiting_for_info@nosnarkybarky.se |       |
-      | emma@happymutts.se                     |       |
-      | admin@shf.se                           | true  |
+      | first_name   | email                                  | admin |
+      | AnnaWaiting  | anna_waiting_for_info@nosnarkybarky.se |       |
+      | EmmaAccepted | emma@happymutts.se                     |       |
+      | admin        | admin@shf.se                           | true  |
 
     Given the following business categories exist
       | name  | description           |
@@ -32,9 +32,9 @@ Feature: Admin manages the list of reasons why SHF is waiting for info from an a
 
 
     And the following applications exist:
-      | first_name   | user_email                             | company_number | category_name | state                 |
-      | AnnaWaiting  | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
-      | EmmaAccepted | emma@happymutts.se                     | 2120000142     | rehab         | accepted              |
+      | user_email                             | company_number | category_name | state                 |
+      | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab         | waiting_for_applicant |
+      | emma@happymutts.se                     | 2120000142     | rehab         | accepted              |
 
 
     And the following member app waiting reasons exist:

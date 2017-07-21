@@ -10,7 +10,7 @@ RSpec.describe MembershipApplicationsHelper, type: :helper do
 
   describe '#member_full_name' do
     it 'appends first and last with a space inbetween' do
-      assign(:membership_application, create(:membership_application, first_name: 'Kitty', last_name: 'Kat', user: create(:user)))
+      assign(:membership_application, create(:membership_application, user: create(:user, first_name: 'Kitty', last_name: 'Kat')))
       expect(helper.member_full_name).to eq('Kitty Kat')
     end
 

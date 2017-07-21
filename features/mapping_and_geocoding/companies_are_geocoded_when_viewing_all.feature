@@ -23,10 +23,10 @@ Feature: All companies are geocoded before being shown on the view all companies
 
 
     And the following users exists
-      | email               | admin |
-      | emma@happymutts.com |       |
-      | a@happymutts.com    |       |
-      | admin@shf.se        | true  |
+      | first_name | email               | admin |
+      | Emma       | emma@happymutts.com |       |
+      | Anna       | a@happymutts.com    |       |
+      | admin      | admin@shf.se        | true  |
 
     And the following business categories exist
       | name         |
@@ -34,9 +34,9 @@ Feature: All companies are geocoded before being shown on the view all companies
       | Trainer      |
 
     And the following applications exist:
-      | first_name | user_email          | company_number | categories | state    |
-      | Emma       | emma@happymutts.com | 5560360793     | Groomer    | accepted |
-      | Anna       | a@happymutts.com    | 2120000142     | Trainer    | accepted |
+      | user_email          | company_number | categories | state    |
+      | emma@happymutts.com | 5560360793     | Groomer    | accepted |
+      | a@happymutts.com    | 2120000142     | Trainer    | accepted |
 
 
 
