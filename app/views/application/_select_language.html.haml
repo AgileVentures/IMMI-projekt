@@ -1,4 +1,12 @@
 - if locale == :sv
-  = link_to image_tag('eng.png', size: '20', alt: 'English flag'), {locale: :en}, class: 'language.en', id: 'change-lang-to-english'
+  - if @language_change_allowed
+    = link_to image_tag('eng.png', size: '20', alt: 'English flag'),
+              {locale: :en}, class: 'language.en', id: 'change-lang-to-english'
+  - else
+    = image_tag('eng_no_change.png', size: '20', alt: 'Cannot change language')
 - else
-  = link_to image_tag('sv.png', size: '20', alt: 'Swedish flag'), {locale: :sv}, class: 'language.sv', id: 'change-lang-to-svenska'
+  - if @language_change_allowed
+    = link_to image_tag('sv.png', size: '20', alt: 'Swedish flag'),
+              {locale: :sv}, class: 'language.sv', id: 'change-lang-to-svenska'
+  - else
+    = image_tag('sv_no_change.png', size: '20', alt: 'Cannot change language')

@@ -54,6 +54,7 @@ class MembershipApplicationsController < ApplicationController
       end
 
     else
+      @language_change_allowed = false
       create_error(t('.error'))
     end
   end
