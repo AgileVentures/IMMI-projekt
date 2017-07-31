@@ -13,6 +13,11 @@ When /^I confirm popup$/ do
   end
 end
 
+And /^I confirm the popup$/ do
+  # This is for CHROME/Selenium (not headless)
+  page.driver.browser.switch_to.alert.accept
+end
+
 When /^I confirm popup with message t\("([^"]*)"\)$/ do | modal_text |
   # requires poltergeist:
   using_wait_time 3 do

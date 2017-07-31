@@ -39,5 +39,31 @@ def i18n_content(content, locale=I18n.locale)
   I18n.t(content, locale)
 end
 
+# Timeout value
+Capybara.default_max_wait_time = 10
+# TODO: Is this time too long? 10 seconds is a long time.
+# 2 seconds is default, which I think is sensible
+
+# Headless chrome browser.
+# Use @selenium
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    args: ['headless']
+  )
+end
+
+# Displayed chrome browser
+# Use @selenium_browser
+Capybara.register_driver :selenium_browser do |app|
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome
+  )
+end
+
+
+# TODO: Needed?
 # For tests requiring javascript, headless
 Capybara.javascript_driver = :poltergeist
