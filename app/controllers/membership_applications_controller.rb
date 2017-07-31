@@ -55,8 +55,7 @@ class MembershipApplicationsController < ApplicationController
         create_error(t('.error'))
       end
 
-
-      MembershipApplicationMailer.acknowledge_received(@membership_application).deliver
+      send_new_membership_application_notice_to_admins(@membership_application)
 
     else
       create_error(t('.error'))
@@ -265,6 +264,12 @@ class MembershipApplicationsController < ApplicationController
       render :edit
     end
 
+  end
+
+  def send_new_membership_application_notice_to_admins(new_membership_application)
+    User.admins.each do |admin|
+      AdminMailer.member_application_received(new_membership_application, admin).deliver_now
+    end
   end
 
 
