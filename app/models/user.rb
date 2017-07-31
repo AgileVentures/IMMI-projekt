@@ -16,6 +16,8 @@ class User < ApplicationRecord
     User.all.reject { | user | user.is_member? }
   }
 
+  scope :admins, -> { where admin: true }
+
   def has_membership_application?
     membership_applications.any?
   end
