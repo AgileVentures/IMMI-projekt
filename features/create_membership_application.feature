@@ -112,3 +112,17 @@ Feature: As a user
     Scenarios:
       | f_name | c_number | l_name    | c_email       | phone      | error                                                     |
       | Kicki  | 00       | Andersson | kicki@immi.nu | 0706898525 | t("errors.messages.wrong_length", count: 10)|
+
+
+  Scenario: Cannot change locale if there are errors in the new application
+    Given I am on the "landing" page
+    And I click on t("menus.nav.users.apply_for_membership")
+    And I fill in the translated form with data:
+      | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.contact_email | membership_applications.new.phone_number |
+      | Kicki                                  | Andersson                             | 1                                          | kicki@immi.n                              | 0706898525                               |
+
+    And I click on t("membership_applications.new.submit_button_label")
+    Then I should see t("errors.messages.wrong_length", count: 10)
+    And I should not see t("show_in_swedish") image
+    And I should not see t("show_in_english") image
+    And I should see t("cannot_change_language") image

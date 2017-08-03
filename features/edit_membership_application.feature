@@ -65,3 +65,16 @@ Feature: As an applicant
     And I navigate to the edit page for "bob@barkybobs.com"
     Then I should not see t("membership_applications.show.membership_number")
 
+
+  Scenario: Cannot change locale if there are errors in the application
+    Given I am logged in as "emma@random.com"
+    And I am on the "landing" page
+    And I click on t("menus.nav.users.my_application")
+    Then I should be on "Edit My Application" page
+    And I fill in t("membership_applications.show.contact_email") with "sussimmi.nu"
+    And I fill in t("membership_applications.show.company_number") with ""
+    And I click on t("membership_applications.edit.submit_button_label")
+    Then I should see t("membership_applications.update.error")
+    And I should not see t("show_in_swedish") image
+    And I should not see t("show_in_english") image
+    And I should see t("cannot_change_language") image

@@ -9,6 +9,7 @@ en:
 
   show_in_english: Show the site in English
   show_in_swedish: Visar webbplatsen på svenska
+  cannot_change_language: "Cannot change the language at this time. (Are there errors to fix?)"
 
   password: &password Password
 
