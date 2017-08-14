@@ -90,7 +90,7 @@ class MembershipApplicationsController < ApplicationController
 
           format.html do
             helpers.flash_message(:notice, t('.success'))
-            render :show
+            redirect_to membership_application_path(@membership_application)
           end
 
         end
