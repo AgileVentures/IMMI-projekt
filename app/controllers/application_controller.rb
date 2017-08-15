@@ -42,6 +42,7 @@ class ApplicationController < ActionController::Base
   end
 
   def user_not_authorized
+    #TODO prevent infinite loop when user tries to translate a create membership application page with errors
     flash[:alert] = t('errors.not_permitted')
     redirect_back(fallback_location: root_path)
   end
