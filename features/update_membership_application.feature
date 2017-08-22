@@ -303,7 +303,7 @@ Feature: As an Admin
   Scenario: User can only view application if it's rejected, they cannot edit it
     Given I am logged in as "lars_rejected@snarkybark.se"
     And I am on "lars_rejected@snarkybark.se" application page
-    Then I should see t("membership_applications.show.title", member_full_name: "LarsRejected Lastname")
+    Then I should see t("membership_applications.show.title", user_full_name: "LarsRejected Lastname")
     And I should not see t("membership_applications.edit.title")
     And I should see "rehab"
 

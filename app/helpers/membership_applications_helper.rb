@@ -5,12 +5,6 @@ module MembershipApplicationsHelper
   end
 
 
-  def member_full_name
-    @membership_application ? "#{@membership_application.user_full_name}" : '..'
-
-  end
-
-
   def reasons_collection(other_reason_value, other_reason_text)
     collection = AdminOnly::MemberAppWaitingReason.all.to_a
     collection << AdminOnly::MemberAppWaitingReason.new(id: other_reason_value, "name_#{I18n.locale}" => "#{other_reason_text}")

@@ -1,12 +1,12 @@
 %div{ :id => "#{unique_css_id(@membership_application)}", class: "#{item_view_class(@membership_application, controller.action_name)}" }
 
   %header.entry-header
-    %h1.entry-title= t('.title', member_full_name: member_full_name)
+    %h1.entry-title= t('.title', user_full_name: @membership_application.user_full_name)
   .post-title-divider
     %span
   .entry-content
 
-    %h2= member_full_name
+    %h2= @membership_application.user_full_name
 
     = render 'membership_number'
 

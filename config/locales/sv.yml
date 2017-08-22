@@ -267,7 +267,7 @@ sv:
       enter_member_number: Var god ange medlemsnummer och spara.
 
     show:
-      title: Ansökan från %{member_full_name}
+      title: Ansökan från %{user_full_name}
       first_name: *first_name
       last_name: *last_name
       phone_number: *phone_number

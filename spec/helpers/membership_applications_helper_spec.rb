@@ -8,15 +8,6 @@ RSpec.describe MembershipApplicationsHelper, type: :helper do
   end
 
 
-  describe '#member_full_name' do
-    it 'appends first and last with a space inbetween' do
-      assign(:membership_application, create(:membership_application, user: create(:user, first_name: 'Kitty', last_name: 'Kat')))
-      expect(helper.member_full_name).to eq('Kitty Kat')
-    end
-
-  end
-
-
   describe 'returns a list of reasons_for_waiting for the right locale' do
 
     before(:all) do
