@@ -34,21 +34,8 @@ RSpec.describe User, type: :model do
   end
 
   describe 'User' do
-    subject { create(:user, first_name: 'first', last_name: 'last', admin: false) }
-
+    subject { create(:user, admin: false) }
     it { is_expected.not_to be_admin }
-
-    it 'should have first_name' do
-      expect(subject.first_name).to eq('first')
-    end
-
-    it 'should have last_name' do
-      expect(subject.last_name).to eq('last')
-    end
-
-    it 'should have full_name' do
-      expect(subject.full_name).to eq('first last')
-    end
   end
 
 
@@ -377,6 +364,23 @@ RSpec.describe User, type: :model do
     describe 'admin' do
       subject { create(:user, admin: true) }
       it { expect(subject.admin?).to be_truthy }
+    end
+  end
+
+  describe '#full_name' do
+    subject { create(:user, first_name: 'first', last_name: 'last') }
+
+    it 'should compose #first_name' do
+      expect(subject.first_name).to eq('first')
+    end
+    it 'should compose #last_name' do
+      expect(subject.last_name).to eq('last')
+    end
+    it 'should return "first_name last_name"' do
+      expect(subject.full_name).to eq('first last')
+    end
+    it 'should belong to a valid User' do
+      expect(subject.valid?).to be true
     end
   end
 end
