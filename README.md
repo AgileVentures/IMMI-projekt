@@ -23,6 +23,7 @@ This project runs on a Ruby on Rails stack with postgreSQL as the repository.
 - Postgresql DB
 - imagemagik https://www.imagemagick.org
 - phantomjs (required for integration tests [cucumber tests]) http://phantomjs.org/
+- chromedriver (https://sites.google.com/a/chromium.org/chromedriver/downloads)
 
 ## Installation
 
@@ -62,7 +63,7 @@ $ bundle install
 ```
 Some of our cucumber tests use Google Chrome as the web browser (with selenium
   as the webdriver).  For that, you'll need to [download chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
-  to your local machine. 
+  to your local machine.
 
 ### Step 3: Get "super secret" data
 
