@@ -29,7 +29,7 @@ Feature: As an applicant
     And I fill in t("membership_applications.show.first_name") with "Anna"
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.success")
-    And I should be on the application page for "emma@random.com"
+    And I should be on the "application" page for "emma@random.com"
     And I should see "Anna Lastname"
 
   Scenario: Applicant makes mistake when editing his own application
@@ -41,7 +41,7 @@ Feature: As an applicant
     And I fill in t("membership_applications.show.company_number") with ""
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.error")
-    And I should see translated error membership_applications.show.company_number errors.messages.blank
+    And I should see error t("membership_applications.show.company_number") t("errors.messages.blank")
     And I should see button t("membership_applications.edit.submit_button_label")
 
   Scenario: Applicant can not edit applications not created by him

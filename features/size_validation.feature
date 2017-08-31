@@ -62,8 +62,8 @@ Feature: As an applicant
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :sv
-    And I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :en
+    Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
+    And I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :en)
     And I set the locale to "sv"
 
 
@@ -73,7 +73,7 @@ Feature: As an applicant
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :sv
+    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
 
 
   Scenario: Switching locales - Size error message in the right language
@@ -82,12 +82,12 @@ Feature: As an applicant
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :sv
+    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
     And I set the locale to "en"
     And I am on the "edit my application" page
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("membership_applications.edit.submit_button_label")
-    Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large"), locale: :sv
+    Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
     And I set the locale to "sv"
 
 

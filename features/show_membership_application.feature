@@ -58,7 +58,7 @@ Feature: As an Admin
     And I should see 3 t("membership_applications.waiting_for_applicant")
     And I should see 1 t("membership_applications.rejected")
     And I click on "Lastname, Emma"
-    Then I should be on the application page for "emma@personal.com"
+    Then I should be on the "application" page for "emma@personal.com"
     And I should see "Emma Lastname"
     And I should see "5562252998"
     And I should see status line with status t("membership_applications.waiting_for_applicant")
@@ -70,7 +70,7 @@ Feature: As an Admin
     And I am on the list applications page
     Then I should see "7" applications
     And I click on "Lastname, Hans"
-    Then I should be on the application page for "hans@random.com"
+    Then I should be on the "application" page for "hans@random.com"
     And I should see "Hans Lastname"
     And I should see "5560360793"
     And I should see t("membership_applications.new_status")
@@ -91,7 +91,7 @@ Feature: As an Admin
     And I am on the list applications page
     Then I should see "7" applications
     And I click on "Lastname, Emma"
-    Then I should be on the application page for "emma@personal.com"
+    Then I should be on the "application" page for "emma@personal.com"
     And I should see "Emma Lastname"
     And I should see "5562252998"
     And I should see "Trainer"
@@ -117,10 +117,10 @@ Feature: As an Admin
   @admin
   Scenario: Clicking the edit button on show page
     Given I am logged in as "admin@shf.com"
-    When I am on the application page for "nils_member@bowwowwow.se"
+    When I am on the "application" page for "nils_member@bowwowwow.se"
     Then I should see t("membership_applications.accepted")
     And I click on t("membership_applications.edit_membership_application")
-    Then I should be on the edit application page for "nils_member@bowwowwow.se"
+    Then I should be on the "edit application" page for "nils_member@bowwowwow.se"
 
   @user
   Scenario: User does not see edit-link
@@ -133,24 +133,24 @@ Feature: As an Admin
   @admin
   Scenario: Admin sees business categories for user under_review
     Given I am logged in as "admin@shf.se"
-    When I am on the application page for "emma_under_review@happymutts.se"
+    When I am on the "application" page for "emma_under_review@happymutts.se"
     Then I should see "rehab"
 
   @admin
   Scenario: Admin sees business categories for user that is ready_for_review
     Given I am logged in as "admin@shf.se"
-    When I am on the application page for "hans_ready_for_review@happymutts.se"
+    When I am on the "application" page for "hans_ready_for_review@happymutts.se"
     Then I should see "dog grooming"
 
   @admin
   Scenario: Admin sees business categories for user that is waiting_for_applicant
     Given I am logged in as "admin@shf.se"
-    When I am on the application page for "emma@personal.com"
+    When I am on the "application" page for "emma@personal.com"
     Then I should see "Psychologist"
 
 
   @admin
   Scenario: Admin sees business categories for user that is accepted
     Given I am logged in as "admin@shf.se"
-    When I am on the application page for "nils_member@bowwowwow.se"
+    When I am on the "application" page for "nils_member@bowwowwow.se"
     Then I should see "Groomer"

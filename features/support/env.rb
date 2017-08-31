@@ -41,3 +41,20 @@ end
 
 # For tests requiring javascript, headless
 Capybara.javascript_driver = :poltergeist
+
+Capybara.register_driver :selenium do |app|
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome,
+    args: ['headless']
+  )
+end
+
+# Displayed chrome browser
+# Use @selenium_browser
+Capybara.register_driver :selenium_browser do |app|
+  Capybara::Selenium::Driver.new(
+    app,
+    browser: :chrome
+  )
+end

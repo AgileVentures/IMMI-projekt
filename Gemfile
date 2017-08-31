@@ -110,4 +110,6 @@ group :test do
   # ^^ https://docs.codeclimate.com/docs/test-coverage-ruby
   gem 'simplecov', '>= 0.13.0'
   gem 'email_spec'
+  gem 'selenium-webdriver'
+  gem 'chromedriver-helper'
 end

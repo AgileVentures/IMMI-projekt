@@ -13,7 +13,7 @@ class User < ApplicationRecord
 
 
   def has_company?
-    has_membership_application? && (membership_applications.select { |app| app.company }).count > 0
+    membership_applications.where.not(company_id: nil).count > 0
   end
 
 

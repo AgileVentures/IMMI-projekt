@@ -38,12 +38,8 @@ Then(/^I can go to the company page for "([^"]*)"$/) do |company_number|
   visit path_with_locale(edit_company_path company)
 end
 
-And(/^the "([^"]*)" should go to "([^"]*)"$/) do |link, url|
-  expect(page).to have_link(link, href: url)
-end
-
-Then(/^the "([^"]*)" should not go to "([^"]*)"$/) do |link, url|
-  expect(page).not_to have_link(link, href: url)
+And(/^the "([^"]*)" should( not)? go to "([^"]*)"$/) do |link, negate, url|
+  expect(page).send (negate ? :not_to : :to), have_link(link, href: url)
 end
 
 And(/^the name for region "([^"]*)" is changed to "([^"]*)"$/) do | old_name, new_name |

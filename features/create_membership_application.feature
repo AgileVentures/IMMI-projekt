@@ -31,7 +31,7 @@ Feature: As a user
       | Kicki                                  | Andersson                             | 5562252998                                 | 031-1234567                              | info@craft.se                             |
     And I select "Groomer" Category
     And I click on t("membership_applications.new.submit_button_label")
-    Then I should be on the landing page
+    Then I should be on the "landing" page
     And I should see t("membership_applications.create.success")
     When I click on t("menus.nav.users.my_application")
     Then the t("membership_applications.new.first_name") field should be set to "Kicki"
@@ -47,7 +47,7 @@ Feature: As a user
     And I select "Trainer" Category
     And I select "Psychologist" Category
     And I click on t("membership_applications.new.submit_button_label")
-    Then I should be on the landing page
+    Then I should be on the "landing" page
     And I should see t("membership_applications.create.success")
 
 
@@ -58,7 +58,7 @@ Feature: As a user
       | membership_applications.new.first_name | membership_applications.new.last_name | membership_applications.new.company_number | membership_applications.new.phone_number | membership_applications.new.contact_email |
       | Kicki                                  | Andersson                             | 5562252998                                 | 031-1234567                              | info@craft.se                             |
     And I click on t("membership_applications.new.submit_button_label")
-    Then I should be on the landing page
+    Then I should be on the "landing" page
     And I should see t("membership_applications.create.success")
 
 
@@ -87,16 +87,16 @@ Feature: As a user
       | <f_name>                               | <l_name>                              | <c_number>                                 | <c_email>                                 | <phone>                                  |
 
     When I click on t("membership_applications.new.submit_button_label")
-    Then I should see translated error <model_attribute> <error>
+    Then I should see error <model_attribute> <error>
 
     Scenarios:
-      | f_name | c_number   | l_name    | c_email       | phone      | model_attribute                                               | error                   |
-      | Kicki  |            | Andersson | kicki@immi.nu | 0706898525 | activerecord.attributes.membership_application.company_number | errors.messages.blank   |
-      | Kicki  | 5562252998 |           | kicki@immi.nu | 0706898525 | activerecord.attributes.membership_application.last_name      | errors.messages.blank   |
-      | Kicki  | 5562252998 | Andersson |               | 0706898525 | activerecord.attributes.membership_application.contact_email  | errors.messages.blank   |
-      |        | 5562252998 | Andersson | kicki@immi.nu | 0706898525 | activerecord.attributes.membership_application.first_name     | errors.messages.blank   |
-      | Kicki  | 5562252998 | Andersson | kicki@imminu  | 0706898525 | activerecord.attributes.membership_application.contact_email  | errors.messages.invalid |
-      | Kicki  | 5562252998 | Andersson | kickiimmi.nu  | 0706898525 | activerecord.attributes.membership_application.contact_email  | errors.messages.invalid |
+      | f_name | c_number   | l_name    | c_email       | phone      | model_attribute                                                    | error                        |
+      | Kicki  |            | Andersson | kicki@immi.nu | 0706898525 | t("activerecord.attributes.membership_application.company_number") | t("errors.messages.blank")   |
+      | Kicki  | 5562252998 |           | kicki@immi.nu | 0706898525 | t("activerecord.attributes.membership_application.last_name")      | t("errors.messages.blank")   |
+      | Kicki  | 5562252998 | Andersson |               | 0706898525 | t("activerecord.attributes.membership_application.contact_email")  | t("errors.messages.blank")   |
+      |        | 5562252998 | Andersson | kicki@immi.nu | 0706898525 | t("activerecord.attributes.membership_application.first_name")     | t("errors.messages.blank")   |
+      | Kicki  | 5562252998 | Andersson | kicki@imminu  | 0706898525 | t("activerecord.attributes.membership_application.contact_email")  | t("errors.messages.invalid") |
+      | Kicki  | 5562252998 | Andersson | kickiimmi.nu  | 0706898525 | t("activerecord.attributes.membership_application.contact_email")  | t("errors.messages.invalid") |
 
 
   Scenario Outline: Apply for membership: company number wrong length

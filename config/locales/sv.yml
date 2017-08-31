@@ -10,6 +10,7 @@ sv:
   show_in_english: Visa webbplatsen på engelska
   show_in_swedish: Visa webbplatsen på svenska
   cannot_change_language: "Kan inte ändra språket just nu. (Finns det fel att fixa?)"
+  unsaved_changes_on_page: 'Ej sparade ändringar! Vill du lämna sidan?'
 
   password: &password Lösenord
 

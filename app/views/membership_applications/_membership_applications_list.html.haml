@@ -3,7 +3,7 @@
     %thead
       %tr
         %th
-          = sort_link(@search_params, :last_name,
+          = sort_link(@search_params, :user_last_name,
                       t('membership_applications.index.name'), {},
                       { class: 'applications_pagination', remote: true })
         %th

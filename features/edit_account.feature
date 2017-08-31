@@ -32,7 +32,7 @@ Feature: As a registered user
     When I fill in t("activerecord.attributes.user.first_name") with ""
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label")
-    Then I should see translated error activerecord.attributes.user.first_name errors.messages.blank
+    Then I should see error t("activerecord.attributes.user.first_name") t("errors.messages.blank")
     And I should not see t("devise.registrations.edit.success")
     And I should see t("cannot_change_language") image
     When I am on the "edit registration for a user" page
@@ -46,7 +46,7 @@ Feature: As a registered user
     When I fill in t("activerecord.attributes.user.last_name") with ""
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label")
-    Then I should see translated error activerecord.attributes.user.last_name errors.messages.blank
+    Then I should see error t("activerecord.attributes.user.last_name") t("errors.messages.blank")
     And I should not see t("devise.registrations.edit.success")
     And I should see t("cannot_change_language") image
     When I am on the "edit registration for a user" page

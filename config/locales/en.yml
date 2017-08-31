@@ -10,6 +10,7 @@ en:
   show_in_english: Show the site in English
   show_in_swedish: Show the site in Swedish
   cannot_change_language: "Cannot change the language at this time. (Are there errors to fix?)"
+  unsaved_changes_on_page: 'Unsaved changes! Do you want to leave the page?'
 
   password: &password Password
 
