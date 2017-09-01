@@ -368,19 +368,24 @@ RSpec.describe User, type: :model do
   end
 
   describe '#full_name' do
-    subject { create(:user, first_name: 'first', last_name: 'last') }
+    let(:user) { build(:user, first_name: 'first', last_name: 'last') }
 
-    it 'should compose #first_name' do
-      expect(subject.first_name).to eq('first')
-    end
-    it 'should compose #last_name' do
-      expect(subject.last_name).to eq('last')
-    end
-    it 'should return "first_name last_name"' do
-      expect(subject.full_name).to eq('first last')
-    end
-    it 'should belong to a valid User' do
-      expect(subject.valid?).to be true
+    context '@first_name=first @last_name=last' do
+      specify { expect(user.full_name).to eq('first last') }
     end
   end
+
+  describe 'Validations' do
+    describe '#valid?' do
+      let(:valid_user) { build(:user, first_name: 'first', last_name: 'last') }
+      let(:invalid_user) { build(:user, first_name: 'first', last_name: nil) }
+
+      context 'user: is not valid' do
+        specify { expect(valid_user.valid?).to be true }
+      end
+      context 'user: is valid'  do
+        specify { expect(invalid_user.valid?).to be false }
+      end
+    end
+    end
 end
