@@ -117,13 +117,13 @@ Feature: As an admin
       | <name>                 | <org_number>                  | <email>              | <phone>                    | <street>              | <post_code>              | <city>              | <website>                      |
     And I select "<region>" in select list t("companies.operations_region")
     When I click on t("submit")
-    Then I should see translated error <model_attribute> <error>
+    Then I should see error <model_attribute> <error>
     And I should see t("companies.update.error")
 
     Scenarios:
-      | name        | org_number | phone | street         | post_code | city   | region     | email        | website                   | model_attribute                       | error                   |
-      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm  | kickiimmi.nu | http://www.gladajyckar.se | activerecord.attributes.company.email | errors.messages.invalid |
-      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Norrbotten | kicki@imminu | http://www.gladajyckar.se | activerecord.attributes.company.email | errors.messages.invalid |
+      | name        | org_number | phone | street         | post_code | city   | region     | email        | website                   | model_attribute                            | error                        |
+      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Stockholm  | kickiimmi.nu | http://www.gladajyckar.se | t("activerecord.attributes.company.email") | t("errors.messages.invalid") |
+      | Happy Mutts | 5560360793 |       | Ålstensgatan 4 | 123 45    | Bromma | Norrbotten | kicki@imminu | http://www.gladajyckar.se | t("activerecord.attributes.company.email") | t("errors.messages.invalid") |
 
 
   Scenario Outline: Admin edits a company: company number is wrong length

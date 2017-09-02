@@ -40,7 +40,7 @@ Feature: As an admin
   Scenario: Admin approves, no company exists so one is created
     Given I am on "emma@happymutts.se" application page
     When I click on t("membership_applications.accept_btn")
-    And I should be on the edit application page for "emma@happymutts.se"
+    And I should be on the "edit application" page for "emma@happymutts.se"
     And I should see t("membership_applications.accept.success")
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "901"
@@ -54,7 +54,7 @@ Feature: As an admin
   Scenario: Admin approves, member is added to existing company
     Given I am on "anna@nosnarkybarky.se" application page
     When I click on t("membership_applications.accept_btn")
-    And I should be on the edit application page for "anna@nosnarkybarky.se"
+    And I should be on the "edit application" page for "anna@nosnarkybarky.se"
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "902"
     And I click on t("membership_applications.edit.submit_button_label")
@@ -79,7 +79,7 @@ Feature: As an admin
   Scenario: Admin approves, but then rejects it
     Given I am on "emma@happymutts.se" application page
     When I click on t("membership_applications.accept_btn")
-    And I should be on the edit application page for "emma@happymutts.se"
+    And I should be on the "edit application" page for "emma@happymutts.se"
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "901"
     And I click on t("membership_applications.edit.submit_button_label")

@@ -32,17 +32,17 @@ Feature: Whole process of a new user creating a login, applying, being approved,
       | NewUser1                               | NewLastName                           | 5562252998                                 | 031-1234567                              | new_user@example.com                      |
     And I select "Groomer" Category
     And I click on t("membership_applications.new.submit_button_label")
-    Then I should be on the landing page
+    Then I should be on the "landing" page
     And I should see t("membership_applications.create.success")
     And I am logged out
     And I am logged in as "admin@shf.se"
     And I am on the "landing" page
     And I click on t("menus.nav.admin.manage_applications")
     Then I should see "NewUser1"
-    And I am on the application page for "new_user@example.com"
+    And I am on the "application" page for "new_user@example.com"
     And I click on t("membership_applications.start_review_btn")
     And I click on t("membership_applications.accept_btn")
-    And I should be on the edit application page for "new_user@example.com"
+    And I should be on the "edit application" page for "new_user@example.com"
     And I should see t("membership_applications.update.enter_member_number")
     And I fill in t("membership_applications.show.membership_number") with "10101"
     And I click on t("membership_applications.edit.submit_button_label")

@@ -12,25 +12,13 @@ And(/^I should see (\d+) reasons? listed$/) do |number|
 end
 
 
-Given(/^I am on the edit member app waiting reason with name_sv "([^"]*)"$/) do | reason_name_sv |
+Given(/^I am on the edit member app waiting reason with name_sv #{CAPTURE_STRING}$/) do | reason_name_sv |
   reason = AdminOnly::MemberAppWaitingReason.find_by_name_sv(reason_name_sv)
   visit path_with_locale(edit_admin_only_member_app_waiting_reason_path reason)
 end
 
-Given(/^I am on the edit member app waiting reason with name_sv t\("([^"]*)"\)$/) do | locale_reason_name_sv |
-  reason = AdminOnly::MemberAppWaitingReason.find_by_name_sv(  i18n_content(locale_reason_name_sv) )
-  visit path_with_locale(edit_admin_only_member_app_waiting_reason_path reason)
-end
 
-
-Given(/^I am on the member app waiting reason page for name_sv "([^"]*)"$/) do | reason_name_sv |
+Given(/^I am on the member app waiting reason page for name_sv #{CAPTURE_STRING}$/) do | reason_name_sv |
   reason = AdminOnly::MemberAppWaitingReason.find_by_name_sv(reason_name_sv)
   visit path_with_locale(admin_only_member_app_waiting_reason_path reason)
 end
-
-
-Given(/^I am on the member app waiting reason with name_sv t\("([^"]*)"\)$/) do | locale_reason_name_sv |
-  reason = AdminOnly::MemberAppWaitingReason.find_by_name_sv(  i18n_content(locale_reason_name_sv) )
-  visit path_with_locale(admin_only_member_app_waiting_reason_path reason)
-end
-

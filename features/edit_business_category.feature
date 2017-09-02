@@ -37,7 +37,7 @@ Feature: As an admin
     Then I should see t("business_categories.edit.title", category_name: "dog crooning")
     And I fill in t("activerecord.attributes.business_category.name") with ""
     And I click on t("business_categories.edit.submit_button_label")
-    Then I should see translated error activerecord.attributes.business_category.name errors.messages.blank
+    Then I should see error t("activerecord.attributes.business_category.name") t("errors.messages.blank")
 
   Scenario: A non-admin user cannot edit business categories
     Given I am logged in as "applicant_1@random.com"

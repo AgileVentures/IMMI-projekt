@@ -100,3 +100,15 @@ Scenario: Search by status and company number
   And I should not see "John"
   And I should not see "Anna"
   And I should not see "Fred"
+
+@javascript
+Scenario: Can sort by user lastname
+  Then I click on t("membership_applications.index.name") link
+  And I should see "Anderson" before "Eriksson"
+  And I should see "Eriksson" before "Fransson"
+  And I should see "Fransson" before "Johanssen"
+  Then I click on t("membership_applications.index.name") link
+  And I should see "Johanssen" before "Fransson"
+  And I should see "Fransson" before "Eriksson"
+  And I should see "Eriksson" before "Anderson"
+

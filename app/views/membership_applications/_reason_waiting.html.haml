@@ -28,13 +28,38 @@
                               method: 'put' } }
 
 
-
 :javascript
 
-  $('#member_app_waiting_reasons').on('ajax:success', function (e, data) {
-    if (data === "#{@other_waiting_reason_value}") {
-      $('#other-text-field').show();
-    } else {
-      $('#other-text-field').hide();
-    }
+  let ChangeStatus = {
+    unsaved_changes: false
+  }
+
+  $(document).ready(function () {
+
+    $('#member_app_waiting_reasons').on('ajax:success', function (e, data) {
+      if (data === "#{@other_waiting_reason_value}") {
+        $('#other-text-field').show();
+      } else {
+        $('#other-text-field').hide();
+      }
+    });
+
+    $('#custom_reason_text').on('input', function (e) {
+      ChangeStatus.unsaved_changes = true;
+    });
+
+    $('#custom_reason_text').on('change', function (e) {
+      ChangeStatus.unsaved_changes = false;
+    });
+
+    $(window).on('beforeunload', function (e) {
+
+      if ($('#member_app_waiting_reasons').val() === '#{@other_waiting_reason_value}' &&
+          ChangeStatus.unsaved_changes === true) {
+
+        e.returnValue = I18n.t('unsaved_changes_on_page');
+        return e.returnValue;
+      }
+
+    });
   });

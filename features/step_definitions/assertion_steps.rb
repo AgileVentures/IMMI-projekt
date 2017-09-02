@@ -1,150 +1,95 @@
+module PathHelpers
+  # remove any leading locale path info
+  def current_path_without_locale(path)
+    locale_pattern =  /^(\/)(en|sv)?(\/)?(.*)$/
+    path.gsub(locale_pattern, '\1\4')
+  end
 
-# remove any leading locale path info
-def current_path_without_locale(path)
-  locale_pattern =  /^(\/)(en|sv)?(\/)?(.*)$/
-  path.gsub(locale_pattern, '\1\4')
-end
-
-Then(/^I should be on the landing page$/) do
-  expect(current_path_without_locale(current_path)).to eq root_path
-end
-
-And(/^I should see "([^"]*)"$/) do |content|
-  expect(page).to have_content content
-end
-
-And(/^I should not see "([^"]*)"$/) do |content|
-  expect(page).not_to have_content content
-end
-
-And(/^I should not see "([^"]*)" image$/) do |alt_text|
-  expect(page).not_to have_xpath("//img[contains(@alt,'#{alt_text}')]")
-end
-
-And(/^I should see "([^"]*)" image$/) do |alt_text|
-  expect(page).to have_xpath("//img[contains(@alt,'#{alt_text}')]")
-end
-
-And(/^I should( not)? see t\("([^"]*)"\) image$/) do |not_see, alt_text|
-  if not_see
-    expect(page).not_to have_xpath("//img[contains(@alt,'#{i18n_content(alt_text)}')]")
-  else
-    expect(page).to have_xpath("//img[contains(@alt,'#{i18n_content(alt_text)}')]")
+  def get_path(pagename, user = @user)
+    case pagename.downcase
+      when  'login'
+        path = new_user_session_path
+      when 'landing'
+        path = root_path
+      when 'edit application', 'edit my application'
+        user.membership_applications.reload
+        path = edit_membership_application_path(user.membership_application)
+      when 'application', 'show my application'
+        path = membership_application_path(user.membership_application)
+      when 'user instructions'
+        path = information_path
+      when 'member instructions'
+        path = information_path
+      when 'all waiting for info reasons'
+        path = admin_only_member_app_waiting_reasons_path
+      when 'new waiting for info reason'
+        path = new_admin_only_member_app_waiting_reason_path
+      when 'register as a new user'
+        path = new_user_registration_path
+      when 'edit registration for a user'
+        path = edit_user_registration_path
+      when 'new password'
+        path = new_user_password_path
+      when 'all member app waiting reasons'
+        path = admin_only_member_app_waiting_reasons_path
+      when 'business categories'
+        path = business_categories_path
+      when 'membership applications'
+        path = membership_applications_path
+      when 'all companies'
+        path = companies_path
+      when 'create a new company'
+        path = new_company_path
+      when 'submit new membership application'
+        path = new_membership_application_path
+      when 'edit my company'
+        path = edit_company_path(user.membership_application.company)
+      when 'all users'
+        path = users_path
+      when 'all shf documents'
+        path = shf_documents_path
+      when 'new shf document'
+        path = new_shf_document_path
+      when 'user details'
+        path = user_path(user)
+      else
+        fail("no path defined for \"#{pagename}\"")
+    end
+    path
   end
 end
 
-And(/^I should see t\("([^"]*)"\)$/) do |content|
-  expect(page).to have_content i18n_content(content)
-end
+World(PathHelpers)
 
-And(/^I should not see t\("([^"]*)"\)$/) do |content|
-  expect(page).not_to have_content i18n_content(content)
-end
 
-And(/^I should see t\("([^"]*)", locale: :(.*)\)$/) do |content, l|
-  expect(page).to have_content i18n_content(content, l)
-end
-
-And(/^I should not see t\("([^"]*)", locale: :(.*)\)$/) do |content, l|
-  expect(page).not_to have_content i18n_content(content, l)
-end
-
-And(/^I should see t\("([^"]*)", ([^:]*): ([^)]*)\), locale: :(.*)\)$/) do |content, key, value, l|
-  expect(page).to have_content I18n.t("#{content}", key.to_sym => value, locale: l.to_sym)
-end
-
-And(/^I should not see t\("([^"]*)", ([^:]*): ([^)]*)\), locale: :(.*)\)$/) do |content, key, value, l|
-  expect(page).not_to have_content I18n.t("#{content}", key.to_sym => value, locale: l.to_sym)
-end
-
-And(/^I should see t\("([^"]*)", ([^:]*): (\d+)\), locale: :(.*)$/) do |content, key, value, locale|
-  expect(page).to have_content I18n.t("#{content}", key.to_sym => value, locale: locale.to_sym)
-end
-
-Then(/^I should see t\("([^"]*)", ([^:]*): "([^"]*)"\), locale: :(.*)$/) do |content, key, value, l|
-  expect(page).to have_content I18n.t("#{content}", key.to_sym => value, locale: l.to_sym)
-end
-
-And(/^I should not see t\("([^"]*)", ([^:]*): (\d+)\), locale: :(.*)$/) do |content, key, value, locale|
-  expect(page).not_to have_content I18n.t("#{content}", key.to_sym => value, locale: locale.to_sym)
-end
-
-And(/^I should see button "([^"]*)"$/) do |button|
-  expect(page).to have_button button
-end
-
-And(/^I should not see button "([^"]*)"$/) do |button|
-  expect(page).not_to have_button button
-end
-
-And(/^I should see button t\("([^"]*)"\)$/) do |button|
-  expect(page).to have_button i18n_content(button)
-end
-
-And(/^I should not see button t\("([^"]*)"\)$/) do |button|
-  expect(page).not_to have_button i18n_content(button)
-end
-
-And(/^I should see the checkbox with id "([^"]*)" unchecked$/) do |checkbox_id|
-  expect(page).to have_unchecked_field checkbox_id
-end
-
-And(/^I should not see the checkbox with id "([^"]*)" unchecked$/) do |checkbox_id|
-  expect(page).not_to have_unchecked_field checkbox_id
-end
-
-And(/^I should see the checkbox with id "([^"]*)" checked/) do |checkbox_id|
-  expect(page).to have_unchecked_field checkbox_id
-end
-
-And(/^I should not see the checkbox with id "([^"]*)" checked/) do |checkbox_id|
-  expect(page).not_to have_unchecked_field checkbox_id
-end
-
-And(/^I should see "([^"]*)" link$/) do |link_label|
-  expect(page).to have_link link_label
-end
-
-And(/^I should see t\("([^"]*)"\) link$/) do |link_label|
-  expect(page).to have_link i18n_content(link_label)
-end
-
-And(/^I should not see "([^"]*)" link$/) do |link_label|
-  expect(page).not_to have_link link_label
-end
-
-And(/^I should not see t\("([^"]*)"\) link$/) do |link_label|
-  expect(page).not_to have_link i18n_content(link_label)
+Then(/^I should( not)? see #{CAPTURE_STRING}$/) do |negate, content|
+  expect(page).send (negate ? :not_to : :to), have_content(content)
 end
 
 
-Then(/^I should be on (?:the )*"([^"]*)" page$/) do |page|
-  case page.downcase
-    when  'login'
-      path = new_user_session_path
-    when 'landing'
-      path = root_path
-    when 'edit my application'
-      path = edit_membership_application_path(@user.membership_applications.last)
-    when 'show my application'
-      path = membership_application_path(@user.membership_applications.last)
-    when 'user instructions'
-      path = information_path
-    when 'member instructions'
-      path = information_path
-    when 'all waiting for info reasons'
-      path = admin_only_member_app_waiting_reasons_path
-    when 'new waiting for info reason'
-      path = new_admin_only_member_app_waiting_reason_path
-    when 'new waiting for info reason'
-      path = new_admin_only_member_app_waiting_reason_path
-    when 'register as a new user'
-      path = new_user_registration_path
-    when 'edit registration for a user'
-      path = edit_user_registration_path
-  end
+Then(/^I should( not)? see #{CAPTURE_STRING} image$/) do |negate, alt_text|
+  expect(page).send (negate ? :not_to : :to),  have_xpath("//img[contains(@alt,'#{alt_text}')]")
+end
 
-  expect(current_path_without_locale(current_path)).to eq path
+
+Then(/^I should( not)? see button #{CAPTURE_STRING}$/) do |negate, button|
+  expect(page).send (negate ? :not_to : :to),  have_button(button)
+end
+
+
+Then(/^I should( not)? see #{CAPTURE_STRING} link$/) do |negate, link_label|
+  expect(page).send (negate ? :not_to : :to),  have_link(link_label)
+end
+
+
+Then(/^I should( not)? see the checkbox with id "([^"]*)" unchecked$/) do |negate, checkbox_id|
+  expect(page).send (negate ? :not_to : :to),  have_unchecked_field(checkbox_id)
+end
+
+
+Then(/^I should be on (?:the )*"([^"]*)" page(?: for "([^"]*)")?$/) do |page, email|
+  user = email == nil ? @user :  User.find_by(email: email)
+  expect(current_path_without_locale(current_path)).to eq get_path(page, user)
 end
 
 
@@ -154,59 +99,26 @@ Then(/^I should see:$/) do |table|
   end
 end
 
-And(/^"([^"]*)" should be set in "([^"]*)"$/) do |status, list|
-  dropdown = page.find("##{list}")
-  selected_option = dropdown.find('option[selected]').text
-  expect(selected_option).to eql status
-end
-
-And(/^t\("([^"]*)"\) should be set in "([^"]*)"$/) do |status, list|
-  dropdown = page.find("##{list}")
-  selected_option = dropdown.find('option[selected]').text
-  expect(selected_option).to eql i18n_content(status)
-end
-
-
-Then(/^I should be on the application page for "([^"]*)"$/) do |email|
-  user = User.find_by(email: email)
-  membership_application = user.membership_application
-  expect(current_path_without_locale(current_path)).to eq membership_application_path(membership_application)
-end
-
-Then(/^I should be on the edit application page for "([^"]*)"$/) do |email|
-  user = User.find_by(email: email)
-  membership_application = user.membership_application
-  expect(current_path_without_locale(current_path)).to eq edit_membership_application_path(membership_application)
-end
-
 
 Then(/^I should see "([^"]*)" applications$/) do |number|
   expect(page).to have_selector('tr.applicant', count: number)
 end
 
+
 Then(/^I should see "([^"]*)" companies/) do |number|
   expect(page).to have_selector('tr.company', count: number)
 end
+
 
 Then(/^I should see "([^"]*)" business categories/) do |number|
   expect(page).to have_selector('tr.business_category', count: number)
 end
 
-Then(/^the field "([^"]*)" should have a required field indicator$/) do |label_text|
-  expect(page.find('label', text: label_text)[:class].include?('required')).to be true
+
+Then(/^the field #{CAPTURE_STRING} should( not)? have a required field indicator$/) do |label_text, negate|
+  expect(page).send ( negate ? :not_to : :to), have_xpath("//label[@class='required'][text()='#{label_text}']")
 end
 
-And(/^the field "([^"]*)" should not have a required field indicator$/) do |label_text|
-  expect(page.find('label', text: label_text)[:class]).not_to have_css 'required'
-end
-
-Then(/^the field t\("([^"]*)"\) should have a required field indicator$/) do |label_text|
-  expect(page.find('label', text: i18n_content(label_text))[:class].include?('required')).to be true
-end
-
-And(/^the field t\("([^"]*)"\) should not have a required field indicator$/) do |label_text|
-  expect(page.find('label', text: i18n_content(label_text))[:class]).not_to have_css 'required'
-end
 
 Then(/^I should see (\d+) (.*?) rows$/) do |n, css_class_name|
   n = n.to_i
@@ -215,104 +127,35 @@ Then(/^I should see (\d+) (.*?) rows$/) do |n, css_class_name|
 end
 
 
-And(/^I should be on the applications page$/) do
-  expect(current_path_without_locale(current_path)).to eq membership_applications_path
+Then(/^I should see(?: translated)? error #{CAPTURE_STRING} #{CAPTURE_STRING}$/) do |model_attribute, error|
+  expect(page).to have_content("#{model_attribute} #{error}")
 end
 
-Then(/^I should see translated error (.*) (.*)$/) do |model_attribute, error|
-  expect(page).to have_content("#{i18n_content(model_attribute)} #{i18n_content(error)}")
-end
 
-And(/^I should see t\("([^"]*)", (\S*): '([^']*)'\)$/) do |i18n_key, attr_label, attr_value|
-  expect(page).to have_content(I18n.t(i18n_key, attr_label.to_sym => attr_value))
-end
-
-And(/^I should see status line with status "([^"]*)" and date "([^"]*)"$/) do |status, date_string|
+Then(/^I should see status line with status #{CAPTURE_STRING} and date "([^"]*)"$/) do |status, date_string|
   expect(page).to have_content("#{status} - #{date_string}")
 end
 
-And(/^I should see status line with status t\("([^"]*)"\) and date "([^"]*)"$/) do |status, date_string|
-  expect(page).to have_content("#{i18n_content(status)} - #{date_string}")
-end
 
-And(/^I should see status line with status t\("([^"]*)"\)$/) do |status|
-  expect(page).to have_content("#{i18n_content(status)} - ")
-end
-
-And(/^I should not see status line with status t\("([^"]*)"\)$/) do |status|
-  expect(page).not_to have_content("#{i18n_content(status)} - ")
-end
-
-And(/^I should see t\("([^"]*)", ([^:]*): (\d+)\)$/) do |content, key, number|
-  expect(page).to have_content I18n.t("#{content}", key.to_sym => number)
+Then(/^I should( not)? see status line with status #{CAPTURE_STRING}$/) do |negate, status|
+  expect(page).send (negate ? :not_to : :to), have_content("#{status} - ")
 end
 
 
-And(/^I should see t\("([^"]*)", ([^:]*): "([^"]*)"\)$/) do |content, key, value|
-  expect(page).to have_content I18n.t("#{content}", key.to_sym => value)
-end
-
-
-And(/^I should see t\("([^"]*)", ([^:]*): "([^"]*)", ([^:]*): "([^"]*)"\)$/) do | content, key1, value1, key2, value2 |
-  expect(page).to have_content I18n.t("#{content}", key1.to_sym => value1, key2.to_sym => value2)
-end
-
-And(/^I should not see t\("([^"]*)", ([^:]*): "([^"]*)", ([^:]*): "([^"]*)"\)$/) do | content, key1, value1, key2, value2 |
-  expect(page).not_to have_content I18n.t("#{content}", key1.to_sym => value1, key2.to_sym => value2)
-end
-
-
-And(/^I should see (\d+) t\("([^"]*)"\)$/) do |n, content |
+Then(/^I should see (\d+) #{CAPTURE_STRING}$/) do |n, content |
   n = n.to_i
-  expect(page).to have_text("#{i18n_content(content)}", count: n)
-  expect(page).not_to have_text("#{i18n_content(content)}", count: n+1)
+  expect(page).to have_text("#{content}", count: n)
+  expect(page).not_to have_text("#{content}", count: n+1)
 end
 
-Then(/^t\("([^"]*)"\) should( not)? be visible$/) do |string, not_see|
-  unless not_see
-    expect(has_text?(:visible, "#{i18n_content(string)}")).to be true
-  else
-    expect(has_text?(:visible, "#{i18n_content(string)}")).to be false
-  end
-end
-
-
-# Have to be sure to wait for any javascript to execute since it may hide or show an item
-Then(/^item "([^"]*)" should( not)? be visible$/) do | item, negate|
-
-  if negate
-    expect(page).to have_field(item, visible: false)
-
-  else
-    expect( find_field(item).visible? ).to be_truthy
-  end
-
-end
-
-
-# Tests that an input or button with the given label is disabled.
-Then /^the "([^\"]*)" (field|button|item) should( not)? be disabled$/ do |label, kind, negate|
-
-  if kind == 'field'
-    element = find_field(label)
-  elsif kind == 'button'
-    element = find_button(label)
-  else
-    element = find(label)
-  end
-
-  expect(["false", "", nil]).send(negate ? :to : :not_to,  include(element[:disabled]) )
-
+Then(/^#{CAPTURE_STRING} should( not)? be visible$/) do |string, negate|
+  expect(has_text?(:visible, "#{string}")).to be negate == nil
 end
 
 
 # Tests that an input has a given value
-Then /^the t\("([^"]*)"\) field should be set to "([^\"]*)"$/ do |i18n_key, text_value|
-
-  element = find_field(I18n.t(i18n_key))
-
-  expect(element.value).to eq(text_value)
-
+Then /^the #{CAPTURE_STRING} field should be set to #{CAPTURE_STRING}$/ do |field, text_value|
+  expect(find_field(field).value).to eq(text_value)
 end
 
 
@@ -320,82 +163,29 @@ Then(/^I should see link "([^"]*)" with target = "([^"]*)"$/) do |link_identifie
   expect(find_link(link_identifier)[:target]).to eq(target_value)
 end
 
-And(/^I should see t\("([^"]*)"\), locale: :(\w\w)$/) do |i18n_key, locale|
-  expect(page).to have_content I18n.t(i18n_key, locale: locale)
+
+Then(/^I should see flash text #{CAPTURE_STRING}$/) do | text |
+  expect(page).to have_selector('#flashes', text: text )
 end
 
-
-And(/^I should not see t\("([^"]*)"\), locale: :(\w\w)$/) do |i18n_key, locale|
-  expect(page).not_to have_content I18n.t(i18n_key, locale: locale)
-end
-
-And(/^I should see the selector "([^"]*)"$/) do | s |
-  expect(page).to have_selector(s)
-end
-
-And(/^I should see flash text t\("([^"]*)"\)$/) do | i18n_key |
-  expect(page).to have_selector('#flashes', text: I18n.t(i18n_key) )
-end
-
-And(/^I should see "([^"]*)" in the row for user "([^"]*)"$/) do | expected_text, user_email |
+Then(/^I should( not)? see #{CAPTURE_STRING} in the row for user "([^"]*)"$/) do | negate, expected_text, user_email |
   td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
   tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
-  expect(tr.text).to match(Regexp.new(expected_text))
+  expect(tr.text).send (negate ? :not_to : :to), match(Regexp.new(expected_text))
 end
 
-And(/^I should see t\("([^"]*)"\) in the row for user "([^"]*)"$/) do | expected_text, user_email |
+
+Then(/^I should( not)? see #{CAPTURE_STRING} for class "([^"]*)" in the row for user "([^"]*)"$/) do |negate, expected_text, css_class, user_email |
   td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
   tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
-  expect(tr.text).to match(Regexp.new(I18n.t(expected_text)))
+  expect(tr).send (negate ? :not_to : :to), have_css(".#{css_class}", text: expected_text)
 end
 
 
-And(/^I should not see "([^"]*)" in the row for user "([^"]*)"$/)do | expected_text, user_email |
-  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
-  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
-  expect(tr.text).not_to match(Regexp.new(expected_text))
-end
-
-
-And(/^I should not see t\("([^"]*)"\) in the row for user "([^"]*)"$/) do | expected_text, user_email |
-  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
-  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
-  expect(tr.text).not_to match(Regexp.new(I18n.t(expected_text)))
-end
-
-And(/^I should see "([^"]*)" for class "([^"]*)" in the row for user "([^"]*)"$/) do |expected_text, css_class, user_email |
-  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
-  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
-
-  expect(tr).to have_css(".#{css_class}", text: expected_text)
-end
-
-And(/^I should not see "([^"]*)" for class "([^"]*)" in the row for user "([^"]*)"$/) do |expected_text, css_class, user_email |
-  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
-  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
-
-  expect(tr).not_to have_css(".#{css_class}", text: expected_text)
-end
-
-
-And(/^I should see t\("([^"]*)"\) for class "([^"]*)" in the row for user "([^"]*)"$/) do |expected_text, css_class, user_email |
-  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
-  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
-
-  expect(tr).to have_css(".#{css_class}", text: I18n.t(expected_text))
-end
-
-And(/^I should not see t\("([^"]*)"\) for class "([^"]*)" in the row for user "([^"]*)"$/) do |expected_text, css_class, user_email |
-  td = page.find(:css, 'td', text: user_email) # find the td with text = user_email
-  tr = td.find(:xpath, './parent::tr') # get the parent tr of the td
-
-  expect(tr).not_to have_css(".#{css_class}", text: I18n.t(expected_text))
-end
-
-
-And(/^I should see xpath "([^"]*)"$/) do | xp |
+Then(/^I should see xpath "([^"]*)"$/) do | xp |
   expect(page).to have_xpath(xp)
 end
+
 
 Then(/^I should( not)? see "([^"]*)" before "([^"]*)"$/) do |not_see, toSearch, last|
   assert_text toSearch
@@ -408,8 +198,8 @@ Then(/^I should( not)? see "([^"]*)" before "([^"]*)"$/) do |not_see, toSearch, 
 end
 
 
-And(/^I should be on the SHF document page for "([^"]*)"$/)  do | doc_title |
-    shf_doc = ShfDocument.find_by_title(doc_title)
+Then(/^I should be on the SHF document page for "([^"]*)"$/)  do | doc_title |
+  shf_doc = ShfDocument.find_by_title(doc_title)
   expect(current_path_without_locale(current_path)).to eq shf_document_path(shf_doc)
 end
 
@@ -427,32 +217,7 @@ end
 
 
 # Checks that a certain option is selected for a text field (from https://github.com/makandra/spreewald)
-Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) selected$/ do |select_list, negate, expected_string |
-
-    field = find_field(select_list)
-
-    field_value = case field.tag_name
-                    when 'select'
-                      options = field.all('option')
-                      selected_option = options.detect(&:selected?) || options.first
-                      if selected_option && selected_option.text.present?
-                        selected_option.text.strip
-                      else
-                        ''
-                      end
-                    else
-                      field.value
-                  end
-
-
-    expect(field_value).send( (negate ? :not_to : :to),  eq(i18n_content(expected_string)) )
-
-end
-
-
-
-# Checks that a certain option is selected for a text field (from https://github.com/makandra/spreewald)
-Then /^"([^"]*)" should( not)? have "([^"]*)" selected$/ do | select_list, negate, expected_string |
+Then /^"([^"]*)" should( not)? have #{CAPTURE_STRING} selected$/ do | select_list, negate, expected_string |
 
   field = find_field(select_list)
 
@@ -476,7 +241,7 @@ end
 
 
 # Checks that a certain option does or does not exist in a select list
-Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) as an option/ do | select_list, negate, expected_string |
+Then /^"([^"]*)" should( not)? have #{CAPTURE_STRING} as an option/ do | select_list, negate, expected_string |
 
   field = find_field(select_list)
 
@@ -484,11 +249,6 @@ Then /^"([^"]*)" should( not)? have t\("([^"]*)"\) as an option/ do | select_lis
                   when 'select'
                     options = field.all('option')
                 end
-  expect(select_options.map(&:text)).send( (negate ? :not_to : :to),  include( i18n_content expected_string) )
+  expect(select_options.map(&:text)).send( (negate ? :not_to : :to),  include( expected_string) )
 
-end
-
-
-Then(/^I should be on the all member app waiting reasons page$/) do
-  expect(current_path_without_locale(current_path)).to eq admin_only_member_app_waiting_reasons_path
 end

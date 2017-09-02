@@ -116,7 +116,7 @@ Feature: As a visitor,
     And I should see "Company10"
     And I should not see "Company11"
     And I should not see "Company26"
-    Then I set "items_count" to "25"
+    Then I select "25" in select list "items_count"
     And I wait for all ajax requests to complete
     Then I should see "25" companies
     And "items_count" should have "25" selected
@@ -124,7 +124,7 @@ Feature: As a visitor,
     And I should see "Company11"
     And I should see "Company25"
     And I should not see "Company26"
-    Then I set "items_count" to "All"
+    Then I select "All" in select list "items_count"
     And I wait for all ajax requests to complete
     Then I should see "27" companies
     And I should see "Company26"

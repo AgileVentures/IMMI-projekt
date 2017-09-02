@@ -189,7 +189,7 @@ Feature: Admin manages the list of reasons why SHF is waiting for info from an a
     And I should see "name 2"
     And I click on t("delete")
     Then I should see t("admin_only.member_app_waiting_reasons.destroy.success")
-    And I should be on the all member app waiting reasons page
+    And I should be on the "all member app waiting reasons" page
     And I should see 1 reasons listed
     And I should not see "namn 2"
 

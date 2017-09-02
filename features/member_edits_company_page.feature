@@ -60,12 +60,12 @@ Feature: As a member
     And I am Logged out
     And I am logged in as "applicant_2@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
-    Then I should be on the landing page
+    Then I should be on the "landing" page
     And I should see t("errors.not_permitted")
 
 
   Scenario: User tries to go do company page (gets rerouted)
     Given I am logged in as "applicant_2@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
-    Then I should be on the landing page
+    Then I should be on the "landing" page
     And I should see t("errors.not_permitted")
