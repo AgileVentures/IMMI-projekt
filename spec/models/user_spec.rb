@@ -35,6 +35,7 @@ RSpec.describe User, type: :model do
 
   describe 'User' do
     subject { create(:user, admin: false) }
+
     it { is_expected.not_to be_admin }
   end
 
@@ -369,23 +370,13 @@ RSpec.describe User, type: :model do
 
   describe '#full_name' do
     let(:user) { build(:user, first_name: 'first', last_name: 'last') }
-
     context '@first_name=first @last_name=last' do
-      specify { expect(user.full_name).to eq('first last') }
+      it { expect(user.full_name).to eq('first last') }
     end
   end
 
   describe 'Validations' do
-    describe '#valid?' do
-      let(:valid_user) { build(:user, first_name: 'first', last_name: 'last') }
-      let(:invalid_user) { build(:user, first_name: 'first', last_name: nil) }
-
-      context 'user: is not valid' do
-        specify { expect(valid_user.valid?).to be true }
-      end
-      context 'user: is valid'  do
-        specify { expect(invalid_user.valid?).to be false }
-      end
-    end
+    it { is_expected.to(validate_presence_of :first_name) }
+    it { is_expected.to(validate_presence_of :last_name) }
   end
 end
