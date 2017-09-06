@@ -533,17 +533,7 @@ en:
   users:
     index:
       title: All Users
-      first_name: *first_name
-      last_name: *last_name
-      email: *email
-      created: *created
-      last_login: *user_last_login
-      logged_in_count: *sign_in_count
-      member: Member
-      applications: *applications
-      applications_tooltip: Number of open applications
-      'yes': *yes  # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
-      'no': *no
+      no_search_results: No records matched your search criteria.
 
     show:
       email: *email
@@ -571,7 +561,28 @@ en:
       success: The user was updated.
       error: A problem kept the user from being updated.
 
+    search_form:
+      profile_email: 'Profile Email'
+      search: 'Search'
+      are_members: 'Are members'
+      are_not_members: 'Are not members'
+      all_users: 'All users'
 
+    user:
+      user_has_never_signed_in: has never logged in.
+      'yes': *yes
+      'no': *no
+
+    users_list:
+      first_name: *first_name
+      last_name: *last_name
+      email: *email
+      created: *created
+      last_login: *user_last_login
+      logged_in_count: *sign_in_count
+      member: Member
+      applications: *applications
+      applications_tooltip: Number of open applications
 
   admin:
     index:

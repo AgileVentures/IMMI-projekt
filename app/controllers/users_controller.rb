@@ -4,8 +4,21 @@ class UsersController < ApplicationController
 
 
   def index
-    @users = User.all.order(last_sign_in_at: :asc)
-      .includes(:membership_applications)
+    @q = User.ransack(params[:q])
+    @users = @q.result.includes(:membership_applications)
+
+    @filter_ignore_membership = true
+    @filter_are_members = params.include?(:are_members) && params[:are_members] == 'true'
+    @filter_are_not_members = params.include?(:are_members) && params[:are_members] == 'false'
+
+    %w(are_members are_not_members).each do | filter |
+      if self.instance_variable_get("@filter_#{filter}")
+        @users = @users.send(filter)
+        @filter_ignore_membership = false
+      end
+    end
+
+    render partial: 'users_list', locals: { q: @q, users: @users } if request.xhr?
   end
 
 

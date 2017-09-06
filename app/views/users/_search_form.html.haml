@@ -1,0 +1,24 @@
+= search_form_for @q, method: :get, url: users_path do |f|
+
+  .row
+    .col-sm-4
+      .form-group.form-group-sm
+        = f.label :email_cont, "#{t('.profile_email')}"
+        = f.search_field :email_cont, class: 'form-control input-sm'
+    .col-sm-6
+      .form-group.form-group-sm
+        .radio-inline
+          %label
+            = radio_button_tag 'are_members', 'ignore', filter_ignore_membership
+            = t('.all_users')
+        .radio-inline
+          %label
+            = radio_button_tag 'are_members', true, filter_are_members
+            = t('.are_members')
+        .radio-inline
+          %label
+            = radio_button_tag 'are_members', false, filter_are_not_members
+            = t('.are_not_members')
+    .col-sm-2
+      .form-group.form-group-sm
+        = submit_tag "#{t('search')}", class: ['btn', 'btn-primary', 'pull-right']

@@ -41,6 +41,16 @@ $(function() {
     // Paginate link sends AJAX request to controller, which renders new page
     // in JS response.  These callbacks execute at that point and replaces
     // the prior pagination page (DOM element) with the new page.
+    var Users = {
+      setup: function () {
+        $('body').on('ajax:success', '#users-list a[data-remote]', function (e, data) {
+          $('#users-list').html(data);
+          $('[data-toggle="tooltip"]').tooltip();
+        });
+      }
+    };
+    Users.setup();
+
     $('body').on('ajax:success', '.companies_pagination', function (e, data) {
       $('#companies_list').html(data);
       // In case there is tooltip(s) in rendered element:

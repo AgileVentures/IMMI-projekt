@@ -8,8 +8,16 @@ class User < ApplicationRecord
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
 
 
+  scope :are_members, lambda {
+    User.all.select { | user | user.is_member? }
+  }
+
+  scope :are_not_members, lambda {
+    User.all.reject { | user | user.is_member? }
+  }
+
   def has_membership_application?
-    membership_applications.size > 0
+    membership_applications.any?
   end
 
 
@@ -65,4 +73,3 @@ class User < ApplicationRecord
   end
 
 end
-

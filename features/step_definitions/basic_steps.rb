@@ -50,6 +50,10 @@ When(/^(?:I|they) select #{CAPTURE_STRING} in select list #{CAPTURE_STRING}$/) d
   select option, from: list
 end
 
+When(/^(?:I|they) select radio button #{CAPTURE_STRING}/) do |label_text|
+  find(:xpath, "//label[contains(.,'#{label_text}')]/input[@type='radio']").click
+end
+
 When(/^I click the #{CAPTURE_STRING} action for the row with #{CAPTURE_STRING}$/) do |action, row_content|
   find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
 end
@@ -67,4 +71,3 @@ When /^I wait for all ajax requests to complete$/ do
     loop until page.evaluate_script('window.jQuery ? jQuery.active : 0').zero?
   end
 end
-

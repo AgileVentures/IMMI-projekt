@@ -1,0 +1,17 @@
+%tr
+  %td.email{ id: "user-#{user.id}" }= link_to user.email, user
+  %td.created-at
+    %small= i18n_time_ago_in_words(user.created_at)
+  %td.last-sign-in-at
+    %small
+      - if user.last_sign_in_at
+        = i18n_time_ago_in_words(most_recent_login_time user)
+      - else
+        = t('.user_has_never_signed_in')
+  %td.sign-in-count= user.sign_in_count
+  %td.applications-open= user.membership_applications.open.count
+  %td.is-member
+    - if user.is_member?
+      %span.yes= t('.yes')
+    - else
+      %span.no= t('.no')

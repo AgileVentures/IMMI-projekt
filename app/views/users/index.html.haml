@@ -2,33 +2,17 @@
   %h1.entry-title= t('.title')
 .post-title-divider
   %span
-.entry-content
-  %table
-    %thead
-      %tr
-        %th= t('.email')
-        %th= t('.created')
-        %th= t('.last_login')
-        %th= t('.logged_in_count')
-        %th
-          = t('.applications')
-          %span.glyphicon.glyphicon-info-sign{ title: "#{t('.applications_tooltip')}",
-                                               data: {toggle: 'tooltip'} }
-        %th= t('.member')
-    %tbody
-      - @users.each do |user|
-        %tr
-          %td.email{id: "user-#{user.id}"}= link_to user.email, user
-          %td.created-at
-            %small= "#{i18n_time_ago_in_words(user.created_at)}"
-          %td.last-sign-in-at
-            %small= user.last_sign_in_at ?                          |
-              "#{i18n_time_ago_in_words(most_recent_login_time user)}" : '' |
-          %td.sign-in-count= user.sign_in_count
-          %td.applications-open= user.membership_applications.open.count
 
-          %td.is-member
-            - if user.is_member?
-              %span.yes= t('.yes')
-            - else
-              %span.no= t('.no')
+.entry-content
+  .row.panel.panel-default
+    = render partial: 'search_form',
+             locals: { q: @q,
+                       filter_ignore_membership: @filter_ignore_membership,
+                       filter_are_members: @filter_are_members,
+                       filter_are_not_members: @filter_are_not_members }
+  .row.panel.panel-default
+    - if @users.empty?
+      %strong
+        = t('.no_search_results')
+    - else
+      = render partial: 'users_list', locals: { q: @q, users: @users }

@@ -533,17 +533,7 @@ sv:
   users:
     index:
       title: Alla Användare
-      first_name: *first_name
-      last_name: *last_name
-      email: *email
-      created: *created
-      last_login: *user_last_login
-      logged_in_count: *sign_in_count
-      member: Medlem
-      applications: *applications
-      applications_tooltip: Antal öppna ansökningar
-      'yes': *yes  # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
-      'no': *no
+      no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
 
     show:
       email: *email
@@ -571,8 +561,28 @@ sv:
       success: Användarens information uppdaterad.
       error: Ett problem hindrade användarinformationen från att uppdateras.
 
+    search_form:
+      profile_email: 'Profile Email'
+      search: 'Search'
+      are_members: 'Are members'
+      are_not_members: 'Are not members'
+      all_users: 'All users'
 
+    user:
+      user_has_never_signed_in: har aldrig loggat in.
+      'yes': *yes
+      'no': *no
 
+    users_list:
+      first_name: *first_name
+      last_name: *last_name
+      email: *email
+      created: *created
+      last_login: *user_last_login
+      logged_in_count: *sign_in_count
+      member: Medlem
+      applications: *applications
+      applications_tooltip: Antal öppna ansökningar
 
   admin:
     index:
