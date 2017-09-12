@@ -5,13 +5,13 @@
 .entry-content
   %p{ style: 'margin-bottom: 30px;' }
     %button.btn.btn-success.btn-xs.pull-right{ id: 'toggle_search_form',
-                                      href: '#application-search-form',
+                                      href: '#application_search_form',
                                       style: 'color:black; text-transform:none;' }
       #{t('toggle.application_search_form.hide')}
 
   .clearfix
 
-  .panel.panel-default.search-form#application-search-form
+  .panel.panel-default.search-form#application_search_form
     = render 'search_form'
 
   - if @membership_applications.empty?
