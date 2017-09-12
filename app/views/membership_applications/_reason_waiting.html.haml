@@ -33,8 +33,9 @@
   let ChangeStatus = {
     unsaved_changes: false,
     watch_for_input: function(e) {
+      console.log('In watch_for_input');
       ChangeStatus.unsaved_changes = true;
-      '#custom_reason_text').off('input');
+      $('#custom_reason_text').off('input');
     }
   }
 
@@ -51,6 +52,7 @@
     $('#custom_reason_text').on('input', ChangeStatus.watch_for_input);
 
     $('#custom_reason_text').on('change', function (e) {
+      console.log('In change event handler');
       ChangeStatus.unsaved_changes = false;
       $('#custom_reason_text').on('input', ChangeStatus.watch_for_input);
     });
