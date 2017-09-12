@@ -31,7 +31,11 @@
 :javascript
 
   let ChangeStatus = {
-    unsaved_changes: false
+    unsaved_changes: false,
+    watch_for_input: function(e) {
+      ChangeStatus.unsaved_changes = true;
+      '#custom_reason_text').off('input');
+    }
   }
 
   $(document).ready(function () {
@@ -44,12 +48,11 @@
       }
     });
 
-    $('#custom_reason_text').on('input', function (e) {
-      ChangeStatus.unsaved_changes = true;
-    });
+    $('#custom_reason_text').on('input', ChangeStatus.watch_for_input);
 
     $('#custom_reason_text').on('change', function (e) {
       ChangeStatus.unsaved_changes = false;
+      $('#custom_reason_text').on('input', ChangeStatus.watch_for_input);
     });
 
     $(window).on('beforeunload', function (e) {
