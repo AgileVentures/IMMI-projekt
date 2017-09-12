@@ -56,7 +56,7 @@ $btn-success-color: #00ff00;
   }
 
   .hide-search-form {
-    //color:black;
+    color:black;
     text-transform: none;
 
     &:hover {
@@ -66,19 +66,6 @@ $btn-success-color: #00ff00;
 
   .search-instructions {
     margin-bottom: 20px;  // same as Bootstrap panel margin-bottom
-  }
-
-  .search-panel {
-
-    .form-group {
-      margin-left: 0;   // undo: bootstrap sets this at -15px
-      margin-right: 0;  // undo: bootstrap sets this at -15px
-
-    }
-
-    input[type="submit"] {
-      font-size: 1em;
-    }
   }
 
   .map-marker {
@@ -105,5 +92,3 @@ $btn-success-color: #00ff00;
   padding: 0;
   width: 100%;
 }
-
-

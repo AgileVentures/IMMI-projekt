@@ -11,8 +11,7 @@
 
   .clearfix
 
-  .panel.panel-default{ style: 'padding-left: 5px; padding-right: 5px;',
-                    id: 'application_search_form' }
+  .panel.panel-default.search-form#application_search_form
     = render 'search_form'
 
   - if @membership_applications.empty?
