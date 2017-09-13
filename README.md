@@ -72,21 +72,21 @@ $ bundle install
   Since our user base primarily works in Swedish, we need to confirm that the
   database will correctly sort (collate) text in that language.
 
-  a) Check if the Swedish local file is present on your machine:
+    a. Check if the Swedish local file is present on your machine:
 
-  ```shell
-  $ locale -a
-  ```
-  In the list of locale files, look for a file that looks like this: `sv_SE.UTF-8`.
-  If found, then you;re fine.  If not, do the next step.
+    ```shell
+    $ locale -a
+    ```
+    In the list of locale files, look for a file that looks like this: `sv_SE.UTF-8`.
+    If found, then you're fine.  If not, do the next step.
 
-  b) Load the swedish "language pack".  For instance, on Linux this should work:
+    b. Load the swedish "language pack".  For instance, on Linux this should work:
 
-  ```shell
-  $ sudo apt-get install language-pack-sv
-  ```
+    ```shell
+    $ sudo apt-get install language-pack-sv
+    ```
 
-  Execute the previous step again and confirm that the language pack has been installed.
+    Execute the previous step again and confirm that the language pack has been installed.
 
 ### Step 3: Get "super secret" data
 
