@@ -58,12 +58,35 @@ $ git remote add upstream https://github.com/AgileVentures/shf-project
 
 ### Step 2: Install Project dependencies
 
+1. Install required gems in your local environment - run this from the project
+  home directory:
+
 ```shell
 $ bundle install
 ```
-Some of our cucumber tests use Google Chrome as the web browser (with selenium
+2. Some of our cucumber tests use Google Chrome as the web browser (with selenium
   as the webdriver).  For that, you'll need to [download chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
   to your local machine.
+
+3. Make sure you have the correct "locale" file present on your local machine -
+  Since our user base primarily works in Swedish, we need to confirm that the
+  database will correctly sort (collate) text in that language.
+
+  a) Check if the Swedish local file is present on your machine:
+
+  ```shell
+  $ locale -a
+  ```
+  In the list of locale files, look for a file that looks like this: `sv_SE.UTF-8`.
+  If found, then you;re fine.  If not, do the next step.
+
+  b) Load the swedish "language pack".  For instance, on Linux this should work:
+
+  ```shell
+  $ sudo apt-get install language-pack-sv
+  ```
+
+  Execute the previous step again and confirm that the language pack has been installed.
 
 ### Step 3: Get "super secret" data
 
