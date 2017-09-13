@@ -1,10 +1,5 @@
 module CompaniesHelper
 
-  def last_category_name company
-    company.business_categories.any? ? company.business_categories.last.name : ''
-  end
-
-
   def list_categories company, separator=' '
     if company.business_categories.any?
       company.business_categories.includes(:membership_applications).map(&:name).sort.join(separator)

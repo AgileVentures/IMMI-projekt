@@ -36,10 +36,6 @@ RSpec.describe CompaniesHelper, type: :helper do
       expect(User.count).to eq(0)
     end
 
-    it '#last_category_name' do
-      expect(helper.last_category_name(company)).to eq 'cat3'
-    end
-
     it '#list_categories' do
       expect(helper.list_categories(company)).to eq 'cat1 cat2 cat3'
       expect(helper.list_categories(company)).not_to include 'Träning'
