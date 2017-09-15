@@ -20,17 +20,19 @@ RSpec.describe 'companies/index' do
   it 'renders paginate links with data-remote attributes' do
     # should have 8 links for specific pages
     rx = /<a .*data-remote="true" href="\/hundforetag\?page=\d{1}"/
-    
-    expect(rendered).to match rx
-    expect(rendered).to match /page=1/
-    expect(rendered).to match /page=8/
-    expect(rendered).to_not match /page=9/
 
-    # should have link for "next"
-    rx = /<a .*data-remote="true" href="#">« Föregående"/
+    expect(rendered).to match rx
+    expect(rendered).to match(/page=1/)
+    expect(rendered).to match(/page=8/)
+    expect(rendered).to_not match(/page=9/)
 
     # should have link for "previous"
-    rx = /<a .*data-remote="true" href="\/hundforetag?page=2">Nästa »"/
+    rx = /<a data-remote="true" href="#">« Föregående/
+    expect(rendered).to match rx
+
+    # should have link for "next"
+    rx = /<a data-remote="true" rel="next" href="\/hundforetag\?page=2">Nästa »/
+    expect(rendered).to match rx
   end
 
 end
