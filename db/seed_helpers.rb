@@ -119,8 +119,7 @@ module SeedHelper
                           email: FFaker::InternetSE.free_email,
                           name: FFaker::CompanySE.name,
                           phone_number: FFaker::PhoneNumberSE.phone_number,
-                          website: FFaker::InternetSE.http_url,
-                          address_visibility: 'street_address')
+                          website: FFaker::InternetSE.http_url)
     if(company.save)
 
       address = Address.new(addressable: company,
@@ -128,7 +127,8 @@ module SeedHelper
                             street_address: FFaker::AddressSE.street_address,
                             post_code: FFaker::AddressSE.zip_code,
                             region: regions[FFaker.rand(0..num_regions-1)],
-                            kommun: kommuns[FFaker.rand(0..num_kommuns-1)])
+                            kommun: kommuns[FFaker.rand(0..num_kommuns-1)],
+                            visibility: 'street_address')
 
       address.save
     end

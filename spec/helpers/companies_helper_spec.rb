@@ -134,7 +134,8 @@ RSpec.describe CompaniesHelper, type: :helper do
     let(:admin)   { create(:user, admin: true) }
     let(:member)  { create(:member_with_membership_app) }
     let(:visitor) { build(:visitor) }
-    let(:company) { create(:company) }
+    let(:company) { create(:company, num_addresses: 0) }
+    let(:address) { create(:address, addressable: company) }
 
     let(:all_fields) do
       [ { name: 'street_address', label: 'street', method: nil },
@@ -151,21 +152,22 @@ RSpec.describe CompaniesHelper, type: :helper do
 
     it 'returns all fields for member associated with company' do
       company = member.membership_applications[0].company
-      expect(show_address_fields(member, company))
+      expect(show_address_fields(member, company.addresses.first))
         .to match_array [ all_fields, true ]
     end
 
     it 'for visitor, returns fields consistent with address visibility' do
 
-      (0..Company::ADDRESS_VISIBILITY.length-1).each do |idx|
+      (0..Address::ADDRESS_VISIBILITY.length-1).each do |idx|
 
-        company.address_visibility = Company::ADDRESS_VISIBILITY[idx]
+        address.visibility = Address::ADDRESS_VISIBILITY[idx]
+        address.save!
 
-        fields, visibility = show_address_fields(visitor, company)
+        fields, visibility = show_address_fields(visitor, address)
 
         expect(visibility).to be false
 
-        case company.address_visibility
+        case address.visibility
         when 'none'
           expect(fields).to be nil
         else

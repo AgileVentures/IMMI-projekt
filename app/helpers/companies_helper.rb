@@ -57,19 +57,19 @@ module CompaniesHelper
   # Creates an array which contains an array of [text, value]
   #  for each company address_visibility level (for selection in form)
   def address_visibility_array
-    Company::ADDRESS_VISIBILITY.map do |visibility_level|
+    Address::ADDRESS_VISIBILITY.map do |visibility_level|
       [ I18n.t("address_visibility.#{visibility_level}"), visibility_level ]
     end
   end
 
   # `show_address_fields` returns an array used in company show view to
-  # loop through and display all address fields for a company,
+  # loop through and display all address fields for a company address,
   # consistent with:
   #  1) type of user, and,
-  #  2) `address_visibility` set for the company
+  #  2) `visibility` set for the address
   #
   # If user == company member || user == admin, show all fields
-  # else show all fields consistent with address_visibility.
+  # else show all fields consistent with address visibility.
   # Two return values:
   #  Return value one:
   #    - array of fields to be shown
@@ -79,9 +79,9 @@ module CompaniesHelper
   #        - method: name of value method to call on attribute (non-nil for association)
   #    - nil if no fields are to be shown
   #  Return value two:
-  #    - true if address_visibility value is to be shown
+  #    - true if address visibility value is to be shown
   #    - false otherwise
-  def show_address_fields(user, company)
+  def show_address_fields(user, address)
 
     all_fields = [ { name: 'street_address', label: 'street', method: nil },
                    { name: 'post_code', label: 'post_code', method: nil },
@@ -89,11 +89,11 @@ module CompaniesHelper
                    { name: 'kommun', label: 'kommun', method: 'name' },
                    { name: 'region', label: 'region', method: 'name' } ]
 
-    if user.admin? || user.is_in_company_numbered?(company.company_number)
+    if user.admin? || user.is_in_company_numbered?(address.addressable.company_number)
       return all_fields, true
     else
       start_index = all_fields.find_index do |field|
-        field[:name] == company.address_visibility
+        field[:name] == address.visibility
       end
 
       if start_index

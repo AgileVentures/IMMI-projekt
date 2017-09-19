@@ -49,7 +49,7 @@ class Company < ApplicationRecord
   def self.address_visible
     # Return ActiveRecord::Relation object for all companies with at
     # least one visible address
-    Company.joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
+    joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
   end
 
   def destroy_checks

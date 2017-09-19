@@ -29,7 +29,8 @@
 
 
         .address
-          - fields, visibility = show_address_fields(current_user, @company)
+          - address = @company.addresses.first
+          - fields, visibility = show_address_fields(current_user, address)
           - if fields
 
             %h2 #{t('.address')}:
@@ -37,7 +38,7 @@
             - fields.each do |field|
 
               -# value could be an address attribute or an association object
-              - val = @company.main_address.method(field[:name]).call
+              - val = address.method(field[:name]).call
 
               - if field[:method]
 
@@ -49,10 +50,10 @@
 
             - if visibility
 
-              - value_class = (@company.address_visibility == 'none' ? 'no' : 'yes')
+              - value_class = (address.visibility == 'none' ? 'no' : 'yes')
 
               = field_or_none t('companies.address_visibility'),
-                              t("address_visibility.#{@company.address_visibility}"),
+                              t("address_visibility.#{address.visibility}"),
                               tag_options: { class: 'address_visibility' },
                               value_class: value_class
 

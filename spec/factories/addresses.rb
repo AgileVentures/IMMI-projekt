@@ -6,6 +6,7 @@ FactoryGirl.define do
     post_code '310 40'
     city 'Harplinge'
     country 'Sverige'
+    visibility 'street_address'
 
     association :region, factory: :region, strategy: :build
 
