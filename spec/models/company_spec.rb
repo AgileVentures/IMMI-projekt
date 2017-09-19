@@ -27,14 +27,15 @@ RSpec.describe Company, type: :model do
 
   let(:complete_co2) do
     create(:company, name: 'Complete Company 2',
-           company_number: '5560360793',
-           address_visibility: 'city')
+                company_number: '5560360793')
   end
 
   let(:complete_co3) do
-    create(:company, name: 'Complete Company 3',
-           company_number: '5569467466',
-           address_visibility: 'none')
+    co = create(:company, name: 'Complete Company 3',
+               company_number: '5569467466', num_addresses: 0)
+    create(:address, visibility: 'none', addressable: co)
+    co.save!
+    co
   end
 
   let!(:complete_companies) { [complete_co] }
@@ -60,7 +61,6 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :email }
     it { is_expected.to have_db_column :website }
     it { is_expected.to have_db_column :description }
-    it { is_expected.to have_db_column :address_visibility }
   end
 
   describe 'Validations' do
@@ -68,9 +68,6 @@ RSpec.describe Company, type: :model do
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
     it { is_expected.to allow_value('user@example.com').for(:email) }
     it { is_expected.not_to allow_value('userexample.com').for(:email) }
-    it { is_expected.to validate_inclusion_of(:address_visibility)
-                            .in_array(Company::ADDRESS_VISIBILITY) }
-
   end
 
   describe 'Associations' do

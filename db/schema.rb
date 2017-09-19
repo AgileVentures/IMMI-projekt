@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(version: 20170918123414) do
     t.bigint "kommun_id"
     t.float "latitude"
     t.float "longitude"
+    t.string "visibility", default: "street_address"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
     t.index ["kommun_id"], name: "index_addresses_on_kommun_id"
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude"
@@ -70,7 +71,6 @@ ActiveRecord::Schema.define(version: 20170918123414) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
-    t.string "address_visibility", default: "street_address"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
   end
 

@@ -12,11 +12,15 @@ class Address < ApplicationRecord
 
   validates_presence_of :country
 
+  ADDRESS_VISIBILITY = %w(street_address post_code city kommun none)
+
+  validates :visibility, inclusion: ADDRESS_VISIBILITY
 
   scope :has_region, -> { where('region_id IS NOT NULL') }
 
   scope :lacking_region, -> { where('region_id IS NULL') }
 
+  scope :visible, -> { where.not(visibility: 'none') }
 
   geocoded_by :entire_address
 
@@ -46,19 +50,17 @@ class Address < ApplicationRecord
 
 
   def address_array
-    # This should only be called for address associated with a company
+    # This should only be called for an address associated with a company
 
-    # Returns an array of address field values (strings) that starts with
-    # with address_visibility level set for the associated company.
-
-    visibility_level = addressable.address_visibility
+    # Returns an array of address field values (strings) that starts with the
+    # attribute associated with the  visibility level set for this address.
 
     address_pattern = %w(street_address post_code city kommun)
 
     pattern_length = address_pattern.length
 
     start_index = address_pattern.find_index do |field|
-      field == visibility_level
+      field == visibility
     end
 
     return [] unless start_index

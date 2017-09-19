@@ -5,7 +5,6 @@ FactoryGirl.define do
     phone_number '123123123'
     email 'thiscompany@example.com'
     website 'http://www.example.com'
-    address_visibility 'street_address'
 
     transient do
       num_addresses 1

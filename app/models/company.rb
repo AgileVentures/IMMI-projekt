@@ -13,10 +13,6 @@ class Company < ApplicationRecord
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
   validate :swedish_organisationsnummer
 
-  ADDRESS_VISIBILITY = %w(street_address post_code city kommun none)
-
-  validates :address_visibility, inclusion: ADDRESS_VISIBILITY
-
   before_save :sanitize_website
 
   has_many :membership_applications, dependent: :destroy, inverse_of: :company
@@ -50,8 +46,11 @@ class Company < ApplicationRecord
 
   end
 
-  scope :address_visible, -> { where('address_visibility != ?', 'none') }
-
+  def self.address_visible
+    # Return ActiveRecord::Relation object for all companies with at
+    # least one visible address
+    Company.joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
+  end
 
   def destroy_checks
 
