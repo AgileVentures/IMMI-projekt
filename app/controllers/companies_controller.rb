@@ -74,37 +74,12 @@ class CompaniesController < ApplicationController
 
 
   def update
-    # Get company params and address params separately. This is because we need
-    #   to update the company first (in case address_visibility changed).
-    # (Normally the address would be updated *before* the company.
-    #   If that happened, then the gecoding for the address could be
-    #   using the "old" address_visibility.)
-
-    cmpy_params = company_params
-    addr_params = cmpy_params.delete(:addresses_attributes)['0']
-
-    address = @company.main_address
-    address.assign_attributes(addr_params)
-
-    if address.valid? && @company.update( sanitize_website(cmpy_params) )
-
-      address.save if address.changed?
-
-      # We need to geocode the address if 1) address_visibility has changed, and
-      # 2) address did not change (geocoding happens automatically upon save)
-
-      if @company.previous_changes.include?('address_visibility') && !address.changed?
-        address.reload # get latest version of company object
-        address.geocode_best_possible
-        address.save
-      end
-
+    if @company.update( sanitize_website(company_params) )
       redirect_to @company, notice: t('.success')
     else
       flash.now[:alert] = t('.error')
       render :edit
     end
-
   end
 
 
