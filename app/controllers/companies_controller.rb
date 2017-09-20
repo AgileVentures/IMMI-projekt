@@ -63,7 +63,6 @@ class CompaniesController < ApplicationController
     authorize Company
 
     @company = Company.new( sanitize_website(company_params) )
-    @company.main_address.addressable = @company  # not sure why Rails doesn't assign this automatically
 
     if @company.save
       redirect_to @company, notice: t('.success')
@@ -143,15 +142,14 @@ class CompaniesController < ApplicationController
                                     :email,
                                     :website,
                                     :description,
-                                    :address_visibility,
-                                    {business_category_ids: []},
         addresses_attributes: [:id,
                                 :street_address,
                                 :post_code,
                                 :kommun_id,
                                 :city,
                                 :region_id,
-                                :country])
+                                :country,
+                                :visibility])
   end
 
 

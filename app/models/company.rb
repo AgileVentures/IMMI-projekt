@@ -19,7 +19,13 @@ class Company < ApplicationRecord
 
   has_many :business_categories, through: :membership_applications
 
-  has_many :addresses, as: :addressable, dependent: :destroy
+  has_many :addresses, as: :addressable, dependent: :destroy,
+           inverse_of: :addressable
+  # ^^ we add the "inverse_of" option because we are validating the presence of
+  # a company parent instance when we save the associated address(es).
+  # See section "Validating the presence of a parent model" here:
+  # https://apidock.com/rails/ActiveRecord/NestedAttributes/
+  #     ClassMethods#971-Validating-presence-of-parent-in-child
 
   has_many :pictures, class_name: 'Ckeditor::Picture', dependent: :destroy
 

@@ -16,10 +16,10 @@ Feature: All companies are geocoded before being shown on the view all companies
       | Bromölla  |
 
     Given the following companies exist:
-      | name                 | company_number | email                  | region       | kommun   | address_visibility |
-      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm    | Alingsås | street_address     |
-      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten | Bromölla | street_address     |
-      | CompanyNotVisible    | 5569467466     | company@notvisible.com | Stockholm    | Alingsås | none               |
+      | name                 | company_number | email                  | region       | kommun   | visibility     |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm    | Alingsås | street_address |
+      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten | Bromölla | street_address |
+      | CompanyNotVisible    | 5569467466     | company@notvisible.com | Stockholm    | Alingsås | none           |
 
 
     And the following users exists

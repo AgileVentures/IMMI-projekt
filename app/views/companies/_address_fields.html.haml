@@ -29,13 +29,13 @@
 
     .col-sm-4
 
-      = f.label :address_visibility, "#{t('companies.address_visibility')}"
+      = address_form.label :visibility, "#{t('companies.address_visibility')}"
 
       %span.glyphicon.glyphicon-info-sign{ title: "#{t('companies.form.visibility_tooltip')}",
                                            data: {toggle: 'tooltip'} }
 
       %br
-      = f.select(:address_visibility, address_visibility_array)
+      = address_form.select(:visibility, address_visibility_array)
 
   %br
   %br
