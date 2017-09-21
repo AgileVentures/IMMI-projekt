@@ -42,14 +42,29 @@ RSpec.describe Address, type: :model do
 
     let(:addr_has_region) { co_has_regions.main_address }
 
-    let(:no_region) { addr_no_region = co_missing_region.main_address
-                      addr_no_region.update_columns(region_id: nil)
-                      addr_no_region
-    }
+    let(:no_region) do
+      addr_no_region = co_missing_region.main_address
+      addr_no_region.update_columns(region_id: nil)
+      addr_no_region
+    end
 
     let!(:has_regions) { [addr_has_region] }
     let!(:lacking_regions) { [no_region] }
 
+    let(:not_visible_addr) do
+      create(:address, visibility: 'none', addressable: co_has_regions)
+    end
+
+    let(:visible_addr) do
+      create(:address, visibility: 'city', addressable: co_has_regions)
+    end
+
+    describe 'visible' do
+      it 'only returns addresses that are visible' do
+        expect(co_has_regions.addresses.visible).
+          to contain_exactly(addr_has_region, visible_addr)
+      end
+    end
 
     describe 'has_region' do
 
