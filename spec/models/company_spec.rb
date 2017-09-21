@@ -93,13 +93,12 @@ RSpec.describe Company, type: :model do
 
   end
 
-  describe 'address_visible scope' do
-    it 'only returns companies that are complete' do
+  describe '.address_visible' do
+    it 'only returns companies that have one or more visible addresses' do
       complete_co2
       complete_co3
-      scope_records = Company.address_visible
-      expect(scope_records).
-          to match_array [no_name, nil_region, complete_co, complete_co2]
+      expect(Company.address_visible).
+          to contain_exactly(no_name, nil_region, complete_co, complete_co2)
     end
   end
 
