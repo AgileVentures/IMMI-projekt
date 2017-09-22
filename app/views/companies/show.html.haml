@@ -35,60 +35,37 @@
 
     .col-md-12.address
       -# Do we have addresses to show this user?
-      - if @company.addresses.visible || user.is_admin? ||
-           user.is_in_company_numbered?(@company.company_number)
+      - user_can_edit = current_user.admin? ||                                        |
+                        current_user.is_in_company_numbered?(@company.company_number) |
 
-        %h2 #{t('.address')}:
+      - addresses = user_can_edit ? @company.addresses : @company.addresses.visible
+
+      - if addresses
 
         -# Build table header
+        %table.table.table-hover
+          %thead
+            %tr
+              %th #{t('.address')}
+              - if user_can_edit
+                %th= t('companies.address_visibility')
+                %th= t('.mailing_address')
 
-        - @company.addresses.each do |address|
-          - fields, visibility = show_address_fields(current_user, address)
-          - if fields
+          - addresses.each do |address|
+            %tbody
+              %tr.address
+                %td
+                  = address.entire_address
+                - if user_can_edit
+                  %td
+                    %span{ class: (address.visibility == 'none' ? 'no' : 'yes') }
+                      = t("address_visibility.#{address.visibility}")
+                  %td
+                    = check_box_tag('mail_address', '1', true,
+                        data: { remote: true,
+                                url: company_address_path(@company.id, address.id),
+                                method: :post })
 
-        - fields.each do |field|
-
-          -# value could be an address attribute or an association object
-          - val = address.method(field[:name]).call
-
-          - if field[:method]
-
-            -# if the latter, call value method on that object
-            - val = val&.method(field[:method])&.call
-
-          = field_or_none t(".#{field[:label]}"), val,
-                          tag_options: { class: field[:name] }
-
-        - if visibility
-
-          - value_class = (address.visibility == 'none' ? 'no' : 'yes')
-
-          = field_or_none t('companies.address_visibility'),
-                          t("address_visibility.#{address.visibility}"),
-                          tag_options: { class: 'address_visibility' },
-                          value_class: value_class
-%table.table.table-hover
-  %thead
-    %tr
-      %th
-        = t('activerecord.attributes.membership_application.contact_email')
-      %th
-        = t('activerecord.attributes.membership_application.state')
-      %th
-        = t('activerecord.attributes.membership_application.company_number')
-      %th
-        = t('activerecord.attributes.company.name')
-  %tbody
-    - @user.membership_applications.includes(:company).each do |app|
-      %tr.membership_application
-        %td= mail_to(app.contact_email)
-        %td
-          - if app.accepted?
-            %span.yes= app.state
-          - else
-            %span.no= app.state
-        %td= link_to(app.company_number, membership_application_path(app))
-        %td= app.company&.name
 
     .row.center.item-nav-buttons#item-nav-buttons
       - if policy(@company).update?

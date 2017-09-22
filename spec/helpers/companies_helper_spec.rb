@@ -147,13 +147,13 @@ RSpec.describe CompaniesHelper, type: :helper do
 
     it 'returns all fields for admin user' do
       # The helper method returns two values, so these will be in an array
-      expect(show_address_fields(admin, nil)).to match_array [ all_fields, true ]
+      expect(show_address_fields(admin, nil)).to match_array all_fields
     end
 
     it 'returns all fields for member associated with company' do
       company = member.membership_applications[0].company
       expect(show_address_fields(member, company.addresses.first))
-        .to match_array [ all_fields, true ]
+        .to match_array all_fields
     end
 
     it 'for visitor, returns fields consistent with address visibility' do
@@ -163,9 +163,7 @@ RSpec.describe CompaniesHelper, type: :helper do
         address.visibility = Address::ADDRESS_VISIBILITY[idx]
         address.save!
 
-        fields, visibility = show_address_fields(visitor, address)
-
-        expect(visibility).to be false
+        fields = show_address_fields(visitor, address)
 
         case address.visibility
         when 'none'

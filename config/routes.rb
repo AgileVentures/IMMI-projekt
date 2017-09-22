@@ -73,6 +73,9 @@ Rails.application.routes.draw do
 
   end
 
+  post 'hundforetag/:id/:address_id', to: 'companies#set_address_type',
+       as: :company_address
+
   get 'information', to: 'membership_applications#information'
 
   root to: 'companies#index'

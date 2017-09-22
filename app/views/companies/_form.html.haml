@@ -17,17 +17,6 @@
   = f.label :email, "#{t('companies.show.email')}", class: 'required'
   = f.text_field :email, class: 'wpcf7-form-control'
 
-  - if @company.addresses.count > 1
-    %p.main-address #{t('companies.show.main_address')}:
-
-  = render 'address_fields', {f: f, addresses: [ @company.main_address ]}
-
-  - other_addresses = @company.addresses - [ @company.main_address ]
-  - unless other_addresses.empty?
-    %p.other_addresses #{t('companies.show.other_addresses')}:
-    = render 'address_fields', {f: f, addresses: other_addresses}
-
-
   = f.label :website, "#{t('companies.website_include_http')}", class: 'required'
   = f.text_field :website, class: 'wpcf7-form-control'
 

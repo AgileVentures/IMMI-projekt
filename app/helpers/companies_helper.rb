@@ -70,17 +70,13 @@ module CompaniesHelper
   #
   # If user == company member || user == admin, show all fields
   # else show all fields consistent with address visibility.
-  # Two return values:
-  #  Return value one:
+  #  Return value:
   #    - array of fields to be shown
   #      - Array contains a hash - one for each field - with three keys:
   #        - name: name of field (Address) attribute
   #        - label: label of field (for I18n lookup)
   #        - method: name of value method to call on attribute (non-nil for association)
   #    - nil if no fields are to be shown
-  #  Return value two:
-  #    - true if address visibility value is to be shown
-  #    - false otherwise
   def show_address_fields(user, address)
 
     all_fields = [ { name: 'street_address', label: 'street', method: nil },
@@ -90,16 +86,16 @@ module CompaniesHelper
                    { name: 'region', label: 'region', method: 'name' } ]
 
     if user.admin? || user.is_in_company_numbered?(address.addressable.company_number)
-      return all_fields, true
+      return all_fields
     else
       start_index = all_fields.find_index do |field|
         field[:name] == address.visibility
       end
 
       if start_index
-        return all_fields[start_index..4], false
+        return all_fields[start_index..4]
       else
-        return nil, false
+        return nil
       end
     end
   end

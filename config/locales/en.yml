@@ -446,6 +446,7 @@ en:
       main_address: Main Address
       other_addresses: Other Addresses
       address: Address
+      mailing_address: Mail
       street: *street
       post_code: *post_code
       city: *city
@@ -484,7 +485,7 @@ en:
     operations_region: County of operations
     website_include_http: Company website
     description: Customized Company Description
-    address_visibility: Address Visibility
+    address_visibility: Visibility
 
     all_companies: All companies
     edit_company: Edit company

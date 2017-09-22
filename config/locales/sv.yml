@@ -447,6 +447,7 @@ sv:
       address: &address Adress
       main_address: Huvudadress
       other_addresses: Andra adresser
+      mailing_address: Post
       street: *street
       post_code: *post_code
       city: *city
@@ -484,7 +485,7 @@ sv:
     operations_region: *region
     website_include_http: Företagets webbplats
     description: Beskrivning av företaget
-    address_visibility: Adressens synlighet
+    address_visibility: Synlighet
 
     all_companies: Alla företag
     edit_company: Redigera detta företag
