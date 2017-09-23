@@ -570,7 +570,7 @@ en:
 
     user:
       user_has_never_signed_in: has never logged in.
-      'yes': *yes
+      'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
 
     users_list:
