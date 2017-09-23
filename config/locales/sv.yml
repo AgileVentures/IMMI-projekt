@@ -562,11 +562,11 @@ sv:
       error: Ett problem hindrade användarinformationen från att uppdateras.
 
     search_form:
-      profile_email: 'Profile Email'
-      search: 'Search'
-      are_members: 'Are members'
-      are_not_members: 'Are not members'
-      all_users: 'All users'
+      profile_email: Profil e-post
+      search: Sök
+      are_members: Är medlemmar
+      are_not_members: Är inte medlemmar
+      all_users: Alla användare
 
     user:
       user_has_never_signed_in: har aldrig loggat in.
