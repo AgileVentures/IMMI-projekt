@@ -61,43 +61,4 @@ module CompaniesHelper
       [ I18n.t("address_visibility.#{visibility_level}"), visibility_level ]
     end
   end
-
-  # `show_address_fields` returns an array used in company show view to
-  # loop through and display all address fields for a company address,
-  # consistent with:
-  #  1) type of user, and,
-  #  2) `visibility` set for the address
-  #
-  # If user == company member || user == admin, show all fields
-  # else show all fields consistent with address visibility.
-  #  Return value:
-  #    - array of fields to be shown
-  #      - Array contains a hash - one for each field - with three keys:
-  #        - name: name of field (Address) attribute
-  #        - label: label of field (for I18n lookup)
-  #        - method: name of value method to call on attribute (non-nil for association)
-  #    - nil if no fields are to be shown
-  def show_address_fields(user, address)
-
-    all_fields = [ { name: 'street_address', label: 'street', method: nil },
-                   { name: 'post_code', label: 'post_code', method: nil },
-                   { name: 'city', label: 'city', method: nil },
-                   { name: 'kommun', label: 'kommun', method: 'name' },
-                   { name: 'region', label: 'region', method: 'name' } ]
-
-    if user.admin? || user.is_in_company_numbered?(address.addressable.company_number)
-      return all_fields
-    else
-      start_index = all_fields.find_index do |field|
-        field[:name] == address.visibility
-      end
-
-      if start_index
-        return all_fields[start_index..4]
-      else
-        return nil
-      end
-    end
-  end
-
 end

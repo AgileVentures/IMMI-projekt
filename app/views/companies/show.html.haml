@@ -34,43 +34,55 @@
                    link_name: false )}
 
     .col-md-12.address
-      -# Do we have addresses to show this user?
-      - user_can_edit = current_user.admin? ||                                        |
-                        current_user.is_in_company_numbered?(@company.company_number) |
+
+      - user_can_edit = policy(@company).update?
 
       - addresses = user_can_edit ? @company.addresses : @company.addresses.visible
 
       - if addresses
 
-        -# Build table header
         %table.table.table-hover
           %thead
             %tr
-              %th #{t('.address')}
+              %th
+                = "#{t('.address')}" + " (#{t('.click_to_edit')})" if user_can_edit
+
               - if user_can_edit
+
                 %th= t('companies.address_visibility')
                 %th= t('.mailing_address')
 
           - addresses.each do |address|
             %tbody
               %tr.address
-                %td
-                  = address.entire_address
                 - if user_can_edit
+                  %td
+                    = link_to address.entire_address,
+                              edit_company_address_path(@company.id, address.id)
                   %td
                     %span{ class: (address.visibility == 'none' ? 'no' : 'yes') }
                       = t("address_visibility.#{address.visibility}")
                   %td
-                    = check_box_tag('mail_address', '1', true,
+                    = check_box_tag('mail', '1', address.mail,
                         data: { remote: true,
-                                url: company_address_path(@company.id, address.id),
+                                url: company_address_type_path(@company.id, address.id),
+                                params: 'type=mail',
                                 method: :post })
-
+                - else
+                  %td
+                    = address.entire_address
 
     .row.center.item-nav-buttons#item-nav-buttons
-      - if policy(@company).update?
+
+      - if user_can_edit
+
         = link_to "#{t('companies.edit_company')}",
-                  edit_company_path(@company), class: 'btn btn-default edit-company'
+                  edit_company_path(@company), class: 'btn btn-primary edit-company'
+
+        = link_to "#{t('.add_address')}",
+                  new_company_address_path(@company),
+                  class: 'btn btn-primary add-company-address'
+
         = link_to "#{t('companies.all_companies')}",
                   companies_path, class: 'btn btn-default all-companies'
 

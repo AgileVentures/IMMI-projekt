@@ -1,42 +1,45 @@
-= f.fields_for :addresses  do |address_form|
+= form_for :address, method: method, url: url  do |f|
 
-  = address_form.label :street_address, "#{t('companies.show.street')}", class: 'required'
-  = address_form.text_field :street_address, class: 'wpcf7-form-control'
+  != model_errors_helper(@company)
 
-  = address_form.label :post_code, "#{t('companies.show.post_code')}", class: 'required'
-  = address_form.text_field :post_code, class: 'wpcf7-form-control'
+  = f.label :street_address, "#{t('companies.show.street')}", class: 'required'
+  = f.text_field :street_address, class: 'wpcf7-form-control'
 
-  = address_form.label :city, "#{t('companies.show.city')}", class: 'required'
-  = address_form.text_field :city, class: 'wpcf7-form-control'
+  = f.label :post_code, "#{t('companies.show.post_code')}", class: 'required'
+  = f.text_field :post_code, class: 'wpcf7-form-control'
+
+  = f.label :city, "#{t('companies.show.city')}", class: 'required'
+  = f.text_field :city, class: 'wpcf7-form-control'
 
   .form-group
     .col-sm-4
 
-      = address_form.label :kommun_id, "#{t('companies.show.kommun')}"
+      = f.label :kommun_id, "#{t('companies.show.kommun')}"
       %br
-      = address_form.collection_select(:kommun_id, Kommun.all, :id, :name)
+      = f.collection_select(:kommun_id, Kommun.all, :id, :name)
 
     .col-sm-4
 
-      = address_form.label :region_id, "#{t('companies.operations_region')}",
-                           class: 'wpcf7-form-control'
+      = f.label :region_id, "#{t('companies.operations_region')}"
 
       %span.glyphicon.glyphicon-info-sign{ title: "#{t('companies.form.region_tooltip')}",
                                            data: {toggle: 'tooltip'} }
 
       %br
-      = address_form.collection_select(:region_id, Region.all, :id, :name)
+      = f.collection_select(:region_id, Region.all, :id, :name)
 
     .col-sm-4
 
-      = address_form.label :visibility, "#{t('companies.address_visibility')}"
+      = f.label :visibility, "#{t('companies.address_visibility')}"
 
       %span.glyphicon.glyphicon-info-sign{ title: "#{t('companies.form.visibility_tooltip')}",
                                            data: {toggle: 'tooltip'} }
 
       %br
-      = address_form.select(:visibility, address_visibility_array)
+      = f.select(:visibility, address_visibility_array)
 
   %br
   %br
+  %br
+  = f.submit "#{t('submit')}"
   %br

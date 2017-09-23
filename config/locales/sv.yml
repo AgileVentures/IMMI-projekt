@@ -457,6 +457,8 @@ sv:
       org_nr: *org_nr
       delete: Radera företaget
       confirm_are_you_sure: *are_you_sure_confirm
+      add_address: 'Lägg till adress'
+      click_to_edit: 'klicka för att redigera'
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
@@ -493,6 +495,12 @@ sv:
     list_all_companies: Lista alla företag
     new_company: Skapa nytt företag
 
+  addresses:
+    edit:
+      title: 'Redigeringsadress för: %{company_name}'
+      delete: 'Ta bort den här adressen'
+    new:
+      title: 'Ny adress för: %{company_name}'
 
   business_categories:
 

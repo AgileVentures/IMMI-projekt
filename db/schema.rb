@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170920153643) do
+ActiveRecord::Schema.define(version: 20170922144510) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 20170920153643) do
     t.float "latitude"
     t.float "longitude"
     t.string "visibility", default: "street_address"
+    t.boolean "mail", default: false
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
     t.index ["kommun_id"], name: "index_addresses_on_kommun_id"
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude"

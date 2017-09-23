@@ -454,8 +454,10 @@ en:
       region: *region
       website: Company website
       org_nr: *org_nr
-      delete: "Delete the company"
+      delete: "Delete company"
       confirm_are_you_sure: '*are_you_sure_confirm you want to delete the company?'
+      add_address: 'Add address'
+      click_to_edit: 'click to edit'
     index:
       title: Find H-labeled companies
       admin_title: Edit member companies
@@ -493,6 +495,12 @@ en:
     list_all_companies: List all companies
     new_company: Create new company
 
+  addresses:
+    edit:
+      title: 'Editing Address for: %{company_name}'
+      delete: 'Delete this address'
+    new:
+      title: 'New Address for: %{company_name}'
 
 
   business_categories:
