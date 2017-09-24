@@ -19,3 +19,4 @@ Rails.application.config.assets.precompile += %w( ckeditor/config.js )
 Rails.application.config.assets.precompile += %w( ckeditor/contents.css )
 Rails.application.config.assets.precompile += %w{ shf-documents.scss }
 Rails.application.config.assets.precompile += %w( membership-applications.scss )
+Rails.application.config.assets.precompile += %w( shf-mailer.scss )

@@ -39,6 +39,38 @@ module SHFProject
 
     I18n.available_locales = ['en', 'sv']
 
+
+
+    ###
+    #
+    # Mail
+    #
+
+    config.action_mailer.delivery_method = :mailgun
+
+    #  need to set the mailgun_settings here because of  https://github.com/mailgun/mailgun-ruby/issues/86
+    config.action_mailer.mailgun_settings = {
+        api_key: ENV['MAILGUN_API_KEY'],
+        domain: ENV['MAILGUN_DOMAIN']
+    }
+
+
+    # Mail templates will need to use "_url" helpers rather than "_path" helpers
+    # since the template will not have the context of a request
+    # (as a controller does) and thus the full URL will be required to create
+    # links in the email.  This setting defines the host (domain) for the URL.
+
+    # Default for development and testing.  production.rb overrides this
+    config.action_mailer.default_url_options = { host: 'localhost', port: '3000' }
+
+    # Ensure this is false by default (to be secure).
+    # Only change in development or test environments where really needed
+    config.action_mailer.show_previews = false
+
+    #
+    ###
+
+
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

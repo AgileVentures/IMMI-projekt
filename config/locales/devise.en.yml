@@ -18,21 +18,23 @@ en:
       unconfirmed: "You have to confirm your email address before continuing."
     mailer:
       confirmation_instructions:
-        subject: "SHF Confirmation instructions"
+        subject: "Swedish Dog Insdustry Association Confirmation Instructions"
 
       reset_password_instructions:
-        subject: "SHF Reset password instructions"
+        subject: "Swedish Dog Insdustry Association Password Reset Instructions"
         hello: "Hello %{email}"
         reset_requested: "Someone has requested a link to change your password.
                           You can do this through the link below."
         change_password: "Change my password"
         ignore: "If you didn't request this, please ignore this email."
         follow_link: "Your password won't change until you access the link above and create a new one."
+        copy_paste_link: "If the link above does not work, copy the URL (link text) below and paste it into the address bar of your browser: %{change_password_link}"
+
 
       unlock_instructions:
-        subject: "SHF Unlock instructions"
+        subject: "Swedish Dog Insdustry Association Unlock Instructions"
       password_change:
-        subject: "SHF Password Changed"
+        subject: "Swedish Dog Insdustry Association Password Changed"
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."

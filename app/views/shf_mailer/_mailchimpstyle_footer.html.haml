@@ -1,0 +1,17 @@
+%table.template-container{ cellspacing: '0', cellpadding: '0', align: 'center' }
+  %tbody
+    %tr
+      %td.footer-container{ valign: 'top' }
+        %table.text-block{ cellspacing: '0', cellpadding: '0' }
+          %tbody.text-block-outer
+            %tr
+              %td.text-block-inner{ valign: 'top' }
+
+                %table.text-content-container{ cellspacing: '0', cellpadding: '0', align: 'left' }
+                  %tbody
+                    %tr
+                      %td.text-content{ valign: 'top' }
+
+                        .sent-to
+                          %p= t('shf_mailer.footer.text.email_sent_to', email_sent_to: @recipient_email).html_safe
+                          %p= t('shf_mailer.footer.text.why_you_are_receiving')

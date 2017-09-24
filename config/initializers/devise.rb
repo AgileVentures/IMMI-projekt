@@ -15,7 +15,7 @@ Devise.setup do |config|
   config.mailer_sender = ENV['SHF_NOREPLY_EMAIL']
 
   # Configure the class responsible to send e-mails.
-  # config.mailer = 'Devise::Mailer'
+   config.mailer = 'ShfMailer'
 
   # Configure the parent class responsible to send e-mails.
   # config.parent_mailer = 'ActionMailer::Base'

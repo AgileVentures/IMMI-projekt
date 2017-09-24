@@ -1,1 +1,8 @@
+= t('shf_mailer.greeting', greeting_name: @greeting_name) if @greeting_name
+\
+\
 = yield
+\
+= yield :signoff
+= render 'shf_mailer/shf_mail_footer'
+

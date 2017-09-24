@@ -3,6 +3,8 @@ en:
 
   title: "SWEDEN'S ETHICAL DOG COMPANIES"
 
+  SHF_name: &SHF_name "Swedish Dog Industry Association"
+
   home: Home
   about: About
   more: More
@@ -44,6 +46,13 @@ en:
   confirm_are_you_sure: &are_you_sure_confirm Are you sure
 
   hello: 'Hello, %{name}'
+
+  shf_home_url: &shf_home_url http://www.sverigeshundforetagare.se
+  shf_medlemssystem_url: &shf_medlemssystem_url http://hitta.sverigeshundforetagare.se
+  shf_facebook_url: &shf_facebook_url http://www.facebook.com/sverigeshundforetagare
+  shf_facebook_group_url: &shf_facebook_group_url https://www.facebook.com/groups/sverigeshundforetagare/
+  shf_instagram_url: &shf_instagram_url http://instagram.com/sverigeshundforetagare
+
 
   info:
     logged_in_as_admin: You are logged in as an admin.
@@ -707,6 +716,50 @@ en:
       other_custom_reason_desc: ""
 
       delete_confirm: "Are you sure you want to delete the reason: %{name_sv} (%{name_en})?"
+
+
+  shf_mailer:
+    greeting: &email_greeting "Hello %{greeting_name}"
+
+    trouble_reading_browser: "Having trouble reading this? View it in a browser"
+    email_us: "If you have any questions or suggestions, email us at "
+
+    footer:
+      text:
+        shf_name: *SHF_name
+        shf_motto: KOMPETENS – GLÄDJE – OMTANKE
+        email_sent_to: This email was sent to %{email_sent_to}
+        why_you_are_receiving: You are receiving this email because you are interested in a membership to SVERIGES HUNDFÖRETAGARE or you are a member.
+
+    admin:
+      signoff: Thanks
+      signature: &medlemsansvarig Membership Committee
+
+      new_application_received:
+        subject: A new SHF Member Application has been received
+
+        message_text:
+          new_app_arrived: "A new membership application has been submitted that you should look at: "
+          from: From
+          view_app_here: "You can view the membership application here: "
+          must_be_logged_in: "(You must be logged in as the administrator to view it.)"
+
+    membership_application:
+      signoff: "Best Regards,"
+      signature: *medlemsansvarig
+      signature_url: "http://sverigeshundforetagare.se"
+
+      acknowledge_received:
+        subject: Your application to Sveriges Hundföretagare has been received
+        message_text: "Your application has been received.  We're all working hard, so it might take a while before we get to it. So do not worry if it takes a while before you hear from us."
+
+      accepted:
+        subject: "Welcome! Your SHF application has been approved"
+        greeting: *email_greeting
+        message_text:
+          youre_active: "You have now been activated as a member of the system and can log in and manage your profile and build your business page. Once you are logged in, you can edit your company page here: "
+          access_fb_group: "As a member, you will also have access to our closed Facebook group: "
+          and_member_pages: "as well as hidden pages in our member system: "
 
 
   devise:

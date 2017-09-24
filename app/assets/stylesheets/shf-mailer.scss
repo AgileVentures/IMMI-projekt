@@ -1,0 +1,399 @@
+$footer-color: #6aa6ed;
+
+$sent-to-color: #606060;
+$background-light-gray: #f7f7f2;
+$border-light-gray: #e5e5e5;
+$gray-text: #656565;
+
+$border-lighter-gray: #eaeaea;
+
+$white: #ffffff;
+$black: #000000;
+$dark-gray: #222222;
+
+.email {
+
+  // to match the emails sent by mailchip
+  .mailchimp {
+
+    background-color: $background-light-gray;
+    background-image: none;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    border: 0;
+
+    font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+
+    .image-block,
+    .image-content-container,
+    .follow-block,
+    .follow-content-container,
+    .follow-content,
+    .follow-content-item,
+    .text-content-container {
+      border: 0;
+      border-collapse: collapse;
+      max-width: 100%;
+      min-width: 100%;
+      width: 100%;
+    }
+
+    .follow-block-inner,
+    .text-block-inner {
+      padding-top: 9px;
+    }
+
+    table {
+      border: 0;
+      border-collapse: collapse;
+    }
+
+    .body-table {
+
+      border: 1px;
+      border-collapse: collapse;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+
+      .body-cell {
+        border-top: 0;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        width: 100%;
+      }
+
+    }
+
+    .template-container {
+      border-collapse: collapse;
+      max-width: 600px;
+      width: 100%;
+
+    }
+
+    .text-block {
+      border: 0;
+      border-collapse: collapse;
+      min-width: 100%;
+      width: 100%;
+    }
+
+    .template-preheader {
+
+      padding-bottom: 9px;
+      padding-top: 9px;
+
+      .template-container {
+        border: 0;
+        width: 100%;
+
+        td.preheader-container {
+
+          td.text-content {
+            p {
+              color: $white;
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+    .template-header {
+
+      padding-top: 9px;
+
+      .image-block-inner {
+        padding: 0;
+
+        img {
+          border: 0;
+          display: inline;
+          height: auto;
+          max-width: 700px;
+          outline: none;
+          padding-bottom: 0;
+          text-decoration: none;
+          vertical-align: bottom;
+        }
+
+      }
+
+    }
+
+    .template-body {
+
+      padding-bottom: 9px;
+      padding-top: 9px;
+
+      .template-container {
+        background-color: $white;
+        border: 0;
+        margin-top: 30px;
+        width: 100%;
+
+        .body-container {
+
+          .text-content {
+            color: $dark-gray;
+            font-family: 'Open Sans', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            line-height: 150%;
+            padding-bottom: 9px;
+            padding-left: 18px;
+            //word-break: break-word;
+            padding-right: 18px;
+            padding-top: 0;
+            text-align: left;
+
+            h1 {
+              color: $dark-gray;
+              display: block;
+              font-family: 'OpenSans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+              font-size: 26px;
+              font-style: normal;
+              font-weight: normal;
+              letter-spacing: normal;
+              line-height: 125%;
+              margin: 0;
+              padding: 0;
+              text-align: left;
+            }
+
+            .from-info {
+              p {
+                margin: 0;
+                padding: 0;
+              }
+
+              .from {
+                font-weight: bold;
+              }
+
+              .user_name,
+              .user_email {
+                margin-left: 30px;
+              }
+
+            }
+
+            p {
+              color: $dark-gray;
+              font-family: 'Open Sans', 'HelveticaNeue', Helvetica, Arial, sans-serif;
+              font-size: 14px;
+              line-height: 150%;
+              margin: 10px 0;
+              padding: 0;
+              text-align: left;
+            }
+
+            #signoff {
+              margin-top: 30px;
+            }
+
+            #signature {
+              p {
+                font-style: italic;
+                margin: 0;
+              }
+
+              .signature {
+                font-size: larger;
+              }
+            }
+
+            .mail-body-footer {
+
+              border-top: 1pt solid $black;
+              margin-top: 20px;
+
+              p {
+                line-height: 130%;
+                margin: 4px 0 0;
+                padding: 0;
+              }
+
+              .shf-name {
+                //  font-size: larger;
+                font-weight: bold;
+              }
+
+            }
+          }
+
+        }
+
+      }
+
+    }
+
+    .template-footer {
+
+      padding-bottom: 20px;
+      padding-top: 20px;
+
+      p {
+        line-height: 130%;
+        margin: 0;
+        padding: 0;
+      }
+
+      .sent-to {
+        color: $sent-to-color;
+        font-family: Helvetica, Arial, sans-serif;
+        margin-top: 20px;
+
+        p {
+          font-size: 11px;
+          line-height: 150%;
+          margin: 0;
+          padding: 0;
+        }
+      }
+
+      .template-container {
+
+        border-top: 1px solid $border-light-gray;
+
+        .footer-container {
+
+          .text-content {
+            //word-break: break-word;
+            color: $gray-text;
+            font-family: Helvetica, sans-serif;
+            font-size: 12px;
+            line-height: 150%;
+            padding-bottom: 9px;
+            padding-left: 18px;
+            padding-right: 18px;
+            padding-top: 0;
+            text-align: center;
+          }
+
+        }
+
+      }
+
+    }
+
+    .divider-block {
+      border: 0;
+      width: 100%;
+
+      .divider-block-outer {
+        border-collapse: collapse;
+        min-width: 100%;
+        table-layout: fixed !important;
+
+        .divider-block-inner {
+          padding: 18px;
+
+          .divider-content {
+            border-collapse: collapse;
+            border-top: 2px dotted $border-lighter-gray;
+            min-width: 100%;
+            width: 100%;
+          }
+        }
+
+      }
+
+    }
+
+    .follow-content {
+      background-color: $white;
+      padding-left: 9px;
+      padding-right: 9px;
+      padding-top: 9px;
+
+      td {
+
+        table {
+          display: inline;
+
+          .follow-content-item-container {
+            padding-bottom: 9px;
+            padding-right: 10px;
+
+            td {
+              padding-bottom: 5px;
+              padding-left: 9px;
+              padding-right: 10px;
+              padding-top: 5px;
+
+              .follow-icon-content {
+                width: 24px;
+
+                a {
+                  border: 0;
+                  display: block;
+                  height: auto;
+                  outline: none;
+                  text-decoration: none;
+
+                }
+
+              }
+
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+  // end .mailchimp
+
+  .member_application_received {
+
+    .from-info {
+      p {
+        margin: 0;
+        padding: 0;
+      }
+    }
+  }
+
+  .email-content {
+    margin-left: 1rem;
+  }
+
+  .signoff {
+
+    .signoff {
+      font-size: larger;
+      font-style: italic;
+      font-weight: bold;
+      margin-top: 2rem;
+    }
+
+    .signature {
+      .shf {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .footer {
+    // color: $footer-color;
+    // font-size: smaller;
+  }
+
+}

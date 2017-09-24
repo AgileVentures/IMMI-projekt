@@ -1,0 +1,17 @@
+- provide :signoff do
+  = render 'admin_mailer/signoff'
+
+
+%p= t('shf_mailer.admin.new_application_received.message_text.new_app_arrived')
+
+.from-info
+  %p.from= t('shf_mailer.admin.new_application_received.message_text.from')
+  %p.user_name= @member_app.user.full_name
+  %p.user_email= @member_app.contact_email
+
+%p
+  = t('shf_mailer.admin.new_application_received.message_text.view_app_here') + ' '
+  = link_to(url_for(@member_app), url_for(@member_app), target: '_blank' )
+
+
+%p= t('shf_mailer.admin.new_application_received.message_text.must_be_logged_in')

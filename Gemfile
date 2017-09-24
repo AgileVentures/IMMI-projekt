@@ -58,7 +58,7 @@ gem 'geocoder'
 
 gem 'sanitize'
 
-gem 'mailgun_rails'
+gem 'mailgun-ruby'
 
 group :development, :test do
   gem 'rspec-rails'

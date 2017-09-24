@@ -1,0 +1,8 @@
+.mail-body-footer
+  %p.shf-name= t('shf_mailer.footer.text.shf_name').upcase
+  %p.shf-motto= t('shf_mailer.footer.text.shf_motto')
+
+  -# Could add information to the URL so that it's clear they came to the site via email
+  %p= link_to t('shf_home_url'), root_url, target: '_blank', class: 'signature-url'
+  %p= link_to t('shf_facebook_url'), t('shf_facebook_url'), target: '_blank'
+  %p= link_to t('shf_instagram_url'), t('shf_instagram_url'), target: '_blank'

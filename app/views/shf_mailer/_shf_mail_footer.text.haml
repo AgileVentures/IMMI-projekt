@@ -1,0 +1,10 @@
+= '----------'
+
+= t('shf_mailer.footer.text.shf_name').upcase
+= t('shf_mailer.footer.text.shf_motto')
+= t('shf_home_url')
+= t('shf_facebook_url')
+= t('shf_instagram_url')
+\
+= t('shf_mailer.footer.text.email_sent_to', email_sent_to: @recipient_email).html_safe
+= t('shf_mailer.footer.text.why_you_are_receiving')

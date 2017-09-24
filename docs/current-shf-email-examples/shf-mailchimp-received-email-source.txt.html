@@ -1,0 +1,734 @@
+Return-Path:
+<lullisuss@gmail.com>
+Delivered-To: ashley@ashleycaroline.com
+Received: from slan-550-85.anhosting.com
+by slan-550-85.anhosting.com with LMTP id MF52KBtJwVn/WQQA65UW1Q
+for
+<ashley@ashleycaroline.com>; Tue, 19 Sep 2017 10:43:07 -0600
+Return-path:
+<lullisuss@gmail.com>
+Envelope-to: ashley@ashleycaroline.com
+Delivery-date: Tue, 19 Sep 2017 10:43:07 -0600
+Received: from slc001.mailfiltering.com ([69.36.161.91]:60512)
+by slan-550-85.anhosting.com with esmtps (TLSv1.2:ECDHE-RSA-AES256-GCM-SHA384:256)
+(Exim 4.89)
+(envelope-from
+<lullisuss@gmail.com>)
+id 1duLc3-001Cuu-KB
+for ashley@ashleycaroline.com; Tue, 19 Sep 2017 10:43:07 -0600
+Received: from mail-qk0-f175.google.com ([209.85.220.175])
+by slc001.mailfiltering.com with esmtps (TLSv1.2:ECDHE-RSA-AES128-GCM-SHA256:128)
+(Exim 4.89)
+(envelope-from
+<lullisuss@gmail.com>)
+id 1duLbt-0001cT-St
+for ashley@ashleycaroline.com; Tue, 19 Sep 2017 10:43:07 -0600
+Received: by mail-qk0-f175.google.com with SMTP id z143so209114qkb.3
+for
+<ashley@ashleycaroline.com>; Tue, 19 Sep 2017 09:42:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+d=gmail.com; s161025;
+h=mime-version:in-reply-to:references:from:date:message-id:subject:to;
+bh=kUe7YK2Up7IuPIZrrKtkrhxc/6s/27GpQhh51Qojpg4=;
+b=ZrDebaGtEveloBgUHG8iRPWCaFNTrX3tkwDIRVCboOFU5t9sLNNOd3MgtZKgB7XZ5p
+ySenkyiubHWbN1sVtYBHYQEC8fBqg8oE4G2dk7qj29ZtpRj8NBrZn4dxZXAX66c/+v2r
+QIN5qB4z2tMuzN3l3DWPXItsDfBAjO/y0Q6TPAV47YsOvkjauRuXgUiHAqKCXPkv8Hvg
+j0lyRNmd80syFtZHGXLDBfDXwTqK3kJ4xlX6s+nMkTRd3+rlU4+vPDbnjuyM34dl6mcR
+xseeq8vo72jqFD8YSbgikSjttIcJYrLprfDE86UYHAlDJ1dimeA3jJbmebUl8A40bqhj
+6gQA=X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+d=1e100.net; s161025;
+h=x-gm-message-state:mime-version:in-reply-to:references:from:date
+:message-id:subject:to;
+bh=kUe7YK2Up7IuPIZrrKtkrhxc/6s/27GpQhh51Qojpg4=;
+b=Jy1ma1OaaMSSnzcbBav0RtzZmqYJ5jbjmw/bI1DarVGjRzQJ/NQc41P4xPWQAbAiE7
+G33t/82ka8Cie6lDwTRIIDbJ8bxUrkGpeFC7vprOK6vNct1E1OWHLm8cvYxkcLfLVzUy
+erA1CyCS0UVfG+cEK4Hh10lc2M/6HAIP3qov+YLrLMEbl9/vk3/qx6oQSsnAlbl05/ZO
+XVCmDLPZqvlvezgt4v6DHehjeuqnU7sAp+fFzHRp4TSR8hf7nrtzvlHjDgLn1IKHx9kH
+tygExD3nhKKVbImETKmF8XZW6RNXveSieTOOlJAlamHO79CP4FzAwHUF/iyPA9BIbbgj
+mTxA=X-Gm-Message-State: AHPjjUgLdtPNKROzNHa4MUmdfLcYQvdvYO5H/kRpmP8wta6CXxivQZK+
+QgMx27PiOznnIZ34eDrljC2OGTEIYeqVJHHi+2kCCg=X-Google-Smtp-Source: AOwi7QBt0FuFvNN3U94L/XWbZJgnXpxpDTlRlUO+xbq0UVXpKGDo39G+1Q4r9e6JRZmrQGHkv4/2BEFXaioqiOqImBsX-Received: by 10.55.119.70 with SMTP id s67mr2808064qkc.211.1505839376525;
+Tue, 19 Sep 2017 09:42:56 -0700 (PDT)
+MIME-Version: 1.0
+Received: by 10.200.53.189 with HTTP; Tue, 19 Sep 2017 09:42:55 -0700 (PDT)
+In-Reply-To: <9656357.20170919164153.59c148d1cbffe5.36040585@mail136-224.atl41.mandrillapp.com>
+References: <9656357.20170919164153.59c148d1cbffe5.36040585@mail136-224.atl41.mandrillapp.com>
+From: Suss
+<lullisuss@gmail.com>
+Date: Tue, 19 Sep 2017 18:42:55 +0200
+Message-ID:
+<CAOwm+ERcSbV1J2xXdkJUifLyg0rDtFygQyMfW+wApqZztAOuXw@mail.gmail.com>
+Subject: =?UTF-8?Q?Fwd=3A_MailChimp_Template_Test_=2D_=22Loggan_och_H=2Dm=C3=A4rket?=?UTF-8?Q?=22?To: ashley e
+<ashley@ashleycaroline.com>
+Content-Type: multipart/alternative; boundary="94eb2c05ea82206fa405598d8d48"
+Received-SPF: pass (slc001.mailfiltering.com: domain of gmail.com designates 209.85.220.175 as permitted sender) client-ip9.85.220.175; envelope-from=lullisuss@gmail.com; helo=mail-qk0-f175.google.com;
+X-SPF-Result: slc001.mailfiltering.com: domain of gmail.com designates 209.85.220.175 as permitted sender
+Authentication-Results: slc001.mailfiltering.com; dmarc=pass header.from=gmail.com
+Authentication-Results:  mailfiltering.com; spf=pass smtp.mailfrom=lullisuss@gmail.com; dkim=pass header.i=gmail.com
+X-Anti-spamControlPanel-Class: ham
+X-Anti-spamControlPanel-Evidence: Combined (0.50)
+X-Recommended-Action: accept
+X-Filter-ID: PqwsvolAWURa0gwxuN3S5dbLZBtEelHx626yyIFROGCrg47fh44OKQ6e5MXwo8ucoZhqhLJKqPmq
+vph4gRJFycenb+D9+ZcejE+3WVaa3ml+6hlkP5d9TRm+DE6o6FGon3hN+B2chXDeEJ/+PGZtjrko
+t5xKqGl8zw8EZ/M9hA39bEP1bZ5n7PQH4aVM8oBLwA5zF8OHpDE9Y+yevZOUyfhR0hzUX9c/CCGg
+JnmmKVdXw7Uz1Efj/A7ByaBlzHiiBHMQdWlxXT2segkF2pRBUa6HlTxNIuDpeiSGmzPTvyus1T2m
+CtHbnbujKZD9QbIJHFjdf1tz3+WvSU2WPXKGYKdPa0mTnggpih09RSHZO/q3y1wC5PH+Y4iWabHc
+zrtGPd0rEuGjFyZoidhtHm+WoYldO4pTbmt9mw647WM3aB5kDdgZa6gnBJlyLjIp5UWEw6nIoDr0
+sXUZ7YZoZ/GZ+pUvFSzI4Pk1+PIMYk6chm6koWjcTBZrd6lrPH07ZXrFWmuNA8WTybi1JN85FSnf
+KU2hdTF3uDBvIpOGBafKPg0WbeJg13ZsvYdHduNVTVWdL+jJFADraAVvj5Xy26V2Wis/lhkZOASS
+phdRHON+xp4VrgeuaaH5/GussPe0N6xVsndKDf0YkL7lKu/H3HLtJfM9hTe8R0YFBzO49j9zc/wI
+zsZ+sMuvdaFpUHOAqRb6IUij/aFJHw0YPNhQjl4KR3XlIeiOENsMy2OTScXxfVpOrZYIHLXG0E7y
+31waRGo1e51nzKUmIoJeqJwTzkh4gSrf4LBEH6UhXdEHLH2ubzLT1YVr/HwHMlsUt4dGZJLkYAOd
+CaMrik/X6IbOMpcEy586GMcHIJ3Fi1EKAfApJ7+tuXXjFgiTt81BOy1Vgoh2kzGrqisoMV1fTwU1
+D32u51heLcmr0MmQcz5C8xG5nGkX-Report-Abuse-To: spam@slc001.mailfiltering.com
+
+--94eb2c05ea82206fa405598d8d48
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+---------- Vidarebefordrat meddelande ----------
+Fr=C3=A5n:
+<susanna@immi.nu>
+Datum: 19 september 2017 18:41
+=C3=84mne: MailChimp Template Test - "Loggan och H-m=C3=A4rket"
+Till: lullisuss@gmail.com
+
+
+Ett nyhetsbrev fr=C3=A5n Sveriges Hundf=C3=B6retagare.
+Rubrik
+
+*Ingress!*
+
+Text
+
+*Med v=C3=A4nliga h=C3=A4lsningar/ *
+
+*Styrelsen Ulrika, Carro, Susanna, Lena, Frida och Susanna*
+<http://www.sverigeshundforetagare.se>
+<http://www.facebook.com/sverigeshundforetagare>
+<http://instagram.com/sverigeshundforetagare>
+Du f=C3=A5r detta mail f=C3=B6r att du =C3=A4r medlem i SVERIGES HUNDF=C3=96RETAGARE
+
+--94eb2c05ea82206fa405598d8d48
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir="ltr">
+    <br>
+    <div class="gmail_quote">
+        ---------- Vidarebefordrat = meddelande ----------<br>
+        Fr=C3=A5n: <b class="gmail_sendername"></b>
+        <span dir="ltr">&lt;<a href="mailto:susanna@immi.nu">susanna@immi.nu</a>&gt;</span>
+        <br>Datum: 19 september 2017 18:41<br>=C3=84mne: MailChimp TemplateTest
+        - &quot;Loggan och H-m=C3=A4rket&quot;<br>Till: <a
+            href="mailto:lullisuss@gmail.com">lullisuss@gmail.com</a><br><br><br><u></u>
+
+
+        <div style="height:100%;margin:0;padding:0;width:100%;background-color:#f7f7f2 ">
+
+            <center>
+                <table id="m_4062113179225865808bodyTable"
+                       style="border-collapse:collapse;height:100%;margin:0;padding:0;width:100%;background-color:#f7f7f2"
+                       cellspacing="0" cellpadding="0"
+                       border="0" align="center" height="100%" width="100%">
+                    <tbody>
+                    <tr>
+                        <td id="m_4062113179225865808bodyCell"
+                            style="height:100%;margin:0;padding:0;width:100%;border-top:0"
+                            align="center" valign="top">
+
+                            <table style="border-collapse:collapse"
+                                   cellspacing="0" cellpadding="0" border="0"
+                                   width="100%">
+                                <tbody>
+                                <tr>
+                                    <td id="m_4062113179225865808templatePreheader"
+                                        style="background-color:#f7f7f2;
+                                        background-image:none;
+                                        background-repeat:no-repeat;
+                                        background-position:center;
+                                        background-size:cover;
+                                        border-top:0;
+                                        border-bottom:0;
+                                        padding-top:9px;
+                                        padding-bottom:9px"
+                                        align="center" valign="top">
+
+                                        <table class="m_4062113179225865808templateContainer"
+                                               style="border-collapse:collapse;max-width:600px!important"
+                                               cellspacing="0" cellpadding="0"
+                                               border="0"
+                                               align="center"
+                                               width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td class="m_4062113179225865808preheaderContainer"
+                                                    valign="top">
+                                                    <table class="m_4062113179225865808mcnTextBlock"
+                                                           style="min-width:100%;border-collapse:collapse"
+                                                           cellspacing="0"
+                                                           cellpadding="0"
+                                                           border="0"
+                                                           width="100%">
+                                                        <tbody class="m_4062113179225865808mcnTextBlockOuter">
+                                                        <tr>
+                                                            <td class="m_4062113179225865808mcnTextBlockInner"
+                                                                style="padding-top:9px"
+                                                                valign="top">
+
+
+                                                                <table style="max-width:100%;min-width:100%;border-collapse:collapse"
+                                                                       class="m_4062113179225865808mcnTextContentContainer"
+                                                                       cellspacing="0"
+                                                                       cellpadding="0"
+                                                                       border="0"
+                                                                       align="left"
+                                                                       width="100%">
+                                                                    <tbody>
+                                                                    <tr>
+
+                                                                        <td class="m_4062113179225865808mcnTextContent"
+                                                                            style="padding-top:0;
+                                                                            padding-right:18px;
+                                                                            padding-bottom:
+                                                                            9px;padding-left:18px;
+                                                                            word-break:break-word;
+                                                                            color:#656565;
+                                                                            font-family:Helvetica;
+                                                                            font-size:12px;
+                                                                            line-height:150%;
+                                                                            text-align:left"
+                                                                            valign="top">
+
+                                                                            <span style="color:#ffffff">Ett nyhetsbrev fr=C3=A5n Sveriges Hundf=C3=B6retagare.</span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+
+
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="m_4062113179225865808templateHeader"
+                                        style="background-color:#ffffff;
+                                        background-image:none;
+                                        background-repeat:no-repeat;
+                                        background-position:center;
+                                        background-size:cover;
+                                        border-top:0;
+                                        border-bottom:0;padding-top:9px;padding-bottom:0"
+                                        align="center" valign="top">
+
+                                        <table class="m_4062113179225865808templateContainer"
+                                               style="border-collapse:collapse;max-width:600px!important"
+                                               cellspacing="0" cellpadding="0"
+                                               border="0"
+                                               align="center" width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td class="m_4062113179225865808headerContainer"
+                                                    valign="top">
+                                                    <table class="m_4062113179225865808mcnImageBlock"
+                                                           style="min-width:100%;border-collapse:collapse"
+                                                           cellspacing="0"
+                                                           cellpadding="0"
+                                                           border="0"
+                                                           width="100%">
+                                                        <tbody class="m_4062113179225865808mcnImageBlockOuter">
+                                                        <tr>
+                                                            <td style="padding:0px"
+                                                                class="m_4062113179225865808mcnImageBlockInner"
+                                                                valign="top">
+                                                                <table class="m_4062113179225865808mcnImageContentContainer"
+                                                                       style="min-width:100%;border-collapse:collapse"
+                                                                       cellspacing="0"
+                                                                       cellpadding="0"
+                                                                       border="0"
+                                                                       align="left"
+                                                                       width="100%">
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td class="m_4062113179225865808mcnImageContent"
+                                                                            style="padding-right:0px;padding-left:0px;padding-top:0;padding-bottom:0"
+                                                                            valign="top">
+
+
+                                                                            <img alt=""
+                                                                                 src="https://gallery.mailchimp.com/08928768613ae66ec8d6f78fb/images/de2a307d-34a1-44d2-a368-06bd06ce1872.jpg"
+                                                                                 style="max-width:693px;
+                                                                                 padding-bottom:0;
+                                                                                 display:inline!important;
+                                                                                 vertical-align:bottom;
+                                                                                 border:0;height:auto;
+                                                                                 outline:none;text-decoration:none"
+                                                                                 class="m_4062113179225865808mcnImage"
+                                                                                 align="left"
+                                                                                 width="600">
+
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="m_4062113179225865808templateBody"
+                                        style="background-color:#ffffff;background-image:none;
+                                        background-repeat:no-repeat;background-position:center;
+                                        background-size:cover;
+                                        border-top:0;border-bottom:0;padding-top:9px;padding-bottom:9px"
+                                        align="center" valign="top">
+
+                                        <table class="m_4062113179225865808templateContainer"
+                                               style="border-collapse:collapse;max-width:600px!important"
+                                               cellspacing="0" cellpadding="0"
+                                               border="0" align="center"
+                                               width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td class="m_4062113179225865808bodyContainer"
+                                                    valign="top">
+                                                    <table class="m_4062113179225865808mcnTextBlock"
+                                                           style="min-width:100%;border-collapse:collapse"
+                                                           cellspacing="0"
+                                                           cellpadding="0"
+                                                           border="0"
+                                                           width="100%">
+                                                        <tbody class="m_4062113179225865808mcnTextBlockOuter">
+                                                        <tr>
+                                                            <td class="m_4062113179225865808mcnTextBlockInner"
+                                                                style="padding-top:9px"
+                                                                valign="top">
+
+
+                                                                <table style="max-width:100%;min-width:100%;border-collapse:collapse"
+                                                                       class="m_4062113179225865808mcnTextContentContainer"
+                                                                       cellspacing="0"
+                                                                       cellpadding="0"
+                                                                       border="0"
+                                                                       align="left"
+                                                                       width="100%">
+                                                                    <tbody>
+                                                                    <tr>
+
+                                                                        <td class="m_4062113179225865808mcnTextContent"
+                                                                            style="padding-top:0;
+                                                                            padding-right:18px;
+                                                                            padding-bottom:9px;padding-left:18px;
+                                                                            word-break:break-word;
+                                                                            color:#222222;
+                                                                            font-family:'Open Sans','HelveticaNeue',Helvetica,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left"
+                                                                            valign="top">
+
+                                                                            <h1 style="display:block;margin:0;padding:0;color:#222222;
+                                                                            font-family:'OpenSans','Helvetica Neue',Helvetica,Arial,sans-serif;font-size:26px;
+                                                                            font-style:normal;font-weight:normal;line-height:125%;letter-spacing:normal;text-align:left">
+                                                                                Rubrik</h1>
+
+                                                                            <p style="margin:10px 0;padding:0;color:#222222;font-family:'Open Sans','HelveticaNeue',Helvetica,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left">
+                                                                                <i>Ingress!</i>
+                                                                            </p>
+
+                                                                            <p style="margin:10px
+                           0;padding:0;color:#222222;font-family:'Open Sans','HelveticaNeue',Helvetica,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left">
+                                                                                Text</p>
+
+                                                                            <p style="margin:10px
+                           0;padding:0;color:#222222;font-family:'Open Sans','HelveticaNeue',Helvetica,Arial,sans-serif;font-size:14px;line-height:150%;text-align:left">
+                                                                                <b>Med
+                                                                                    v=C3=A4nliga
+                                                                                    h=C3=A4lsningar/=C2=A0</b><br>
+                                                                                <i>Styrelsen<br>
+                                                                                    Ulrika,
+                                                                                    Carro,
+                                                                                    Susanna,
+                                                                                    Lena,
+                                                                                    Frida
+                                                                                    och
+                                                                                    Susanna</i>
+                                                                            </p>
+
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+
+
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                    <table class="m_4062113179225865808mcnDividerBlock"
+                                                           style="min-width:100%;border-collapse:collapse;table-layout:fixed!important"
+                                                           cellspacing="0"
+                                                           cellpadding="0"
+                                                           border="0"
+                                                           width="100%">
+                                                        <tbody class="m_4062113179225865808mcnDividerBlockOuter">
+                                                        <tr>
+                                                            <td class="m_4062113179225865808mcnDividerBlockInner"
+                                                                style="min-width:100%;padding:18px">
+                                                                <table class="m_4062113179225865808mcnDividerContent"
+                                                                       style="min-width:100%;border-top:2px dotted #eaeaea;border-collapse:collapse"
+                                                                       cellspacing=" 0"
+                                                                       cellpadding="0"
+                                                                       border="0"
+                                                                       width="100%">
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td>
+                                                                            <span></span>
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                    <table class="m_4062113179225865808mcnFollowBlock"
+                                                           style="min-width:100%;border-collapse:collapse" cellspacing="0" cellpadding="0" border="0" width="100%">
+                                                        <tbody class="m_4062113179225865808mcnFollowBlockOuter">
+                                                        <tr>
+                                                            <td style="padding:9px"
+                                                                class="m_4062113179225865808mcnFollowBlockInner"
+                                                                align="center"
+                                                                valign="top">
+                                                                <table class="m_4062113179225865808mcnFollowContentContainer"
+                                                                       style="min-width:100%;border-collapse:collapse"
+                                                                       cellspacing="0"
+                                                                       cellpadding="0"
+                                                                       border="0"
+                                                                       width="100%">
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <td style="padding-left:9px;padding-right:9px"
+                                                                            align="center">
+                                                                            <table style="min-width:100%;background-color:#ffffff;border-collapse:collapse"
+                                                                                   class="m_4062113179225865808mcnFollowContent"
+                                                                                   cellspacing="0"
+                                                                                   cellpadding="0"
+                                                                                   border="0"
+                                                                                   width="100%">
+                                                                                <tbody>
+                                                                                <tr>
+                                                                                    <td style="padding-top:9px;padding-right:9px;padding-left:9px"
+                                                                                        align="center"
+                                                                                        valign="top">
+                                                                                        <table style="border-collapse:collapse"
+                                                                                               cellspacing="0"
+                                                                                               cellpadding="0"
+                                                                                               border="0"
+                                                                                               align="center">
+                                                                                            <tbody>
+                                                                                            <tr>
+                                                                                                <td align="center"
+                                                                                                    valign="top">
+
+
+                                                                                                    <table style="display:inline;border-collapse:collapse"
+                                                                                                           cellspacing="0"
+                                                                                                           cellpadding="0"
+                                                                                                           border="0"
+                                                                                                           align="left">
+                                                                                                        <tbody>
+                                                                                                        <tr>
+                                                                                                            <td style="padding-right:10px;padding-bottom:9px"
+                                                                                                                class="m_4062113179225865808mcnFollowContentItemContainer"
+                                                                                                                valign="top">
+                                                                                                                <table class="m_4062113179225865808mcnFollowContentItem"
+                                                                                                                       style="border-collapse:collapse"
+                                                                                                                       cellspacing="0"
+                                                                                                                       cellpadding="0"
+                                                                                                                       border="0"
+                                                                                                                       width="100%">
+                                                                                                                    <tbody>
+                                                                                                                    <tr>
+                                                                                                                        <td style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:9px"
+                                                                                                                            align="left"
+                                                                                                                            valign="middle">
+                                                                                                                            <table
+                                                                                                                                    style="border-collapse:collapse"
+                                                                                                                                    cellspacing="0"
+                                                                                                                                    cellpadding="0"
+                                                                                                                                    border="0"
+                                                                                                                                    align="left"
+                                                                                                                                    width="">
+                                                                                                                                <tbody>
+                                                                                                                                <tr>
+
+                                                                                                                                    <td class="m_4062113179225865808mcnFollowIconContent"
+                                                                                                                                        align="center"
+                                                                                                                                        width="24"
+                                                                                                                                        valign="middle">
+                                                                                                                                        <a href="http://www.sverigeshundforetagare.se"
+                                                                                                                                           target="_blank"><img
+                                                                                                                                                src="https://cdn-images.mailchimp.com/icons/social-block-v2/gray-link-48.png"
+                                                                                                                                                style="display:block;border:0;height:auto;outline:none;text-decoration:none"
+                                                                                                                                                height="24"
+                                                                                                                                                width="24"></a>
+                                                                                                                                    </td>
+
+
+                                                                                                                                </tr>
+                                                                                                                                </tbody>
+                                                                                                                            </table>
+                                                                                                                        </td>
+                                                                                                                    </tr>
+                                                                                                                    </tbody>
+                                                                                                                </table>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+
+
+                                                                                                    <table style="display:inline;border-collapse:collapse"
+                                                                                                           cellspacing="0"
+                                                                                                           cellpadding="0"
+                                                                                                           border="0"
+                                                                                                           align="left">
+                                                                                                        <tbody>
+                                                                                                        <tr>
+                                                                                                            <td style="padding-right:10px;padding-bottom:9px"
+                                                                                                                class="m_4062113179225865808mcnFollowContentItemContainer"
+                                                                                                                valign="top">
+                                                                                                                <table class="m_4062113179225865808mcnFollowContentItem"
+                                                                                                                       style="border-collapse:collapse"
+                                                                                                                       cellspacing="0"
+                                                                                                                       cellpadding="0"
+                                                                                                                       border="0"
+                                                                                                                       width="100%">
+                                                                                                                    <tbody>
+                                                                                                                    <tr>
+                                                                                                                        <td style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:9px"
+                                                                                                                            align="left"
+                                                                                                                            valign="middle">
+                                                                                                                            <table
+                                                                                                                                    style="border-collapse:collapse"
+                                                                                                                                    cellspacing="0"
+                                                                                                                                    cellpadding="0"
+                                                                                                                                    border="0"
+                                                                                                                                    align="left"
+                                                                                                                                    width="">
+                                                                                                                                <tbody>
+                                                                                                                                <tr>
+
+                                                                                                                                    <td class="m_4062113179225865808mcnFollowIconContent"
+                                                                                                                                        align="center"
+                                                                                                                                        width="24"
+                                                                                                                                        valign="middle">
+                                                                                                                                        <a href="http://www.facebook.com/sverigeshundforetagare"
+                                                                                                                                           target="_blank"><img
+                                                                                                                                                src="https://cdn-images.mailchimp.com/icons/social-block-v2/gray-facebook-48.png"
+                                                                                                                                                style="display:block;border:0;height:auto;outline:none;text-decoration:none"
+                                                                                                                                                height="24"
+                                                                                                                                                width="24"></a>
+                                                                                                                                    </td>
+
+
+                                                                                                                                </tr>
+                                                                                                                                </tbody>
+                                                                                                                            </table>
+                                                                                                                        </td>
+                                                                                                                    </tr>
+                                                                                                                    </tbody>
+                                                                                                                </table>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+
+
+                                                                                                    <table style="display:inline;border-collapse:collapse"
+                                                                                                           cellspacing="0"
+                                                                                                           cellpadding="0"
+                                                                                                           border="0"
+                                                                                                           align="left">
+                                                                                                        <tbody>
+                                                                                                        <tr>
+                                                                                                            <td style="padding-right:0;padding-bottom:9px"
+                                                                                                                class="m_4062113179225865808mcnFollowContentItemContainer"
+                                                                                                                valign="top">
+                                                                                                                <table class="m_4062113179225865808mcnFollowContentItem"
+                                                                                                                       style="border-collapse:collapse"
+                                                                                                                       cellspacing="0"
+                                                                                                                       cellpadding="0"
+                                                                                                                       border="0"
+                                                                                                                       width="100%">
+                                                                                                                    <tbody>
+                                                                                                                    <tr>
+                                                                                                                        <td style="padding-top:5px;padding-right:10px;padding-bottom:5px;padding-left:9px"
+                                                                                                                            align="left"
+                                                                                                                            valign="middle">
+                                                                                                                            <table
+                                                                                                                                    style="border-collapse:collapse"
+                                                                                                                                    cellspacing="0"
+                                                                                                                                    cellpadding="0"
+                                                                                                                                    border="0"
+                                                                                                                                    align="left"
+                                                                                                                                    width="">
+                                                                                                                                <tbody>
+                                                                                                                                <tr>
+
+                                                                                                                                    <td class="m_4062113179225865808mcnFollowIconContent"
+                                                                                                                                        align="center"
+                                                                                                                                        width="24"
+                                                                                                                                        valign="middle">
+                                                                                                                                        <a href="http://instagram.com/sverigeshundforetagare"
+                                                                                                                                           target="_blank"><img
+                                                                                                                                                src="https://cdn-images.mailchimp.com/icons/social-block-v2/gray-instagram-48.png"
+                                                                                                                                                style="display:block;border:0;height:auto;outline:none;text-decoration:none"
+                                                                                                                                                height="24"
+                                                                                                                                                width="24"></a>
+                                                                                                                                    </td>
+
+
+                                                                                                                                </tr>
+                                                                                                                                </tbody>
+                                                                                                                            </table>
+                                                                                                                        </td>
+                                                                                                                    </tr>
+                                                                                                                    </tbody>
+                                                                                                                </table>
+                                                                                                            </td>
+                                                                                                        </tr>
+                                                                                                        </tbody>
+                                                                                                    </table>
+
+
+                                                                                                </td>
+                                                                                            </tr>
+                                                                                            </tbody>
+                                                                                        </table>
+                                                                                    </td>
+                                                                                </tr>
+                                                                                </tbody>
+                                                                            </table>
+                                                                        </td>
+                                                                    </tr>
+
+                                                                    </tbody>
+                                                                </table>
+
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td id="m_4062113179225865808templateFooter"
+                                        style="background:#f7f7f2 none no-repeat center cover;background-color:#f7f7f2;background-image:none;background-repeat:no-repeat;background-position:center;background-size:cover;border-top:0;border-bottom:0;padding-top:9px;padding-bottom:9px"
+                                        align="center" valign="top">
+
+                                        <table class="m_4062113179225865808templateContainer"
+                                               style="border-collapse:collapse;max-width:600px!important"
+                                               cellspacing="0" cellpadding="0"
+                                               border="0" align="center"
+                                               width="100%">
+                                            <tbody>
+                                            <tr>
+                                                <td class="m_4062113179225865808footerContainer"
+                                                    valign="top">
+                                                    <table class="m_4062113179225865808mcnTextBlock"
+                                                           style="min-width:100%;border-collapse:collapse"
+                                                           cellspacing="0"
+                                                           cellpadding="0"
+                                                           border="0"
+                                                           width="100%">
+                                                        <tbody class="m_4062113179225865808mcnTextBlockOuter">
+                                                        <tr>
+                                                            <td class="m_4062113179225865808mcnTextBlockInner"
+                                                                style="padding-top:9px"
+                                                                valign="top">
+
+
+                                                                <table style="max-width:100%;min-width:100%;border-collapse:collapse"
+                                                                       class="m_4062113179225865808mcnTextContentContainer"
+                                                                       cellspacing="0"
+                                                                       cellpadding="0"
+                                                                       border="0"
+                                                                       align="left"
+                                                                       width="100%">
+                                                                    <tbody>
+                                                                    <tr>
+
+                                                                        <td class="m_4062113179225865808mcnTextContent"
+                                                                            style="padding-top:0;padding-right:18px;padding-bottom:9px;padding-left:18px;  word-break:break-word; color:#656565;font-family:Helvetica;font-size:12px;line-height:150%;text-align:center"
+                                                                            valign="top">
+
+                                                                            Du
+                                                                            f=C3=A5r
+                                                                            detta
+                                                                            mail
+                                                                            f=C3=B6r
+                                                                            att
+                                                                            du
+                                                                            =C3=A4r
+                                                                            medlem
+                                                                            i
+                                                                            SVERIGES
+                                                                            HUNDF=C3=96RETAGARE<br>
+                                                                            =C2=A0
+                                                                        </td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+
+
+                                                            </td>
+                                                        </tr>
+                                                        </tbody>
+
+                                                    </table>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </center>
+        </div>
+
+    </div>
+    <br></div>
+
+--94eb2c05ea82206fa405598d8d48--
+

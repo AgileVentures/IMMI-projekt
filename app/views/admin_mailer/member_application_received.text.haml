@@ -1,0 +1,17 @@
+- provide :signoff do
+  = render 'admin_mailer/signoff'
+
+
+= t('shf_mailer.admin.new_application_received.message_text.new_app_arrived')
+\
+= t('shf_mailer.admin.new_application_received.message_text.from')
+= "     #{@member_app.user.full_name}"
+= "     #{@member_app.contact_email}"
+
+\
+= t('shf_mailer.admin.new_application_received.message_text.view_app_here')
+= "     #{url_for(@member_app)}"
+\
+= t('shf_mailer.admin.new_application_received.message_text.must_be_logged_in')
+\
+

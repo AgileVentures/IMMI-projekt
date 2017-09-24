@@ -1,0 +1,9 @@
+- provide :signoff do
+  = render 'membership_application_mailer/signoff'
+
+= t('shf_mailer.membership_application.accepted.message_text.youre_active')  + edit_company_url(@member_app.company)
+\
+= t('shf_mailer.membership_application.accepted.message_text.access_fb_group')
+= t('shf_facebook_group_url')
+\
+= t('shf_mailer.membership_application.accepted.message_text.and_member_pages') + t('shf_medlemssystem_url')

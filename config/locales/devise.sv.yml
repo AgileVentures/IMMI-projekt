@@ -23,11 +23,11 @@ sv:
       reset_password_instructions:
         subject: "Instrukionter för att återställa lösenord"
         hello: "Hallå %{email}"
-        reset_requested: "Någon har begärt en länk för att ändra ditt lösenord.
-                          Du kan göra det genom länken nedan."
+        reset_requested: "Någon har begärt en länk för att ändra ditt lösenord. Du kan göra det genom länken nedan."
         change_password: "Ändra mitt lösenord"
         ignore: "Om du inte begärt detta, ignorerar du det här e-postmeddelandet."
         follow_link: "Ditt lösenord ändras inte förrän du kommer åt länken ovan och skapar ett nytt."
+        copy_paste_link: "Om länken ovan inte fungerar, kopiera nedan och klistra in i adressfältet i din webbläsare: %{change_password_link}"
 
       unlock_instructions:
         subject: "Instruktioner för att låsa up konto"

@@ -1,0 +1,20 @@
+-# This is the style (and format) that MailChimp uses for follow links at the bottom of a mail
+%table{ cellspacing: '0', cellpadding: '0', align: 'left', border: '1px' }
+  %tbody
+    %tr
+      %td.follow-content-item-container{ valign: 'top' }
+        %table.follow-content-item{ cellspacing: '0', cellpadding: '0' }
+          %tbody
+            %tr
+              %td{ align: "left", valign: 'middle' }
+                %table{ cellspacing: '0', cellpadding: '0', align: "left" }
+                  %tr
+
+                    %td.follow-icon-content{ align: "center", valign: "middle" }
+                      = link_to( image_tag('mailchimp-gray-link-48.png',  height: '24', width: '24' ), t('shf_home_url'), target: '_blank')
+
+                    %td.follow-icon-content{ align: "center", valign: "middle" }
+                      = link_to( 'fb',  t('shf_facebook_url'), target: '_blank')
+
+                    %td.follow-icon-content{ align: "center", valign: "middle" }
+                      = link_to( 'insta', t('shf_instagram_url'), target: '_blank')
