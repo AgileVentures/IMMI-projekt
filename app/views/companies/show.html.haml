@@ -45,7 +45,7 @@
           %thead
             %tr
               %th
-                = "#{t('.address')}" + " (#{t('.click_to_edit')})" if user_can_edit
+                = "#{t('.address')}" + (" (#{t('.click_to_edit')})" if user_can_edit)
 
               - if user_can_edit
 
@@ -57,7 +57,7 @@
               %tr.address
                 - if user_can_edit
                   %td
-                    = link_to address.entire_address,
+                    = link_to address.entire_address(full_visibility: true),
                               edit_company_address_path(@company.id, address.id)
                   %td
                     %span{ class: (address.visibility == 'none' ? 'no' : 'yes') }

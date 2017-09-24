@@ -499,8 +499,16 @@ en:
     edit:
       title: 'Editing Address for: %{company_name}'
       delete: 'Delete this address'
+    update:
+      error: There was a problem updating the address.
+      success: The address was updated.
     new:
       title: 'New Address for: %{company_name}'
+    create:
+      success: The address was created successfully.
+    destroy:
+      success: Address deleted.
+      error: Could not delete the address.
 
 
   business_categories:

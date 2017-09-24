@@ -36,14 +36,12 @@ class CompaniesController < ApplicationController
 
   def show
     @categories = @company.business_categories
-    @company.addresses << Address.new  if @company.addresses.count == 0
   end
 
 
   def new
     authorize Company
     @company = Company.new
-    @addresses = @company.addresses.build
 
     @all_business_categories = BusinessCategory.all
   end

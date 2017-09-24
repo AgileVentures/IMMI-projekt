@@ -4,21 +4,50 @@ class AddressesController < ApplicationController
   before_action :get_company
 
   def new
+    # authorize Address
+
     @address = Address.new
   end
 
   def create
+    # authorize Address
+
+    @address = Address.new(address_params)
+    @address.addressable = @company
+
+    if @address.save
+      redirect_to @company, notice: t('.success')
+    else
+      flash.now[:alert] = t('.error')
+      render :new
+    end
   end
 
   def edit
+    # authorize
   end
 
   def update
-    redirect_to company_path(@company)
+    # authorize
+
+    if @address.update(address_params)
+      redirect_to @company, notice: t('.success')
+    else
+      flash.now[:alert] = t('.error')
+      render :edit
+    end
   end
 
   def destroy
-    redirect_to company_path(@company)
+    # authorize
+
+    if @address.destroy
+      redirect_to @company, notice: t('addresses.destroy.success')
+    else
+      translated_errors = helpers.translate_and_join(@address.errors.full_messages)
+      helpers.flash_message(:alert, "#{t('addresses.destroy.error')}: #{translated_errors}")
+      redirect_to @company
+    end
   end
 
   def set_address_type
@@ -32,6 +61,11 @@ class AddressesController < ApplicationController
 
   def get_address
     @address = Address.find(params[:id])
+  end
+
+  def address_params
+    params.require(:address).permit(:street_address, :post_code, :city,
+                                    :kommun_id, :region_id, :visibility)
   end
 
 end

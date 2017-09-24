@@ -76,8 +76,17 @@ class Address < ApplicationRecord
   end
 
 
-  def entire_address
-    address_array.compact.join(', ')
+  def entire_address(full_visibility: false)
+    return address_array.compact.join(', ') if (!full_visibility ||
+                                                visibility == 'street_address')
+    
+    saved_visibility = visibility
+    self.visibility = 'street_address'
+
+    addr_str = address_array.compact.join(', ')
+    self.visibility = saved_visibility
+
+    addr_str
   end
 
 

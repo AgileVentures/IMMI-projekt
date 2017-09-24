@@ -499,8 +499,16 @@ sv:
     edit:
       title: 'Redigeringsadress för: %{company_name}'
       delete: 'Ta bort den här adressen'
+    update:
+      error: Det gick inte att uppdatera adressen.
+      success: Adressen uppdaterades.
     new:
       title: 'Ny adress för: %{company_name}'
+    create:
+      success: TAdressen skapades framgångsrikt.
+    destroy:
+      success: Adressen raderad.
+      error: Det gick inte att ta bort adressen.
 
   business_categories:
 
