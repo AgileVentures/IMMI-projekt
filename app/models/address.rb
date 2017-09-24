@@ -12,6 +12,11 @@ class Address < ApplicationRecord
 
   validates_presence_of :country
 
+  # Business rule: addressable (business, member) can have only one mailing address
+  validates_uniqueness_of :mail, scope: :addressable_id,
+                          conditions: -> { where(mail: true) },
+                          if: proc { :mail }
+
   ADDRESS_VISIBILITY = %w(street_address post_code city kommun none)
 
   validates :visibility, inclusion: ADDRESS_VISIBILITY
@@ -79,7 +84,7 @@ class Address < ApplicationRecord
   def entire_address(full_visibility: false)
     return address_array.compact.join(', ') if (!full_visibility ||
                                                 visibility == 'street_address')
-    
+
     saved_visibility = visibility
     self.visibility = 'street_address'
 

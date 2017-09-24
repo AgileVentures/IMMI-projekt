@@ -151,6 +151,7 @@ sv:
         region: &region Verksamhetslän
         region_short: &region_short Län
         country: Land
+        mail: Post
 
       company:
         company_number: *org_nr

@@ -151,6 +151,7 @@ en:
         region: &region Region
         region_short: &region_short Län
         country: country
+        mail: Mail
 
       company:
         company_number: *org_nr
