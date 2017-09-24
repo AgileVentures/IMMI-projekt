@@ -506,6 +506,7 @@ sv:
     new:
       title: 'Ny adress för: %{company_name}'
     create:
+      error: Ett eller flera problem hindrade adressen från att skapas.
       success: TAdressen skapades framgångsrikt.
     destroy:
       success: Adressen raderad.

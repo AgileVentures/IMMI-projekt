@@ -506,6 +506,7 @@ en:
     new:
       title: 'New Address for: %{company_name}'
     create:
+      error: One or more problems prevented the address from being created.
       success: The address was created successfully.
     destroy:
       success: Address deleted.
