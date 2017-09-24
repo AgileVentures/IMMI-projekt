@@ -45,7 +45,7 @@ RSpec.describe Address, type: :model do
     it { is_expected.to validate_presence_of :addressable }
     it { is_expected.to validate_inclusion_of(:visibility)
                             .in_array(Address::ADDRESS_VISIBILITY) }
-                            
+
     it 'validates only one mailing address' do
       visible_addr.mail = true
       expect(visible_addr).to be_valid
@@ -108,6 +108,22 @@ RSpec.describe Address, type: :model do
 
   end
 
+  describe '#entire_address' do
+    it 'returns all data if visibility == street_address' do
+      visible_addr.visibility = 'street_address'
+      addr_str = visible_addr.entire_address
+      confirm_full_address_str(addr_str, visible_addr)
+    end
+    it 'returns empty string if visibility == none' do
+      visible_addr.visibility = 'none'
+      expect(visible_addr.entire_address).to be_empty
+    end
+    it 'returns all data if visibility == none but full_visibility specified' do
+      visible_addr.visibility = 'none'
+      addr_str = visible_addr.entire_address(full_visibility: true)
+      confirm_full_address_str(addr_str, visible_addr)
+    end
+  end
 
   describe 'geocoding' do
 
@@ -442,5 +458,14 @@ RSpec.describe Address, type: :model do
 
     end
 
+  end
+
+  def confirm_full_address_str(addr_str, addr)
+    kommun = Kommun.find(addr.kommun_id)
+    expect(addr_str.include?(addr.street_address)).to be true
+    expect(addr_str.include?(addr.post_code)).to be true
+    expect(addr_str.include?(addr.city)).to be true
+    expect(addr_str.include?(kommun.name)).to be true
+    expect(addr_str.include?(addr.country)).to be true
   end
 end
