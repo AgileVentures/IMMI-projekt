@@ -2,6 +2,7 @@ class AddressesController < ApplicationController
 
   before_action :get_address, except: [:new, :create]
   before_action :get_company
+  before_action :authorize_company, only: [:update, :show, :edit, :destroy]
 
   def new
     # authorize Address
@@ -66,6 +67,10 @@ class AddressesController < ApplicationController
   def address_params
     params.require(:address).permit(:street_address, :post_code, :city,
                                     :kommun_id, :region_id, :visibility)
+  end
+
+  def authorize_company
+    authorize @company
   end
 
 end
