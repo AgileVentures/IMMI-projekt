@@ -39,13 +39,14 @@
 
       - addresses = user_can_edit ? @company.addresses : @company.addresses.visible
 
-      - if addresses
+      - if addresses.any?
 
         %table.table.table-hover
           %thead
             %tr
               %th
-                = "#{t('.address')}" + (" (#{t('.click_to_edit')})" if user_can_edit)
+                = "#{t('.address')}"
+                = " (#{t('.click_to_edit')})" if user_can_edit
 
               - if user_can_edit
 
@@ -78,12 +79,12 @@
 
       - if user_can_edit
 
-        = link_to "#{t('companies.edit_company')}",
-                  edit_company_path(@company), class: 'btn btn-primary edit-company'
-
         = link_to "#{t('.add_address')}",
                   new_company_address_path(@company),
                   class: 'btn btn-primary add-company-address'
+
+        = link_to "#{t('companies.edit_company')}",
+                  edit_company_path(@company), class: 'btn btn-default edit-company'
 
         = link_to "#{t('companies.all_companies')}",
                   companies_path, class: 'btn btn-default all-companies'

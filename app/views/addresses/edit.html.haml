@@ -10,8 +10,6 @@
   .center
     = link_to "#{t('companies.view_company')}", @company
     \|
-    = link_to "#{t('companies.list_all_companies')}", companies_path
-    \|
     = link_to "#{t('.delete')}", company_address_delete_path(@company, @address),
               method: :delete,
               data: { confirm: 'Are you sure you want to delete this address?' },

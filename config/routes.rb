@@ -73,6 +73,8 @@ Rails.application.routes.draw do
 
   end
 
+  # We are not using nested resource statements for the following routes
+  # because that did not seem to work when used in combination with "path:" option 
   post 'hundforetag/:company_id/adresser/:id/set_type', to: 'addresses#set_address_type',
        as: :company_address_type
   # ^^ Used only for XHR action, not visible to user
