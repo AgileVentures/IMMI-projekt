@@ -79,6 +79,16 @@ RSpec.configure do |config|
     DatabaseCleaner.clean
   end
 
+  config.before(:all) do
+    DatabaseCleaner.start
+  end
+
+
+  config.append_after(:all) do
+    DatabaseCleaner.clean
+    # @see http://renderedtext.com/blog/2012/10/10/cleaning-up-after-before-all-blocks/
+  end
+
 end
 
 
