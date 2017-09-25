@@ -26,9 +26,12 @@ module CompaniesHelper
 
     companies.each do |company|
       link_name ? name_html = nil : name_html = company.name
-      results << {latitude: company.main_address.latitude,
-                  longitude: company.main_address.longitude,
-                  text: html_marker_text(company, name_html: name_html) }
+
+      company.addresses.visible.each do |address|
+        results << {latitude: address.latitude,
+                    longitude: address.longitude,
+                    text: html_marker_text(company, address, name_html: name_html) }
+      end
     end
 
     results
@@ -38,17 +41,14 @@ module CompaniesHelper
   # html to display for a company when showing a marker on a map
   #  if no name_html is given (== nil), it will be linked to the company,
   #  else the name_html string will be used
-  def html_marker_text company, name_html:  nil
+  def html_marker_text company, address, name_html:  nil
     text = "<div class='map-marker'>"
     text <<  "<p class='name'>"
     text << (name_html.nil? ? link_to(company.name, company, target: '_blank') : name_html)
     text <<  "</p>"
     text << "<p class='categories'>#{list_categories company, ', '}</p>"
     text << "<br>"
-    company.addresses.each do |addr|
-      text << "<p class='entire-address'>#{addr.entire_address}</p>"
-    end
-
+    text << "<p class='entire-address'>#{address.entire_address}</p>"
     text << "</div>"
 
     text
