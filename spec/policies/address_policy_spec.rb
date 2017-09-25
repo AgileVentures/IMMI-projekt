@@ -20,7 +20,7 @@ RSpec.describe AddressPolicy do
   end
 
   describe 'For a member that is a part of a company' do
-    let(:members_company) { Company.find_by_company_number('5562728336')}
+    let(:members_company) { Company.find_by_company_number('5562728336') }
     subject { described_class.new(member, members_company) }
 
     it { is_expected.to permit_action :edit }

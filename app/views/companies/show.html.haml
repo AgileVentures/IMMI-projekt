@@ -64,6 +64,8 @@
                       = t("address_visibility.#{address.visibility}")
                   %td
                     = check_box_tag('mail', '1', address.mail,
+                        class: 'cb_address',
+                        id: "cb_address_#{address.id}",
                         data: { remote: true,
                                 url: company_address_type_path(@company.id, address.id),
                                 params: 'type=mail',

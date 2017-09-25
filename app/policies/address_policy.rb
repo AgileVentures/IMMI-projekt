@@ -3,7 +3,7 @@ class AddressPolicy < ApplicationPolicy
   def new?
     return true if user.admin?
 
-    case record
+    case record.actionable
     when Company
       is_in_company?
     end
@@ -22,6 +22,10 @@ class AddressPolicy < ApplicationPolicy
   end
 
   def destroy?
+    new?
+  end
+
+  def set_address_type?
     new?
   end
 end

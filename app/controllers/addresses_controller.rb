@@ -2,19 +2,20 @@ class AddressesController < ApplicationController
 
   before_action :get_address, except: [:new, :create]
   before_action :get_company
-  before_action :authorize_company, only: [:update, :show, :edit, :destroy]
+  before_action :authorize_address, except: [:new, :create]
 
   def new
-    # authorize Address
-
     @address = Address.new
+    @address.addressable = @company
+
+    authorize @address
   end
 
   def create
-    # authorize Address
-
     @address = Address.new(address_params)
     @address.addressable = @company
+
+    authorize @address
 
     if @address.save
       redirect_to @company, notice: t('.success')
@@ -25,12 +26,9 @@ class AddressesController < ApplicationController
   end
 
   def edit
-    # authorize
   end
 
   def update
-    # authorize
-
     if @address.update(address_params)
       redirect_to @company, notice: t('.success')
     else
@@ -40,8 +38,6 @@ class AddressesController < ApplicationController
   end
 
   def destroy
-    # authorize
-
     if @address.destroy
       redirect_to @company, notice: t('addresses.destroy.success')
     else
@@ -52,6 +48,28 @@ class AddressesController < ApplicationController
   end
 
   def set_address_type
+    if params[:type] == 'mail'
+      @address.mail = params[:mail] ? true : false
+
+      if @address.mail  # This address selected to be "mail" address
+
+        # Find prior "mail" address and unset
+        (@company.addresses - [@address]).each do |addr|
+
+          if addr.mail
+            addr.mail = false
+            addr.save
+
+            @address.save
+
+            # AJAX callback to unset addr's "mail" checkbox in view
+            render json: { type: 'mail', address_id: addr.id }
+            return
+          end
+        end
+      end
+    end
+    render nothing: true
   end
 
   private
@@ -69,8 +87,8 @@ class AddressesController < ApplicationController
                                     :kommun_id, :region_id, :visibility)
   end
 
-  def authorize_company
-    authorize @company
+  def authorize_address
+    authorize @address
   end
 
 end

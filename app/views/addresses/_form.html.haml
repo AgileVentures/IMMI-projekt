@@ -1,6 +1,6 @@
 = form_for :address, method: method, url: url  do |f|
 
-  != model_errors_helper(@company)
+  != model_errors_helper(@address)
 
   = f.label :street_address, "#{t('companies.show.street')}", class: 'required'
   = f.text_field :street_address, class: 'wpcf7-form-control'
