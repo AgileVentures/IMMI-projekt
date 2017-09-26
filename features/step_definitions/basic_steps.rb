@@ -1,9 +1,24 @@
-When(/^I click on(?: the)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |element, type|
+When(/^I click on(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ordinal, element, type|
+# use 'ordinal' when selecting among links or buttons all of which
+# have the same selector (e.g., same label)
+
+  raise 'must specify link or button to use ordinal' if ordinal and !type
+  index = 0
+  if ordinal
+    case ordinal
+    when ' first' then index = 0
+    when ' second' then index = 1
+    when ' third' then index = 2
+    else
+      raise 'do not understand ordinal value'
+    end
+  end
+
   case type
     when 'link'
-      click_link element
+      all(:link, element)[index].click
     when 'button'
-      click_button element
+      all(:button, element)[index].click
     else
       click_link_or_button element
   end

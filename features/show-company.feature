@@ -65,7 +65,6 @@ Feature: As a visitor,
     And I should see "Groomer"
     And I should see "JustForFun"
     And I should see "snarky@snarkybarky.com"
-    And I should see "Stockholm"
     And I should see "123123123"
     And I should see "Hundforetagarevägen 1"
     And I should see "310 40"
@@ -79,7 +78,6 @@ Feature: As a visitor,
     And I should see "Rehab"
     And I should see "Psychologist"
     And I should see "bowwow@bowsersy.com"
-    And I should see "Västerbotten"
     And I should see "123123123"
     And I should see "Hundforetagarevägen 1"
     And I should see "310 40"
@@ -94,7 +92,6 @@ Feature: As a visitor,
     And I should see "Groomer"
     And I should see "JustForFun"
     And I should see "snarky@snarkybarky.com"
-    And I should see "Stockholm"
     And I should see "123123123"
     And I should see "Hundforetagarevägen 1"
     And I should see "310 40"
@@ -109,7 +106,6 @@ Feature: As a visitor,
     And I should see "Groomer"
     And I should see "JustForFun"
     And I should see "snarky@snarkybarky.com"
-    And I should see "Stockholm"
     And I should see "123123123"
     And I should see "Hundforetagarevägen 1"
     And I should see "310 40"
@@ -123,7 +119,6 @@ Feature: As a visitor,
     And I should see "Rehab"
     And I should see "Psychologist"
     And I should see "bowwow@bowsersy.com"
-    And I should see "Västerbotten"
     And I should see "123123123"
     And I should see "Hundforetagarevägen 1"
     And I should see "310 40"
@@ -154,7 +149,6 @@ Feature: As a visitor,
     And I should not see "Hundforetagarevägen 1"
     And I should see "310 40"
     And I should see "Harplinge"
-    And I should see "Stockholm"
     And I should see "Alingsås"
 
   Scenario: Visitor: Don't show company street address or postal code
@@ -164,7 +158,6 @@ Feature: As a visitor,
     And I should not see "Hundforetagarevägen 1"
     And I should not see "310 40"
     And I should see "Harplinge"
-    And I should see "Stockholm"
     And I should see "Alingsås"
 
   Scenario: Visitor: Don't show company street, postal code or city
@@ -174,7 +167,6 @@ Feature: As a visitor,
     And I should not see "Hundforetagarevägen 1"
     And I should not see "310 40"
     And I should not see "Harplinge"
-    And I should see "Stockholm"
     And I should see "Alingsås"
 
   Scenario: Visitor: Don't show company address
@@ -184,5 +176,4 @@ Feature: As a visitor,
     And I should not see "Hundforetagarevägen 1"
     And I should not see "310 40"
     And I should not see "Harplinge"
-    And I should not see "Stockholm"
     And I should not see "Alingsås"

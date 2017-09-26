@@ -1,4 +1,5 @@
 class AddressPolicy < ApplicationPolicy
+  include PoliciesHelper
 
   def new?
     return true if user.admin?

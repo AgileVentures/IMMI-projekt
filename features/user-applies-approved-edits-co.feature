@@ -58,10 +58,11 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I should see t("companies.show.company_number")
     And I should see t("companies.telephone_number")
     And I should see t("companies.show.email")
+    And I should see t("companies.show.website")
+    Then I click on the second t("companies.view_company") link
+    Then I click on t("companies.show.add_address")
     And I should see t("companies.show.street")
     And I should see t("companies.show.post_code")
     And I should see t("companies.show.city")
     And I should see t("companies.show.kommun")
     And I should see t("companies.show.region")
-    And I should see t("companies.show.website")
-
