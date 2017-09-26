@@ -174,7 +174,7 @@ RSpec.describe Company, type: :model do
 
       # calling .main_address should instantiate an Address
       expect(company.main_address).to be_an_instance_of Address
-      expect(company.addresses.count).to eq 1
+      expect(company.addresses.to_ary.count).to eq 1
 
     end
 

@@ -83,7 +83,7 @@ class Company < ApplicationRecord
 
   def main_address
     if addresses.empty?
-      addresses << Address.new
+      addresses << Address.new(addressable: self)
     end
 
     addresses.first

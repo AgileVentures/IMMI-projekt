@@ -63,16 +63,17 @@ class AddressesController < ApplicationController
             addr.save
             # AJAX callback to unset addr's "mail" checkbox in view
             render_val = { type: 'mail', address_id: addr.id }
+            break
           end
         end
-
-        @address.save
       end
+
+      @address.save
 
       if render_val
         render json: render_val
       else
-        render nothing: true
+        head :ok
       end
     end
   end

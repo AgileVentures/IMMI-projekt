@@ -71,19 +71,41 @@ RSpec.describe CompaniesHelper, type: :helper do
     end
 
     it 'one company (name is linked to the company)' do
-      co = build(:company)
-      markers = helper.location_and_markers_for([co])
+      markers = helper.location_and_markers_for([company])
       expect(markers.count).to eq 1
-      expect(markers.first[:latitude]).to eq co.main_address.latitude
-      expect(markers.first[:longitude]).to eq co.main_address.longitude
-      expect(markers.first[:text]).to eq(helper.html_marker_text(co))
-      expect(markers.first[:text]).to include("#{link_to(co.name, co,target: '_blank')}")
+      expect(markers.first[:latitude]).to eq company.addresses[0].latitude
+      expect(markers.first[:longitude]).to eq company.addresses[0].longitude
+      expect(markers.first[:text]).
+        to eq(helper.html_marker_text(company, company.addresses[0]))
+      expect(markers.first[:text]).
+        to include("#{link_to(company.name, company, target: '_blank')}")
+    end
+
+    it 'one company, two addresses' do
+      create(:address, addressable: company)
+      company.reload
+      markers = helper.location_and_markers_for([company])
+      expect(markers.count).to eq 2
+
+      expect(markers.first[:latitude]).to eq company.addresses[0].latitude
+      expect(markers.first[:longitude]).to eq company.addresses[0].longitude
+      expect(markers.first[:text]).
+        to eq(helper.html_marker_text(company, company.addresses[0]))
+      expect(markers.first[:text]).
+        to include("#{link_to(company.name, company, target: '_blank')}")
+
+      expect(markers.second[:latitude]).to eq company.addresses[1].latitude
+      expect(markers.second[:longitude]).to eq company.addresses[1].longitude
+      expect(markers.second[:text]).
+        to eq(helper.html_marker_text(company, company.addresses[1]))
+      expect(markers.second[:text]).
+        to include("#{link_to(company.name, company, target: '_blank')}")
     end
 
     it 'just show company name with no link for it' do
-      co = build(:company)
-      markers = helper.location_and_markers_for([co], link_name: false)
-      expect(markers.first[:text]).not_to include("#{link_to(co.name, co,target: '_blank')}")
+      markers = helper.location_and_markers_for([company], link_name: false)
+      expect(markers.first[:text]).
+        not_to include("#{link_to(company.name, company, target: '_blank')}")
     end
 
   end
@@ -94,13 +116,13 @@ RSpec.describe CompaniesHelper, type: :helper do
     let(:co) { create(:company, company_number: '8776682406')}
 
     it 'default links name to the company' do
-      marker_text = helper.html_marker_text(co)
+      marker_text = helper.html_marker_text(co, co.addresses[0])
       expect(marker_text).to include( "#{link_to(co.name, co, target: '_blank')}" )
     end
 
 
     it 'name text = just the name (no link)' do
-      marker_text = helper.html_marker_text(co, name_html: co.name)
+      marker_text = helper.html_marker_text(co, co.addresses[0], name_html: co.name)
       expect(marker_text).not_to include( "#{link_to(co.name, co, target: '_blank')}" )
     end
 

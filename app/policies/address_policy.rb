@@ -3,7 +3,7 @@ class AddressPolicy < ApplicationPolicy
   def new?
     return true if user.admin?
 
-    case record.actionable
+    case record.addressable
     when Company
       is_in_company?
     end

@@ -10,7 +10,7 @@ RSpec.describe AddressPolicy do
   let(:company) { create(:company, company_number: '5712213304')}
 
   describe 'For admin' do
-    subject { described_class.new(admin, company) }
+    subject { described_class.new(admin, company.addresses.first) }
 
     it { is_expected.to permit_action :edit }
     it { is_expected.to permit_action :update }
@@ -21,7 +21,7 @@ RSpec.describe AddressPolicy do
 
   describe 'For a member that is a part of a company' do
     let(:members_company) { Company.find_by_company_number('5562728336') }
-    subject { described_class.new(member, members_company) }
+    subject { described_class.new(member, members_company.addresses.first) }
 
     it { is_expected.to permit_action :edit }
     it { is_expected.to permit_action :update }
