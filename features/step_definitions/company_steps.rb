@@ -1,7 +1,7 @@
 And(/^the following companies exist:$/) do |table|
   table.hashes.each do |company|
-    region = company.delete('region')
-    kommun = company.delete('kommun')
+    region = company.delete('region') || 'Stockholm'
+    kommun = company.delete('kommun') || 'Stockholm'
     visibility = company.delete('visibility') || 'street_address'
 
     cmpy = FactoryGirl.create(:company, company)

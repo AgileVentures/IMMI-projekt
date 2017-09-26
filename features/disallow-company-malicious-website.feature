@@ -54,10 +54,8 @@ Feature: Don't allow malicious code in Company website value
     Given I am logged in as "admin@shf.se"
     And I am on the "create a new company" page
     And I fill in the translated form with data:
-      | companies.company_name | companies.show.company_number | companies.show.street | companies.show.post_code | companies.show.city | companies.show.email |
-      | Happy Mutts            | 5569467466                    | Ålstensgatan 4        | 123 45                   | Bromma              | kicki@gladajyckar.se |
-    And I select "Stockholm" in select list t("companies.operations_region")
-    And I select "Bromölla" in select list t("companies.show.kommun")
+      | companies.company_name | companies.show.company_number | companies.show.email |
+      | Happy Mutts            | 5569467466                    | kicki@gladajyckar.se |
     And I fill in t("companies.website_include_http") with "<malicious_entry>"
     And I click on t("submit") button
     Then I should not see "<malicious_part>"
@@ -70,5 +68,3 @@ Feature: Don't allow malicious code in Company website value
       | <meta%20http-equiv='refresh'%20content='0;'>       | <meta%20http-equiv='refresh'%20content='0;'> |               |
       | >'><script>alert('XSS)</script>&                   | <script>                                     |               |
       | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | javascript                                   | alert('XSS')  |
-
-

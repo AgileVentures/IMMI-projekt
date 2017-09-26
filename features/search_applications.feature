@@ -28,11 +28,11 @@ Background:
     | Sweden       |
 
   And the following companies exist:
-    | name        | company_number | email                | region       | city        |
-    | Barky Boys  | 5560360793     | barky@barkyboys.com  | Stockholm    | Bagarmossen |
-    | HappyMutts  | 2120000142     | woof@happymutts.com  | Västerbotten | Kusmark     |
-    | Dogs R Us   | 5562252998     | chief@dogsrus.com    | Norrbotten   | Morjarv     |
-    | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       |             |
+    | name        | company_number | email                | region       |
+    | Barky Boys  | 5560360793     | barky@barkyboys.com  | Stockholm    |
+    | HappyMutts  | 2120000142     | woof@happymutts.com  | Västerbotten |
+    | Dogs R Us   | 5562252998     | chief@dogsrus.com    | Norrbotten   |
+    | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       |
 
   And the following applications exist:
     | user_email          | company_number | state        | categories   |
@@ -51,7 +51,7 @@ Scenario: Search by user's last name
   And I should see "Anna"
   And I should see "Emma"
   Then I select "Fransson" in select list t("activerecord.attributes.membership_application.last_name")
-  And I click on t("search") button
+  And I click on t("search")
   And I should see "Fransson, Fred"
   And I should not see "John"
   And I should not see "Anna"
@@ -60,26 +60,26 @@ Scenario: Search by user's last name
 @javascript
 Scenario: Search by company (org) number
   Then I select "5569467466" in select list t("membership_applications.index.org_nr")
-  And I click on t("search") button
+  And I click on t("search")
   Then I should see "Eriksson, Emma"
   And I should not see "John"
   And I should not see "Anna"
   And I should not see "Fred"
   Then I select "2120000142" in select list t("membership_applications.index.org_nr")
-  And I click on t("search") button
+  And I click on t("search")
   Then I should see "Eriksson, Emma"
   Then I should see "Johanssen, John"
 
 @javascript
 Scenario: Search by status
   Then I select "Under review" in select list t("membership_applications.index.state")
-  And I click on t("search") button
+  And I click on t("search")
   And I should see "Eriksson, Emma"
   And I should not see "John"
   And I should not see "Anna"
   And I should not see "Fred"
   Then I select "New" in select list t("membership_applications.index.state")
-  And I click on t("search") button
+  And I click on t("search")
   And I should see "Eriksson, Emma"
   And I should see "Anderson, Anna"
   And I should not see "John"
@@ -89,13 +89,13 @@ Scenario: Search by status
 Scenario: Search by status and company number
   Then I select "Under review" in select list t("membership_applications.index.state")
   Then I select "2120000142" in select list t("membership_applications.index.org_nr")
-  And I click on t("search") button
+  And I click on t("search")
   And I should not see "Emma"
   And I should not see "John"
   And I should not see "Anna"
   And I should not see "Fred"
   Then I select "5569467466" in select list t("membership_applications.index.org_nr")
-  And I click on t("search") button
+  And I click on t("search")
   And I should see "Eriksson, Emma"
   And I should not see "John"
   And I should not see "Anna"
@@ -111,4 +111,3 @@ Scenario: Can sort by user lastname
   And I should see "Johanssen" before "Fransson"
   And I should see "Fransson" before "Eriksson"
   And I should see "Eriksson" before "Anderson"
-
