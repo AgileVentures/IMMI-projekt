@@ -7,7 +7,7 @@ $(function() {
   // to uncheck the "mail" checkbox, for that address, in the view.
   // (this callback will perform the same function for "bill" attribute in future)
   $('body').on('ajax:success', '.cb_address', function (e, data) {
-    let checkboxId = '#cb_address_' + data['address_id'];
+    var checkboxId = '#cb_address_' + data['address_id'];
 
     $(checkboxId).prop('checked', false);
   });

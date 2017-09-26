@@ -3,7 +3,6 @@ class CompaniesController < ApplicationController
 
   before_action :set_company, only: [:show, :edit, :update, :destroy]
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
-  around_action :skip_bullet, only: [:show]
 
   def index
     authorize Company
@@ -134,13 +133,6 @@ class CompaniesController < ApplicationController
   def sanitize_website(params)
     params['website'] = URLSanitizer.sanitize( params.fetch('website','') )
     params
-  end
-
-  def skip_bullet
-    Bullet.enable = false
-    yield
-  ensure
-    Bullet.enable = true
   end
 
 end
