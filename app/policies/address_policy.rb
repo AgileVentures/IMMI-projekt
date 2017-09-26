@@ -5,7 +5,7 @@ class AddressPolicy < ApplicationPolicy
 
     case record.addressable
     when Company
-      is_in_company?
+      is_in_company? record.addressable
     end
   end
 

@@ -18,7 +18,7 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? || is_in_company?
+    user.admin? || is_in_company?(record)
   end
 
 end

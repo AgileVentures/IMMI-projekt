@@ -31,7 +31,7 @@ RSpec.describe AddressPolicy do
   end
 
   describe 'For a member that is not part of a company' do
-    subject { described_class.new(member, company) }
+    subject { described_class.new(member, company.addresses.first) }
 
     it { is_expected.to forbid_action :edit }
     it { is_expected.to forbid_action :update }
@@ -41,7 +41,7 @@ RSpec.describe AddressPolicy do
   end
 
   describe 'For a user (logged in)' do
-    subject { described_class.new(user_1, company) }
+    subject { described_class.new(user_1, company.addresses.first) }
 
     it { is_expected.to forbid_action :edit }
     it { is_expected.to forbid_action :update }
@@ -51,7 +51,7 @@ RSpec.describe AddressPolicy do
   end
 
   describe 'For a visitor (not logged in)' do
-    subject { described_class.new(visitor, company) }
+    subject { described_class.new(visitor, company.addresses.first) }
 
     it { is_expected.to forbid_action :edit }
     it { is_expected.to forbid_action :update }
