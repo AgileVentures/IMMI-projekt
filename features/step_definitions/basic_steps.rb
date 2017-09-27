@@ -78,7 +78,6 @@ When(/^I (check|uncheck) the checkbox with id #{CAPTURE_STRING}$/) do |action, e
 end
 
 When(/^I click the radio button with id #{CAPTURE_STRING}$/) do |element_id|
-  # radio_button("##{element_id}").click
   find("##{element_id}").click
 end
 
