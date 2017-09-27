@@ -50,16 +50,14 @@ class AddressesController < ApplicationController
   def set_address_type
     if params[:type] == 'mail'
 
-      @address.mail = params[:mail] ? true : false
+      @address.mail = true
 
-      if @address.mail  # This address selected to be "mail" address
-        # Find prior "mail" address and unset
-        (@company.addresses - [@address]).each do |addr|
-          if addr.mail
-            addr.mail = false
-            addr.save
-            break
-          end
+      # Find prior "mail" address and unset
+      (@company.addresses - [@address]).each do |addr|
+        if addr.mail
+          addr.mail = false
+          addr.save
+          break
         end
       end
       @address.save
