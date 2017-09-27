@@ -83,7 +83,7 @@ Then(/^I should( not)? see #{CAPTURE_STRING} link$/) do |negate, link_label|
 end
 
 
-Then(/^I should( not)? see the checkbox with id "([^"]*)" unchecked$/) do |negate, checkbox_id|
+Then(/^I should( not)? see the (?:checkbox|radio button) with id "([^"]*)" unchecked$/) do |negate, checkbox_id|
   expect(page).send (negate ? :not_to : :to),  have_unchecked_field(checkbox_id)
 end
 

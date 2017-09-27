@@ -49,32 +49,22 @@ class AddressesController < ApplicationController
 
   def set_address_type
     if params[:type] == 'mail'
+
       @address.mail = params[:mail] ? true : false
 
-      render_val = nil
-
       if @address.mail  # This address selected to be "mail" address
-
         # Find prior "mail" address and unset
         (@company.addresses - [@address]).each do |addr|
-
           if addr.mail
             addr.mail = false
             addr.save
-            # AJAX callback to unset addr's "mail" checkbox in view
-            render_val = { type: 'mail', address_id: addr.id }
             break
           end
         end
       end
-
       @address.save
 
-      if render_val
-        render json: render_val
-      else
-        head :ok
-      end
+      head :ok
     end
   end
 

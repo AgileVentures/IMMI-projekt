@@ -65,15 +65,15 @@ Feature: As a member
     And I click on t("submit")
     Then I should see t("addresses.create.success")
 
-    Then I check the checkbox with id "cb_address_3"
-    And I should not see the checkbox with id "cb_address_3" unchecked
-    And I should see the checkbox with id "cb_address_4" unchecked
-    And I should see the checkbox with id "cb_address_5" unchecked
+    Then I click the radio button with id "cb_address_3"
+    And I should not see the radio button with id "cb_address_3" unchecked
+    And I should see the radio button with id "cb_address_4" unchecked
+    And I should see the radio button with id "cb_address_5" unchecked
 
-    Then I check the checkbox with id "cb_address_5"
-    And I should not see the checkbox with id "cb_address_5" unchecked
-    And I should see the checkbox with id "cb_address_3" unchecked
-    And I should see the checkbox with id "cb_address_4" unchecked
+    Then I click the radio button with id "cb_address_5"
+    And I should not see the radio button with id "cb_address_5" unchecked
+    And I should see the radio button with id "cb_address_3" unchecked
+    And I should see the radio button with id "cb_address_4" unchecked
 
     And I click the first address for company "Happy Mutts"
     And I select t("address_visibility.none") in select list t("companies.address_visibility")

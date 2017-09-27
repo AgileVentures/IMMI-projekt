@@ -64,7 +64,7 @@
                     %span{ class: (address.visibility == 'none' ? 'no' : 'yes') }
                       = t("address_visibility.#{address.visibility}")
                   %td
-                    = check_box_tag('mail', '1', address.mail,
+                    = radio_button_tag('mail', '1', address.mail,
                         class: 'cb_address',
                         id: "cb_address_#{address.id}",
                         data: { remote: true,
