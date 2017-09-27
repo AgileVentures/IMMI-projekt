@@ -45,7 +45,7 @@
           %thead
             %tr
               %th
-                = "#{t('.address')}"
+                = #{t('.address')}
                 = " (#{t('.click_to_edit')})" if user_can_edit
 
               - if user_can_edit

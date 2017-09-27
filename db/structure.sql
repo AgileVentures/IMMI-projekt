@@ -42,7 +42,8 @@ CREATE TABLE addresses (
     kommun_id bigint,
     latitude double precision,
     longitude double precision,
-    visibility character varying DEFAULT 'street_address'::character varying
+    visibility character varying DEFAULT 'street_address'::character varying,
+    mail boolean DEFAULT false
 );
 
 
@@ -997,6 +998,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170704095534'),
 ('20170918123414'),
 ('20170919120008'),
-('20170920153643');
+('20170920153643'),
+('20170922144510');
 
 

@@ -1,6 +1,6 @@
 = form_for :address, method: method, url: url  do |f|
 
-  != model_errors_helper(@address)
+  != model_errors_helper(address)
 
   = f.label :street_address, "#{t('activerecord.attributes.address.street')}",
             class: 'required'
