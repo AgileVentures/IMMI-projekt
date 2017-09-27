@@ -115,6 +115,10 @@ Then(/^I should see "([^"]*)" business categories/) do |number|
   expect(page).to have_selector('tr.business_category', count: number)
 end
 
+Then(/^I should see "([^"]*)" addresses/) do |number|
+  expect(page).to have_selector('tr.address', count: number)
+end
+
 
 Then(/^the field #{CAPTURE_STRING} should( not)? have a required field indicator$/) do |label_text, negate|
   expect(page).send ( negate ? :not_to : :to), have_xpath("//label[@class='required'][text()='#{label_text}']")

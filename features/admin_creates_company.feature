@@ -100,8 +100,7 @@ Feature: As an admin
       | Happy Mutts | 5562252998 |            | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
       | Happy Mutts | 5560360793 | 0706898525 | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.company_number.taken") |
 
-
-  Scenario: Admin edits a company
+  Scenario: Admin edits a company and visitor views changes
     Given I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
     When I fill in the translated form with data:
@@ -111,6 +110,25 @@ Feature: As an admin
     Then I should see t("companies.update.success")
     And I should see "kicki@gladajyckar.se"
     And the "http://www.snarkybarkbark.se" should go to "http://www.snarkybarkbark.se"
+    Then I click on t("companies.show.add_address")
+    And I fill in the translated form with data:
+      | activerecord.attributes.address.street | activerecord.attributes.address.post_code | activerecord.attributes.address.city |
+      | 1 Algovik                              | 919 32                                    | Åsele                                |
+    And I select "Västerbotten" in select list t("activerecord.attributes.address.region")
+    And I select "Bromölla" in select list t("activerecord.attributes.address.kommun")
+    Then I click on t("submit")
+    And I wait 10 seconds
+    And I should see "Algovik"
+    And I should see "Bromölla"
+    And I should see t("address_visibility.street_address")
+
+    And I am Logged out
+    And I am on the "landing" page
+    And I click on "No More Snarky Barky"
+    And I should see "1 Algovik"
+    And I should see "Bromölla"
+    And I should see "919 32"
+    And I should not see t("address_visibility.street_address")
 
 
   Scenario Outline: Admin edits a company - when things go wrong (sad case)

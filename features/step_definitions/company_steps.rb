@@ -69,3 +69,12 @@ Given(/^all addresses for the company named "([^"]*)" are not geocoded$/) do |co
   Address.connection.exec_query(query)
 
 end
+
+When(/^I click(?: the)?( \w*) address for company #{CAPTURE_STRING}$/) do |ordinal, company|
+  cmpy = Company.find_by name: company
+
+  addr = cmpy.addresses.send(ordinal.lstrip)
+  addr_link = addr.entire_address(full_visibility: true)
+
+  click_link(addr_link)
+end

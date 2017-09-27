@@ -2,25 +2,27 @@
 
   != model_errors_helper(@address)
 
-  = f.label :street_address, "#{t('companies.show.street')}", class: 'required'
+  = f.label :street_address, "#{t('activerecord.attributes.address.street')}",
+            class: 'required'
   = f.text_field :street_address, class: 'wpcf7-form-control'
 
-  = f.label :post_code, "#{t('companies.show.post_code')}", class: 'required'
+  = f.label :post_code, "#{t('activerecord.attributes.address.post_code')}",
+            class: 'required'
   = f.text_field :post_code, class: 'wpcf7-form-control'
 
-  = f.label :city, "#{t('companies.show.city')}", class: 'required'
+  = f.label :city, "#{t('activerecord.attributes.address.city')}", class: 'required'
   = f.text_field :city, class: 'wpcf7-form-control'
 
   .form-group
     .col-sm-4
 
-      = f.label :kommun_id, "#{t('companies.show.kommun')}"
+      = f.label :kommun_id, "#{t('activerecord.attributes.address.kommun')}"
       %br
       = f.collection_select(:kommun_id, Kommun.all, :id, :name)
 
     .col-sm-4
 
-      = f.label :region_id, "#{t('companies.operations_region')}"
+      = f.label :region_id, "#{t('activerecord.attributes.address.region')}"
 
       %span.glyphicon.glyphicon-info-sign{ title: "#{t('companies.form.region_tooltip')}",
                                            data: {toggle: 'tooltip'} }

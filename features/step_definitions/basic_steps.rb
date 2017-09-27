@@ -86,3 +86,7 @@ When /^I wait for all ajax requests to complete$/ do
     loop until page.evaluate_script('window.jQuery ? jQuery.active : 0').zero?
   end
 end
+
+And(/^show me the page$/) do
+  save_and_open_page
+end
