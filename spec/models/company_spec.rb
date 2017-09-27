@@ -72,8 +72,8 @@ RSpec.describe Company, type: :model do
 
   describe 'Associations' do
     it { is_expected.to have_many(:business_categories).through(:membership_applications) }
-    it { is_expected.to have_many(:membership_applications) }
-    it { is_expected.to have_many(:addresses) }
+    it { is_expected.to have_many(:membership_applications).dependent(:destroy) }
+    it { is_expected.to have_many(:addresses).dependent(:destroy) }
     it { is_expected.to have_many(:pictures) }
   end
 
