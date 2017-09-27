@@ -53,7 +53,7 @@
                 %th= t('companies.address_visibility')
                 %th= t('.mailing_address')
 
-          - addresses.each do |address|
+          - addresses.includes(:kommun).each do |address|
             %tbody
               %tr.address
                 - if user_can_edit

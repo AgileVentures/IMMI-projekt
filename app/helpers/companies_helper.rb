@@ -27,7 +27,7 @@ module CompaniesHelper
     companies.each do |company|
       link_name ? name_html = nil : name_html = company.name
 
-      company.addresses.visible.each do |address|
+      company.addresses.visible.includes(:kommun).each do |address|
         results << {latitude: address.latitude,
                     longitude: address.longitude,
                     text: html_marker_text(company, address, name_html: name_html) }
