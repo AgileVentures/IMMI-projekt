@@ -3,16 +3,8 @@ When(/^I click on(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ord
 # have the same selector (e.g., same label)
 
   raise 'must specify link or button to use ordinal' if ordinal and !type
-  index = 0
-  if ordinal
-    case ordinal
-    when ' first' then index = 0
-    when ' second' then index = 1
-    when ' third' then index = 2
-    else
-      raise 'do not understand ordinal value'
-    end
-  end
+
+  index = ordinal ? [0, 1, 2, 3, 4].send(ordinal.lstrip) : 0
 
   case type
     when 'link'
