@@ -52,14 +52,14 @@ class AddressesController < ApplicationController
 
       @address.mail = true
 
-      # Find prior "mail" address and unset
-      (@company.addresses - [@address]).each do |addr|
-        if addr.mail
-          addr.mail = false
-          addr.save
-          break
-        end
+      # Find prior "mail" address(es) and unset
+      prior_addr = (@company.addresses - [@address]).select { |addr| addr.mail }
+
+      prior_addr.each do |addr|
+        addr.mail = false
+        addr.save
       end
+      
       @address.save
 
       head :ok
