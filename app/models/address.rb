@@ -1,4 +1,9 @@
 class Address < ApplicationRecord
+  # An address only exists within an owning object, called "addressable".
+  # (right now this only exists as a Company address - user (member address
+  #  possibly to be added later).
+  # Thus the model behavior is consistent with the business rules of the
+  # Company model.  This is manifest in some of the Address controller actions.
 
   belongs_to :addressable, polymorphic: true
 

@@ -2,12 +2,7 @@ class AddressPolicy < ApplicationPolicy
   include PoliciesHelper
 
   def new?
-    return true if user.admin?
-
-    case record.addressable
-    when Company
-      is_in_company? record.addressable
-    end
+    user.admin? || is_in_company?(record.addressable)
   end
 
   def create?

@@ -500,6 +500,7 @@ sv:
     edit:
       title: 'Redigeringsadress för: %{company_name}'
       delete: 'Ta bort den här adressen'
+      delete_confirm: Är du säker på att du vill radera den här adressen?
     update:
       error: Det gick inte att uppdatera adressen.
       success: Adressen uppdaterades.
@@ -508,6 +509,8 @@ sv:
     create:
       error: Ett eller flera problem hindrade adressen från att skapas.
       success: TAdressen skapades framgångsrikt.
+      success_sole_address: "Adressen skapades med framgång
+                            (och är standardadressen för företaget)."
     destroy:
       success: Adressen raderad.
       error: Det gick inte att ta bort adressen.

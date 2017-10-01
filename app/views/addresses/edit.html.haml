@@ -12,5 +12,5 @@
     \|
     = link_to "#{t('.delete')}", company_address_delete_path(@company, @address),
               method: :delete,
-              data: { confirm: 'Are you sure you want to delete this address?' },
+              data: { confirm: "#{t('.delete_confirm')}" },
               class: 'btn btn-xs btn-danger'

@@ -55,6 +55,7 @@ Feature: As a member
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Alingsås"
+    And I should see "2" addresses
 
     Then I click on t("companies.show.add_address")
     And I fill in the translated form with data:
@@ -80,10 +81,16 @@ Feature: As a member
     And I click on t("submit")
     And I should see "3" addresses
 
+    And I click the second address for company "Happy Mutts"
+    And I click on the t("addresses.edit.delete") link
+    And I confirm popup
+    Then I should see t("addresses.destroy.success")
+    And I should see "2" addresses
+
     And I am Logged out
     And I am on the "landing" page
     And I click on "Happy Mutts"
-    And I should see "2" addresses
+    And I should see "1" address
 
 
   Scenario: Another tries to edit your company page (gets rerouted)

@@ -115,7 +115,7 @@ Then(/^I should see "([^"]*)" business categories/) do |number|
   expect(page).to have_selector('tr.business_category', count: number)
 end
 
-Then(/^I should see "([^"]*)" addresses/) do |number|
+Then(/^I should see "([^"]*)" address(?:es)?/) do |number|
   expect(page).to have_selector('tr.address', count: number)
 end
 

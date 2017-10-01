@@ -17,8 +17,15 @@ class AddressesController < ApplicationController
 
     authorize @address
 
+    if @company.addresses.count == 0
+      @address.mail = true
+      notice = t('.success_sole_address')
+    else
+      notice = t('.success')
+    end
+
     if @address.save
-      redirect_to @company, notice: t('.success')
+      redirect_to @company, notice: notice
     else
       flash.now[:alert] = t('.error')
       render :new
@@ -59,7 +66,7 @@ class AddressesController < ApplicationController
         addr.mail = false
         addr.save
       end
-      
+
       @address.save
 
       head :ok

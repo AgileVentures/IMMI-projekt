@@ -77,6 +77,9 @@ Feature: As an admin
     And I select "Stockholm" in select list t("companies.operations_region")
     And I select "Bromölla" in select list t("companies.show.kommun")
     Then I click on t("submit")
+    And I should see t("addresses.create.success_sole_address")
+    And I should see "1" address
+    And I should not see the radio button with id "cb_address_3" unchecked
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
