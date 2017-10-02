@@ -498,7 +498,7 @@ sv:
 
   addresses:
     edit:
-      title: 'Redigeringsadress för: %{company_name}'
+      title: 'Redigera adress för: %{company_name}'
       delete: 'Ta bort den här adressen'
       delete_confirm: Är du säker på att du vill radera den här adressen?
     update:
@@ -508,7 +508,7 @@ sv:
       title: 'Ny adress för: %{company_name}'
     create:
       error: Ett eller flera problem hindrade adressen från att skapas.
-      success: TAdressen skapades framgångsrikt.
+      success: Adressen skapades framgångsrikt.
       success_sole_address: "Adressen skapades med framgång
                             (och är standardadressen för företaget)."
     destroy:
