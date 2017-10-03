@@ -17,9 +17,15 @@ When(/^I click on(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ord
 end
 
 When /^I confirm popup$/ do
-  # requires poltergeist:
-  using_wait_time 3 do
-    page.driver.accept_modal(:confirm)
+
+  if Capybara.current_driver == :poltergeist
+    using_wait_time 3 do
+      page.driver.accept_modal(:confirm)
+    end
+  elsif Capybara.current_driver == :selenium_browser
+    page.driver.browser.switch_to.alert.accept
+  else
+    raise 'step not configured for current browser driver'
   end
 end
 

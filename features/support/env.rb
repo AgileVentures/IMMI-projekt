@@ -39,19 +39,16 @@ def i18n_content(content, locale=I18n.locale)
   I18n.t(content, locale)
 end
 
-# For tests requiring javascript, headless
-Capybara.javascript_driver = :poltergeist
-
 Capybara.register_driver :selenium do |app|
+  options = Selenium::WebDriver::Chrome::Options.new(args: ['headless'])
   Capybara::Selenium::Driver.new(
     app,
     browser: :chrome,
-    args: ['headless']
+    options: options
   )
 end
 
-# Displayed chrome browser
-# Use @selenium_browser
+# Displayed chrome browser - @selenium_browser
 Capybara.register_driver :selenium_browser do |app|
   Capybara::Selenium::Driver.new(
     app,
