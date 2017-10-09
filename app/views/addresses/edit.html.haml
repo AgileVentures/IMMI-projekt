@@ -1,5 +1,6 @@
 %header.entry-header
   %h1.entry-title= t('.title', company_name: @company.name)
+  = t('.cannot_delete_address') if @address.mail
   .post-title-divider
     %span
 
@@ -9,8 +10,9 @@
                      url: company_address_path(@company.id, @address.id) }
   .center
     = link_to "#{t('companies.view_company')}", @company
-    \|
-    = link_to "#{t('.delete')}", company_address_delete_path(@company, @address),
-              method: :delete,
-              data: { confirm: "#{t('.delete_confirm')}" },
-              class: 'btn btn-xs btn-danger'
+    - unless @address.mail
+      \|
+      = link_to "#{t('.delete')}", company_address_delete_path(@company, @address),
+                method: :delete,
+                data: { confirm: "#{t('.delete_confirm')}" },
+                class: 'btn btn-xs btn-danger'

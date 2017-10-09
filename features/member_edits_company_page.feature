@@ -81,7 +81,13 @@ Feature: As a member
     And I click on t("submit")
     And I should see "3" addresses
 
+    Then I click the third address for company "Happy Mutts"
+    And I should see t("addresses.edit.cannot_delete_address")
+    And I should not see t("'addresses.edit.delete'")
+    And I click on the t("companies.view_company") link
+
     And I click the second address for company "Happy Mutts"
+    And I should not see t("addresses.edit.cannot_delete_address")
     And I click on the t("addresses.edit.delete") link
     And I confirm popup
     Then I should see t("addresses.destroy.success")

@@ -501,6 +501,7 @@ en:
       title: 'Editing Address for: %{company_name}'
       delete: 'Delete this address'
       delete_confirm: Are you sure you want to delete this address?
+      cannot_delete_address: (Company mail address - cannot be deleted)
     update:
       error: There was a problem updating the address.
       success: The address was updated.

@@ -502,6 +502,7 @@ sv:
       title: 'Redigera adress för: %{company_name}'
       delete: 'Ta bort den här adressen'
       delete_confirm: Är du säker på att du vill radera den här adressen?
+      cannot_delete_address: (Företagets mailadress - kan inte raderas)
     update:
       error: Det gick inte att uppdatera adressen.
       success: Adressen uppdaterades.
