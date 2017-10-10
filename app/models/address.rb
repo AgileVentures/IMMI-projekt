@@ -40,7 +40,7 @@ class Address < ApplicationRecord
                   region_id visibility country).freeze
 
   after_validation :geocode_best_possible,
-                   :if => lambda { |obj| !obj.persisted? ||
+                   :if => lambda { |obj| obj.new_record? ||
                                          (obj.changed & GEO_FIELDS).any? }
 
   # geocode all of the addresses that need it
