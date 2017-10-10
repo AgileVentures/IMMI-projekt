@@ -23,5 +23,16 @@ class AbstractMembershipInfoMailer < ApplicationMailer
 
   end
 
+  def send_admin_email_for(method_name, admin, subject)
+    set_admin_mail_info method_name, admin
+    mail to: @recipient_email, subject: subject
+  end
+
+  def set_admin_mail_info(method_sym, admin)
+    @action_name = method_sym.to_s
+    @greeting_name = set_greeting_name(admin)
+    @recipient_email = set_recipient_email(admin)
+  end
+
 
 end
