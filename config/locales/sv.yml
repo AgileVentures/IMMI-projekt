@@ -503,6 +503,8 @@ sv:
       delete: 'Ta bort den här adressen'
       delete_confirm: Är du säker på att du vill radera den här adressen?
       cannot_delete_address: (Företagets mailadress - kan inte raderas)
+      delete_address_tooltip: Om du vill radera den här adressen anger du en
+                              annan adress som företagets mailadress.
     update:
       error: Det gick inte att uppdatera adressen.
       success: Adressen uppdaterades.
