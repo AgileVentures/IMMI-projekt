@@ -71,7 +71,7 @@ if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
   users = {}
   while users.length < number_of_users-1 do
-    email = FFaker::InternetSE.free_email
+    email = FFaker::InternetSE.disposable_email
     first_name = FFaker::NameSE.first_name
     last_name = FFaker::NameSE.last_name
     users[email] = User.create!(email: email, password: DEFAULT_PASSWORD,

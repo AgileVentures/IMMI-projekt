@@ -118,7 +118,7 @@ module SeedHelper
 
     # make a full company instance
     company = Company.new(company_number: company_number,
-                          email: FFaker::InternetSE.free_email,
+                          email: FFaker::InternetSE.disposable_email,
                           name: FFaker::CompanySE.name,
                           phone_number: FFaker::PhoneNumberSE.phone_number,
                           website: FFaker::InternetSE.http_url)
@@ -146,7 +146,7 @@ module SeedHelper
     business_categories = BusinessCategory.all.to_a
 
     # for 1 in 8 apps, use a different contact email than the user's email
-    ma = MembershipApplication.new(contact_email: ( (Random.new.rand(1..8)) == 0 ? FFaker::InternetSE.free_email : u.email),
+    ma = MembershipApplication.new(contact_email: ( (Random.new.rand(1..8)) == 0 ? FFaker::InternetSE.disposable_email : u.email),
                                    company_number: company_number,
                                    user: u)
 
