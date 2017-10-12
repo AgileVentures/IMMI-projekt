@@ -349,7 +349,7 @@ RSpec.describe Address, type: :model do
       end
     end
 
-    describe '#self.geocode_all_needed(sleep_between: 0.5, num_per_batch: 50)' do
+    context 'gecode only if needed' do
 
       let(:a_company) { create(:company, num_addresses: 0) }
 
@@ -358,103 +358,147 @@ RSpec.describe Address, type: :model do
 
       # These are real addresses in  Övertorneå Municipality in Norrbotten County:
 
-      let(:valid_address1) { addr1 = create(:address,
-                                    street_address: 'Matarengivägen 24',
-                                    post_code: '957 31',
-                                    city: 'Övertorneå',
-                                    kommun: overtornea_kommun,
-                                    region: norbotten_region,
-                                    addressable: a_company )
-                            addr1.validate
-                            addr1
-       }
+      let(:valid_address1) do
+        addr1 = create(:address,
+                      street_address: 'Matarengivägen 24',
+                      post_code: '957 31',
+                      city: 'Övertorneå',
+                      kommun: overtornea_kommun,
+                      region: norbotten_region,
+                      addressable: a_company,
+                      mail: false )
+        addr1.validate
+        addr1
+      end
 
-      let(:valid_address2) { addr2 = create(:address,
-                                    street_address: 'Skolvägen 12',
-                                    post_code: '957 31',
-                                    city: 'Övertorneå',
-                                    kommun: overtornea_kommun,
-                                    region: norbotten_region,
-                                    addressable: a_company )
-                            addr2.validate
-                            addr2
-       }
+      let(:valid_address2) do
+        addr2 = create(:address,
+                       street_address: 'Skolvägen 12',
+                       post_code: '957 31',
+                       city: 'Övertorneå',
+                       kommun: overtornea_kommun,
+                       region: norbotten_region,
+                       addressable: a_company )
+        addr2.validate
+        addr2
+      end
 
-      let(:valid_address3) { addr3 = create(:address,
-                                            street_address: 'Matarengivägen 30',
-                                            post_code: '957 31',
-                                            city: 'Övertorneå',
-                                            kommun: overtornea_kommun,
-                                            region: norbotten_region,
-                                            addressable: a_company )
-                              addr3.validate
-                              addr3
-       }
-
-      it 'nothing geocoded if all have latitude and longitude' do
-        valid_address1
-        valid_address2
-        valid_address3
-
-        need_geocoding = Address.not_geocoded
-        needed_geocoding = need_geocoding.count
-
-        Address.geocode_all_needed
-
-        after_run_need_geocoding = Address.not_geocoded.count
-
-        expect(needed_geocoding).to eq 0
-        expect(after_run_need_geocoding).to eq 0
+      let(:valid_address3) do
+        addr3 = create(:address,
+                       street_address: 'Matarengivägen 30',
+                       post_code: '957 31',
+                       city: 'Övertorneå',
+                       kommun: overtornea_kommun,
+                       region: norbotten_region,
+                       addressable: a_company )
+        addr3.validate
+        addr3
       end
 
 
-      it 'will geocode 1 that needs it' do
+      describe '#self.geocode_all_needed(sleep_between: 0.5, num_per_batch: 50)' do
 
-        valid_address1
-        valid_address2
-        valid_address3
+        it 'nothing geocoded if all have latitude and longitude' do
+          valid_address1
+          valid_address2
+          valid_address3
 
-        query = <<-SQL
-          UPDATE addresses SET latitude=NULL, longitude=NULL
-           WHERE street_address = 'Matarengivägen 24'
-        SQL
+          need_geocoding = Address.not_geocoded
+          needed_geocoding = need_geocoding.count
 
-        Address.connection.execute(query)
+          Address.geocode_all_needed
 
-        need_geocoding = Address.not_geocoded
-        needed_geocoding = need_geocoding.count
+          after_run_need_geocoding = Address.not_geocoded.count
 
-        Address.geocode_all_needed
+          expect(needed_geocoding).to eq 0
+          expect(after_run_need_geocoding).to eq 0
+        end
 
-        after_run_need_geocoding = Address.not_geocoded.count
 
-        expect(needed_geocoding).to eq 1
-        expect(after_run_need_geocoding).to eq 0
+        it 'will geocode 1 that needs it' do
+
+          valid_address1
+          valid_address2
+          valid_address3
+
+          query = <<-SQL
+            UPDATE addresses SET latitude=NULL, longitude=NULL
+             WHERE street_address = 'Matarengivägen 24'
+          SQL
+
+          Address.connection.execute(query)
+
+          need_geocoding = Address.not_geocoded
+          needed_geocoding = need_geocoding.count
+
+          Address.geocode_all_needed
+
+          after_run_need_geocoding = Address.not_geocoded.count
+
+          expect(needed_geocoding).to eq 1
+          expect(after_run_need_geocoding).to eq 0
+        end
+
+
+        it 'will geocode 3 that need it' do
+          valid_address1
+          valid_address2
+          valid_address3
+
+          query = <<-SQL
+            UPDATE addresses SET latitude=NULL, longitude=NULL
+          SQL
+
+          Address.connection.execute(query)
+
+          need_geocoding = Address.not_geocoded
+          needed_geocoding = need_geocoding.count
+
+          Address.geocode_all_needed
+
+          after_run_need_geocoding = Address.not_geocoded.count
+
+          expect(needed_geocoding).to eq 3
+          expect(after_run_need_geocoding).to eq 0
+        end
+
       end
 
+      context 'geocodes only if location field has change' do
 
-      it 'will geocode 3 that need it' do
-        valid_address1
-        valid_address2
-        valid_address3
+        it 'geocodes for changed street, post code, city, kommun, region, country' do
+          valid_address1.street_address = 'new street'
+          expect(valid_address1).to receive(:geocode_best_possible)
+          valid_address1.validate
 
-        query = <<-SQL
-          UPDATE addresses SET latitude=NULL, longitude=NULL
-        SQL
+          valid_address1.post_code = '999 99'
+          expect(valid_address1).to receive(:geocode_best_possible)
+          valid_address1.validate
 
-        Address.connection.execute(query)
+          valid_address1.city = 'new city'
+          expect(valid_address1).to receive(:geocode_best_possible)
+          valid_address1.validate
 
-        need_geocoding = Address.not_geocoded
-        needed_geocoding = need_geocoding.count
+          valid_address1.kommun = create(:kommun, name: 'New Kommun')
+          expect(valid_address1).to receive(:geocode_best_possible)
+          valid_address1.validate
 
-        Address.geocode_all_needed
+          valid_address1.region = create(:region, name: 'New Region')
+          expect(valid_address1).to receive(:geocode_best_possible)
+          valid_address1.validate
 
-        after_run_need_geocoding = Address.not_geocoded.count
+          valid_address1.country = 'new country'
+          expect(valid_address1).to receive(:geocode_best_possible)
+          valid_address1.validate
+        end
 
-        expect(needed_geocoding).to eq 3
-        expect(after_run_need_geocoding).to eq 0
+        it 'does not geocode for changed mail' do
+          valid_address1.mail = true
+          expect(valid_address1).not_to receive(:geocode_best_possible)
+          valid_address1.validate
+        end
+
       end
-
 
     end
 

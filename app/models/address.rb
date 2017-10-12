@@ -36,8 +36,12 @@ class Address < ApplicationRecord
 
   geocoded_by :entire_address
 
+  GEO_FIELDS = %w(street_address post_code city kommun_id
+                  region_id visibility country).freeze
+
   after_validation :geocode_best_possible,
-                   :if => lambda { |obj| obj.changed? }
+                   :if => lambda { |obj| obj.new_record? ||
+                                         (obj.changed & GEO_FIELDS).any? }
 
   # geocode all of the addresses that need it
   #
