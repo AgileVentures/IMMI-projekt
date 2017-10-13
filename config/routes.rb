@@ -71,10 +71,19 @@ Rails.application.routes.draw do
 
     get 'member-pages', to: 'shf_documents#minutes_and_static_pages'
 
+    resources :payments, path: 'betalning', only: [:edit, :update,
+                                                  :show, :destroy]
+
   end
 
+  get 'betalning', to: 'payments#index', as: :payments
+
+  post 'betalning/:type', to: 'payments#create'
+
+  get 'betalning/ny/:type', to: 'payments#new', as: :new_payment
+
   # We are not using nested resource statements for the following routes
-  # because that did not seem to work when used in combination with "path:" option 
+  # because that did not seem to work when used in combination with "path:" option
   post 'hundforetag/:company_id/adresser/:id/set_type', to: 'addresses#set_address_type',
        as: :company_address_type
   # ^^ Used only for XHR action, not visible to user
