@@ -1,0 +1,15 @@
+%header.entry-header
+  %h1.entry-title= t('.title', user_name: @payment.user.full_name)
+  .post-title-divider
+    %span
+.entry-content.wpcf7
+
+:javascript
+  Hips.checkout({
+          token: "#{@hips_id}",
+          style: {
+            'mainColor': 'BA68D1',
+            'secondColor': 'C29ACE',
+            'font': 'Comic Sans MS'
+          }
+         });
