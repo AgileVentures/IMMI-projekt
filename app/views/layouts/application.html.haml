@@ -18,6 +18,7 @@
     = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=" + |
                              "#{Geocoder.config[:api_key]}&language=#{I18n.locale}" + |
                              "&region=SE" |
+    = javascript_include_tag HIPS_JS_CDN
 
 
     - if Rails.env.test?

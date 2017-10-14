@@ -71,16 +71,22 @@ Rails.application.routes.draw do
 
     get 'member-pages', to: 'shf_documents#minutes_and_static_pages'
 
-    resources :payments, path: 'betalning', only: [:edit, :update,
-                                                  :show, :destroy]
-
   end
+
+  # We are not using nested resource statements for the following routes
+  # because that did not seem to work when used in combination with "path:" option
+
+  # Payment as a nested resource within user:
 
   get 'betalning', to: 'payments#index', as: :payments
 
-  post 'betalning/:type', to: 'payments#create'
+  get 'anvandare/:user_id/betalning/ny/:type', to: 'payments#new',
+       as: :new_payment
 
-  get 'betalning/ny/:type', to: 'payments#new', as: :new_payment
+  post 'anvandare/:user_id/betalning/:type', to: 'payments#create'
+
+  delete 'anvandare/:user_id/betalning/:id', to: 'payments#destroy',
+       as: :payment
 
   # We are not using nested resource statements for the following routes
   # because that did not seem to work when used in combination with "path:" option
