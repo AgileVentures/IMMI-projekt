@@ -20,6 +20,16 @@ class HipsService
     response.parsed_response
   end
 
+  def self.get_order(hips_id)
+    debugger
+    url = HIPS_ORDERS_URL + "#{hips_id}"
+    response = HTTParty.get(url,
+                  headers: { 'Authorization' => "Token token=#{HIPS_PRIVATE_KEY}",
+                             'Content-Type' => 'application/json' },
+                  debug_output: $stdout)
+    response.parsed_response
+  end
+
   def self.order_json(payment_id, user_id, session_id,
                       payment_type, item_price, currency,
                       success_url, error_url)
@@ -31,8 +41,8 @@ class HipsService
       fulfill: true,
       require_shipping: false,
       hooks: {
-        user_return_url_on_success: success_url,
-        user_return_url_on_fail: error_url
+                user_return_url_on_success: success_url,
+                user_return_url_on_fail: error_url
              },
       cart: {
               items: [ {
