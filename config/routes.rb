@@ -81,7 +81,7 @@ Rails.application.routes.draw do
   post 'anvandare/:user_id/betalning/:type', to: 'payments#create',
        as: :payments
 
-  put 'anvandare/:user_id/betalning/:id', to: 'payments#update', as: :payment
+  get 'anvandare/:user_id/betalning/:id', to: 'payments#update', as: :payment
 
   delete 'anvandare/:user_id/betalning/:id', to: 'payments#destroy'
 
