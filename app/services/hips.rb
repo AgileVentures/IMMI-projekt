@@ -23,7 +23,6 @@ class HipsService
   def self.order_json(payment_id, user_id, session_id,
                       payment_type, item_price, currency,
                       success_url, error_url)
-                      success_url, error_url)
 
     { order_id: payment_id,
       purchase_currency: currency,
