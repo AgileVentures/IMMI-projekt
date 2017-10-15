@@ -7,7 +7,7 @@ class PaymentsController < ApplicationController
 
     @payment = Payment.create(payment_type: payment_type,
                               user_id: user_id,
-                              status: Payment::STATUS[:NEW])
+                              status: 'created')
 
     success_url = payment_url(user_id: user_id, id: @payment.id)
 
@@ -17,11 +17,10 @@ class PaymentsController < ApplicationController
                                           payment_type,
                                           success_url,
                                           root_url)
-
     @hips_id = hips_order['id']
 
     @payment.hips_id = @hips_id
-    @payment.status = Payment::STATUS[:PENDING] if hips_order['status'] == 'pending'
+    @payment.status = hips_order['status']
     @payment.save
 
   rescue => e
@@ -41,7 +40,23 @@ class PaymentsController < ApplicationController
   end
 
   def update
-    render plain: "Payments#update, id: #{params[:id]}, user_id: #{params[:user_id]}"
-  end
+    debugger
 
+    payment = Payment.find(params[:id])
+    hips_order = HipsService.get_order(payment.hips_id)
+
+    payment.status = hips_order['status']
+    payment.save
+
+    # Confirm success status
+    if hips_order['status'] == 'successful'
+      helpers.flash_message(:notice, 'Payment successfully processed - thank you!')
+    else
+      helpers.flash_message(:alert,
+        'Payment status uncertain - please contact system administrator')
+    end
+
+    # Redirect to user account page (when it exists)
+    redirect_to root_path
+  end
 end
