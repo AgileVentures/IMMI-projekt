@@ -2,37 +2,42 @@
 class HipsService
   require 'httparty'
 
-  def self.create_order(order_id, user_id, session_id,
-                        order_type, currency = 'SEK')
+  def self.create_order(payment_id, user_id, session_id, payment_type,
+                        success_url, error_url, currency = 'SEK')
 
-    raise 'Invalid order type' unless order_type == 'member_fee' ||
-                                      order_type == 'branding_fee'
+    raise 'Invalid payment type' unless payment_type == 'member_fee' ||
+                                        payment_type == 'branding_fee'
 
-    item_price = order_type == 'member_fee' ? SHF_MEMBER_FEE : SHF_BRANDING_FEE
+    item_price = payment_type == 'member_fee' ? SHF_MEMBER_FEE : SHF_BRANDING_FEE
 
-    HTTParty.post(HIPS_ORDERS_URL,
+    response = HTTParty.post(HIPS_ORDERS_URL,
                   headers: { 'Authorization' => "Token token=#{HIPS_PRIVATE_KEY}",
                              'Content-Type' => 'application/json' },
                   debug_output: $stdout,
-                  body: order_json(order_id, user_id, session_id,
-                                   order_type, item_price, currency)
-    ).parsed_response
+                  body: order_json(payment_id, user_id, session_id,
+                                   payment_type, item_price, currency,
+                                   success_url, error_url))
+    response.parsed_response
   end
 
-  def self.order_json(order_id, user_id, session_id,
-                      order_type, item_price, currency)
+  def self.order_json(payment_id, user_id, session_id,
+                      payment_type, item_price, currency,
+                      success_url, error_url)
+                      success_url, error_url)
 
-    { order_id: order_id,
+    { order_id: payment_id,
       purchase_currency: currency,
       user_session_id: session_id,
       user_identifier: user_id,
       fulfill: true,
       require_shipping: false,
+      user_return_url_on_success: success_url,
+      user_return_url_on_fail: error_url,
       cart: {
               items: [ {
                           type: 'fee',
-                          sku: order_type,
-                          name: order_type,
+                          sku: payment_type,
+                          name: payment_type,
                           quantity: 1,
                           unit_price: item_price
                         }

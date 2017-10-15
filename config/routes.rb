@@ -78,15 +78,12 @@ Rails.application.routes.draw do
 
   # Payment as a nested resource within user:
 
-  get 'betalning', to: 'payments#index', as: :payments
+  post 'anvandare/:user_id/betalning/:type', to: 'payments#create',
+       as: :payments
 
-  get 'anvandare/:user_id/betalning/ny/:type', to: 'payments#new',
-       as: :new_payment
+  put 'anvandare/:user_id/betalning/:id', to: 'payments#update', as: :payment
 
-  post 'anvandare/:user_id/betalning/:type', to: 'payments#create'
-
-  delete 'anvandare/:user_id/betalning/:id', to: 'payments#destroy',
-       as: :payment
+  delete 'anvandare/:user_id/betalning/:id', to: 'payments#destroy'
 
   # We are not using nested resource statements for the following routes
   # because that did not seem to work when used in combination with "path:" option
