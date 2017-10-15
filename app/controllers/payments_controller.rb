@@ -1,7 +1,7 @@
 class PaymentsController < ApplicationController
   require 'hips'
 
-  def new
+  def create
     payment_type = params[:type]
     user_id = params[:user_id]
 
@@ -9,10 +9,14 @@ class PaymentsController < ApplicationController
                               user_id: user_id,
                               status: Payment::STATUS[:NEW])
 
+    success_url = payment_url(user_id: user_id, id: @payment.id)
+
     hips_order = HipsService.create_order(@payment.id,
                                           user_id,
                                           session.id,
-                                          payment_type)
+                                          payment_type,
+                                          success_url,
+                                          root_url)
 
     @hips_id = hips_order['id']
 
@@ -34,6 +38,10 @@ class PaymentsController < ApplicationController
       'Something went wrong - please contact system administrator')
 
     redirect_to(request.referer.present? ? :back : root_path)
+  end
+
+  def update
+    render plain: "Payments#update, id: #{params[:id]}, user_id: #{params[:user_id]}"
   end
 
 end
