@@ -30,8 +30,10 @@ class HipsService
       user_identifier: user_id,
       fulfill: true,
       require_shipping: false,
-      user_return_url_on_success: success_url,
-      user_return_url_on_fail: error_url,
+      hooks: {
+        user_return_url_on_success: success_url,
+        user_return_url_on_fail: error_url
+             },
       cart: {
               items: [ {
                           type: 'fee',
@@ -41,7 +43,6 @@ class HipsService
                           unit_price: item_price
                         }
                       ]
-
             }
     }.to_json
   end
