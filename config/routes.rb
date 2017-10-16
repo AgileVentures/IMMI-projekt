@@ -81,13 +81,13 @@ Rails.application.routes.draw do
        as: :payments
 
   get 'anvandare/:user_id/betalning/:id', to: 'payments#update', as: :payment
-  # ^^ This is accessed as a webhook from HIPS, hence must use HTTP "get"
+  # ^^ This is accessed as a user redirect from HIPS, hence must use HTTP "get"
 
   delete 'anvandare/:user_id/betalning/:id', to: 'payments#destroy'
 
   get 'anvandare/:user_id/betalning/:id/error', to: 'payments#error',
       as: :payment_error
-  # ^^ This is accessed as a webhook from HIPS, hence must use HTTP "get"
+  # ^^ This is accessed as a user redirect from HIPS, hence must use HTTP "get"
   # ------- Payment as a nested resource within user --------
 
   # ------- Address as a nested resource within company -----
