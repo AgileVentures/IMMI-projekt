@@ -1,8 +1,14 @@
 %header.entry-header
-  %h1.entry-title= t('.title', user_name: @payment.user.full_name)
+  %h1.entry-title
+    - if @payment.payment_type == 'member_fee'
+      - payment_type = t('activerecord.attributes.payment.payment_type.member_fee')
+    - else
+      - payment_type = t('activerecord.attributes.payment.payment_type.branding_fee')
+
+    = t('.title', payment_type: payment_type, user_name: @payment.user.full_name)
+    
   .post-title-divider
     %span
-.entry-content.wpcf7
 
 :javascript
   Hips.checkout({

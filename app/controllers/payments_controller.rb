@@ -28,8 +28,7 @@ class PaymentsController < ApplicationController
 
     log_hips_activity('create order', nil, @hips_id, exc)
 
-    helpers.flash_message(:alert,
-      'Something went wrong - please contact system administrator')
+    helpers.flash_message(:alert, t('.something_wrong'))
 
     redirect_back fallback_location: root_path
   end
@@ -47,17 +46,15 @@ class PaymentsController < ApplicationController
 
     # Confirm success status
     if hips_order['status'] == 'successful'
-      helpers.flash_message(:notice, 'Payment successfully processed - thank you!')
+      helpers.flash_message(:notice, t('.success'))
     else
-      helpers.flash_message(:alert,
-        'Payment status uncertain - please contact system administrator')
+      helpers.flash_message(:alert, t('.status_uncertain'))
     end
 
   rescue RuntimeError, HTTParty::Error => exc
     log_hips_activity('update payment', payment&.id, hips_order&['id'], exc)
 
-    helpers.flash_message(:alert,
-      'Something went wrong - please contact system administrator')
+    helpers.flash_message(:alert, t('.status_uncertain'))
 
   ensure
     # Redirect to user account page (when it exists)
@@ -75,8 +72,7 @@ class PaymentsController < ApplicationController
   ensure
     log_hips_activity('order create error', payment&.id, hips_order&['id'], exc)
 
-    helpers.flash_message(:alert,
-      'There was an error in processing your payment - please contact system administrator')
+    helpers.flash_message(:alert, t('.error')
 
     # Redirect to user account page (when it exists)
     redirect_to root_path
