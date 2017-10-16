@@ -72,7 +72,7 @@ class PaymentsController < ApplicationController
   ensure
     log_hips_activity('order create error', payment&.id, hips_order&['id'], exc)
 
-    helpers.flash_message(:alert, t('.error')
+    helpers.flash_message(:alert, t('.error'))
 
     # Redirect to user account page (when it exists)
     redirect_to root_path
