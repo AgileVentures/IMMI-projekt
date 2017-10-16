@@ -8,3 +8,5 @@ HIPS_PUBLIC_KEY  = ENV['SHF_HIPS_PUBLIC_KEY']
 
 SHF_MEMBER_FEE   = 40000  # unit == one hundredth of krona
 SHF_BRANDING_FEE = 20000
+
+HIPS_LOG = 'log/HIPS.log'
