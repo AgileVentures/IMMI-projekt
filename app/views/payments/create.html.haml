@@ -6,7 +6,7 @@
       - payment_type = t('activerecord.attributes.payment.payment_type.branding_fee')
 
     = t('.title', payment_type: payment_type, user_name: @payment.user.full_name)
-    
+
   .post-title-divider
     %span
 
@@ -14,8 +14,8 @@
   Hips.checkout({
           token: "#{@hips_id}",
           style: {
-            'mainColor': 'BA68D1',
-            'secondColor': 'C29ACE',
+            'mainColor': '003A78',
+            'secondColor': '5692ce',
             'font': 'Comic Sans MS'
           }
          });
