@@ -2,6 +2,8 @@
 class HipsService
   require 'httparty'
 
+  SUCCESS_CODES = [200, 201, 202].freeze
+
   def self.create_order(payment_id, user_id, session_id, payment_type,
                         success_url, error_url, currency = 'SEK')
 
@@ -17,22 +19,28 @@ class HipsService
                   body: order_json(payment_id, user_id, session_id,
                                    payment_type, item_price, currency,
                                    success_url, error_url))
-    response.parsed_response
+
+    return response.parsed_response if SUCCESS_CODES.include?(response.code)
+
+    raise "HTTP Status: #{response.code}, #{response.message}"
   end
 
   def self.get_order(hips_id)
-    debugger
+
     url = HIPS_ORDERS_URL + "#{hips_id}"
     response = HTTParty.get(url,
                   headers: { 'Authorization' => "Token token=#{HIPS_PRIVATE_KEY}",
                              'Content-Type' => 'application/json' },
                   debug_output: $stdout)
-    response.parsed_response
+
+    return response.parsed_response if SUCCESS_CODES.include?(response.code)
+
+    raise "HTTP Status: #{response.code}, #{response.message}"
   end
 
-  def self.order_json(payment_id, user_id, session_id,
-                      payment_type, item_price, currency,
-                      success_url, error_url)
+  private_class_method def self.order_json(payment_id, user_id, session_id,
+                                           payment_type, item_price, currency,
+                                           success_url, error_url)
 
     { order_id: payment_id,
       purchase_currency: currency,
