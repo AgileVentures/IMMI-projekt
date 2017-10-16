@@ -134,6 +134,11 @@ en:
         created: *created
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
 
+      payment:
+        payment_type:
+          member_fee: Member Fee
+          branding_fee: Branding Fee
+
       membership_application:
         company_number: &company_number Company number
         first_name: *first_name
@@ -620,6 +625,19 @@ en:
       member: Member
       applications: *applications
       applications_tooltip: Number of open applications
+
+  payments:
+    create:
+      page_title: &page_title '%{payment_type} Payment by: %{user_name}'
+      title: *page_title
+      something_wrong: Something went wrong - please contact system administrator
+
+    update:
+      status_uncertain: Payment status uncertain - please contact system administrator
+      success: Payment successfully processed - thank you!
+
+    error:
+      error: There was an error in processing your payment
 
   admin:
     index:
