@@ -82,11 +82,11 @@ class Company < ApplicationRecord
 
 
   def main_address
-    if addresses.empty?
-      addresses << Address.new(addressable: self)
-    end
+    return addresses.includes(:region).first unless addresses.empty?
 
-    addresses.first
+    new_address = Address.new(addressable: self)
+    addresses << new_address
+    new_address
   end
 
 

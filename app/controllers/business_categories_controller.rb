@@ -11,7 +11,7 @@ class BusinessCategoriesController < ApplicationController
 
   def show
 
-    @companies = @business_category.companies.complete.order(:name)
+    @companies = @business_category.companies.includes(:addresses).complete.order(:name)
 
   end
 
