@@ -918,6 +918,7 @@ sv:
           view_company: Visa företagssida
           edit_company: Redigera företag
         my_application: *my_application
+        pay_membership: Betala medlemsavgift
 
       admin:
         shf_main_site: *shf_main_site
