@@ -1,6 +1,8 @@
 class PaymentsController < ApplicationController
   require 'hips'
 
+  protect_from_forgery except: :webhook
+
   def create
     payment_type = params[:type]
     user_id = params[:user_id]
@@ -12,13 +14,15 @@ class PaymentsController < ApplicationController
     success_url = payment_success_url(user_id: user_id, id: @payment.id)
     error_url   = payment_error_url(user_id: user_id, id: @payment.id)
 
+    webhook_url = 'http://a7c25d48.ngrok.io/anvandare/betalning/webhook'
+
     hips_order = HipsService.create_order(@payment.id,
                                           user_id,
                                           session.id,
                                           payment_type,
                                           success_url,
                                           error_url,
-                                          payment_webhook_url)
+                                          webhook_url)
     @hips_id = hips_order['id']
     @payment.hips_id = @hips_id
     @payment.status = hips_order['status']
@@ -27,9 +31,9 @@ class PaymentsController < ApplicationController
   rescue RuntimeError, HTTParty::Error => exc
     @payment.destroy if @payment.persisted?
 
-    log_hips_activity('create order', nil, @hips_id, exc)
+    log_hips_activity('create order', 'error', nil, @hips_id, exc)
 
-    log_hips_activity('create order', nil, @hips_id, exc.cause)
+    log_hips_activity('create order', 'error', nil, @hips_id, exc.cause)
 
     helpers.flash_message(:alert, t('.something_wrong'))
 
@@ -37,7 +41,31 @@ class PaymentsController < ApplicationController
   end
 
   def webhook
-    log_hips_activity('Webhook')
+    # This webhook will be called multiple times (7) during the order create and
+    # payment process. We are only interested in the "order.successful" event,
+    # which indicates successful payment.
+    # Later, we can switch to "hooks/webhook_url_on_success" - which will
+    # be triggered *only* by the "order.successful" event.
+    # (That webhook is not available at this time (October 18, 2017)).
+
+    payload = JSON.parse request.body.read
+
+    return head(:ok) unless payload['event'] == 'order.successful'
+
+    # To Do: Validate webhook is from HIPS_API
+
+    resource = payload['resource']
+
+    payment_id = resource['merchant_reference']['order_id']
+    hips_id    = resource['id']
+
+    payment = Payment.find(payment_id)
+    payment.status = resource['status']
+    payment.save
+
+    log_hips_activity('Webhook', 'info', payment_id, hips_id)
+
+    head :ok
   end
 
   def success
@@ -45,62 +73,19 @@ class PaymentsController < ApplicationController
     redirect_to root_path   # Redirect to user account page (when it exists)
   end
 
-  #   payment = Payment.find(params[:id])
-  #   hips_order = HipsService.get_order(payment.hips_id)
-  #
-  #   if payment.hips_id != hips_order['id']
-  #     raise "HIPS ID (#{hips_order['id']}) != SHF HIPS id (#{payment.hips_id})"
-  #   end
-  #
-  #   payment.status = hips_order['status']
-  #   payment.save
-  #
-  #   # Confirm success status
-  #   if hips_order['status'] == 'successful'
-  #     helpers.flash_message(:notice, t('.success'))
-  #   else
-  #     helpers.flash_message(:alert, t('.status_uncertain'))
-  #   end
-  #
-  # rescue RuntimeError, HTTParty::Error => exc
-  #   log_hips_activity('update payment', payment&.id, hips_order&['id'], exc)
-  #
-  #   helpers.flash_message(:alert, t('.status_uncertain'))
-  #
-  # ensure
-  #   # Redirect to user account page (when it exists)
-  #   redirect_to root_path
-  # end
-
   def error
     helpers.flash_message(:alert, t('.error'))
-    redirect_to root_path # Redirect to user account page (when it exists)
+    redirect_to root_path   # Redirect to user account page (when it exists)
   end
-
-  #   payment = Payment.find(params[:id])
-  #   hips_order = HipsService.get_order(payment.hips_id)
-  #
-  #   payment.status = hips_order['status']
-  #   payment.save
-  #
-  # rescue RuntimeError, HTTParty::Error => exc
-  # ensure
-  #   log_hips_activity('order create error', payment&.id, hips_order&['id'], exc)
-  #
-  #   helpers.flash_message(:alert, t('.error'))
-  #
-  #   # Redirect to user account page (when it exists)
-  #   redirect_to root_path
-  # end
 
   private
 
-  def log_hips_activity(activity, payment_id, hips_id, exc)
+  def log_hips_activity(activity, severity, payment_id, hips_id, exc=nil)
     ActivityLogger.open(HIPS_LOG, 'HIPS_API', activity, false) do |log|
-      log.record('error', "Payment ID: #{payment_id}") if payment_id
-      log.record('error', "HIPS ID: #{hips_id}") if hips_id
-      log.record('error', "Exception class: #{exc.class}") if exc
-      log.record('error', "Exception message: #{exc.message}") if exc
+      log.record(severity, "Payment ID: #{payment_id}") if payment_id
+      log.record(severity, "HIPS ID: #{hips_id}") if hips_id
+      log.record(severity, "Exception class: #{exc.class}") if exc
+      log.record(severity, "Exception message: #{exc.message}") if exc
     end
   end
 end

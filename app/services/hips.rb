@@ -45,7 +45,11 @@ class HipsService
 
     return response.parsed_response if SUCCESS_CODES.include?(response.code)
 
-    raise "HTTP Status: #{response.code}, #{response.message}"
+    begin
+      raise "Error: #{error['type']}, #{error['message']}"
+    rescue RuntimeError
+      raise "HTTP Status: #{response.code}, #{response.message}"
+    end
   end
 
   private_class_method def self.order_json(payment_id, user_id, session_id,
