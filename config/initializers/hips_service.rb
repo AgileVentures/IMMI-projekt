@@ -10,3 +10,5 @@ SHF_MEMBER_FEE   = 40000  # unit == one hundredth of krona
 SHF_BRANDING_FEE = 20000
 
 HIPS_LOG = 'log/HIPS.log'
+
+SHF_WEBHOOK_HOST = ENV['SHF_DEV_WEBHOOK_HOST'] || "#{root_url}"
