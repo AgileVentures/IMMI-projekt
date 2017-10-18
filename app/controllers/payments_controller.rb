@@ -14,7 +14,7 @@ class PaymentsController < ApplicationController
     success_url = payment_success_url(user_id: user_id, id: @payment.id)
     error_url   = payment_error_url(user_id: user_id, id: @payment.id)
 
-    webhook_url = 'http://a7c25d48.ngrok.io/anvandare/betalning/webhook'
+    webhook_url = SHF_WEBHOOK_HOST + payment_webhook_path
 
     hips_order = HipsService.create_order(@payment.id,
                                           user_id,
