@@ -634,6 +634,8 @@ en:
 
     update:
       status_uncertain: Payment status uncertain - please contact system administrator
+
+    success:
       success: Payment successfully processed - thank you!
 
     error:

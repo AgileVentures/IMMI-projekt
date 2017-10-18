@@ -80,20 +80,19 @@ Rails.application.routes.draw do
   post 'anvandare/:user_id/betalning/:type', to: 'payments#create',
        as: :payments
 
-  get 'anvandare/:user_id/betalning/:id', to: 'payments#update', as: :payment
-  # ^^ This is accessed as a user redirect from HIPS, hence must use HTTP "get"
-
-  delete 'anvandare/:user_id/betalning/:id', to: 'payments#destroy'
+  get 'anvandare/:user_id/betalning/:id', to: 'payments#success',
+      as: :payment_success  # user redirect from HIPS
 
   get 'anvandare/:user_id/betalning/:id/error', to: 'payments#error',
-      as: :payment_error
-  # ^^ This is accessed as a user redirect from HIPS, hence must use HTTP "get"
-  # ------- Payment as a nested resource within user --------
+      as: :payment_error  # user redirect from HIPS
+
+  post 'anvandare/betalning/webhook', to: 'payments#webhook',
+       as: :payment_webhook
+  # ----------------------------------------------------------
 
   # ------- Address as a nested resource within company -----
   post 'hundforetag/:company_id/adresser/:id/set_type', to: 'addresses#set_address_type',
-       as: :company_address_type
-  # ^^ Used only for XHR action, not visible to user
+       as: :company_address_type  # Used only for XHR action, not visible to user
 
   get 'hundforetag/:company_id/ny', to: 'addresses#new', as: :new_company_address
 
@@ -108,8 +107,7 @@ Rails.application.routes.draw do
 
   delete 'hundforetag/:company_id/adresser/:id', to: 'addresses#destroy',
          as: :company_address_delete
-  # ------- Address as a nested resource within company -----
-
+  # ----------------------------------------------------------
 
   get 'information', to: 'membership_applications#information'
 
