@@ -4,8 +4,9 @@ class HipsService
 
   SUCCESS_CODES = [200, 201, 202].freeze
 
-  def self.create_order(payment_id, user_id, session_id, payment_type,
-                        success_url, error_url, currency = 'SEK')
+  def self.create_order(payment_id, user_id, session_id,
+                        payment_type, success_url, error_url,
+                        webhook_url, currency = 'SEK')
 
     raise 'Invalid payment type' unless payment_type == 'member_fee' ||
                                         payment_type == 'branding_fee'
@@ -18,11 +19,20 @@ class HipsService
                   debug_output: $stdout,
                   body: order_json(payment_id, user_id, session_id,
                                    payment_type, item_price, currency,
-                                   success_url, error_url))
+                                   success_url, error_url, webhook_url))
 
-    return response.parsed_response if SUCCESS_CODES.include?(response.code)
+    parsed_response = response.parsed_response
 
-    raise "HTTP Status: #{response.code}, #{response.message}"
+    return parsed_response if SUCCESS_CODES.include?(response.code)
+
+    error = parsed_response['error']
+
+    # Wrap cause exception within HTTP error exception so both appear in log
+    begin
+      raise "Error: #{error['type']}, #{error['message']}"
+    rescue RuntimeError
+      raise "HTTP Status: #{response.code}, #{response.message}"
+    end
   end
 
   def self.get_order(hips_id)
@@ -40,7 +50,7 @@ class HipsService
 
   private_class_method def self.order_json(payment_id, user_id, session_id,
                                            payment_type, item_price, currency,
-                                           success_url, error_url)
+                                           success_url, error_url, webhook_url)
 
     { order_id: payment_id,
       purchase_currency: currency,
@@ -50,7 +60,8 @@ class HipsService
       require_shipping: false,
       hooks: {
                 user_return_url_on_success: success_url,
-                user_return_url_on_fail: error_url
+                user_return_url_on_fail: error_url,
+                webhook_url: webhook_url
              },
       cart: {
               items: [ {

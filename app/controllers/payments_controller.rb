@@ -9,7 +9,7 @@ class PaymentsController < ApplicationController
                               user_id: user_id,
                               status: 'created')
 
-    success_url = payment_url(user_id: user_id, id: @payment.id)
+    success_url = payment_success_url(user_id: user_id, id: @payment.id)
     error_url   = payment_error_url(user_id: user_id, id: @payment.id)
 
     hips_order = HipsService.create_order(@payment.id,
@@ -17,7 +17,8 @@ class PaymentsController < ApplicationController
                                           session.id,
                                           payment_type,
                                           success_url,
-                                          error_url)
+                                          error_url,
+                                          payment_webhook_url)
     @hips_id = hips_order['id']
     @payment.hips_id = @hips_id
     @payment.status = hips_order['status']
@@ -28,55 +29,69 @@ class PaymentsController < ApplicationController
 
     log_hips_activity('create order', nil, @hips_id, exc)
 
+    log_hips_activity('create order', nil, @hips_id, exc.cause)
+
     helpers.flash_message(:alert, t('.something_wrong'))
 
     redirect_back fallback_location: root_path
   end
 
-  def update
-    payment = Payment.find(params[:id])
-    hips_order = HipsService.get_order(payment.hips_id)
-
-    if payment.hips_id != hips_order['id']
-      raise "HIPS ID (#{hips_order['id']}) != SHF HIPS id (#{payment.hips_id})"
-    end
-
-    payment.status = hips_order['status']
-    payment.save
-
-    # Confirm success status
-    if hips_order['status'] == 'successful'
-      helpers.flash_message(:notice, t('.success'))
-    else
-      helpers.flash_message(:alert, t('.status_uncertain'))
-    end
-
-  rescue RuntimeError, HTTParty::Error => exc
-    log_hips_activity('update payment', payment&.id, hips_order&['id'], exc)
-
-    helpers.flash_message(:alert, t('.status_uncertain'))
-
-  ensure
-    # Redirect to user account page (when it exists)
-    redirect_to root_path
+  def webhook
+    log_hips_activity('Webhook')
   end
+
+  def success
+    helpers.flash_message(:notice, t('.success'))
+    redirect_to root_path   # Redirect to user account page (when it exists)
+  end
+
+  #   payment = Payment.find(params[:id])
+  #   hips_order = HipsService.get_order(payment.hips_id)
+  #
+  #   if payment.hips_id != hips_order['id']
+  #     raise "HIPS ID (#{hips_order['id']}) != SHF HIPS id (#{payment.hips_id})"
+  #   end
+  #
+  #   payment.status = hips_order['status']
+  #   payment.save
+  #
+  #   # Confirm success status
+  #   if hips_order['status'] == 'successful'
+  #     helpers.flash_message(:notice, t('.success'))
+  #   else
+  #     helpers.flash_message(:alert, t('.status_uncertain'))
+  #   end
+  #
+  # rescue RuntimeError, HTTParty::Error => exc
+  #   log_hips_activity('update payment', payment&.id, hips_order&['id'], exc)
+  #
+  #   helpers.flash_message(:alert, t('.status_uncertain'))
+  #
+  # ensure
+  #   # Redirect to user account page (when it exists)
+  #   redirect_to root_path
+  # end
 
   def error
-    payment = Payment.find(params[:id])
-    hips_order = HipsService.get_order(payment.hips_id)
-
-    payment.status = hips_order['status']
-    payment.save
-
-  rescue RuntimeError, HTTParty::Error => exc
-  ensure
-    log_hips_activity('order create error', payment&.id, hips_order&['id'], exc)
-
     helpers.flash_message(:alert, t('.error'))
-
-    # Redirect to user account page (when it exists)
-    redirect_to root_path
+    redirect_to root_path # Redirect to user account page (when it exists)
   end
+
+  #   payment = Payment.find(params[:id])
+  #   hips_order = HipsService.get_order(payment.hips_id)
+  #
+  #   payment.status = hips_order['status']
+  #   payment.save
+  #
+  # rescue RuntimeError, HTTParty::Error => exc
+  # ensure
+  #   log_hips_activity('order create error', payment&.id, hips_order&['id'], exc)
+  #
+  #   helpers.flash_message(:alert, t('.error'))
+  #
+  #   # Redirect to user account page (when it exists)
+  #   redirect_to root_path
+  # end
 
   private
 

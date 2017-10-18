@@ -631,6 +631,8 @@ sv:
 
     update:
       status_uncertain: Betalningsstatus osäker - kontakta systemadministratören
+
+    success:
       success: Betalning bearbetas framgångsrikt - tack!
 
     error:
