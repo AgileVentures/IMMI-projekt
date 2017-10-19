@@ -52,6 +52,16 @@ class HipsService
     end
   end
 
+  def self.validate_webhook_origin(jwt)
+    token = JWT.decode(jwt, HIPS_RSA_KEY, true, algorithm: 'RS256')
+
+    raise 'JWT issuer not HIPS' unless token[0]['iss'] == 'hips.com'
+
+    raise 'JWT wrong algorythm' unless token[1]['alg'] == 'RS256'
+
+    token[0]['data']['resource']
+  end
+
   private_class_method def self.order_json(payment_id, user_id, session_id,
                                            payment_type, item_price, currency,
                                            success_url, error_url, webhook_url)
