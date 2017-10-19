@@ -1,7 +1,7 @@
 %header.entry-header
   %h1.entry-title= t('.title', company_name: @company.name)
   - if @address.mail
-    = t('.cannot_delete_address') if @address.mail
+    = t('.cannot_delete_address')
     %span.glyphicon.glyphicon-info-sign{ title: "#{t('.delete_address_tooltip')}",
                                          data: {toggle: 'tooltip'} }
   .post-title-divider
