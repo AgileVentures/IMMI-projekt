@@ -247,6 +247,7 @@ GEM
       railties (>= 4.2.0)
       thor (>= 0.14, < 2.0)
     json (2.1.0)
+    jwt (2.1.0)
     launchy (2.4.3)
       addressable (~> 2.3)
     listen (3.1.5)
@@ -518,6 +519,7 @@ DEPENDENCIES
   i18n-tasks
   jbuilder (~> 2.5)
   jquery-rails
+  jwt
   launchy
   mailgun-ruby
   nokogiri
