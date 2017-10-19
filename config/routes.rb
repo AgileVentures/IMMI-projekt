@@ -74,7 +74,23 @@ Rails.application.routes.draw do
   end
 
   # We are not using nested resource statements for the following routes
-  # because that did not seem to work when used in combination with "path:" option 
+  # because that did not seem to work when used in combination with "path:" option
+
+  # ------- Payment as a nested resource within user --------
+  post 'anvandare/:user_id/betalning/:type', to: 'payments#create',
+       as: :payments
+
+  get 'anvandare/:user_id/betalning/:id', to: 'payments#update', as: :payment
+  # ^^ This is accessed as a user redirect from HIPS, hence must use HTTP "get"
+
+  delete 'anvandare/:user_id/betalning/:id', to: 'payments#destroy'
+
+  get 'anvandare/:user_id/betalning/:id/error', to: 'payments#error',
+      as: :payment_error
+  # ^^ This is accessed as a user redirect from HIPS, hence must use HTTP "get"
+  # ------- Payment as a nested resource within user --------
+
+  # ------- Address as a nested resource within company -----
   post 'hundforetag/:company_id/adresser/:id/set_type', to: 'addresses#set_address_type',
        as: :company_address_type
   # ^^ Used only for XHR action, not visible to user
@@ -92,7 +108,7 @@ Rails.application.routes.draw do
 
   delete 'hundforetag/:company_id/adresser/:id', to: 'addresses#destroy',
          as: :company_address_delete
-
+  # ------- Address as a nested resource within company -----
 
 
   get 'information', to: 'membership_applications#information'
