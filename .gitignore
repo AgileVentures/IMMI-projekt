@@ -31,6 +31,7 @@ public/javascripts/translations.js
 /log
 .DS_Store
 .env
+.env.development
 
 # swaks is used to test sending SMTP email via CLI
 swaks
