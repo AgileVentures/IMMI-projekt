@@ -52,9 +52,7 @@ class PaymentsController < ApplicationController
 
     return head(:ok) unless payload['event'] == 'order.successful'
 
-    # To Do: Validate webhook is from HIPS_API
-
-    resource = payload['resource']
+    resource = HipsService.validate_webhook_origin(payload['jwt'])
 
     payment_id = resource['merchant_reference']['order_id']
     hips_id    = resource['id']
@@ -65,6 +63,10 @@ class PaymentsController < ApplicationController
 
     log_hips_activity('Webhook', 'info', payment_id, hips_id)
 
+  rescue RuntimeError => exc
+    log_hips_activity('Webhook', 'error', payment_id, hips_id, exc)
+
+  ensure
     head :ok
   end
 
