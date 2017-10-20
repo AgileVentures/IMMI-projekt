@@ -1,0 +1,107 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.hips.com/v1/orders/
+    body:
+      encoding: UTF-8
+      string: '{"order_id":1,"purchase_currency":"SEK","user_session_id":1,"user_identifier":1,"fulfill":true,"require_shipping":false,"hooks":{"user_return_url_on_success":null,"user_return_url_on_fail":null,"webhook_url":null},"cart":{"items":[{"type":"fee","sku":"member_fee","name":"member_fee","quantity":1,"unit_price":30000}]}}'
+    headers:
+      Authorization:
+      - Token token=private_GCzHecUJWEPZWNpPvQoiNxvy
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 20 Oct 2017 16:15:06 GMT
+      Etag:
+      - W/"37683bb0850d3f700459c4c4f2abf211"
+      Server:
+      - nginx/1.10.1
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '200'
+      X-Ratelimit-Remaining:
+      - '199'
+      X-Ratelimit-Reset:
+      - '60'
+      X-Request-Id:
+      - d1260b60-2486-4991-a076-e1f72bb3f138
+      X-Runtime:
+      - '0.152392'
+      Content-Length:
+      - '1797'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"XWWwaFUERChzX4kGemLixjte","object":"order","checkout_uri":"https://checkout.hips.com/XWWwaFUERChzX4kGemLixjte","merchant_reference":{"order_id":"1"},"purchase_currency":"SEK","status":"pending","disallow_address_change":false,"total_payments_amount":0,"created_at":"2017-10-20T16:15:06.596Z","last_modified_at":"2017-10-20T16:15:06.596Z","expires_at":null,"require_shipping":false,"shipping":null,"test":true,"billing_address":{"id":null,"object":"address","title":null,"given_name":null,"family_name":null,"care_of":null,"street_address":null,"street_number":null,"postal_code":null,"email":null,"city":null,"is_billing":true,"company_name":null,"country":null,"phone_mobile":"-","status":null},"shipping_address":{"id":null,"object":"address","title":null,"given_name":null,"family_name":null,"care_of":null,"street_address":null,"street_number":null,"postal_code":null,"email":null,"city":null,"is_billing":true,"company_name":null,"country":null,"phone_mobile":"-","status":null},"cart":{"total_vat_amount":0,"total_vat_amount_formatted":"0.00
+        kr","total_amount":30000,"total_amount_formatted":"300.00 kr","amount_due":30000,"amount_due_formatted":"300.00
+        kr","items":[{"id":"fDnNQ5q46V8babr39PqGK1bX","object":"order_item","sku":"member_fee","name":"member_fee","quantity":1,"type":"fee","ean":null,"uri":null,"weight":null,"weight_unit":"gram","image_uri":null,"discount_rate":0,"vat_amount":0,"unit_price":30000,"unit_price_formatted":"300.00
+        kr","price":30000,"price_formatted":"300.00 kr","tax":0,"tax_formatted":"0.00
+        kr"}]},"coupons":[],"html_snippet":"\u003cscript src=\"https://cdn.hips.com/js/v1/hips.js\"\u003e\u003c/script\u003e\n        \u003cscript\u003e\n          Hips.checkout({\n            token:
+        ''XWWwaFUERChzX4kGemLixjte''\n        });\n        \u003c/script\u003e"}'
+    http_version: 
+  recorded_at: Fri, 20 Oct 2017 16:15:06 GMT
+- request:
+    method: get
+    uri: https://api.hips.com/v1/orders/XWWwaFUERChzX4kGemLixjte
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Authorization:
+      - Token token=private_GCzHecUJWEPZWNpPvQoiNxvy
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 20 Oct 2017 16:15:07 GMT
+      Etag:
+      - W/"37683bb0850d3f700459c4c4f2abf211"
+      Server:
+      - nginx/1.10.1
+      Vary:
+      - Origin
+      X-Ratelimit-Limit:
+      - '60'
+      X-Ratelimit-Remaining:
+      - '59'
+      X-Ratelimit-Reset:
+      - '60'
+      X-Request-Id:
+      - e180164b-1118-4346-b385-e98823bb1385
+      X-Runtime:
+      - '0.029060'
+      Content-Length:
+      - '1797'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"id":"XWWwaFUERChzX4kGemLixjte","object":"order","checkout_uri":"https://checkout.hips.com/XWWwaFUERChzX4kGemLixjte","merchant_reference":{"order_id":"1"},"purchase_currency":"SEK","status":"pending","disallow_address_change":false,"total_payments_amount":0,"created_at":"2017-10-20T16:15:06.596Z","last_modified_at":"2017-10-20T16:15:06.596Z","expires_at":null,"require_shipping":false,"shipping":null,"test":true,"billing_address":{"id":null,"object":"address","title":null,"given_name":null,"family_name":null,"care_of":null,"street_address":null,"street_number":null,"postal_code":null,"email":null,"city":null,"is_billing":true,"company_name":null,"country":null,"phone_mobile":"-","status":null},"shipping_address":{"id":null,"object":"address","title":null,"given_name":null,"family_name":null,"care_of":null,"street_address":null,"street_number":null,"postal_code":null,"email":null,"city":null,"is_billing":true,"company_name":null,"country":null,"phone_mobile":"-","status":null},"cart":{"total_vat_amount":0,"total_vat_amount_formatted":"0.00
+        kr","total_amount":30000,"total_amount_formatted":"300.00 kr","amount_due":30000,"amount_due_formatted":"300.00
+        kr","items":[{"id":"fDnNQ5q46V8babr39PqGK1bX","object":"order_item","sku":"member_fee","name":"member_fee","quantity":1,"type":"fee","ean":null,"uri":null,"weight":null,"weight_unit":"gram","image_uri":null,"discount_rate":0,"vat_amount":0,"unit_price":30000,"unit_price_formatted":"300.00
+        kr","price":30000,"price_formatted":"300.00 kr","tax":0,"tax_formatted":"0.00
+        kr"}]},"coupons":[],"html_snippet":"\u003cscript src=\"https://cdn.hips.com/js/v1/hips.js\"\u003e\u003c/script\u003e\n        \u003cscript\u003e\n          Hips.checkout({\n            token:
+        ''XWWwaFUERChzX4kGemLixjte''\n        });\n        \u003c/script\u003e"}'
+    http_version: 
+  recorded_at: Fri, 20 Oct 2017 16:15:07 GMT
+recorded_with: VCR 3.0.3
