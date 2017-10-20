@@ -3,6 +3,6 @@ FactoryGirl.define do
     user
     company nil
     payment_type 'member_fee'
-    status 'created'
+    status 'skapad'
   end
 end
