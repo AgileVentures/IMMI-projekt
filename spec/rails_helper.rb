@@ -30,12 +30,7 @@ RSpec.configure do |config|
   end
 
   config.file_fixture_path = 'spec/fixtures/uploaded_files'
-
-  # set `:type` for services directory
-  config.define_derived_metadata(file_path: Regexp.new('/spec/services/')) do |metadata|
-    metadata[:type] = :service
-  end
-
+  
 
   config.use_transactional_fixtures = false
 
