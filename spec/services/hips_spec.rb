@@ -26,15 +26,13 @@ RSpec.describe HipsService do
   end
 
   let(:token_bad_issuer) do
-    file = File.new('spec/fixtures/hips_service/token_bad_issuer.txt')
-    token = file.read
-    JSON.parse(JSON.parse(token))
+    file = File.new('spec/fixtures/hips_service/token_bad_issuer.yaml')
+    YAML.load(file.read)
   end
 
   let(:token_bad_algo) do
-    file = File.new('spec/fixtures/hips_service/token_bad_algo.txt')
-    token = file.read
-    JSON.parse(JSON.parse(token))
+    file = File.new('spec/fixtures/hips_service/token_bad_algo.yaml')
+    YAML.load(file.read)
   end
 
   describe '.create_order', :vcr do

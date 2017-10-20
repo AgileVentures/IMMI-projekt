@@ -1,0 +1,92 @@
+---
+- data:
+    event: order.successful
+    resource:
+      id: R7SknVEDuqMxBoMVcMA749kB
+      type: order
+      links:
+      - rel: self
+        href: https://api.hips.com/v1/orders/R7SknVEDuqMxBoMVcMA749kB
+        method: GET
+      object: order
+      checkout_uri: https://checkout.hips.com/R7SknVEDuqMxBoMVcMA749kB
+      merchant_reference:
+        order_id: '191'
+      purchase_currency: SEK
+      status: successful
+      disallow_address_change: false
+      total_payments_amount: 40000
+      created_at: '2017-10-19T12:08:00.236Z'
+      last_modified_at: '2017-10-19T12:08:03.846Z'
+      expires_at:
+      require_shipping: false
+      shipping:
+      test: true
+      billing_address:
+        id: RByUyVtDG84yzo4gbrxJtFgV
+        object: address
+        title:
+        given_name: Patrick
+        family_name: Bolger
+        care_of:
+        street_address: 10 Main Street
+        street_number:
+        postal_code: '11122'
+        email: patmbolger@gmail.com
+        city: Stockholm
+        is_billing: true
+        company_name:
+        country: SE
+        phone_mobile: "-"
+        status: pending_approval_via_email
+      shipping_address:
+        id:
+        object: address
+        title:
+        given_name:
+        family_name:
+        care_of:
+        street_address:
+        street_number:
+        postal_code:
+        email:
+        city:
+        is_billing: true
+        company_name:
+        country:
+        phone_mobile: "-"
+        status:
+      cart:
+        total_vat_amount: 0
+        total_vat_amount_formatted: 0.00 kr
+        total_amount: 40000
+        total_amount_formatted: 400.00 kr
+        amount_due: 0
+        amount_due_formatted: 0.00 kr
+        items:
+        - id: wt13W1P4CmcGxJCBiTh1Xccy
+          object: order_item
+          sku: member_fee
+          name: member_fee
+          quantity: 1
+          type: fee
+          ean:
+          uri:
+          weight:
+          weight_unit: gram
+          image_uri:
+          discount_rate: 0
+          vat_amount: 0
+          unit_price: 40000
+          unit_price_formatted: 400.00 kr
+          price: 40000
+          price_formatted: 400.00 kr
+          tax: 0
+          tax_formatted: 0.00 kr
+      coupons: []
+      html_snippet: "<script src=\"https://cdn.hips.com/js/v1/hips.js\">\n           </script>\n 
+              <script>\n          Hips.checkout({\n            \n            token:
+        'R7SknVEDuqMxBoMVcMA749kB'\n        });\n        </script>"
+  iss: badguys.com
+- typ: JWT
+  alg: RS256
