@@ -9,7 +9,7 @@ class PaymentsController < ApplicationController
 
     @payment = Payment.create(payment_type: payment_type,
                               user_id: user_id,
-                              status: 'created')
+                              status: Payment::ORDER_PAYMENT_STATUS(nil)
 
     success_url = payment_success_url(user_id: user_id, id: @payment.id)
     error_url   = payment_error_url(user_id: user_id, id: @payment.id)
@@ -26,7 +26,7 @@ class PaymentsController < ApplicationController
                                           webhook_url)
     @hips_id = hips_order['id']
     @payment.hips_id = @hips_id
-    @payment.status = hips_order['status']
+    @payment.status = Payment::ORDER_PAYMENT_STATUS(hips_order['status'])
     @payment.save
 
   rescue RuntimeError, HTTParty::Error => exc
@@ -59,7 +59,7 @@ class PaymentsController < ApplicationController
     hips_id    = resource['id']
 
     payment = Payment.find(payment_id)
-    payment.status = resource['status']
+    payment.status = Payment::ORDER_PAYMENT_STATUS(resource['status'])
     payment.save
 
     log_hips_activity('Webhook', 'info', payment_id, hips_id)
