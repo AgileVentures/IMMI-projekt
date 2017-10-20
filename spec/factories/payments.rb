@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :payment do
-    user nil
+    user
     company nil
-    type ""
-    status "MyString"
+    payment_type 'member_fee'
+    status 'created'
   end
 end

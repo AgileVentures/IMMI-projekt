@@ -1,9 +1,9 @@
 %header.entry-header
   %h1.entry-title
     - if @payment.payment_type == 'member_fee'
-      - payment_type = t('activerecord.attributes.payment.payment_type.member_fee')
+      - payment_type = t('payment.payment_type.member_fee')
     - else
-      - payment_type = t('activerecord.attributes.payment.payment_type.branding_fee')
+      - payment_type = t('payment.payment_type.branding_fee')
 
     = t('.title', payment_type: payment_type, user_name: @payment.user.full_name)
 

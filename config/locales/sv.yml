@@ -115,6 +115,9 @@ sv:
         one: Dokument
         other: Dokument
 
+      payment:
+        one: Betalning
+        other: Betalningar
 
     attributes:
 
@@ -135,9 +138,7 @@ sv:
         reset_password_sent_at: &user_reset_password_sent_at Information angående återställning av lösenord sändes
 
       payment:
-        payment_type:
-          member_fee: Medlemsavgift
-          branding_fee: Brandavgift
+        payment_type: Betalnings typ
 
       membership_application:
         company_number: &company_number Organisationsnummer
@@ -235,6 +236,11 @@ sv:
     city: *city
     kommun: *kommun
     none: *none
+
+  payment:
+    payment_type:
+      member_fee: Medlemsavgift
+      branding_fee: Brandavgift
 
   # Automatisk och manuell sökning för views:
   membership_applications:
