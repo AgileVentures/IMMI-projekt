@@ -115,6 +115,10 @@ en:
         one: SHF Document
         other: SHF Documents
 
+      payment:
+        one: Payment
+        other: Payments
+
 
     attributes:
 
@@ -135,9 +139,7 @@ en:
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
 
       payment:
-        payment_type:
-          member_fee: Member Fee
-          branding_fee: Branding Fee
+        payment_type: Payment Type
 
       membership_application:
         company_number: &company_number Company number
@@ -234,6 +236,11 @@ en:
     city: *city
     kommun: *kommun
     none: *none
+
+  payment:
+    payment_type:
+      member_fee: Member Fee
+      branding_fee: Branding Fee
 
  # Automatic and manual lookup for views:
   membership_applications:
