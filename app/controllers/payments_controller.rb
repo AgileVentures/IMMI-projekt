@@ -14,8 +14,6 @@ class PaymentsController < ApplicationController
     success_url = payment_success_url(user_id: user_id, id: @payment.id)
     error_url   = payment_error_url(user_id: user_id, id: @payment.id)
 
-    debugger
-
     webhook_url = (SHF_WEBHOOK_HOST || root_url) +
                   payment_webhook_path.sub('/en', '')
 
