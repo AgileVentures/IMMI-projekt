@@ -1,0 +1,48 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.hips.com/v1/orders/
+    body:
+      encoding: UTF-8
+      string: '{"order_id":1,"purchase_currency":"SEK","user_session_id":1,"user_identifier":1,"fulfill":true,"require_shipping":false,"hooks":{"user_return_url_on_success":null,"user_return_url_on_fail":null,"webhook_url":null},"cart":{"items":[{"type":"fee","sku":"member_fee","name":"member_fee","quantity":1,"unit_price":30000}]}}'
+    headers:
+      Authorization:
+      - Token token=123
+      Content-Type:
+      - application/json
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Cache-Control:
+      - no-cache
+      Content-Type:
+      - application/json
+      Date:
+      - Fri, 20 Oct 2017 18:24:43 GMT
+      Server:
+      - nginx/1.10.1
+      Vary:
+      - Origin
+      Www-Authenticate:
+      - Basic realm="HIPS API"
+      X-Request-Id:
+      - 7582a62c-184a-4a84-b71e-ba6653d5a1eb
+      X-Runtime:
+      - '0.010954'
+      Content-Length:
+      - '370'
+      Connection:
+      - keep-alive
+    body:
+      encoding: UTF-8
+      string: '{"error":{"type":"authentication_error","message":"You did not provide
+        a valid PRIVATE API key or the API key has expired. You need to provide your
+        PRIVATE API key using HTTP Basic Access Authentication. Use your PRIVATE API
+        key as username with an empty password. See https://dashboard.hips.com/account/apikeys
+        for details, or we can help at https://support.hips.com"}}'
+    http_version: 
+  recorded_at: Fri, 20 Oct 2017 18:24:43 GMT
+recorded_with: VCR 3.0.3
