@@ -1,4 +1,5 @@
 # Interface to HIPS service API
+# https://static.hips.com/doc/api/index.html?shell#introduction
 class HipsService
   require 'httparty'
 
