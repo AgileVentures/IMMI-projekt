@@ -16,6 +16,14 @@ When(/^I click on(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ord
   end
 end
 
+When(/^I click on and accept(?: the)?( \w*)? #{CAPTURE_STRING}[ ]?(link|button)?$/) do |ordinal, element, type|
+  page.driver.accept_modal(:confirm, wait: 4) do
+    confirm_step = "I click on" + (ordinal ? "#{ordinal}" : '') +
+                   " \"#{element}\"" + (type ? " #{type}" : '')
+    step confirm_step
+  end
+end
+
 When /^I confirm popup$/ do
 
   if Capybara.current_driver == :poltergeist
@@ -69,6 +77,12 @@ end
 
 When(/^I click the #{CAPTURE_STRING} action for the row with #{CAPTURE_STRING}$/) do |action, row_content|
   find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
+end
+
+When(/^I click and accept the #{CAPTURE_STRING} action for the row with #{CAPTURE_STRING}$/) do |action, row_content|
+  page.driver.accept_modal(:confirm, wait: 4) do
+    step %{I click the "#{action}" action for the row with "#{row_content}"}
+  end
 end
 
 When(/^I (check|uncheck) the checkbox with id #{CAPTURE_STRING}$/) do |action, element_id|
