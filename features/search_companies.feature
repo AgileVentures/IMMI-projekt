@@ -47,7 +47,7 @@ Background:
     | anna@dogsrus.com    | 5562252998     | accepted | Trainer         |
     | emma@weluvdogs.com  | 5569467466     | accepted | Groomer, Walker |
 
-@javascript
+@selenium
 Scenario: View all companies, sort by columns
   Given I am Logged out
   And I am on the "landing" page
@@ -68,7 +68,7 @@ Scenario: View all companies, sort by columns
   And I should see "Bromölla" before "Laxå"
   And I should see "Laxå" before "Östersund"
 
-@javascript
+@selenium_browser
 Scenario: Search by category
   Given I am Logged out
   And I am on the "landing" page
@@ -80,13 +80,14 @@ Scenario: Search by category
   And I click on t("search")
   And I should see "Barky Boys"
   And I should see "We Luv Dogs"
+  And I wait 20 seconds
   And I should not see "HappyMutts"
   And I should not see "Dogs R Us"
   And I should see "Trainer"
   And I should see "Walker"
   And I should not see "Psychologist"
 
-@javascript
+@selenium
 Scenario: Search by region
   Given I am Logged out
   And I am on the "landing" page
@@ -97,7 +98,7 @@ Scenario: Search by region
   And I should not see "Dogs R Us"
   And I should not see "We Luv Dogs"
 
-@javascript
+@selenium
 Scenario: Search by company
   Given I am Logged out
   And I am on the "landing" page
@@ -108,7 +109,7 @@ Scenario: Search by company
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
 
-@javascript
+@selenium
 Scenario: Search by kommun and region
   Given I am Logged out
   And I am on the "landing" page
@@ -125,7 +126,7 @@ Scenario: Search by kommun and region
   And I click on t("search")
   And I should see "Barky Boys"
 
-@javascript
+@selenium
 Scenario: Search by category and region
   Given I am Logged out
   And I am on the "landing" page
@@ -143,7 +144,7 @@ Scenario: Search by category and region
   And I click on t("search")
   And I should see "We Luv Dogs"
 
-@javascript
+@selenium
 Scenario: Search by region
   Given I am Logged out
   And I am on the "landing" page
@@ -154,7 +155,7 @@ Scenario: Search by region
   And I should not see "Dogs R Us"
   And I should not see "We Luv Dogs"
 
-@javascript
+@selenium
 Scenario: Search by company
   Given I am Logged out
   And I am on the "landing" page
@@ -165,7 +166,7 @@ Scenario: Search by company
   And I should not see "Barky Boys"
   And I should not see "Dogs R Us"
 
-@javascript
+@selenium
 Scenario: Search by kommun
   Given I am Logged out
   And I am on the "landing" page
@@ -182,7 +183,7 @@ Scenario: Search by kommun
   And I should see "We Luv Dogs"
   And I should not see "Dogs R Us"
 
-@javascript
+@selenium
 Scenario: Search by category and region 2
   Given I am Logged out
   And I am on the "landing" page
@@ -200,7 +201,7 @@ Scenario: Search by category and region 2
   And I click on t("search")
   And I should see "We Luv Dogs"
 
-@javascript
+@selenium
 Scenario: Toggle Hide/Show search form
   Given I am Logged out
   And I am on the "landing" page

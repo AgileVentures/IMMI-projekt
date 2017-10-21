@@ -49,7 +49,7 @@ Feature: As a visitor,
       | a@happymutts.com    |       |
       | admin@shf.se        | true  |
 
-  @javascript
+  @selenium
   Scenario: Visitor sees all companies
     Given I am Logged out
     And I am on the "landing" page
@@ -70,7 +70,7 @@ Feature: As a visitor,
     And I should not see "5560360793"
     And I should not see t("companies.new_company")
 
-  @javascript
+  @selenium
   Scenario: Pagination
     Given I am Logged out
     And I am on the "landing" page
@@ -86,7 +86,7 @@ Feature: As a visitor,
     And I should see "Company11"
     And I should not see "Company10"
 
-  @javascript
+  @selenium
   Scenario: I18n translations
     Given I am Logged out
     And I set the locale to "sv"
@@ -106,7 +106,7 @@ Feature: As a visitor,
     And I should not see "Verksamhetslän"
     And I should not see "Kategori"
 
-  @javascript
+  @selenium
   Scenario: Pagination: Set number of items per page
     Given I am Logged out
     And I am on the "landing" page

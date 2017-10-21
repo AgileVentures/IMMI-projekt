@@ -1,4 +1,4 @@
-Before('@javascript, @poltergeist') do
+Before('@selenium, @selenium') do
   Capybara.current_driver = :poltergeist
 end
 
@@ -12,7 +12,7 @@ Before('@selenium_browser') do
  Capybara.current_driver = :selenium_browser
 end
 
-After('@javascript, @poltergeist, @selenium, @selenium_browser') do
+After('@selenium, @selenium, @selenium, @selenium_browser') do
   ajax_active = !page.evaluate_script('window.jQuery ? jQuery.active : 0').zero?
   Capybara.reset_sessions!
   Capybara.current_driver = :rack_test

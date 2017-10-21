@@ -36,7 +36,7 @@ Feature: As a visitor
       | emma@happymutts.com | 5560360793     | Groomer    | accepted |
 
 
-  @javascript
+  @selenium
   Scenario: Show the company location on the Company detail page (popup should not link to the detail page)
     Given I am on the page for company number "5560360793"
     Then I should see xpath "//*[@id='map']"

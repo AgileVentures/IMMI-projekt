@@ -44,7 +44,7 @@ Background:
   And I am logged in as "admin@shf.se"
   And I am on the "membership applications" page
 
-@javascript
+@selenium
 Scenario: Search by user's last name
   And I should see "Fred"
   And I should see "John"
@@ -57,7 +57,7 @@ Scenario: Search by user's last name
   And I should not see "Anna"
   And I should not see "Emma"
 
-@javascript
+@selenium
 Scenario: Search by company (org) number
   Then I select "5569467466" in select list t("membership_applications.index.org_nr")
   And I click on t("search")
@@ -70,7 +70,7 @@ Scenario: Search by company (org) number
   Then I should see "Eriksson, Emma"
   Then I should see "Johanssen, John"
 
-@javascript
+@selenium
 Scenario: Search by status
   Then I select "Under review" in select list t("membership_applications.index.state")
   And I click on t("search")
@@ -85,7 +85,7 @@ Scenario: Search by status
   And I should not see "John"
   And I should not see "Fred"
 
-@javascript
+@selenium
 Scenario: Search by status and company number
   Then I select "Under review" in select list t("membership_applications.index.state")
   Then I select "2120000142" in select list t("membership_applications.index.org_nr")
@@ -101,7 +101,7 @@ Scenario: Search by status and company number
   And I should not see "Anna"
   And I should not see "Fred"
 
-@javascript
+@selenium
 Scenario: Search by membership number
   Then I select "1" in select list t("membership_applications.index.membership_number")
   And I click on t("search")
@@ -113,7 +113,7 @@ Scenario: Search by membership number
   And I click on t("search")
   Then I should see "Johanssen, John"
 
-@javascript
+@selenium
 Scenario: Can sort by user lastname
   Then I click on t("membership_applications.index.name") link
   And I should see "Anderson" before "Eriksson"
@@ -124,7 +124,7 @@ Scenario: Can sort by user lastname
   And I should see "Fransson" before "Eriksson"
   And I should see "Eriksson" before "Anderson"
 
-@javascript
+@selenium
 Scenario: Can sort by user membership number
   Then I click on t("membership_applications.index.membership_number") link
   And I should see "Anderson" before "Eriksson"
@@ -134,5 +134,3 @@ Scenario: Can sort by user membership number
   And I should see "Johanssen" before "Fransson"
   And I should see "Fransson" before "Eriksson"
   And I should see "Eriksson" before "Anderson"
-
-

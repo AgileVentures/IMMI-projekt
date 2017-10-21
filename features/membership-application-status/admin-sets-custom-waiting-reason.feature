@@ -42,7 +42,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     And I am logged in as "admin@shf.com"
 
 
-  @javascript @admin
+  @selenium @admin
   Scenario: Admin selects 'need more documentation' as the reason SHF is waiting_for_applicant
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select "need doc" in select list "member_app_waiting_reasons"
@@ -51,7 +51,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     And I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     Then "member_app_waiting_reasons" should have "need doc" selected
 
-  @javascript @admin
+  @selenium @admin
   Scenario: Admin selects 'waiting for payment' as the reason SHF is waiting_for_applicant
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select "waiting for payment" in select list "member_app_waiting_reasons"
@@ -106,7 +106,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     Then I should not see "This is my reason"
 
 
-  @javascript @member
+  @selenium @member
   Scenario: owner cannot see the fields for changing the reason
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"

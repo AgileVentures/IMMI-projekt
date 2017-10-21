@@ -45,7 +45,7 @@ Feature: As an admin,
     And I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
 
-  @javascript
+  @selenium
   Scenario: Pagination
     And I select "10" in select list "items_count"
     And I should see "0000000010"
@@ -58,7 +58,7 @@ Feature: As an admin,
     And I should see "0000000021"
     And I should not see "0000000020"
 
-  @javascript
+  @selenium
   Scenario: Pagination: Set number of items per page
     Then "items_count" should have "All" selected
     And I should see "28" applications

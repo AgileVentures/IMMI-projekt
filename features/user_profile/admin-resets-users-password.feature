@@ -21,7 +21,7 @@ Feature: As an admin
 
     And I am logged in as "admin@shf.se"
 
-  @poltergeist @member
+  @selenium @member
   Scenario: A member needs their password reset
     Given I am on the "user details" page for "emma@happymutts.com"
     Then I should not see t("users.show.new_password")
@@ -34,13 +34,12 @@ Feature: As an admin
     When I fill in t("users.show.new_password") with "newpassword"
     And I fill in t("users.show.re_enter_new_password") with "newpassword"
     And I should see t("users.show.please_note_new_password")
-    And I click on t("users.show.submit_new_password") button
-    #And I confirm popup
+    And I click on and accept t("users.show.submit_new_password") button
     Then I should see flash text t("users.update.success")
 
 
 
-  @poltergeist @user
+  @selenium @user
   Scenario: A user needs their password reset
     Given I am on the "user details" page for "bob@snarkybarky.se"
     Then I should not see t("users.show.new_password")
@@ -53,14 +52,13 @@ Feature: As an admin
     When I fill in t("users.show.new_password") with "snarkywoofwoof"
     And I fill in t("users.show.re_enter_new_password") with "snarkywoofwoof"
     And I should see t("users.show.please_note_new_password")
-    And I click on t("users.show.submit_new_password") button
-    #And I confirm popup
+    And I click on and accept t("users.show.submit_new_password") button
     Then I should see flash text t("users.update.success")
     And I should see t("users.update.success")
 
 
 
-  @poltergeist @user
+  @selenium @user
   Scenario: New password and confirmation don't match [SAD PATH]
     Given I am on the "user details" page for "bob@snarkybarky.se"
     When I click on t("toggle.set_new_password_form.show") button
@@ -68,13 +66,12 @@ Feature: As an admin
     When I fill in t("users.show.new_password") with "snarkywoofwoof"
     And I fill in t("users.show.re_enter_new_password") with "not-a-match"
     And I should see t("users.show.please_note_new_password")
-    And I click on t("users.show.submit_new_password") button
-    #And I confirm popup
+    And I click on and accept t("users.show.submit_new_password") button
     Then I should see t("users.update.error")
     And I should see t("activerecord.errors.models.user.attributes.password_confirmation.confirmation")
 
 
-  @poltergeist @user
+  @selenium @user
   Scenario: New password is too short (not valid) [SAD PATH]
     Given I am on the "user details" page for "bob@snarkybarky.se"
     When I click on t("toggle.set_new_password_form.show") button
@@ -82,14 +79,13 @@ Feature: As an admin
     When I fill in t("users.show.new_password") with "woof"
     And I fill in t("users.show.re_enter_new_password") with "woof"
     And I should see t("users.show.please_note_new_password")
-    And I click on t("users.show.submit_new_password") button
-    #And I confirm popup
+    And I click on and accept t("users.show.submit_new_password") button
     Then I should see t("users.update.error")
     And I should see t("errors.messages.too_short", count: 6)
     And I should not see t("activerecord.errors.models.user.attributes.password_confirmation.confirmation")
 
 
-  @poltergeist @user
+  @selenium @user
   Scenario: New password and confirmation don't match AND new one is too short [SAD PATH]
     Given I am on the "user details" page for "bob@snarkybarky.se"
     When I click on t("toggle.set_new_password_form.show") button
@@ -97,8 +93,7 @@ Feature: As an admin
     When I fill in t("users.show.new_password") with "woof"
     And I fill in t("users.show.re_enter_new_password") with "nomatch"
     And I should see t("users.show.please_note_new_password")
-    And I click on t("users.show.submit_new_password") button
-    #And I confirm popup
+    And I click on and accept t("users.show.submit_new_password") button
     Then I should see t("users.update.error")
     And I should see t("activerecord.errors.models.user.attributes.password_confirmation.confirmation")
     And I should see t("errors.messages.too_short", count: 6)

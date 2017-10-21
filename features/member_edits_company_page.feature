@@ -34,7 +34,7 @@ Feature: As a member
       | user_email          | company_number | categories | state    |
       | emma@happymutts.com | 5562252998     | Awesome    | accepted |
 
-  @javascript
+  @selenium
   Scenario: Member goes to company page after membership approval, specifes mail address
     Given I am logged in as "emma@happymutts.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
@@ -88,8 +88,7 @@ Feature: As a member
 
     And I click the second address for company "Happy Mutts"
     And I should not see t("addresses.edit.cannot_delete_address")
-    And I click on the t("addresses.edit.delete") link
-    And I confirm popup
+    And I click on and accept the t("addresses.edit.delete") link
     Then I should see t("addresses.destroy.success")
     And I should see "2" addresses
 

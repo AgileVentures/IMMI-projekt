@@ -25,7 +25,7 @@ Feature: Admin can delete uploaded SHF Documents
     And I am logged in as "admin@shf.se"
 
 
-  @admin @poltergeist
+  @admin @selenium
   Scenario:  Admin can delete a SHF document - confirm delete
     Given I am on the "new SHF document" page
     And I fill in the translated form with data:
@@ -48,9 +48,7 @@ Feature: Admin can delete uploaded SHF Documents
     And I am on the "all shf documents" page
     And I should see 3 shf-documents listed
     And I should see t("delete")
-    When I click the t("delete") action for the row with "doc 1"
-    And I confirm popup
+    When I click and accept the t("delete") action for the row with "doc 1"
     Then I should see t("shf_documents.destroy.success", document_title: "doc 1")
     And I should see 2 shf-documents listed
     And I should not see "description 1"
-
