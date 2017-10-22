@@ -44,6 +44,7 @@ Feature: As an admin,
 
     And I am logged in as "admin@shf.se"
     And I am on the "membership applications" page
+    And I click on t("toggle.company_search_form.hide")
 
   @selenium
   Scenario: Pagination

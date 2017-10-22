@@ -75,6 +75,7 @@ Feature: As a visitor,
     Given I am Logged out
     And I am on the "landing" page
     Then I should see t("companies.index.h_companies_listed_below")
+    And I click on t("toggle.company_search_form.hide")
     And I should see "Bowsers"
     And I should not see "2120000142"
     And I should see "No More Snarky Barky"
@@ -111,6 +112,7 @@ Feature: As a visitor,
     Given I am Logged out
     And I am on the "landing" page
     Then I should see t("companies.index.h_companies_listed_below")
+    And I click on t("toggle.company_search_form.hide")
     And "items_count" should have "10" selected
     And I should see "10" companies
     And I should see "Company10"
