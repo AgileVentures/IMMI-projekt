@@ -21,7 +21,7 @@ RSpec.describe HipsService do
   end
 
   let(:valid_jwt_payload) do
-    file = File.new('spec/fixtures/hips_service/jason_web_token.txt')
+    file = File.new('spec/fixtures/hips_service/json_web_token.txt')
     jwt = file.read
     described_class.validate_webhook_origin(jwt)
   end
@@ -57,7 +57,6 @@ RSpec.describe HipsService do
 
   describe '.get_order', :vcr do
     it 'returns parsed response if successful' do
-      fetched_order
       expect(fetched_order).to be_instance_of(Hash)
       expect(fetched_order['id']).to eq valid_order['id']
       expect(fetched_order['merchant_reference']['order_id']).to eq '1'
@@ -71,7 +70,7 @@ RSpec.describe HipsService do
   end
 
   describe '.validate_webhook_origin' do
-    it 'returns resource data for valid jason_web_token' do
+    it 'returns resource data for valid json_web_token' do
       expect(valid_jwt_payload).to be_instance_of(Hash)
     end
 
