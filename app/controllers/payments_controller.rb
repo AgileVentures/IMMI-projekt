@@ -11,19 +11,17 @@ class PaymentsController < ApplicationController
                               user_id: user_id,
                               status: Payment.order_to_payment_status(nil))
 
-    success_url = payment_success_url(user_id: user_id, id: @payment.id)
-    error_url   = payment_error_url(user_id: user_id, id: @payment.id)
+    urls = { success: payment_success_url(user_id: user_id, id: @payment.id) }
+    urls[:error]   = payment_error_url(user_id: user_id, id: @payment.id)
 
-    webhook_url = (SHF_WEBHOOK_HOST || root_url) +
-                  payment_webhook_path.sub('/en', '')
+    urls[:webhook] = (SHF_WEBHOOK_HOST || root_url) +
+                     payment_webhook_path.sub('/en', '')
 
     hips_order = HipsService.create_order(@payment.id,
                                           user_id,
                                           session.id,
                                           payment_type,
-                                          success_url,
-                                          error_url,
-                                          webhook_url)
+                                          urls)
     @hips_id = hips_order['id']
     @payment.hips_id = @hips_id
     @payment.status = Payment.order_to_payment_status(hips_order['status'])

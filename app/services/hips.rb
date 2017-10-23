@@ -6,8 +6,7 @@ class HipsService
   SUCCESS_CODES = [200, 201, 202].freeze
 
   def self.create_order(payment_id, user_id, session_id,
-                        payment_type, success_url, error_url,
-                        webhook_url, currency = 'SEK')
+                        payment_type, urls, currency = 'SEK')
 
     raise 'Invalid payment type' unless payment_type == 'member_fee' ||
                                         payment_type == 'branding_fee'
@@ -19,8 +18,7 @@ class HipsService
                              'Content-Type' => 'application/json' },
                   debug_output: $stdout,
                   body: order_json(payment_id, user_id, session_id,
-                                   payment_type, item_price, currency,
-                                   success_url, error_url, webhook_url))
+                                   payment_type, item_price, currency, urls))
 
     parsed_response = response.parsed_response
 
@@ -64,8 +62,7 @@ class HipsService
   end
 
   private_class_method def self.order_json(payment_id, user_id, session_id,
-                                           payment_type, item_price, currency,
-                                           success_url, error_url, webhook_url)
+                                           payment_type, item_price, currency, urls)
 
     { order_id: payment_id,
       purchase_currency: currency,
@@ -74,9 +71,9 @@ class HipsService
       fulfill: true,
       require_shipping: false,
       hooks: {
-                user_return_url_on_success: success_url,
-                user_return_url_on_fail: error_url,
-                webhook_url: webhook_url
+                user_return_url_on_success: urls[:success],
+                user_return_url_on_fail: urls[:error],
+                webhook_url: urls[:webhook]
              },
       cart: {
               items: [ {

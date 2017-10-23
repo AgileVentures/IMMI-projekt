@@ -1,14 +1,15 @@
 require 'rails_helper'
 
-require_relative (File.join(__dir__, '..', '..', 'app','services','hips'))
+require_relative(File.join(__dir__, '..', '..', 'app','services','hips'))
 
 RSpec.describe HipsService do
+  let(:nil_urls) { {success: nil, error: nil, webhook: nil} }
   let(:invalid_type) do
-    described_class.create_order(1, 1, 1, 'invalid_payment_type', nil, nil, nil)
+    described_class.create_order(1, 1, 1, 'invalid_payment_type', nil_urls)
   end
 
   let(:valid_order) do
-    described_class.create_order(1, 1, 1, 'member_fee', nil, nil, nil)
+    described_class.create_order(1, 1, 1, 'member_fee', nil_urls)
   end
 
   let(:invalid_key) do

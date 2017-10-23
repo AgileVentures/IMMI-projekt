@@ -117,8 +117,9 @@ ActiveRecord::Schema.define(version: 20171013141538) do
   create_table "payments", force: :cascade do |t|
     t.bigint "user_id"
     t.bigint "company_id"
-    t.string "type"
+    t.string "payment_type"
     t.string "status"
+    t.string "hips_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_payments_on_company_id"
