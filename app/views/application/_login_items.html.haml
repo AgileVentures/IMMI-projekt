@@ -9,6 +9,8 @@
       = link_to(t('devise.registrations.edit.title'),
                 edit_user_registration_path)
     %li
+      = link_to(t('menus.nav.users.your_account'), user_path(current_user))
+    %li
       = link_to(t('devise.sessions.destroy.log_out'),
                 destroy_user_session_path, method: :delete)
   -# Temporary payment link

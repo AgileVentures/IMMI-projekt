@@ -914,6 +914,7 @@ en:
       users:
         my_application: &my_application My Application
         apply_for_membership: Apply for Membership
+        your_account: View Your Account
 
       members:
         shf_companies: SHF Companies

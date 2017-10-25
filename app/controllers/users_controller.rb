@@ -1,9 +1,9 @@
 class UsersController < ApplicationController
-  before_action :authorize_user
   before_action :set_user, except: :index
-
+  before_action :authorize_user, only: [:show]
 
   def index
+    authorize User
     @q = User.ransack(params[:q])
     @users = @q.result.includes(:membership_applications)
 
@@ -40,7 +40,7 @@ class UsersController < ApplicationController
   private
 
   def authorize_user
-    authorize User
+    authorize @user
   end
 
 

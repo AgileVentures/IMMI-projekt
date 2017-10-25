@@ -916,6 +916,7 @@ sv:
       users:
         my_application: &my_application Min ansökan
         apply_for_membership: Ansök om medlemsskap
+        your_account: Visa ditt konto
 
       members:
         shf_companies: SHF-företag
