@@ -17,17 +17,18 @@ RSpec.describe User, type: :model do
 
   describe 'DB Table' do
     it { is_expected.to have_db_column :id }
-    it {is_expected.to have_db_column :first_name}
-    it {is_expected.to have_db_column :last_name}
-    it {is_expected.to have_db_column :membership_number}
+    it { is_expected.to have_db_column :first_name }
+    it { is_expected.to have_db_column :last_name }
+    it { is_expected.to have_db_column :membership_number }
     it { is_expected.to have_db_column :email }
     it { is_expected.to have_db_column :admin }
+    it { is_expected.to have_db_column :member }
   end
 
   describe 'Validations' do
     it { is_expected.to(validate_presence_of :first_name) }
     it { is_expected.to(validate_presence_of :last_name) }
-    it {is_expected.to validate_uniqueness_of :membership_number}
+    it { is_expected.to validate_uniqueness_of :membership_number }
   end
 
   describe 'Associations' do
@@ -38,12 +39,14 @@ RSpec.describe User, type: :model do
     subject { create(:user, admin: true) }
 
     it { is_expected.to be_admin }
+    it { is_expected.not_to be_member }
   end
 
   describe 'User' do
     subject { create(:user, admin: false) }
 
     it { is_expected.not_to be_admin }
+    it { is_expected.not_to be_member }
   end
 
 

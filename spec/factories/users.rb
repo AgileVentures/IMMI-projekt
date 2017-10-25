@@ -7,6 +7,7 @@ FactoryGirl.define do
     email
     password 'my_password'
     admin false
+    member false
 
     transient do
       company_number 5712213304

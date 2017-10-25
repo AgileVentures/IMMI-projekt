@@ -574,7 +574,8 @@ CREATE TABLE users (
     admin boolean DEFAULT false,
     first_name character varying,
     last_name character varying,
-    membership_number character varying
+    membership_number character varying,
+    member boolean DEFAULT false
 );
 
 
@@ -1082,6 +1083,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170920153643'),
 ('20170922144510'),
 ('20171005113112'),
-('20171013141538');
+('20171013141538'),
+('20171025191957');
 
 
