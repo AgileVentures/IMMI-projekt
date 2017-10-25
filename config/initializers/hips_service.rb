@@ -22,3 +22,8 @@ public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAu269xcyVkOZLP93D82g8" 
 "1QIDAQAB"
 
 HIPS_RSA_KEY = OpenSSL::PKey::RSA.new(Base64.decode64(public_key))
+
+# Styling items for HIP checkout form
+HIPS_FORM_MAIN_COLOR = '5692CE'
+HIPS_FORM_SECONDARY_COLOR = '003A78'
+HIPS_FORM_FONT = 'Comic Sans MS'

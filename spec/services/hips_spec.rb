@@ -4,12 +4,15 @@ require_relative(File.join(__dir__, '..', '..', 'app','services','hips'))
 
 RSpec.describe HipsService do
   let(:nil_urls) { {success: nil, error: nil, webhook: nil} }
+
   let(:invalid_type) do
-    described_class.create_order(1, 1, 1, 'invalid_payment_type', nil_urls)
+    payment_data = { id: 1, type: 'invalid', currency: 'SEK' }
+    described_class.create_order(1, 1, payment_data, nil_urls)
   end
 
   let(:valid_order) do
-    described_class.create_order(1, 1, 1, 'member_fee', nil_urls)
+    payment_data = { id: 1, type: 'member_fee', currency: 'SEK' }
+    described_class.create_order(1, 1, payment_data, nil_urls)
   end
 
   let(:invalid_key) do
@@ -83,7 +86,7 @@ RSpec.describe HipsService do
     it 'raises exception if not expected algorythm' do
       allow(JWT).to receive(:decode).and_return(token_bad_algo)
       expect { described_class.validate_webhook_origin('123') }
-        .to raise_exception(RuntimeError, 'JWT wrong algorythm')
+        .to raise_exception(RuntimeError, 'JWT wrong algorithm')
     end
   end
 end

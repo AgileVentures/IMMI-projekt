@@ -5,20 +5,19 @@ class HipsService
 
   SUCCESS_CODES = [200, 201, 202].freeze
 
-  def self.create_order(payment_id, user_id, session_id,
-                        payment_type, urls, currency = 'SEK')
+  def self.create_order(user_id, session_id, payment_data, urls)
 
-    raise 'Invalid payment type' unless payment_type == 'member_fee' ||
-                                        payment_type == 'branding_fee'
+    raise 'Invalid payment type' unless payment_data[:type] == 'member_fee' ||
+                                        payment_data[:type] == 'branding_fee'
 
-    item_price = payment_type == 'member_fee' ? SHF_MEMBER_FEE : SHF_BRANDING_FEE
+    item_price = payment_data[:type] == 'member_fee' ? SHF_MEMBER_FEE : SHF_BRANDING_FEE
 
     response = HTTParty.post(HIPS_ORDERS_URL,
                   headers: { 'Authorization' => "Token token=#{HIPS_PRIVATE_KEY}",
                              'Content-Type' => 'application/json' },
                   debug_output: $stdout,
-                  body: order_json(payment_id, user_id, session_id,
-                                   payment_type, item_price, currency, urls))
+                  body: order_json(user_id, session_id, payment_data,
+                                   item_price, urls))
 
     parsed_response = response.parsed_response
 
@@ -56,16 +55,16 @@ class HipsService
 
     raise 'JWT issuer not HIPS' unless token[0]['iss'] == 'hips.com'
 
-    raise 'JWT wrong algorythm' unless token[1]['alg'] == 'RS256'
+    raise 'JWT wrong algorithm' unless token[1]['alg'] == 'RS256'
 
     token[0]['data']['resource']
   end
 
-  private_class_method def self.order_json(payment_id, user_id, session_id,
-                                           payment_type, item_price, currency, urls)
+  private_class_method def self.order_json(user_id, session_id,
+                                           payment_data, item_price, urls)
 
-    { order_id: payment_id,
-      purchase_currency: currency,
+    { order_id: payment_data[:id],
+      purchase_currency: payment_data[:currency],
       user_session_id: session_id,
       user_identifier: user_id,
       fulfill: true,
@@ -78,8 +77,8 @@ class HipsService
       cart: {
               items: [ {
                           type: 'fee',
-                          sku: payment_type,
-                          name: payment_type,
+                          sku: payment_data[:type],
+                          name: payment_data[:type],
                           quantity: 1,
                           unit_price: item_price
                         }

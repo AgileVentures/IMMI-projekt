@@ -638,9 +638,7 @@ en:
       page_title: &page_title '%{payment_type} Payment by: %{user_name}'
       title: *page_title
       something_wrong: Something went wrong - please contact system administrator
-
-    update:
-      status_uncertain: Payment status uncertain - please contact system administrator
+      # TODO: consider adding a 'mailto:' link in above message
 
     success:
       success: Payment successfully processed - thank you!

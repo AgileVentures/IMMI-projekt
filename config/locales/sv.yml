@@ -638,9 +638,6 @@ sv:
       title: *page_title
       something_wrong: Något gick fel - kontakta systemadministratören
 
-    update:
-      status_uncertain: Betalningsstatus osäker - kontakta systemadministratören
-
     success:
       success: Betalning bearbetas framgångsrikt - tack!
 

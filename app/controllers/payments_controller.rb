@@ -17,17 +17,18 @@ class PaymentsController < ApplicationController
     urls[:webhook] = (SHF_WEBHOOK_HOST || root_url) +
                      payment_webhook_path.sub('/en', '')
 
-    hips_order = HipsService.create_order(@payment.id,
-                                          user_id,
+    payment_data = { id: @payment.id, type: payment_type, currency: 'SEK' }
+
+    hips_order = HipsService.create_order(user_id,
                                           session.id,
-                                          payment_type,
+                                          payment_data,
                                           urls)
     @hips_id = hips_order['id']
     @payment.hips_id = @hips_id
     @payment.status = Payment.order_to_payment_status(hips_order['status'])
-    @payment.save
+    @payment.save!
 
-  rescue RuntimeError, HTTParty::Error => exc
+  rescue RuntimeError, HTTParty::Error, ActiveRecord::RecordInvalid  => exc
     @payment.destroy if @payment.persisted?
 
     log_hips_activity('create order', 'error', nil, @hips_id, exc)
