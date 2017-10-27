@@ -5,6 +5,8 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :payments
+
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
   validates_uniqueness_of :membership_number, allow_blank: true
 
@@ -15,6 +17,35 @@ class User < ApplicationRecord
   scope :are_not_members, lambda {
     User.all.reject { | user | user.is_member? }
   }
+
+  def membership_expire_date
+    payments.completed.last&.expire_date
+  end
+
+  def membership_notes
+    payments.completed.last&.notes
+  end
+
+  def self.next_payment_dates(user_id)
+    # Business rules:
+    # start_date = prior payment expire date + 1 day
+    # expire_date = start_date + 1 year
+    user = find(user_id)
+    prior_payment = user.payments.last
+
+    if prior_payment.expire_date
+      start_date = prior_payment.expire_date + 1.day
+    else
+      start_date = Date.current
+    end
+    return [start_date, start_date + 1.year]
+  end
+
+  def allow_pay_member_fee?
+    # Business rule:
+    # 1) Show button if user == member
+    member?
+  end
 
   def has_membership_application?
     membership_applications.any?

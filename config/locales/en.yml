@@ -137,9 +137,13 @@ en:
         sign_in_count: &sign_in_count Logins
         created: *created
         reset_password_sent_at: &user_reset_password_sent_at Password reset info sent
+        member: &member Member
 
       payment:
         payment_type: Payment Type
+        start_date: Start Date
+        expire_date: Expire Date
+        notes: Notes
 
       membership_application:
         company_number: &company_number Company number
@@ -602,6 +606,7 @@ en:
       re_enter_new_password: Re-Enter the Password
       please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
       submit_new_password: Save the New Password
+      member: *member
 
     update:
       passwords_dont_match: "The two passwords entered don't match."

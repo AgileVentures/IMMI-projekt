@@ -12,9 +12,14 @@ class PaymentsController < ApplicationController
 
     # HIPS will associate the payment with a "merchant reference" - which
     # will be our Payment ID.  We can use this later to fetch the HIPS order.
+
+    start_date, expire_date = User.next_payment_dates(user_id)
+    
     @payment = Payment.create(payment_type: payment_type,
                               user_id: user_id,
-                              status: Payment.order_to_payment_status(nil))
+                              status: Payment.order_to_payment_status(nil),
+                              start_date: start_date,
+                              expire_date: expire_date)
 
     # Build data structures for HIPS order
     urls = hips_order_urls(user_id, @payment.id)

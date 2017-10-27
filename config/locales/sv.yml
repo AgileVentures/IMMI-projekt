@@ -119,6 +119,7 @@ sv:
         one: Betalning
         other: Betalningar
 
+
     attributes:
 
       user:
@@ -136,6 +137,7 @@ sv:
         sign_in_count: &sign_in_count Inloggningar
         created: *created
         reset_password_sent_at: &user_reset_password_sent_at Information angående återställning av lösenord sändes
+        member: &member Medlem
 
       payment:
         payment_type: Betalningstyp
@@ -601,6 +603,7 @@ sv:
       re_enter_new_password: Skriv in lösenordet igen
       please_note_new_password: Spara detta på ett säkert ställe. När du klickar på spara nedan kommer du inte att kunna se lösenordet igen och det finns ingen möjlighet att åter visa det.
       submit_new_password: Spara det nya lösenordet
+      member: *member
 
     update:
       passwords_dont_match: De två lösenord du angivit matchar inte.

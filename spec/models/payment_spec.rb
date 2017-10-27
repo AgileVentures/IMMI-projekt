@@ -13,6 +13,9 @@ RSpec.describe Payment, type: :model do
     it { is_expected.to have_db_column :company_id }
     it { is_expected.to have_db_column :payment_type }
     it { is_expected.to have_db_column :status }
+    it { is_expected.to have_db_column :start_date }
+    it { is_expected.to have_db_column :expire_date }
+    it { is_expected.to have_db_column :notes }
   end
 
   describe 'Associations' do
@@ -26,6 +29,8 @@ RSpec.describe Payment, type: :model do
     it { is_expected.to validate_presence_of :status }
     it { is_expected.to validate_inclusion_of(:status)
                             .in_array(Payment::ORDER_PAYMENT_STATUS.values) }
+    it { is_expected.to validate_presence_of :start_date }
+    it { is_expected.to validate_presence_of :expire_date }
   end
 
   describe '.order_to_payment_status' do

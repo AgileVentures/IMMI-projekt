@@ -28,12 +28,16 @@
 @import "member-app-waiting-reason";
 
 
-.yes {
+.yes, .Yes {
   background-color: LightGreen;
 }
 
-.no {
+.no, .No {
   background-color: Yellow;
+}
+
+.bg-red {
+  background-color: LightCoral;
 }
 
 .search-form {

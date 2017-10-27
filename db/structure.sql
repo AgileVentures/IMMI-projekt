@@ -417,7 +417,10 @@ CREATE TABLE payments (
     status character varying,
     hips_id character varying,
     created_at timestamp without time zone NOT NULL,
-    updated_at timestamp without time zone NOT NULL
+    updated_at timestamp without time zone NOT NULL,
+    start_date date,
+    expire_date date,
+    notes text
 );
 
 
@@ -1084,6 +1087,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20170922144510'),
 ('20171005113112'),
 ('20171013141538'),
-('20171025191957');
+('20171025191957'),
+('20171026103648');
 
 

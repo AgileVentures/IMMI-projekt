@@ -1,18 +1,35 @@
 %header.entry-header
+  - user_name = @user.full_name
   - if @user.admin?
     %h1.entry-title.is-admin
-      = @user.email
+      = user_name.empty? ? @user.email : user_name
       %span.small
         (#{t('.is_an_admin')})
-
   - else
-    %h1.entry-title=  @user.email
-
+    %h1.entry-title
+      = user_name.empty? ? @user.email : user_name
 
 .entry-content
-  = field_or_none("#{t('.email')}", mail_to(@user.email), label_class: 'standard-label')
+  .col-sm-6
+    = field_or_none("#{t('.email')}", mail_to(@user.email), label_class: 'standard-label')
+  .col-sm-4.col-sm-offset-2
+    = field_or_none("#{t('.membership_number')}", @user.membership_number, label_class: 'standard-label')
 
-  = field_or_none("#{t('.membership_number')}", @user.membership_number, label_class: 'standard-label')
+  .col-sm-4
+    - is_member = @user.member? ? 'Yes' : 'No'
+    = field_or_none("#{t('.member')}", "#{is_member}",
+                    label_class: 'standard-label',
+                    value_class: is_member)
+  .col-sm-4
+    = expire_date_label_and_value(@user)
+
+  .col-sm-4
+    = pay_member_fee_link(@user)
+
+  .col-sm-8
+    = membership_notes_label_and_value(@user)
+
+  .row
 
   - unless @user.membership_applications.exists?
     = field_or_none("#{t('applications')}", t('none'), label_class: 'standard-label')

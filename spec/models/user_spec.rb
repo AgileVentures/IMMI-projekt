@@ -33,6 +33,7 @@ RSpec.describe User, type: :model do
 
   describe 'Associations' do
     it { is_expected.to have_many :membership_applications }
+    it { is_expected.to have_many :payments }
   end
 
   describe 'Admin' do

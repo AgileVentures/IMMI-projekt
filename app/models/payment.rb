@@ -2,7 +2,7 @@ class Payment < ApplicationRecord
   belongs_to :user
   belongs_to :company, optional: true # used for branding_fee
 
-  validates_presence_of :user, :payment_type, :status
+  validates_presence_of :user, :payment_type, :status, :start_date, :expire_date
   validates_presence_of :hips_id, on: :update
 
   PAYMENT_TYPE_MEMBER   = 'member_fee'
@@ -15,7 +15,7 @@ class Payment < ApplicationRecord
   #  processes that order (that is, has the user pay for the order).
   #  Note that here, "payment" refers to the SHF Payment, and "order" to
   #  the HIPS order).
-  # Note that succesful order payment (on the HIPS side) is represented by
+  # Note that successful order payment (on the HIPS side) is represented by
   # order status 'successful'.  On the SHF side, that translates to a
   # completed payment ('paid') for the user fee (e.g. a membership fee).
   ORDER_PAYMENT_STATUS = {
@@ -27,6 +27,8 @@ class Payment < ApplicationRecord
   }.freeze
 
   validates :status, inclusion: ORDER_PAYMENT_STATUS.values
+
+  scope :completed, -> { where(status: ORDER_PAYMENT_STATUS['successful']) }
 
   def self.order_to_payment_status(order_status)
     ORDER_PAYMENT_STATUS.fetch(order_status, 'unknown')
