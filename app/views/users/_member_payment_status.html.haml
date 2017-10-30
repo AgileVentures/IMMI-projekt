@@ -8,7 +8,11 @@
     = expire_date_label_and_value(@user)
 
   .col-sm-4
-    = pay_member_fee_link(@user)
+    - link = pay_member_fee_link(@user)
+    - if link
+      = link
+      %span.glyphicon.glyphicon-info-sign{ title: "#{t('users.show.pay_membership_tooltip')}",
+                                           data: {toggle: 'tooltip'} }
 
   - if current_user.admin?
     -# .row

@@ -609,6 +609,8 @@ en:
       please_note_new_password: Please record this in a safe and secure place. Once you press the Save button below you will not be able to see the password again and there is no way to display it again.
       submit_new_password: Save the New Password
       member: *member
+      pay_membership_tooltip: Paying membership fee will extend your membership
+                              for one year
 
     update:
       passwords_dont_match: "The two passwords entered don't match."

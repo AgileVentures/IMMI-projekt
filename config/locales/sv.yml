@@ -609,6 +609,7 @@ sv:
       please_note_new_password: Spara detta på ett säkert ställe. När du klickar på spara nedan kommer du inte att kunna se lösenordet igen och det finns ingen möjlighet att åter visa det.
       submit_new_password: Spara det nya lösenordet
       member: *member
+      pay_membership_tooltip: Betala medlemsavgift förlänger ditt medlemskap i ett år
 
     update:
       passwords_dont_match: De två lösenord du angivit matchar inte.
