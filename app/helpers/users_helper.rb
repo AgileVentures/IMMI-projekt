@@ -35,9 +35,9 @@ module UsersHelper
             { method: :post, class: 'btn btn-primary btn-xs' })
   end
 
-  def membership_notes_label_and_value(user)
-    notes = user.membership_notes
-    if !notes
+  def payment_notes_label_and_value(user)
+    notes = user.payment_notes
+    if !notes || notes.empty?
       return field_or_none("#{t('activerecord.attributes.payment.notes')}",
                            "#{t('none')}", label_class: 'standard-label')
     end

@@ -6,6 +6,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :payments
+  accepts_nested_attributes_for :payments
 
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
   validates_uniqueness_of :membership_number, allow_blank: true
@@ -22,8 +23,12 @@ class User < ApplicationRecord
     payments.completed.last&.expire_date
   end
 
-  def membership_notes
+  def payment_notes
     payments.completed.last&.notes
+  end
+
+  def most_recent_payment
+    payments.completed.last
   end
 
   def self.next_payment_dates(user_id)
@@ -31,10 +36,9 @@ class User < ApplicationRecord
     # start_date = prior payment expire date + 1 day
     # expire_date = start_date + 1 year
     user = find(user_id)
-    prior_payment = user.payments.last
 
-    if prior_payment.expire_date
-      start_date = prior_payment.expire_date + 1.day
+    if user.most_recent_payment&.expire_date
+      start_date = user.most_recent_payment.expire_date + 1.day
     else
       start_date = Date.current
     end
@@ -42,9 +46,11 @@ class User < ApplicationRecord
   end
 
   def allow_pay_member_fee?
-    # Business rule:
-    # 1) Show button if user == member
-    member?
+    # Business rule: show "pay membership fee" button if:
+    # 1. user == member, or
+    # 2. user has at least one application with status == :waiting_for_payment
+
+    member? || membership_applications.where(state: :waiting_for_payment).any?
   end
 
   def has_membership_application?

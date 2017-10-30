@@ -51,6 +51,15 @@ $(function() {
     };
     Users.setup();
 
+    $('#userStatusForm').on('ajax:success', function (e, data) {
+      $('#userMemberStatus').html(data);
+      $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    $('#editUserStatusSubmit').click(function() {
+      $('#editStatusModal').modal('hide');
+    });
+
     $('body').on('ajax:success', '.companies_pagination', function (e, data) {
       $('#companies_list').html(data);
       // In case there is tooltip(s) in rendered element:

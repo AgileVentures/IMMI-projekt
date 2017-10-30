@@ -81,12 +81,12 @@ class PaymentsController < ApplicationController
 
   def success
     helpers.flash_message(:notice, t('.success'))
-    redirect_to root_path   # Redirect to user account page (when it exists)
+    redirect_to user_path(params[:user_id])
   end
 
   def error
     helpers.flash_message(:alert, t('.error'))
-    redirect_to root_path   # Redirect to user account page (when it exists)
+    redirect_to user_path(params[:user_id])
   end
 
   private

@@ -37,6 +37,8 @@ sv:
   search: &search Sök
   'yes': &yes Ja
   'no': &no Nej
+  'Yes': *yes
+  'No': *no
   applications: &applications Ansökningar
   user_activity: Användaraktivitet
   none: &none Ingen
@@ -622,6 +624,8 @@ sv:
       user_has_never_signed_in: har aldrig loggat in.
       'yes': *yes # https://coderwall.com/p/ld65tq/rails-i18n-yes-no-translation
       'no': *no
+      edit_member_status: Redigera medlemsstatus
+      submit_button_label: Uppdatera status
 
     users_list:
       membership_number: *membership_number_short

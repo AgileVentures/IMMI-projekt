@@ -69,6 +69,13 @@ h1, h2, h3, h4, h5, h6, .comment-author .fn, .prev-link a, .next-link a, .widget
 	font-weight: 400;
 	font-style: normal;
 }
+
+.select-box {
+  min-width: 50px;
+  height: auto;
+  margin-left: 15px;
+}
+
 .entry-title, .entry-title a, .read-more-link a, .cat-links a, .popular-title, .recent-post-title, button, input[type="button"], input[type="reset"], input[type="submit"], .footer-social a, .comment .reply a, .paging-navigation a, #related-posts .related-post-title, #wp-calendar thead th, #wp-calendar caption, #wp-calendar tfoot td, .wordchef-pagination li a, .page-links, .page-links a, .results-title, .archive-title, .featured-posts-container .post-date, .featured-page-title, #comments .comment-author .fn, .featured-post-title a, .featured-post-meta a, .featured-post-date, .edit-link a, .featured-post-category .post-categories a, .featured-read-more a, .post-category .post-categories a, .post-author-date, .widget_recent_entries a {
 	font-family: 'Open Sans', serif;
 	line-height: 27px;
