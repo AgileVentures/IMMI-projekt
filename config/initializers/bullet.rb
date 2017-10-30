@@ -38,4 +38,8 @@ if defined? Bullet
   Bullet.add_whitelist type: :unused_eager_loading,
                  class_name: 'BusinessCategory',
                 association: :businesscategories_membership_applications
+
+  Bullet.add_whitelist type: :unused_eager_loading,
+                 class_name: 'User',
+                association: :membership_applications
 end
