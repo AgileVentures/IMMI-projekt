@@ -143,6 +143,9 @@ sv:
 
       payment:
         payment_type: Betalningstyp
+        start_date: Start datum
+        expire_date: &expire_date Utgångsdatum
+        notes: Anteckningar
 
       membership_application:
         company_number: &company_number Organisationsnummer

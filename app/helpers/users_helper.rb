@@ -13,6 +13,15 @@ module UsersHelper
     end
 
     # Show expire date as yellow if within 1 month from today, red if expired
+    value_class = expire_date_css_class(expire_date)
+
+    return field_or_none("#{t('activerecord.attributes.payment.expire_date')}",
+                         "#{expire_date}",
+                         label_class: 'standard-label',
+                         value_class: value_class)
+  end
+
+  def expire_date_css_class(expire_date)
     today = Date.current
     if today < expire_date << 1
       value_class = 'Yes'  # green
@@ -21,10 +30,6 @@ module UsersHelper
     else
       value_class = 'No'
     end
-    return field_or_none("#{t('activerecord.attributes.payment.expire_date')}",
-                         "#{expire_date}",
-                         label_class: 'standard-label',
-                         value_class: value_class)
   end
 
   def pay_member_fee_link(user)

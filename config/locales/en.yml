@@ -144,7 +144,7 @@ en:
       payment:
         payment_type: Payment Type
         start_date: Start Date
-        expire_date: Expire Date
+        expire_date: &expire_date Expire Date
         notes: Notes
 
       membership_application:
@@ -641,6 +641,7 @@ en:
       member: Member
       applications: *applications
       applications_tooltip: Number of open applications
+      expire_date: *expire_date
 
   payments:
     create:
