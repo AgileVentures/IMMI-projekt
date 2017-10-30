@@ -35,6 +35,7 @@ class User < ApplicationRecord
     # Business rules:
     # start_date = prior payment expire date + 1 day
     # expire_date = start_date + 1 year
+    # (special rules apply for remainder of 2017)
     user = find(user_id)
 
     if user.most_recent_payment&.expire_date
@@ -42,7 +43,12 @@ class User < ApplicationRecord
     else
       start_date = Date.current
     end
-    return [start_date, start_date + 1.year]
+    if Date.today.year == 2017
+      expire_date = Date.new(2017, 12, 31)
+    else
+      expire_date = start_date + 1.year - 1.day
+    end
+    [start_date, expire_date]
   end
 
   def allow_pay_member_fee?
