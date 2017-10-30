@@ -1,28 +1,32 @@
 class PaymentsController < ApplicationController
   require 'hips'
 
+  SUCCESSFUL_HIPS_ORDER_EVENT = 'order.successful'
+
   protect_from_forgery except: :webhook
 
   def create
+    # The user wants to pay a fee (e.g. membership fee)
     payment_type = params[:type]
     user_id = params[:user_id]
 
+    # HIPS will associate the payment with a "merchant reference" - which
+    # will be our Payment ID.  We can use this later to fetch the HIPS order.
     @payment = Payment.create(payment_type: payment_type,
                               user_id: user_id,
                               status: Payment.order_to_payment_status(nil))
 
-    urls = { success: payment_success_url(user_id: user_id, id: @payment.id) }
-    urls[:error]   = payment_error_url(user_id: user_id, id: @payment.id)
-
-    urls[:webhook] = (SHF_WEBHOOK_HOST || root_url) +
-                     payment_webhook_path.sub('/en', '')
-
+    # Build data structures for HIPS order
+    urls = hips_order_urls(user_id, @payment.id)
     payment_data = { id: @payment.id, type: payment_type, currency: 'SEK' }
 
+    # Invoke HIPS API - returns an order to be used for checkout
     hips_order = HipsService.create_order(user_id,
                                           session.id,
                                           payment_data,
                                           urls)
+
+    # Save payment and render HIPS checkout form
     @hips_id = hips_order['id']
     @payment.hips_id = @hips_id
     @payment.status = Payment.order_to_payment_status(hips_order['status'])
@@ -50,7 +54,7 @@ class PaymentsController < ApplicationController
 
     payload = JSON.parse request.body.read
 
-    return head(:ok) unless payload['event'] == 'order.successful'
+    return head(:ok) unless payload['event'] == SUCCESSFUL_HIPS_ORDER_EVENT
 
     resource = HipsService.validate_webhook_origin(payload['jwt'])
 
@@ -89,5 +93,13 @@ class PaymentsController < ApplicationController
       log.record(severity, "Exception class: #{exc.class}") if exc
       log.record(severity, "Exception message: #{exc.message}") if exc
     end
+  end
+
+  def hips_order_urls(user_id, payment_id)
+    urls = {}
+    urls[:success] = payment_success_url(user_id: user_id, id: payment_id)
+    urls[:error]   = payment_error_url(user_id: user_id, id: payment_id)
+    urls[:webhook] = (SHF_WEBHOOK_HOST || root_url) + payment_webhook_path.sub('/en', '')
+    urls
   end
 end

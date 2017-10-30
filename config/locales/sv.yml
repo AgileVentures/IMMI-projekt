@@ -138,7 +138,7 @@ sv:
         reset_password_sent_at: &user_reset_password_sent_at Information angående återställning av lösenord sändes
 
       payment:
-        payment_type: Betalnings typ
+        payment_type: Betalningstyp
 
       membership_application:
         company_number: &company_number Organisationsnummer
@@ -240,7 +240,7 @@ sv:
   payment:
     payment_type:
       member_fee: Medlemsavgift
-      branding_fee: Brandavgift
+      branding_fee: H-märkesavgift
 
   # Automatisk och manuell sökning för views:
   membership_applications:
@@ -636,10 +636,10 @@ sv:
     create:
       page_title: &page_title '%{payment_type} Betalning genom: %{user_name}'
       title: *page_title
-      something_wrong: Något gick fel - kontakta systemadministratören
+      something_wrong: Något gick fel - kontakta systemadministratören på medlem@sverigeshundforetagare.se
 
     success:
-      success: Betalning bearbetas framgångsrikt - tack!
+      success: Betalning framgångsrikt genomförd - tack!
 
     error:
       error: Det uppstod ett fel vid behandlingen av din betalning

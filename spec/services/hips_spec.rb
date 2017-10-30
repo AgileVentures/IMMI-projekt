@@ -11,7 +11,7 @@ RSpec.describe HipsService do
   end
 
   let(:valid_order) do
-    payment_data = { id: 1, type: 'member_fee', currency: 'SEK' }
+    payment_data = { id: 1, type: Payment::PAYMENT_TYPE_MEMBER, currency: 'SEK' }
     described_class.create_order(1, 1, payment_data, nil_urls)
   end
 

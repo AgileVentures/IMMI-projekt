@@ -5,12 +5,17 @@ class HipsService
 
   SUCCESS_CODES = [200, 201, 202].freeze
 
+  JWT_ALGORITHM = 'RS256'
+  JWT_ISSUER = 'hips.com'
+
   def self.create_order(user_id, session_id, payment_data, urls)
 
-    raise 'Invalid payment type' unless payment_data[:type] == 'member_fee' ||
-                                        payment_data[:type] == 'branding_fee'
+    raise 'Invalid payment type' unless
+      payment_data[:type] == Payment::PAYMENT_TYPE_MEMBER ||
+      payment_data[:type] == Payment::PAYMENT_TYPE_BRANDING
 
-    item_price = payment_data[:type] == 'member_fee' ? SHF_MEMBER_FEE : SHF_BRANDING_FEE
+    item_price = payment_data[:type] == Payment::PAYMENT_TYPE_MEMBER ?
+      SHF_MEMBER_FEE : SHF_BRANDING_FEE
 
     response = HTTParty.post(HIPS_ORDERS_URL,
                   headers: { 'Authorization' => "Token token=#{HIPS_PRIVATE_KEY}",
@@ -51,11 +56,11 @@ class HipsService
   end
 
   def self.validate_webhook_origin(jwt)
-    token = JWT.decode(jwt, HIPS_RSA_KEY, true, algorithm: 'RS256')
+    token = JWT.decode(jwt, HIPS_RSA_KEY, true, algorithm: JWT_ALGORITHM)
 
-    raise 'JWT issuer not HIPS' unless token[0]['iss'] == 'hips.com'
+    raise 'JWT issuer not HIPS' unless token[0]['iss'] == JWT_ISSUER
 
-    raise 'JWT wrong algorithm' unless token[1]['alg'] == 'RS256'
+    raise 'JWT wrong algorithm' unless token[1]['alg'] == JWT_ALGORITHM
 
     token[0]['data']['resource']
   end

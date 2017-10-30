@@ -47,7 +47,7 @@ RSpec.describe Payment, type: :model do
 
     it "returns payment status 'awaiting payments' for 'awaiting_payments' order status" do
       expect(described_class.order_to_payment_status('awaiting_payments'))
-        .to eq 'väntar på betalningar'
+        .to eq 'Väntar på betalning'
     end
 
   end

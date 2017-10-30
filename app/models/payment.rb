@@ -5,6 +5,9 @@ class Payment < ApplicationRecord
   validates_presence_of :user, :payment_type, :status
   validates_presence_of :hips_id, on: :update
 
+  PAYMENT_TYPE_MEMBER   = 'member_fee'
+  PAYMENT_TYPE_BRANDING = 'branding_fee'
+
   # This hash maps a HIPS order status to an SHF payment status.
   # The payment values are stored in the DB and exposed to the user.
   # (The user is paying a fee to SHF (payment).  In order to process that
@@ -20,7 +23,7 @@ class Payment < ApplicationRecord
     'pending'    => 'avvaktan',
     'successful' => 'betald',   # paid
     'expired'    => 'utgånget',
-    'awaiting_payments' => 'väntar på betalningar'
+    'awaiting_payments' => 'Väntar på betalning' # awaiting payment
   }.freeze
 
   validates :status, inclusion: ORDER_PAYMENT_STATUS.values
