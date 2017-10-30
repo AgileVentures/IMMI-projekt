@@ -40,7 +40,9 @@ class UsersController < ApplicationController
 
     payment = @user.most_recent_payment
 
-    if @user.update(user_params) && payment.update(payment_params)
+    if @user.update(user_params) &&
+      (payment ? payment.update(payment_params) : true)
+      
       render partial: 'member_payment_status', locals: { user: @user }
     else
       helpers.flash_message(:alert, t('users.update.error'))
