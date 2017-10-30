@@ -137,6 +137,7 @@ class MembershipApplication < ApplicationRecord
     begin
 
       user.issue_membership_number
+      user.member = true
       user.save
 
       company = Company.find_or_create_by!(company_number: company_number) do |co|
