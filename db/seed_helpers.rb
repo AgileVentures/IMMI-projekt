@@ -102,6 +102,7 @@ module SeedHelper
 
       user.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
                                       user_id: user.id,
+                                      hips_id: 'none',
                                       status: Payment.order_to_payment_status('successful'),
                                       start_date: start_date,
                                       expire_date: expire_date)

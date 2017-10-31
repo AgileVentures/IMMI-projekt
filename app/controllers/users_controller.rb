@@ -42,7 +42,7 @@ class UsersController < ApplicationController
 
     if @user.update(user_params) &&
       (payment ? payment.update(payment_params) : true)
-      
+
       render partial: 'member_payment_status', locals: { user: @user }
     else
       helpers.flash_message(:alert, t('users.update.error'))
