@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171026103648) do
+ActiveRecord::Schema.define(version: 20171013141538) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -122,9 +122,6 @@ ActiveRecord::Schema.define(version: 20171026103648) do
     t.string "hips_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.date "start_date"
-    t.date "expire_date"
-    t.text "notes"
     t.index ["company_id"], name: "index_payments_on_company_id"
     t.index ["user_id"], name: "index_payments_on_user_id"
   end
@@ -177,7 +174,6 @@ ActiveRecord::Schema.define(version: 20171026103648) do
     t.string "first_name"
     t.string "last_name"
     t.string "membership_number"
-    t.boolean "member", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["membership_number"], name: "index_users_on_membership_number", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

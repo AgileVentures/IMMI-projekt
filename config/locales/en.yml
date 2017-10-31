@@ -637,8 +637,7 @@ en:
     create:
       page_title: &page_title '%{payment_type} Payment by: %{user_name}'
       title: *page_title
-      something_wrong: Something went wrong - please contact system administrator
-      # TODO: consider adding a 'mailto:' link in above message
+      something_wrong: Something went wrong - contact the system administrator at member@sverigeshundforetagare.se
 
     success:
       success: Payment successfully processed - thank you!

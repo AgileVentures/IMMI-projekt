@@ -83,7 +83,7 @@ RSpec.describe HipsService do
         .to raise_exception(RuntimeError, 'JWT issuer not HIPS')
     end
 
-    it 'raises exception if not expected algorythm' do
+    it 'raises exception if not expected algorithm' do
       allow(JWT).to receive(:decode).and_return(token_bad_algo)
       expect { described_class.validate_webhook_origin('123') }
         .to raise_exception(RuntimeError, 'JWT wrong algorithm')
