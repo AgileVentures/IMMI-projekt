@@ -44,7 +44,7 @@ class User < ApplicationRecord
       start_date = Date.current
     end
     if Date.today.year == 2017
-      expire_date = Date.new(2017, 12, 31)
+      expire_date = Date.new(2018, 12, 31)
     else
       expire_date = start_date + 1.year - 1.day
     end

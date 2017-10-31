@@ -10,11 +10,11 @@ class PaymentsController < ApplicationController
     payment_type = params[:type]
     user_id = params[:user_id]
 
+    # Set membership duration dates based on business rule
+    start_date, expire_date = User.next_payment_dates(user_id)
+
     # HIPS will associate the payment with a "merchant reference" - which
     # will be our Payment ID.  We can use this later to fetch the HIPS order.
-
-    start_date, expire_date = User.next_payment_dates(user_id)
-    
     @payment = Payment.create(payment_type: payment_type,
                               user_id: user_id,
                               status: Payment.order_to_payment_status(nil),
@@ -57,10 +57,10 @@ class PaymentsController < ApplicationController
     # be triggered *only* by the "order.successful" event.
     # (That webhook is not available at this time (October 18, 2017)).
 
-    payload = JSON.parse request.body.read
+    payload = JSON.parse(request.body.read)
 
     return head(:ok) unless payload['event'] == SUCCESSFUL_HIPS_ORDER_EVENT
-
+    
     resource = HipsService.validate_webhook_origin(payload['jwt'])
 
     payment_id = resource['merchant_reference']['order_id']
@@ -72,7 +72,7 @@ class PaymentsController < ApplicationController
 
     log_hips_activity('Webhook', 'info', payment_id, hips_id)
 
-  rescue RuntimeError => exc
+  rescue RuntimeError, JWT::IncorrectAlgorithm => exc
     log_hips_activity('Webhook', 'error', payment_id, hips_id, exc)
 
   ensure

@@ -97,6 +97,15 @@ module SeedHelper
       ma.company = make_new_company(ma.company_number)
 
       user.issue_membership_number
+
+      start_date, expire_date = User.next_payment_dates(user.id)
+
+      user.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
+                                      user_id: user.id,
+                                      status: Payment.order_to_payment_status('successful'),
+                                      start_date: start_date,
+                                      expire_date: expire_date)
+      user.member = true
     end
 
 
