@@ -122,4 +122,6 @@ group :test do
   gem 'webmock'  # to mock web (HTTP) interactions.  Required by the vcr gem
   gem 'vcr'      # to record and 'playback' (mock) http requests
 
+  gem 'timecop'
+
 end

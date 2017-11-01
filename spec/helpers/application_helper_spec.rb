@@ -275,5 +275,36 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe '#boolean_radio_buttons_collection' do
+    let(:collection_sv)  do
+      I18n.locale = :sv
+      boolean_radio_buttons_collection
+    end
+
+    let(:collection_en)  do
+      I18n.locale = :en
+      boolean_radio_buttons_collection
+    end
+
+    let(:collection_custom)  do
+      I18n.locale = :en
+      boolean_radio_buttons_collection(true: 'save', false: 'delete')
+    end
+
+    it 'returns yes/no text values - swedish' do
+      expect(collection_sv).to eq [ [true, 'Ja'], [false, 'Nej'] ]
+    end
+
+    it 'returns yes/no text values - english' do
+      expect(collection_en).to eq [ [true, 'Yes'], [false, 'No'] ]
+    end
+
+    it 'returns custom text values' do
+      expect(collection_custom).to eq [ [true, 'Save'], [false, 'Delete'] ]
+    end
+
+
+  end
+
 
 end

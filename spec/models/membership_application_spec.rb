@@ -204,6 +204,7 @@ RSpec.describe MembershipApplication, type: :model do
       it {expect(application).to have_valid_state(:new)}
       it {expect(application).to have_valid_state(:under_review)}
       it {expect(application).to have_valid_state(:waiting_for_applicant)}
+      it {expect(application).to have_valid_state(:waiting_for_payment)}
       it {expect(application).to have_valid_state(:ready_for_review)}
       it {expect(application).to have_valid_state(:accepted)}
       it {expect(application).to have_valid_state(:rejected)}
@@ -217,12 +218,14 @@ RSpec.describe MembershipApplication, type: :model do
       expect(user.membership_application).not_to have_state(:accepted)
       expect(user.membership_application).not_to have_state(:rejected)
       expect(user.membership_application).not_to have_state(:waiting_for_applicant)
+      expect(user.membership_application).not_to have_state(:waiting_for_payment)
     end
 
 
     describe 'valid events' do
       it {expect(application).to have_valid_event(:start_review)}
       it {expect(application).to have_valid_event(:ask_applicant_for_info)}
+      it {expect(application).to have_valid_event(:ask_for_payment)}
       it {expect(application).to have_valid_event(:cancel_waiting_for_applicant)}
       it {expect(application).to have_valid_event(:is_ready_for_review)}
       it {expect(application).to have_valid_event(:accept)}
@@ -237,6 +240,7 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'allow transition to', :new, :under_review, :start_review
 
       it_will 'not allow transition to', :new, :waiting_for_applicant
+      it_will 'not allow transition to', :new, :waiting_for_payment
       it_will 'not allow transition to', :new, :ready_for_review
 
       it_will 'not allow transition to', :new, :accepted
@@ -252,6 +256,8 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'not allow transition to', :under_review, :under_review
 
       it_will 'allow transition to', :under_review, :waiting_for_applicant, :ask_applicant_for_info
+
+      it_will 'allow transition to', :under_review, :waiting_for_payment, :ask_for_payment
 
       it_will 'not allow transition to', :under_review, :ready_for_review
 
@@ -269,6 +275,7 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'allow transition to', :waiting_for_applicant, :under_review, :cancel_waiting_for_applicant
 
       it_will 'not allow transition to', :waiting_for_applicant, :waiting_for_applicant
+      it_will 'not allow transition to', :waiting_for_applicant, :waiting_for_payment
       it_will 'allow transition to', :waiting_for_applicant, :ready_for_review, :is_ready_for_review
 
       it_will 'not allow transition to', :waiting_for_applicant, :accepted, :accept
@@ -284,6 +291,7 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'not allow transition to', :accepted, :under_review
 
       it_will 'not allow transition to', :accepted, :waiting_for_applicant
+      it_will 'not allow transition to', :accepted, :waiting_for_payment
       it_will 'not allow transition to', :accepted, :ready_for_review
 
       it_will 'not allow transition to', :accepted, :accepted
@@ -299,11 +307,35 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'not allow transition to', :rejected, :under_review
 
       it_will 'not allow transition to', :rejected, :waiting_for_applicant
+      it_will 'not allow transition to', :rejected, :waiting_for_payment
       it_will 'not allow transition to', :rejected, :ready_for_review
 
       it_will 'allow transition to', :rejected, :accepted, :accept
       it_will 'not allow transition to', :rejected, :rejected
 
+    end
+
+    context 'actions taken on state transition' do
+      describe 'application accepted' do
+        before(:each) do
+          application.start_review!
+          application.accept!
+        end
+        it 'assigns membership number to user' do
+          expect(user.membership_number).not_to be_nil
+        end
+        it 'assigns membership status to user' do
+          expect(user.member).to be true
+        end
+        it 'assigns company email to application contact_email' do
+          expect(application.company.email).to eq application.contact_email
+        end
+      end
+
+      describe 'application rejected' do
+        xit 'need tests here' do
+        end
+      end
     end
 
   end

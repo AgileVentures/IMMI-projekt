@@ -17,12 +17,23 @@ RSpec.describe PaymentsController, type: :controller do
     end
 
     it 'handles exception if payment cannot be saved' do
+      ActionDispatch::Request.any_instance.stub(:referer)
+        .and_return(user_url(user.id))
+
       allow(HipsService).to receive(:create_order).and_return({}) # force exception
 
       # Cannot test 'rescue' action directly so need to confirm side effects
       expect{ payment_create }.to_not change(Payment, :count)
 
       expect(flash[:alert]).to eq ["#{I18n.t('payments.create.something_wrong')}"]
+    end
+    it 'prevents execution if referer is not user "show" view' do
+      ActionDispatch::Request.any_instance.stub(:referer)
+        .and_return(user_url(user.id+1))
+
+      payment_create
+
+      expect(flash[:alert]).to eq "#{I18n.t('errors.not_permitted')}"
     end
   end
 end

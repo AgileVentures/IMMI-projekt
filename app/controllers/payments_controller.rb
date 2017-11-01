@@ -1,6 +1,9 @@
 class PaymentsController < ApplicationController
   require 'hips'
 
+  class NotAuthorizedError < Pundit::NotAuthorizedError
+  end
+
   SUCCESSFUL_HIPS_ORDER_EVENT = 'order.successful'
 
   protect_from_forgery except: :webhook
@@ -9,6 +12,10 @@ class PaymentsController < ApplicationController
     # The user wants to pay a fee (e.g. membership fee)
     payment_type = params[:type]
     user_id = params[:user_id]
+
+    # Authorize by confirming we have come from the user's show page
+    raise NotAuthorizedError unless
+      URI(request.referer).path == user_path(user_id)
 
     # Set membership duration dates based on business rule
     start_date, expire_date = User.next_payment_dates(user_id)
@@ -60,7 +67,7 @@ class PaymentsController < ApplicationController
     payload = JSON.parse(request.body.read)
 
     return head(:ok) unless payload['event'] == SUCCESSFUL_HIPS_ORDER_EVENT
-    
+
     resource = HipsService.validate_webhook_origin(payload['jwt'])
 
     payment_id = resource['merchant_reference']['order_id']

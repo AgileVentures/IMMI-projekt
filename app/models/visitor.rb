@@ -23,4 +23,8 @@ class Visitor
   def is_in_company_numbered?(_company_number_)
     false
   end
+
+  def id
+    0
+  end
 end

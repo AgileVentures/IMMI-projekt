@@ -409,4 +409,105 @@ RSpec.describe User, type: :model do
 
   end
 
+  context 'payment and membership period' do
+    let(:user) { create(:user) }
+    let(:application) { create(:membership_application, user: user,
+                               state: :waiting_for_payment) }
+    let(:payment1) do
+      create(:payment, user: user,
+             status: Payment.order_to_payment_status('successful'),
+             notes: 'these are notes for payment1')
+    end
+    let(:payment2) do
+      create(:payment, user: user,
+             status: Payment.order_to_payment_status('successful'),
+             notes: 'these are notes for payment2',
+             expire_date: Date.new(2018, 7, 1))
+    end
+
+    describe '#membership_expire_date' do
+      it 'returns date for latest completed payment' do
+        payment1
+        expect(user.membership_expire_date).to eq payment1.expire_date
+        payment2
+        expect(user.membership_expire_date).to eq payment2.expire_date
+      end
+    end
+
+    describe '#payment_notes' do
+      it 'returns notes for latest completed payment' do
+        payment1
+        expect(user.payment_notes).to eq payment1.notes
+        payment2
+        expect(user.payment_notes).to eq payment2.notes
+      end
+    end
+
+    describe '#most_recent_payment' do
+      it 'returns latest completed payment' do
+        payment1
+        expect(user.most_recent_payment).to eq payment1
+        payment2
+        expect(user.most_recent_payment).to eq payment2
+      end
+    end
+
+    describe '.self.next_payment_dates' do
+
+      context 'start_date' do
+
+        it 'returns today if no prior payment' do
+          expect(User.next_payment_dates(user.id)[0]).to eq Date.today
+        end
+
+        it 'returns prior-payment-expire_date plus one day if prior payment' do
+          payment1
+          expect(User.next_payment_dates(user.id)[0])
+            .to eq payment1.expire_date + 1.day
+        end
+      end
+
+      context 'expire_date' do
+        after(:each) do
+          Timecop.return
+        end
+
+        describe 'during the year 2017' do
+
+          it 'returns January 1, 2018' do
+            Timecop.freeze(Date.new(2017, 10, 1))
+            expect(User.next_payment_dates(user.id)[1])
+              .to eq Date.new(2018, 12, 31)
+          end
+        end
+
+        describe 'after year 2017' do
+          it 'returns prior expire_date plus one year' do
+            Timecop.freeze(Date.new(2018, 7, 1))
+            payment1
+            expect(User.next_payment_dates(user.id)[1])
+              .to eq payment1.expire_date + 1.year
+          end
+        end
+      end
+    end
+
+    describe '#allow_pay_member_fee?' do
+      it 'returns true if user is a member' do
+        user.member = true
+        user.save
+        expect(user.allow_pay_member_fee?).to eq true
+      end
+
+      it 'returns true if user has app in waiting_for_payment state' do
+        application
+        expect(user.allow_pay_member_fee?).to eq true
+      end
+    end
+  end
+
+
+
+
+
 end

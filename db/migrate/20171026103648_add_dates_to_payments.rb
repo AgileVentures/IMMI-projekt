@@ -11,8 +11,8 @@ class AddDatesToPayments < ActiveRecord::Migration[5.1]
           next unless user.member?
 
           Payment.create(user: user,
-                         payment_type: 'member_fee',
-                         status: 'betald',
+                         payment_type: Payment::PAYMENT_TYPE_MEMBER,
+                         status: Payment.order_to_payment_status('successful'),
                          hips_id: 'none',
                          start_date: Date.new(2017, 1, 1),
                          expire_date: Date.new(2017, 12, 31))
