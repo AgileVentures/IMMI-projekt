@@ -52,3 +52,12 @@ Then(/^(?:I|they) click the browser back button and "([^"]*)" the prompt$/) do |
     raise 'invalid modal_action specified'
   end
 end
+
+When(/^I am in (.*) browser$/) do |user_email|
+  Capybara.session_name = user_email
+  @user = User.find_by_email user_email
+end
+
+When(/^I reload the page$/) do
+  visit current_path
+end

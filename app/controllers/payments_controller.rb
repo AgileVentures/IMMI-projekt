@@ -14,10 +14,11 @@ class PaymentsController < ApplicationController
     user_id = params[:user_id]
 
     # Authorize by confirming we have come from the user's show page
+    # (need to remove 'sv' from path derived from referer)
     raise NotAuthorizedError unless
-      URI(request.referer).path == user_path(user_id)
+      URI(request.referer).path.sub('/sv','') == user_path(user_id)
 
-    # Set membership duration dates based on business rule
+    # Set membership duration dates based on business rules
     start_date, expire_date = User.next_payment_dates(user_id)
 
     # HIPS will associate the payment with a "merchant reference" - which
