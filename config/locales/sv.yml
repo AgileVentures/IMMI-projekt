@@ -642,6 +642,7 @@ sv:
       member: Medlem
       applications: *applications
       applications_tooltip: Antal öppna ansökningar
+      expire_date: *expire_date
 
   payments:
     create:
