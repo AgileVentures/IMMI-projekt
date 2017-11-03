@@ -656,6 +656,18 @@ sv:
     error:
       error: Det uppstod ett fel vid behandlingen av din betalning
 
+  payments:
+    create:
+      page_title: &page_title '%{payment_type} Betalning genom: %{user_name}'
+      title: *page_title
+      something_wrong: Något gick fel - kontakta systemadministratören på medlem@sverigeshundforetagare.se
+
+    success:
+      success: Betalning framgångsrikt genomförd - tack!
+
+    error:
+      error: Det uppstod ett fel vid behandlingen av din betalning
+
   admin:
     index:
       export: Exportera ansökningar som CSV
