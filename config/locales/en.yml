@@ -147,9 +147,6 @@ en:
         expire_date: &expire_date Expire Date
         notes: Notes
 
-      payment:
-        payment_type: Payment Type
-
       membership_application:
         company_number: &company_number Company number
         first_name: *first_name
