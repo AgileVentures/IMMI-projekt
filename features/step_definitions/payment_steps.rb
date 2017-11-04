@@ -9,9 +9,14 @@ end
 
 And(/^I complete the payment$/) do
   # Emulate webhook payment-update and direct to "success" action
-  payment = @user.payments.last
-  payment.status = Payment.order_to_payment_status('successful')
-  payment.save
+  payment = @user.payments.last # present for member, nil for user
+
+  payment = FactoryGirl.create(:payment, user: @user) unless payment
+
+  start_date, expire_date = User.next_payment_dates(@user.id)
+  payment.update!(status: Payment.order_to_payment_status('successful'),
+                  start_date: start_date, expire_date: expire_date)
+
   visit payment_success_path(user_id: @user.id, id: payment.id)
 end
 
