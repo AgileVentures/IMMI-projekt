@@ -33,11 +33,11 @@ Feature: As a user
     Then I am in "emma@mutts.com" browser
     And I reload the page
     And I should see t("menus.nav.members.pay_membership")
-    Then I click on the pay membership button
+    Then I click on t("menus.nav.members.pay_membership")
     And I complete the payment
     And I should see t("payments.success.success")
     And I should see "2018-12-31"
-    
+
   @time_adjust
   Scenario: Set app state to waiting_for_payment, User pays membership fee (post-2017)
     Given the date is set to "2018-7-01"
@@ -55,7 +55,7 @@ Feature: As a user
     Then I am in "emma@mutts.com" browser
     And I reload the page
     And I should see t("menus.nav.members.pay_membership")
-    Then I click on the pay membership button
+    Then I click on t("menus.nav.members.pay_membership")
     And I complete the payment
     And I should see t("payments.success.success")
     And I should see "2019-06-30"

@@ -16,16 +16,17 @@ Feature: As a member
     And I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
     And I should see "1001"
-    Then I click on the pay membership button
+    Then I click on t("menus.nav.members.pay_membership")
     And I complete the payment
     And I should see t("payments.success.success")
     And I should see "2018-12-31"
 
+  @selenium
   Scenario: Member starts payment process then abandons it
     Given I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
     And I should see "1001"
-    Then I click on the pay membership button
+    Then I click on t("menus.nav.members.pay_membership")
     And I abandon the payment
     And I should see "2017-12-31"
     And I should not see t("payments.success.success")
@@ -35,7 +36,7 @@ Feature: As a member
     Given I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
     And I should see "1001"
-    Then I click on the pay membership button
+    Then I click on t("menus.nav.members.pay_membership")
     And I incur an error in payment processing
     And I should see t("payments.error.error")
     And I should see "2017-12-31"
