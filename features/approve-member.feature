@@ -19,7 +19,7 @@ Feature: As an admin
       | name         | description                     |
       | dog grooming | grooming dogs from head to tail |
       | dog crooning | crooning to dogs                |
-      | rehab        | physcial rehabitation           |
+      | rehab        | physical rehabilitation         |
 
     Given the following regions exist:
       | name         |
@@ -50,7 +50,6 @@ Feature: As an admin
     And I should see "901"
     Then I can go to the company page for "5562252998"
 
-
   Scenario: Admin approves, member is added to existing company
     Given I am on the "application" page for "anna@nosnarkybarky.se"
     When I click on t("membership_applications.accept_btn")
@@ -68,7 +67,10 @@ Feature: As an admin
     And I should see "No More Snarky Barky"
     And I should see "rehab"
     And I am logged in as "anna@nosnarkybarky.se"
-    And I am on the "landing" page
+    And I am on the "user details" page for "anna@nosnarkybarky.se"
+    Then I click on t("menus.nav.members.pay_membership")
+    And I complete the payment
+    And I should see t("payments.success.success")
     Then I should see t("menus.nav.members.manage_company.submenu_title")
     And I am on the "edit my application" page for "anna@nosnarkybarky.se"
     Then I should see t("membership_applications.show.membership_number")

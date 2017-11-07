@@ -17,7 +17,7 @@ Feature: As a user
       | emma@mutts.com | 5562252998     | rehab        | under_review |
 
   @time_adjust
-  Scenario: Set app state to waiting_for_payment, User pays membership fee (2017)
+  Scenario: Set app state to accepted, User pays membership fee (2017)
     Given the date is set to "2017-10-01"
 
     When I am in "emma@mutts.com" browser
@@ -28,7 +28,7 @@ Feature: As a user
     Then I am in "admin@shf.se" browser
     And I am logged in as "admin@shf.se"
     Then I am on the "application" page for "emma@mutts.com"
-    And I click on t("membership_applications.ask_applicant_for_payment_btn")
+    And I click on t("membership_applications.accept_btn")
 
     Then I am in "emma@mutts.com" browser
     And I reload the page
@@ -39,7 +39,7 @@ Feature: As a user
     And I should see "2018-12-31"
 
   @time_adjust
-  Scenario: Set app state to waiting_for_payment, User pays membership fee (post-2017)
+  Scenario: Set app state to accepted, User pays membership fee (post-2017)
     Given the date is set to "2018-7-01"
 
     When I am in "emma@mutts.com" browser
@@ -50,7 +50,7 @@ Feature: As a user
     Then I am in "admin@shf.se" browser
     And I am logged in as "admin@shf.se"
     Then I am on the "application" page for "emma@mutts.com"
-    And I click on t("membership_applications.ask_applicant_for_payment_btn")
+    And I click on t("membership_applications.accept_btn")
 
     Then I am in "emma@mutts.com" browser
     And I reload the page

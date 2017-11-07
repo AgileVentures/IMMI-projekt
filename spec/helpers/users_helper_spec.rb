@@ -33,7 +33,7 @@ RSpec.describe UsersHelper, type: :helper do
 
   describe '#pay_member_fee_link' do
     let(:user) { create(:user) }
-    let(:app)  { create(:membership_application, state: :waiting_for_payment) }
+    let(:app)  { create(:membership_application, state: :accepted) }
     let(:expected_path) do
       payments_path(user_id: user.id, type: Payment::PAYMENT_TYPE_MEMBER)
     end
@@ -47,7 +47,7 @@ RSpec.describe UsersHelper, type: :helper do
       expect(pay_member_fee_link(user)).to match expected_path
     end
 
-    it 'returns pay-fee link if user has app in "waiting_for_payment" state' do
+    it 'returns pay-fee link if user has app in "accepted" state' do
       user.membership_applications << app
       user.save
       expect(pay_member_fee_link(user)).to match expected_path

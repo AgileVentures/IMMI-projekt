@@ -17,6 +17,9 @@ And(/^I complete the payment$/) do
   payment.update!(status: Payment.order_to_payment_status('successful'),
                   start_date: start_date, expire_date: expire_date)
 
+  @user.member = true
+  @user.save
+
   visit payment_success_path(user_id: @user.id, id: payment.id)
 end
 

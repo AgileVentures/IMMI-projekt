@@ -78,6 +78,12 @@ class PaymentsController < ApplicationController
     payment.status = Payment.order_to_payment_status(resource['status'])
     payment.save
 
+    # If user can pay member fee they are 1) already a member, or,
+    # have an accepted application
+    user = payment.user
+    user.member = true
+    user.save
+
     log_hips_activity('Webhook', 'info', payment_id, hips_id)
 
   rescue RuntimeError, JWT::IncorrectAlgorithm => exc

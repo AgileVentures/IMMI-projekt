@@ -24,7 +24,7 @@ Feature: Whole process of a new user creating a login, applying, being approved,
 
   @admin, @user, @member
   Scenario: User creates login, admin approves, user edits company, blank main address is displayed
-    Given I am logged in as "new_user@example.com"
+    And I am logged in as "new_user@example.com"
     And I am on the "landing" page
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
@@ -51,7 +51,10 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I should see "10101"
     And I am logged out
     And I am logged in as "new_user@example.com"
-    And I am on the "landing" page
+    And I am on the "user details" page for "new_user@example.com"
+    Then I click on t("menus.nav.members.pay_membership")
+    And I complete the payment
+    And I should see t("payments.success.success")
     And I click on t("menus.nav.members.manage_company.edit_company")
     Then I should see t("companies.edit.title", company_name: "")
     And I should see t("companies.company_name")

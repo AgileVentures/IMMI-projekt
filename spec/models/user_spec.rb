@@ -412,7 +412,7 @@ RSpec.describe User, type: :model do
   context 'payment and membership period' do
     let(:user) { create(:user) }
     let(:application) { create(:membership_application, user: user,
-                               state: :waiting_for_payment) }
+                               state: :accepted) }
     let(:payment1) do
       create(:payment, user: user,
              status: Payment.order_to_payment_status('successful'),
@@ -499,15 +499,10 @@ RSpec.describe User, type: :model do
         expect(user.allow_pay_member_fee?).to eq true
       end
 
-      it 'returns true if user has app in waiting_for_payment state' do
+      it 'returns true if user has app in "accepted" state' do
         application
         expect(user.allow_pay_member_fee?).to eq true
       end
     end
   end
-
-
-
-
-
 end

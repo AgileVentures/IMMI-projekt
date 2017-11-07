@@ -324,9 +324,6 @@ RSpec.describe MembershipApplication, type: :model do
         it 'assigns membership number to user' do
           expect(user.membership_number).not_to be_nil
         end
-        it 'assigns membership status to user' do
-          expect(user.member).to be true
-        end
         it 'assigns company email to application contact_email' do
           expect(application.company.email).to eq application.contact_email
         end

@@ -52,11 +52,11 @@ class User < ApplicationRecord
   end
 
   def allow_pay_member_fee?
-    # Business rule: show "pay membership fee" button if:
+    # Business rule: user can pay membership fee if:
     # 1. user == member, or
-    # 2. user has at least one application with status == :waiting_for_payment
+    # 2. user has at least one application with status == :accepted
 
-    member? || membership_applications.where(state: :waiting_for_payment).any?
+    member? || membership_applications.where(state: :accepted).any?
   end
 
   def has_membership_application?
