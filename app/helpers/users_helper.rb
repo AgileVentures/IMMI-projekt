@@ -26,10 +26,11 @@ module UsersHelper
     if today < expire_date << 1
       value_class = 'Yes'  # green
     elsif today >= expire_date
-      value_class = 'bg-red'
-    else
       value_class = 'No'
+    else
+      value_class = 'Maybe'
     end
+    value_class
   end
 
   def pay_member_fee_link(user)

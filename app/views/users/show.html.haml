@@ -50,7 +50,7 @@
                 - if app.accepted?
                   %span.yes= app.state
                 - else
-                  %span.no= app.state
+                  %span.maybe= app.state
               %td= link_to(app.company_number, membership_application_path(app))
               %td= app.company&.name
 

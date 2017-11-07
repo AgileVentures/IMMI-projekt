@@ -61,7 +61,7 @@
                     = link_to address.entire_address(full_visibility: true),
                               edit_company_address_path(@company.id, address.id)
                   %td
-                    %span{ class: (address.visibility == 'none' ? 'no' : 'yes') }
+                    %span{ class: (address.visibility == 'none' ? 'maybe' : 'yes') }
                       = t("address_visibility.#{address.visibility}")
                   %td
                     = radio_button_tag('mail', '1', address.mail,

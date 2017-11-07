@@ -9,7 +9,7 @@
     - if user.is_member?
       %span.yes= t('.yes')
     - else
-      %span.no= t('.no')
+      %span.maybe= t('.no')
   %td.expire_date
     - expire_date = user.most_recent_payment&.expire_date
     - if expire_date
