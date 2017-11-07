@@ -75,14 +75,11 @@ class PaymentsController < ApplicationController
     hips_id    = resource['id']
 
     payment = Payment.find(payment_id)
-    payment.status = Payment.order_to_payment_status(resource['status'])
-    payment.save
+    payment.update(status: Payment.order_to_payment_status(resource['status']))
 
     # If user can pay member fee they are 1) already a member, or,
     # have an accepted application
-    user = payment.user
-    user.member = true
-    user.save
+    payment.user.update(member: true)
 
     log_hips_activity('Webhook', 'info', payment_id, hips_id)
 
