@@ -64,7 +64,7 @@ class AdminController < ApplicationController
     header_member_strs = ['activerecord.attributes.membership_application.contact_email',
                           'activerecord.attributes.membership_application.first_name',
                           'activerecord.attributes.membership_application.last_name',
-                          'activerecord.attributes.membership_application.membership_number',
+                          'activerecord.attributes.user.membership_number',
                           'activerecord.attributes.membership_application.state',
                           'activerecord.models.business_category.other',
                           'activerecord.models.company.one',

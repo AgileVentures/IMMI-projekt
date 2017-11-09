@@ -11,8 +11,7 @@
 class AddressExporter
 
   SVERIGE_COUNTRY    = 'Sverige'
-  SVERIGE_POSTAL_STR = 'SE-Sweden'
-
+  SVERIGE_VARIATIONS = ['SE', 'Sverige', 'SE-Sweden', 'Sveriges', 'SE-Sverige']
 
 
   def self.se_mailing_csv_str(address)
@@ -35,11 +34,14 @@ class AddressExporter
 
 
 
-  # if country == 'Sverige' return what the Swedish Postal service wants to see for a mailing address
+  # if country == 'Sverige' || 'SE' || 'Sveriges' standardize to "Sverige"
   def self.country_postal(address)
 
     if address
-      address.country == SVERIGE_COUNTRY ? SVERIGE_POSTAL_STR : address.country
+      if SVERIGE_VARIATIONS.include?(address.country)
+        address.country = SVERIGE_COUNTRY
+      end
+      address.country
     else
       ''
     end
