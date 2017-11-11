@@ -178,7 +178,13 @@ RSpec.describe Company, type: :model do
 
     end
 
-    it 'returns the first address for the company' do
+    it 'returns mail address for company' do
+      company = create(:company, num_addresses: 3)
+      company.addresses[1].update(mail: true)
+      expect(company.main_address).to eq(company.addresses.second)
+    end
+
+    it 'returns the first address for the company if no mail address' do
       company = create(:company, num_addresses: 3)
       expect(company.addresses.count).to eq 3
       expect(company.main_address).to eq(company.addresses.first)
