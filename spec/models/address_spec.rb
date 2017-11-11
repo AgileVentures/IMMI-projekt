@@ -112,7 +112,7 @@ RSpec.describe Address, type: :model do
         expect(co_has_region.addresses.mail_address[0]).to eq mail_addr
       end
       it 'returns nil if mail address not present' do
-        second_address = create(:address, addressable: co_has_region)
+        create(:address, addressable: co_has_region)
         expect(co_has_region.addresses.mail_address[0]).to be_nil
       end
     end
