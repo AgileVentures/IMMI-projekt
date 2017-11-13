@@ -1,5 +1,7 @@
 class MembershipApplicationPolicy < ApplicationPolicy
 
+  EDITABLE_STATES_FOR_APPLICANT = Set[:new, :initial, :ready_for_review, :under_review, :waiting_for_applicant].freeze
+
 
   def permitted_attributes
     allowed_attribs_for_current_user
@@ -44,6 +46,13 @@ class MembershipApplicationPolicy < ApplicationPolicy
 
   def create?
     new?
+  end
+
+
+  def update?
+    return true if user.admin?
+
+    user == record.user && EDITABLE_STATES_FOR_APPLICANT.include?(record.state.to_sym)
   end
 
 
@@ -111,7 +120,7 @@ class MembershipApplicationPolicy < ApplicationPolicy
     if user.admin?
       all_attributes
     elsif owner?
-      owner_attributes
+      [:accepted, :rejected].include?(record.state.to_sym) ? [] : owner_attributes
     elsif not_a_visitor
       user_owner_attributes
     else

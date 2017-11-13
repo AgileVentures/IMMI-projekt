@@ -49,6 +49,28 @@ Feature: As an applicant
     And I am on the "edit application" page for "hans@random.com"
     Then I should see t("errors.not_permitted")
 
+  Scenario: Applicant can not edit accepted application
+    Given I am logged in as "nils@random.com"
+    And I am on the "edit application" page for "nils@random.com"
+    Then I should see t("errors.not_permitted")
+
+  Scenario: Applicant can view accepted application
+    Given I am logged in as "nils@random.com"
+    And I am on the "show my application" page for "nils@random.com"
+    Then I should not see t("errors.not_permitted")
+    And I should see t("membership_applications.accepted")
+
+  Scenario: Applicant can not edit rejected application
+    Given I am logged in as "bob@barkybobs.com"
+    And I am on the "edit application" page for "bob@barkybobs.com"
+    Then I should see t("errors.not_permitted")
+
+  Scenario: Applicant can view rejected application
+    Given I am logged in as "bob@barkybobs.com"
+    And I am on the "show my application" page for "bob@barkybobs.com"
+    Then I should not see t("errors.not_permitted")
+    And I should see t("membership_applications.rejected")
+
   Scenario: Member wants to view their own application
     Given I am logged in as "nils@random.com"
     And I am on the "landing" page

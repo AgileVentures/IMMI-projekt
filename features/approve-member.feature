@@ -72,7 +72,7 @@ Feature: As an admin
     And I complete the payment
     And I should see t("payments.success.success")
     Then I should see t("menus.nav.members.manage_company.submenu_title")
-    And I am on the "edit my application" page for "anna@nosnarkybarky.se"
+    And I am on the "show my application" page for "anna@nosnarkybarky.se"
     Then I should see t("membership_applications.show.membership_number")
     And I should see "902"
     And I am on the "edit my company" page for "anna@nosnarkybarky.se"
@@ -95,8 +95,8 @@ Feature: As an admin
     And I am on the "landing" page
     Then I should not see "5562252998"
     And I am logged in as "emma@happymutts.se"
-    And I am on the "edit application" page for "emma@happymutts.se"
-    Then I should be on "Edit My Application" page
+    And I am on the "show my application" page for "emma@happymutts.se"
+    Then I should be on "show my application" page
     And I should not see t("membership_applications.show.membership_number")
 
 

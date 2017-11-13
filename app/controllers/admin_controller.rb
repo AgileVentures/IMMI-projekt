@@ -61,24 +61,24 @@ class AdminController < ApplicationController
 
     # build the header string from strings in the locale file
 
-    header_member_strs = ['activerecord.attributes.membership_application.contact_email',
-                          'activerecord.attributes.membership_application.first_name',
-                          'activerecord.attributes.membership_application.last_name',
-                          'activerecord.attributes.membership_application.membership_number',
-                          'activerecord.attributes.membership_application.state',
-                          'activerecord.models.business_category.other',
-                          'activerecord.models.company.one',
-                          'activerecord.attributes.address.street',
-                          'activerecord.attributes.address.post_code',
-                          'activerecord.attributes.address.city',
-                          'activerecord.attributes.address.kommun',
-                          'activerecord.attributes.address.region',
-                          'activerecord.attributes.address.country',
+    header_member_strs = [t('activerecord.attributes.membership_application.contact_email'),
+                          t('activerecord.attributes.membership_application.first_name'),
+                          t('activerecord.attributes.membership_application.last_name'),
+                          t('activerecord.attributes.user.membership_number'),
+                          t('activerecord.attributes.membership_application.state'),
+                          t('activerecord.models.business_category.other'),
+                          t('activerecord.models.company.one'),
+                          t('activerecord.attributes.address.street'),
+                          t('activerecord.attributes.address.post_code'),
+                          t('activerecord.attributes.address.city'),
+                          t('activerecord.attributes.address.kommun'),
+                          t('activerecord.attributes.address.region'),
+                          t('activerecord.attributes.address.country'),
     ]
 
     out_str = ''
 
-    out_str << header_member_strs.map{| header_str | "'#{t(header_str).strip}'" }.join(',')
+    out_str << header_member_strs.map{| header_str | "'#{header_str.strip}'" }.join(',')
 
     out_str << "\n"
 

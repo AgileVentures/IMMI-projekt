@@ -72,7 +72,7 @@ Feature: As any type of visitor
 
   Scenario: Another category is added
     Given I am logged in as "admin@shf.se"
-    And I am on the "edit my application" page for "ernt@mutts.com"
+    And I am on the "edit application" page for "ernt@mutts.com"
     And I select "Extra" Category
     And I click on t("membership_applications.edit.submit_button_label")
     When I am on the business category "Extra"
