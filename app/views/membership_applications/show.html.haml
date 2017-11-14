@@ -8,7 +8,7 @@
 
     %h2= @membership_application.user_full_name
 
-    = render 'membership_number'
+    = render partial: 'membership_number', locals: { user: @membership_application.user }
 
     %p= field_or_none("#{t('activerecord.attributes.user.email')}",
                       mail_to(@membership_application.user.email),

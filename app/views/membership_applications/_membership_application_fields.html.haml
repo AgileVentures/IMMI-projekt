@@ -1,7 +1,7 @@
 .app-section
   %h2.first= t('membership_applications.new.section_title_about_you')
   .answers
-    - if current_user.admin? && @membership_application.is_accepted?
+    - if current_user.admin? && user.membership_number
       = f.label :membership_number, t('membership_applications.show.membership_number'), class: 'required'
       = f.text_field :membership_number, class: 'wpcf7-form-control'
 

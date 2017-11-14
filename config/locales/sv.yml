@@ -143,7 +143,7 @@ sv:
 
       payment:
         payment_type: Betalningstyp
-        start_date: Start datum
+        start_date: Startdatum
         expire_date: &expire_date Utgångsdatum
         notes: Anteckningar
 
@@ -609,7 +609,7 @@ sv:
       please_note_new_password: Spara detta på ett säkert ställe. När du klickar på spara nedan kommer du inte att kunna se lösenordet igen och det finns ingen möjlighet att åter visa det.
       submit_new_password: Spara det nya lösenordet
       member: *member
-      pay_membership_tooltip: Betala medlemsavgift förlänger ditt medlemskap i ett år
+      pay_membership_tooltip: När du betalar din medlemsavgift förlängs ditt medlemskap i ett år.
 
     update:
       passwords_dont_match: De två lösenord du angivit matchar inte.
@@ -646,21 +646,9 @@ sv:
 
   payments:
     create:
-      page_title: &page_title '%{payment_type} Betalning genom: %{user_name}'
+      page_title: &page_title '%{payment_type} betalning av: %{user_name}'
       title: *page_title
-      something_wrong: Något gick fel - kontakta systemadministratören på medlem@sverigeshundforetagare.se
-
-    success:
-      success: Betalning framgångsrikt genomförd - tack!
-
-    error:
-      error: Det uppstod ett fel vid behandlingen av din betalning
-
-  payments:
-    create:
-      page_title: &page_title '%{payment_type} Betalning genom: %{user_name}'
-      title: *page_title
-      something_wrong: Något gick fel - kontakta systemadministratören på medlem@sverigeshundforetagare.se
+      something_wrong: 'Något gick fel - kontakta systemadministratören på %{admin_email}'
 
     success:
       success: Betalning framgångsrikt genomförd - tack!
@@ -940,7 +928,7 @@ sv:
       users:
         my_application: &my_application Min ansökan
         apply_for_membership: Ansök om medlemsskap
-        your_account: Visa ditt konto
+        your_account: Mitt konto
 
       members:
         shf_companies: SHF-företag

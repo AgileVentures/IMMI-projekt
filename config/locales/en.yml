@@ -649,19 +649,7 @@ en:
     create:
       page_title: &page_title '%{payment_type} Payment by: %{user_name}'
       title: *page_title
-      something_wrong: Something went wrong - contact the system administrator at member@sverigeshundforetagare.se
-
-    success:
-      success: Payment successfully processed - thank you!
-
-    error:
-      error: There was an error in processing your payment
-
-  payments:
-    create:
-      page_title: &page_title '%{payment_type} Payment by: %{user_name}'
-      title: *page_title
-      something_wrong: Something went wrong - contact the system administrator at member@sverigeshundforetagare.se
+      something_wrong: 'Something went wrong - contact the system administrator at %{admin_email}'
 
     success:
       success: Payment successfully processed - thank you!

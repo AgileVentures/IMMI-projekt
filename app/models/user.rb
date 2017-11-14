@@ -19,26 +19,26 @@ class User < ApplicationRecord
     User.all.reject { | user | user.is_member? }
   }
 
+  def most_recent_payment
+    payments.completed.order(:created_at).last
+  end
+
   def membership_expire_date
-    payments.completed.last&.expire_date
+    most_recent_payment&.expire_date
   end
 
   def payment_notes
-    payments.completed.last&.notes
-  end
-
-  def most_recent_payment
-    payments.completed.last
+    most_recent_payment&.notes
   end
 
   def self.next_payment_dates(user_id)
     # Business rules:
     # start_date = prior payment expire date + 1 day
-    # expire_date = start_date + 1 year
+    # expire_date = start_date + 1 year - 1 day
     # (special rules apply for remainder of 2017)
     user = find(user_id)
 
-    if user.most_recent_payment&.expire_date
+    if user.membership_expire_date
       start_date = user.most_recent_payment.expire_date + 1.day
     else
       start_date = Date.current

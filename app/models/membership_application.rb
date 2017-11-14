@@ -136,9 +136,6 @@ class MembershipApplication < ApplicationRecord
   def accept_membership
     begin
 
-      user.issue_membership_number
-      user.save
-
       company = Company.find_or_create_by!(company_number: company_number) do |co|
         co.email = contact_email
       end

@@ -54,6 +54,17 @@ RSpec.describe Payment, type: :model do
       expect(described_class.order_to_payment_status('awaiting_payments'))
         .to eq 'Väntar på betalning'
     end
+  end
 
+  describe 'scope: completed' do
+    let(:success) { Payment::ORDER_PAYMENT_STATUS['successful'] }
+    let(:created) { Payment::ORDER_PAYMENT_STATUS[nil] }
+    let!(:pymt1) { create(:payment, status: success, expire_date: Date.today + 1.day) }
+    let!(:pymt2) { create(:payment, status: created, expire_date: Date.today + 1.year) }
+    let!(:pymt3) { create(:payment, status: success, expire_date: Date.today + 1.year) }
+
+    it 'returns all completed payments' do
+      expect(Payment.completed).to contain_exactly(pymt3, pymt1)
+    end
   end
 end

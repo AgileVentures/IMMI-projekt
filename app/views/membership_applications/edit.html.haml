@@ -8,12 +8,13 @@
 
   .entry-content.wpcf7
 
-    = render 'membership_number'
+    = render partial: 'membership_number', locals: { user: @membership_application.user }
 
     = form_for @membership_application, html: {multipart: true}, url: membership_application_path do |f|
 
       != model_errors_helper(@membership_application)
 
-      = render partial: 'membership_application_fields', locals: {f: f}
+      = render partial: 'membership_application_fields',
+               locals: { f: f, user: @membership_application.user }
       = render 'application/required_fields'
       = f.submit t('.submit_button_label')

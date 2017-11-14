@@ -13,10 +13,7 @@ class PaymentsController < ApplicationController
     payment_type = params[:type]
     user_id = params[:user_id]
 
-    # Authorize by confirming we have come from the user's show page
-    # (need to remove 'sv' from path derived from referer)
-    raise NotAuthorizedError unless
-      URI(request.referer).path.sub('/sv','') == user_path(user_id)
+    authorize Payment.new(user_id: user_id)
 
     # Set membership duration dates based on business rules
     start_date, expire_date = User.next_payment_dates(user_id)
@@ -52,7 +49,8 @@ class PaymentsController < ApplicationController
 
     log_hips_activity('create order', 'error', nil, @hips_id, exc.cause)
 
-    helpers.flash_message(:alert, t('.something_wrong'))
+    helpers.flash_message(:alert, t('.something_wrong',
+                                    admin_email: ENV['SHF_MEMBERSHIP_EMAIL']))
 
     redirect_back fallback_location: root_path
   end
@@ -77,9 +75,9 @@ class PaymentsController < ApplicationController
     payment = Payment.find(payment_id)
     payment.update(status: Payment.order_to_payment_status(resource['status']))
 
-    # If user can pay member fee they are 1) already a member, or,
-    # have an accepted application
-    payment.user.update(member: true)
+    # When fee is paid, user is made a member, and a membership_number is issued
+    user = payment.user
+    user.update(member: true, membership_number: user.issue_membership_number)
 
     log_hips_activity('Webhook', 'info', payment_id, hips_id)
 

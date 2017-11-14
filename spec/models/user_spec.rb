@@ -411,16 +411,18 @@ RSpec.describe User, type: :model do
 
   context 'payment and membership period' do
     let(:user) { create(:user) }
-    let(:application) { create(:membership_application, user: user,
-                               state: :accepted) }
+    let(:success) { Payment.order_to_payment_status('successful') }
+    let(:application) do
+      create(:membership_application, user: user, state: :accepted)
+    end
+
     let(:payment1) do
-      create(:payment, user: user,
-             status: Payment.order_to_payment_status('successful'),
-             notes: 'these are notes for payment1')
+      create(:payment, user: user, status: success,
+             notes: 'these are notes for payment1',
+             expire_date: Date.new(2018, 1, 1))
     end
     let(:payment2) do
-      create(:payment, user: user,
-             status: Payment.order_to_payment_status('successful'),
+      create(:payment, user: user, status: success,
              notes: 'these are notes for payment2',
              expire_date: Date.new(2018, 7, 1))
     end
