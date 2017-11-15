@@ -368,11 +368,6 @@ RSpec.describe MembershipApplication, type: :model do
       expect(user.membership_number).to be_nil
     end
 
-    it 'generates a membership_number when an application is accepted' do
-      new_app.accept
-      expect(user.membership_number).not_to be_blank
-    end
-
     it 'removes the membership_number when an application is rejected' do
       new_app.accept
       new_app.reject
