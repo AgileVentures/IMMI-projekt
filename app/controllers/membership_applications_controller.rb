@@ -140,7 +140,6 @@ class MembershipApplicationsController < ApplicationController
     begin
       @membership_application.accept!
       helpers.flash_message(:notice, t('membership_applications.accept.success'))
-      helpers.flash_message(:notice, t('membership_applications.update.enter_member_number'))
       redirect_to edit_membership_application_url(@membership_application)
       return
     rescue => e

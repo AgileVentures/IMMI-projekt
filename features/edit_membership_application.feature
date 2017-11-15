@@ -85,7 +85,7 @@ Feature: As an applicant
   Scenario: Admin can't edit membership number for a rejected application
     Given I am logged in as "admin@shf.se"
     And I am on the "edit application" page for "bob@barkybobs.com"
-    Then I should not see t("membership_applications.show.membership_number")
+    And I should not see t("membership_applications.edit.submit_button_label")
 
   Scenario: Cannot change locale if there are errors in the application
     Given I am logged in as "emma@random.com"

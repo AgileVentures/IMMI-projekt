@@ -50,7 +50,7 @@ module PathHelpers
         path = shf_documents_path
       when 'new shf document'
         path = new_shf_document_path
-      when 'user details'
+      when 'user details', 'user profile'
         path = user_path(user)
     end
 

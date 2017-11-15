@@ -18,6 +18,7 @@ And(/^I complete the payment$/) do
                   start_date: start_date, expire_date: expire_date)
 
   @user.member = true
+  @user.issue_membership_number
   @user.save
 
   visit payment_success_path(user_id: @user.id, id: payment.id)

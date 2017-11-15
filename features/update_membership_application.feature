@@ -78,7 +78,6 @@ Feature: As an Admin
     Then I should see "rehab"
     When I click on t("membership_applications.accept_btn")
     Then I should see t("membership_applications.accept.success")
-    And I should see t("membership_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
     Then I should see 1 t("membership_applications.waiting_for_applicant")
@@ -334,7 +333,6 @@ Feature: As an Admin
     And I should see "rehab"
     When I click on t("membership_applications.accept_btn")
     Then I should see t("membership_applications.accept.success")
-    And I should see t("membership_applications.update.enter_member_number")
     And I should see "rehab"
     When I am on the "landing" page
     Then I should see 1 t("membership_applications.waiting_for_applicant")

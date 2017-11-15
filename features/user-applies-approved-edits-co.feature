@@ -24,6 +24,7 @@ Feature: Whole process of a new user creating a login, applying, being approved,
 
   @admin, @user, @member
   Scenario: User creates login, admin approves, user edits company, blank main address is displayed
+    Given I am in "new_user@example.com" browser
     And I am logged in as "new_user@example.com"
     And I am on the "landing" page
     And I click on t("menus.nav.users.apply_for_membership")
@@ -32,9 +33,9 @@ Feature: Whole process of a new user creating a login, applying, being approved,
       | NewUser1                               | NewLastName                           | 5562252998                                 | 031-1234567                              | new_user@example.com                      |
     And I select "Groomer" Category
     And I click on t("membership_applications.new.submit_button_label")
-    Then I should be on the "landing" page
     And I should see t("membership_applications.create.success", email_address: new_user@example.com)
-    And I am logged out
+
+    Then I am in "admin@shf.se" browser
     And I am logged in as "admin@shf.se"
     And I am on the "landing" page
     And I click on t("menus.nav.admin.manage_applications")
@@ -43,7 +44,22 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I click on t("membership_applications.start_review_btn")
     And I click on t("membership_applications.accept_btn")
     And I should be on the "edit application" page for "new_user@example.com"
-    And I should see t("membership_applications.update.enter_member_number")
+    And I should not see t("membership_applications.update.enter_member_number")
+    And I click on t("membership_applications.edit.submit_button_label")
+    Then I should see t("membership_applications.update.success")
+    And I should see t("membership_applications.accepted")
+
+    Given I am in "new_user@example.com" browser
+    And I am logged in as "new_user@example.com"
+    And I am on the "user details" page for "new_user@example.com"
+    Then I click on t("menus.nav.members.pay_membership")
+    And I complete the payment
+    And I should see t("payments.success.success")
+
+    Then I am in "admin@shf.se" browser
+    And I am on the "application" page for "new_user@example.com"
+    And I click on t("membership_applications.edit_membership_application")
+
     And I fill in t("membership_applications.show.membership_number") with "10101"
     And I click on t("membership_applications.edit.submit_button_label")
     Then I should see t("membership_applications.update.success")
@@ -52,9 +68,6 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I am logged out
     And I am logged in as "new_user@example.com"
     And I am on the "user details" page for "new_user@example.com"
-    Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
-    And I should see t("payments.success.success")
     And I click on t("menus.nav.members.manage_company.edit_company")
     Then I should see t("companies.edit.title", company_name: "")
     And I should see t("companies.company_name")
