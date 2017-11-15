@@ -1,6 +1,6 @@
 %p.membership_number
   = "#{t('membership_applications.show.membership_number')}: "
   - if user.membership_number
-    #{@membership_application.membership_number}
+    = user.membership_number
   - else
     = t('none')

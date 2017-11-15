@@ -9,7 +9,7 @@ RSpec.describe PaymentsController, type: :controller do
   let(:webhook_payload) do
     resource = { 'id' => 'hips_id', 'status' => 'successful',
                  'merchant_reference' => { 'order_id' => payment.id } }
-    payload = { 'event' => 'order.successful', 'jwt' => resource }
+    { 'event' => 'order.successful', 'jwt' => resource }
   end
 
   describe 'routing' do
