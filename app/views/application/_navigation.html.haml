@@ -39,7 +39,7 @@
                 %li.menu-item
                   = link_to t('menus.nav.members.shf_companies'), root_path
 
-                - if current_user.is_member?
+                - if current_user.member?
 
                   = render 'navigation_member_pages'
 

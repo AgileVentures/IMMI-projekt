@@ -6,7 +6,7 @@
   %td.sign-in-count= user.sign_in_count
   %td.applications-open= user.membership_applications.open.count
   %td.is-member
-    - if user.is_member?
+    - if user.member?
       %span.yes= t('.yes')
     - else
       %span.maybe= t('.no')

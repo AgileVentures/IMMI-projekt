@@ -12,11 +12,11 @@ class User < ApplicationRecord
   validates_uniqueness_of :membership_number, allow_blank: true
 
   scope :are_members, lambda {
-    User.all.select { | user | user.is_member? }
+    User.all.select { | user | user.member? }
   }
 
   scope :are_not_members, lambda {
-    User.all.reject { | user | user.is_member? }
+    User.all.reject { | user | user.member? }
   }
 
   def most_recent_payment
@@ -84,18 +84,13 @@ class User < ApplicationRecord
   end
 
 
-  def is_member?
-    member?
-  end
-
-
   def is_member_or_admin?
-    admin? || is_member?
+    admin? || member?
   end
 
 
   def is_in_company_numbered?(company_num)
-    is_member? && !(companies.detect { |c| c.company_number == company_num }).nil?
+    member? && !(companies.detect { |c| c.company_number == company_num }).nil?
   end
 
 

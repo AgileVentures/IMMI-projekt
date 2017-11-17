@@ -36,7 +36,7 @@ class PagePolicy < Struct.new(:user, :record)
 
   private
   def user_is_member?
-    (user.is_member? || user.admin?)
+    (user.member? || user.admin?)
   end
 
 end

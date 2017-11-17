@@ -3,7 +3,7 @@
   .post-title-divider
     %span
 .entry-content
-  - if current_user.is_member?
+  - if current_user.member?
     %h2
       = t('.member.title')
       = current_user.first_name

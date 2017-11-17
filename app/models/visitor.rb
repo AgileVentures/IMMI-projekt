@@ -4,7 +4,7 @@ class Visitor
     false
   end
 
-  def is_member?
+  def member?
     false
   end
 
