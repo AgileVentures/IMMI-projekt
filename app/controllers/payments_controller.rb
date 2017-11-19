@@ -16,7 +16,7 @@ class PaymentsController < ApplicationController
     authorize Payment.new(user_id: user_id)
 
     # Set membership duration dates based on business rules
-    start_date, expire_date = User.next_payment_dates(user_id)
+    start_date, expire_date = User.next_membership_payment_dates(user_id)
 
     # HIPS will associate the payment with a "merchant reference" - which
     # will be our Payment ID.  We can use this later to fetch the HIPS order.

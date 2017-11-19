@@ -478,6 +478,10 @@ sv:
       confirm_are_you_sure: *are_you_sure_confirm
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
+      edit_branding_status: Redigera varumärkesstatus
+      branding_license: Varumärkesrättigheter
+      pay_branding_fee_tooltip: Betalande avgift kommer att 
+                                förlänga dina varumärkesrättigheter för ett år
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
@@ -940,6 +944,9 @@ sv:
           edit_company: Redigera företag
         my_application: *my_application
         pay_membership: Betala medlemsavgift
+
+      company:
+        pay_branding_fee: Betala H-märkesavgift
 
       admin:
         shf_main_site: *shf_main_site

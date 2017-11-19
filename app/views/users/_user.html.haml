@@ -11,7 +11,7 @@
     - else
       %span.maybe= t('.no')
   %td.expire_date
-    - expire_date = user.most_recent_payment&.expire_date
+    - expire_date = user.most_recent_membership_payment&.expire_date
     - if expire_date
       %span{ class: expire_date_css_class(expire_date) }
         = expire_date

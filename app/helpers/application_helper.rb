@@ -154,4 +154,52 @@ module ApplicationHelper
     [ [true, t(text_vals[:true])], [false, t(text_vals[:false])] ]
   end
 
+  def expire_date_label_and_value(entity)
+    if entity.is_a? User
+      expire_date = entity.membership_expire_date
+    else
+      expire_date = entity.branding_expire_date
+    end
+
+    if !expire_date
+      return field_or_none("#{t('activerecord.attributes.payment.expire_date')}",
+                           "#{t('none')}", label_class: 'standard-label')
+    end
+
+    # Show expire date as yellow if within 1 month from today, red if expired
+    value_class = expire_date_css_class(expire_date)
+
+    return field_or_none("#{t('activerecord.attributes.payment.expire_date')}",
+                         "#{expire_date}",
+                         label_class: 'standard-label',
+                         value_class: value_class)
+  end
+
+  def expire_date_css_class(expire_date)
+    today = Date.current
+    if today < expire_date << 1
+      value_class = 'Yes'  # green
+    elsif today >= expire_date
+      value_class = 'No'
+    else
+      value_class = 'Maybe'
+    end
+    value_class
+  end
+
+  def payment_notes_label_and_value(entity)
+    if entity.is_a? User
+      notes = entity.membership_payment_notes
+    else
+      notes = entity.branding_payment_notes
+    end
+
+    if !notes || notes.empty?
+      return field_or_none("#{t('activerecord.attributes.payment.notes')}",
+                           "#{t('none')}", label_class: 'standard-label')
+    end
+    return field_or_none("#{t('activerecord.attributes.payment.notes')}",
+                         notes, label_class: 'standard-label')
+  end
+
 end

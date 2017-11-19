@@ -27,6 +27,8 @@
 
         = field_or_none t('.website'), link_to(@company.website, sanitize(full_uri(@company)), target: '_blank'), tag_options: {class: 'website'}
 
+        = render partial: 'branding_payment_status', locals: { company: @company }
+
       .col-md-7
         - if @company.addresses.visible
           = render partial: 'map_companies',

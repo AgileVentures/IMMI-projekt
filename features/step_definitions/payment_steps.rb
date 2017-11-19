@@ -13,7 +13,7 @@ And(/^I complete the payment$/) do
 
   payment = FactoryGirl.create(:payment, user: @user) unless payment
 
-  start_date, expire_date = User.next_payment_dates(@user.id)
+  start_date, expire_date = User.next_membership_payment_dates(@user.id)
   payment.update!(status: Payment.order_to_payment_status('successful'),
                   start_date: start_date, expire_date: expire_date)
 
@@ -28,6 +28,6 @@ And(/^I abandon the payment$/) do
 end
 
 And(/^I incur an error in payment processing$/) do
-  payment = @user.most_recent_payment
+  payment = @user.most_recent_membership_payment
   visit payment_error_path(user_id: @user.id, id: payment.id)
 end

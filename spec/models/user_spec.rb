@@ -444,32 +444,32 @@ RSpec.describe User, type: :model do
     describe '#payment_notes' do
       it 'returns notes for latest completed payment' do
         payment1
-        expect(user.payment_notes).to eq payment1.notes
+        expect(user.membership_payment_notes).to eq payment1.notes
         payment2
-        expect(user.payment_notes).to eq payment2.notes
+        expect(user.membership_payment_notes).to eq payment2.notes
       end
     end
 
-    describe '#most_recent_payment' do
+    describe '#most_recent_membership_payment' do
       it 'returns latest completed payment' do
         payment1
-        expect(user.most_recent_payment).to eq payment1
+        expect(user.most_recent_membership_payment).to eq payment1
         payment2
-        expect(user.most_recent_payment).to eq payment2
+        expect(user.most_recent_membership_payment).to eq payment2
       end
     end
 
-    describe '.self.next_payment_dates' do
+    describe '.self.next_membership_payment_dates' do
 
       context 'start_date' do
 
         it 'returns today if no prior payment' do
-          expect(User.next_payment_dates(user.id)[0]).to eq Date.today
+          expect(User.next_membership_payment_dates(user.id)[0]).to eq Date.today
         end
 
         it 'returns prior-payment-expire_date plus one day if prior payment' do
           payment1
-          expect(User.next_payment_dates(user.id)[0])
+          expect(User.next_membership_payment_dates(user.id)[0])
             .to eq payment1.expire_date + 1.day
         end
       end
@@ -483,7 +483,7 @@ RSpec.describe User, type: :model do
 
           it 'returns January 1, 2018' do
             Timecop.freeze(Date.new(2017, 10, 1))
-            expect(User.next_payment_dates(user.id)[1])
+            expect(User.next_membership_payment_dates(user.id)[1])
               .to eq Date.new(2018, 12, 31)
           end
         end
@@ -492,7 +492,7 @@ RSpec.describe User, type: :model do
           it 'returns prior expire_date plus one year' do
             Timecop.freeze(Date.new(2018, 7, 1))
             payment1
-            expect(User.next_payment_dates(user.id)[1])
+            expect(User.next_membership_payment_dates(user.id)[1])
               .to eq payment1.expire_date + 1.year
           end
         end

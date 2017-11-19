@@ -28,7 +28,7 @@
                     = rb.label(style: 'margin-left: 10px;') do
                       = rb.radio_button + ' ' + rb.text
 
-              = fields_for :payment, user.most_recent_payment do |pf|
+              = fields_for :payment, user.most_recent_membership_payment do |pf|
                 .row
                   .col-sm-4
                     %label

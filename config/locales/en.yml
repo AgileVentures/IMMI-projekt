@@ -477,6 +477,10 @@ en:
       confirm_are_you_sure: '*are_you_sure_confirm you want to delete the company?'
       add_address: 'Add address'
       click_to_edit: 'click to edit'
+      edit_branding_status: Edit Branding Status
+      branding_license: H-Branding License
+      pay_branding_fee_tooltip: Paying H-Branding fee will extend your branding
+                                license for one year
     index:
       title: Find H-labeled companies
       admin_title: Edit member companies
@@ -938,6 +942,9 @@ en:
           edit_company: Edit My Company
         my_application: *my_application
         pay_membership: Pay Membership Fee
+
+      company:
+        pay_branding_fee: Pay H-Branding Fee
 
       admin:
         shf_main_site: *shf_main_site

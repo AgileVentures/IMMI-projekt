@@ -61,4 +61,14 @@ module CompaniesHelper
       [ I18n.t("address_visibility.#{visibility_level}"), visibility_level ]
     end
   end
+
+  def pay_branding_fee_link(company)
+    # Returns link styled as a button
+
+    link_to("#{t('menus.nav.company.pay_branding_fee')}",
+            payments_path(user_id: current_user.id,
+                          company_id: company.id,
+                          type: Payment::PAYMENT_TYPE_BRANDING),
+            { method: :post, class: 'btn btn-primary btn-xs' })
+  end
 end

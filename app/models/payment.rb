@@ -30,6 +30,8 @@ class Payment < ApplicationRecord
 
   scope :completed, -> { where(status: ORDER_PAYMENT_STATUS['successful']) }
 
+  scope :membership_fee, -> { where(payment_type: PAYMENT_TYPE_MEMBER) }
+
   def self.order_to_payment_status(order_status)
     ORDER_PAYMENT_STATUS.fetch(order_status, 'unknown')
   end

@@ -1,0 +1,21 @@
+#companyBrandingStatus
+
+  - licensed = company.branding_license? ? 'Yes' : 'No'
+  = field_or_none("#{t('companies.show.branding_license')}", "#{t(licensed)}",
+                  label_class: 'standard-label',
+                  value_class: licensed)
+
+
+  = expire_date_label_and_value(company)
+
+  = pay_branding_fee_link(company)
+  - help_text = "#{t('companies.show.pay_branding_fee_tooltip')}"
+  %span.glyphicon.glyphicon-info-sign{ title: help_text,
+                                         data: {toggle: 'tooltip'} }
+
+  - if current_user.admin?
+    = payment_notes_label_and_value(company)
+
+    -# NOTE: Capybara cannot find link without 'href' attribute
+    %a.btn.btn-warning.btn-xs(href='#' data-toggle='modal' data-target='#editStatusModal')
+      = t('companies.show.edit_branding_status')

@@ -17,6 +17,11 @@ class Company < ApplicationRecord
 
   has_many :membership_applications, dependent: :destroy, inverse_of: :company
 
+  has_many :users, through: :membership_applications
+
+  has_many :payments
+  accepts_nested_attributes_for :payments
+
   has_many :business_categories, through: :membership_applications
 
   has_many :addresses, as: :addressable, dependent: :destroy,
@@ -30,6 +35,22 @@ class Company < ApplicationRecord
   has_many :pictures, class_name: 'Ckeditor::Picture', dependent: :destroy
 
   accepts_nested_attributes_for :addresses, allow_destroy: true
+
+  def most_recent_branding_payment
+    payments.completed.order(:created_at).last
+  end
+
+  def branding_expire_date
+    most_recent_branding_payment&.expire_date
+  end
+
+  def branding_payment_notes
+    most_recent_branding_payment&.notes
+  end
+
+  def branding_license?
+    branding_expire_date > Date.today
+  end
 
 
   # All addresses for a company are complete AND the name is not blank

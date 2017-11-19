@@ -38,7 +38,7 @@ class UsersController < ApplicationController
     raise 'Unsupported request' unless request.xhr?
     authorize User
 
-    payment = @user.most_recent_payment
+    payment = @user.most_recent_membership_payment
 
     if @user.update(user_params) &&
       (payment ? payment.update(payment_params) : true)
