@@ -20,7 +20,7 @@ class User < ApplicationRecord
   }
 
   def most_recent_membership_payment
-    payments.completed.order(:created_at).last
+    payments.completed.membership_fee.order(:created_at).last
   end
 
   def membership_expire_date

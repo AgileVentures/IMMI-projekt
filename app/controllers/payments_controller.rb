@@ -9,25 +9,32 @@ class PaymentsController < ApplicationController
   protect_from_forgery except: :webhook
 
   def create
-    # The user wants to pay a fee (e.g. membership fee)
+    # The user wants to pay a fee (e.g. membership fee or branding fee)
     payment_type = params[:type]
-    user_id = params[:user_id]
+    user_id      = params[:user_id]
+    company_id   = params[:company_id]
 
     authorize Payment.new(user_id: user_id)
 
-    # Set membership duration dates based on business rules
-    start_date, expire_date = User.next_membership_payment_dates(user_id)
+    if payment_type == Payment::PAYMENT_TYPE_MEMBER
+      entity_id = user_id
+      start_date, expire_date = User.next_membership_payment_dates(user_id)
+    else
+      entity_id = company_id
+      start_date, expire_date = Company.next_branding_payment_dates(company_id)
+    end
 
     # HIPS will associate the payment with a "merchant reference" - which
     # will be our Payment ID.  We can use this later to fetch the HIPS order.
     @payment = Payment.create(payment_type: payment_type,
                               user_id: user_id,
+                              company_id: company_id,
                               status: Payment.order_to_payment_status(nil),
                               start_date: start_date,
                               expire_date: expire_date)
 
     # Build data structures for HIPS order
-    urls = hips_order_urls(user_id, @payment.id)
+    urls = hips_order_urls(entity_id, @payment.id, company_id, payment_type)
     payment_data = { id: @payment.id, type: payment_type, currency: 'SEK' }
 
     # Invoke HIPS API - returns an order to be used for checkout
@@ -90,15 +97,23 @@ class PaymentsController < ApplicationController
 
   def success
     helpers.flash_message(:notice, t('.success'))
-    redirect_to user_path(params[:user_id])
+    redirect_on_payment_success_or_error
   end
 
   def error
     helpers.flash_message(:alert, t('.error'))
-    redirect_to user_path(params[:user_id])
+    redirect_on_payment_success_or_error
   end
 
   private
+
+  def redirect_on_payment_success_or_error
+    if params[:payment_type] == Payment::PAYMENT_TYPE_MEMBER
+      redirect_to user_path(params[:user_id])
+    else
+      redirect_to company_path(params[:company_id])
+    end
+  end
 
   def log_hips_activity(activity, severity, payment_id, hips_id, exc=nil)
     ActivityLogger.open(HIPS_LOG, 'HIPS_API', activity, false) do |log|
@@ -109,10 +124,18 @@ class PaymentsController < ApplicationController
     end
   end
 
-  def hips_order_urls(user_id, payment_id)
+  def hips_order_urls(user_id, payment_id, company_id, payment_type)
     urls = {}
-    urls[:success] = payment_success_url(user_id: user_id, id: payment_id)
-    urls[:error]   = payment_error_url(user_id: user_id, id: payment_id)
+    urls[:success] = payment_success_url(user_id: user_id,
+                                         company_id: company_id,
+                                         id: payment_id,
+                                         payment_type: payment_type)
+
+    urls[:error]   = payment_error_url(user_id: user_id,
+                                       company_id: company_id,
+                                       id: payment_id,
+                                       payment_type: payment_type)
+
     urls[:webhook] = (SHF_WEBHOOK_HOST || root_url) + payment_webhook_path.sub('/en', '')
     urls
   end

@@ -158,7 +158,7 @@ module ApplicationHelper
     if entity.is_a? User
       expire_date = entity.membership_expire_date
     else
-      expire_date = entity.branding_expire_date
+      expire_date = entity.branding_expire_date # Company
     end
 
     if !expire_date

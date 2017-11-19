@@ -37,7 +37,7 @@ class Company < ApplicationRecord
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
   def most_recent_branding_payment
-    payments.completed.order(:created_at).last
+    payments.completed.branding_fee.order(:created_at).last
   end
 
   def branding_expire_date
@@ -50,6 +50,26 @@ class Company < ApplicationRecord
 
   def branding_license?
     branding_expire_date > Date.today
+  end
+
+  def self.next_branding_payment_dates(company_id)
+    # Business rules:
+    # start_date = prior payment expire date + 1 day
+    # expire_date = start_date + 1 year - 1 day
+    # (special rules apply for remainder of 2017)
+    company = find(company_id)
+
+    if company.branding_expire_date
+      start_date = company.most_recent_branding_payment.expire_date + 1.day
+    else
+      start_date = Date.current
+    end
+    if Date.today.year == 2017
+      expire_date = Date.new(2018, 12, 31)
+    else
+      expire_date = start_date + 1.year - 1.day
+    end
+    [start_date, expire_date]
   end
 
 
