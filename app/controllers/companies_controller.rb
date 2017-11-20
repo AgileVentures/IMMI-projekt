@@ -1,7 +1,7 @@
 class CompaniesController < ApplicationController
   include PaginationUtility
 
-  before_action :set_company, only: [:show, :edit, :update, :destroy]
+  before_action :set_company, only: [:show, :edit, :update, :destroy, :edit_payment]
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
 
   def index
@@ -89,9 +89,21 @@ class CompaniesController < ApplicationController
       helpers.flash_message(:alert, "#{t('companies.destroy.error')}: #{translated_errors}")
       redirect_to @company
     end
-
   end
 
+  def edit_payment
+    raise 'Unsupported request' unless request.xhr?
+    authorize Company
+
+    payment = @company.most_recent_branding_payment
+    payment.update!(payment_params) if payment
+
+    render partial: 'branding_payment_status', locals: { company: @company }
+
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+    render partial: 'branding_payment_status',
+           locals: { company: @company, error: t('companies.update.error') }
+  end
 
   private
   # Use callbacks to share common setup or constraints between actions.
@@ -122,6 +134,10 @@ class CompaniesController < ApplicationController
                                 :region_id,
                                 :country,
                                 :visibility])
+  end
+
+  def payment_params
+    params.require(:payment).permit(:expire_date, :notes)
   end
 
 

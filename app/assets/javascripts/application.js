@@ -42,12 +42,6 @@ $(function() {
     // in JS response.  These callbacks execute at that point and replaces
     // the prior pagination page (DOM element) with the new page.
 
-    $('body').on('ajax:success', '.companies_pagination', function (e, data) {
-      $('#companies_list').html(data);
-      // In case there is tooltip(s) in rendered element:
-      $('[data-toggle="tooltip"]').tooltip();
-    });
-
     $('body').on('ajax:success', '.applications_pagination', function (e, data) {
       $('#membership_applications_list').html(data);
       // In case there is tooltip(s) in rendered element:

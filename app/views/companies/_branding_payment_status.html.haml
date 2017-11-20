@@ -1,10 +1,11 @@
 #companyBrandingStatus
-
+  - if defined?(error) && error
+    .alert.alert-danger= error
+  %br
   - licensed = company.branding_license? ? 'Yes' : 'No'
   = field_or_none("#{t('companies.show.branding_license')}", "#{t(licensed)}",
                   label_class: 'standard-label',
                   value_class: licensed)
-
 
   = expire_date_label_and_value(company)
 
@@ -13,9 +14,11 @@
   %span.glyphicon.glyphicon-info-sign{ title: help_text,
                                          data: {toggle: 'tooltip'} }
 
+  %br
   - if current_user.admin?
+    %br
     = payment_notes_label_and_value(company)
 
     -# NOTE: Capybara cannot find link without 'href' attribute
-    %a.btn.btn-warning.btn-xs(href='#' data-toggle='modal' data-target='#editStatusModal')
+    %a.btn.btn-warning.btn-xs(href='#' data-toggle='modal' data-target='#editBrandingModal')
       = t('companies.show.edit_branding_status')

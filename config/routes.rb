@@ -54,7 +54,11 @@ Rails.application.routes.draw do
 
     end
 
-    resources :companies, path: 'hundforetag'
+    resources :companies, path: 'hundforetag' do
+      member do
+        put 'edit_payment', to: 'companies#edit_payment', as: 'edit_payment'
+      end
+    end
 
     resources :users, path: 'anvandare' do
       member do

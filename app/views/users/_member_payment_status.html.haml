@@ -1,4 +1,7 @@
 #userMemberStatus
+  - if defined?(error) && error
+    .alert.alert-danger= error
+
   .col-sm-4
     - is_member = user.member? ? 'Yes' : 'No'
     = field_or_none("#{t('users.show.member')}", "#{t(is_member)}",

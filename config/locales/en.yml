@@ -505,6 +505,9 @@ en:
         Set to 'None' for no address visibility.
       org_nr_tooltip: Numbers only (no hyphens)
 
+    company:
+      submit_button_label: Update Status
+
     company_name: Company name
     telephone_number: Phone number
     operations_region: County of operations

@@ -27,7 +27,11 @@
 
         = field_or_none t('.website'), link_to(@company.website, sanitize(full_uri(@company)), target: '_blank'), tag_options: {class: 'website'}
 
-        = render partial: 'branding_payment_status', locals: { company: @company }
+        - if current_user.is_in_company_numbered?(@company.company_number) ||  |
+             current_user.admin?                                               |
+
+          = render partial: 'branding_payment_status',
+                   locals: { company: @company }
 
       .col-md-7
         - if @company.addresses.visible
@@ -95,3 +99,5 @@
         = link_to "#{t('.delete')}", @company, method: :delete,
                   class:'btn btn-danger delete-company',
                   data: { confirm: "#{t('.confirm_are_you_sure')}" }
+
+= render partial: 'edit_branding_modal', locals: { company: @company }

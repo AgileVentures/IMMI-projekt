@@ -39,15 +39,13 @@ class UsersController < ApplicationController
     authorize User
 
     payment = @user.most_recent_membership_payment
+    payment.update!(payment_params) if payment
 
-    if @user.update(user_params) &&
-      (payment ? payment.update(payment_params) : true)
+    render partial: 'member_payment_status', locals: { user: @user }
 
-      render partial: 'member_payment_status', locals: { user: @user }
-    else
-      helpers.flash_message(:alert, t('users.update.error'))
-      render :show
-    end
+  rescue ActiveRecord::RecordInvalid, ActiveRecord::RecordNotSaved
+    render partial: 'member_payment_status',
+           locals: { user: @user, error:  t('users.update.error') }
   end
 
   private

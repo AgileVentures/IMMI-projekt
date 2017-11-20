@@ -478,9 +478,9 @@ sv:
       confirm_are_you_sure: *are_you_sure_confirm
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
-      edit_branding_status: Redigera varumärkesstatus
+      edit_branding_status: Redigera Varumärkesstatus
       branding_license: Varumärkesrättigheter
-      pay_branding_fee_tooltip: Betalande avgift kommer att 
+      pay_branding_fee_tooltip: Betalande avgift kommer att
                                 förlänga dina varumärkesrättigheter för ett år
     index:
       title:  Hitta H-märkt företag
@@ -504,6 +504,9 @@ sv:
        flera län, eller "Online" om det (i huvudsak) finns på nätet
       visibility_tooltip: Hur detaljerat din adress visas för besökare (inkl kartor). Välj 'Ingen' för att inte visa din adress för besökare alls.
       org_nr_tooltip: Endast siffror (ej bindestreck)
+
+    company:
+      submit_button_label: Uppdatera status
 
     company_name: Företagsnamn
     telephone_number: Telefonnummer
