@@ -2,6 +2,7 @@ require_relative File.join('..', 'services', 'address_exporter')
 
 
 class Company < ApplicationRecord
+  include PaymentUtility
 
   include HasSwedishOrganization
 
@@ -37,15 +38,15 @@ class Company < ApplicationRecord
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
   def most_recent_branding_payment
-    payments.completed.branding_fee.order(:created_at).last
+    most_recent_payment(Payment::PAYMENT_TYPE_BRANDING)
   end
 
   def branding_expire_date
-    most_recent_branding_payment&.expire_date
+    payment_expire_date(Payment::PAYMENT_TYPE_BRANDING)
   end
 
   def branding_payment_notes
-    most_recent_branding_payment&.notes
+    payment_notes(Payment::PAYMENT_TYPE_BRANDING)
   end
 
   def branding_license?
@@ -53,23 +54,7 @@ class Company < ApplicationRecord
   end
 
   def self.next_branding_payment_dates(company_id)
-    # Business rules:
-    # start_date = prior payment expire date + 1 day
-    # expire_date = start_date + 1 year - 1 day
-    # (special rules apply for remainder of 2017)
-    company = find(company_id)
-
-    if company.branding_expire_date
-      start_date = company.most_recent_branding_payment.expire_date + 1.day
-    else
-      start_date = Date.current
-    end
-    if Date.today.year == 2017
-      expire_date = Date.new(2018, 12, 31)
-    else
-      expire_date = start_date + 1.year - 1.day
-    end
-    [start_date, expire_date]
+    next_payment_dates(company_id, Payment::PAYMENT_TYPE_BRANDING)
   end
 
 

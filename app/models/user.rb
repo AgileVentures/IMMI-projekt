@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  include PaymentUtility
+
   has_many :membership_applications
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -20,35 +22,19 @@ class User < ApplicationRecord
   }
 
   def most_recent_membership_payment
-    payments.completed.membership_fee.order(:created_at).last
+    most_recent_payment(Payment::PAYMENT_TYPE_MEMBER)
   end
 
   def membership_expire_date
-    most_recent_membership_payment&.expire_date
+    payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
   end
 
   def membership_payment_notes
-    most_recent_membership_payment&.notes
+    payment_notes(Payment::PAYMENT_TYPE_MEMBER)
   end
 
   def self.next_membership_payment_dates(user_id)
-    # Business rules:
-    # start_date = prior payment expire date + 1 day
-    # expire_date = start_date + 1 year - 1 day
-    # (special rules apply for remainder of 2017)
-    user = find(user_id)
-
-    if user.membership_expire_date
-      start_date = user.most_recent_membership_payment.expire_date + 1.day
-    else
-      start_date = Date.current
-    end
-    if Date.today.year == 2017
-      expire_date = Date.new(2018, 12, 31)
-    else
-      expire_date = start_date + 1.year - 1.day
-    end
-    [start_date, expire_date]
+    next_payment_dates(user_id, Payment::PAYMENT_TYPE_MEMBER)
   end
 
   def allow_pay_member_fee?
