@@ -5,12 +5,12 @@ class PagePolicy < Struct.new(:user, :record)
   end
 
   def show?
-    user_is_member?
+    user.is_member_or_admin?
   end
 
 
   def index?
-    user_is_member?
+    show?
   end
 
 
@@ -32,11 +32,4 @@ class PagePolicy < Struct.new(:user, :record)
   def edit?
     update?
   end
-
-
-  private
-  def user_is_member?
-    (user.member? || user.admin?)
-  end
-
 end
