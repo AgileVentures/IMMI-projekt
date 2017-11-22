@@ -2,7 +2,7 @@ module PaymentUtility
   extend ActiveSupport::Concern
 
   included do
-    # Instance methods for class which includes this module
+    
     def most_recent_payment(payment_type)
       payments.completed.send(payment_type).order(:created_at).last
     end
