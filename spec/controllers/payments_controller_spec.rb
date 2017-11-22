@@ -4,6 +4,8 @@ RSpec.describe PaymentsController, type: :controller do
   let(:user1) { create(:user) }
   let(:user2) { create(:user) }
 
+  let(:company) { create(:company) }
+
   let(:payment) { create(:payment) }
 
   let(:webhook_payload) do
@@ -17,6 +19,11 @@ RSpec.describe PaymentsController, type: :controller do
       expect(post: '/anvandare/1/betalning/member_fee')
         .to route_to(controller: 'payments', action: 'create',
                      user_id: '1', type: Payment::PAYMENT_TYPE_MEMBER)
+
+      expect(post: '/anvandare/1/betalning/branding_fee?company_id=1')
+        .to route_to(controller: 'payments', action: 'create',
+                     user_id: '1', company_id: '1',
+                     type: Payment::PAYMENT_TYPE_BRANDING)
     end
   end
 
