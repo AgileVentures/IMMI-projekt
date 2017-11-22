@@ -2,7 +2,7 @@ module PaymentUtility
   extend ActiveSupport::Concern
 
   included do
-    
+
     def most_recent_payment(payment_type)
       payments.completed.send(payment_type).order(:created_at).last
     end
@@ -25,12 +25,16 @@ module PaymentUtility
       # (special rules apply for remainder of 2017)
       entity = find(entity_id)
 
+      payment_found = false
+
       if entity.payment_expire_date(payment_type)
         start_date = entity.most_recent_payment(payment_type).expire_date + 1.day
+        payment_found = true
       else
         start_date = Date.current
       end
-      if Date.today.year == 2017
+
+      if (Date.today.year == 2017) && !payment_found
         expire_date = Date.new(2018, 12, 31)
       else
         expire_date = start_date + 1.year - 1.day
