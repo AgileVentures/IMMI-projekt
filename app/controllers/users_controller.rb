@@ -39,7 +39,9 @@ class UsersController < ApplicationController
     authorize User
 
     payment = @user.most_recent_membership_payment
-    payment.update!(payment_params) if payment
+
+    @user.update!(user_params) && (payment ?
+                                   payment.update!(payment_params) : true)
 
     render partial: 'member_payment_status', locals: { user: @user }
 
