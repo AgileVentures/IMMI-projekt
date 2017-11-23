@@ -108,10 +108,11 @@ class PaymentsController < ApplicationController
   private
 
   def redirect_on_payment_success_or_error
-    if params[:payment_type] == Payment::PAYMENT_TYPE_MEMBER
+    payment = Payment.find(params[:id])
+    if payment.payment_type == Payment::PAYMENT_TYPE_MEMBER
       redirect_to user_path(params[:user_id])
     else
-      redirect_to company_path(params[:company_id])
+      redirect_to company_path(payment.company_id)
     end
   end
 

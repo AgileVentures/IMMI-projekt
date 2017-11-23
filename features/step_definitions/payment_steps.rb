@@ -41,7 +41,7 @@ And(/^I complete the branding payment for "([^"]*)"$/) do |company_name|
   payment.update!(status: Payment.order_to_payment_status('successful'),
                   start_date: start_date, expire_date: expire_date)
 
-  visit payment_success_path(user_id: @user.id, company_id: company.id, id: payment.id)
+  visit payment_success_path(user_id: @user.id, id: payment.id)
 end
 
 And(/^I abandon the payment$/) do
