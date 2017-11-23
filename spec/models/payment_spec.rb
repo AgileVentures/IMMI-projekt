@@ -1,6 +1,32 @@
 require 'rails_helper'
 
 RSpec.describe Payment, type: :model do
+  let(:success) { Payment::ORDER_PAYMENT_STATUS['successful'] }
+  let(:created) { Payment::ORDER_PAYMENT_STATUS[nil] }
+
+  let(:member_pymt1) do
+    create(:payment, status: success, expire_date: Date.today + 1.day)
+  end
+  let(:member_pymt2) do
+    create(:payment, status: created, expire_date: Date.today + 1.year)
+  end
+  let(:member_pymt3) do
+    create(:payment, status: success, expire_date: Date.today + 1.year)
+  end
+
+  let(:brand_pymt1) do
+    create(:payment, status: success, expire_date: Date.today + 1.day,
+           payment_type: Payment::PAYMENT_TYPE_BRANDING)
+  end
+  let(:brand_pymt2) do
+    create(:payment, status: created, expire_date: Date.today + 1.year,
+           payment_type: Payment::PAYMENT_TYPE_BRANDING)
+  end
+  let(:brand_pymt3) do
+    create(:payment, status: success, expire_date: Date.today + 1.year,
+           payment_type: Payment::PAYMENT_TYPE_BRANDING)
+  end
+
   describe 'Factory' do
     it 'has a valid factory' do
       expect(build(:payment)).to be_valid
@@ -57,14 +83,25 @@ RSpec.describe Payment, type: :model do
   end
 
   describe 'scope: completed' do
-    let(:success) { Payment::ORDER_PAYMENT_STATUS['successful'] }
-    let(:created) { Payment::ORDER_PAYMENT_STATUS[nil] }
-    let!(:pymt1) { create(:payment, status: success, expire_date: Date.today + 1.day) }
-    let!(:pymt2) { create(:payment, status: created, expire_date: Date.today + 1.year) }
-    let!(:pymt3) { create(:payment, status: success, expire_date: Date.today + 1.year) }
 
     it 'returns all completed payments' do
-      expect(Payment.completed).to contain_exactly(pymt3, pymt1)
+      expect(Payment.completed).to contain_exactly(member_pymt3, member_pymt1)
+    end
+  end
+
+  describe 'scope: Payment::PAYMENT_TYPE_MEMBER' do
+
+    it 'returns all member fee payments' do
+      expect(Payment.send(Payment::PAYMENT_TYPE_MEMBER))
+        .to contain_exactly(member_pymt3, member_pymt2, member_pymt1)
+    end
+  end
+
+  describe 'scope: Payment::PAYMENT_TYPE_BRANDING' do
+
+    it 'returns all branding fee payments' do
+      expect(Payment.send(Payment::PAYMENT_TYPE_BRANDING))
+        .to contain_exactly(brand_pymt3, brand_pymt2, brand_pymt1)
     end
   end
 end

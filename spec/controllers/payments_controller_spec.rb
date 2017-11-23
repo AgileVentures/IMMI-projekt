@@ -78,5 +78,4 @@ RSpec.describe PaymentsController, type: :controller do
       expect(payment.user.membership_number).not_to be_nil
     end
   end
-
 end

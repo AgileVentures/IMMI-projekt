@@ -1,3 +1,8 @@
+# This task adds an initial H-Branding fee payment, for all appropriate companies,
+# for the year 2017 (jan 1 to dec 31).
+# This "bootstraps" these companies so that subsequent branding payments can
+# correctly extend branding license from prior payment expire_date.
+
 namespace :payments do
   desc "Create 2017 branding payments for companies"
   task branding_2017: :environment do

@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
+  let(:user) { create(:user) }
+  let(:user_payment) do
+    create(:payment, user: user, status: Payment::ORDER_PAYMENT_STATUS['successful'])
+  end
+
   describe '#flash_class' do
 
     it 'adds correct class on notice' do
@@ -302,9 +307,78 @@ RSpec.describe ApplicationHelper, type: :helper do
     it 'returns custom text values' do
       expect(collection_custom).to eq [ [true, 'Save'], [false, 'Delete'] ]
     end
-
-
   end
 
+  describe 'expire_date_label_and_value' do
+
+    it 'returns date with style "yes" if expire_date more than a month away' do
+      user_payment.update(expire_date: Date.today + 2.months)
+      response = /class="Yes".*#{user_payment.expire_date}/
+      expect(expire_date_label_and_value(user)).to match response
+    end
+
+    it 'returns date with style "maybe" if expire_date less than a month away' do
+      user_payment.update(expire_date: Date.today + 2.days)
+      response = /class="Maybe".*#{user_payment.expire_date}/
+      expect(expire_date_label_and_value(user)).to match response
+    end
+
+    it 'returns date with style "no" if expired' do
+      user_payment.update(expire_date: Date.today - 1.day)
+      response = /class="No".*#{user_payment.expire_date}/
+      expect(expire_date_label_and_value(user)).to match response
+    end
+  end
+
+  describe 'expire_date_label_and_value' do
+
+    it 'returns date with style "yes" if expire_date more than a month away' do
+      user_payment.update(expire_date: Date.today + 2.months)
+      response = /class="Yes".*#{user_payment.expire_date}/
+      expect(expire_date_label_and_value(user)).to match response
+    end
+
+    it 'returns date with style "maybe" if expire_date less than a month away' do
+      user_payment.update(expire_date: Date.today + 2.days)
+      response = /class="Maybe".*#{user_payment.expire_date}/
+      expect(expire_date_label_and_value(user)).to match response
+    end
+
+    it 'returns date with style "no" if expired' do
+      user_payment.update(expire_date: Date.today - 1.day)
+      response = /class="No".*#{user_payment.expire_date}/
+      expect(expire_date_label_and_value(user)).to match response
+    end
+  end
+
+  describe 'payment_notes_label_and_value' do
+
+    it 'returns label and "none" if no notes' do
+      response = /#{t('activerecord.attributes.payment.notes')}.*#{t('none')}/
+      expect(payment_notes_label_and_value(user)).to match response
+    end
+
+    it 'returns label and value if notes' do
+      notes = 'here are some notes for this payment'
+      user_payment.update(notes: notes)
+      response = /#{t('activerecord.attributes.payment.notes')}.*#{notes}/
+      expect(payment_notes_label_and_value(user)).to match response
+    end
+  end
+
+  describe 'expire_date_css_class' do
+
+    it 'returns "Yes" if expire_date more than a month away' do
+      expect(expire_date_css_class(Date.today + 2.months)).to eq 'Yes'
+    end
+
+    it 'returns "Maybe" if expire_date less than a month away' do
+      expect(expire_date_css_class(Date.today + 2.days)).to eq 'Maybe'
+    end
+
+    it 'returns "No" if expire_date has passed' do
+      expect(expire_date_css_class(Date.today - 2.days)).to eq 'No'
+    end
+  end
 
 end

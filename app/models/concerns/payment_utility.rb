@@ -27,8 +27,10 @@ module PaymentUtility
 
       payment_found = false
 
-      if entity.payment_expire_date(payment_type)
-        start_date = entity.most_recent_payment(payment_type).expire_date + 1.day
+      expire_date = entity.payment_expire_date(payment_type)
+
+      if expire_date
+        start_date = expire_date + 1.day
         payment_found = true
       else
         start_date = Date.current

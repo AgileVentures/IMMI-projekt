@@ -74,7 +74,11 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_many(:business_categories).through(:membership_applications) }
     it { is_expected.to have_many(:membership_applications).dependent(:destroy) }
     it { is_expected.to have_many(:addresses).dependent(:destroy) }
+    it { is_expected.to accept_nested_attributes_for(:addresses)}
     it { is_expected.to have_many(:pictures) }
+    it { is_expected.to have_many(:users).through(:membership_applications) }
+    it { is_expected.to have_many(:payments) }
+    it { is_expected.to accept_nested_attributes_for(:payments)}
   end
 
 
@@ -240,5 +244,101 @@ RSpec.describe Company, type: :model do
     end
 
 
+  end
+
+  context 'payment and branding license period' do
+    let(:user) { create(:user) }
+    let(:company) { create(:company) }
+
+    let(:success) do
+      Payment.order_to_payment_status('successful')
+    end
+
+    let(:payment1) do
+      create(:payment, user: user, status: success, company: company,
+             payment_type: Payment::PAYMENT_TYPE_BRANDING,
+             notes: 'these are notes for branding payment1',
+             expire_date: Date.new(2018, 12, 31))
+    end
+    let(:payment2) do
+      create(:payment, user: user, status: success, company: company,
+             payment_type: Payment::PAYMENT_TYPE_BRANDING,
+             notes: 'these are notes for branding payment2',
+             expire_date: Date.new(2018, 7, 1))
+    end
+
+    describe '#branding_expire_date' do
+      it 'returns date for latest completed payment' do
+        payment1
+        expect(company.branding_expire_date).to eq payment1.expire_date
+        payment2
+        expect(company.branding_expire_date).to eq payment2.expire_date
+      end
+    end
+
+    describe '#branding_payment_notes' do
+      it 'returns notes for latest completed payment' do
+        payment1
+        expect(company.branding_payment_notes).to eq payment1.notes
+        payment2
+        expect(company.branding_payment_notes).to eq payment2.notes
+      end
+    end
+
+    describe '#most_recent_branding_payment' do
+      it 'returns latest completed payment' do
+        payment1
+        expect(company.most_recent_branding_payment).to eq payment1
+        payment2
+        expect(company.most_recent_branding_payment).to eq payment2
+      end
+    end
+
+    describe '.self.next_branding_payment_dates' do
+
+      context 'start_date' do
+
+        it 'returns today if no prior payment' do
+          expect(Company.next_branding_payment_dates(company.id)[0]).to eq Date.today
+        end
+
+        it 'returns prior-payment-expire_date plus one day if prior payment' do
+          payment1
+          expect(Company.next_branding_payment_dates(company.id)[0])
+            .to eq payment1.expire_date + 1.day
+        end
+      end
+
+      context 'expire_date' do
+        after(:each) do
+          Timecop.return
+        end
+
+        describe 'during the year 2017' do
+
+          it 'returns Dec 31, 2018 for first payment' do
+            Timecop.freeze(Date.new(2017, 10, 1))
+            expect(Company.next_branding_payment_dates(company.id)[1])
+              .to eq Date.new(2018, 12, 31)
+          end
+
+          it 'returns Dec 31, 2019 for second payment' do
+            Timecop.freeze(Date.new(2017, 10, 1))
+            payment1
+            expect(Company.next_branding_payment_dates(company.id)[1])
+              .to eq Date.new(2019, 12, 31)
+          end
+        end
+
+        describe 'after year 2017' do
+          it 'returns prior expire_date plus one year' do
+            Timecop.freeze(Date.new(2018, 7, 1))
+            payment1
+            expect(Company.next_branding_payment_dates(company.id)[1])
+              .to eq payment1.expire_date + 1.year
+          end
+        end
+      end
+    end
   end
 end

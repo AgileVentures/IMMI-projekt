@@ -34,6 +34,7 @@ RSpec.describe User, type: :model do
   describe 'Associations' do
     it { is_expected.to have_many :membership_applications }
     it { is_expected.to have_many :payments }
+    it { is_expected.to accept_nested_attributes_for(:payments)}
   end
 
   describe 'Admin' do
@@ -424,7 +425,7 @@ RSpec.describe User, type: :model do
     let(:payment1) do
       create(:payment, user: user, status: success,
              notes: 'these are notes for payment1',
-             expire_date: Date.new(2018, 1, 1))
+             expire_date: Date.new(2018, 12, 31))
     end
     let(:payment2) do
       create(:payment, user: user, status: success,
@@ -441,7 +442,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-    describe '#payment_notes' do
+    describe '#membership_payment_notes' do
       it 'returns notes for latest completed payment' do
         payment1
         expect(user.membership_payment_notes).to eq payment1.notes
@@ -481,10 +482,17 @@ RSpec.describe User, type: :model do
 
         describe 'during the year 2017' do
 
-          it 'returns January 1, 2018' do
+          it 'returns January 1, 2018 for first payment' do
             Timecop.freeze(Date.new(2017, 10, 1))
             expect(User.next_membership_payment_dates(user.id)[1])
               .to eq Date.new(2018, 12, 31)
+          end
+
+          it 'returns Dec 31, 2019 for second payment' do
+            Timecop.freeze(Date.new(2017, 10, 1))
+            payment1
+            expect(User.next_membership_payment_dates(user.id)[1])
+              .to eq Date.new(2019, 12, 31)
           end
         end
 
