@@ -33,7 +33,7 @@ module PaymentUtility
         start_date = expire_date + 1.day
         payment_found = true
       else
-        start_date = Date.current
+        start_date = Date.current # date in this time zone
       end
 
       if (Date.today.year == 2017) && !payment_found

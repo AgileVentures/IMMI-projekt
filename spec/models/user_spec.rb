@@ -422,15 +422,25 @@ RSpec.describe User, type: :model do
       create(:membership_application, user: user, state: :accepted)
     end
 
+    let(:payment_date_2017) { Date.new(2017, 10, 1) }
+
+    let(:payment_date_2018) { Date.new(2018, 11, 21) }
+
     let(:payment1) do
+      start_date, expire_date = User.next_membership_payment_dates(user.id)
       create(:payment, user: user, status: success,
-             notes: 'these are notes for payment1',
-             expire_date: Date.new(2018, 12, 31))
+             payment_type: Payment::PAYMENT_TYPE_MEMBER,
+             notes: 'these are notes for member payment1',
+             start_date: start_date,
+             expire_date: expire_date)
     end
     let(:payment2) do
+      start_date, expire_date = User.next_membership_payment_dates(user.id)
       create(:payment, user: user, status: success,
-             notes: 'these are notes for payment2',
-             expire_date: Date.new(2018, 7, 1))
+             payment_type: Payment::PAYMENT_TYPE_MEMBER,
+             notes: 'these are notes for member payment2',
+             start_date: start_date,
+             expire_date: expire_date)
     end
 
     describe '#membership_expire_date' do
@@ -462,47 +472,64 @@ RSpec.describe User, type: :model do
 
     describe '.self.next_membership_payment_dates' do
 
-      context 'start_date' do
+      context 'during the year 2017' do
 
-        it 'returns today if no prior payment' do
-          expect(User.next_membership_payment_dates(user.id)[0]).to eq Date.today
-        end
-
-        it 'returns prior-payment-expire_date plus one day if prior payment' do
-          payment1
-          expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq payment1.expire_date + 1.day
-        end
-      end
-
-      context 'expire_date' do
-        after(:each) do
+        around(:each) do |example|
+          Timecop.freeze(payment_date_2017)
+          example.run
           Timecop.return
         end
 
-        describe 'during the year 2017' do
-
-          it 'returns January 1, 2018 for first payment' do
-            Timecop.freeze(Date.new(2017, 10, 1))
-            expect(User.next_membership_payment_dates(user.id)[1])
-              .to eq Date.new(2018, 12, 31)
-          end
-
-          it 'returns Dec 31, 2019 for second payment' do
-            Timecop.freeze(Date.new(2017, 10, 1))
-            payment1
-            expect(User.next_membership_payment_dates(user.id)[1])
-              .to eq Date.new(2019, 12, 31)
-          end
+        it "returns today's date for first payment start date" do
+          expect(User.next_membership_payment_dates(user.id)[0])
+            .to eq Date.current
         end
 
-        describe 'after year 2017' do
-          it 'returns prior expire_date plus one year' do
-            Timecop.freeze(Date.new(2018, 7, 1))
-            payment1
-            expect(User.next_membership_payment_dates(user.id)[1])
-              .to eq payment1.expire_date + 1.year
-          end
+        it 'returns Dec 31, 2018 for first payment expire date' do
+          expect(User.next_membership_payment_dates(user.id)[1])
+            .to eq Date.new(2018, 12, 31)
+        end
+
+        it 'returns Jan 1, 2019 for second payment start date' do
+          payment1
+          expect(User.next_membership_payment_dates(user.id)[0])
+            .to eq Date.new(2019, 1, 1)
+        end
+
+        it 'returns Dec 31, 2019 for second payment expire date' do
+          payment1
+          expect(User.next_membership_payment_dates(user.id)[1])
+            .to eq Date.new(2019, 12, 31)
+        end
+      end
+
+      context 'after the year 2017' do
+
+        around(:each) do |example|
+          Timecop.freeze(payment_date_2018)
+          example.run
+          Timecop.return
+        end
+
+        it "returns today's date for first payment start date" do
+          expect(User.next_membership_payment_dates(user.id)[0]).to eq Date.current
+        end
+
+        it 'returns one year later for first payment expire date' do
+          expect(User.next_membership_payment_dates(user.id)[1])
+            .to eq Date.current + 1.year - 1.day
+        end
+
+        it 'returns date-after-expiration for second payment start date' do
+          payment1
+          expect(User.next_membership_payment_dates(user.id)[0])
+            .to eq Date.current + 1.year
+        end
+
+        it 'returns one year later for second payment expire date' do
+          payment1
+          expect(User.next_membership_payment_dates(user.id)[1])
+            .to eq Date.current + 1.year + 1.year - 1.day
         end
       end
     end
