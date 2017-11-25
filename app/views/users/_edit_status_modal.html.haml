@@ -35,8 +35,8 @@
                       #{t('activerecord.attributes.payment.expire_date')}:
                   .com-sm-8
                     = pf.date_select(:expire_date,
-                                     { start_year: Date.today.year,
-                                       end_year: Date.today.year + 2},
+                                     { start_year: Date.current.year,
+                                       end_year: Date.current.year + 2},
                                      { class: 'select-box' })
                 .row
                   .col-sm-4

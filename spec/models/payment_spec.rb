@@ -5,25 +5,25 @@ RSpec.describe Payment, type: :model do
   let(:created) { Payment::ORDER_PAYMENT_STATUS[nil] }
 
   let(:member_pymt1) do
-    create(:payment, status: success, expire_date: Date.today + 1.day)
+    create(:payment, status: success, expire_date: Date.current + 1.day)
   end
   let(:member_pymt2) do
-    create(:payment, status: created, expire_date: Date.today + 1.year)
+    create(:payment, status: created, expire_date: Date.current + 1.year)
   end
   let(:member_pymt3) do
-    create(:payment, status: success, expire_date: Date.today + 1.year)
+    create(:payment, status: success, expire_date: Date.current + 1.year)
   end
 
   let(:brand_pymt1) do
-    create(:payment, status: success, expire_date: Date.today + 1.day,
+    create(:payment, status: success, expire_date: Date.current + 1.day,
            payment_type: Payment::PAYMENT_TYPE_BRANDING)
   end
   let(:brand_pymt2) do
-    create(:payment, status: created, expire_date: Date.today + 1.year,
+    create(:payment, status: created, expire_date: Date.current + 1.year,
            payment_type: Payment::PAYMENT_TYPE_BRANDING)
   end
   let(:brand_pymt3) do
-    create(:payment, status: success, expire_date: Date.today + 1.year,
+    create(:payment, status: success, expire_date: Date.current + 1.year,
            payment_type: Payment::PAYMENT_TYPE_BRANDING)
   end
 
