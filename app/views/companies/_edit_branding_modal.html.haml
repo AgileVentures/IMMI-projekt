@@ -1,5 +1,5 @@
-#editBrandingModal.modal.fade(tabindex='-1' role='dialog')
-  .modal-dialog(role='document')
+.modal.fade#edit-branding-modal{ tabindex: '-1', role: 'dialog' }
+  .modal-dialog{ role: 'document' }
     .modal-content
 
       = form_for company, url: edit_payment_company_path(company),
@@ -7,8 +7,8 @@
                  html: { id: 'brandingStatusForm' } do |f|
 
         .modal-header
-          %button(type='button' class='close' data-dismiss='modal')
-            %span(aria-hidden='true') &times;
+          %button{ type: 'button', class: 'close', data: { dismiss: 'modal' }}
+            %span{ 'aria-hidden' => 'true' } &times;
           %h3.modal-title.text-center
             = t('companies.show.edit_branding_status')
 
@@ -37,5 +37,5 @@
           = f.submit t('companies.company.submit_button_label'), class: "btn btn-primary",
                      id: 'editBrandingStatusSubmit'
 
-          %button(type='button' class='btn btn-default' data-dismiss='modal')
+          %button{ type: 'button', class: 'btn btn-default', data: { dismiss: 'modal' }}
             = t('cancel')

@@ -8,11 +8,11 @@ $(function() {
   });
 
   $('#brandingStatusForm').on('ajax:success', function (e, data) {
-    $('#companyBrandingStatus').html(data);
+    $('#company-branding-status').html(data);
     $('[data-toggle="tooltip"]').tooltip();
   });
 
   $('#editBrandingStatusSubmit').click(function() {
-    $('#editBrandingModal').modal('hide');
+    $('#edit-branding-modal').modal('hide');
   });
 });

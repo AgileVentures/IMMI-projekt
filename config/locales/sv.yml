@@ -478,10 +478,9 @@ sv:
       confirm_are_you_sure: *are_you_sure_confirm
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
-      edit_branding_status: Redigera Varumärkesstatus
-      branding_license: Varumärkesrättigheter
-      pay_branding_fee_tooltip: Betalande avgift kommer att
-                                förlänga dina varumärkesrättigheter för ett år
+      edit_branding_status: Redigera Status
+      branding_license: H-märkets användningsrättigheter och policy
+      pay_branding_fee_tooltip: Betald avgift förlänger H-märkningen i ett år.
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag
