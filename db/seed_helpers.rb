@@ -106,7 +106,6 @@ module SeedHelper
                                       status: Payment.order_to_payment_status('successful'),
                                       start_date: start_date,
                                       expire_date: expire_date)
-      user.member = true
     end
 
 
