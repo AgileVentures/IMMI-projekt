@@ -479,7 +479,7 @@ sv:
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
       edit_branding_status: Redigera Status
-      branding_license: H-märkets användningsrättigheter och policy
+      branding_license: Accepterar policy
       pay_branding_fee_tooltip: Betald avgift förlänger H-märkningen i ett år.
     index:
       title:  Hitta H-märkt företag
