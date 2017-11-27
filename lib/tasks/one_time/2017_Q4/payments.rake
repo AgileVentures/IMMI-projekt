@@ -1,8 +1,3 @@
-# This task adds an initial H-Branding fee payment, for all appropriate companies,
-# for the year 2017 (jan 1 to dec 31).
-# This "bootstraps" these companies so that subsequent branding payments can
-# correctly extend branding license from prior payment expire_date.
-
 # PREREQUISITE MIGRATIONS:
 # 20171013141538_create_payments
 # 20171026103648_add_dates_to_payments
