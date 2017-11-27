@@ -34,6 +34,8 @@ class Address < ApplicationRecord
 
   scope :visible, -> { where.not(visibility: 'none') }
 
+  scope :mail_address, -> { where(mail: true) }
+
   geocoded_by :entire_address
 
   GEO_FIELDS = %w(street_address post_code city kommun_id

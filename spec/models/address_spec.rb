@@ -2,10 +2,10 @@ require 'rails_helper'
 
 RSpec.describe Address, type: :model do
 
-  let(:co_has_regions) { create(:company, name: 'Has Region', company_number: '4268582063', city: 'HasRegionBorg') }
+  let(:co_has_region) { create(:company, name: 'Has Region', company_number: '4268582063', city: 'HasRegionBorg') }
   let(:co_missing_region) { create(:company, name: 'Missing Region', company_number: '6112107039', city: 'NoRegionBorg') }
 
-  let(:addr_has_region) { co_has_regions.main_address }
+  let(:addr_has_region) { co_has_region.main_address }
 
   let(:no_region) do
     addr_no_region = co_missing_region.main_address
@@ -14,11 +14,11 @@ RSpec.describe Address, type: :model do
   end
 
   let(:not_visible_addr) do
-    create(:address, visibility: 'none', addressable: co_has_regions)
+    create(:address, visibility: 'none', addressable: co_has_region)
   end
 
   let(:visible_addr) do
-    create(:address, visibility: 'city', addressable: co_has_regions)
+    create(:address, visibility: 'city', addressable: co_has_region)
   end
 
   describe 'Factory' do
@@ -71,7 +71,7 @@ RSpec.describe Address, type: :model do
 
     describe 'visible' do
       it 'only returns addresses that are visible' do
-        expect(co_has_regions.addresses.visible).
+        expect(co_has_region.addresses.visible).
           to contain_exactly(addr_has_region, visible_addr)
       end
     end
@@ -104,6 +104,17 @@ RSpec.describe Address, type: :model do
         expect(lacking_region_scope & has_regions).to match_array([])
       end
 
+    end
+
+    describe 'mail_address' do
+      it 'returns mail address if present' do
+        mail_addr = create(:address, mail: true, addressable: co_has_region)
+        expect(co_has_region.addresses.mail_address[0]).to eq mail_addr
+      end
+      it 'returns nil if mail address not present' do
+        create(:address, addressable: co_has_region)
+        expect(co_has_region.addresses.mail_address[0]).to be_nil
+      end
     end
 
   end

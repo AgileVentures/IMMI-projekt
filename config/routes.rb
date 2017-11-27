@@ -9,6 +9,10 @@ Rails.application.routes.draw do
     authenticated :user, lambda {|u| u.admin? }  do
       post 'admin/export-ansokan-csv'
 
+      # Route for testing Exception Notification configuration
+      get "test_exception_notifications" => "application#test_exception_notifications"
+
+
       root to: 'membership_applications#index', as: :admin_root
     end
   end

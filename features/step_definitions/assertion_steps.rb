@@ -52,6 +52,8 @@ module PathHelpers
         path = new_shf_document_path
       when 'user details', 'user profile'
         path = user_path(user)
+      when 'test exception notifications'
+        path = test_exception_notifications_path
     end
 
     expect(path).not_to be_empty, "A step was called with path= '#{pagename}', but that path is not defined in #{__method__} \n    (which is in #{__FILE__}"
@@ -256,4 +258,20 @@ Then /^"([^"]*)" should( not)? have #{CAPTURE_STRING} as an option/ do | select_
                 end
   expect(select_options.map(&:text)).send( (negate ? :not_to : :to),  include( expected_string) )
 
+end
+
+
+And(/^the url "([^"]*)" should( not)? be a valid route$/) do |url, negate |
+
+  if negate
+    expect{ visit url }.to  raise_error(ActionController::RoutingError, "No route matches [GET] \"/#{url}\"")
+  else
+    visit url
+  end
+
+end
+
+
+And(/^the page should( not)? be blank$/) do | negate |
+  expect(page.body).send( (negate ? :not_to : :to), be_empty )
 end

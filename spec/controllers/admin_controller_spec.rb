@@ -40,6 +40,13 @@ RSpec.describe AdminController, type: :controller do
 
       end
 
+      it 'filename is Ansokningar-<datetime>.csv' do
+
+        post :export_ansokan_csv
+
+        expect(response.header['Content-Disposition']).to match(/filename=\"Ansokningar-\d\d\d\d-\d\d-\d\d--\d\d-\d\d-\d\d\.csv\"/)
+      end
+
 
       it 'header line is correct' do
 

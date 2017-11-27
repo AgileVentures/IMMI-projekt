@@ -112,3 +112,16 @@ Rails.application.configure do
   }
 
 end
+
+
+# Notify of any exceptions using the exception_notification gem
+Rails.application.config.middleware.use ExceptionNotification::Rack,
+                                        :slack => {
+                                            webhook_url:    ENV['SHF_SLACK_WEBHOOKURL'],
+                                            channel:        ENV['SHF_SLACK_CHANNEL'],
+                                            username:       ENV['SHF_SLACK_USERNAME'],
+                                            additional_parameters: {
+                                                mrkdwn: true
+                                            },
+                                            additional_fields: [ icon_emoji: ':bangbang:' ]
+                                        }

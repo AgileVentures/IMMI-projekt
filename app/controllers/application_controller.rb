@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
   before_action :set_locale
   before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :prepare_exception_notifier
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -11,6 +12,15 @@ class ApplicationController < ActionController::Base
   def index
 
   end
+
+
+  # This should be called when the app is deployed to ensure that
+  # exception notifications are working in the production environment, and perhaps also called periodically
+  # to ensure notifications are working between deployments.
+  def test_exception_notifications
+    raise 'This is a just a test of the exception notifications to ensure they are working.'
+  end
+
 
   protected
 
@@ -54,4 +64,17 @@ class ApplicationController < ActionController::Base
     return false if current_user.is_a? Visitor
     true
   end
+
+
+  # Set data that will be included when an exception notification is sent
+  #  current_user: so we know who was using the application when the error occured
+  #  remote_addr: IP address to help identify bots and webcrawlers
+  def prepare_exception_notifier
+    request.env["exception_notifier.exception_data"] = {
+        current_user: current_user.inspect,
+        remote_addr: request.env['REMOTE_ADDR']
+    }
+  end
+
+
 end

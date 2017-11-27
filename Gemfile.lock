@@ -6,16 +6,6 @@ GIT
       cocaine
       orm_adapter (~> 0.5.0)
 
-GIT
-  remote: git://github.com/weedySeaDragon/aasm_statecharts.git
-  revision: 0a74ab466575fc4b08c9866139ba5ea8e4e0f010
-  specs:
-    aasm_statecharts (1.1.7)
-      aasm (>= 4.0)
-      psych (>= 2.0)
-      rails (>= 4.0)
-      ruby-graphviz (>= 1.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -189,6 +179,9 @@ GEM
       html2haml
     erubi (1.6.1)
     erubis (2.7.0)
+    exception_notification (4.2.2)
+      actionmailer (>= 4.0, < 6)
+      activesupport (>= 4.0, < 6)
     execjs (2.7.0)
     factory_girl (4.8.0)
       activesupport (>= 3.0.0)
@@ -311,7 +304,6 @@ GEM
     pry-byebug (3.5.0)
       byebug (~> 9.1)
       pry (~> 0.10)
-    psych (2.2.4)
     public_suffix (3.0.0)
     puma (3.10.0)
     pundit (1.1.0)
@@ -386,7 +378,6 @@ GEM
       rspec-mocks (~> 3.6.0)
       rspec-support (~> 3.6.0)
     rspec-support (3.6.0)
-    ruby-graphviz (1.2.3)
     ruby_dep (1.5.0)
     ruby_parser (3.10.1)
       sexp_processor (~> 4.9)
@@ -418,6 +409,7 @@ GEM
       json (>= 1.8, < 3)
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
+    slack-notifier (2.3.1)
     slop (3.6.0)
     smarter_csv (1.1.4)
     spring (2.0.2)
@@ -482,7 +474,6 @@ PLATFORMS
 
 DEPENDENCIES
   aasm (~> 4.11.1)
-  aasm_statecharts (~> 1.1.7)!
   bcrypt (~> 3.1.7)
   better_errors
   binding_of_caller
@@ -508,6 +499,7 @@ DEPENDENCIES
   dotenv-rails
   email_spec
   erb2haml
+  exception_notification
   factory_girl_rails
   ffaker
   font-awesome-sass
@@ -546,6 +538,7 @@ DEPENDENCIES
   selenium-webdriver
   shoulda-matchers
   simplecov (>= 0.13.0)
+  slack-notifier
   smarter_csv
   spring
   spring-watcher-listen (~> 2.0.0)
@@ -561,4 +554,4 @@ RUBY VERSION
    ruby 2.4.2p198
 
 BUNDLED WITH
-   1.15.4
+   1.16.0
