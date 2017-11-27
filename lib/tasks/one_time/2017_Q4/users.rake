@@ -4,7 +4,7 @@
 # PREREQUISITE RAKE TASKS:
 # None
 
-namespace :users do
+namespace :shf_users do
 
   desc "Assign member status for appropriate users"
   task set_member_status: :environment do

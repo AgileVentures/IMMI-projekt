@@ -5,7 +5,7 @@
 # PREREQUISITE RAKE TASKS:
 # None
 
-namespace :payments do
+namespace :shf_payments do
 
   desc "Create 2017 branding payments for companies"
   task branding_2017: :environment do
