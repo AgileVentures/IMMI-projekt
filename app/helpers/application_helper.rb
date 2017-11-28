@@ -1,5 +1,11 @@
 module ApplicationHelper
 
+  def beta_user?(user)
+    return true unless ENV['SHF_BETA'] == 'yes'
+    
+    BETA_USERS.include?(user.email)
+  end
+
   def flash_class(level)
     case level.to_sym
       when :notice then

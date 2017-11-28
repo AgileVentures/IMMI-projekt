@@ -18,7 +18,9 @@
                     label_class: 'standard-label')
   .clearfix
 
-  = render partial: 'member_payment_status', locals: { user: @user }
+  - if current_user.admin? || beta_user?(@user)
+
+    = render partial: 'member_payment_status', locals: { user: @user }
 
   .clearfix
 
