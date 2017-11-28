@@ -78,6 +78,13 @@ class Company < ApplicationRecord
 
   end
 
+  def self.branding_licensed
+    joins(:payments)
+      .where('payments.id IN (?)',
+             Payment.branding_fee.completed.unexpired.pluck(:id))
+      .distinct
+  end
+
   def self.address_visible
     # Return ActiveRecord::Relation object for all companies with at
     # least one visible address

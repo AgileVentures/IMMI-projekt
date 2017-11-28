@@ -13,6 +13,9 @@ RSpec.describe Payment, type: :model do
   let(:member_pymt3) do
     create(:payment, status: success, expire_date: Date.current + 1.year)
   end
+  let(:member_pymt4) do
+    create(:payment, status: success, expire_date: Date.current - 1.day)
+  end
 
   let(:brand_pymt1) do
     create(:payment, status: success, expire_date: Date.current + 1.day,
@@ -102,6 +105,14 @@ RSpec.describe Payment, type: :model do
     it 'returns all branding fee payments' do
       expect(Payment.send(Payment::PAYMENT_TYPE_BRANDING))
         .to contain_exactly(brand_pymt3, brand_pymt2, brand_pymt1)
+    end
+  end
+
+  describe 'scope: unexpired' do
+    it 'returns all unexpired payments' do
+      expect(Payment.unexpired)
+        .to contain_exactly(member_pymt1, member_pymt2, member_pymt3,
+                            brand_pymt1, brand_pymt2, brand_pymt3)
     end
   end
 end

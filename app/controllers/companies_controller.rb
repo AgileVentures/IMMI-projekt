@@ -15,6 +15,7 @@ class CompaniesController < ApplicationController
 
     @all_companies =  @search_params.result(distinct: true)
                           .complete
+                          .branding_licensed
                           .includes(:business_categories)
                           .includes(addresses: [ :region, :kommun ])
                           .joins(addresses: [ :region, :kommun ])

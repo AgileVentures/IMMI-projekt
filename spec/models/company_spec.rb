@@ -38,9 +38,9 @@ RSpec.describe Company, type: :model do
     co
   end
 
-  let!(:complete_companies) { [complete_co] }
+  let(:complete_companies) { [complete_co] }
 
-  let!(:incomplete_companies) do
+  let(:incomplete_companies) do
     incomplete_cos = []
     incomplete_cos << no_name
     incomplete_cos << nil_region
@@ -83,15 +83,18 @@ RSpec.describe Company, type: :model do
 
 
   describe 'complete scope' do
+    let(:complete_scope) { Company.complete }
+
+    before(:each) do
+      complete_companies
+      incomplete_companies
+    end
 
     it 'only returns companies that are complete' do
-
-      complete_scope = Company.complete
       expect(complete_scope).to match_array(complete_companies)
     end
 
     it 'does not return any incomplete companies' do
-      complete_scope = Company.complete
       expect(complete_scope & incomplete_companies).to match_array([])
     end
 
@@ -367,6 +370,20 @@ RSpec.describe Company, type: :model do
           expect(Company.next_branding_payment_dates(company.id)[1])
             .to eq Date.current + 1.year + 1.year - 1.day
         end
+      end
+    end
+
+    describe 'scope: branding_licensed' do
+      it 'returns all currently-licensed companies' do
+        payment1.update(expire_date: Date.current - 1.day)
+        payment2.update(expire_date: Date.current - 1.day)
+        expect(Company.branding_licensed).to be_empty
+
+        payment1.update(expire_date: Date.current)
+        expect(Company.branding_licensed).to contain_exactly(company)
+
+        payment2.update(expire_date: Date.current)
+        expect(Company.branding_licensed).to contain_exactly(company)
       end
     end
   end
