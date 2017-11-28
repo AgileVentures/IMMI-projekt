@@ -422,9 +422,9 @@ RSpec.describe User, type: :model do
       create(:membership_application, user: user, state: :accepted)
     end
 
-    let(:payment_date_2017) { Date.new(2017, 10, 1) }
+    let(:payment_date_2017) { Date.new(2017, 10, 1).in_time_zone }
 
-    let(:payment_date_2018) { Date.new(2018, 11, 21) }
+    let(:payment_date_2018) { Date.new(2018, 11, 21).in_time_zone }
 
     let(:payment1) do
       start_date, expire_date = User.next_membership_payment_dates(user.id)
@@ -487,19 +487,19 @@ RSpec.describe User, type: :model do
 
         it 'returns Dec 31, 2018 for first payment expire date' do
           expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Date.new(2018, 12, 31)
+            .to eq Date.new(2018, 12, 31).in_time_zone
         end
 
         it 'returns Jan 1, 2019 for second payment start date' do
           payment1
           expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq Date.new(2019, 1, 1)
+            .to eq Date.new(2019, 1, 1).in_time_zone
         end
 
         it 'returns Dec 31, 2019 for second payment expire date' do
           payment1
           expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Date.new(2019, 12, 31)
+            .to eq Date.new(2019, 12, 31).in_time_zone
         end
       end
 
