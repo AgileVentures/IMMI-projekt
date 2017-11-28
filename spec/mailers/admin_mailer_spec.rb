@@ -29,4 +29,20 @@ RSpec.describe AdminMailer, type: :mailer do
 
   end
 
+  describe '#application_ready_for_review' do
+
+    let(:new_app) { create(:membership_application, user: test_user)  }
+
+    let(:email_sent) { AdminMailer.member_application_received(new_app) }
+
+    it_behaves_like 'a successfully created email',
+                    I18n.t('application_mailer.admin.new_application_received.subject'),
+                    ENV['SHF_MEMBERSHIP_EMAIL'],
+                    '' do
+      let(:email_created) { email_sent }
+    end
+
+
+  end
+
 end

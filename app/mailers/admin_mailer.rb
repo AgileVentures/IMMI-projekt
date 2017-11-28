@@ -8,6 +8,14 @@ class AdminMailer < AbstractMembershipInfoMailer
   end
 
 
+  def application_ready_for_review(member_app)
+
+    send_mail_for __method__, member_app, t('application_mailer.admin.new_application_received.subject')
+
+  end
+
+
+
 
   private
 

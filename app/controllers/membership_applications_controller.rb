@@ -114,6 +114,7 @@ class MembershipApplicationsController < ApplicationController
   def check_and_mark_if_ready_for_review(app_params)
     if app_params.fetch('marked_ready_for_review', false) && app_params['marked_ready_for_review'] != "0"
       @membership_application.is_ready_for_review!
+      AdminMailer.create_application_ready_for_review(@membership_application)
     end
   end
 
