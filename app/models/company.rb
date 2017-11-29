@@ -65,20 +65,12 @@ class Company < ApplicationRecord
   #  name could be NULL or it could be an empty string
 
   def self.complete
-
-    have_no_regions = Address.lacking_region.where(addressable_type: 'Company').distinct.pluck(:addressable_id)
-
-    if have_no_regions.count > 0
-      where('"companies"."name" <> :blank_name AND "companies"."id" NOT IN (:address_lacking_region)',
-            { blank_name: '',
-             address_lacking_region: have_no_regions })
-    else
-      where('"companies"."name" <> ? ', '' )
-    end
-
+    where.not('companies.name' => '',
+              id: Address.lacking_region.pluck(:addressable_id))
   end
 
   def self.branding_licensed
+    # All companies (distinct) with at least one unexpired branding payment
     joins(:payments)
       .where('payments.id IN (?)',
              Payment.branding_fee.completed.unexpired.pluck(:id))
@@ -86,7 +78,7 @@ class Company < ApplicationRecord
   end
 
   def self.address_visible
-    # Return ActiveRecord::Relation object for all companies with at
+    # Return ActiveRecord::Relation object for all companies (distinct) with at
     # least one visible address
     joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
   end

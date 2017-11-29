@@ -34,8 +34,13 @@ Feature: As a member
       | user_email          | company_number | categories | state    |
       | emma@happymutts.com | 5562252998     | Awesome    | accepted |
 
-  @selenium
-  Scenario: Member goes to company page after membership approval, specifes mail address
+    And the following payments exist
+      | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | emma@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
+
+  @selenium @time_adjust
+  Scenario: Member goes to company page after membership approval, specifies mail address
+    Given the date is set to "2017-10-01"
     Given I am logged in as "emma@happymutts.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     And I fill in the translated form with data:
@@ -112,7 +117,7 @@ Feature: As a member
     And I should see t("errors.not_permitted")
 
 
-  Scenario: User tries to go do company page (gets rerouted)
+  Scenario: User tries to go to company page (gets rerouted)
     Given I am logged in as "applicant_2@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the "landing" page

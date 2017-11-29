@@ -40,6 +40,13 @@ Background:
     | Dogs R Us   | 5562252998     | chief@dogsrus.com    | Norrbotten   | Östersund |
     | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       | Laxå      |
 
+  And the following payments exist
+    | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
+    | fred@barkyboys.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
+    | john@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+    | anna@dogsrus.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
+    | emma@weluvdogs.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5569467466     |
+
   And the following applications exist:
     | user_email          | company_number | state    | categories      |
     | fred@barkyboys.com  | 5560360793     | accepted | Groomer, Trainer|

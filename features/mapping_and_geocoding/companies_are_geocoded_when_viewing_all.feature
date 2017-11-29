@@ -21,7 +21,6 @@ Feature: All companies are geocoded before being shown on the view all companies
       | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Västerbotten | Bromölla | street_address |
       | CompanyNotVisible    | 5569467466     | company@notvisible.com | Stockholm    | Alingsås | none           |
 
-
     And the following users exists
       | email               | admin |
       | emma@happymutts.com |       |
@@ -38,9 +37,15 @@ Feature: All companies are geocoded before being shown on the view all companies
       | emma@happymutts.com | 5560360793     | Groomer    | accepted |
       | a@happymutts.com    | 2120000142     | Trainer    | accepted |
 
+    And the following payments exist
+      | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | emma@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
+      | a@happymutts.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
 
 
+  @time_adjust
   Scenario: A company that isn't geocoded is geocoded before all are viewed
+    Given the date is set to "2017-10-01"
     Given all addresses for the company named "No More Snarky Barky" are not geocoded
     And all addresses for the company named "Bowsers" are not geocoded
     And all addresses for the company named "CompanyNotVisible" are not geocoded

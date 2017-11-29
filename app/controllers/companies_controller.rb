@@ -15,10 +15,11 @@ class CompaniesController < ApplicationController
 
     @all_companies =  @search_params.result(distinct: true)
                           .complete
-                          .branding_licensed
                           .includes(:business_categories)
                           .includes(addresses: [ :region, :kommun ])
                           .joins(addresses: [ :region, :kommun ])
+
+    @all_companies = @all_companies.branding_licensed unless current_user.admin?
 
     # The last qualifier ("joins") on above statement ("addresses: :region") is
     # to get around a problem with DISTINCT queries used with ransack when also

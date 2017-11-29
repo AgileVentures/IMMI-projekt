@@ -33,6 +33,11 @@ Feature: As an admin
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
       | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Norrbotten |
 
+    Given the following payments exist
+      | user_email                 | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | applicant_1@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
+      | applicant_3@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+
     And the following applications exist:
       | user_email                 | company_number | state    |
       | applicant_1@happymutts.com | 5560360793     | accepted |
@@ -103,8 +108,10 @@ Feature: As an admin
       | Happy Mutts | 5562252998 |            | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
       | Happy Mutts | 5560360793 | 0706898525 | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.company_number.taken") |
 
+  @time_adjust
   Scenario: Admin edits a company and visitor views changes
-    Given I am logged in as "admin@shf.se"
+    Given the date is set to "2017-10-01"
+    And I am logged in as "admin@shf.se"
     And I am on the edit company page for "5560360793"
     When I fill in the translated form with data:
       | companies.show.email | companies.website_include_http |
