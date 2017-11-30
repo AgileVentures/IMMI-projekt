@@ -18,12 +18,13 @@ RSpec.describe AdminMailer, type: :mailer do
   describe '#member_application_received' do
 
     let(:new_app) { create(:membership_application, user: test_user)  }
-    let(:email_sent) { AdminMailer.member_application_received(new_app) }
+    let(:admin) { create(:user, email: 'admin@example.com', admin: true) }
+    let(:email_sent) { AdminMailer.member_application_received(new_app, admin) }
 
     it_behaves_like 'a successfully created email',
                     I18n.t('application_mailer.admin.new_application_received.subject'),
-                    ENV['SHF_MEMBERSHIP_EMAIL'],
-                    '' do
+                    'admin@example.com',
+                    I18n.t('application_mailer.greeting', greeting_name: 'Firstname Lastname') do
       let(:email_created) { email_sent }
     end
 

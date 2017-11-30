@@ -65,6 +65,8 @@ class User < ApplicationRecord
     member? || membership_applications.where(state: :accepted).any?
   end
 
+  scope :admins, -> { where admin: true }
+
   def has_membership_application?
     membership_applications.any?
   end
