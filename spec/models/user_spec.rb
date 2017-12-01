@@ -422,9 +422,9 @@ RSpec.describe User, type: :model do
       create(:membership_application, user: user, state: :accepted)
     end
 
-    let(:payment_date_2017) { Date.new(2017, 10, 1).in_time_zone }
+    let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
 
-    let(:payment_date_2018) { Date.new(2018, 11, 21).in_time_zone }
+    let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
 
     let(:payment1) do
       start_date, expire_date = User.next_membership_payment_dates(user.id)
@@ -482,24 +482,24 @@ RSpec.describe User, type: :model do
 
         it "returns today's date for first payment start date" do
           expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq Date.current
+            .to eq Time.zone.today
         end
 
         it 'returns Dec 31, 2018 for first payment expire date' do
           expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Date.new(2018, 12, 31).in_time_zone
+            .to eq Time.zone.local(2018, 12, 31)
         end
 
         it 'returns Jan 1, 2019 for second payment start date' do
           payment1
           expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq Date.new(2019, 1, 1).in_time_zone
+            .to eq Time.zone.local(2019, 1, 1)
         end
 
         it 'returns Dec 31, 2019 for second payment expire date' do
           payment1
           expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Date.new(2019, 12, 31).in_time_zone
+            .to eq Time.zone.local(2019, 12, 31)
         end
       end
 
@@ -512,24 +512,24 @@ RSpec.describe User, type: :model do
         end
 
         it "returns today's date for first payment start date" do
-          expect(User.next_membership_payment_dates(user.id)[0]).to eq Date.current
+          expect(User.next_membership_payment_dates(user.id)[0]).to eq Time.zone.today
         end
 
         it 'returns one year later for first payment expire date' do
           expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Date.current + 1.year - 1.day
+            .to eq Time.zone.today + 1.year - 1.day
         end
 
         it 'returns date-after-expiration for second payment start date' do
           payment1
           expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq Date.current + 1.year
+            .to eq Time.zone.today + 1.year
         end
 
         it 'returns one year later for second payment expire date' do
           payment1
           expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq Date.current + 1.year + 1.year - 1.day
+            .to eq Time.zone.today + 1.year + 1.year - 1.day
         end
       end
     end

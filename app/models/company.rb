@@ -50,7 +50,7 @@ class Company < ApplicationRecord
   end
 
   def branding_license?
-    branding_expire_date&.> Date.current
+    branding_expire_date&.future?
   end
 
   def self.next_branding_payment_dates(company_id)

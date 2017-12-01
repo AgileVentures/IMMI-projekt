@@ -108,5 +108,5 @@ And(/^show me the page$/) do
 end
 
 Given(/^the date is set to "([^"]*)"$/) do |date|
-  Timecop.freeze(Date.parse(date))
+  Timecop.freeze(Time.zone.parse(date))
 end

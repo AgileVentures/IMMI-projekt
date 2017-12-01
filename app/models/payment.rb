@@ -30,7 +30,7 @@ class Payment < ApplicationRecord
 
   scope :completed, -> { where(status: ORDER_PAYMENT_STATUS['successful']) }
 
-  scope :unexpired, -> { where('expire_date >= ?', Date.current ) }
+  scope :unexpired, -> { where('expire_date >= ?', Time.zone.today ) }
 
   scope PAYMENT_TYPE_MEMBER.to_sym, -> { where(payment_type: PAYMENT_TYPE_MEMBER) }
 

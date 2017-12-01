@@ -61,19 +61,19 @@ RSpec.describe UsersHelper, type: :helper do
   describe 'expire_date_label_and_value' do
 
     it 'returns date with style "yes" if expire_date more than a month away' do
-      user_payment.update(expire_date: Date.current + 2.months)
+      user_payment.update(expire_date: Time.zone.today + 2.months)
       response = /class="Yes".*#{user_payment.expire_date}/
       expect(expire_date_label_and_value(user)).to match response
     end
 
     it 'returns date with style "maybe" if expire_date less than a month away' do
-      user_payment.update(expire_date: Date.current + 2.days)
+      user_payment.update(expire_date: Time.zone.today + 2.days)
       response = /class="Maybe".*#{user_payment.expire_date}/
       expect(expire_date_label_and_value(user)).to match response
     end
 
     it 'returns date with style "no" if expired' do
-      user_payment.update(expire_date: Date.current - 1.day)
+      user_payment.update(expire_date: Time.zone.today - 1.day)
       response = /class="No".*#{user_payment.expire_date}/
       expect(expire_date_label_and_value(user)).to match response
     end
@@ -97,15 +97,15 @@ RSpec.describe UsersHelper, type: :helper do
   describe 'expire_date_css_class' do
 
     it 'returns "Yes" if expire_date more than a month away' do
-      expect(expire_date_css_class(Date.current + 2.months)).to eq 'Yes'
+      expect(expire_date_css_class(Time.zone.today + 2.months)).to eq 'Yes'
     end
 
     it 'returns "Maybe" if expire_date less than a month away' do
-      expect(expire_date_css_class(Date.current + 2.days)).to eq 'Maybe'
+      expect(expire_date_css_class(Time.zone.today + 2.days)).to eq 'Maybe'
     end
 
     it 'returns "No" if expire_date has passed' do
-      expect(expire_date_css_class(Date.current - 2.days)).to eq 'No'
+      expect(expire_date_css_class(Time.zone.today - 2.days)).to eq 'No'
     end
   end
 

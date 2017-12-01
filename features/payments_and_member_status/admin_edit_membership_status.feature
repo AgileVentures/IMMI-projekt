@@ -12,8 +12,9 @@ Feature: As an admin
       | user_email     | start_date | expire_date | payment_type | status | hips_id |
       | emma@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
-  @selenium
+  @selenium @time_adjust
   Scenario: Admin edits membership status
+    Given the date is set to "2017-11-01"
     Given I am logged in as "admin@shf.se"
     Then I am on the "user details" page for "emma@mutts.com"
     And I should see t("Yes")

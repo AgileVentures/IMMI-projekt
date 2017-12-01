@@ -2,7 +2,7 @@ module ApplicationHelper
 
   def beta_user?(user)
     return true unless ENV['SHF_BETA'] == 'yes'
-    
+
     BETA_USERS.include?(user.email)
   end
 
@@ -182,8 +182,8 @@ module ApplicationHelper
   end
 
   def expire_date_css_class(expire_date)
-    today = Date.current
-    if today < expire_date << 1
+    today = Time.zone.today
+    if today < expire_date.months_ago(1)  # expire_date minus one month
       value_class = 'Yes'  # green
     elsif today >= expire_date
       value_class = 'No'
