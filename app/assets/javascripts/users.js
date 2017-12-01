@@ -1,8 +1,8 @@
 $(function() {
   'use strict';
 
-  $('body').on('ajax:success', '#users-list a[data-remote]', function (e, data) {
-    $('#users-list').html(data);
+  $('body').on('ajax:success', '.users_pagination', function (e, data) {
+    $('#users_list').html(data);
     $('[data-toggle="tooltip"]').tooltip();
   });
 

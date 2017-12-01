@@ -2,13 +2,6 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
 
-  before(:all) do
-    expect(BusinessCategory.count).to eq(0)
-    expect(Company.count).to eq(0)
-    expect(MembershipApplication.count).to eq(0)
-    expect(User.count).to eq(0)
-  end
-
   describe 'Factory' do
     it 'has a valid factory' do
       expect(create(:user)).to be_valid

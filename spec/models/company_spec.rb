@@ -143,12 +143,6 @@ RSpec.describe Company, type: :model do
              company_number: company.company_number)
     end
 
-    before(:all) do
-      expect(Company.count).to eq(0)
-      expect(MembershipApplication.count).to eq(0)
-      expect(User.count).to eq(0)
-    end
-
     it '3 employees, each with 1 unique category' do
       m1.business_categories << cat1
       m2.business_categories << cat2

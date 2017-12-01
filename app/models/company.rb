@@ -95,7 +95,7 @@ class Company < ApplicationRecord
 
     membership_applications.reload
 
-    if membership_applications.select(&:is_accepted?).count != 0
+    if membership_applications.where(state: 'accepted').any?
       errors.add(:base, 'activerecord.errors.models.company.company_has_active_memberships')
       # Rails 5: must throw
       throw(:abort)

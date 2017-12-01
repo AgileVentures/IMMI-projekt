@@ -11,7 +11,6 @@ Feature: As an Admin
       | AnnaWaiting           | anna_waiting_for_info@nosnarkybarky.se |       |
       | LarsRejected          | lars_rejected@snarkybark.se            |       |
       | NilsAccepted          | nils_member@bowwowwow.se               |       |
-      | LarsWaitingForPayment | lars_waiting_for_payment@happymutts.se |       |
       | Applicant1            | applicant_1@random.com                 |       |
       | Applicant2            | applicant_2@random.com                 |       |
       | admin                 | admin@shf.se                           | true  |
@@ -35,7 +34,6 @@ Feature: As an Admin
       | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab        | waiting_for_applicant |
       | lars_rejected@snarkybark.se            | 0000000000     | rehab        | rejected              |
       | nils_member@bowwowwow.se               | 0000000000     | dog crooning | accepted              |
-      | lars_waiting_for_payment@happymutts.se | 0000000000     | dog crooning | waiting_for_payment   |
 
     And I am logged in as "admin@shf.se"
     And time is frozen at 2016-12-16
@@ -146,22 +144,6 @@ Feature: As an Admin
     And I should not see "image.png"
     And I should see "rehab"
 
-  @admin
-  Scenario: Admin changed from under_review to waiting_for_payment
-    Given I am on the "application" page for "emma_under_review@happymutts.se"
-    Then I should see "rehab"
-    When I click on t("membership_applications.ask_applicant_for_payment_btn")
-    Then I should see t("membership_applications.need_payment.success")
-    And I should see status line with status t("membership_applications.waiting_for_payment")
-    And I should not see t("membership_applications.update.enter_member_number")
-    And I should see "rehab"
-    When I am on the "landing" page
-    Then I should see 1 t("membership_applications.waiting_for_applicant")
-    And I should see 2 t("membership_applications.waiting_for_payment")
-    And I should see 1 t("membership_applications.under_review")
-    And I should see 1 t("membership_applications.rejected")
-    And I should see 1 t("membership_applications.accepted")
-
   # From waiting for applicant to...
   @member
   Scenario: Anna updates her application but doesn't mark it as ready to be reviewed yet
@@ -237,30 +219,6 @@ Feature: As an Admin
     And I should see status line with status t("membership_applications.waiting_for_applicant")
     And I should not see status line with status t("membership_applications.under_review")
 
-
-  # From waiting_for_payment to...
-  Scenario: Admin changed waiting_for_payment to under_review
-    Given I am on the "application" page for "lars_waiting_for_payment@happymutts.se"
-    And I click on t("membership_applications.cancel_waiting_for_payment_btn")
-    Then I should see t("membership_applications.cancel_need_payment.success")
-    And I should see status line with status t("membership_applications.under_review")
-    When I am on the "landing" page
-    And I should see 3 t("membership_applications.under_review")
-    And I should see 0 t("membership_applications.waiting_for_payment")
-    And I should see 1 t("membership_applications.rejected")
-    And I should see 1 t("membership_applications.accepted")
-
-  Scenario: Admin changed waiting_for_payment to accepted
-    Given I am on the "application" page for "lars_waiting_for_payment@happymutts.se"
-    And I click on t("membership_applications.received_payment_btn")
-    Then I should see t("membership_applications.received_payment.success")
-    And I should see status line with status t("membership_applications.accepted")
-    When I am on the "landing" page
-    And I should see 0 t("membership_applications.ready_for_review")
-    And I should see 2 t("membership_applications.under_review")
-    And I should see 0 t("membership_applications.waiting_for_payment")
-    And I should see 1 t("membership_applications.rejected")
-    And I should see 2 t("membership_applications.accepted")
 
   # From accepted to...
   @admin

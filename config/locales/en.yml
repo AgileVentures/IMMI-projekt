@@ -306,7 +306,6 @@ en:
       with_categories: Categories
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
-      waiting_for_payment: 'Waiting for payment (Cannot approve the application until the payment has been received.)'
       ready_for_review_instructions: "When you are ready for SHF review your application again, check the checkbox below. When you press the submit button and the checkbox is checked, we will know we need to review it again.\nYou can make changes without checking the 'ready for review' checkbox.  You might do that if you need to save a change and come back and make more changes before you're ready to have it reviewed."
 
     index:
@@ -390,7 +389,6 @@ en:
       new: &status_new New
       under_review: &status_under_review Under Review
       waiting_for_applicant: &status_waiting_for_applicant Waiting for applicant
-      waiting_for_payment: &status_waiting_for_payment Waiting for payment
       ready_for_review: &status_ready_for_review Ready For Review
       accepted: &status_accepted Accepted
       rejected: &status_rejected Rejected
@@ -407,9 +405,6 @@ en:
     waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Applicant Updated Info
     ask_applicant_for_payment_btn: Ask Applicant for Payment
-    cancel_waiting_for_payment_btn: Cancel Waiting for Payment
-    received_payment_btn: Received Payment
-    waiting_for_payment: *status_waiting_for_payment
     ready_for_review: *status_ready_for_review
     start_review_btn: Start Reviewing
 

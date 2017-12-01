@@ -19,14 +19,3 @@
 
   .row
     = button_to t('membership_applications.cancel_waiting_for_applicant_btn'), cancel_need_info_membership_application_path(@membership_application), {class: 'btn cancel-need-info', disabled: !(@membership_application.may_cancel_waiting_for_applicant?)}
-
-    = button_to t('membership_applications.ask_applicant_for_payment_btn'), need_payment_membership_application_path(@membership_application), {class: 'btn need-payment', disabled: !(@membership_application.may_ask_for_payment?)}
-
-    = button_to t('membership_applications.cancel_waiting_for_payment_btn'), cancel_need_payment_membership_application_path(@membership_application), {class: 'btn cancel_need-payment', disabled: !(@membership_application.may_cancel_waiting_for_payment?)}
-
-    = button_to t('membership_applications.received_payment_btn'), received_payment_membership_application_path(@membership_application), {class: 'btn received-payment', disabled: !(@membership_application.may_received_payment?)}
-
-
-%br
-  - if !@membership_application.paid?
-    %p= t('membership_applications.show.waiting_for_payment')

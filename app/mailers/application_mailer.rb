@@ -40,7 +40,7 @@ class ApplicationMailer < ActionMailer::Base
 
     ActivityLogger.open(LOG_FILE, LOG_FACILITY, 'Mailgun::CommunicationError', false) do |log|
 
-      log.record('error', "Could not send email via mailgun at #{Time.now}  Error received from Mailgun: #{mailgun_error}")
+      log.record('error', "Could not send email via mailgun at #{Time.zone.now}  Error received from Mailgun: #{mailgun_error}")
 
     end
 

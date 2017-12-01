@@ -2,15 +2,9 @@ require 'rails_helper'
 
 RSpec.describe MembershipApplicationsHelper, type: :helper do
 
-  before(:all) do
-    # ensure MembershipAppWaitingReason.all is empty
-    expect(AdminOnly::MemberAppWaitingReason.count).to be(0)
-  end
-
-
   describe 'returns a list of reasons_for_waiting for the right locale' do
 
-    before(:all) do
+    before(:each) do
       FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv1', name_en: 'name_en1', description_sv: 'desc_sv1', description_en: 'desc_en1')
       FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv2', name_en: 'name_en2', description_sv: 'desc_sv2', description_en: 'desc_en2')
       FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv3', name_en: 'name_en3', description_sv: 'desc_sv3', description_en: 'desc_en3')
@@ -19,7 +13,6 @@ RSpec.describe MembershipApplicationsHelper, type: :helper do
     let(:reason1) { AdminOnly::MemberAppWaitingReason.find_by_name_sv('name_sv1') }
     let(:reason2) { AdminOnly::MemberAppWaitingReason.find_by_name_sv('name_sv2') }
     let(:reason3) { AdminOnly::MemberAppWaitingReason.find_by_name_sv('name_sv3') }
-
 
     describe '#reasons_for_waiting_names' do
 

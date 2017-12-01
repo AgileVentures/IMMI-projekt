@@ -1,24 +1,26 @@
 class UsersController < ApplicationController
+  include PaginationUtility
+
   before_action :set_user, except: :index
   before_action :authorize_user, only: [:show]
 
   def index
     authorize User
-    @q = User.ransack(params[:q])
-    @users = @q.result.includes(:membership_applications)
+    action_params, @items_count, items_per_page = process_pagination_params('user')
 
-    @filter_ignore_membership = true
-    @filter_are_members = params.include?(:are_members) && params[:are_members] == 'true'
-    @filter_are_not_members = params.include?(:are_members) && params[:are_members] == 'false'
-
-    %w(are_members are_not_members).each do | filter |
-      if self.instance_variable_get("@filter_#{filter}")
-        @users = @users.send(filter)
-        @filter_ignore_membership = false
-      end
+    if action_params then
+      @filter_are_members = action_params[:membership_filter] == '1'
+      @filter_are_not_members = action_params[:membership_filter] == '2'
     end
+    @filter_ignore_membership = !(@filter_are_members || @filter_are_not_members)
 
-    render partial: 'users_list', locals: { q: @q, users: @users } if request.xhr?
+    membership_filter = 'member = true' if @filter_are_members
+    membership_filter = 'member = false' if @filter_are_not_members
+
+    @q = User.ransack(action_params)
+    @users = @q.result.includes(:membership_applications).where(membership_filter).page(params[:page]).per_page(items_per_page)
+
+    render partial: 'users_list', locals: { q: @q, users: @users, items_count: @items_count } if request.xhr?
   end
 
 

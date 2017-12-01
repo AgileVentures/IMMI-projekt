@@ -178,7 +178,7 @@ RSpec.describe ApplicationMailer, type: :mailer do
   describe 'logs Mailgun errors', vcr: { cassette_name: 'mailgun', record: :none } do
 
     # do not actually hit the net; mock the responses from the vcr file instead
-    before(:all) do
+    before(:each) do
 
       @orig_delivery_method = ApplicationMailer.delivery_method
       ApplicationMailer.delivery_method = :mailgun
@@ -186,7 +186,7 @@ RSpec.describe ApplicationMailer, type: :mailer do
       WebMock.disable_net_connect!(allow_localhost: true)
     end
 
-    after(:all) do
+    after(:each) do
       ApplicationMailer.delivery_method = @orig_delivery_method
       WebMock.allow_net_connect!(allow_localhost: true)
     end

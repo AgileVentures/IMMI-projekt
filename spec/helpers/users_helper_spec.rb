@@ -3,8 +3,8 @@ include ApplicationHelper
 
 RSpec.describe UsersHelper, type: :helper do
   let(:user) { create(:user) }
-  let(:right_now) { Time.now }
-  let(:yesterday) { Time.now - 1.day - 2.minutes }
+  let(:right_now) { Time.zone.now }
+  let(:yesterday) { Time.zone.now - 1.day - 2.minutes }
 
   let(:app)  { create(:membership_application, state: :accepted) }
   let(:expected_path) do

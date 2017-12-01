@@ -138,27 +138,6 @@ RSpec.describe MembershipApplication, type: :model do
 
   end
 
-  describe '#is_accepted?' do
-    let!(:states) {MembershipApplication.aasm.states.map(&:name)}
-    let(:states_not_accepted) {states.reject {|s| s == :accepted}}
-
-    it "state :accepted == is_accepted" do
-      subject.state = :accepted
-      expect(subject.is_accepted?).to be_truthy
-    end
-
-    it "these states should not be #is_accepted" do
-      not_accepted_states = MembershipApplication.aasm.states.map(&:name).reject {|s| s == :accepted}
-
-      not_accepted_states.each do |state|
-        subject.state = state
-        expect(subject.is_accepted?).to be_falsey
-      end
-    end
-
-  end
-
-
   describe 'test factories' do
 
     it '1 category with default category name' do
@@ -204,7 +183,6 @@ RSpec.describe MembershipApplication, type: :model do
       it {expect(application).to have_valid_state(:new)}
       it {expect(application).to have_valid_state(:under_review)}
       it {expect(application).to have_valid_state(:waiting_for_applicant)}
-      it {expect(application).to have_valid_state(:waiting_for_payment)}
       it {expect(application).to have_valid_state(:ready_for_review)}
       it {expect(application).to have_valid_state(:accepted)}
       it {expect(application).to have_valid_state(:rejected)}
@@ -218,14 +196,12 @@ RSpec.describe MembershipApplication, type: :model do
       expect(user.membership_application).not_to have_state(:accepted)
       expect(user.membership_application).not_to have_state(:rejected)
       expect(user.membership_application).not_to have_state(:waiting_for_applicant)
-      expect(user.membership_application).not_to have_state(:waiting_for_payment)
     end
 
 
     describe 'valid events' do
       it {expect(application).to have_valid_event(:start_review)}
       it {expect(application).to have_valid_event(:ask_applicant_for_info)}
-      it {expect(application).to have_valid_event(:ask_for_payment)}
       it {expect(application).to have_valid_event(:cancel_waiting_for_applicant)}
       it {expect(application).to have_valid_event(:is_ready_for_review)}
       it {expect(application).to have_valid_event(:accept)}
@@ -240,7 +216,6 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'allow transition to', :new, :under_review, :start_review
 
       it_will 'not allow transition to', :new, :waiting_for_applicant
-      it_will 'not allow transition to', :new, :waiting_for_payment
       it_will 'not allow transition to', :new, :ready_for_review
 
       it_will 'not allow transition to', :new, :accepted
@@ -256,8 +231,6 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'not allow transition to', :under_review, :under_review
 
       it_will 'allow transition to', :under_review, :waiting_for_applicant, :ask_applicant_for_info
-
-      it_will 'allow transition to', :under_review, :waiting_for_payment, :ask_for_payment
 
       it_will 'not allow transition to', :under_review, :ready_for_review
 
@@ -275,7 +248,6 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'allow transition to', :waiting_for_applicant, :under_review, :cancel_waiting_for_applicant
 
       it_will 'not allow transition to', :waiting_for_applicant, :waiting_for_applicant
-      it_will 'not allow transition to', :waiting_for_applicant, :waiting_for_payment
       it_will 'allow transition to', :waiting_for_applicant, :ready_for_review, :is_ready_for_review
 
       it_will 'not allow transition to', :waiting_for_applicant, :accepted, :accept
@@ -291,7 +263,6 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'not allow transition to', :accepted, :under_review
 
       it_will 'not allow transition to', :accepted, :waiting_for_applicant
-      it_will 'not allow transition to', :accepted, :waiting_for_payment
       it_will 'not allow transition to', :accepted, :ready_for_review
 
       it_will 'not allow transition to', :accepted, :accepted
@@ -307,7 +278,6 @@ RSpec.describe MembershipApplication, type: :model do
       it_will 'not allow transition to', :rejected, :under_review
 
       it_will 'not allow transition to', :rejected, :waiting_for_applicant
-      it_will 'not allow transition to', :rejected, :waiting_for_payment
       it_will 'not allow transition to', :rejected, :ready_for_review
 
       it_will 'allow transition to', :rejected, :accepted, :accept

@@ -47,7 +47,7 @@ class ActivityLogger
     @activity = activity
     @facility_and_action = "[#{facility}] [#{activity}] "
     @show = show
-    @start_time = Time.now
+    @start_time = Time.zone.now
 
     @log = ActiveSupport::TaggedLogging.new(ActiveSupport::Logger.new(filename))
 
@@ -66,7 +66,7 @@ class ActivityLogger
   end
 
   def close(duration: true)
-    finish_time = Time.now
+    finish_time = Time.zone.now
     record('info', "Finished at #{finish_time}.")
     record('info',
       "Duration: #{(finish_time - @start_time).round(2)} seconds.\n") if duration

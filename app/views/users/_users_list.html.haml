@@ -1,9 +1,9 @@
-#users-list
+#users_list
   %table.table
     %thead.panel-heading
       %tr
-        %th= sort_link(q, :padded_membership_number, t('users.users_list.membership_number'), {}, { remote: true } )
-        %th= sort_link(q, :email, t('.email'), { default_order: { email: :asc } }, { remote: true } )
+        %th= sort_link(q, :padded_membership_number, t('users.users_list.membership_number'), {}, { class: 'users_pagination', remote: true } )
+        %th= sort_link(q, :email, t('.email'), { default_order: { email: :asc } }, { class: 'users_pagination', remote: true } )
         %th= t('.created')
         %th= t('.logged_in_count')
         %th
@@ -14,3 +14,9 @@
         %th= t('.expire_date')
     %tbody.panel-body
       = render partial: 'user', collection: users
+
+  = render partial: 'application/paginate_footer',
+           locals: { entities: @users,
+                     paginate_class: 'users_pagination',
+                     items_count: items_count,
+                     url: users_path }

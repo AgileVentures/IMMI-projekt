@@ -18,15 +18,15 @@
       .form-group.form-group-sm
         .radio-inline
           %label
-            = radio_button_tag 'are_members', 'ignore', filter_ignore_membership
+            = f.radio_button :membership_filter, 0, checked: @filter_ignore_membership
             = t('.all_users')
         .radio-inline
           %label
-            = radio_button_tag 'are_members', true, filter_are_members
+            = f.radio_button :membership_filter, 1, checked: @filter_are_members
             = t('.are_members')
         .radio-inline
           %label
-            = radio_button_tag 'are_members', false, filter_are_not_members
+            = f.radio_button :membership_filter, 2, checked: @filter_are_not_members
             = t('.are_not_members')
     .col-sm-12
       .form-group.form-group-sm

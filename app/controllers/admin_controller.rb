@@ -7,7 +7,7 @@ class AdminController < ApplicationController
     begin
       @membership_applications = MembershipApplication.includes(:user).all
 
-      export_name = "Ansokningar-#{Time.now.strftime('%Y-%m-%d--%H-%M-%S')}.csv"
+      export_name = "Ansokningar-#{Time.zone.now.strftime('%Y-%m-%d--%H-%M-%S')}.csv"
 
       send_data(export_str(@membership_applications), filename: export_name, type: "text/plain" )
 

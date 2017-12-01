@@ -169,21 +169,6 @@ class MembershipApplicationsController < ApplicationController
   end
 
 
-  def need_payment
-    simple_state_change(:ask_for_payment!, t('.success'), t('.error'))
-  end
-
-
-  def cancel_need_payment
-    simple_state_change(:cancel_waiting_for_payment!, t('.success'), t('.error'))
-  end
-
-
-  def received_payment
-    simple_state_change(:received_payment!, t('.success'), t('.error'))
-  end
-
-
   private
   def membership_application_params
     params.require(:membership_application).permit(*policy(@membership_application || MembershipApplication).permitted_attributes)

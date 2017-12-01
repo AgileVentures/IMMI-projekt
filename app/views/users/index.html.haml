@@ -15,4 +15,4 @@
       %strong
         = t('.no_search_results')
     - else
-      = render partial: 'users_list', locals: { q: @q, users: @users }
+      = render partial: 'users_list', locals: { q: @q, users: @users, items_count: @items_count }

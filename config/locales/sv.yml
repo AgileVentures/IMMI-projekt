@@ -308,7 +308,6 @@ sv:
       with_categories: Ansöker som
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
-      waiting_for_payment: 'Väntar på betalning (Det går inte att godkänna ansökan till dess att betalning har mottagits.)'
       ready_for_review_instructions: "När du är redo för att vi ska hantera din ansökan igen, kryssa i rutan nedan. När du trycker på knappen Skicka och kryssrutan är markerad, vet vi att vi måste se över den igen. \nDu kan göra ändringar utan att kryssa i rutan. Du kan om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du skickar in den för granskning."
 
     index:
@@ -392,7 +391,6 @@ sv:
       new: &status_new Ny
       under_review: &status_under_review Behandlas
       waiting_for_applicant: &status_waiting_for_applicant  Väntar på sökande
-      waiting_for_payment: &status_waiting_for_payment Väntar på betalning
       ready_for_review: &status_ready_for_review Redo för granskning
       accepted: &status_accepted Godkänd
       rejected: &status_rejected Avböjd
@@ -409,9 +407,6 @@ sv:
     waiting_for_applicant: *status_waiting_for_applicant
     applicant_updated_info: &event_applicant_updated_info Sökanden har kompletterat sin ansökan
     ask_applicant_for_payment_btn: Behöver betalning
-    cancel_waiting_for_payment_btn: Ångra Behöver betalning
-    received_payment_btn: Betalning inkommen
-    waiting_for_payment: *status_waiting_for_payment
     ready_for_review: *status_ready_for_review
     start_review_btn: Påbörja granskning
 

@@ -31,12 +31,6 @@ RSpec.describe CompaniesHelper, type: :helper do
       ma
     end
 
-    before(:all) do
-      expect(Company.count).to eq(0)
-      expect(MembershipApplication.count).to eq(0)
-      expect(User.count).to eq(0)
-    end
-
     it '#list_categories' do
       expect(helper.list_categories(company)).to eq 'cat1 cat2 cat3'
       expect(helper.list_categories(company)).not_to include 'Träning'
