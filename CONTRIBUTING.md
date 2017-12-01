@@ -187,7 +187,7 @@ git checkout -b sprint24-#1059872-add-contributing-md
 ```
 or, perhaps like this:
 ```
-it checkout -b add-contributing-md#1059872
+git checkout -b add-contributing-md#1059872
 ```
 
 Note that it's ok to include the `#` in the branch name.  You can leave it in there or not; it's optional.
