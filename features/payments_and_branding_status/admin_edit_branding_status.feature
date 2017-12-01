@@ -31,6 +31,7 @@ Feature: As an admin
     And I select "1" in select list "payment[expire_date(3i)]"
     And I fill in t("activerecord.attributes.payment.notes") with "This is a note regarding this company."
     Then I click on t("companies.company.submit_button_label")
+    And I wait for all ajax requests to complete
     And I reload the page
     # ^^ should not have to do this - check later after upgrades
     And I should see "2018-06-01"
