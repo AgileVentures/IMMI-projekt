@@ -29,6 +29,8 @@ Feature: As an admin
     And I select "1" in select list "payment[expire_date(3i)]"
     And I fill in t("activerecord.attributes.payment.notes") with "This is a note regarding this member."
     Then I click on t("users.user.submit_button_label")
+    And I wait 3 seconds
+    When I am on the "user details" page for "emma@mutts.com"
     And I should see t("No")
     And I should see "2018-06-01"
     And I should see "This is a note regarding this member."
