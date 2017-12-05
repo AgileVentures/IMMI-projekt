@@ -59,12 +59,12 @@ RSpec.describe 'companies/index' do
 
       it 'renders menu link == member pages index' do
         text = t('menus.nav.members.member_pages')
-        expect(rendered).to match %r{<a href=\"\/member-pages\">#{text}}
+        expect(rendered).to match %r{<a href=\"\/medlemssidor\">#{text}}
       end
 
       it 'renders link to view SHF Board meeting minutes' do
         text = t('menus.nav.members.shf_meeting_minutes')
-        expect(rendered).to match %r{<a href=\"\/shf_documents">#{text}}
+        expect(rendered).to match %r{<a href=\"\/dokument">#{text}}
       end
     end
 
@@ -168,12 +168,12 @@ RSpec.describe 'companies/index' do
 
       it 'renders menu link == member pages index' do
         text = t('menus.nav.members.member_pages')
-        expect(rendered).to match %r{<a href=\"\/member-pages\">#{text}}
+        expect(rendered).to match %r{<a href=\"\/medlemssidor\">#{text}}
       end
 
       it 'renders link to view SHF Board meeting minutes' do
         text = t('menus.nav.members.shf_meeting_minutes')
-        expect(rendered).to match %r{<a href=\"\/shf_documents">#{text}}
+        expect(rendered).to match %r{<a href=\"\/dokument">#{text}}
       end
     end
 

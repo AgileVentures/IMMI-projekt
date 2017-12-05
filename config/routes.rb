@@ -70,18 +70,19 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :shf_documents
+    resources :shf_documents, path: 'dokument'
 
-    get 'shf_documents/contents/:page',
+    get 'dokument/innehall/:page',
       to: 'shf_documents#contents_show', as: 'contents_show'
 
-    get 'shf_documents/contents/:page/redigera',
+    get 'dokument/innehall/:page/redigera',
       to: 'shf_documents#contents_edit', as: 'contents_edit'
 
-    patch 'shf_documents/contents/:page',
+    patch 'dokument/innehall/:page',
       to: 'shf_documents#contents_update', as: 'contents_update'
 
-    get 'member-pages', to: 'shf_documents#minutes_and_static_pages'
+    get 'medlemssidor', to: 'shf_documents#minutes_and_static_pages',
+                        as: 'member_pages'
 
   end
 
