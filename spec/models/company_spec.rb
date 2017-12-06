@@ -381,4 +381,52 @@ RSpec.describe Company, type: :model do
       end
     end
   end
+
+  describe '#accepted_applications_from_members' do
+    let(:cmpy1) { create(:company, company_number: '5560360793') }
+    let(:cmpy2) { create(:company, company_number: '5562252998') }
+
+    let(:user1) { create(:user, member: true) }
+    let(:user2) { create(:user, member: true) }
+    let(:user3) { create(:user, member: true) }
+    let(:user4) { create(:user) }
+
+    let!(:cmpy1_app1) do
+      create(:membership_application, :accepted,
+             company_number: cmpy1.company_number, user: user1)
+    end
+
+    let!(:cmpy1_app2) do
+      create(:membership_application, :accepted,
+             company_number: cmpy1.company_number, user: user2)
+    end
+
+    let!(:cmpy1_app3) do
+      create(:membership_application, :rejected,
+             company_number: cmpy1.company_number, user: user3)
+    end
+
+    let!(:cmpy2_app1) do
+      create(:membership_application, :accepted,
+             company_number: cmpy2.company_number, user: user1)
+    end
+
+    let!(:cmpy2_app2) do
+      create(:membership_application, :accepted,
+             company_number: cmpy2.company_number, user: user2)
+    end
+
+    let!(:cmpy2_app3) do
+      create(:membership_application, :accepted,
+             company_number: cmpy1.company_number, user: user4)
+    end
+
+    it 'returns only apps that are 1) accepted and 2) from members' do
+      expect(cmpy1.accepted_applications_from_members)
+        .to contain_exactly(cmpy1_app1, cmpy1_app2)
+
+      expect(cmpy2.accepted_applications_from_members)
+        .to contain_exactly(cmpy2_app1, cmpy2_app2)
+    end
+  end
 end

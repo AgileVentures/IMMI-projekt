@@ -41,6 +41,8 @@ class MembershipApplication < ApplicationRecord
 
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
+  scope :accepted, -> { where(state: :accepted) }
+
   delegate :full_name, to: :user, prefix: true
   delegate :membership_number, :membership_number=, to: :user, prefix: false
 

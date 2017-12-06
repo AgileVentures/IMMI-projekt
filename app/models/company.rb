@@ -37,6 +37,12 @@ class Company < ApplicationRecord
 
   accepts_nested_attributes_for :addresses, allow_destroy: true
 
+  def accepted_applications_from_members
+    # Returns ActiveRecord Relation
+    membership_applications.accepted.includes(:user)
+      .order('users.last_name').where('users.member = ?', true)
+  end
+
   def most_recent_branding_payment
     most_recent_payment(Payment::PAYMENT_TYPE_BRANDING)
   end

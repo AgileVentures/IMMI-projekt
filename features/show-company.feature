@@ -64,6 +64,8 @@ Feature: As a visitor,
     And I should see "No More Snarky Barky"
     And I should see "Groomer"
     And I should see "JustForFun"
+    And I should see t("companies.show.members")
+    And I should see "Firstname Lastname"
     And I should see "snarky@snarkybarky.com"
     And I should see "123123123"
     And I should see "Hundforetagarevägen 1"

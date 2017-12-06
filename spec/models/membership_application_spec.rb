@@ -59,6 +59,26 @@ RSpec.describe MembershipApplication, type: :model do
     it {is_expected.to validate_length_of(:company_number).is_equal_to(10)}
   end
 
+  context 'scopes' do
+    let!(:accepted_app1) { create(:membership_application, :accepted) }
+    let!(:accepted_app2) { create(:membership_application, :accepted) }
+    let!(:rejected_app1) { create(:membership_application, :rejected) }
+    let!(:new_app1)      { create(:membership_application) }
+
+    describe 'open' do
+      it 'returns all apps not accepted or rejected' do
+        expect(described_class.open.all).to contain_exactly(new_app1)
+      end
+    end
+
+    describe 'accepted' do
+      it 'returns all accepted apps' do
+        expect(described_class.accepted.all)
+          .to contain_exactly(accepted_app1, accepted_app2)
+      end
+    end
+  end
+
   describe 'Validate Swedish Orgnr' do
     let (:company) do
       create(:membership_application)

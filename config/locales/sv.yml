@@ -480,6 +480,8 @@ sv:
       edit_branding_status: Redigera Status
       branding_license: Accepterar policy
       pay_branding_fee_tooltip: Betald avgift förlänger H-märkningen i ett år.
+      members: Företagsmedlemmar
+
     index:
       title:  Hitta H-märkt företag
       admin_title: Redigera medlemsföretag

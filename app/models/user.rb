@@ -1,29 +1,23 @@
 class User < ApplicationRecord
   include PaymentUtility
 
-  has_many :membership_applications
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  has_many :membership_applications
+  has_many :business_categories, through: :membership_applications
 
   has_many :payments
   accepts_nested_attributes_for :payments
 
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
   validates_uniqueness_of :membership_number, allow_blank: true
-
+  
   scope :admins, -> { where(admin: true) }
 
-  scope :are_members, lambda {
-    User.all.select { | user | user.member? }
-  }
-
-  scope :are_not_members, lambda {
-    User.all.reject { | user | user.member? }
-  }
-
-
+  scope :members, -> { where(member: true) }
 
   def most_recent_membership_payment
     most_recent_payment(Payment::PAYMENT_TYPE_MEMBER)
