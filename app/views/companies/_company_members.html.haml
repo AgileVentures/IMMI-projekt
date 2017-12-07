@@ -1,10 +1,10 @@
-- applications = company.accepted_applications_from_members
+- applications = company.approved_applications_from_members
 
 - if applications.any?
 
   .col-md-12.company_member
 
-    %table.table.table-hover
+    %table.table.table-hover.company-members
       %thead
         %tr
           %th= t('companies.show.members')

@@ -382,7 +382,7 @@ RSpec.describe Company, type: :model do
     end
   end
 
-  describe '#accepted_applications_from_members' do
+  describe '#approved_applications_from_members' do
     let(:cmpy1) { create(:company, company_number: '5560360793') }
     let(:cmpy2) { create(:company, company_number: '5562252998') }
 
@@ -422,10 +422,10 @@ RSpec.describe Company, type: :model do
     end
 
     it 'returns only apps that are 1) accepted and 2) from members' do
-      expect(cmpy1.accepted_applications_from_members)
+      expect(cmpy1.approved_applications_from_members)
         .to contain_exactly(cmpy1_app1, cmpy1_app2)
 
-      expect(cmpy2.accepted_applications_from_members)
+      expect(cmpy2.approved_applications_from_members)
         .to contain_exactly(cmpy2_app1, cmpy2_app2)
     end
   end
