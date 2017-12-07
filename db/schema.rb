@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20171129011045) do
+ActiveRecord::Schema.define(version: 20171120170441) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,44 +72,7 @@ ActiveRecord::Schema.define(version: 20171129011045) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.text "description"
-    t.string "dinkurs_key"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
-  end
-
-  create_table "dinkurs_events", force: :cascade, comment: "Information tracked by the DinKurs.se system about an Event" do |t|
-    t.string "dinkurs_id", comment: "unique identifier for the event in the DinKurs system"
-    t.string "name", comment: "text name of the event"
-    t.string "place_geometry_location", comment: "location geocoordinates"
-    t.string "host"
-    t.float "fee", comment: "cost of the event (for a ticket)"
-    t.float "fee_tax", comment: "tax that is in addition to the cost"
-    t.datetime "pub", comment: "date the event is published?"
-    t.datetime "apply", comment: "TODO date ? "
-    t.datetime "start", comment: "start date and time for the event"
-    t.datetime "stop", comment: "stop date and time for the event"
-    t.decimal "participant_number", comment: "max. number of participants allowed for the event"
-    t.decimal "participant_reserve", comment: "number of participants waiting for a spot to be available for the event"
-    t.decimal "participants", comment: "number of participants signed up for the event"
-    t.string "occasions"
-    t.string "group"
-    t.string "position"
-    t.string "instructor_1", comment: "name of instructor 1 for the event"
-    t.string "instructor_2", comment: "name of instructor 2 for the event"
-    t.string "instructor_3", comment: "name of instructor 3 for the event"
-    t.string "infotext", comment: "More text details about the event"
-    t.string "commenttext"
-    t.string "ticket_info"
-    t.string "key", comment: "unique identifier for DinKurs used to construct the event_url_key"
-    t.string "url_id"
-    t.string "url_key"
-    t.string "completion_text"
-    t.string "aftertext"
-    t.string "dates"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.bigint "company_id"
-    t.string "place"
-    t.index ["company_id"], name: "index_dinkurs_events_on_company_id"
   end
 
   create_table "kommuns", force: :cascade do |t|
@@ -223,7 +186,6 @@ ActiveRecord::Schema.define(version: 20171129011045) do
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
-  add_foreign_key "dinkurs_events", "companies"
   add_foreign_key "membership_applications", "member_app_waiting_reasons", column: "member_app_waiting_reasons_id"
   add_foreign_key "membership_applications", "users"
   add_foreign_key "payments", "companies"
