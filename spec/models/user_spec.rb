@@ -27,9 +27,7 @@ RSpec.describe User, type: :model do
   describe 'Associations' do
     it { is_expected.to have_many :membership_applications }
     it { is_expected.to have_many :payments }
-    it { is_expected.to accept_nested_attributes_for(:payments) }
-    it { is_expected.to have_many(:business_categories)
-         .through(:membership_applications) }
+    it { is_expected.to accept_nested_attributes_for(:payments)}
   end
 
   describe 'Admin' do

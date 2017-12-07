@@ -7,7 +7,6 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
 
   has_many :membership_applications
-  has_many :business_categories, through: :membership_applications
 
   has_many :payments
   accepts_nested_attributes_for :payments
