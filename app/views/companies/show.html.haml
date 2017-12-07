@@ -41,10 +41,10 @@
 
     - user_can_edit = policy(@company).update?
 
+    = render partial: 'company_members', locals: { company: @company }
+
     = render partial: 'company_addresses',
                       locals: { company: @company, user_can_edit: user_can_edit }
-
-    = render partial: 'company_members', locals: { company: @company }
 
     .row.center.item-nav-buttons#item-nav-buttons
 
