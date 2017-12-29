@@ -279,7 +279,7 @@ en:
       upload_files_section: Documents to support your application (certifications, etc.)
       upload_files_instructions: 'The documents are very important for us to assess your application. We use them to authenticate your skills and education. This ensures that our membership standards remain high, which in turn means that the public know that the Swedish dog business is professional and reliable.'
       upload_files: 'Upload files from your computer:'
-      upload_more_files: 'You can upload more files. After you submit your application, you can edit it upload more files on that page.'
+      upload_more_files: 'You can upload more files. After you submit your application, you may still edit the application and upload more files.'
       upload_button: Choose files to upload...
       will_be_uploaded: 'These files will be uploaded when you submit your application:'
 
