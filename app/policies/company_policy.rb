@@ -25,4 +25,8 @@ class CompanyPolicy < ApplicationPolicy
     user.admin?
   end
 
+  def get_dinkurs_events?
+    update?
+  end
+
 end

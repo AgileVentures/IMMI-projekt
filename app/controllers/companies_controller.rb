@@ -1,8 +1,8 @@
 class CompaniesController < ApplicationController
   include PaginationUtility
 
-  before_action :set_company, only: [:show, :edit, :update, :destroy, :edit_payment]
-  before_action :authorize_company, only: [:update, :show, :edit, :destroy]
+  before_action :set_company, only: [:show, :edit, :update, :destroy, :edit_payment, :get_dinkurs_events]
+  before_action :authorize_company, only: [:update, :show, :edit, :destroy, :get_dinkurs_events]
 
 
   def index
@@ -113,6 +113,45 @@ class CompaniesController < ApplicationController
   end
 
 
+  def get_dinkurs_events
+
+    raise 'Unsupported request' unless request.xhr?
+
+    # get dinkurs events for the company
+    dinkurs_events = DinkursService.get_events(@company.dinkurs_key)
+
+
+    unless dinkurs_events.nil?
+      dinkurs_events.each do | dk_event |
+        puts "   #{dk_event.inspect}"
+      end
+
+      # TODO save the events
+
+      render partial: 'dinkurs_events_teaser_list', locals: { dk_events: dinkurs_events }
+    else
+      helpers.flash_message(:alert, t('.error'))
+      render :show
+    end
+
+    # TODO if fetch was successful,
+    #  populate some little bit of info about the events with a link to where to find the full list.
+
+    # example code used when payments are fetched from an external system (HIPS):
+=begin
+    if @company.update(sanitize_website(company_params))  &&
+        (payment ? payment.update(payment_params) : true)
+
+      #render partial: 'member_payment_status', locals: { user: @user }
+    else
+      helpers.flash_message(:alert, t('.error'))
+      render :show
+    end
+=end
+
+  end
+
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_company
@@ -134,14 +173,15 @@ class CompaniesController < ApplicationController
                                     :email,
                                     :website,
                                     :description,
-                                    addresses_attributes: [:id,
-                                                           :street_address,
-                                                           :post_code,
-                                                           :kommun_id,
-                                                           :city,
-                                                           :region_id,
-                                                           :country,
-                                                           :visibility])
+                                    :dinkurs_key,
+        addresses_attributes: [:id,
+                                :street_address,
+                                :post_code,
+                                :kommun_id,
+                                :city,
+                                :region_id,
+                                :country,
+                                :visibility])
   end
 
 

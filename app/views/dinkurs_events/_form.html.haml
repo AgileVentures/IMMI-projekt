@@ -1,0 +1,11 @@
+= form_for @dinkurs_event do |f|
+
+  - if @dinkurs_event.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@dinkurs_event.errors.count, "error")} prohibited this dinkurs_event from being saved:"
+      %ul
+        - @dinkurs_event.errors.full_messages.each do |message|
+          %li= message
+
+  .actions
+    = f.submit 'Save'

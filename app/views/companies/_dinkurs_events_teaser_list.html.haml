@@ -1,0 +1,21 @@
+%h3 DinKurs Events: (TODO: need to replace this with real view)
+
+%table.table.table-hover
+  %thead
+    %tr
+      %th
+        Event name
+      %th
+        Start Date
+    %tr
+  %tbody
+    - dk_events.each do | dk_event |
+      %tr.dk_event{class: "#{dk_event.id}-dk_event"}
+        %td.event-name
+          = dk_event.name
+        %td.event-start-date
+          = dk_event.start
+
+
+-# if the number of events > the TEASER_LIMIT...
+%p.dinkurs_more Click here to see all DinKurs events for this company...

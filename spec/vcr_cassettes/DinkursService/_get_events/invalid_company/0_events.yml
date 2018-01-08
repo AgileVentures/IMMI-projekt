@@ -1,0 +1,34 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://dinkurs.se/lxml.asp?company_key=blorf
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - ASPSESSIONIDSGSSCRQQ=NNBOLLJCKAHALFMOPJBGNDML; secure; path=/
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Wed, 22 Nov 2017 09:31:01 GMT
+      Content-Length:
+      - '59'
+    body:
+      encoding: UTF-8
+      string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<events>\r\n</events>"
+    http_version: 
+  recorded_at: Wed, 22 Nov 2017 09:30:51 GMT
+recorded_with: VCR 3.0.3

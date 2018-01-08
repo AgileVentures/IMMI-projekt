@@ -1,0 +1,19 @@
+%h1 Listing dinkurs_events
+
+%table
+  %thead
+    %tr
+      %th
+      %th
+      %th
+
+  %tbody
+    - @dinkurs_events.each do |dinkurs_event|
+      %tr
+        %td= link_to 'Show', dinkurs_event
+        %td= link_to 'Edit', edit_dinkurs_event_path(dinkurs_event)
+        %td= link_to 'Destroy', dinkurs_event, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Dinkurs event', new_dinkurs_event_path

@@ -185,6 +185,7 @@ sv:
         kommun: *kommun
         region: *region
         region_short: *region_short
+        dinkurs_key: &dinkurs_company_key Dinkurs Företag key
 
       business_category:
         name: &business_category_name  Namn
@@ -202,7 +203,35 @@ sv:
         description_en: "Beskrivning (engelska)"
         is_custom: "Annan anledning"
 
-
+      dinkurs_event:
+        name:  Name
+        place: Place
+        place_geometry_location: Place coordinates
+        host: Host
+        fee: Fee
+        fee_tax:  Fee tax
+        pub:  Publication date
+        apply:  Apply date
+        start:  Start date
+        stop:  End date
+        participant_number:  Number of Participants
+        participant_reserve:  Reserve number of participants
+        participants:  Participants
+        occasions:  Occasions
+        group:  Group
+        position:  Position
+        instructor_1: Instructor 1
+        instructor_2: Instructor 2
+        instructor_3: Instructor 3
+        infotext:  Info
+        commenttext:  Comments
+        ticket_info:  Ticket info
+        key:  Key
+        url_id: Url ID
+        url_key: Url Key
+        completion_text:  Completion text
+        aftertext:  After text
+        dates: Dates
 
 
     errors:
@@ -477,6 +506,10 @@ sv:
       region: *region
       website: Företagets webbplats
       org_nr: *org_nr
+      dinkurs_key: *dinkurs_company_key
+      dinkurs_help: "Om du har ett Dinkurs.se konto och vill visa företagshändelser här, ange Dinkurs.se företagsnyckel.."
+      dinkurs_help_can_leave_blank: "(Du kan lämna den tom om du inte har ett Dinkurs.se konto.)"
+
       delete: Radera företaget
       confirm_are_you_sure: *are_you_sure_confirm
       add_address: 'Lägg till adress'
@@ -503,6 +536,9 @@ sv:
     destroy:
       success: Företaget raderat.
       error: Ett problem hindrade företaget från att raderas.
+
+    get_dinkurs_events:
+      error: "Kan inte hämta evenemang från DinKurs.se"
 
     form:
       region_tooltip: Välj "Sverige" om företaget är verksamt i

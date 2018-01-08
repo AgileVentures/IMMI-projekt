@@ -45,6 +45,25 @@
     = render partial: 'company_addresses',
                       locals: { company: @company, user_can_edit: user_can_edit }
 
+
+    - if user_can_edit
+      .row
+        .col-md-4
+          %p.dinkurs-key
+            = field_or_none t('.dinkurs_key'), @company.dinkurs_key, tag_options: {class: 'dinkurs-key'}
+
+            - unless @company.dinkurs_key.nil? || @company.dinkurs_key.empty?  # what if the field above has data, just not saved yet?
+              .dinkurs-fetch
+                = button_to 'get Dinkurs events',
+                            [:get_dinkurs_events, @company],
+                            id: 'getDinkursEvents',
+                            remote: true,
+                            data: {disable_with: "Getting the events..."}
+
+        .col-md-8
+          #dinkurs-events
+
+
     .row.center.item-nav-buttons#item-nav-buttons
 
       - if user_can_edit

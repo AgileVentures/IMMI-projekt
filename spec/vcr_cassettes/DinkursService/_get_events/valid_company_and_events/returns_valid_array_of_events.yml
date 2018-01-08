@@ -1,0 +1,359 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://dinkurs.se/lxml.asp?company_key=yFKGQJ
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers: {}
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Cache-Control:
+      - private
+      Content-Type:
+      - text/xml;charset=UTF-8
+      Server:
+      - Microsoft-IIS/8.5
+      Set-Cookie:
+      - ASPSESSIONIDAGRQDRTT=DDKMAPCDOJBBNDLADIHENHCC; secure; path=/
+      X-Powered-By:
+      - ASP.NET
+      Date:
+      - Wed, 29 Nov 2017 08:57:45 GMT
+      Content-Length:
+      - '30169'
+    body:
+      encoding: UTF-8
+      string: "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\r\n<events>\r\n    <event
+        event_id=\"28613\">\r\n    \t<event_id type=\"PropertyNumber\">28613</event_id>\r\n
+        \       <event_name type=\"PropertyString\">Betaling (DKK)</event_name>\r\n
+        \       <event_place type=\"PropertyString\"></event_place>\r\n        <event_place_geometry_location
+        type=\"PropertyString\"></event_place_geometry_location>\r\n        <event_host
+        type=\"PropertyString\">Demo Din Kurs</event_host>\r\n        <event_fee type=\"PropertyNumber\">0</event_fee>\r\n
+        \       <event_fee_tax type=\"PropertyNumber\">0</event_fee_tax>\r\n        <event_pub
+        type=\"PropertyDate\">2015-02-06</event_pub>\r\n        <event_apply type=\"PropertyDate\">2100-01-01</event_apply>\r\n
+        \       <event_start type=\"PropertyDate\">2100-01-01</event_start>\r\n        <event_stop
+        type=\"PropertyDate\">2100-01-01</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">0</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">0</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">0</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">0</event_occasions>\r\n        <event_group type=\"PropertyNumber\">0</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">0</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">3</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\"></event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\"></event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">PEpnLgEsMLFBlGjV</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">3</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=28613</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=PEpnLgEsMLFBlGjV</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[]]></event_aftertext>\r\n
+        \       <event_event_dates type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n
+        \   <event event_id=\"30016\">\r\n    \t<event_id type=\"PropertyNumber\">30016</event_id>\r\n
+        \       <event_name type=\"PropertyString\">Betalning (SEK)</event_name>\r\n
+        \       <event_place type=\"PropertyString\"></event_place>\r\n        <event_place_geometry_location
+        type=\"PropertyString\"></event_place_geometry_location>\r\n        <event_host
+        type=\"PropertyString\">Demo Din Kurs</event_host>\r\n        <event_fee type=\"PropertyNumber\">0</event_fee>\r\n
+        \       <event_fee_tax type=\"PropertyNumber\">0</event_fee_tax>\r\n        <event_pub
+        type=\"PropertyDate\">2015-04-15</event_pub>\r\n        <event_apply type=\"PropertyDate\">2100-01-01</event_apply>\r\n
+        \       <event_start type=\"PropertyDate\">2100-01-01</event_start>\r\n        <event_stop
+        type=\"PropertyDate\">2100-01-01</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">0</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">0</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">0</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">0</event_occasions>\r\n        <event_group type=\"PropertyNumber\">0</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">0</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">3</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\"></event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\"></event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">MRCLQjAQUStcThxB</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=30016</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=MRCLQjAQUStcThxB</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[]]></event_aftertext>\r\n
+        \       <event_event_dates type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n
+        \   <event event_id=\"26296\">\r\n    \t<event_id type=\"PropertyNumber\">26296</event_id>\r\n
+        \       <event_name type=\"PropertyString\">Nyhetsbrevslista</event_name>\r\n
+        \       <event_place type=\"PropertyString\"></event_place>\r\n        <event_place_geometry_location
+        type=\"PropertyString\"></event_place_geometry_location>\r\n        <event_host
+        type=\"PropertyString\">Demo</event_host>\r\n        <event_fee type=\"PropertyNumber\">0</event_fee>\r\n
+        \       <event_fee_tax type=\"PropertyNumber\">0</event_fee_tax>\r\n        <event_pub
+        type=\"PropertyDate\">2014-10-20</event_pub>\r\n        <event_apply type=\"PropertyDate\">2100-01-01</event_apply>\r\n
+        \       <event_start type=\"PropertyDate\">2100-01-01</event_start>\r\n        <event_stop
+        type=\"PropertyDate\">2100-01-01</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">0</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">0</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">1</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">0</event_occasions>\r\n        <event_group type=\"PropertyNumber\">0</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">0</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">4</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\">Här ser du dina sändlistor.
+        En sändlista är en samling adresser som du kan använda för att skicka nyhetsbrev
+        till. Du kan även skicka nyhetsbrev till deltagare i ett evenemang.</event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\"></event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">qPZFJwFENEqVwcvI</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=26296</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=qPZFJwFENEqVwcvI</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[]]></event_aftertext>\r\n
+        \       <event_event_dates type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n
+        \   <event event_id=\"42356\">\r\n    \t<event_id type=\"PropertyNumber\">42356</event_id>\r\n
+        \       <event_name type=\"PropertyString\">Biljetter</event_name>\r\n        <event_place
+        type=\"PropertyString\">Elsewhere AB</event_place>\r\n        <event_place_geometry_location
+        type=\"PropertyString\">(55.6077948, 13.005606100000023)</event_place_geometry_location>\r\n
+        \       <event_host type=\"PropertyString\">Demo</event_host>\r\n        <event_fee
+        type=\"PropertyNumber\">10</event_fee>\r\n        <event_fee_tax type=\"PropertyNumber\">2</event_fee_tax>\r\n
+        \       <event_pub type=\"PropertyDate\">2016-11-18</event_pub>\r\n        <event_apply
+        type=\"PropertyDate\">2017-11-29</event_apply>\r\n        <event_start type=\"PropertyDate\">2017-12-15</event_start>\r\n
+        \       <event_stop type=\"PropertyDate\">2017-12-15</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">500</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">2</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">91</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">4</event_occasions>\r\n        <event_group type=\"PropertyNumber\">10</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">3</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">0</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\"></event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\"></event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">QKCVGOObDgLCHVRY</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=42356</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=QKCVGOObDgLCHVRY</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[Yolo]]></event_aftertext>\r\n
+        \       <event_event_dates type=\"PropertyString\">\r\n        \r\n\t\t\t\t<event_date
+        event_date_id=\"3585\">\r\n\t\t\t\t\t<event_date_url><![CDATA[https://dinkurs.se/forms/event_dates_create_cal.asp?event_id=&event_dates_id=3585]]></event_date_url>\r\n\t\t\t\t\t<event_date_start><![CDATA[2011-01-01]]></event_date_start>\r\n\t\t\t\t\t<event_date_stop><![CDATA[2011-04-09]]></event_date_stop>\r\n\t\t\t\t\t<event_date_place><![CDATA[]]></event_date_place>\r\n\t\t\t\t\t<event_date_info><![CDATA[]]></event_date_info>\r\n\t\t\t\t</event_date>\r\n\t\t\t\r\n\t\t\t\t<event_date
+        event_date_id=\"2928\">\r\n\t\t\t\t\t<event_date_url><![CDATA[https://dinkurs.se/forms/event_dates_create_cal.asp?event_id=&event_dates_id=2928]]></event_date_url>\r\n\t\t\t\t\t<event_date_start><![CDATA[2016-11-26]]></event_date_start>\r\n\t\t\t\t\t<event_date_stop><![CDATA[2016-11-26]]></event_date_stop>\r\n\t\t\t\t\t<event_date_place><![CDATA[]]></event_date_place>\r\n\t\t\t\t\t<event_date_info><![CDATA[]]></event_date_info>\r\n\t\t\t\t</event_date>\r\n\t\t\t\r\n\t\t\t\t<event_date
+        event_date_id=\"2929\">\r\n\t\t\t\t\t<event_date_url><![CDATA[https://dinkurs.se/forms/event_dates_create_cal.asp?event_id=&event_dates_id=2929]]></event_date_url>\r\n\t\t\t\t\t<event_date_start><![CDATA[2016-11-27]]></event_date_start>\r\n\t\t\t\t\t<event_date_stop><![CDATA[2016-11-27]]></event_date_stop>\r\n\t\t\t\t\t<event_date_place><![CDATA[]]></event_date_place>\r\n\t\t\t\t\t<event_date_info><![CDATA[]]></event_date_info>\r\n\t\t\t\t</event_date>\r\n\t\t\t\r\n\t\t\t\t<event_date
+        event_date_id=\"2930\">\r\n\t\t\t\t\t<event_date_url><![CDATA[https://dinkurs.se/forms/event_dates_create_cal.asp?event_id=&event_dates_id=2930]]></event_date_url>\r\n\t\t\t\t\t<event_date_start><![CDATA[2016-11-28]]></event_date_start>\r\n\t\t\t\t\t<event_date_stop><![CDATA[2016-11-28]]></event_date_stop>\r\n\t\t\t\t\t<event_date_place><![CDATA[]]></event_date_place>\r\n\t\t\t\t\t<event_date_info><![CDATA[]]></event_date_info>\r\n\t\t\t\t</event_date>\r\n\t\t\t\r\n\t\t\t\t<event_date
+        event_date_id=\"2931\">\r\n\t\t\t\t\t<event_date_url><![CDATA[https://dinkurs.se/forms/event_dates_create_cal.asp?event_id=&event_dates_id=2931]]></event_date_url>\r\n\t\t\t\t\t<event_date_start><![CDATA[2016-11-29]]></event_date_start>\r\n\t\t\t\t\t<event_date_stop><![CDATA[2016-11-29]]></event_date_stop>\r\n\t\t\t\t\t<event_date_place><![CDATA[]]></event_date_place>\r\n\t\t\t\t\t<event_date_info><![CDATA[]]></event_date_info>\r\n\t\t\t\t</event_date>\r\n\t\t\t
+        \r\n        </event_event_dates>\r\n\t</event>\r\n    <event event_id=\"43493\">\r\n
+        \   \t<event_id type=\"PropertyNumber\">43493</event_id>\r\n        <event_name
+        type=\"PropertyString\">Grundkurs om eventry.</event_name>\r\n        <event_place
+        type=\"PropertyString\">Fågelvägen 8,</event_place>\r\n        <event_place_geometry_location
+        type=\"PropertyString\">(56.2360185, 14.535028900000043)</event_place_geometry_location>\r\n
+        \       <event_host type=\"PropertyString\">Demo</event_host>\r\n        <event_fee
+        type=\"PropertyNumber\">10</event_fee>\r\n        <event_fee_tax type=\"PropertyNumber\">2</event_fee_tax>\r\n
+        \       <event_pub type=\"PropertyDate\">2017-01-12</event_pub>\r\n        <event_apply
+        type=\"PropertyDate\">2018-01-30</event_apply>\r\n        <event_start type=\"PropertyDate\">2018-01-30</event_start>\r\n
+        \       <event_stop type=\"PropertyDate\">2018-01-30</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">0</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">0</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">32</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">1</event_occasions>\r\n        <event_group type=\"PropertyNumber\">10</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">3</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">0</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\"></event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\"></event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">PPCDTNJrDvrFMBoX</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=43493</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=PPCDTNJrDvrFMBoX</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[ghfddz]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[]]></event_aftertext>\r\n
+        \       <event_event_dates type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n
+        \   <event event_id=\"47250\">\r\n    \t<event_id type=\"PropertyNumber\">47250</event_id>\r\n
+        \       <event_name type=\"PropertyString\">Test</event_name>\r\n        <event_place
+        type=\"PropertyString\">Demo</event_place>\r\n        <event_place_geometry_location
+        type=\"PropertyString\"></event_place_geometry_location>\r\n        <event_host
+        type=\"PropertyString\">Demo</event_host>\r\n        <event_fee type=\"PropertyNumber\">0</event_fee>\r\n
+        \       <event_fee_tax type=\"PropertyNumber\">0</event_fee_tax>\r\n        <event_pub
+        type=\"PropertyDate\">2017-06-21</event_pub>\r\n        <event_apply type=\"PropertyDate\">2018-06-21</event_apply>\r\n
+        \       <event_start type=\"PropertyDate\">2018-06-21</event_start>\r\n        <event_stop
+        type=\"PropertyDate\">2018-06-21</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">0</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">0</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">56</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">2</event_occasions>\r\n        <event_group type=\"PropertyNumber\">10</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">3</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">0</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\"></event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\">Yolo</event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">INhjhxvPAJIDNErZ</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=47250</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=INhjhxvPAJIDNErZ</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[<p><strong>Den kinesiska
+        e-handelsjätten Alibaba drar in 22 miljarder kronor under kvartalet. Samtidigt
+        skruvar bolaget upp prognoserna.</strong></p> <p>Den kinesiska näthandelsjätten
+        Alibaba gör ett nettoresultat på 17,4 miljarder yuan, motsvarande drygt 22
+        miljarder kronor, för det andra kvartalet i det brutna räkenskapsåret 2017/2018.</p><p>Samma
+        period förra året var vinsten omkring 9 miljarder kronor. Alibaba har alltså
+        mer än fördubblat vinsten.</p><p>Justerat resultat per aktie var 8:57 yuan.
+        Det är betydligt högre än analytikernas förväntningar på ett resultat på 6:86
+        yuan per aktie, enligt Bloomberg News snittprognos.</p>]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[<p><strong>&amp;nbsp;Nu
+        lanseras deras digitala kompis</strong></p> &amp;nbsp;<p>&amp;nbsp;</p><p>Under
+        torsdagen lanseras Shim, en svensk app som vill vara en digital kompis till
+        användaren. Appen är baserad på psykologisk forskning, men är inte avsedd
+        som en behandling för psykisk ohälsa. Istället ska man kunna prata med Shim
+        om vardagens bekymmer.</p><p>”Evolutionen har format oss människor till att
+        i första hand uppmärksamma det som är negativt. Därför kan det få stora effekter
+        om man tränar på det positiva. Samtalet med Shim är ett enkelt sätt att göra
+        just det”, säger Hoa Ly som är medgrundare av Shim och doktor i psykologi.</p>]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[<p><strong>Courtagefri
+        aktieapp når 3 miljoner användare</strong></p><p>Nätmäklaren Robinhood har
+        nu nått tre miljoner registrerade använder, rapporterar&amp;nbsp;<a title=\"https://techcrunch.com/2017/11/01/robinhood-for-web/\"
+        href=\"https://techcrunch.com/2017/11/01/robinhood-for-web/\" target=\"_blank\">Techcrunch</a>.</p><p>Det
+        speciella med nätmäklaren är att de erbjuder courtagefri aktiehandel i USA.&amp;nbsp;Bolaget
+        tjänar pengar på en premiumtjänst som låter användarna låna pengar för att
+        handla.&amp;nbsp;</p><p><strong>Läs även:&amp;nbsp;<a title=\"https://digital.di.se/artikel/efter-courtagechocken-sigmastocks-i-samarbete-med-nordea\"
+        href=\"https://digital.di.se/artikel/efter-courtagechocken-sigmastocks-i-samarbete-med-nordea\">Efter
+        courtagechocken – Sigmastocks i samarbete med Nordea</a></strong></p><p>Samtidigt
+        meddelar bolaget att transaktioner till ett värde av över 800 miljarder kronor
+        skett i appen. Enligt bolaget har kunderna sparat courtageavgifter på drygt
+        8 miljarder kronor.&amp;nbsp;<br /></p>]]></event_aftertext>\r\n        <event_event_dates
+        type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n
+        \   <event event_id=\"48712\">\r\n    \t<event_id type=\"PropertyNumber\">48712</event_id>\r\n
+        \       <event_name type=\"PropertyString\">Deltagarhantering har aldrig varit
+        enklare!</event_name>\r\n        <event_place type=\"PropertyString\">Östergatan</event_place>\r\n
+        \       <event_place_geometry_location type=\"PropertyString\">(55.60756180000001,
+        13.003679599999941)</event_place_geometry_location>\r\n        <event_host
+        type=\"PropertyString\">Demo</event_host>\r\n        <event_fee type=\"PropertyNumber\">125</event_fee>\r\n
+        \       <event_fee_tax type=\"PropertyNumber\">25</event_fee_tax>\r\n        <event_pub
+        type=\"PropertyDate\">2017-09-22</event_pub>\r\n        <event_apply type=\"PropertyDate\">2018-12-31</event_apply>\r\n
+        \       <event_start type=\"PropertyDate\">2018-12-31</event_start>\r\n        <event_stop
+        type=\"PropertyDate\">2018-12-31</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">1234</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">56</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">11</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">1</event_occasions>\r\n        <event_group type=\"PropertyNumber\">10</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">3</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">0</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\"></event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\"></event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">kNzMWFFQTWKBgLPM</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=48712</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=kNzMWFFQTWKBgLPM</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[<p><strong>Office
+        365 är en samlingsterm för Microsoft's cloud tjänster.&amp;nbsp;</strong></p><p>&amp;nbsp;</p><p>Saas
+        (Software as a Service) modelen ersätter den gamla standarden av köp, nedladdgning
+        samt installation av mjukvara på varje dator på arbetsplatsen. Grundtanken
+        är att premuneration på tjänster ger åtkomst till ditt office 24 timmar om
+        dygnet 365 dagar om året. Så även om du loggar in på en tablet eller smart
+        telefon på resa, en bärbar dator i sängen eller en arbetsstation på ditt kontor,
+        kan du komma åt alla de verktyg eller information du behöver. Flera enhe</p>]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[<p>moms</p><p>&amp;nbsp;</p>]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[]]></event_aftertext>\r\n
+        \       <event_event_dates type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n
+        \   <event event_id=\"13343\">\r\n    \t<event_id type=\"PropertyNumber\">13343</event_id>\r\n
+        \       <event_name type=\"PropertyString\">Beställningsformulär</event_name>\r\n
+        \       <event_place type=\"PropertyString\"></event_place>\r\n        <event_place_geometry_location
+        type=\"PropertyString\"></event_place_geometry_location>\r\n        <event_host
+        type=\"PropertyString\">Demo Din Kurs</event_host>\r\n        <event_fee type=\"PropertyNumber\">0</event_fee>\r\n
+        \       <event_fee_tax type=\"PropertyNumber\">0</event_fee_tax>\r\n        <event_pub
+        type=\"PropertyDate\">2012-08-21</event_pub>\r\n        <event_apply type=\"PropertyDate\">2022-06-08</event_apply>\r\n
+        \       <event_start type=\"PropertyDate\">2022-06-08</event_start>\r\n        <event_stop
+        type=\"PropertyDate\">2022-06-08</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">0</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">0</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">2</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">0</event_occasions>\r\n        <event_group type=\"PropertyNumber\">10</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">3</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">2</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\"></event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\"></event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">pTPQREGNgBXGNMQn</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=13343</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=pTPQREGNgBXGNMQn</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[]]></event_aftertext>\r\n
+        \       <event_event_dates type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n
+        \   <event event_id=\"26230\">\r\n    \t<event_id type=\"PropertyNumber\">26230</event_id>\r\n
+        \       <event_name type=\"PropertyString\">Intresselista</event_name>\r\n
+        \       <event_place type=\"PropertyString\">Intresselista/Nyhetsbrev</event_place>\r\n
+        \       <event_place_geometry_location type=\"PropertyString\"></event_place_geometry_location>\r\n
+        \       <event_host type=\"PropertyString\">Demo Din Kurs</event_host>\r\n
+        \       <event_fee type=\"PropertyNumber\">0</event_fee>\r\n        <event_fee_tax
+        type=\"PropertyNumber\">0</event_fee_tax>\r\n        <event_pub type=\"PropertyDate\">2014-10-15</event_pub>\r\n
+        \       <event_apply type=\"PropertyDate\">2015-12-31</event_apply>\r\n        <event_start
+        type=\"PropertyDate\">2040-01-01</event_start>\r\n        <event_stop type=\"PropertyDate\">2040-01-01</event_stop>\r\n
+        \       <event_participant_number type=\"PropertyNumber\">0</event_participant_number>\r\n
+        \       <event_participant_reserve type=\"PropertyNumber\">0</event_participant_reserve>\r\n
+        \       <event_participants type=\"PropertyNumber\">0</event_participants>\r\n
+        \       <event_occasions type=\"PropertyNumber\">0</event_occasions>\r\n        <event_group
+        type=\"PropertyNumber\">10</event_group>\r\n        <event_position type=\"PropertyNumber\">3</event_position>\r\n
+        \       <event_instructor_1 type=\"PropertyString\"></event_instructor_1>\r\n
+        \       <event_instructor_2 type=\"PropertyString\"></event_instructor_2>\r\n
+        \       <event_instructor_3 type=\"PropertyString\"></event_instructor_3>\r\n
+        \       <event_parking type=\"PropertyNumber\">1</event_parking>\r\n        <event_commenttext
+        type=\"PropertyString\"></event_commenttext>\r\n        <event_ticket_info
+        type=\"PropertyString\"></event_ticket_info>\r\n        <event_key type=\"PropertyString\">LGbRBLplIUHsNJHF</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=26230</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=LGbRBLplIUHsNJHF</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[]]></event_infotext>\r\n
+        \       <event_completion_text type=\"PropertyString\"><![CDATA[]]></event_completion_text>\r\n
+        \       <event_aftertext type=\"PropertyString\"><![CDATA[]]></event_aftertext>\r\n
+        \       <event_event_dates type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n
+        \   <event event_id=\"41988\">\r\n    \t<event_id type=\"PropertyNumber\">41988</event_id>\r\n
+        \       <event_name type=\"PropertyString\">stav</event_name>\r\n        <event_place
+        type=\"PropertyString\">Stavsnäs</event_place>\r\n        <event_place_geometry_location
+        type=\"PropertyString\">(59.2911887, 18.690457000000038)</event_place_geometry_location>\r\n
+        \       <event_host type=\"PropertyString\">Demo</event_host>\r\n        <event_fee
+        type=\"PropertyNumber\">300</event_fee>\r\n        <event_fee_tax type=\"PropertyNumber\">0</event_fee_tax>\r\n
+        \       <event_pub type=\"PropertyDate\">2016-11-14</event_pub>\r\n        <event_apply
+        type=\"PropertyDate\">2016-11-24</event_apply>\r\n        <event_start type=\"PropertyDate\">2040-01-01</event_start>\r\n
+        \       <event_stop type=\"PropertyDate\">2040-01-01</event_stop>\r\n        <event_participant_number
+        type=\"PropertyNumber\">12</event_participant_number>\r\n        <event_participant_reserve
+        type=\"PropertyNumber\">0</event_participant_reserve>\r\n        <event_participants
+        type=\"PropertyNumber\">1</event_participants>\r\n        <event_occasions
+        type=\"PropertyNumber\">0</event_occasions>\r\n        <event_group type=\"PropertyNumber\">10</event_group>\r\n
+        \       <event_position type=\"PropertyNumber\">3</event_position>\r\n        <event_instructor_1
+        type=\"PropertyString\"></event_instructor_1>\r\n        <event_instructor_2
+        type=\"PropertyString\"></event_instructor_2>\r\n        <event_instructor_3
+        type=\"PropertyString\"></event_instructor_3>\r\n        <event_parking type=\"PropertyNumber\">1</event_parking>\r\n
+        \       <event_commenttext type=\"PropertyString\"></event_commenttext>\r\n
+        \       <event_ticket_info type=\"PropertyString\"></event_ticket_info>\r\n
+        \       <event_key type=\"PropertyString\">BLQHndUsZcZHrJhR</event_key>\r\n
+        \       <event_currency_id type=\"PropertyNumber\">1</event_currency_id>\r\n
+        \       <event_default_client_numbers type=\"PropertyNumber\"></event_default_client_numbers>\r\n
+        \       <event_url_id type=\"PropertyString\">https://dinkurs.se/appliance/?event_id=41988</event_url_id>\r\n
+        \       <event_url_key type=\"PropertyString\">https://dinkurs.se/appliance/?event_key=BLQHndUsZcZHrJhR</event_url_key>\r\n
+        \       <event_infotext type=\"PropertyString\"><![CDATA[Informationstext
+        innan anmälningsformuläret\r\n\r\nLämna denna ruta tom för att låta deltagaren
+        komma direkt till anmälningsformuläret]]></event_infotext>\r\n        <event_completion_text
+        type=\"PropertyString\"><![CDATA[]]></event_completion_text>\r\n        <event_aftertext
+        type=\"PropertyString\"><![CDATA[]]></event_aftertext>\r\n        <event_event_dates
+        type=\"PropertyString\">\r\n         \r\n        </event_event_dates>\r\n\t</event>\r\n</events>"
+    http_version: 
+  recorded_at: Wed, 29 Nov 2017 08:57:33 GMT
+recorded_with: VCR 3.0.3

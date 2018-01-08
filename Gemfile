@@ -68,6 +68,9 @@ gem 'jwt'
 gem 'exception_notification' # send notifications if there are errors
 gem 'slack-notifier'  # send notifications to Slack
 
+gem 'httparty'
+
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'

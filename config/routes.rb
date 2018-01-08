@@ -61,6 +61,7 @@ Rails.application.routes.draw do
     resources :companies, path: 'hundforetag' do
       member do
         put 'edit_payment', to: 'companies#edit_payment', as: 'edit_payment'
+        post 'get_dinkurs_events', to: 'companies#get_dinkurs_events', as: 'get_dinkurs_events'
       end
     end
 
@@ -71,6 +72,8 @@ Rails.application.routes.draw do
     end
 
     resources :shf_documents, path: 'dokument'
+
+    resources :dinkurs_events
 
     get 'dokument/innehall/:page',
       to: 'shf_documents#contents_show', as: 'contents_show'
