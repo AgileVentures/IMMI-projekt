@@ -8,6 +8,8 @@ FactoryGirl.define do
     contact_email 'MyString@email.com'
     state :new
 
+    updated_at Time.zone.now
+
     association :user
 
     trait :accepted do

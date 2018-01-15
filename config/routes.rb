@@ -25,6 +25,12 @@ Rails.application.routes.draw do
 
     resources :member_app_waiting_reasons
 
+    get 'dashboard', to: 'dashboard#index'
+    put 'dashboard_timeframe', to: 'dashboard#update_timeframe'
+
+    put 'dashboard_show_recent_activity', to: 'dashboard#show_recent_activity'
+
+
   end
 
 

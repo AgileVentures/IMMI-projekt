@@ -3,28 +3,16 @@ module AdminOnly
 # An abstract super class for those classes that only Admins have permission to access
   class AdminOnlyPolicy < ApplicationPolicy
 
-    def show?
-      @user.admin?
-    end
+    # All methods do the same thing:  the user must be the admin
 
+    all_actions_to_authorize = [:show?, :index?, :new?, :create?, :edit?, :update?, :destroy?]
 
-    def index?
-      @user.admin?
-    end
+    all_actions_to_authorize.each do |method|
 
+      define_method(method) do
+        user.admin?
+      end
 
-    def update?
-      @user.admin?
-    end
-
-
-    def create?
-      @user.admin?
-    end
-
-
-    def new?
-      create?
     end
 
   end

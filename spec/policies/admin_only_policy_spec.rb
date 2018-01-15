@@ -9,17 +9,15 @@ RSpec.describe AdminOnly::AdminOnlyPolicy do
 
   let(:simple_record) { create(:business_category) }
 
-  describe 'Admin is permitted everything' do
+  CRUD_ACTIONS = [:index, :show, :new, :create, :edit, :update, :destroy]
 
+
+  describe 'Admin is permitted everything' do
     subject { described_class.new(admin, simple_record) }
 
-    it { is_expected.to permit_action :index }
-    it { is_expected.to permit_action :show }
-    it { is_expected.to permit_action :edit }
-    it { is_expected.to permit_action :update }
-    it { is_expected.to permit_action :destroy }
-    it { is_expected.to permit_action :new }
-    it { is_expected.to permit_action :create }
+    CRUD_ACTIONS.each do | action |
+      it { is_expected.to permit_action action }
+    end
 
   end
 
@@ -27,13 +25,9 @@ RSpec.describe AdminOnly::AdminOnlyPolicy do
   describe 'Member is forbidden everything' do
     subject { described_class.new(member, simple_record) }
 
-    it { is_expected.to forbid_action :index }
-    it { is_expected.to forbid_action :show }
-    it { is_expected.to forbid_action :edit }
-    it { is_expected.to forbid_action :update }
-    it { is_expected.to forbid_action :destroy }
-    it { is_expected.to forbid_action :new }
-    it { is_expected.to forbid_action :create }
+    CRUD_ACTIONS.each do | action |
+      it { is_expected.to forbid_action action }
+    end
 
   end
 
@@ -41,27 +35,19 @@ RSpec.describe AdminOnly::AdminOnlyPolicy do
   describe 'User (logged in) is forbidden everything' do
     subject { described_class.new(user_1, simple_record) }
 
-    it { is_expected.to forbid_action :index }
-    it { is_expected.to forbid_action :show }
-    it { is_expected.to forbid_action :edit }
-    it { is_expected.to forbid_action :update }
-    it { is_expected.to forbid_action :destroy }
-    it { is_expected.to forbid_action :new }
-    it { is_expected.to forbid_action :create }
-
+    CRUD_ACTIONS.each do | action |
+      it { is_expected.to forbid_action action }
+    end
 
   end
+
 
   describe 'Visitor (not logged in) is forbidden everything' do
     subject { described_class.new(visitor, simple_record) }
 
-    it { is_expected.to forbid_action :index }
-    it { is_expected.to forbid_action :show }
-    it { is_expected.to forbid_action :edit }
-    it { is_expected.to forbid_action :update }
-    it { is_expected.to forbid_action :destroy }
-    it { is_expected.to forbid_action :new }
-    it { is_expected.to forbid_action :create }
+    CRUD_ACTIONS.each do | action |
+      it { is_expected.to forbid_action action }
+    end
 
   end
 

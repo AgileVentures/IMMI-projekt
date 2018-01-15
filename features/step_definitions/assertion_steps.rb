@@ -56,6 +56,8 @@ module PathHelpers
         path = user_path(user)
       when 'test exception notifications'
         path = test_exception_notifications_path
+      when 'admin dashboard'
+        path = admin_only_dashboard_path
     end
 
     expect(path).not_to be_empty, "A step was called with path= '#{pagename}', but that path is not defined in #{__method__} \n    (which is in #{__FILE__}"
