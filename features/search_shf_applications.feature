@@ -134,3 +134,29 @@ Scenario: Can sort by user membership number
   And I should see "Johanssen" before "Fransson"
   And I should see "Fransson" before "Eriksson"
   And I should see "Eriksson" before "Anderson"
+
+
+  @selenium
+  Scenario: Can sort by company number (org nr)
+    When I click on t("shf_applications.index.org_nr") link
+    And I should see "2120000142" before "5560360793"
+    And I should see "5560360793" before "5562252998"
+    And I should see "5562252998" before "5569467466"
+    Then I click on t("shf_applications.index.org_nr") link
+    And I should see "5569467466" before "5562252998"
+    And I should see "5562252998" before "5560360793"
+    And I should see "5560360793" before "2120000142"
+
+
+
+  @selenium
+  Scenario: Toggle Hide/Show search form (default state is to show the 'Hide the search form' button)
+    And I should see t("toggle.application_search_form.hide")
+    And I should not see t("toggle.application_search_form.show")
+    And t("activerecord.attributes.shf_application.last_name) should be visible
+    Then I click on t("toggle.application_search_form.hide")
+    Then I wait 2 seconds
+    Then I should see t("toggle.application_search_form.show")
+    And I should not see t("toggle.application_search_form.hide")
+    And t("activerecord.attributes.shf_application.last_name) should not be visible
+
