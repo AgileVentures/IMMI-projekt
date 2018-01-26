@@ -15,8 +15,11 @@ RSpec.describe AdminController, type: :controller do
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.last_name').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.user.membership_number').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.shf_application.state').strip}',"
+  out_str << "'date of state',"
   out_str << "'#{I18n.t('activerecord.models.business_category.other').strip}',"
   out_str << "'#{I18n.t('activerecord.models.company.one').strip}',"
+  out_str << "'Member fee',"
+  out_str << "'H-branding',"
   out_str << "'#{I18n.t('activerecord.attributes.address.street').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.address.post_code').strip}',"
   out_str << "'#{I18n.t('activerecord.attributes.address.city').strip}',"
@@ -91,11 +94,32 @@ RSpec.describe AdminController, type: :controller do
 
             member1_info = "#{m.contact_email},#{u.first_name},#{u.last_name},#{u.membership_number},"+ I18n.t("shf_applications.state.#{app_state.name}")
 
+
             result_str << member1_info + ','
+
+            # state date
+            result_str << (m.updated_at.strftime('%F'))
+            result_str << ','
+
             result_str << '"",'  # no business categories
 
-            result_str << (m.companies.any? ? '"' + m.companies.last.name + '"' : '')
+            result_str << (m.company_id.nil? ? '' : '"' + Company.find_by_id(m.company_id).name + '"')
+
             result_str << ','
+
+            # say betals if member fee is paid, otherwise make link to where it is paid
+            result_str << (u.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u))
+            result_str << ','
+
+            if m.company_id.nil?
+              result_str << '-'
+              result_str << ','
+            else
+              # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+              result_str << (Company.find_by_id(m.company_id).branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(Company.find_by_id(m.company_id)))
+              result_str << ','
+            end
+
 
             result_str << m.se_mailing_csv_str + "\n"
 
@@ -125,7 +149,7 @@ RSpec.describe AdminController, type: :controller do
 
         let(:c1) { FactoryGirl.create(:company) }
 
-        let(:member1) { m1 = FactoryGirl.create :shf_application,
+        let(:member1) { FactoryGirl.create :shf_application,
                                                       contact_email:  "u1@example.com",
                                                       state:          :accepted,
                                                       company_number: c1.company_number,
@@ -135,8 +159,7 @@ RSpec.describe AdminController, type: :controller do
 
         let(:csv_response) { post :export_ansokan_csv
                              response.body
-                           }
-
+        }
 
         it 'uses the company name and  address for each member' do
 
@@ -145,9 +168,28 @@ RSpec.describe AdminController, type: :controller do
           member1_info = "#{member1.contact_email},#{u1.first_name},#{u1.last_name},#{u1.membership_number},"+ I18n.t("shf_applications.state.#{member1.state}")
 
           result_str << member1_info + ','
-          result_str << '"",'  # no business categories
-          result_str << '"' + c1.name + '"' +','
+          # state date
+          result_str << (member1.updated_at.strftime('%F'))
+          result_str << ','
 
+          result_str << '"",'  # no business categories
+
+          #result_str << '"' + c1.name + '"' +','
+          result_str << (member1.company_id.nil? ?  '' : "\"#{Company.find_by_id(member1.company_id).name}\"") +','
+
+
+          # say betals if member fee is paid, otherwise make link to where it is paid
+          result_str << (u1.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << ','
+
+          if member1.company_id.nil?
+            result_str << '-'
+            result_str << ','
+          else
+            # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+            result_str << (Company.find_by_id(member1.company_id).branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(Company.find_by_id(member1.company_id)))
+            result_str << ','
+          end
           result_str << c1.se_mailing_csv_str + "\n"
 
           expect(csv_response).to match result_str
@@ -168,7 +210,7 @@ RSpec.describe AdminController, type: :controller do
 
         let(:c1) { FactoryGirl.create(:company) }
 
-        let(:member1) { m1 = FactoryGirl.create :shf_application,
+        let(:member1) { FactoryGirl.create :shf_application,
                                                 contact_email:  "u1@example.com",
                                                 state:          :accepted,
                                                 company_number: c1.company_number,
@@ -179,6 +221,9 @@ RSpec.describe AdminController, type: :controller do
                              response.body
                            }
 
+        let(:csv_response_reg) {  post :export_ansokan_csv
+                                  response.body
+        }
         let(:member1_info) {  "#{member1.contact_email},#{u1.first_name},#{u1.last_name},#{u1.membership_number},"+ I18n.t("shf_applications.state.#{member1.state}") }
 
 
@@ -187,11 +232,24 @@ RSpec.describe AdminController, type: :controller do
           result_str = csv_header
 
           result_str << member1_info + ','
-
+          # state date
+          result_str << (member1.updated_at.strftime('%F'))
+          result_str << ','
           result_str << '"",'  # no business categories
 
-          result_str << '"' + c1.name + '"' +','
+          result_str << (member1.company_id.nil? ?  '' : "\"#{Company.find_by_id(member1.company_id).name}\"") +','
+          # say betals if member fee is paid, otherwise make link to where it is paid
+          result_str << (u1.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << ','
 
+          if member1.company_id.nil?
+            result_str << '-'
+            result_str << ','
+          else
+            # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+            result_str << (Company.find_by_id(member1.company_id).branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(Company.find_by_id(member1.company_id)))
+            result_str << ','
+          end
           result_str << c1.se_mailing_csv_str + "\n"
 
           expect(csv_response).to match result_str
@@ -206,11 +264,24 @@ RSpec.describe AdminController, type: :controller do
           result_str = csv_header
 
           result_str << member1_info + ','
-
+          # state date
+          result_str << (member1.updated_at.strftime('%F'))
+          result_str << ','
           result_str << '"Business Category",'
 
-          result_str << '"' + c1.name + '"' +','
+          result_str << (member1.company_id.nil? ?  '' : "\"#{Company.find_by_id(member1.company_id).name}\"") +','
+          # say betals if member fee is paid, otherwise make link to where it is paid
+          result_str << (u1.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str << ','
 
+          if member1.company_id.nil?
+            result_str << '-'
+            result_str << ','
+          else
+            # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+            result_str << (Company.find_by_id(member1.company_id).branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(Company.find_by_id(member1.company_id)))
+            result_str << ','
+          end
           result_str << c1.se_mailing_csv_str + "\n"
 
           expect(csv_response).to match result_str
@@ -227,19 +298,33 @@ RSpec.describe AdminController, type: :controller do
           member1.save
 
           result_str_start = csv_header
-          result_str_start << member1_info
+          result_str_start << member1_info + ','
+          # state date
+          result_str_start << (member1.updated_at.strftime('%F'))
 
-          result_str_end = '"' + c1.name + '"' +','
+          result_str_end = (member1.company_id.nil? ?  '' : "\"#{Company.find_by_id(member1.company_id).name}\"") +','
+
+          # say betals if member fee is paid, otherwise make link to where it is paid
+          result_str_end << (u1.member? ? 'Betald' : 'Betalas via: http://hitta.sverigeshundforetagare.se' + user_path(u1))
+          result_str_end << ','
+
+          if member1.company_id.nil?
+            result_str_end << '-'
+            result_str_end << ','
+          else
+            # say betald if branding fee is paid, otherwise makes link to where it is paid (when logged in)
+            result_str_end << (Company.find_by_id(member1.company_id).branding_license? ? 'Betald' : 'Betalas som inloggad via: http://hitta.sverigeshundforetagare.se' + company_path(Company.find_by_id(member1.company_id)))
+            result_str_end << ','
+          end
           result_str_end << c1.se_mailing_csv_str + "\n"
 
           result_regexp = Regexp.new(/^#{result_str_start},(.*),#{result_str_end}$/)
 
           # results without the categories:
-          expect(csv_response).to match result_regexp
-
+          expect(csv_response_reg.to_s).to match result_regexp.to_s
 
           # Check that the categories are as expected:
-          match = csv_response.match result_regexp
+          match = csv_response_reg.to_s.match result_regexp.to_s
 
           # get the categories from the (.*) group -- if there are any
           #   get rid of extra quotes and whitespace
@@ -248,10 +333,7 @@ RSpec.describe AdminController, type: :controller do
           # expect all categories to be there, but could be in any order
           expect(categories).to match_array(['Category1', 'Category 2', 'Category the third'])
         end
-
       end
-
-
       describe 'error from send_data is rescued' do
 
         # status, location, response_body
