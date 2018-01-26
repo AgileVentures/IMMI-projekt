@@ -216,6 +216,16 @@ ALTER SEQUENCE companies_id_seq OWNED BY companies.id;
 
 
 --
+-- Name: companies_shf_applications; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE companies_shf_applications (
+    shf_application_id bigint NOT NULL,
+    company_id bigint NOT NULL
+);
+
+
+--
 -- Name: kommuns; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -860,6 +870,13 @@ CREATE INDEX index_addresses_on_region_id ON addresses USING btree (region_id);
 
 
 --
+-- Name: index_application_company; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_application_company ON companies_shf_applications USING btree (shf_application_id, company_id);
+
+
+--
 -- Name: index_ckeditor_assets_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -878,6 +895,13 @@ CREATE INDEX index_ckeditor_assets_on_type ON ckeditor_assets USING btree (type)
 --
 
 CREATE UNIQUE INDEX index_companies_on_company_number ON companies USING btree (company_number);
+
+
+--
+-- Name: index_company_application; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_company_application ON companies_shf_applications USING btree (company_id, shf_application_id);
 
 
 --
@@ -1096,6 +1120,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171109142139'),
 ('20171120170441'),
 ('20171213174816'),
-('20180103171241');
+('20180103171241'),
+('20180110215208');
 
 
