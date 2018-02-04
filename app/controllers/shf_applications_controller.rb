@@ -10,6 +10,7 @@ class ShfApplicationsController < ApplicationController
     @shf_application = ShfApplication.new(user: current_user)
     @all_business_categories = BusinessCategory.all
     @uploaded_file = @shf_application.uploaded_files.build
+    @allowed_file_types = UploadedFile::ALLOWED_FILE_TYPES.keys.flatten.join(' ')
   end
 
 
