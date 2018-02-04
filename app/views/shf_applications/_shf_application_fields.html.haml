@@ -46,7 +46,6 @@
 
       %h3.upload-button-pre= t('shf_applications.new.upload_files')
 
-
       %span{class: "btn btn-warning btn-file"}
         = t('shf_applications.new.upload_button')
         = f.file_field 'actual_files[]', multiple: true, name: 'uploaded_file[actual_files][]', class: 'upload-field', id: 'upload-button'

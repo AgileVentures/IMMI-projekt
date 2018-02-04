@@ -4,13 +4,12 @@ class ShfApplicationsController < ApplicationController
   before_action :get_shf_application, except: [:information, :index, :new, :create]
   before_action :authorize_shf_application
   before_action :set_other_waiting_reason, only: [:show, :edit, :update, :need_info]
-
+  before_action :set_allowed_file_types, only: [:edit, :new]
 
   def new
     @shf_application = ShfApplication.new(user: current_user)
     @all_business_categories = BusinessCategory.all
     @uploaded_file = @shf_application.uploaded_files.build
-    @allowed_file_types = UploadedFile::ALLOWED_FILE_TYPES.keys.flatten.join(' ')
   end
 
 
@@ -196,6 +195,11 @@ class ShfApplicationsController < ApplicationController
   def set_other_waiting_reason
     @other_waiting_reason_value = '-1'
     @other_waiting_reason_text = t('admin_only.member_app_waiting_reasons.other_custom_reason')
+  end
+
+
+  def set_allowed_file_types
+    @allowed_file_types = UploadedFile::ALLOWED_FILE_TYPES.keys.flatten.join(' ')
   end
 
 

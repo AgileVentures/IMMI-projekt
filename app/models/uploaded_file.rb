@@ -11,6 +11,7 @@ class UploadedFile < ApplicationRecord
     %w(.docx) => 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     %w(.docm) => 'application/vnd.ms-word.document.macroEnabled.12'
   }
+
   belongs_to :shf_application
 
   has_attached_file :actual_file
