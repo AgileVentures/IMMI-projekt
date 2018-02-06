@@ -4,7 +4,7 @@ class ShfApplicationsController < ApplicationController
   before_action :get_shf_application, except: [:information, :index, :new, :create]
   before_action :authorize_shf_application
   before_action :set_other_waiting_reason, only: [:show, :edit, :update, :need_info]
-  before_action :set_allowed_file_types, only: [:edit, :new]
+  before_action :set_allowed_file_types, only: [:edit, :new, :update, :create]
 
   def new
     @shf_application = ShfApplication.new(user: current_user)
