@@ -218,6 +218,7 @@ class ShfApplicationsController < ApplicationController
                                            filename: @uploaded_file.actual_file_file_name))
           successful = successful & true
         else
+          @shf_application.uploaded_files.delete(@uploaded_file)
           helpers.flash_message :alert, @uploaded_file.errors.messages.values.uniq.flatten.join(' ')
           successful = successful & false
         end
