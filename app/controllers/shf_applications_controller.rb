@@ -199,7 +199,7 @@ class ShfApplicationsController < ApplicationController
 
 
   def set_allowed_file_types
-    @allowed_file_types = UploadedFile::ALLOWED_FILE_TYPES.keys.flatten.join(' ')
+    @allowed_file_types = UploadedFile::ALLOWED_FILE_TYPES
   end
 
 
