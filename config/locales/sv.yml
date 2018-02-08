@@ -296,6 +296,9 @@ sv:
 
       submit_button_label: *submit
 
+    rendering:
+      success: Aktion utfördes framgångsrikt
+
     create:
       success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
       error: Ett eller flera problem hindrade din ansökan från att skickas.

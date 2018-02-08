@@ -296,6 +296,9 @@ en:
 
       submit_button_label: *submit
 
+    rendering:
+      success: Action performed successfully
+
     create:
       success: "Thank You. Your membership application has been submitted. You should receive an email shortly at %{email_address} with information about what to expect next."
       error: The was a problem creating and submitting your application.
