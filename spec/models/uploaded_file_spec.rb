@@ -19,13 +19,7 @@ RSpec.describe UploadedFile, type: :model do
   describe 'Validations' do
 
     it { should validate_attachment_content_type(:actual_file)
-                    .allowing('image/jpeg', 'image/gif', 'image/png',
-                              'text/plain',
-                              'text/rtf',
-                              'application/pdf',
-                              'application/msword',
-                              'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-                              'application/vnd.ms-word.document.macroEnabled.12')
+                    .allowing(UploadedFile::ALLOWED_FILE_TYPES.values)
                     .rejecting('bin', 'exe') }
   end
 
