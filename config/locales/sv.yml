@@ -290,6 +290,7 @@ sv:
       upload_files_section: Underlag för att styrka min ansökan
       upload_files_instructions: 'Dokumenten är mycket viktiga för att vi ska kunna bedöma din ansökan. Vi använder dem för att verifiera dina kunskaper och utbildningar. Detta säkerställer att vår medlemsstandard är fortsatt hög, vilket i förlängningen innebär att allmänheten vet att Sveriges hundföretagare är professionella och att lita på.'
       upload_files: 'Ladda upp filer från datorn'
+      upload_allowed_file_types: 'Tillåtna filtyper:'
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
       upload_button: Välj dina filer...
       will_be_uploaded: 'Dessa filer kommer att laddas upp när du skickar in din ansökan:'

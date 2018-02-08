@@ -48,9 +48,17 @@
 
       %span{class: "btn btn-warning btn-file"}
         = t('shf_applications.new.upload_button')
-        = f.file_field 'actual_files[]', multiple: true, name: 'uploaded_file[actual_files][]', class: 'upload-field', id: 'upload-button'
+        = f.file_field 'actual_files[]',
+          multiple: true,
+          name: 'uploaded_file[actual_files][]',
+          class: 'upload-field',
+          id: 'upload-button',
+          accept: @allowed_file_types.values.join(',')
 
       - submit_label = @shf_application.new_record? ? t('submit') : t('save')
+      %p= t('shf_applications.new.upload_allowed_file_types')
+      %p= @allowed_file_types.keys.flatten.join(' ')
+
       %h4.hidden.files-to-upload-title#files-to-upload-title= t('shf_applications.new.will_be_uploaded')
 
       -# The table that lists the files to be uploaded when the form is submitted:

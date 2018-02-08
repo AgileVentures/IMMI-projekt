@@ -4,7 +4,7 @@ class ShfApplicationsController < ApplicationController
   before_action :get_shf_application, except: [:information, :index, :new, :create]
   before_action :authorize_shf_application
   before_action :set_other_waiting_reason, only: [:show, :edit, :update, :need_info]
-
+  before_action :set_allowed_file_types, only: [:edit, :new, :update, :create]
 
   def new
     @shf_application = ShfApplication.new(user: current_user)
@@ -212,6 +212,11 @@ class ShfApplicationsController < ApplicationController
   end
 
 
+  def set_allowed_file_types
+    @allowed_file_types = UploadedFile::ALLOWED_FILE_TYPES
+  end
+
+
   def new_file_uploaded(params)
 
     successful = true
@@ -227,6 +232,7 @@ class ShfApplicationsController < ApplicationController
                                            filename: @uploaded_file.actual_file_file_name))
           successful = successful & true
         else
+          @shf_application.uploaded_files.delete(@uploaded_file)
           helpers.flash_message :alert, @uploaded_file.errors.messages.values.uniq.flatten.join(' ')
           successful = successful & false
         end
