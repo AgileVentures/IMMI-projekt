@@ -154,7 +154,7 @@ en:
         notes: Notes
 
       shf_application:
-        company_number: &company_number Company number
+        company_number: &company_number "Company number"
         first_name: *first_name
         last_name: *last_name
         contact_email: &contact_email Contact Email
@@ -163,6 +163,12 @@ en:
         uploaded_files:
           one: Uploaded file
           many: Uploaded files
+        state/new: &status_new New
+        state/under_review: &status_under_review Under review
+        state/waiting_for_applicant: &status_waiting_for_applicant  Waiting for Applicant
+        state/ready_for_review: &status_ready_for_review Ready for review
+        state/accepted: &status_accepted Approved
+        state/rejected: &status_rejected Rejected
 
 
       address:
@@ -406,12 +412,12 @@ en:
       error: There was an error when trying to submit your application for another review.
 
     state:
-      new: &status_new New
-      under_review: &status_under_review Under Review
-      waiting_for_applicant: &status_waiting_for_applicant Waiting for applicant
-      ready_for_review: &status_ready_for_review Ready For Review
-      accepted: &status_accepted Accepted
-      rejected: &status_rejected Rejected
+      new: *status_new
+      under_review: *status_under_review
+      waiting_for_applicant: *status_waiting_for_applicant
+      ready_for_review: *status_ready_for_review
+      accepted: *status_accepted
+      rejected: *status_rejected
 
     new_status: *status_new
     accept_btn: Accept

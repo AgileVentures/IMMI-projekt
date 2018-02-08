@@ -163,6 +163,13 @@ sv:
         uploaded_files:
           one: Uppladdad fil
           many: Uppladdade filer
+        state/new: &status_new Ny
+        state/under_review: &status_under_review Behandlas
+        state/waiting_for_applicant: &status_waiting_for_applicant Avvaktar sökande
+        state/ready_for_review: &status_ready_for_review Redo för granskning
+        state/accepted: &status_accepted Godkänd
+        state/rejected: &status_rejected Avböjd
+
 
 
       address:
@@ -406,12 +413,12 @@ sv:
       error: Det uppstod ett fel när du försöker att skicka in din ansökan för omgranskning.
 
     state:
-      new: &status_new Ny
-      under_review: &status_under_review Behandlas
-      waiting_for_applicant: &status_waiting_for_applicant  Avvaktar sökande
-      ready_for_review: &status_ready_for_review Redo för granskning
-      accepted: &status_accepted Godkänd
-      rejected: &status_rejected Avböjd
+      new: *status_new
+      under_review: *status_under_review
+      waiting_for_applicant: *status_waiting_for_applicant
+      ready_for_review: *status_ready_for_review
+      accepted: *status_accepted
+      rejected: *status_rejected
 
     new_status: *status_new
     accept_btn: Godkänn

@@ -37,7 +37,7 @@
       = render 'uploaded_files_list', shf_application: @shf_application, show_delete: false
 
 
-    %h3.app-status #{t('.app_status')}: #{t("shf_applications.state.#{@shf_application.state}")}  - #{@shf_application.updated_at.strftime('%F')}
+    %h3.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state}  - #{@shf_application.updated_at.strftime('%F')}
 
     - if current_user.admin?
       = render partial: 'application_status_form'

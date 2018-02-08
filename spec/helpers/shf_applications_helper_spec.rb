@@ -2,6 +2,38 @@ require 'rails_helper'
 
 RSpec.describe ShfApplicationsHelper, type: :helper do
 
+
+  describe '#states_selection_list gets the localized version of each state name each time it is requested' do
+
+    around(:each) do |example|
+      orig_locale = I18n.locale
+      example.run
+      I18n.locale = orig_locale
+    end
+
+    let(:application) { create(:shf_application) }
+
+    it 'returns the list in the default I18n locale' do
+      select_list = helper.states_selection_list
+      select_list.each do |each_option|
+        expect(each_option[0]).to eq I18n.t("activerecord.attributes.shf_application.state/#{each_option[1]}")
+      end
+    end
+
+    it 'correct locale if changed to :en from locale = :sv' do
+
+      I18n.locale = :sv
+      helper.states_selection_list
+
+      I18n.locale = :en
+      select_list = helper.states_selection_list
+      select_list.each do |each_option|
+        expect(each_option[0]).to eq I18n.t("activerecord.attributes.shf_application.state/#{each_option[1]}", locale: :en)
+      end
+
+    end
+  end
+
   describe 'returns a list of reasons_for_waiting for the right locale' do
 
     before(:each) do
@@ -16,8 +48,8 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
 
     describe '#reasons_for_waiting_names' do
 
-      let(:expected_sv_names) { [ [reason1.id, 'name_sv1'], [reason2.id, 'name_sv2'], [reason3.id, 'name_sv3'] ] }
-      let(:expected_en_names) { [ [reason1.id, 'name_en1'], [reason2.id, 'name_en2'], [reason3.id, 'name_en3'] ] }
+      let(:expected_sv_names) { [[reason1.id, 'name_sv1'], [reason2.id, 'name_sv2'], [reason3.id, 'name_sv3']] }
+      let(:expected_en_names) { [[reason1.id, 'name_en1'], [reason2.id, 'name_en2'], [reason3.id, 'name_en3']] }
 
       it 'calls name_sv if locale == sv' do
         name_list = helper.reasons_for_waiting_names(:sv)
@@ -95,8 +127,8 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
 
     describe '#reasons_for_waiting_descs' do
 
-      let(:expected_sv_descs) { [ [reason1.id, 'desc_sv1'], [reason2.id, 'desc_sv2'], [reason3.id, 'desc_sv3'] ] }
-      let(:expected_en_descs) { [ [reason1.id, 'desc_en1'], [reason2.id, 'desc_en2'], [reason3.id, 'desc_en3'] ] }
+      let(:expected_sv_descs) { [[reason1.id, 'desc_sv1'], [reason2.id, 'desc_sv2'], [reason3.id, 'desc_sv3']] }
+      let(:expected_en_descs) { [[reason1.id, 'desc_en1'], [reason2.id, 'desc_en2'], [reason3.id, 'desc_en3']] }
 
       it 'calls description_sv if locale == sv' do
         desc_list = helper.reasons_for_waiting_descs(:sv)

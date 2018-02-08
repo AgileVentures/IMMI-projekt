@@ -36,7 +36,7 @@ module PathHelpers
         path = admin_only_member_app_waiting_reasons_path
       when 'business categories'
         path = business_categories_path
-      when 'membership applications'
+      when 'membership applications', 'shf applications'
         path = shf_applications_path
       when 'all companies'
         path = companies_path
@@ -197,8 +197,8 @@ Then(/^I should( not)? see #{CAPTURE_STRING} for class "([^"]*)" in the row for 
 end
 
 
-Then(/^I should see xpath "([^"]*)"$/) do | xp |
-  expect(page).to have_xpath(xp)
+Then(/^I should( not)? see xpath "([^"]*)"$/) do | negate, xp |
+  expect(page).send (negate ? :not_to : :to),  have_xpath(xp)
 end
 
 

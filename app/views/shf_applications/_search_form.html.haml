@@ -41,7 +41,7 @@
                class: 'control-label',
                style: 'text-align: left; font-size: 12px;'
       = f.collection_select :state_in,
-                     ShfApplication.aasm.states_for_select,
+                     states_selection_list,
                      :second, :first, { include_blank: false },
                      { multiple: true, size: 5, style: 'width: 100%;',
                        class: 'form-control search_field',
