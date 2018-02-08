@@ -99,10 +99,7 @@ class ShfApplicationsController < ApplicationController
             head :ok # just let the receiver know everything is OK. no need to render anything
           end
 
-          format.html do
-            helpers.flash_message(:notice, t('.success'))
-            redirect_to shf_application_path(@shf_application)
-          end
+          rendering(format, shf_application_params)
 
         end
 
@@ -169,6 +166,23 @@ class ShfApplicationsController < ApplicationController
 
 
   private
+
+  def rendering(format, params)
+    format.html do
+      helpers.flash_message(:notice, t('.success'))
+      redirect_to define_path(evaluate_update(params))
+    end
+  end
+
+  def define_path(user_deleted_file)
+    return edit_shf_application_path(@shf_application) if user_deleted_file
+    shf_application_path(@shf_application)
+  end
+
+  def evaluate_update(params)
+    params.has_key?('uploaded_files_attributes').&('_destroy')
+  end
+
   def shf_application_params
     params.require(:shf_application).permit(*policy(@shf_application || ShfApplication).permitted_attributes)
   end
