@@ -47,7 +47,6 @@ module CompaniesHelper
     text << (name_html.nil? ? link_to(company.name, company, target: '_blank') : name_html)
     text <<  "</p>"
     text << "<p class='categories'>#{list_categories company, ', '}</p>"
-    text << "<br>"
     text << "<p class='entire-address'>#{address.entire_address}</p>"
     text << "</div>"
 
