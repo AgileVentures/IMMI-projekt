@@ -82,12 +82,12 @@ RSpec.describe AdminController, type: :controller do
           # create 1 application in each state
           ShfApplication.aasm.states.each do |app_state|
 
-            u = FactoryGirl.create(:user,
+            u = FactoryBot.create(:user,
                                    first_name:    "First#{app_state.name}",
                                    last_name:     "Last#{app_state.name}",
                                    email: "#{app_state.name}@example.com")
 
-            m = FactoryGirl.create :shf_application,
+            m = FactoryBot.create :shf_application,
                                    contact_email: "#{app_state.name}@example.com",
                                    state:         app_state.name,
                                    user:          u
@@ -141,15 +141,15 @@ RSpec.describe AdminController, type: :controller do
         end
 
 
-        let(:u1) { FactoryGirl.create(:user,
+        let(:u1) { FactoryBot.create(:user,
                                       first_name:     "u1",
                                       email: "user1@example.com",
                                       membership_number: '1234567890')
         }
 
-        let(:c1) { FactoryGirl.create(:company) }
+        let(:c1) { FactoryBot.create(:company) }
 
-        let(:member1) { FactoryGirl.create :shf_application,
+        let(:member1) { FactoryBot.create :shf_application,
                                                       contact_email:  "u1@example.com",
                                                       state:          :accepted,
                                                       company_number: c1.company_number,
@@ -202,15 +202,15 @@ RSpec.describe AdminController, type: :controller do
       describe 'with business categories (surrounded by double quotes)' do
 
 
-        let(:u1) { FactoryGirl.create(:user,
+        let(:u1) { FactoryBot.create(:user,
                                       first_name:     "u1",
                                       email: "user1@example.com",
                                       membership_number: '1234567890')
         }
 
-        let(:c1) { FactoryGirl.create(:company) }
+        let(:c1) { FactoryBot.create(:company) }
 
-        let(:member1) { FactoryGirl.create :shf_application,
+        let(:member1) { FactoryBot.create :shf_application,
                                                 contact_email:  "u1@example.com",
                                                 state:          :accepted,
                                                 company_number: c1.company_number,

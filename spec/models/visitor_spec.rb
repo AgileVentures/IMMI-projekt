@@ -32,7 +32,7 @@ RSpec.describe Visitor, type: :model do
   end
 
   describe User do
-    subject { FactoryGirl.create(:user) }
+    subject { FactoryBot.create(:user) }
     it_should_behave_like 'a user'
   end
 end

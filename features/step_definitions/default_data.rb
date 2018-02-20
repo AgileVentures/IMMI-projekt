@@ -1,3 +1,3 @@
 And(/^the default data exists$/) do
-  FactoryGirl.create(:app_configuration)
+  FactoryBot.create(:app_configuration)
 end

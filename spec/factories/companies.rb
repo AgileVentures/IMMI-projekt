@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   factory :company do
     name 'SomeCompany'
     company_number '0000000000'

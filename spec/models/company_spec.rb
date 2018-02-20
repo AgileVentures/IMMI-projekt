@@ -71,7 +71,7 @@ RSpec.describe Company, type: :model do
 
     describe 'uniqueness of company_number' do
       let(:msg) { I18n.t('activerecord.errors.models.company.company_number.taken') }
-      subject { FactoryGirl.build(:company) }
+      subject { FactoryBot.build(:company) }
 
       it 'uniqueness of company_number' do
         expect(subject).to validate_uniqueness_of(:company_number)

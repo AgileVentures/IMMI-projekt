@@ -1,6 +1,6 @@
 And(/^the following business categories exist$/) do |table|
   table.hashes.each do |business_category|
-    FactoryGirl.create(:business_category, business_category)
+    FactoryBot.create(:business_category, business_category)
   end
 end
 

@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   sequence(:cat_name_seq, "Business Category", 1) { |name, num| "#{name} #{num}" }
 
@@ -38,7 +38,7 @@ FactoryGirl.define do
 
         company = Company.find_by(company_number: evaluator.company_number)
         unless company
-          company = FactoryGirl.create(:company, company_number: evaluator.company_number)
+          company = FactoryBot.create(:company, company_number: evaluator.company_number)
         end
         shf_app.companies << company
       end
