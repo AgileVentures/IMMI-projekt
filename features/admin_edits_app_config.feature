@@ -5,8 +5,8 @@ Feature: Admin edits application configuration
 
   Background:
     Given the following users exists
-      | email             | password | admin | member    | first_name | last_name |
-      | admin@random.com  | password | true  | false     | emma       | admin     |
+      | email             | password | admin |
+      | admin@random.com  | password | true  |
 
   Scenario: Admin uploads SHF logo and chairperson signature
     Given I am logged in as "admin@random.com"
