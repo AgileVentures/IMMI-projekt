@@ -8,16 +8,12 @@ class ShfApplication < ApplicationRecord
   belongs_to :user
 
   #  A Company for a membership application (an instantiated one)
-  #  is created (instantiated) only when a membership is *accepted* --
+  #  is created (instantiated) when a embership application is created,
   #  unless the company already exists, in which case that existing instance
-  #  is associated with a membership application.
-  #  See the 'accept_membership' method below; note the .find_or_create method
-  #
-  #  Until a membership application is accepted, we just keep the
-  #  company_number.  That's what we'll later use to create (instantiate)
-  #  a company if/when needed.
-  #
-  has_and_belongs_to_many :companies
+  #  is associated with the new membership application.
+
+  has_many :company_applications
+  has_many :companies, through: :company_applications, dependent: :destroy
 
   has_and_belongs_to_many :business_categories
   has_many :uploaded_files
@@ -27,17 +23,16 @@ class ShfApplication < ApplicationRecord
              class_name: 'AdminOnly::MemberAppWaitingReason'
 
 
-  validates_presence_of :company_number,
-                        :contact_email,
-                        :state
+  validates_presence_of :contact_email, :state
 
-  validates_length_of :company_number, is: 10
   validates_format_of :contact_email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
-  validates_uniqueness_of :user_id, scope: :company_number
-  validate :swedish_organisationsnummer
+
+  validates_uniqueness_of :user_id
 
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
   accepts_nested_attributes_for :user, update_only: true
+
+  accepts_nested_attributes_for :companies
 
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
@@ -100,11 +95,6 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  def swedish_organisationsnummer
-    errors.add(:company_number, :invalid, company_number: self.company_number) unless errors.include?(:company_number) || Orgnummer.new(self.company_number).valid?
-  end
-
-
   def not_a_member?
     !user.member?
   end
@@ -112,11 +102,6 @@ class ShfApplication < ApplicationRecord
 
   def accept_membership
     begin
-
-      company = Company.find_or_create_by!(company_number: company_number) do |co|
-        co.email = contact_email
-      end
-
       self.companies << company
       self.save
 

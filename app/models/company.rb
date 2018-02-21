@@ -17,7 +17,8 @@ class Company < ApplicationRecord
 
   before_save :sanitize_website, :sanitize_description
 
-  has_and_belongs_to_many :shf_applications
+  has_many :company_applications
+  has_many :shf_applications, through: :company_applications, dependent: :destroy
 
   has_many :users, through: :shf_applications
 

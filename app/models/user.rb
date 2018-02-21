@@ -10,8 +10,6 @@ class User < ApplicationRecord
 
   has_one :shf_application
 
-  has_many :companies, through: :shf_application
-
   has_many :payments
   accepts_nested_attributes_for :payments
 
@@ -92,7 +90,7 @@ class User < ApplicationRecord
 
 
   def in_company_numbered?(company_num)
-    member? && companies.where(company_number: company_num).any?
+    member? && shf_application&.companies.where(company_number: company_num).any?
   end
 
 
