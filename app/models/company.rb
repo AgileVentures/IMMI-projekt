@@ -106,7 +106,6 @@ class Company < ApplicationRecord
 
   # do not delete a Company if it has ShfApplications that are accepted
   def error_if_has_accepted_applications?
-
     shf_applications.reload
 
     if shf_applications.where(state: 'accepted').any?

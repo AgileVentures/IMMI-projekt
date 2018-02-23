@@ -16,6 +16,7 @@ class ShfApplication < ApplicationRecord
   has_many :companies, through: :company_applications, dependent: :destroy
 
   has_and_belongs_to_many :business_categories
+
   has_many :uploaded_files
 
   belongs_to :waiting_reason, optional: true,
@@ -55,6 +56,7 @@ class ShfApplication < ApplicationRecord
     state :ready_for_review
     state :accepted
     state :rejected
+    state :being_destroyed
 
 
     event :start_review do
@@ -75,11 +77,11 @@ class ShfApplication < ApplicationRecord
     end
 
     event :accept do
-      transitions from: [:under_review, :rejected], to: :accepted, after: :accept_membership
+      transitions from: [:under_review, :rejected], to: :accepted, after: :accept_application
     end
 
     event :reject do
-      transitions from: [:under_review, :accepted], to: :rejected, after: :reject_membership
+      transitions from: [:under_review, :accepted], to: :rejected, after: :reject_application
     end
 
   end
@@ -100,10 +102,11 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  def accept_membership
+  def accept_application
     begin
-      self.companies << company
-      self.save
+
+      # Default company email = user's membership contact email
+      companies.first.email = contact_email
 
       # email the applicant to let them know the application was approved:
       ShfApplicationMailer.app_approved(self).deliver_now
@@ -115,15 +118,23 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  def reject_membership
+  def reject_application
     user.update(membership_number: nil)
     destroy_uploaded_files
+
+    # Destroy associated company(s) if no other applications for that company
+    companies.all.each do |cmpy|
+      cmpy.destroy if cmpy.shf_applications.count == 1
+    end
+
   end
 
 
   def before_destroy_checks
 
     destroy_uploaded_files
+
+    destroy_associated_companies
 
   end
 
@@ -143,6 +154,16 @@ class ShfApplication < ApplicationRecord
     end
 
     save
+  end
+
+  def destroy_associated_companies
+    # Destroy company if no other associated applications
+
+    self.update(state: :being_destroyed)
+
+    companies.all.each do |cmpy|
+      cmpy.destroy if cmpy.shf_applications.count == 1
+    end
   end
 
 

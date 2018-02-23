@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :company_application do
-    company nil
-    shf_application nil
+    company
+    shf_application
   end
 end

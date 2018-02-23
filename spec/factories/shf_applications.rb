@@ -3,7 +3,6 @@ FactoryGirl.define do
   sequence(:cat_name_seq, "Business Category", 1) { |name, num| "#{name} #{num}" }
 
   factory :shf_application do
-    company_number '5562252998'
     phone_number 'MyString'
     contact_email 'MyString@email.com'
     state :new
@@ -33,13 +32,9 @@ FactoryGirl.define do
         end
       end
 
-      if (evaluator.state) && evaluator.state.to_sym == :accepted
-        shf_app.state = :accepted
+      if (evaluator.state) && evaluator.state.to_sym != :rejected
 
-        company = Company.find_by(company_number: evaluator.company_number)
-        unless company
-          company = FactoryGirl.create(:company, company_number: evaluator.company_number)
-        end
+        company = FactoryGirl.create(:company)
         shf_app.companies << company
       end
     end

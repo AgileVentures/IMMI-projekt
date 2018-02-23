@@ -21,7 +21,7 @@ module SeedHelper
   end
 
 
-  def get_company_number(r)
+  def get_company_number(r=Random.new)
     company_number = nil
     100.times do
       # loop until done or we find a valid Org number
@@ -82,7 +82,7 @@ module SeedHelper
   end
 
 
-  def make_n_save_app(user, state, co_number = get_company_number(Random.new))
+  def make_n_save_app(user, state, co_number = get_company_number)
     # create a basic app
     ma = make_app(user)
 
