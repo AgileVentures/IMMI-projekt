@@ -56,7 +56,7 @@ class User < ApplicationRecord
   end
 
   def has_shf_application?
-    ! shf_application.nil? && shf_application.valid?
+    shf_application&.valid?
   end
 
   def check_member_status
@@ -69,18 +69,16 @@ class User < ApplicationRecord
 
 
   def has_company?
-    companies.any?
+    shf_application&.companies&.any?
   end
 
-
-  def company
-    companies.last
-  end
 
   def companies
     return Company.all if admin?
 
-    super
+    return [] unless has_company?
+
+    shf_application.companies
   end
 
 
@@ -90,7 +88,7 @@ class User < ApplicationRecord
 
 
   def in_company_numbered?(company_num)
-    member? && shf_application&.companies.where(company_number: company_num).any?
+    member? && shf_application&.companies&.where(company_number: company_num)&.any?
   end
 
 

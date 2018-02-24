@@ -19,9 +19,8 @@ describe ShfApplicationPolicy do
 
   let(:user_not_owner) { create(:user, email: 'user_not_owner@random.com') }
   let(:user_applicant) { create(:user_with_membership_app, email: 'user_owner@random.com') }
-  let(:application) { create(:shf_application,
-                             user: user_applicant,
-                             state: :new) }
+  # let(:application) { create(:shf_application, user: user_applicant, state: :new) }
+  let(:application) { create(:shf_application, state: :new) }
 
   let(:visitor) { build(:visitor) }
 
