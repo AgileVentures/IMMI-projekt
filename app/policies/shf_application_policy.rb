@@ -103,7 +103,6 @@ class ShfApplicationPolicy < ApplicationPolicy
 
   def user_owner_attributes
     [
-        :company_number,
         :contact_email,
         :phone_number,
         { business_category_ids: [] },
@@ -116,8 +115,7 @@ class ShfApplicationPolicy < ApplicationPolicy
                                     :actual_file_content_type,
                                     :actual_file_updated_at,
                                     :_destroy],
-        user_attributes: [:first_name,
-                          :last_name]
+        companies_attributes: [:company_number]
     ]
   end
 

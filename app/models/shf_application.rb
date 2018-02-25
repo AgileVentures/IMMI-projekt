@@ -31,7 +31,6 @@ class ShfApplication < ApplicationRecord
   validates_uniqueness_of :user_id
 
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
-  accepts_nested_attributes_for :user, update_only: true
 
   accepts_nested_attributes_for :companies
 

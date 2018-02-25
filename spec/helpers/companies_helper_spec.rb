@@ -10,28 +10,25 @@ RSpec.describe CompaniesHelper, type: :helper do
     let(:employee3) { create(:user) }
 
     let!(:ma1) do
-      ma = create(:shf_application, :accepted,
-                  user: employee1,
-                  company_number: company.company_number)
+      ma = create(:shf_application, :accepted, user: employee1)
       ma.business_categories << create(:business_category, name: 'cat1')
       ma
     end
     let!(:ma2) do
-      ma = create(:shf_application, :accepted,
-                  user: employee2,
-                  company_number: company.company_number)
+      ma = create(:shf_application, :accepted, user: employee2)
       ma.business_categories << create(:business_category, name: 'cat2')
+      ma.companies = ma1.companies
       ma
     end
     let!(:ma3) do
-      ma = create(:shf_application, :accepted,
-                  user: employee3,
-                  company_number: company.company_number)
+      ma = create(:shf_application, :accepted, user: employee3)
       ma.business_categories << create(:business_category, name: 'cat3')
+      ma.companies = ma1.companies
       ma
     end
 
     it '#list_categories' do
+      company = ma1.companies.first
       expect(helper.list_categories(company)).to eq 'cat1 cat2 cat3'
       expect(helper.list_categories(company)).not_to include 'Träning'
     end

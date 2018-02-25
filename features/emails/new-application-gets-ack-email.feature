@@ -23,8 +23,8 @@ Feature: New Applicant gets an email acknowledging their application
     And I am on the "landing" page
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
-      | shf_applications.new.first_name | shf_applications.new.last_name | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | Emma                            | HappyMutts                     | 5562252998                          | 031-1234567                       | emma@happymutts.com                |
+      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 5562252998                          | 031-1234567                       | emma@happymutts.com                |
     And I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
     Then I should be on the "user instructions" page
@@ -40,8 +40,8 @@ Feature: New Applicant gets an email acknowledging their application
     And I am on the "landing" page
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
-      | shf_applications.new.first_name | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | Emma                            | 031-1234567                       | emma@happymutts.com                |
+      | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 031-1234567                       | emma@happymutts.com                |
     And I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
     And I should see t("shf_applications.create.error")

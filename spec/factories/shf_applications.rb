@@ -20,6 +20,7 @@ FactoryGirl.define do
     transient do
       num_categories 0
       category_name "Business Category"
+      company_number nil
     end
 
     after(:build) do |shf_app, evaluator|
@@ -33,8 +34,14 @@ FactoryGirl.define do
       end
 
       if (evaluator.state) && evaluator.state.to_sym != :rejected
-
-        company = FactoryGirl.create(:company)
+        if evaluator.company_number
+          company = Company.find_by(company_number: evaluator.company_number)
+          unless company
+            company = FactoryGirl.create(:company, company_number: evaluator.company_number)
+          end
+        else
+          company = FactoryGirl.create(:company)
+        end
         shf_app.companies << company
       end
     end

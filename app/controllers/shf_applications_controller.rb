@@ -8,6 +8,7 @@ class ShfApplicationsController < ApplicationController
 
   def new
     @shf_application = ShfApplication.new(user: current_user)
+    @shf_application.companies.build
     @all_business_categories = BusinessCategory.all
     @uploaded_file = @shf_application.uploaded_files.build
   end
@@ -48,8 +49,17 @@ class ShfApplicationsController < ApplicationController
 
 
   def create
-    @shf_application = ShfApplication.new(user: current_user)
-    @shf_application.update(shf_application_params)
+    app_params = shf_application_params
+
+    company_number = app_params[:companies_attributes]['0'][:company_number]
+
+    if company_number && (company = Company.find_by_company_number(company_number))
+      app_params.delete(:companies_attributes)
+    else
+      app_params[:companies_attributes]['0'][:email] = app_params[:contact_email]
+    end
+
+    @shf_application = ShfApplication.new(app_params.merge(user: current_user))
 
     if @shf_application.save
 
@@ -88,29 +98,51 @@ class ShfApplicationsController < ApplicationController
         head :ok
       end
 
-    elsif @shf_application.update(shf_application_params)
+    else
+      app_params = shf_application_params
 
-      if new_file_uploaded params
+      app_params[:companies_attributes]['0'][:email] = app_params[:contact_email]
 
-        check_and_mark_if_ready_for_review params['shf_application'] if params.fetch('shf_application', false)
+      company_number = app_params[:companies_attributes]['0'][:company_number]
 
-        respond_to do |format|
-          format.js do
-            head :ok # just let the receiver know everything is OK. no need to render anything
+      if company_number
+
+        company = @shf_application.companies.first
+
+        if company_number == company.company_number
+          # Is this the same company currently associated with the app?
+          # If so, then remove company attributes from params
+          app_params.delete(:companies_attributes)
+        else
+          # Else we will try to create another company on "update".  However, first
+          # destroy the current company if there is no other app associated with it
+          company.destroy if company.shf_applications.count == 1
+        end
+      end
+
+      if @shf_application.update(app_params)
+
+        if new_file_uploaded params
+
+          check_and_mark_if_ready_for_review params['shf_application'] if params.fetch('shf_application', false)
+
+          respond_to do |format|
+            format.js do
+              head :ok # just let the receiver know everything is OK. no need to render anything
+            end
+
+            rendering(format, shf_application_params)
+
           end
 
-          rendering(format, shf_application_params)
-
+        else
+          update_error(t('.error'))
         end
 
       else
         update_error(t('.error'))
       end
-
-    else
-      update_error(t('.error'))
     end
-
   end
 
 

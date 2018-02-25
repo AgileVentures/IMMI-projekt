@@ -169,6 +169,7 @@ sv:
         state/ready_for_review: &status_ready_for_review Redo för granskning
         state/accepted: &status_accepted Godkänd
         state/rejected: &status_rejected Avböjd
+        state/being_destroyed: &status_being_destroyed Förstört
 
 
 
