@@ -190,7 +190,6 @@ Feature: SHF Application status is changed
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
     Then I should see the checkbox with id "shf_application_marked_ready_for_review" unchecked
-    And I fill in t("shf_applications.show.last_name") with "ForInfo"
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.success")
     And I should not see status line with status t("shf_applications.ready_for_review")
@@ -201,7 +200,6 @@ Feature: SHF Application status is changed
     Given I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
     And I am on the "edit my application" page
     Then I should see the checkbox with id "shf_application_marked_ready_for_review" unchecked
-    And I fill in t("shf_applications.show.last_name") with "ForInfo"
     When I check the checkbox with id "shf_application_marked_ready_for_review"
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.success")
@@ -257,7 +255,6 @@ Feature: SHF Application status is changed
   Scenario: 'Waiting for applicant' status is not changed if admin edits the application
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     And I click on t("shf_applications.edit_shf_application")
-    And I fill in t("shf_applications.show.last_name") with "AdminUpdated"
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.success")
     And I should see status line with status t("shf_applications.waiting_for_applicant")
@@ -315,7 +312,7 @@ Feature: SHF Application status is changed
     Given I am on the "application" page for "lars_rejected@snarkybark.se"
     And I should see "rehab"
     When I click on t("shf_applications.edit_shf_application")
-    And I fill in t("shf_applications.show.last_name") with "BadBadLars"
+    And I fill in t("shf_applications.show.contact_email") with "newmail@mail.com"
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.success")
     And I should see status line with status t("shf_applications.rejected")

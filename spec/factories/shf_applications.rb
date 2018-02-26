@@ -33,19 +33,16 @@ FactoryGirl.define do
         end
       end
 
-      if (evaluator.state) && evaluator.state.to_sym != :rejected
-        if evaluator.company_number
-          company = Company.find_by(company_number: evaluator.company_number)
-          unless company
-            company = FactoryGirl.create(:company, company_number: evaluator.company_number)
-          end
-        else
-          company = FactoryGirl.create(:company)
+      if evaluator.company_number
+        company = Company.find_by(company_number: evaluator.company_number)
+        unless company
+          company = FactoryGirl.create(:company, company_number: evaluator.company_number)
         end
-        shf_app.companies << company
+      else
+        company = FactoryGirl.create(:company)
       end
+      shf_app.companies << company
     end
-
 
   end
 end

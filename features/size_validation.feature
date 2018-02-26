@@ -19,8 +19,8 @@ Feature: Applicant uploads too large a file for their application
     Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
     When I fill in the translated form with data:
-      | shf_applications.new.first_name | shf_applications.new.last_name | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | Hans                            | Newfoundland                   | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
+      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
@@ -31,8 +31,8 @@ Feature: Applicant uploads too large a file for their application
     Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
     When I fill in the translated form with data:
-      | shf_applications.new.first_name | shf_applications.new.last_name | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | Hans                            | Newfoundland                   | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
+      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
     And I choose a file named "upload-just-under-limit.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
@@ -90,5 +90,3 @@ Feature: Applicant uploads too large a file for their application
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
     And I set the locale to "sv"
-
-
