@@ -16,7 +16,7 @@ module MailgunConfig
 
   # the specific SHF domain for the Mailgun account (it's not the sandbox domain)
   def domain
-    ENV['MAILGUN_DOMAIN']
+    ENV['SHF_MAILGUN_DOMAIN']
   end
 
 end
