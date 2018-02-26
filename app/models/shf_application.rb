@@ -34,6 +34,14 @@ class ShfApplication < ApplicationRecord
 
   accepts_nested_attributes_for :companies
 
+  accepts_nested_attributes_for :user, update_only: true
+  # ^^ We are not explicitly using any user attributes in the app form.  However,
+  # we are delegating the "membership_number" getter and setter methods to
+  # User from ShfApplication ("membership_number" used to be an attribute of
+  # ShfApplication and was moved to User).
+  # The update to "membership_number" (via delegation) will not work without
+  # the above statement.
+
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
   delegate :full_name, to: :user, prefix: true

@@ -57,6 +57,7 @@ class ShfApplicationsController < ApplicationController
     if company_number && (company = Company.find_by_company_number(company_number))
       app_params.delete(:companies_attributes)
     else
+      # Default company email == application contact_email
       app_params[:companies_attributes]['0'][:email] = app_params[:contact_email]
     end
 
