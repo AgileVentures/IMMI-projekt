@@ -6,7 +6,7 @@ set :rbenv_ruby, '2.4.2'
 
 set :application, 'shf'
 set :repo_url, 'git@github.com:AgileVentures/shf-project.git'
-set :branch, ENV['BRANCH']
+set :branch, ENV['SHF_BRANCH']
 
 set :deploy_to, ENV['SHF_APP_PATH']
 
