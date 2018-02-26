@@ -31,7 +31,6 @@ Feature: As an admin
 
     And the following applications exist:
       | user_email          | contact_email         | company_number | state    |
-      | emma@personal.com   | emma@happymutts.com   | 5560360793     | accepted |
       | lars@personal.com   | lars@happymutts.com   | 5560360793     | accepted |
       | hannah@personal.com | hannah@happymutts.com | 5560360793     | accepted |
       | emma@personal.com   | emma@bowsers.com      | 2120000142     | new      |
@@ -139,17 +138,13 @@ Feature: As an admin
     And I should see t("users.show.last_login")
 
   @user
-  Scenario: Show all emails and applications for a user
+  Scenario: Show email addresses and application for a user
     When I am on the "user details" page for "emma@personal.com"
     Then I should see "emma@personal.com"
-    And I should see "emma@happymutts.com"
     And I should see "emma@bowsers.com"
-    And I should see "5560360793"
     And I should see "2120000142"
-    And I should see t("shf_applications.state.accepted")
     And I should see t("shf_applications.state.new")
     Then I click on "change-lang-to-english"
-    And I should see t("shf_applications.state.accepted")
     And I should see t("shf_applications.state.new")
 
   @user

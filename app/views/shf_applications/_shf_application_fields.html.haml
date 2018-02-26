@@ -1,37 +1,7 @@
-.app-section
-  %h2.first= t('shf_applications.new.section_title_about_you')
-  .answers
-    - if current_user.admin? && user.membership_number
-      = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
-      = f.text_field :membership_number, class: 'wpcf7-form-control'
-
-
-    = f.fields_for :user do |ff|
-      = ff.label :first_name, t('shf_applications.show.first_name'), class: 'required'
-      = ff.text_field :first_name, class: 'wpcf7-form-control'
-
-
-      = ff.label :last_name, t('shf_applications.show.last_name'), class: 'required'
-      = ff.text_field :last_name, class: 'wpcf7-form-control'
-
-
-    = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
-    = f.number_field :company_number, class: 'wpcf7-form-control'
-    %p.field-instruction= t('shf_applications.show.org_nr_no_hyphens')
-
-
-    = f.label :contact_email, t('shf_applications.show.contact_email'), class: 'required'
-    = f.email_field :contact_email, class: 'wpcf7-form-control'
-    %p.field-instruction= t('shf_applications.new.can_be_same_email')
-
-
-    = f.label :phone_number, t('shf_applications.show.phone_number')
-    = f.telephone_field :phone_number, class: 'wpcf7-form-control'
-
 
 .app-section
   - unless assocation_empty?(@all_business_categories)
-    %h2.required= t('shf_applications.new.application_dog_category')
+    %h2= t('shf_applications.new.application_dog_category')
     %p= t('shf_applications.new.clue_selected_categories')
     .checkbox.col-xs-offset-1
       = f.collection_check_boxes :business_category_ids, @all_business_categories, :id, :name do |b|
@@ -39,36 +9,64 @@
 
 .app-section#supporting-files
   %h2= t('shf_applications.new.upload_files_section')
-  %p.instructions= t('shf_applications.new.upload_files_instructions')
+  .answers
+    %p= t('shf_applications.new.upload_files_instructions')
 
-  .files
-    #upload-files
+    .files
+      .container
+        .row
+          .col-md-6
+            #upload-files
+              %h3.upload-button-pre= t('shf_applications.new.upload_files')
+              %span{class: 'btn btn-warning btn-file'}
+                = t('shf_applications.new.upload_button')
+                = f.file_field 'actual_files[]',
+                  multiple: true,
+                  name: 'uploaded_file[actual_files][]',
+                  class: 'upload-field',
+                  id: 'upload-button',
+                  accept: @allowed_file_types.values.join(',')
 
-      %h3.upload-button-pre= t('shf_applications.new.upload_files')
+              - submit_label = @shf_application.new_record? ? t('submit') : t('save')
+              %p= t('shf_applications.new.upload_allowed_file_types')
+              %p= @allowed_file_types.keys.flatten.join(' ')
 
-      %span{class: "btn btn-warning btn-file"}
-        = t('shf_applications.new.upload_button')
-        = f.file_field 'actual_files[]',
-          multiple: true,
-          name: 'uploaded_file[actual_files][]',
-          class: 'upload-field',
-          id: 'upload-button',
-          accept: @allowed_file_types.values.join(',')
+              %h4.hidden.files-to-upload-title#files-to-upload-title= t('shf_applications.new.will_be_uploaded')
 
-      - submit_label = @shf_application.new_record? ? t('submit') : t('save')
-      %p= t('shf_applications.new.upload_allowed_file_types')
-      %p= @allowed_file_types.keys.flatten.join(' ')
-
-      %h4.hidden.files-to-upload-title#files-to-upload-title= t('shf_applications.new.will_be_uploaded')
-
-      -# The table that lists the files to be uploaded when the form is submitted:
-      %table.hidden.table#files-to-upload
-        %tbody.files{'data-toggle': "modal-gallery", 'data-target': "#modal-gallery"}
-
-    = render 'uploaded_files_list', shf_application: @shf_application
+              -# The table that lists the files to be uploaded when the form is submitted:
+              %table.hidden.table#files-to-upload
+                %tbody.files{'data-toggle': "modal-gallery", 'data-target': "#modal-gallery"}
+          .col-md-6
+            = render 'uploaded_files_list', shf_application: @shf_application
 
 
-  %p.upload-more-note.instructions= t('shf_applications.new.upload_more_files') if controller.action_name == 'new'
+    %p.upload-more-note.instructions= t('shf_applications.new.upload_more_files') if controller.action_name == 'new'
+
+.app-section
+  %h2= t('shf_applications.new.section_title_about_you')
+  .answers
+    - if current_user.admin? && user.membership_number
+      = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
+      = f.text_field :membership_number, class: 'wpcf7-form-control'
+
+    = f.fields_for :user do |ff|
+      = ff.label :first_name, t('shf_applications.show.first_name'), class: 'required'
+      = ff.text_field :first_name, class: 'wpcf7-form-control'
+
+      = ff.label :last_name, t('shf_applications.show.last_name'), class: 'required'
+      = ff.text_field :last_name, class: 'wpcf7-form-control'
+
+    = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
+    %p.field-instruction= t('shf_applications.show.org_nr_no_hyphens')
+    = f.number_field :company_number, class: 'wpcf7-form-control'
+
+    = f.label :contact_email, t('shf_applications.show.contact_email'), class: 'required'
+    %p.field-instruction= t('shf_applications.new.can_be_same_email')
+    = f.email_field :contact_email, class: 'wpcf7-form-control'
+
+    = f.label :phone_number, t('shf_applications.show.phone_number')
+    = f.telephone_field :phone_number, class: 'wpcf7-form-control'
+
 
 - if @shf_application.may_is_ready_for_review?
   = render 'ready_for_review', f: f

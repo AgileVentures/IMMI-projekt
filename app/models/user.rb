@@ -8,9 +8,9 @@ class User < ApplicationRecord
 
   before_destroy { self.member_photo = nil } # remove photo file from file system
 
-  has_many :shf_applications
+  has_one :shf_application
 
-  has_many :companies, through: :shf_applications
+  has_many :companies, through: :shf_application
 
   has_many :payments
   accepts_nested_attributes_for :payments
@@ -19,8 +19,8 @@ class User < ApplicationRecord
                     styles: { standard: ['130x130#'] }, default_style: :standard
 
   validates_attachment_content_type :member_photo,
-                                    content_type:  /\Aimage\/.*(jpeg|png)\z/
-  validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/]
+                                    content_type:  /\Aimage\/.*(jpg|jpeg|png)\z/
+  validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/, /PNG\z/,/JPE?G\z/]
 
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
   validates_uniqueness_of :membership_number, allow_blank: true
@@ -54,11 +54,11 @@ class User < ApplicationRecord
     # 1. user == member, or
     # 2. user has at least one application with status == :accepted
 
-    member? || shf_applications.where(state: :accepted).any?
+    member? || shf_application&.accepted?
   end
 
   def has_shf_application?
-    shf_applications.any?
+    ! shf_application.nil? && shf_application.valid?
   end
 
   def check_member_status
@@ -72,11 +72,6 @@ class User < ApplicationRecord
 
   def has_company?
     companies.any?
-  end
-
-
-  def shf_application
-    shf_applications.last
   end
 
 

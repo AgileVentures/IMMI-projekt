@@ -25,7 +25,7 @@
           %td.membership_number= shf_application.membership_number
           %td.name= link_to "#{shf_application.user.last_name + ', ' + shf_application.user.first_name}", user_path(shf_application.user)
           %td.company_number= shf_application.company_id == nil ? shf_application.company_number : link_to(shf_application.company_number, company_path(shf_application.company_id))
-          %td.state= t("shf_applications.state.#{shf_application.state}")
+          %td.state=  shf_application.aasm.human_state
           %td.action= link_to "#{t('manage')}", shf_application_path(shf_application.id)
 
   = render partial: 'application/paginate_footer',

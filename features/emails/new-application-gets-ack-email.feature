@@ -27,7 +27,7 @@ Feature: New Applicant gets an email acknowledging their application
       | Emma                            | HappyMutts                     | 5562252998                          | 031-1234567                       | emma@happymutts.com                |
     And I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "landing" page
+    Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: 'emma@happymutts.com')
     Then "emma@happymutts.com" should receive an email
     And I open the email

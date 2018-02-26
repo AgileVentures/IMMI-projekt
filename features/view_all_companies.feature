@@ -1,4 +1,6 @@
-Feature: As a visitor,
+Feature: Visitor sees all companies
+
+  As a visitor,
   so that I can find companies that can offer me services,
   I want to see all companies
 
@@ -11,52 +13,52 @@ Feature: As a visitor,
       | Uppsala      |
 
     Given the following kommuns exist:
-      | name         |
-      | Alingsås     |
-      | Bromölla     |
-      | Alvesta      |
-      | Aneby        |
+      | name     |
+      | Alingsås |
+      | Bromölla |
+      | Alvesta  |
+      | Aneby    |
 
     And the following business categories exist
-      | name         |
-      | Groomer      |
+      | name    |
+      | Groomer |
 
     Given the following companies exist:
-      | name      | company_number | email           | region       | kommun  |
-      | Company1  | 5560360793     | cmpy1@mail.com  | Stockholm    | Alingsås|
-      | Company2  | 2120000142     | cmpy2@mail.com  | Västerbotten | Bromölla|
-      | Company3  | 6613265393     | cmpy3@mail.com  | Stockholm    | Alingsås|
-      | Company4  | 6222279082     | cmpy4@mail.com  | Stockholm    | Alingsås|
-      | Company5  | 8025085252     | cmpy5@mail.com  | Stockholm    | Alingsås|
-      | Company6  | 6914762726     | cmpy6@mail.com  | Stockholm    | Alingsås|
-      | Company7  | 7661057765     | cmpy7@mail.com  | Stockholm    | Alingsås|
-      | Company8  | 7736362901     | cmpy8@mail.com  | Stockholm    | Alingsås|
-      | Company9  | 6112107039     | cmpy9@mail.com  | Stockholm    | Alingsås|
-      | Company10 | 3609340140     | cmpy10@mail.com | Stockholm    | Alingsås|
-      | Company11 | 2965790286     | cmpy11@mail.com | Stockholm    | Alingsås|
-      | Company12 | 4268582063     | cmpy12@mail.com | Stockholm    | Alingsås|
-      | Company13 | 8028973322     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company14 | 8356502446     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company15 | 8394317054     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company16 | 8423893877     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company17 | 8589182768     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company18 | 8616006592     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company19 | 8764985894     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company20 | 8822107739     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company21 | 5569767808     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company22 | 8909248752     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company23 | 9074668568     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company24 | 9243957975     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company25 | 9267816362     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company26 | 9360289459     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company27 | 9475077674     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company28 | 8728875504     | cmpy13@mail.com | Stockholm    | Alingsås|
-      | Company29 | 5872150379     | cmpy13@mail.com | Stockholm    | Alingsås|
+      | name      | company_number | email           | region       | kommun   |
+      | Company01 | 5560360793     | cmpy1@mail.com  | Stockholm    | Alingsås |
+      | Company02 | 2120000142     | cmpy2@mail.com  | Västerbotten | Bromölla |
+      | Company03 | 6613265393     | cmpy3@mail.com  | Stockholm    | Alingsås |
+      | Company04 | 6222279082     | cmpy4@mail.com  | Stockholm    | Alingsås |
+      | Company05 | 8025085252     | cmpy5@mail.com  | Stockholm    | Alingsås |
+      | Company06 | 6914762726     | cmpy6@mail.com  | Stockholm    | Alingsås |
+      | Company07 | 7661057765     | cmpy7@mail.com  | Stockholm    | Alingsås |
+      | Company08 | 7736362901     | cmpy8@mail.com  | Stockholm    | Alingsås |
+      | Company09 | 6112107039     | cmpy9@mail.com  | Stockholm    | Alingsås |
+      | Company10 | 3609340140     | cmpy10@mail.com | Stockholm    | Alingsås |
+      | Company11 | 2965790286     | cmpy11@mail.com | Stockholm    | Alingsås |
+      | Company12 | 4268582063     | cmpy12@mail.com | Stockholm    | Alingsås |
+      | Company13 | 8028973322     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company14 | 8356502446     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company15 | 8394317054     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company16 | 8423893877     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company17 | 8589182768     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company18 | 8616006592     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company19 | 8764985894     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company20 | 8822107739     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company21 | 5569767808     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company22 | 8909248752     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company23 | 9074668568     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company24 | 9243957975     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company25 | 9267816362     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company26 | 9360289459     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company27 | 9475077674     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company28 | 8728875504     | cmpy13@mail.com | Stockholm    | Alingsås |
+      | Company29 | 5872150379     | cmpy13@mail.com | Stockholm    | Alingsås |
 
     And the following company addresses exist:
-      | company_name | region       | kommun  |
-      | Company2     | Norrbotten   | Alvesta |
-      | Company2     | Uppsala      | Aneby   |
+      | company_name | region     | kommun  |
+      | Company02    | Norrbotten | Alvesta |
+      | Company02    | Uppsala    | Aneby   |
 
     And the following users exists
       | email        | admin | member |
@@ -66,15 +68,15 @@ Feature: As a visitor,
 
     And the following payments exist
       | user_email  | start_date | expire_date | payment_type | status | hips_id | company_name |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company1     |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company2     |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company3     |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company4     |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company5     |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company6     |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company7     |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company8     |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company9     |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company01    |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company02    |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company03    |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company04    |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company05    |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company06    |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company07    |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company08    |
+      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company09    |
       | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company10    |
       | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company11    |
       | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company12    |
@@ -97,15 +99,15 @@ Feature: As a visitor,
 
     And the following applications exist:
       | user_email  | company_name | state    | categories |
-      | a@mutts.com | Company1     | accepted | Groomer    |
-      | a@mutts.com | Company2     | accepted | Groomer    |
-      | a@mutts.com | Company3     | accepted | Groomer    |
-      | a@mutts.com | Company4     | accepted | Groomer    |
-      | a@mutts.com | Company5     | accepted | Groomer    |
-      | a@mutts.com | Company6     | accepted | Groomer    |
-      | a@mutts.com | Company7     | accepted | Groomer    |
-      | a@mutts.com | Company8     | accepted | Groomer    |
-      | a@mutts.com | Company9     | accepted | Groomer    |
+      | a@mutts.com | Company01    | accepted | Groomer    |
+      | a@mutts.com | Company02    | accepted | Groomer    |
+      | a@mutts.com | Company03    | accepted | Groomer    |
+      | a@mutts.com | Company04    | accepted | Groomer    |
+      | a@mutts.com | Company05    | accepted | Groomer    |
+      | a@mutts.com | Company06    | accepted | Groomer    |
+      | a@mutts.com | Company07    | accepted | Groomer    |
+      | a@mutts.com | Company08    | accepted | Groomer    |
+      | a@mutts.com | Company09    | accepted | Groomer    |
       | a@mutts.com | Company10    | accepted | Groomer    |
       | a@mutts.com | Company11    | accepted | Groomer    |
       | a@mutts.com | Company12    | accepted | Groomer    |
@@ -133,9 +135,9 @@ Feature: As a visitor,
     Given I am Logged out
     And I am on the "landing" page
     Then I should see t("companies.index.h_companies_listed_below")
-    And I should see "Company2"
+    And I should see "Company02"
     And I should not see "2120000142"
-    And I should see "Company1"
+    And I should see "Company01"
     And I should not see "5560360793"
     And I should not see t("companies.new_company")
 
@@ -145,14 +147,16 @@ Feature: As a visitor,
     Given I am Logged out
     And I am on the "landing" page
     Then I should see t("companies.index.h_companies_listed_below")
-    And I should see "Company2"
-    And I should see "Västerbotten" in the row for "Company2"
-    And I should see "Norrbotten" in the row for "Company2"
-    And I should see "Uppsala" in the row for "Company2"
-    And I should see "Bromölla" in the row for "Company2"
-    And I should see "Alvesta" in the row for "Company2"
-    And I should see "Aneby" in the row for "Company2"
-    And I should not see "Stockholm" in the row for "Company2"
+    # Ensure the list is sorted by name so we will see Company02
+    And I click on t("activerecord.attributes.company.name")
+    And I should see "Company02"
+    And I should see "Västerbotten" in the row for "Company02"
+    And I should see "Norrbotten" in the row for "Company02"
+    And I should see "Uppsala" in the row for "Company02"
+    And I should see "Bromölla" in the row for "Company02"
+    And I should see "Alvesta" in the row for "Company02"
+    And I should see "Aneby" in the row for "Company02"
+    And I should not see "Stockholm" in the row for "Company02"
 
   @time_adjust
   Scenario: User sees all the companies
@@ -160,9 +164,9 @@ Feature: As a visitor,
     Given I am logged in as "a@mutts.com"
     And I am on the "landing" page
     Then I should see t("companies.index.title")
-    And I should see "Company2"
+    And I should see "Company02"
     And I should not see "2120000142"
-    And I should see "Company1"
+    And I should see "Company01"
     And I should not see "5560360793"
     And I should not see t("companies.new_company")
 
@@ -173,9 +177,11 @@ Feature: As a visitor,
     And I am on the "landing" page
     Then I should see t("companies.index.h_companies_listed_below")
     And I click on t("toggle.company_search_form.hide")
-    And I should see "Company2"
+    # Ensure the list is sorted by name so we will see Company02
+    And I click on t("activerecord.attributes.company.name")
+    And I should see "Company02"
     And I should not see "2120000142"
-    And I should see "Company1"
+    And I should see "Company01"
     And I should not see "5560360793"
     And I should see "Company10"
     And I should not see "3609340140"
@@ -214,6 +220,8 @@ Feature: As a visitor,
     And I click on t("toggle.company_search_form.hide")
     And "items_count" should have "10" selected
     And I should see "10" companies
+    # Ensure the list is sorted by name so we will see Company02
+    And I click on t("activerecord.attributes.company.name")
     And I should see "Company10"
     And I should not see "Company11"
     And I should not see "Company26"
@@ -221,8 +229,8 @@ Feature: As a visitor,
     And I wait for all ajax requests to complete
     Then I should see "25" companies
     And "items_count" should have "25" selected
-    And I should see "Company1"
-    And I should see "Company2"
+    And I should see "Company01"
+    And I should see "Company02"
     And I should see "Company11"
     And I should see "Company12"
     And I should see "Company24"

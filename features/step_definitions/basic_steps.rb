@@ -18,8 +18,8 @@ end
 
 When "I click on and accept{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
   page.driver.accept_modal(:confirm, wait: 4) do
-    confirm_step = "I click on the" + (ordinal ? "#{ordinal}" : '') +
-                   " \"#{element}\"" + (type ? " #{type}" : '')
+    confirm_step = "I click on" + (ordinal ? "#{ordinal}" : '') +
+        " \"#{element}\"" + (type ? " #{type}" : '')
     step confirm_step
   end
 end
@@ -37,10 +37,10 @@ When /^I confirm popup$/ do
   end
 end
 
-When /^I confirm popup with message t\("([^"]*)"\)$/ do | modal_text |
+When /^I confirm popup with message t\("([^"]*)"\)$/ do |modal_text|
   # requires poltergeist:
   using_wait_time 3 do
-    page.driver.accept_modal(:confirm, {text: i18n_content("#{modal_text}")}) # will wait until it finds the text (or reaches Capybara max wait time)
+    page.driver.accept_modal(:confirm, { text: i18n_content("#{modal_text}") }) # will wait until it finds the text (or reaches Capybara max wait time)
   end
 end
 
@@ -109,4 +109,19 @@ end
 
 Given(/^the date is set to "([^"]*)"$/) do |date|
   Timecop.freeze(Time.zone.parse(date))
+end
+
+# Hide (or show) the search form by clicking on the button
+#  This is frequently used to hide the search form on a page so that
+#  items in the select lists are not included in counts.
+#
+#  assumes that the hide/show button has id = "toggle_search_form"
+#
+And(/^I (hide|show) the search form$/) do | _hide_or_show |
+  click_link_or_button "toggle_search_form"  # click on "toggle_search_form"
+end
+
+
+And(/^I scroll to the top$/) do
+  page.evaluate_script("scroll(0, 0)")
 end

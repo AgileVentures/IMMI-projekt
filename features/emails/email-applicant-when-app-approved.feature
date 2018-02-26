@@ -51,5 +51,5 @@ Feature: Applicant gets an email when the application is approved
     When I follow "http://localhost:3000/anvandare/1" in the email
     Then I should see "Firstname Lastname"
     And I should see t("users.show.email")
-    And I should see t("applications")
+    And I should see t("application")
     And I should not see t("users.show.membership_number")

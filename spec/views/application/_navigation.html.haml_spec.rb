@@ -8,11 +8,12 @@ RSpec.describe 'companies/index' do
 
   let(:user)    { FactoryGirl.create(:user_with_membership_app) }
 
-  let(:cmpy_id) { member.shf_applications[0].company.id }
+  let(:cmpy_id) { member.shf_application.company.id }
+  let(:cmpy_id) { member.shf_application.company.id }
 
-  let(:app_id)  { member.shf_applications[0].id }
+  let(:app_id)  { member.shf_application.id }
 
-  let(:user_app_id) { user.shf_applications[0].id }
+  let(:user_app_id) { user.shf_application.id }
 
   let(:shf_site) { Regexp.escape('http://sverigeshundforetagare.se/') }
 

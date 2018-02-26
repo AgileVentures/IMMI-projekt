@@ -5,6 +5,13 @@ module ShfApplicationsHelper
   end
 
 
+  # The AASM gem caches the display_name for a State.  We cannot do that because
+  # the I18n.locale may have changed, so we must get the localized name every time
+  def states_selection_list
+    ShfApplication.aasm.states.map { |state| [state.localized_name, state.name.to_s] }
+  end
+
+
   def reasons_collection(other_reason_value, other_reason_text)
     collection = AdminOnly::MemberAppWaitingReason.all.to_a
     collection << AdminOnly::MemberAppWaitingReason.new(id: other_reason_value, "name_#{I18n.locale}" => "#{other_reason_text}")

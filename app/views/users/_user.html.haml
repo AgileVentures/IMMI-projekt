@@ -1,10 +1,11 @@
 %tr
+
   %td.membership_number= user.membership_number
   %td.email{ id: "user-#{user.id}" }= link_to user.email, user
   %td.created-at
     %small= i18n_time_ago_in_words(user.created_at)
   %td.sign-in-count= user.sign_in_count
-  %td.applications-open= user.shf_applications.open.count
+  %td.applications-open= user_has_open_application(user)
   %td.is-member
     - if user.member?
       %span.yes= t('.yes')

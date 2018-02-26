@@ -4,14 +4,14 @@
     %h1.entry-title= t('.title')
   .post-title-divider
     %span
-  .entry-content.instructions= t('shf_applications.new.instructions')
+  .entry-content
+    .wpcf7
+      .instructions= t('shf_applications.new.instructions_html')
+      = form_for @shf_application, html: {multipart: true}, url: shf_applications_path do |f|
 
-  .entry-content.wpcf7
-    = form_for @shf_application, html: {multipart: true}, url: shf_applications_path do |f|
+        != model_errors_helper(@shf_application)
 
-      != model_errors_helper(@shf_application)
+        = render partial: 'shf_application_fields', locals: {f: f}
+        = render 'application/required_fields'
 
-      = render partial: 'shf_application_fields', locals: {f: f}
-      = render 'application/required_fields'
-
-      = f.submit t('.submit_button_label')
+        = f.submit t('.submit_button_label')

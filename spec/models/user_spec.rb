@@ -59,7 +59,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'Associations' do
-    it { is_expected.to have_many(:shf_applications) }
+    it { is_expected.to have_one(:shf_application) }
     it { is_expected.to have_many(:payments) }
     it { is_expected.to accept_nested_attributes_for(:payments) }
     it { is_expected.to have_attached_file(:member_photo) }
@@ -164,11 +164,6 @@ RSpec.describe User, type: :model do
       it { expect(subject.has_company?).to be_falsey }
     end
 
-    describe 'user: 2 application' do
-      subject { create(:user_with_2_membership_apps) }
-      it { expect(subject.has_company?).to be_falsey }
-    end
-
     describe 'member with 1 app' do
       let(:member) { create(:member_with_membership_app) }
       it { expect(member.has_company?).to be_truthy }
@@ -195,11 +190,6 @@ RSpec.describe User, type: :model do
     describe 'user: 1 saved application' do
       subject { create(:user_with_membership_app) }
       it { expect(subject.shf_application).not_to be_nil }
-    end
-    describe 'user: 2 application' do
-      subject { create(:user_with_2_membership_apps) }
-      it { expect(subject.shf_application).not_to be_nil }
-      it { expect(subject.shf_applications.size).to eq(2) }
     end
 
     describe 'member with 1 app' do
@@ -228,10 +218,6 @@ RSpec.describe User, type: :model do
       subject { create(:user_with_membership_app) }
       it { expect(subject.company).to be_nil }
     end
-    describe 'user: 2 application' do
-      subject { create(:user_with_2_membership_apps) }
-      it { expect(subject.company).to be_nil }
-    end
 
     describe 'member with 1 app' do
       let(:member) { create(:member_with_membership_app) }
@@ -258,10 +244,6 @@ RSpec.describe User, type: :model do
 
     describe 'user: 1 saved application' do
       subject { create(:user_with_membership_app) }
-      it { expect(subject.member_or_admin?).to be_falsey }
-    end
-    describe 'user: 2 application' do
-      subject { create(:user_with_2_membership_apps) }
       it { expect(subject.member_or_admin?).to be_falsey }
     end
 
@@ -295,11 +277,6 @@ RSpec.describe User, type: :model do
         subject { create(:user_with_membership_app) }
         it { expect(subject.in_company_numbered?(default_co_number)).to be_falsey }
       end
-
-      describe 'user: 2 application' do
-        subject { create(:user_with_2_membership_apps) }
-        it { expect(subject.in_company_numbered?(default_co_number)).to be_falsey }
-      end
     end
 
     describe 'is a member, so is in companies' do
@@ -308,28 +285,6 @@ RSpec.describe User, type: :model do
         let(:member) { create(:member_with_membership_app) }
         it { expect(member.in_company_numbered?(default_co_number)).to be_truthy }
       end
-
-      describe 'member with 2 apps, both with same (1) company' do
-        let(:member) do
-          m = create(:member_with_membership_app)
-          app2 = create(:shf_application, :accepted, company_number: m.shf_applications.first.company_number)
-          m.shf_applications << app2
-          m
-        end
-        it { expect(member.in_company_numbered?(default_co_number)).to be_truthy }
-      end
-
-      describe 'member with 2 apps, 2 different companies' do
-        let(:member) do
-          m = create(:member_with_membership_app, company_number: '5562252998')
-          app2 = create(:shf_application, :accepted, company_number: '2120000142')
-          m.shf_applications << app2
-          m
-        end
-        it { expect(member.in_company_numbered?('5562252998')).to be_truthy }
-        it { expect(member.in_company_numbered?('2120000142')).to be_truthy }
-      end
-
 
       describe 'member with 0 apps (should not happen)' do
         let(:member) { create(:user) }
@@ -357,50 +312,13 @@ RSpec.describe User, type: :model do
         subject { create(:user_with_membership_app) }
         it { expect(subject.companies.size).to eq(0) }
       end
-
-      describe 'user: 2 application' do
-        subject { create(:user_with_2_membership_apps) }
-        it { expect(subject.companies.size).to eq(0) }
-      end
-
     end
+
     describe 'is a member, so is in companies' do
 
       describe 'member with 1 app' do
         let(:member) { create(:member_with_membership_app) }
         it { expect(member.companies.size).to eq(1) }
-      end
-
-      describe 'member with 2 apps, both with same (1) company' do
-        let(:member) do
-          m = create(:member_with_membership_app)
-          app2 = create(:shf_application, :accepted, company_number: m.shf_applications.first.company_number)
-          m.shf_applications << app2
-          m
-        end
-        it { expect(member.companies.size).to eq(1), "found: size: #{member.companies.size} #{member.companies.inspect}" }
-      end
-
-      describe 'member with 2 apps, 2 different companies' do
-        let(:member) do
-          m = create(:member_with_membership_app, company_number: '5562252998')
-          app2 = create(:shf_application, :accepted, company_number: '2120000142')
-          m.shf_applications << app2
-          m
-        end
-        it { expect(member.companies.size).to eq(2) }
-      end
-
-      describe 'member with 2 apps, 2 for the same company, 1 different company' do
-        let(:member) do
-          m = create(:member_with_membership_app)
-          app2 = create(:shf_application, :accepted, company_number: m.shf_applications.first.company_number)
-          m.shf_applications << app2
-          app3_different_co = create(:shf_application, :accepted, company_number: '2120000142')
-          m.shf_applications << app3_different_co
-          m
-        end
-        it { expect(member.companies.size).to eq(2) }
       end
 
       describe 'member with 0 apps (should not happen)' do

@@ -1,0 +1,56 @@
+- need_to_pay = false
+
+- if ! current_user.most_recent_membership_payment
+  -# User has never paid
+
+  - need_to_pay = true
+
+  %p= t('shf_applications.information.check_payment_status.approved')
+  %h4= t('shf_applications.information.check_payment_status.pay_m_here')
+
+- elsif ! current_user.membership_current?
+  -# User has paid but payment has expired
+
+  - need_to_pay = true
+
+  %p= t('shf_applications.information.check_payment_status.approved_since_before')
+  %h4
+    = t('shf_applications.information.check_payment_status.m_expires')
+    %strong= current_user.membership_expire_date
+
+- if need_to_pay
+
+  = link_to(t('menus.nav.members.pay_membership'), user_path(current_user), class: 'btn btn-info')
+  %br
+  %br
+
+  - need_to_pay = false
+
+
+- if current_user.has_company?
+
+  - if ! current_user.company.most_recent_branding_payment
+    -# User has never paid
+
+    - need_to_pay = true
+
+    %h4= t('shf_applications.information.check_payment_status.pay_h_here')
+
+
+  - elsif ! current_user.company.branding_license?
+    -# User has paid but payment has expired
+
+    - need_to_pay = true
+
+    %h4
+      = t('shf_applications.information.check_payment_status.h_expires')
+      %strong= current_user.company.branding_expire_date
+
+
+- if need_to_pay
+
+
+
+  = link_to(t('menus.nav.company.pay_branding_fee'), company_path(current_user.company), class: 'btn btn-info')
+  %br
+  %br

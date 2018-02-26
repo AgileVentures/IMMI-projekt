@@ -12,11 +12,9 @@ describe ShfApplicationPolicy do
 
   let(:member_not_owner) { create(:member_with_membership_app, email: 'member_not_owner@random.com') }
   let(:member_applicant) do
-    memb = create(:member_with_membership_app, email: 'member_owner@random.com')
-    create(:shf_application,
-           user: memb,
-           state: :new)
-    memb
+    member = create(:user, member: true, email: 'member_owner@random.com')
+    member.shf_application = create(:shf_application, state: :new)
+    member
   end
 
   let(:user_not_owner) { create(:user, email: 'user_not_owner@random.com') }
@@ -48,9 +46,7 @@ describe ShfApplicationPolicy do
 
         describe "For #{user_class} (not the owner of the application)" do
 
-          # Note that for the member_application, the last application is new. The first application is already approved.
-          # These tests check the 2nd application: the one that starts out as :new
-          let(:app_being_checked) { user_applicant.shf_applications.last }
+          let(:app_being_checked) { user_applicant.shf_application }
 
           CRUD_ACTIONS.each do |action|
             it "forbids :state to be changed for :#{action} action" do
@@ -69,9 +65,7 @@ describe ShfApplicationPolicy do
 
         describe "For #{user_class} (is the owner of a new application)" do
 
-          # Note that for the member_application, the last application is new. The first application is already approved.
-          # These tests check the 2nd application: the one that starts out as :new
-          let(:app_being_checked) { self.send(current_user).shf_applications.last }
+          let(:app_being_checked) { self.send(current_user).shf_application }
 
           (CRUD_ACTIONS - [:destroy]).each do |action|
             it "permits :state to be changed for :#{action} action" do
@@ -89,7 +83,12 @@ describe ShfApplicationPolicy do
 
     describe 'For the Member owner of an *approved* SHFApplication' do
 
-      subject { described_class.new(member_applicant, member_applicant.shf_applications.first) }
+      let(:application) do
+        member_applicant.shf_application.update(state: :accepted)
+        member_applicant.shf_application
+      end
+
+      subject { described_class.new(member_applicant, application) }
 
       it 'permits show' do
         is_expected.to permit_mass_assignment_of(:state).for_action(:show)
@@ -192,9 +191,7 @@ describe ShfApplicationPolicy do
 
         describe "For #{user_class} (is the owner of a new application)" do
 
-          # Note that for the member_application, the last application is new. The first application is already approved.
-          # These tests check the 2nd application: the one that starts out as :new
-          let(:app_being_checked) { self.send(current_user).shf_applications.last }
+          let(:app_being_checked) { self.send(current_user).shf_application }
 
           it 'permits new for a new application (not already instantiated)' do
             expect(described_class.new(self.send(current_user), ShfApplication)).to permit_action :new
@@ -281,7 +278,12 @@ describe ShfApplicationPolicy do
 
 
     describe 'For Member that is the owner of an *approved* SHFApplication' do
-      subject { described_class.new(member_applicant, member_applicant.shf_applications.first) }
+      let(:application) do
+        member_applicant.shf_application.update(state: :accepted)
+        member_applicant.shf_application
+      end
+
+      subject { described_class.new(member_applicant, application) }
 
       it 'permits new for a new application (not already instantiated)' do
         expect(described_class.new(member_applicant, ShfApplication)).to permit_action :new
@@ -362,4 +364,3 @@ describe ShfApplicationPolicy do
   end
 
 end
-

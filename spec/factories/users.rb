@@ -32,20 +32,6 @@ FactoryGirl.define do
       end
     end
 
-    factory :user_with_2_membership_apps do
-
-      transient do
-        company_number1 5712213304
-        company_number2 5562728336
-      end
-
-      after(:create) do |user, evaluator|
-        create(:shf_application, user: user, contact_email: evaluator.email, company_number: evaluator.company_number1)
-        create(:shf_application, user: user, contact_email: evaluator.email, company_number: evaluator.company_number2)
-      end
-
-    end
-
     factory :member_with_membership_app do
 
       member true

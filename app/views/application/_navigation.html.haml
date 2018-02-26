@@ -1,6 +1,6 @@
 .scroll-to-top
   %a{ href: '#' }
-    = icon('far', 'angle-up')
+    = fa_icon 'angle-up'
 .container-fluid.hfeed.site
   %header.site-header#masthead{ role: 'banner' }
     %a.skip-link.screen-reader-text{ href: '#content' } Skip to content
@@ -44,7 +44,7 @@
                   = render 'navigation_member_pages'
 
                   - if current_user.has_company?
-                    - member_company = current_user.shf_applications.accepted.last.company
+                    - member_company = current_user.shf_application&.company
                     %li.menu-item.menu-item-has-children
                       = link_to t('menus.nav.members.manage_company.submenu_title'),
                                 company_path(member_company)
@@ -56,13 +56,13 @@
                           = link_to t('menus.nav.members.manage_company.edit_company'),
                                     edit_company_path(member_company)
 
-                  = render 'navigation_edit_my_application', shf_app: current_user.shf_applications.last
+                  = render 'navigation_edit_my_application', shf_app: current_user.shf_application
 
                 - else
                   -# User is not a member nor admin
 
                   - if current_user.has_shf_application?
-                    = render 'navigation_edit_my_application', shf_app: current_user.shf_applications.last
+                    = render 'navigation_edit_my_application', shf_app: current_user.shf_application
                   - else
                     %li.menu-item
                       = link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path

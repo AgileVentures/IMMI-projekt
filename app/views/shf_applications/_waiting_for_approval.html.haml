@@ -1,0 +1,17 @@
+%h2= t('shf_applications.information.waiting_for_approval.title')
+
+%p= t('shf_applications.information.waiting_for_approval.in_process')
+
+%p= t('shf_applications.information.waiting_for_approval.look_over')
+
+
+- if policy(current_user.shf_application).update?
+  = link_to t('menus.nav.users.my_application'), edit_shf_application_path(current_user.shf_application), class: 'btn btn-info'
+- else
+  = link_to t('menus.nav.users.my_application'), shf_application_path(current_user.shf_application), class: 'btn btn-info'
+
+%br
+%br
+%p
+  = t('shf_applications.information.waiting_for_approval.too_slow')
+  = link_to 'medlem@sverigeshundforetagare.se', 'mailto:medlem@sverigeshundforetagare.se'

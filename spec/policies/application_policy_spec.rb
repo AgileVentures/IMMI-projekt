@@ -41,7 +41,7 @@ RSpec.describe ApplicationPolicy do
 
       describe 'Member that owns the record' do
         it 'forbidden if the record is an instantianted object' do
-          expect(described_class.new(member_owner, member_owner.shf_applications.last)).to forbid_action action_tested
+          expect(described_class.new(member_owner, member_owner.shf_application)).to forbid_action action_tested
         end
       end
 
@@ -67,7 +67,7 @@ RSpec.describe ApplicationPolicy do
 
       describe 'User that owns the record' do
         it 'forbidden if the record is an instantianted object' do
-          expect(described_class.new(user_owner, user_owner.shf_applications.last)).to forbid_action action_tested
+          expect(described_class.new(user_owner, user_owner.shf_application)).to forbid_action action_tested
         end
       end
 
@@ -89,9 +89,9 @@ RSpec.describe ApplicationPolicy do
       it 'permitted for Admins' do
         expect(described_class.new(admin, business_cat)).to permit_action action_tested
       end
-      
+
       it 'permitted for Member that owns the record' do
-          expect(described_class.new(member_owner, member_owner.shf_applications.last)).to permit_action action_tested
+          expect(described_class.new(member_owner, member_owner.shf_application)).to permit_action action_tested
       end
 
       it 'forbidden for Member that is not the record owner' do
@@ -99,7 +99,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'permitted for User that owns the record' do
-        expect(described_class.new(user_owner, user_owner.shf_applications.last)).to permit_action action_tested
+        expect(described_class.new(user_owner, user_owner.shf_application)).to permit_action action_tested
       end
 
       it 'forbidden for User that is not the record owner' do
@@ -142,7 +142,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'permitted for Member that owns the record' do
-        expect(described_class.new(member_owner, member_owner.shf_applications.last)).to permit_action action_tested
+        expect(described_class.new(member_owner, member_owner.shf_application)).to permit_action action_tested
       end
 
       it 'forbidden for Member that is not the record owner' do
@@ -150,7 +150,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'permitted for User that owns the record' do
-        expect(described_class.new(user_owner, user_owner.shf_applications.last)).to permit_action action_tested
+        expect(described_class.new(user_owner, user_owner.shf_application)).to permit_action action_tested
       end
 
       it 'forbidden for User that is not the record owner' do
@@ -172,7 +172,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'permitted for Member that owns the record' do
-        expect(described_class.new(member_owner, member_owner.shf_applications.last)).to permit_action action_tested
+        expect(described_class.new(member_owner, member_owner.shf_application)).to permit_action action_tested
       end
 
       it 'forbidden for Member that is not the record owner' do
@@ -180,7 +180,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'permitted for User that owns the record' do
-        expect(described_class.new(user_owner, user_owner.shf_applications.last)).to permit_action action_tested
+        expect(described_class.new(user_owner, user_owner.shf_application)).to permit_action action_tested
       end
 
       it 'forbidden for User that is not the record owner' do
@@ -202,7 +202,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'permitted for Member that owns the record' do
-        expect(described_class.new(member_owner, member_owner.shf_applications.last)).to permit_action action_tested
+        expect(described_class.new(member_owner, member_owner.shf_application)).to permit_action action_tested
       end
 
       it 'forbidden for Member that is not the record owner' do
@@ -210,7 +210,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'permitted for User that owns the record' do
-        expect(described_class.new(user_owner, user_owner.shf_applications.last)).to permit_action action_tested
+        expect(described_class.new(user_owner, user_owner.shf_application)).to permit_action action_tested
       end
 
       it 'forbidden for User that is not the record owner' do
@@ -232,7 +232,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'forbidden for Member that owns the record' do
-        expect(described_class.new(member_owner, member_owner.shf_applications.last)).to forbid_action action_tested
+        expect(described_class.new(member_owner, member_owner.shf_application)).to forbid_action action_tested
       end
 
       it 'forbidden for Member that is not the record owner' do
@@ -240,7 +240,7 @@ RSpec.describe ApplicationPolicy do
       end
 
       it 'forbidden for User that owns the record' do
-        expect(described_class.new(user_owner, user_owner.shf_applications.last)).to forbid_action action_tested
+        expect(described_class.new(user_owner, user_owner.shf_application)).to forbid_action action_tested
       end
 
       it 'forbidden for User that is not the record owner' do

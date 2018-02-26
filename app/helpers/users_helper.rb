@@ -35,4 +35,10 @@ module UsersHelper
                            attached_file.url(image_type))
   end
 
+  def user_has_open_application(user)
+    return nil unless user.shf_application
+
+    user.shf_application.state.to_sym.in?([:accepted, :rejected]) ? nil : t('yes')
+  end
+
 end

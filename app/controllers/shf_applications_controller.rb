@@ -59,7 +59,7 @@ class ShfApplicationsController < ApplicationController
 
       if file_uploads_successful
         helpers.flash_message(:notice, t('.success', email_address: @shf_application.contact_email))
-        redirect_to root_path
+        redirect_to information_path
       else
         create_error(t('.error'))
       end
@@ -261,7 +261,7 @@ class ShfApplicationsController < ApplicationController
 
   def create_error(error_message)
     helpers.flash_message(:alert, error_message)
-    current_user.shf_applications.reload
+    @all_business_categories = BusinessCategory.all
     render :new
   end
 

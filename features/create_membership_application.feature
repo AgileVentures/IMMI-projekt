@@ -41,9 +41,9 @@ Feature: Create a new membership application
       | Kicki                           | Andersson                      | 5562252998                          | 031-1234567                       | info@craft.se                      |
     And I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "landing" page
+    Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
-    When I click on t("menus.nav.users.my_application")
+    When I am on the "edit my application" page
     Then the t("shf_applications.new.first_name") field should be set to "Kicki"
     And the t("shf_applications.new.last_name") field should be set to "Andersson"
     Then "applicant_1@random.com" should receive an email
@@ -64,7 +64,7 @@ Feature: Create a new membership application
     And I select "Trainer" Category
     And I select "Psychologist" Category
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "landing" page
+    Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
 
@@ -75,7 +75,7 @@ Feature: Create a new membership application
       | shf_applications.new.first_name | shf_applications.new.last_name | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | Kicki                                  | Andersson                             | 5562252998                                 | 031-1234567                              | info@craft.se                             |
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "landing" page
+    Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
 
@@ -178,9 +178,9 @@ Feature: Create a new membership application
       | Lars                                   | IsaMember                             | 5562252998                                 | 031-1234567                              | member@random.com                         |
     And I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "landing" page
+    Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: member@random.com  )
-    When I click on t("menus.nav.users.my_application")
+    When I am on the "edit my application" page
     Then the t("shf_applications.new.first_name") field should be set to "Lars"
     And the t("shf_applications.new.last_name") field should be set to "IsaMember"
     Then "member@random.com" should receive an email

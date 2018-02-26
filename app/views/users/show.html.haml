@@ -24,26 +24,26 @@
 
   .col-sm-12
 
-    - unless @user.shf_applications.exists?
-      = field_or_none("#{t('applications')}", t('none'), label_class: 'standard-label')
+    - unless @user.shf_application
+      = field_or_none("#{t('application')}", t('none'), label_class: 'standard-label')
     - else
       -# .col-sm-3{ style: 'margin-left: -15px;' }
-      %span.standard-label #{t('applications')}:
+      %span.standard-label #{t('application')}:
 
-    .row
-      %table.table.table-hover
-        %thead
-          %tr
-            %th
-              = t('activerecord.attributes.shf_application.contact_email')
-            %th
-              = t('activerecord.attributes.shf_application.state')
-            %th
-              = t('activerecord.attributes.shf_application.company_number')
-            %th
-              = t('activerecord.attributes.company.name')
-        %tbody
-          - @user.shf_applications.includes(:companies).each do |app|
+      .row
+        %table.table.table-hover
+          %thead
+            %tr
+              %th
+                = t('activerecord.attributes.shf_application.contact_email')
+              %th
+                = t('activerecord.attributes.shf_application.state')
+              %th
+                = t('activerecord.attributes.shf_application.company_number')
+              %th
+                = t('activerecord.attributes.company.name')
+          %tbody
+            - app = @user.shf_application
             %tr.shf_application
               %td= mail_to(app.contact_email)
               %td
@@ -61,11 +61,12 @@
     %br
 
     - if current_user.admin?
-      .col-sm-12
+
       - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
         #{@user.email} #{t('.user_has_never_signed_in')}
 
       - else
+
         = "#{t('.last_login')}:"
         #{most_recent_login_time @user}
         (#{i18n_time_ago_in_words(most_recent_login_time @user)})
@@ -97,28 +98,30 @@
 
     %hr
 
-  .col-sm-12
-    .col-md-5
-      = render partial: 'proof_of_membership',
+
+  - if @user.member?
+    .col-sm-12
+      .col-md-5
+        = render partial: 'proof_of_membership',
                         locals: { app_config: @app_configuration, user: @user }
 
-    .col-md-7
-      %span.standard-label= t('.proof_of_membership')
-      %br
-      %br
-      = t('.proof_of_membership_describe')
-      %br
-      %br
-      = t('.proof_of_membership_image')
-      &nbsp;
-      = link_to(t('.download_image'), proof_of_membership_path(@user, render_to: :jpg),
-                class: 'btn btn-warning btn-xs')
-      %br
-      %br
-      = t('.proof_of_membership_show')
-      &nbsp;
-      = link_to(t('.show_image'), proof_of_membership_path(@user),
-                 class: 'btn btn-warning btn-xs')
+      .col-md-7
+        %span.standard-label= t('.proof_of_membership')
+        %br
+        %br
+        = t('.proof_of_membership_describe')
+        %br
+        %br
+        = t('.proof_of_membership_image')
+        &nbsp;
+        = link_to(t('.download_image'), proof_of_membership_path(@user, render_to: :jpg),
+                  class: 'btn btn-warning btn-xs')
+        %br
+        %br
+        = t('.proof_of_membership_show')
+        &nbsp;
+        = link_to(t('.show_image'), proof_of_membership_path(@user),
+                   class: 'btn btn-warning btn-xs')
 
 
 = render partial: 'edit_status_modal', locals: { user: @user }

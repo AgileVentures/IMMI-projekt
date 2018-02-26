@@ -16,6 +16,10 @@ class Visitor
     false
   end
 
+  def shf_application
+    nil
+  end
+
   def has_company?
     false
   end

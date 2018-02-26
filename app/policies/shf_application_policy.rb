@@ -137,6 +137,8 @@ class ShfApplicationPolicy < ApplicationPolicy
       all_attributes
     elsif owner?
       application_is_approved_or_rejected? ? [] : owner_attributes
+    elsif user_has_other_application?
+      []
     elsif not_a_visitor
       user_owner_attributes
     else
@@ -147,6 +149,10 @@ class ShfApplicationPolicy < ApplicationPolicy
 
   def application_is_approved_or_rejected?
     [:accepted, :rejected].include?(record.state.to_sym)
+  end
+
+  def user_has_other_application?
+    user.shf_application && user.shf_application != record
   end
 
 

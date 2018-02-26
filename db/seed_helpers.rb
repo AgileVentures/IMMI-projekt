@@ -48,17 +48,13 @@ module SeedHelper
     small_number_of_users = users.count < 3 ? 0 : [1, (0.1 * users.count).round].max
 
     users_with_no_application = small_number_of_users
-    users_with_double_application = small_number_of_users
 
-    users_with_single_application = users.count - users_with_no_application - users_with_double_application
-
-    users_with_application = users_with_single_application + users_with_double_application
+    users_with_application = users.count - users_with_no_application
 
     return if users_with_application == 0
 
     users[0..users_with_application-1].each.with_index do |user, i|
       make_application(user)
-      make_application(user) unless i >= users_with_double_application
     end
 
   end
@@ -119,9 +115,7 @@ module SeedHelper
                                       expire_date: expire_date)
     end
 
-
-    # ensure that this is the *last* application for the user
-    user.shf_applications << ma
+    user.shf_application = ma
 
     user.save!
     user

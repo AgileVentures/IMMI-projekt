@@ -39,7 +39,6 @@ Feature: As a member
 
     And the following applications exist:
       | user_email          | company_number | categories | state    |
-      | emma@happymutts.com | 5560360793     |            | accepted |
       | emma@happymutts.com | 5562252998     | Awesome    | accepted |
 
     And the following payments exist

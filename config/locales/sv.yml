@@ -39,9 +39,9 @@ sv:
   'no': &no Nej
   'Yes': *yes
   'No': *no
-  applications: &applications Ansökningar
+  application: &application Ansökan
   user_activity: Användaraktivitet
-  none: &none Ingen
+  none: &none Inget
 
   time_ago: '%{amount_of_time} sedan'
 
@@ -163,6 +163,13 @@ sv:
         uploaded_files:
           one: Uppladdad fil
           many: Uppladdade filer
+        state/new: &status_new Ny
+        state/under_review: &status_under_review Behandlas
+        state/waiting_for_applicant: &status_waiting_for_applicant Avvaktar sökande
+        state/ready_for_review: &status_ready_for_review Redo för granskning
+        state/accepted: &status_accepted Godkänd
+        state/rejected: &status_rejected Avböjd
+
 
 
       address:
@@ -270,7 +277,7 @@ sv:
   shf_applications:
     new:
       title: Ansök om medlemskap
-      instructions: 'För att kunna hantera din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier.'
+      instructions_html: 'För att kunna hantera din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier. <strong>Utan detta kan vi inte hantera din ansökan.</strong>'
 
       section_title_about_you: &about_you Om dig
 
@@ -285,11 +292,11 @@ sv:
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
       application_dog_category: &application_dog_category "Ansöker som:"
-      clue_selected_categories: &clue_selected_categories "Blå fält = valda"
+      clue_selected_categories: &clue_selected_categories "Blå fält = valda. Relevant medlemskategori behöver fyllas i för att vi ska kunna hantera din ansökan."
 
       upload_files_section: Underlag för att styrka min ansökan
       upload_files_instructions: 'Dokumenten är mycket viktiga för att vi ska kunna bedöma din ansökan. Vi använder dem för att verifiera dina kunskaper och utbildningar. Detta säkerställer att vår medlemsstandard är fortsatt hög, vilket i förlängningen innebär att allmänheten vet att Sveriges hundföretagare är professionella och att lita på.'
-      upload_files: 'Ladda upp filer från datorn'
+      upload_files: 'Ladda upp filer från datorn (VIKTIGT)'
       upload_allowed_file_types: 'Tillåtna filtyper:'
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
       upload_button: Välj dina filer...
@@ -341,30 +348,48 @@ sv:
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
 
     information:
-      title: Om medlemskap
+      title: Om ansökan och medlemskap
       member:
         title: Välkommen
-        using_the_logo: "Det är viktigt att vi alla följer vår grafiska profil, att loggan
-                         nyttjas på ett enhetligt sätt och inga egna versioner skapas av er
-                         medlemmar. Detta för att skapa igenkänning, tydlighet gentemot kund.
-                         Och skydda oss mot förfalskningar av H-märket."
-        upload_this_image: "Vi önskar att ni lägger upp nedanstående bild på era hemsidor.
-                                  Samt länkar denna bild till:"
-        using_the_h_mark: "Vi önskar även att ni pryder er hemsida med H-märket. För att visa
-                                 att ni just H-märkta med allt vad det innebär. Bilden nedan nyttjas i
-                                 detta syfte och länkas till:"
+        using_the_logo: Det är viktigt att vi alla följer vår grafiska profil,
+                        att loggan nyttjas på ett enhetligt sätt och inga egna
+                        versioner skapas av dig som är medlem. Detta för att
+                        skapa igenkänning, tydlighet gentemot kund. Och skydda
+                        oss mot förfalskningar av H-märket.
+        upload_this_image: 'Vi önskar att du lägger upp nedanstående bild på din
+                          hemsida. Samt länkar denna bild till: "http://www.sverigeshundforetagare.se"'
+        using_the_h_mark: 'Vi önskar även att du pryder din hemsida med H-märket.
+                          För att visa att ni är just H-märkta med allt vad det innebär.
+                          Bilden nedan nyttjas i detta syfte och länkas till: "http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
+      waiting_for_approval:
+        title: Hej, kul att du vill bli medlem
+        in_process: Vi håller på att hantera din ansökan.
+        look_over: Se gärna över den och säkerställ att laddat upp filer och fyllt i kategorier.
+        too_slow: Tycker du det tar alldeles för lång tid, och din ansökan är komplett, skriv en rad till
+
+      check_payment_status:
+        approved: Du är godkänd och nu är det dags att betala dina avgifter.
+        pay_m_here: 'Ditt medlemskap betalas på denna sida:'
+        approved_since_before: Du är godkänd sedan innan men du har just nu en eller flera avgifter som inte är betalda.
+        m_expires: 'Ditt medlemskap är betalt till:'
+        h_expires: 'Din H-märkningspremie är betald till:'
+        pay_h_here: 'Din H-märkningspremie behöver betalas:'
 
       user:
         title: Hej, kul att du är intresserad
-        how_to_apply: "För att skicka in din medlemsansökan klickar du på länken nedan
-                        och fyller i alla nödvändiga uppgifter.
-                        Glöm inte markera vilken eller vilka
-                        kategorier du vill ansöka om medlemskap i."
-        once_it_is_submitted: "När din ansökan är inskickad hamnar den hos oss för behandling, detta
-                               tar en stund, så var inte orolig om du inte hör något från oss."
-        when_we_decide: "När din ansökan sedan är godkänd får du ett mail, med betalningsinformation. När
-                         du betalt får du ett nytt mail med information om hur
-                         du skapar din sökbara företagssida."
+        how_to_apply: "För att skicka in din medlemsansökan klickar du på länken
+                      nedan och fyller i alla nödvändiga uppgifter. Glöm inte
+                      markera vilken eller vilka kategorier du vill ansöka
+                      om medlemskap i."
+        once_it_is_submitted: "När din ansökan är inskickad hamnar den hos oss
+                      för behandling, detta tar en stund, så var inte orolig
+                      om du inte hör något från oss genast."
+        when_we_decide: "När din ansökan sedan är godkänd får du ett mail med
+                        betalningsinformation från systemet. När du betalt får
+                        du ett nytt mail med information om hur du skapar din
+                        sökbara företagssida."
+
+
 
 
     start_review:
@@ -409,12 +434,12 @@ sv:
       error: Det uppstod ett fel när du försöker att skicka in din ansökan för omgranskning.
 
     state:
-      new: &status_new Ny
-      under_review: &status_under_review Behandlas
-      waiting_for_applicant: &status_waiting_for_applicant  Avvaktar sökande
-      ready_for_review: &status_ready_for_review Redo för granskning
-      accepted: &status_accepted Godkänd
-      rejected: &status_rejected Avböjd
+      new: *status_new
+      under_review: *status_under_review
+      waiting_for_applicant: *status_waiting_for_applicant
+      ready_for_review: *status_ready_for_review
+      accepted: *status_accepted
+      rejected: *status_rejected
 
     new_status: *status_new
     accept_btn: Godkänn
@@ -495,7 +520,7 @@ sv:
       add_address: 'Lägg till adress'
       click_to_edit: 'klicka för att redigera'
       edit_branding_status: Redigera Status
-      branding_license: Accepterar policy
+      branding_license: Betald H-märkespremie
       pay_branding_fee_tooltip: Betald avgift förlänger H-märkningen i ett år.
       branding_fee_expire_date_tooltip: Efter detta datum går perioden för din H-märkning ut.
       members: Företagsmedlemmar
@@ -653,7 +678,7 @@ sv:
       error: Ett problem hindrade användarinformationen från att uppdateras.
       member_photo:
         reason: Detta foto används på ditt medlemsbevis.
-        format: Din fotofil ska vara i "PNG" eller "JPEG" -format,
+        format: Din fotofil ska vara i "PNG", "JPG" eller "JPEG" -format,
                 och av passfototyp (det vill säga ansiktsbild med neutral bagrund)
                 för bästa resultat.
         upload: Klicka på "Välj fil" för att ladda upp ditt foto.
@@ -684,8 +709,8 @@ sv:
       last_login: *user_last_login
       logged_in_count: *sign_in_count
       member: Medlem
-      applications: *applications
-      applications_tooltip: Antal öppna ansökningar
+      application: *application
+      applications_tooltip: Användaren har en öppen ansökan
       expire_date: *expire_date
 
   payments:
@@ -1004,7 +1029,7 @@ sv:
         pay_membership: Betala medlemsavgift
 
       company:
-        pay_branding_fee: Betala H-märkesavgift
+        pay_branding_fee: Betala H-märkespremie
 
       admin:
         shf_main_site: *shf_main_site
@@ -1021,7 +1046,7 @@ sv:
           manage_companies: Hantera företag
           new_company: Nytt företag
         applications:
-          submenu_title: *applications
+          submenu_title: Ansökningar
           manage_applications: Hantera ansökningar
           waiting_reasons: "Anledning för avvaktan"
         users:
