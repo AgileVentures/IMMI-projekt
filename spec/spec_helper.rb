@@ -14,6 +14,9 @@ require 'vcr'
 # helper to be used in specs for services
 SERVICES_PATH = File.absolute_path(File.join(__dir__, '..', 'app','services'))
 
+# location of our testing fixtures
+FIXTURES_PATH = File.join(__dir__, 'fixtures')
+
 
 VCR.configure do |c|
   c.cassette_library_dir = 'spec/vcr_cassettes'

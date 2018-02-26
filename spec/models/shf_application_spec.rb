@@ -3,6 +3,9 @@ require 'aasm/rspec'
 
 require 'support/ae_aasm_matchers/ae_aasm_matchers'
 
+require_relative './shared_ex_scope_updated_in_date_range_spec'
+
+
 # alias shared example call for readability
 RSpec.configure do |c|
   c.alias_it_should_behave_like_to :it_will, 'it will'
@@ -90,40 +93,136 @@ RSpec.describe ShfApplication, type: :model do
   end
 
   context 'scopes' do
-    let!(:accepted_app1) { create(:shf_application, :accepted) }
-    let!(:accepted_app2) { create(:shf_application, :accepted) }
-    let!(:rejected_app1) { create(:shf_application, :rejected) }
-    let!(:new_app1)      { create(:shf_application) }
 
-    describe 'open' do
-      it 'returns all apps not accepted or rejected' do
-        expect(described_class.open.all).to contain_exactly(new_app1)
+    context 'open and accepted' do
+      let!(:accepted_app1) { create(:shf_application, :accepted) }
+      let!(:accepted_app2) { create(:shf_application, :accepted) }
+      let!(:rejected_app1) { create(:shf_application, :rejected) }
+      let!(:new_app1) { create(:shf_application) }
+
+      describe 'open' do
+        it 'returns all apps not accepted or rejected' do
+          expect(described_class.open.all).to contain_exactly(new_app1)
+        end
       end
+
+      describe 'accepted' do
+        it 'returns all accepted apps' do
+          expect(described_class.accepted.all)
+              .to contain_exactly(accepted_app1, accepted_app2)
+        end
+      end
+
     end
 
-    describe 'accepted' do
-      it 'returns all accepted apps' do
-        expect(described_class.accepted.all)
-          .to contain_exactly(accepted_app1, accepted_app2)
+    describe 'no uploaded files: all open applications that have no uploaded files' do
+
+      let!(:application_owner1) { create(:user, email: 'user_1@random.com') }
+      let!(:application_owner2) { create(:user, email: 'user_2@random.com') }
+      let!(:application_owner3) { create(:user, email: 'user_3@random.com') }
+
+      let!(:shf_open_app_no_uploads_1) { create(:shf_application, user: application_owner2, contact_email: application_owner2.email,) }
+      let!(:shf_open_app_no_uploads_2) { create(:shf_application, user: application_owner3, contact_email: application_owner3.email,) }
+
+      let!(:shf_rejected_app_uploads_1) do
+        user = create(:user, email: 'user_7@random.com')
+        create(:shf_application, :rejected, user: user)
       end
+
+      let!(:shf_rejected_app_uploads_2) do
+        user = create(:user, email: 'user_8@random.com')
+        create(:shf_application, :rejected, user: user)
+      end
+
+      let!(:shf_rejected_app_uploads_3) do
+        user = create(:user, email: 'user_9@random.com')
+        create(:shf_application, :rejected, user: user)
+      end
+
+      let!(:shf_rejected_app_uploads_4) do
+        user = create(:user, email: 'user_10@random.com')
+        create(:shf_application, :rejected, user: user)
+      end
+
+
+      context 'no uploaded files in the system [caused a problem with the original scope]' do
+
+        it 'returns 2 apps when there are 2 open apps without uploads, 4 rejected apps without uploads' do
+
+          expect(described_class.no_uploaded_files).to contain_exactly(shf_open_app_no_uploads_1,
+                                                                       shf_open_app_no_uploads_2)
+        end
+      end
+
+      context 'there are uploaded files in the system' do
+
+        let!(:shf_open_app_uploads_1) do
+          shf_app = create(:shf_application, user: application_owner1, contact_email: application_owner1.email)
+          shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
+        end
+
+        let!(:shf_approved_app_uploads_1) do
+          member = create(:member_with_membership_app, email: 'user_4@random.com')
+          shf_app = member.shf_application
+          shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
+          shf_app
+        end
+
+        let!(:shf_approved_app_uploads_2) do
+          member = create(:member_with_membership_app, email: 'user_5@random.com')
+          shf_app = member.shf_application
+          shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
+          shf_app
+        end
+
+        let!(:shf_approved_app_uploads_3) do
+          member = create(:member_with_membership_app, email: 'user_6@random.com')
+          shf_app = member.shf_application
+          shf_app.uploaded_files <<  create(:uploaded_file, :png, shf_application: shf_app)
+          shf_app
+        end
+
+
+        describe '1 open apps with uploads, 2 open apps without, 3 approved apps with uploads, 4 rejected apps without uploads ' do
+
+          it 'open count = 3' do
+            expect(described_class.open.count).to eq 3
+          end
+
+          it 'no_uploaded_files count = 2' do
+            expect(described_class.no_uploaded_files.count).to eq 2
+            expect(described_class.no_uploaded_files).to contain_exactly(shf_open_app_no_uploads_1, shf_open_app_no_uploads_2)
+          end
+
+        end
+
+      end
+
+
+    end
+
+    describe 'updated_in_date_range(start_date, end_date)' do
+      it_behaves_like 'it_has_updated_in_date_range_scope', :shf_application
     end
   end
+
 
   describe "Uploaded Files" do
 
-    let(:application_owner) {create(:user, email: 'user_1@random.com')}
-    let(:application_owner2) {create(:user, email: 'user_2@random.com')}
+    let(:application_owner) { create(:user, email: 'user_1@random.com') }
+    let(:application_owner2) { create(:user, email: 'user_2@random.com') }
 
     it 'uploading a file increases the number of uploaded files by 1' do
-      expect {create(:shf_application, user: application_owner, uploaded_files: [create(:uploaded_file, actual_file: (File.new(File.join(FIXTURE_DIR, 'image.jpg'))))])}.to change(UploadedFile, :count).by(1)
+      expect { create(:shf_application, user: application_owner, uploaded_files: [create(:uploaded_file, actual_file: (File.new(File.join(FIXTURE_DIR, 'image.jpg'))))]) }.to change(UploadedFile, :count).by(1)
     end
 
   end
 
+
   describe 'User attributes nesting' do
 
-    let(:user) {create(:user, first_name: 'Firstname', last_name: 'Lastname')}
-    let!(:member_app) {create(:shf_application, user: user, user_attributes: {first_name: 'New Firstname', last_name: 'New Lastname'})}
+    let(:user) { create(:user, first_name: 'Firstname', last_name: 'Lastname') }
+    let!(:member_app) { create(:shf_application, user: user, user_attributes: { first_name: 'New Firstname', last_name: 'New Lastname' }) }
 
     it 'sets first_name on user' do
       expect(user.first_name).to eq('New Firstname')
@@ -199,7 +298,7 @@ RSpec.describe ShfApplication, type: :model do
 
     it '1 category with the name "Special"' do
       member_app = create(:shf_application, num_categories: 1,
-                          category_name:                           "Special")
+                          category_name: "Special")
       expect(member_app.business_categories.count).to eq(1)
       expect(member_app.business_categories.first.name).to eq("Special"), "The first category name should have been 'Special' but instead was '#{member_app.business_categories.first.name}'"
     end
@@ -217,16 +316,16 @@ RSpec.describe ShfApplication, type: :model do
 
   describe 'states, events, and transitions' do
 
-    let!(:user) {create(:user_with_membership_app)}
-    let!(:application) {user.shf_application}
+    let!(:user) { create(:user_with_membership_app) }
+    let!(:application) { user.shf_application }
 
     describe 'valid states' do
-      it {expect(application).to have_valid_state(:new)}
-      it {expect(application).to have_valid_state(:under_review)}
-      it {expect(application).to have_valid_state(:waiting_for_applicant)}
-      it {expect(application).to have_valid_state(:ready_for_review)}
-      it {expect(application).to have_valid_state(:accepted)}
-      it {expect(application).to have_valid_state(:rejected)}
+      it { expect(application).to have_valid_state(:new) }
+      it { expect(application).to have_valid_state(:under_review) }
+      it { expect(application).to have_valid_state(:waiting_for_applicant) }
+      it { expect(application).to have_valid_state(:ready_for_review) }
+      it { expect(application).to have_valid_state(:accepted) }
+      it { expect(application).to have_valid_state(:rejected) }
     end
 
 
@@ -241,12 +340,12 @@ RSpec.describe ShfApplication, type: :model do
 
 
     describe 'valid events' do
-      it {expect(application).to have_valid_event(:start_review)}
-      it {expect(application).to have_valid_event(:ask_applicant_for_info)}
-      it {expect(application).to have_valid_event(:cancel_waiting_for_applicant)}
-      it {expect(application).to have_valid_event(:is_ready_for_review)}
-      it {expect(application).to have_valid_event(:accept)}
-      it {expect(application).to have_valid_event(:reject)}
+      it { expect(application).to have_valid_event(:start_review) }
+      it { expect(application).to have_valid_event(:ask_applicant_for_info) }
+      it { expect(application).to have_valid_event(:cancel_waiting_for_applicant) }
+      it { expect(application).to have_valid_event(:is_ready_for_review) }
+      it { expect(application).to have_valid_event(:accept) }
+      it { expect(application).to have_valid_event(:reject) }
     end
 
 
@@ -349,7 +448,7 @@ RSpec.describe ShfApplication, type: :model do
   describe '#se_mailing_csv_str (comma sep string) of the address for the swedish postal service' do
 
     let(:accepted_app) { create(:shf_application, :accepted) }
-    let(:rejected_app) { create(:shf_application, :rejected)}  # no company for this
+    let(:rejected_app) { create(:shf_application, :rejected) } # no company for this
 
     it "uses the app's latest-added-company main address" do
 

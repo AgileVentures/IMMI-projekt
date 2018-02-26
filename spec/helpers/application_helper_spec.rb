@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe ApplicationHelper, type: :helper do
-  let(:user) { create(:user) }
+  let(:user) { create(:user) }  # FIXME  why is this needed here?  It should be defined only in the tests that require it
 
   describe '#flash_class' do
 

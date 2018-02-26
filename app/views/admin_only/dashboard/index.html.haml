@@ -1,0 +1,65 @@
+%header.entry-header
+  %h1.entry-title= t('admin_only.dashboard.title')
+.post-title-divider
+  %span
+
+.entry-content.admin
+  .row
+    .col-md-11
+      %ul.nav.nav-tabs
+        %li.active
+          %a(data-toggle='tab' href='#n1') Current
+        %li
+          %a(data-toggle='tab' href='#n2') Activity
+        %li
+          %a(data-toggle='tab' href='#n6') Applications
+        %li
+          %a(data-toggle='tab' href='#n7') Users
+        %li
+          %a(data-toggle='tab' href='#n3') Members
+        %li
+          %a(data-toggle='tab' href='#n4') Membership
+        %li
+          %a(data-toggle='tab' href='#n5') H-branding
+
+      .tab-content
+        #n1.tab-pane.fade.in.active
+          -# smell:  passing so many vars to a view -> should encapsulate in a class
+          .section
+            = render 'current_items_to_note', apps_without_uploads: @data_gatherer.apps_without_uploads,
+            apps_approved_member_fee_not_paid: @data_gatherer.apps_approved_member_fee_not_paid,
+             companies_branding_not_paid: @data_gatherer.companies_branding_not_paid,
+             companies_info_not_completed: @data_gatherer.companies_info_not_completed
+
+        #n2.tab-pane.fade
+          -# smell:  passing so many vars to a view -> should encapsulate in a class
+          .section
+            = render 'recent_activity', recent_num_days: @data_gatherer.timeframe,
+                                        recent_apps: @data_gatherer.recent_shf_apps,
+                                        recent_app_state_counts: @data_gatherer.recent_app_state_counts,
+                                        recent_payments: @data_gatherer.recent_payments,
+                                        recent_member_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym],
+                                        recent_branding_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym]
+
+        #n3.tab-pane.fade
+          .section.membership-totals-current
+            %h3.total-members
+              = styled_total(@data_gatherer.total_members, t('admin_only.dashboard.total_members'))
+
+        #n4.tab-pane.fade
+          = render 'admin_only/dashboard/m_fee_payments'
+        #n5.tab-pane.fade
+          = render 'admin_only/dashboard/h_branding'
+
+        #n6.tab-pane.fade
+          .section
+            %h3.section-title Applications
+            %p= @data_gatherer.app_states_translated.map{|k, v| "#{k}: #{v}"}.join(', ')
+            = pie_chart @data_gatherer.app_states_translated
+            = line_chart ShfApplication.group_by_day(:created_at).count
+
+
+        #n7.tab-pane.fade
+          = render 'admin_only/dashboard/users'
+
+

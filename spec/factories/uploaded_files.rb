@@ -1,4 +1,7 @@
 FactoryGirl.define do
+
+  # NOTE: This will create a ShfApplication if one is not provided
+  #
   factory :uploaded_file do
 
     shf_application

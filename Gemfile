@@ -71,6 +71,8 @@ gem 'slack-notifier'  # send notifications to Slack
 
 gem 'imgkit'
 gem 'wkhtmltoimage-binary'
+gem 'chartkick'
+gem 'groupdate'
 
 group :development, :test do
   gem 'rspec-rails'

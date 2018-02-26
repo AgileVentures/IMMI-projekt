@@ -15,6 +15,8 @@
 //= require bootstrap-sprockets
 //= require i18n/translations
 //= require_tree .
+//= require Chart.bundle
+//= require chartkick
 
 $(function() {
     'use strict';

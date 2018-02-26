@@ -1,0 +1,20 @@
+- i18n_scope = 'admin_only.dashboard'
+#current-activity
+  %h3.section-title= t('current_items_section_title', scope: i18n_scope)
+
+  .current-items-of-note
+    %p
+      = styled_total(apps_without_uploads.count,
+                     t('open_apps_no_files', scope: i18n_scope))
+
+    %p
+      = styled_total(apps_approved_member_fee_not_paid.count,
+                     t('app_approved_no_payment', scope: i18n_scope))
+
+    %p
+      = styled_total(companies_branding_not_paid.count,
+                     t('companies_no_branding_payment', scope: i18n_scope))
+
+    %p
+      = styled_total(companies_info_not_completed.count,
+                   t('companies_incomplete', scope: i18n_scope))

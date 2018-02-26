@@ -6,6 +6,9 @@ require 'rspec/rails'
 require 'pundit/matchers'
 require 'paperclip/matchers'
 
+require 'support/data_creation_helper'
+
+
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|

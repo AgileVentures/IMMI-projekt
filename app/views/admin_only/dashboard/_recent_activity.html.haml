@@ -1,0 +1,33 @@
+#recent-activity
+  %h3.section-title= t('admin_only.dashboard.recent_activity_section_title', recent_num_days: recent_num_days)
+
+  .recent-activity
+    -#%p.timeframe-options
+      change the timeframe (days):
+      %span.not-working [JS NOT WORKING YET]
+      = collection_radio_buttons(:data_gatherer, :timeframe,
+          @data_gatherer.days_ago_list, :itself, :to_s,
+          {},
+          {data: { remote: true, url: admin_only_dashboard_show_recent_activity_path,
+                                 method: 'put' } }) do | radio_button |
+        = radio_button.label(class: 'radio-button') do
+          = radio_button.radio_button + ' ' + radio_button.text
+
+    #recent-details
+      %h4
+        = styled_total(recent_app_state_counts[:new], "#{t('new')} #{t('activerecord.models.shf_application.other')}")
+      %p=  (recent_app_state_counts.reject{|k,_v| k== :new}).map{|k, v| "#{t'activerecord.attributes.shf_application.state/'+(k).to_s}: #{v}"}.join(', ')
+
+      %h4.total-payments-weekly
+        = styled_total(recent_member_fee_payments.count + recent_branding_fee_payments.count,
+                       t('admin_only.dashboard.payments'))
+      %p.detail-line= t('admin_only.dashboard.member_fee_payments', number_payments: recent_member_fee_payments.count)
+      %p.detail-line= t('admin_only.dashboard.branding_fee_payments', number_payments: recent_branding_fee_payments.count)
+
+
+:javascript
+
+  $( document ).ajaxSuccess(function( event, request, settings ) {
+        console.info("document Triggered ajaxSuccess handler! event="+ event + "= response:" + request + ":");
+        // update the section-title with the new recent_num_days number from @data_gatherer.timeframe )
+  });

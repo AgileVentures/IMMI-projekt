@@ -1,0 +1,67 @@
+/* ------------------------
+ Admin Dashboard
+------------------------*/
+
+$indent-amount: 2rem;
+
+.radio-button {
+margin-left: 2rem;
+font-weight: normal;
+}
+
+.admin {
+  padding:5px!important;
+}
+
+.section {
+  min-height: 300px;
+  margin: 0 0 1.5em 3em;
+  padding: 10px;
+  p {
+    margin-bottom: 0.5em;
+  }
+
+  .section-title {
+    padding-top: 1rem;
+  }
+
+  .row {
+    margin-top: 0;
+  }
+
+  .total, .subtotal {
+    font-weight: bold;
+  }
+
+  .total {
+    color: #1b3e70;
+    text-align: right;
+    min-width: 35px;
+    margin-left:-35px;
+    display: inline-block;
+  }
+
+  .sub-info-line {
+    font-size: 85%
+  }
+
+  .detail-line {
+    margin-left: $indent-amount;
+    font-size: smaller;
+  }
+
+  .recent-activity, .current-items-of-note {
+    margin-left: $indent-amount;
+  }
+
+  .timeframe-options {
+    font-size: smaller;
+  }
+
+  .not-working {
+    font-style: italic;
+    color: red;
+
+  }
+
+}

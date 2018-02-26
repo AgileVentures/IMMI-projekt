@@ -104,8 +104,8 @@ en:
   activerecord:
     models:
       shf_application:
-        one: Membership
-        other: Memberships
+        one: Membership Application
+        other: Membership Applications
 
       business_category:
         one: &business_category Category
@@ -121,7 +121,7 @@ en:
 
       payment:
         one: Payment
-        other: Payments
+        other: &payments Payments
 
       user:
         one: User
@@ -170,6 +170,9 @@ en:
         state/accepted: &status_accepted Approved
         state/rejected: &status_rejected Rejected
 
+      member:
+        true: Member
+        false: Not member
 
       address:
         street: &street Street
@@ -856,6 +859,22 @@ en:
       update:
         success: Application data updated successfully
         error: There was a problem with updating configuration data
+    dashboard:
+      title: ADMIN DASHBOARD
+      total_members: "members"
+
+      payments: *payments
+
+      member_fee_payments: "%{number_payments} member fee payments"
+      branding_fee_payments: "%{number_payments} branding fee payments"
+
+      recent_activity_section_title: "Activity in the past %{recent_num_days} days:"
+
+      current_items_section_title: "Current Items of Note:"
+      open_apps_no_files: "Open Applications with no files uploaded"
+      app_approved_no_payment: "Applications approved but no membership payment yet"
+      companies_no_branding_payment: "companies Branding license fee not yet paid"
+      companies_incomplete: "companies with information not yet complete"
 
   mailers:
     application_mailer:

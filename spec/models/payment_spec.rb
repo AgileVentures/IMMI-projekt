@@ -1,6 +1,10 @@
 require 'rails_helper'
 
+require_relative './shared_ex_scope_updated_in_date_range_spec'
+
+
 RSpec.describe Payment, type: :model do
+
   let(:success) { Payment::ORDER_PAYMENT_STATUS['successful'] }
   let(:created) { Payment::ORDER_PAYMENT_STATUS[nil] }
 
@@ -62,6 +66,43 @@ RSpec.describe Payment, type: :model do
     it { is_expected.to validate_presence_of :expire_date }
   end
 
+  describe 'Scopes' do
+    describe 'scope: completed' do
+
+      it 'returns all completed payments' do
+        expect(Payment.completed).to contain_exactly(member_pymt3, member_pymt1)
+      end
+    end
+
+    describe 'scope: Payment::PAYMENT_TYPE_MEMBER' do
+
+      it 'returns all member fee payments' do
+        expect(Payment.send(Payment::PAYMENT_TYPE_MEMBER))
+            .to contain_exactly(member_pymt3, member_pymt2, member_pymt1)
+      end
+    end
+
+    describe 'scope: Payment::PAYMENT_TYPE_BRANDING' do
+
+      it 'returns all branding fee payments' do
+        expect(Payment.send(Payment::PAYMENT_TYPE_BRANDING))
+            .to contain_exactly(brand_pymt3, brand_pymt2, brand_pymt1)
+      end
+    end
+
+    describe 'scope: unexpired' do
+      it 'returns all unexpired payments' do
+        expect(Payment.unexpired)
+            .to contain_exactly(member_pymt1, member_pymt2, member_pymt3,
+                                brand_pymt1, brand_pymt2, brand_pymt3)
+      end
+    end
+
+    describe 'updated_in_date_range(start_date, end_date)' do
+      it_behaves_like 'it_has_updated_in_date_range_scope', :payment
+    end
+  end
+
   describe '.order_to_payment_status' do
     it "returns payment status 'created' for nil order status" do
       expect(described_class.order_to_payment_status(nil)).to eq 'skapad'
@@ -81,38 +122,8 @@ RSpec.describe Payment, type: :model do
 
     it "returns payment status 'awaiting payments' for 'awaiting_payments' order status" do
       expect(described_class.order_to_payment_status('awaiting_payments'))
-        .to eq 'Väntar på betalning'
+          .to eq 'Väntar på betalning'
     end
   end
 
-  describe 'scope: completed' do
-
-    it 'returns all completed payments' do
-      expect(Payment.completed).to contain_exactly(member_pymt3, member_pymt1)
-    end
-  end
-
-  describe 'scope: Payment::PAYMENT_TYPE_MEMBER' do
-
-    it 'returns all member fee payments' do
-      expect(Payment.send(Payment::PAYMENT_TYPE_MEMBER))
-        .to contain_exactly(member_pymt3, member_pymt2, member_pymt1)
-    end
-  end
-
-  describe 'scope: Payment::PAYMENT_TYPE_BRANDING' do
-
-    it 'returns all branding fee payments' do
-      expect(Payment.send(Payment::PAYMENT_TYPE_BRANDING))
-        .to contain_exactly(brand_pymt3, brand_pymt2, brand_pymt1)
-    end
-  end
-
-  describe 'scope: unexpired' do
-    it 'returns all unexpired payments' do
-      expect(Payment.unexpired)
-        .to contain_exactly(member_pymt1, member_pymt2, member_pymt3,
-                            brand_pymt1, brand_pymt2, brand_pymt3)
-    end
-  end
 end

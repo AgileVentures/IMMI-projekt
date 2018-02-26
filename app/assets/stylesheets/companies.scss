@@ -1,4 +1,4 @@
-$btn-success-color: #00ff00;
+$btn-hover-color: #7EDD8B;
 
 .field-label {
   font-weight: bold;
@@ -60,7 +60,7 @@ $btn-success-color: #00ff00;
     text-transform: none;
 
     &:hover {
-      color: $btn-success-color;
+      color: $btn-hover-color;
     }
   }
 

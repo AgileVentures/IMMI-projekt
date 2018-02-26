@@ -41,6 +41,7 @@ class ShfApplication < ApplicationRecord
 
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
+
   delegate :full_name, to: :user, prefix: true
   delegate :membership_number, :membership_number=, to: :user, prefix: false
 
@@ -88,6 +89,34 @@ class ShfApplication < ApplicationRecord
     end
 
   end
+
+  # encapsulate how to get a list of all states as symbols
+  def self.all_states
+    aasm.states.map(&:name)
+  end
+
+  def self.in_state(app_state)
+    where(state: app_state)
+  end
+
+  def self.total_in_state(app_state)
+    where(state: app_state).count
+  end
+
+  # Have to guard agains the condition where there are no uploaded files in the system
+  def self.no_uploaded_files
+    return open if UploadedFile.count == 0
+
+    open.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id))
+
+  end
+
+  # return all SHF applications where updated_at: >= start date AND updated_at: <= end_date
+  def self.updated_in_date_range(start_date, end_date)
+    where( updated_at: start_date..end_date )
+  end
+
+
 
   # these are only used by the submisssion form and are not saved to the db
   def marked_ready_for_review
