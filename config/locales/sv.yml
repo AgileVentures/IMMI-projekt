@@ -489,6 +489,8 @@ sv:
 
 
   companies:
+    companies_list:
+      name_missing: Namn Saknas
     new:
       title: Nytt företag
     create:

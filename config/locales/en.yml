@@ -485,6 +485,8 @@ en:
 
 
   companies:
+    companies_list:
+      name_missing: Name Missing
     new:
       title: New company
     create:
