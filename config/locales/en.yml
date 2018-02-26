@@ -42,6 +42,7 @@ en:
   application: &application Application
   user_activity: User Activity
   none: &none None
+  name_missing: Name Missing
 
   time_ago: '%{amount_of_time} ago'
 
@@ -485,8 +486,6 @@ en:
 
 
   companies:
-    companies_list:
-      name_missing: Name Missing
     new:
       title: New company
     create:
