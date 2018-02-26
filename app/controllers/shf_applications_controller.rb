@@ -52,6 +52,7 @@ class ShfApplicationsController < ApplicationController
     app_params = shf_application_params
 
     company_number = app_params[:companies_attributes]['0'][:company_number]
+    company = nil
 
     if company_number && (company = Company.find_by_company_number(company_number))
       app_params.delete(:companies_attributes)
@@ -60,6 +61,8 @@ class ShfApplicationsController < ApplicationController
     end
 
     @shf_application = ShfApplication.new(app_params.merge(user: current_user))
+
+    @shf_application.companies = [company] if company
 
     if @shf_application.save
 
