@@ -8,7 +8,7 @@ set :application, 'shf'
 set :repo_url, 'git@github.com:AgileVentures/shf-project.git'
 set :branch, ENV['BRANCH']
 
-set :deploy_to, ENV['APP_PATH']
+set :deploy_to, ENV['SHF_APP_PATH']
 
 # These files are shared among all deployments.  Every deployment has a
 # link to these files.  They are not recreated (new) for each deployment.
