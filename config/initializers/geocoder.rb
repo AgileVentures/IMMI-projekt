@@ -10,7 +10,7 @@ Geocoder.configure(
     # https_proxy: nil,           # HTTPS proxy server (user:pass@host:port)
 
     # API key for geocoding service
-    api_key: ENV['GOOGLE_MAP_API'],
+    api_key: ENV['SHF_GOOGLE_MAP_API'],
 
     google_maps_js_api: "https://maps.googleapis.com/maps/api/js",
 
