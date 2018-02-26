@@ -97,5 +97,4 @@ Feature: As an admin
     Then I should see t("shf_applications.application_deleted")
     And I should not see "Wils"
     When I am on the "all companies" page
-    # We do NOT destroy a company when an app is destroyed
-    Then I should see "3" companies
+    Then I should see "2" companies

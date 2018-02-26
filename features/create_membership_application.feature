@@ -161,29 +161,11 @@ Feature: Create a new membership application
     And I should see t("cannot_change_language") image
 
 
-  # Note: this functional integration test passes; it proves that a member can submit a new application.
-  # However, our application does not currently provide a menu option or other way for the Member to do this!
-  @selenium_browser
-  Scenario: A member can submit a new application
+  Scenario: A member with existing application cannot submit a new application
     Given I am logged out
     And I am logged in as "member@random.com"
     And I am on the "new application" page
-    And I fill in the translated form with data:
-      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 5562252998                          | 031-1234567                       | member@random.com                  |
-    And I wait 20 seconds
-    And I select "Groomer" Category
-    And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user instructions" page
-    And I should see t("shf_applications.create.success", email_address: member@random.com  )
-    When I am on the "edit my application" page
-    Then "member@random.com" should receive an email
-    And I open the email
-    And I should see t("mailers.shf_application_mailer.acknowledge_received.subject") in the email subject
-    And I am logged in as "admin@shf.se"
-    Then "admin@shf.se" should receive an email
-    And I open the email
-    And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
+    Then I should see t("errors.not_permitted")
 
 
   Scenario: An admin cannot submit a new application because we don't know which User it is for

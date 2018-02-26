@@ -51,12 +51,13 @@ class ShfApplicationPolicy < ApplicationPolicy
 
   # an Admin cannot create an Application because we currently have no way to say who the application is for (which User)
   def new?
-    super && !user.admin? && not_a_visitor
+    super && !user.admin? && not_a_visitor && !user_has_other_application?
   end
 
 
   def create?
-    record.is_a?(ShfApplication) ? owner? : !user.admin? && not_a_visitor
+    record.is_a?(ShfApplication) ? owner? : !user.admin? && not_a_visitor &&
+                                            !user_has_other_application?
   end
 
 
