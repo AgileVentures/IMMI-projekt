@@ -50,7 +50,7 @@ module SHFProject
 
     #  need to set the mailgun_settings here because of  https://github.com/mailgun/mailgun-ruby/issues/86
     config.action_mailer.mailgun_settings = {
-        api_key: ENV['MAILGUN_API_KEY'],
+        api_key: ENV['SHF_MAILGUN_API_KEY'],
         domain: ENV['MAILGUN_DOMAIN']
     }
 

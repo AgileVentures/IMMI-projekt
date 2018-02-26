@@ -3,7 +3,7 @@ module MailgunConfig
 
 
   def mailgun_client
-    Mailgun::Client.new(ENV['MAILGUN_API_KEY'])
+    Mailgun::Client.new(ENV['SHF_MAILGUN_API_KEY'])
   end
 
 
