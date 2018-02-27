@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
   factory :app_configuration, class: AdminOnly::AppConfiguration do
 

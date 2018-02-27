@@ -224,9 +224,9 @@ RSpec.describe ApplicationHelper, type: :helper do
 
   describe '#model_errors_helper' do
 
-    let(:good_ma) { FactoryGirl.create(:shf_application) }
+    let(:good_ma) { FactoryBot.create(:shf_application) }
 
-    let(:user)    { FactoryGirl.create(:user) }
+    let(:user)    { FactoryBot.create(:user) }
 
     let(:errors_html_sv)  do
       I18n.locale = :sv

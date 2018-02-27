@@ -7,12 +7,12 @@ RSpec.describe AddressExporter do
   describe '#se_mailing_csv_str(address)' do
 
 
-    let(:a_company) { FactoryGirl.create(:company, num_addresses: 0) }
+    let(:a_company) { FactoryBot.create(:company, num_addresses: 0) }
 
-    let(:norbotten_region) { FactoryGirl.create(:region, name: 'Norrbotten') }
-    let(:overtornea_kommun) { FactoryGirl.create(:kommun, name: 'Övertorneå') }
+    let(:norbotten_region) { FactoryBot.create(:region, name: 'Norrbotten') }
+    let(:overtornea_kommun) { FactoryBot.create(:kommun, name: 'Övertorneå') }
 
-    let(:valid_address1) { addr1 = FactoryGirl.create(:address,
+    let(:valid_address1) { addr1 = FactoryBot.create(:address,
                                                       street_address: 'Matarengivägen 24',
                                                       post_code: '957 31',
                                                       city: 'Övertorneå',

@@ -4,7 +4,7 @@ And(/^the following companies exist:$/) do |table|
     kommun = company.delete('kommun') || 'Stockholm'
     visibility = company.delete('visibility') || 'street_address'
 
-    cmpy = FactoryGirl.create(:company, company)
+    cmpy = FactoryBot.create(:company, company)
 
     cmpy.addresses.first.update(region: Region.find_by_name(region),
                                 kommun: Kommun.find_by_name(kommun),
@@ -15,13 +15,13 @@ end
 
 And(/^the following regions exist:$/) do |table|
   table.hashes.each do |region|
-    FactoryGirl.create(:region, region)
+    FactoryBot.create(:region, region)
   end
 end
 
 And(/^the following kommuns exist:$/) do |table|
   table.hashes.each do |kommun|
-    FactoryGirl.create(:kommun, kommun)
+    FactoryBot.create(:kommun, kommun)
   end
 end
 
@@ -32,7 +32,7 @@ And(/^the following company addresses exist:$/) do |table|
 
     region = Region.find_by_name(address.delete('region') || 'Stockholm')
     kommun = Kommun.find_by_name(address.delete('kommun') || 'Stockholm')
-    FactoryGirl.create(:company_address, region: region, kommun: kommun, addressable: company)
+    FactoryBot.create(:company_address, region: region, kommun: kommun, addressable: company)
   end
 end
 

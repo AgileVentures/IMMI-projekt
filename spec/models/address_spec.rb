@@ -157,8 +157,8 @@ RSpec.describe Address, type: :model do
     end
 
     context '#address_array' do
-      let(:company) { FactoryGirl.create(:company) }
-      let(:address) { FactoryGirl.create(:address, addressable: company) }
+      let(:company) { FactoryBot.create(:company) }
+      let(:address) { FactoryBot.create(:address, addressable: company) }
       let(:address_pattern) do
         [ address.street_address, address.post_code,
           address.city, address.kommun.name, 'Sverige' ]

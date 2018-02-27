@@ -8,7 +8,7 @@ RSpec.describe 'companies/index' do
 
   before(:each) do
     75.times do |n|
-      company = FactoryGirl.build(:company, company_number: "#{n}")
+      company = FactoryBot.build(:company, company_number: "#{n}")
       company.save!(validate: false)
     end
 

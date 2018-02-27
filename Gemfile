@@ -76,7 +76,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'pundit-matchers'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'pry'
   gem 'pry-byebug'
   gem 'cucumber-rails', require: false

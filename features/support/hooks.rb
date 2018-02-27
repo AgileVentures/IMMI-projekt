@@ -24,5 +24,5 @@ After('@time_adjust') do
 end
 
 def load_default_data
-  FactoryGirl.create(:app_configuration)
+  FactoryBot.create(:app_configuration)
 end
