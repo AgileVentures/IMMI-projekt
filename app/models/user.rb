@@ -18,7 +18,7 @@ class User < ApplicationRecord
 
   validates_attachment_content_type :member_photo,
                                     content_type:  /\Aimage\/.*(jpg|jpeg|png)\z/
-  validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/]
+  validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/, /PNG\z/,/JPE?G\z/]
 
   validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
   validates_uniqueness_of :membership_number, allow_blank: true

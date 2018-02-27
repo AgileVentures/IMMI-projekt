@@ -278,7 +278,7 @@ en:
   shf_applications:
     new:
       title: Apply for a Membership
-      instructions: 'To process your application, we need information about you and in which category you are applying as well as documents proving your skills in this/those categories.'
+      instructions_html: 'To process your application, we need information about you and in which category you are applying as well as documents proving your skills in this/those categories. <strong>Without this we cannot review your application.</strong>'
 
       section_title_about_you: &about_you About You
 

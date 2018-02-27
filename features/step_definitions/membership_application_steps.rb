@@ -10,7 +10,7 @@ And(/^the following applications exist:$/) do |table|
      else
        company = Company.find_by(company_number: hash['company_number'])
        unless company
-         company = FactoryGirl.create(:company, company_number: hash['company_number'])
+         company = FactoryBot.create(:company, company_number: hash['company_number'])
        end
      end
    end
@@ -23,7 +23,7 @@ And(/^the following applications exist:$/) do |table|
      company_number = company.company_number
    end
 
-   ma = FactoryGirl.create(:shf_application,
+   ma = FactoryBot.create(:shf_application,
                             attributes.merge(user: user,
                             company_number: company_number,
                             contact_email: contact_email))

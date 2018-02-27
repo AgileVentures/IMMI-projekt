@@ -1,7 +1,7 @@
 And(/the following member app waiting reasons exist/) do | table |
 
   table.hashes.each do | reason |
-    FactoryGirl.create(:member_app_waiting_reason, reason)
+    FactoryBot.create(:member_app_waiting_reason, reason)
   end
 
 end

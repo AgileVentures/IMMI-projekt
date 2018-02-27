@@ -4,17 +4,17 @@
     %h1.entry-title= t('.title')
   .post-title-divider
     %span
-  .entry-content.instructions= t('shf_applications.new.instructions')
+  .entry-content
+    .wpcf7
+      .instructions= t('shf_applications.new.instructions_html')
 
-  .entry-content.wpcf7
+      = render partial: 'membership_number', locals: { user: @shf_application.user }
 
-    = render partial: 'membership_number', locals: { user: @shf_application.user }
+      = form_for @shf_application, html: {multipart: true}, url: shf_application_path do |f|
 
-    = form_for @shf_application, html: {multipart: true}, url: shf_application_path do |f|
+        != model_errors_helper(@shf_application)
 
-      != model_errors_helper(@shf_application)
-
-      = render partial: 'shf_application_fields',
-               locals: { f: f, user: @shf_application.user }
-      = render 'application/required_fields'
-      = f.submit t('.submit_button_label')
+        = render partial: 'shf_application_fields',
+                 locals: { f: f, user: @shf_application.user }
+        = render 'application/required_fields'
+        = f.submit t('.submit_button_label')

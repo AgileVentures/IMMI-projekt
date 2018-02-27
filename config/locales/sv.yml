@@ -41,7 +41,7 @@ sv:
   'No': *no
   application: &application Ansökan
   user_activity: Användaraktivitet
-  none: &none Ingen
+  none: &none Inget
 
   time_ago: '%{amount_of_time} sedan'
 
@@ -278,7 +278,7 @@ sv:
   shf_applications:
     new:
       title: Ansök om medlemskap
-      instructions: 'För att kunna hantera din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier.'
+      instructions_html: 'För att kunna hantera din ansökan behöver vi ha information om dig, vilka kategorier du ansöker som samt dokument som styrker din kompetens i dessa kategorier. <strong>Utan detta kan vi inte hantera din ansökan.</strong>'
 
       section_title_about_you: &about_you Om dig
 
@@ -293,11 +293,11 @@ sv:
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
       application_dog_category: &application_dog_category "Ansöker som:"
-      clue_selected_categories: &clue_selected_categories "Blå fält = valda"
+      clue_selected_categories: &clue_selected_categories "Blå fält = valda. Relevant medlemskategori behöver fyllas i för att vi ska kunna hantera din ansökan."
 
       upload_files_section: Underlag för att styrka min ansökan
       upload_files_instructions: 'Dokumenten är mycket viktiga för att vi ska kunna bedöma din ansökan. Vi använder dem för att verifiera dina kunskaper och utbildningar. Detta säkerställer att vår medlemsstandard är fortsatt hög, vilket i förlängningen innebär att allmänheten vet att Sveriges hundföretagare är professionella och att lita på.'
-      upload_files: 'Ladda upp filer från datorn'
+      upload_files: 'Ladda upp filer från datorn (VIKTIGT)'
       upload_allowed_file_types: 'Tillåtna filtyper:'
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
       upload_button: Välj dina filer...

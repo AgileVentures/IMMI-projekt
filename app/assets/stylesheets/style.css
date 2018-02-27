@@ -524,7 +524,7 @@ textarea {
 4.1 Contact form 7
 --------------------------------------------------------------*/
 .wpcf7 {
-    margin-top:45px !important;
+    margin-top:45px;
     text-align:center;
 }
 .btn-danger {
