@@ -1,6 +1,6 @@
 Feature: So that I do not get frustrated by trying to find out more
   about a company that does not have complete information,
-  Only show companies with complete information
+  Only show companies with complete information for non admin users
 
   Background:
     Given the following regions exist:
@@ -108,7 +108,7 @@ Feature: So that I do not get frustrated by trying to find out more
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
     Then I should see "5906055081"
-    And I should see "Name Missing"
+    And I should not see "NoRegion"
     And I should see "Happy Mutts"
     And I should see "5560360793"
     And I should see "Bowsers"
@@ -120,8 +120,8 @@ Feature: So that I do not get frustrated by trying to find out more
   Scenario: admin Kategori list - all companies are shown
     Given I am logged in as "admin@shf.se"
     When I am on the business category "Groomer"
-    Then I should see "5906055081"
-    And I should see "Name Missing"
+    Then I should not see "5906055081"
+    And I should not see "NoRegion"
     And I should not see "Bowsers"
     And I should not see "2120000142"
     And I should see "Happy Mutts"
