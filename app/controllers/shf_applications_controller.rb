@@ -105,22 +105,29 @@ class ShfApplicationsController < ApplicationController
     else
       app_params = shf_application_params
 
-      app_params[:companies_attributes]['0'][:email] = app_params[:contact_email]
-
       company_number = app_params[:companies_attributes]['0'][:company_number]
 
-      if company_number
+      unless company_number.blank?
 
-        company = @shf_application.companies.first
+        company = Company.find_by_id(app_params[:companies_attributes]['0'][:id])
 
-        if company_number == company.company_number
-          # Is this the same company currently associated with the app?
-          # If so, then remove company attributes from params
-          app_params.delete(:companies_attributes)
+        if company
+          if company_number != company.company_number
+            # User is changing the company_number.
+            # Destroy the current company if there is no other app associated with it.
+            # Remove the ID so another company will be associated with the app,
+            # and created if it does not yet exist.
+            company.destroy if company.shf_applications.count == 1
+            app_params[:companies_attributes]['0'][:id] = nil
+            app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
+
+          elsif company.email.blank?
+            # Set default company email if missing
+            app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
+          end
         else
-          # Else we will try to create another company on "update".  However, first
-          # destroy the current company if there is no other app associated with it
-          company.destroy if company.shf_applications.count == 1
+          # Somehow we have no company association .... set default email
+          app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
         end
       end
 
