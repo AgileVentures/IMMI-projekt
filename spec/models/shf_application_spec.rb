@@ -376,7 +376,11 @@ RSpec.describe ShfApplication, type: :model do
   describe '#se_mailing_csv_str (comma sep string) of the address for the swedish postal service' do
 
     let(:accepted_app) { create(:shf_application, :accepted) }
-    let(:rejected_app) { create(:shf_application, :rejected)}  # no company for this
+    let(:app_no_company) do
+      app = create(:shf_application)
+      app.companies = []
+      app
+    end
 
     it "uses the app's latest-added-company main address" do
 
@@ -389,7 +393,7 @@ RSpec.describe ShfApplication, type: :model do
 
     it 'blanks (just commas with no data between them) if there is no company' do
 
-      expect(rejected_app.se_mailing_csv_str).to eq AddressExporter.se_mailing_csv_str(nil)
+      expect(app_no_company.se_mailing_csv_str).to eq AddressExporter.se_mailing_csv_str(nil)
 
     end
 
