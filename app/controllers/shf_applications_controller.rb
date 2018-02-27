@@ -45,6 +45,7 @@ class ShfApplicationsController < ApplicationController
 
   def edit
     @all_business_categories = BusinessCategory.all
+    @shf_application.companies.build if @shf_application.companies.empty?
   end
 
 
@@ -107,7 +108,7 @@ class ShfApplicationsController < ApplicationController
 
       company_number = app_params[:companies_attributes]['0'][:company_number]
 
-      unless company_number.blank?
+      if company_number.present?
 
         company = Company.find_by_id(app_params[:companies_attributes]['0'][:id])
 
@@ -126,9 +127,11 @@ class ShfApplicationsController < ApplicationController
             app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
           end
         else
-          # Somehow we have no company association .... set default email
+          # No company association .... set default email
           app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
         end
+      else
+        app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
       end
 
       if @shf_application.update(app_params)
