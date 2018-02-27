@@ -22,7 +22,7 @@ RSpec.describe CompanyApplication, type: :model do
     it { is_expected.to validate_presence_of(:company) }
     it { is_expected.to validate_presence_of(:shf_application) }
     it 'validates uniqueness of company<>shf_application association' do
-      subject { FactoryGirl.build(:company_application)
+      subject { FactoryBot.build(:company_application)
       is_expected.to validate_uniqueness_of(:company_id).scoped_to(:shf_application) }
     end
   end

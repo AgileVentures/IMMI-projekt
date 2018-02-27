@@ -74,7 +74,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
 
     describe 'uniqueness of user across all applications' do
-      subject { FactoryGirl.build(:shf_application) }
+      subject { FactoryBot.build(:shf_application) }
       it { is_expected.to validate_uniqueness_of(:user_id) }
     end
   end

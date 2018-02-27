@@ -39,7 +39,7 @@ FactoryBot.define do
           company = FactoryBot.create(:company, company_number: evaluator.company_number)
         end
       else
-        company = FactoryGirl.create(:company)
+        company = FactoryBot.create(:company)
       end
       shf_app.companies << company
     end
