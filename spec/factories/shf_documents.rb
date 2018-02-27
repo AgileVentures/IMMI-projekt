@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
 
 
   # FIXTURE_DIR = File.join("#{Rails.root}",'spec','fixtures','uploaded_files')

@@ -76,7 +76,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
 
     describe 'uniqueness of user scoped within company_number' do
-      subject { FactoryGirl.build(:shf_application) }
+      subject { FactoryBot.build(:shf_application) }
       it { is_expected.to validate_uniqueness_of(:user_id)
                                 .scoped_to(:company_number) }
     end

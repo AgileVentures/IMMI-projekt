@@ -2,11 +2,11 @@ require 'rails_helper'
 
 RSpec.describe 'companies/index' do
 
-  let(:member)  { FactoryGirl.create(:member_with_membership_app) }
+  let(:member)  { FactoryBot.create(:member_with_membership_app) }
 
-  let(:admin)   { FactoryGirl.create(:user, admin: true) }
+  let(:admin)   { FactoryBot.create(:user, admin: true) }
 
-  let(:user)    { FactoryGirl.create(:user_with_membership_app) }
+  let(:user)    { FactoryBot.create(:user_with_membership_app) }
 
   let(:cmpy_id) { member.shf_application.company.id }
   let(:cmpy_id) { member.shf_application.company.id }

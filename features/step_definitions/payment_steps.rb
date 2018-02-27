@@ -13,7 +13,7 @@ Given(/^the following payments exist$/) do |table|
       company = Company.find_by_company_number(company_number) if company_number
     end
 
-    FactoryGirl.create(:payment, payment.merge(user: user, company: company))
+    FactoryBot.create(:payment, payment.merge(user: user, company: company))
   end
 end
 
@@ -21,7 +21,7 @@ And(/^I complete the payment$/) do
   # Emulate webhook payment-update and direct to "success" action
   payment = @user.payments.last # present for member, nil for user
 
-  payment = FactoryGirl.create(:payment, user: @user) unless payment
+  payment = FactoryBot.create(:payment, user: @user) unless payment
 
   start_date, expire_date = User.next_membership_payment_dates(@user.id)
   payment.update!(status: Payment.order_to_payment_status('successful'),
@@ -40,7 +40,7 @@ And(/^I complete the branding payment for "([^"]*)"$/) do |company_name|
 
   payment = company.most_recent_branding_payment
 
-  payment = FactoryGirl.create(:payment, user: @user, company: company,
+  payment = FactoryBot.create(:payment, user: @user, company: company,
                                payment_type: Payment::PAYMENT_TYPE_BRANDING) unless payment
 
   start_date, expire_date = Company.next_branding_payment_dates(company.id)

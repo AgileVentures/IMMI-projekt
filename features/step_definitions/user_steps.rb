@@ -5,7 +5,7 @@ Given(/^the following users exist(?:s|)$/) do |table|
 
     is_legacy = user.delete('is_legacy')
 
-    is_legacy == 'true' ? FactoryGirl.create(:user_without_first_and_lastname, user) : FactoryGirl.create(:user, user)
+    is_legacy == 'true' ? FactoryBot.create(:user_without_first_and_lastname, user) : FactoryBot.create(:user, user)
 
   end
 end
