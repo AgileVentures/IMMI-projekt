@@ -365,7 +365,7 @@ RSpec.describe ShfApplication, type: :model do
         end
 
         it 'destroys associated company(s)' do
-          expect(application.companies.count).to be 0
+          expect(application.companies.count).to be 1
         end
       end
     end

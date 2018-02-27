@@ -126,14 +126,11 @@ class ShfApplication < ApplicationRecord
 
 
   def reject_application
+
     user.update(membership_number: nil)
+
     destroy_uploaded_files
-
-    # Destroy associated company(s) if no other applications for that company
-    companies.all.each do |cmpy|
-      cmpy.destroy if cmpy.shf_applications.count == 1
-    end
-
+    
   end
 
 
