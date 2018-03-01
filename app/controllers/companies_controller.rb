@@ -17,7 +17,6 @@ class CompaniesController < ApplicationController
     # only select companies that are 'complete'; see the Company.complete scope
 
     @all_companies = @search_params.result(distinct: true)
-                         .complete
                          .includes(:business_categories)
                          .includes(addresses: [:region, :kommun])
                          .joins(addresses: [:region, :kommun])
@@ -27,7 +26,10 @@ class CompaniesController < ApplicationController
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
 
     unless current_user.admin?
-      @all_companies = @all_companies.branding_licensed.with_members
+      @all_companies = @all_companies
+                           .branding_licensed
+                           .with_members
+                           .complete
     end
 
     @all_visible_companies = @all_companies.address_visible
