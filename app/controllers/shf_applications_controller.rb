@@ -135,6 +135,8 @@ class ShfApplicationsController < ApplicationController
 
           old_co.destroy
 
+          app_params[:companies_attributes]['0'][:id] = nil
+
         else
 
           if old_co.company_number == new_co_number
