@@ -4,7 +4,8 @@ Feature: As an admin
 
   PT: https://www.pivotaltracker.com/story/show/138063171
 
-  Only delete a company if it is not associated with any accepted ShfApplications
+  Only delete a company if it is not associated with any ShfApplications,
+  other than applications with status == :being_destroyed.
 
   Only delete the business categories associated with a company
   if those business categories are not associated with any other companies.
@@ -130,7 +131,7 @@ Feature: As an admin
     And I should see "6" companies
 
   @selenium
-  Scenario: Admin deletes a company that has applications with that company number, but are not accepted or rejected
+  Scenario: Admin tries to delete a company that has applications
     Given I am logged in as "admin@shf.se"
     When I am on the "business categories" page
     Then I should see "8" business categories
@@ -139,13 +140,7 @@ Feature: As an admin
     When I am on the "all companies" page
     Then I should see "7" companies
     When I click and accept the t("delete") action for the row with "Kats"
-    Then I should see t("companies.destroy.success")
-    And I should not see "Kats"
-    And I should see "6" companies
-    When I am on the "business categories" page
-    Then I should see "8" business categories
-    When I am on the "landing" page
-    Then I should see "11" applications
+    Then I should see t("companies.destroy.error")
 
   @selenium
   Scenario: Admin cannot delete a company with 2 (accepted) membership applications
@@ -170,7 +165,7 @@ Feature: As an admin
     Then I should see "11" applications
 
   @selenium
-  Scenario: Admin deletes a company with 2 rejected membership applications associated with it
+  Scenario: Admin tries to delete a company with 2 rejected membership applications
     Given I am logged in as "admin@shf.se"
     When I am on the "business categories" page
     Then I should see "8" business categories
@@ -179,18 +174,11 @@ Feature: As an admin
     When I am on the "all companies" page
     Then I should see "7" companies
     When I click and accept the t("delete") action for the row with "Kitties"
-    Then I should see t("companies.destroy.success")
-    And I should not see "Kitties"
-    And I should see "6" companies
-    When I am on the "business categories" page
-    Then I should see "8" business categories
-    When I am on the "landing" page
-    # We do NOT destroy applications when a company is destroyed
-    Then I should see "11" applications
+    Then I should see t("companies.destroy.error")
 
 
   @selenium
-  Scenario: Admin deletes a company with 2 rejected membership applications and 2 categories (only co. with them)
+  Scenario: Admin tries to delete a company with 2 rejected applications and 2 categories (only co. with them)
     Given I am logged in as "admin@shf.se"
     When I am on the "business categories" page
     Then I should see "8" business categories
@@ -199,18 +187,14 @@ Feature: As an admin
     When I am on the "all companies" page
     Then I should see "7" companies
     When I click and accept the t("delete") action for the row with "No More Snarky Barky"
-    Then I should see t("companies.destroy.success")
-    And I should not see "No More Snarky Barky"
-    And I should see "6" companies
-    When I am on the "business categories" page
-    Then I should see "8" business categories
-    When I am on the "landing" page
+    Then I should see t("companies.destroy.error")
+    Then I am on the "landing" page
     # We do NOT destroy applications when a company is destroyed
     Then I should see "11" applications
 
 
   @selenium @focus
-  Scenario: Admin deletes a company with 1 rejected membership app, 1 categories (only co. associated with it)
+  Scenario: Admin tries to delete a company with 1 rejected app, 1 category (only co. associated with it)
     Given I am logged in as "admin@shf.se"
     When I am on the "business categories" page
     Then I should see "8" business categories
@@ -219,10 +203,8 @@ Feature: As an admin
     When I am on the "all companies" page
     Then I should see "7" companies
     When I click and accept the t("delete") action for the row with "WOOF"
-    Then I should see t("companies.destroy.success")
-    And I should not see "WOOF"
-    And I should see "6" companies
-    When I am on the "business categories" page
+    Then I should see t("companies.destroy.error")
+    Then I am on the "business categories" page
     Then I should see "8" business categories
     When I am on the "landing" page
     # We do NOT destroy applications when a company is destroyed

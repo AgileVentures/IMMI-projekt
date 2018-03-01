@@ -104,7 +104,6 @@ class ShfApplicationsController < ApplicationController
       end
 
     else
-      debugger
       app_params = shf_application_params
 
       new_co_number = app_params[:companies_attributes]['0'][:company_number]
