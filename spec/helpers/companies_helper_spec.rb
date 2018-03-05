@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CompaniesHelper, type: :helper do
-  let!(:company) { create(:company) }
+  let(:company) { create(:company) }
   let(:user) { create(:user) }
 
   describe 'companies' do
@@ -153,6 +153,23 @@ RSpec.describe CompaniesHelper, type: :helper do
     it 'returns pay-fee link with company and user id' do
       expect(pay_branding_fee_link(company.id, user.id))
         .to match Regexp.new(Regexp.escape(expected_path))
+    end
+  end
+
+  describe '#company_number_selection_field' do
+    4.times do |n|
+      let!("cmpy_#{n+1}".to_sym) { create(:company) }
+    end
+
+    it 'returns select field for company_number, value == company ID' do
+      Company.all.each do |cmpy|
+        expect(company_number_selection_field).to match /option value="#{cmpy.id}"/
+      end
+    end
+
+    it 'sets selected value when given an argument' do
+      expect(company_number_selection_field(cmpy_3.id))
+        .to match /option selected="selected" value="#{cmpy_3.id}"/
     end
   end
 end

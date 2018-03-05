@@ -32,8 +32,6 @@ class ShfApplication < ApplicationRecord
 
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
 
-  accepts_nested_attributes_for :companies
-
   accepts_nested_attributes_for :user, update_only: true
   # ^^ We are not explicitly using any user attributes in the app form.  However,
   # we are delegating the "membership_number" getter and setter methods to
@@ -130,7 +128,7 @@ class ShfApplication < ApplicationRecord
     user.update(membership_number: nil)
 
     destroy_uploaded_files
-    
+
   end
 
 

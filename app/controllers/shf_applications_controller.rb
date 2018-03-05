@@ -8,7 +8,7 @@ class ShfApplicationsController < ApplicationController
 
   def new
     @shf_application = ShfApplication.new(user: current_user)
-    @shf_application.companies.build
+    @company = Company.new
     @all_business_categories = BusinessCategory.all
     @uploaded_file = @shf_application.uploaded_files.build
   end
@@ -45,26 +45,16 @@ class ShfApplicationsController < ApplicationController
 
   def edit
     @all_business_categories = BusinessCategory.all
-    @shf_application.companies.build if @shf_application.companies.empty?
+    @company = @shf_application.companies.first
   end
 
 
   def create
-    app_params = shf_application_params
 
-    company_number = app_params[:companies_attributes]['0'][:company_number]
-    company = nil
+    @shf_application = ShfApplication.new(shf_application_params
+                                          .merge(user: current_user))
 
-    if company_number && (company = Company.find_by_company_number(company_number))
-      app_params.delete(:companies_attributes)
-    else
-      # Default company email == application contact_email
-      app_params[:companies_attributes]['0'][:email] = app_params[:contact_email]
-    end
-
-    @shf_application = ShfApplication.new(app_params.merge(user: current_user))
-
-    @shf_application.companies = [company] if company
+    @shf_application.companies << Company.find_by_id(params[:company_id])
 
     if @shf_application.save
 
@@ -103,131 +93,29 @@ class ShfApplicationsController < ApplicationController
         head :ok
       end
 
-    else
-      app_params = shf_application_params
+    elsif @shf_application.update(shf_application_params)
 
-      new_co_number = app_params[:companies_attributes]['0'][:company_number]
+      @shf_application.companies = [Company.find_by_id(params[:company_id])]
 
-      old_co = @shf_application.companies.first
+      if new_file_uploaded params
 
-      if ! old_co
+        check_and_mark_if_ready_for_review params['shf_application'] if params.fetch('shf_application', false)
 
-        if new_co_number.present?
-
-          if (new_co = Company.find_by_company_number(new_co_number))
-            app_params[:companies_attributes]['0'][:id] = new_co.id
-            @shf_application.companies << new_co
-          else
-            app_params[:companies_attributes]['0'][:id] = nil
-          end
-        end
-
-        app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
-
-      else
-
-        app_params[:companies_attributes]['0'][:email] = old_co.email
-
-        if new_co_number.blank?
-
-          @shf_application.company_applications
-            .find_by(company_id: old_co.id).delete
-
-          old_co.destroy
-
-          app_params[:companies_attributes]['0'][:id] = nil
-
-        else
-
-          if old_co.company_number == new_co_number
-
-            app_params[:companies_attributes]['0'][:id] = old_co.id
-
-          else
-
-            @shf_application.company_applications
-              .find_by(company_id: old_co.id).delete
-
-            old_co.destroy
-
-            if (new_co = Company.find_by_company_number(new_co_number))
-              app_params[:companies_attributes]['0'][:id] = new_co.id
-              @shf_application.companies << new_co
-            else
-              app_params[:companies_attributes]['0'][:id] = nil
-            end
-          end
-        end
-      end
-
-
-
-      #   # Is the company_number associated with an existing company?
-      #   if (new_co = Company.find_by_company_number(new_co_number))
-      #
-      #     # Is this company different from the current associated company?
-      #     old_co = @shf_application.companies.first
-      #
-      #     if new_co_number != old_co&.company_number
-      #
-      #       # User is changing the company_number, or old_co does not exist.
-      #
-      #       # If the former, remove the association with the old company and
-      #       # destroy the company.
-      #       # (Company will not be destroyed if associated with other app(s))
-      #
-      #       if old_co
-      #         @shf_application.company_applications
-      #           .find_by(company_id: old_co.id).delete
-      #
-      #         old_co.destroy
-      #       end
-      #
-      #       # Set the company id in params equal to new_co's id -
-      #       # this will cause the join model record to be created on update.
-      #
-      #       app_params[:companies_attributes]['0'][:id] = new_co.id
-      #     end
-      #
-      #     if new_co.email.blank?
-      #       # Set default company email if missing
-      #       app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
-      #     end
-      #
-      #   else
-      #     # Otherwise, remove the ID from params so another company will
-      #     # be be created and associated with the app.
-      #
-      #     app_params[:companies_attributes]['0'][:id] = nil
-      #     app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
-      #   end
-      # else
-      #   # No existing company .... update will try to create
-      #   app_params[:companies_attributes]['0'][:email] = @shf_application.contact_email
-      # end
-
-      if @shf_application.update(app_params)
-
-        if new_file_uploaded params
-
-          check_and_mark_if_ready_for_review params['shf_application'] if params.fetch('shf_application', false)
-
-          respond_to do |format|
-            format.js do
-              head :ok # just let the receiver know everything is OK. no need to render anything
-            end
-
-            rendering(format, shf_application_params)
-
+        respond_to do |format|
+          format.js do
+            head :ok # just let the receiver know everything is OK. no need to render anything
           end
 
-        else
-          update_error(t('.error'))
+          rendering(format, shf_application_params)
+
         end
 
       else
         update_error(t('.error'))
       end
+
+    else
+      update_error(t('.error'))
     end
   end
 

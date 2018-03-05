@@ -115,8 +115,7 @@ class ShfApplicationPolicy < ApplicationPolicy
                                     :actual_file_file_size,
                                     :actual_file_content_type,
                                     :actual_file_updated_at,
-                                    :_destroy],
-        companies_attributes: [:id, :company_number]
+                                    :_destroy]
     ]
   end
 

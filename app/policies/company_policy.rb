@@ -10,7 +10,8 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def new?
-    user.admin?
+    true
+    # user.admin?
   end
 
   def create?

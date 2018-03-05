@@ -70,4 +70,12 @@ module CompaniesHelper
                           type: Payment::PAYMENT_TYPE_BRANDING),
             { method: :post, class: 'btn btn-primary btn-xs' })
   end
+
+  def company_number_selection_field(company_id=nil)
+    select_tag :company_id,
+       options_from_collection_for_select(Company.order(:company_number),
+                  :id, :company_number, company_id),
+       class: 'search_field',
+       data: {language: "#{@locale}" }
+  end
 end

@@ -289,7 +289,7 @@ sv:
       first_name: *first_name
       last_name: *last_name
       company_number: *company_number
-      org_nr_no_hyphens: &orgnr_no_hyphens "Endast siffror (ej bindestreck)"
+      select_company_number: Välj ditt företagsnummer (eller skapa ett nytt företag om det inte finns)
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
@@ -317,7 +317,6 @@ sv:
       title: Redigera ansökan om medlemskap
       is_ready_for_review: Redo för granskning
       submit_button_label: *save
-      org_nr_no_hyphens: *orgnr_no_hyphens
 
     update:
       success: Ansökan har uppdaterats.
@@ -330,7 +329,6 @@ sv:
       last_name: *last_name
       phone_number: *phone_number
       company_number: *company_number
-      org_nr_no_hyphens: *orgnr_no_hyphens
       contact_email: *contact_email
       app_status: Ansökans status
       change_status: Ändra status
