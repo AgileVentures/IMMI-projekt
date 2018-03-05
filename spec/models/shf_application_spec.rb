@@ -62,8 +62,6 @@ RSpec.describe ShfApplication, type: :model do
                           .allow_destroy(true) }
     it { is_expected.to accept_nested_attributes_for(:user)
                           .update_only(true).allow_destroy(false) }
-
-    it { is_expected.to accept_nested_attributes_for(:companies).allow_destroy(false) }
   end
 
   describe 'Validations' do

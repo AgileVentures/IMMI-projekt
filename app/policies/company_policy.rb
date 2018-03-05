@@ -10,8 +10,7 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def new?
-    true
-    # user.admin?
+    not_a_visitor
   end
 
   def create?

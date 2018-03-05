@@ -41,4 +41,8 @@ class ApplicationPolicy
     user.admin? || ( record.respond_to?(:user) &&  record.user == user )
   end
 
+  def not_a_visitor
+    !user.is_a? Visitor
+  end
+
 end
