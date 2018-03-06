@@ -81,7 +81,6 @@ Feature: As an applicant
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     And I fill in t("shf_applications.show.contact_email") with "sussimmi.nu"
-    And I fill in t("shf_applications.show.company_number") with ""
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.error")
     And I should not see t("show_in_swedish") image

@@ -10,11 +10,13 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def new?
-    not_a_visitor
+    user.admin?
   end
 
   def create?
-    new?
+    # User needs to be able to create a company within the context of
+    # creating a membership application
+    not_a_visitor
   end
 
   def update?

@@ -21,14 +21,19 @@ Feature: When a new application is received, all admins get an email notificatio
       | name         |
       | Groomer      |
 
+    And the following companies exist:
+      | name                 | company_number | email                  | region     |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
+
   Scenario: User submits a new application and email is sent to all 3 admins
     Given I am logged in as "emma@happymutts.com"
     And I am on the "landing" page
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
-      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 5562252998                          | 031-1234567                       | emma@happymutts.com                |
+      | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 031-1234567                       | emma@happymutts.com                |
     And I select "Groomer" Category
+    And I select "5560360793" in select list "company_id"
     And I click on t("shf_applications.new.submit_button_label")
     Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: 'emma@happymutts.com')
@@ -76,8 +81,9 @@ Feature: When a new application is received, all admins get an email notificatio
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
       | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 031-1234567                       | emma@happymutts.com                |
+      | 031-1234567                       | emmahappymutts.com                 |
     And I select "Groomer" Category
+    And I select "5560360793" in select list "company_id"
     And I click on t("shf_applications.new.submit_button_label")
     And I should see t("shf_applications.create.error")
     Then "admin1@shf.se" should receive 0 email

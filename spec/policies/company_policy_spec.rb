@@ -32,7 +32,7 @@ RSpec.describe CompanyPolicy do
     it { is_expected.to permit_action :show }
     it { is_expected.to permit_action :edit }
     it { is_expected.to permit_action :update }
-    it { is_expected.to permit_action :new }
+    it { is_expected.to forbid_action :new }
     it { is_expected.to permit_action :create }
     it { is_expected.to forbid_action :edit_payment }
   end
@@ -44,7 +44,7 @@ RSpec.describe CompanyPolicy do
     it { is_expected.to permit_action :show }
     it { is_expected.to forbid_action :edit }
     it { is_expected.to forbid_action :update }
-    it { is_expected.to permit_action :new }
+    it { is_expected.to forbid_action :new }
     it { is_expected.to permit_action :create }
     it { is_expected.to forbid_action :edit_payment }
   end
@@ -56,7 +56,7 @@ RSpec.describe CompanyPolicy do
     it { is_expected.to permit_action :show }
     it { is_expected.to forbid_action :edit }
     it { is_expected.to forbid_action :update }
-    it { is_expected.to permit_action :new }
+    it { is_expected.to forbid_action :new }
     it { is_expected.to permit_action :create }
     it { is_expected.to forbid_action :edit_payment }
   end
