@@ -52,9 +52,9 @@
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
 
     -# NOTE: Capybara cannot find link without 'href' attribute
-    %a.btn.btn-warning.btn-xs{href: '#', 'data-toggle': 'modal',
-                              'data-target': '#companyCreateModal',
-                              style: 'float: right;'}
+    %a.btn.btn-warning.btn-xs{ href: '#', 'data-toggle': 'modal',
+                               'data-target': '#companyCreateModal',
+                               style: 'float: right;' }
 
       = t('companies.new.title')
 

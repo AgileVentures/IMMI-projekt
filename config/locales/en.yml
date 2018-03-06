@@ -490,6 +490,7 @@ en:
     create:
       error: One or more problems prevented the company from being created.
       success: The company was created successfully.
+      create_submit: Create Company
     edit:
       title: 'Editing: %{company_name}'
     update:

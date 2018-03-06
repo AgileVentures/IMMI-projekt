@@ -494,6 +494,7 @@ sv:
     create:
       error: Ett eller flera problem hindrade företaget från att skapas.
       success: Företaget har skapats.
+      create_submit: Skapa företag
     update:
       error: Ett problem förhindrade uppdatering av företaget.
       success: Företaget har uppdaterats.

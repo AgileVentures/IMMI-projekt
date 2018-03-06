@@ -44,8 +44,7 @@ class ShfApplicationsController < ApplicationController
 
 
   def edit
-    @all_business_categories = BusinessCategory.all
-    @company = @shf_application.companies.first
+    load_update_objects
   end
 
 
@@ -267,6 +266,7 @@ class ShfApplicationsController < ApplicationController
 
   def create_error(error_message)
     helpers.flash_message(:alert, error_message)
+    @company = Company.new
     @all_business_categories = BusinessCategory.all
     render :new
   end
@@ -278,9 +278,16 @@ class ShfApplicationsController < ApplicationController
       render json: @shf_application.errors.full_messages, status: :unprocessable_entity if request.xhr?
     else
       helpers.flash_message(:alert, error_message)
+      load_update_objects
       render :edit
     end
 
+  end
+
+  def load_update_objects
+    @all_business_categories = BusinessCategory.all
+    @new_company = Company.new   # In case user wants to create a new company
+    @company = @shf_application.companies.first
   end
 
 
