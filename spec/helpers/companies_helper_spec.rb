@@ -163,13 +163,13 @@ RSpec.describe CompaniesHelper, type: :helper do
 
     it 'returns select field for company_number, value == company ID' do
       Company.all.each do |cmpy|
-        expect(company_number_selection_field).to match /option value="#{cmpy.id}"/
+        expect(company_number_selection_field).to match(/option value="#{cmpy.id}"/)
       end
     end
 
     it 'sets selected value when given an argument' do
       expect(company_number_selection_field(cmpy_3.id))
-        .to match /option selected="selected" value="#{cmpy_3.id}"/
+        .to match(/option selected="selected" value="#{cmpy_3.id}"/)
     end
   end
 end

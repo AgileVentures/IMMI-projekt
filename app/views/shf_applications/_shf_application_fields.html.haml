@@ -53,13 +53,13 @@
 
     -# NOTE: Capybara cannot find link without 'href' attribute
     %a.btn.btn-warning.btn-xs{ href: '#', 'data-toggle': 'modal',
-                               'data-target': '#companyCreateModal',
+                               'data-target': '#company-create-modal',
                                style: 'float: right;' }
 
       = t('companies.new.title')
 
     %p.field-instruction= t('shf_applications.new.select_company_number')
-    #companyNumberSelect
+    #company-number-select
       - cmpy_id = local_assigns.has_key?(:company_id) ? company_id : nil
       = company_number_selection_field(cmpy_id)
     %br

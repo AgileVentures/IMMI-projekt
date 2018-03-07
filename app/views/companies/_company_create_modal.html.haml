@@ -1,4 +1,4 @@
-#companyCreateModal.modal.fade(tabindex='-1' role='dialog')
+.modal.fade#company-create-modal(tabindex='-1' role='dialog')
   .modal-dialog(role='document')
     .modal-content
 
@@ -15,7 +15,7 @@
         .modal-body
           .container-fluid
 
-            #companyCreateErrors
+            #company-create-errors
               != model_errors_helper(company)
 
             .form-group

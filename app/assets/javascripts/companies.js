@@ -19,8 +19,8 @@ $(function() {
   $('#companyCreateForm').on('ajax:success', function (e, data) {
     $('#' + data.id).html(data.html);
     if (data.status === 'success') {
-      $('#companyCreateErrors').html('');
-      $('#companyCreateModal').modal('hide');
+      $('#company-create-errors').html('');
+      $('#company-create-modal').modal('hide');
     }
   });
 });

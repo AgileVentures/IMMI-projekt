@@ -84,11 +84,11 @@ class CompaniesController < ApplicationController
     # XHR request from ShfApplication create modal (for company create)
     if saved
       status = 'success'
-      id = 'companyNumberSelect'
+      id = 'company-number-select'
       html = helpers.company_number_selection_field(@company.id)
     else
       status = 'errors'
-      id = 'companyCreateErrors'
+      id = 'company-create-errors'
       html = helpers.model_errors_helper(@company)
     end
 
