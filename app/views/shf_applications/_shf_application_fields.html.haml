@@ -59,9 +59,10 @@
       = t('companies.new.title')
 
     %p.field-instruction= t('shf_applications.new.select_company_number')
-    #company-number-select
-      - cmpy_id = local_assigns.has_key?(:company_id) ? company_id : nil
-      = company_number_selection_field(cmpy_id)
+    
+    #company-number-entry
+      = company_number_entry_field(company.company_number)
+
     %br
 
     = f.label :contact_email, t('shf_applications.show.contact_email'), class: 'required'

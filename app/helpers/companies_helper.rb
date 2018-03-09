@@ -78,4 +78,8 @@ module CompaniesHelper
        class: 'search_field',
        data: {language: "#{@locale}" }
   end
+
+  def company_number_entry_field(company_number=nil)
+    number_field_tag :company_number, company_number, class: 'wpcf7-form-control'
+  end
 end

@@ -26,6 +26,8 @@ class ShfApplication < ApplicationRecord
 
   validates_presence_of :contact_email, :state
 
+  validates_presence_of :companies
+
   validates_format_of :contact_email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
 
   validates_uniqueness_of :user_id

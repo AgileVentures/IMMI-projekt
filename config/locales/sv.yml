@@ -256,6 +256,8 @@ sv:
           attributes:
             company_number:
               invalid: "%{company_number} är inte ett svenskt organisationsnummer"
+            companies:
+              blank: '- Ange ett befintligt företagsnummer (eller skapa ett nytt företag)'
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
@@ -289,7 +291,8 @@ sv:
       first_name: *first_name
       last_name: *last_name
       company_number: *company_number
-      select_company_number: Välj ditt företagsnummer (eller skapa ett nytt företag om det inte finns)
+      select_company_number: Ange ditt företagsnummer (eller skapa ett nytt
+                             företag om det inte finns i systemet)
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.

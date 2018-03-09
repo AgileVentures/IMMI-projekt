@@ -172,4 +172,16 @@ RSpec.describe CompaniesHelper, type: :helper do
         .to match(/option selected="selected" value="#{cmpy_3.id}"/)
     end
   end
+
+  describe '#company_number_entry_field' do
+    it 'returns number entry field for company_number' do
+      expect(company_number_entry_field)
+        .to match(/input type="number" name="company_number" id="company_number"/)
+    end
+
+    it 'returns entry field with initial value when given an argument' do
+      expect(company_number_entry_field('0000000000'))
+        .to match(/id="company_number" value="0000000000"/)
+    end
+  end
 end

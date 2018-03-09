@@ -255,6 +255,8 @@ en:
           attributes:
             company_number:
               invalid: "%{company_number} is not a valid Swedish company number"
+            companies:
+              blank: '- Specify an existing company number (or create new company)'
 
 
       messages:
@@ -288,7 +290,8 @@ en:
       last_name: *last_name
       phone_number: Phone number
       company_number: *company_number
-      select_company_number: Select your company number (or create a new company if not present)
+      select_company_number: Enter your company number (or create a new company
+                             if not yet in the system)
       contact_email: *contact_email
 
       can_be_same_email: Can be the same that you logged in with, but need not be.
