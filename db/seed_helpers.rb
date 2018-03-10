@@ -83,37 +83,38 @@ module SeedHelper
 
 
   def make_n_save_app(user, state, co_number = get_company_number)
+
     # create a basic app
     ma = make_app(user)
 
+    ma.companies = [] # We validate that this association is present
+
     ma.state = state
 
-    if state == MA_ACCEPTED_STATE then
-      # make a full company object (instance) for the accepted membership application
-      ma.companies << make_new_company(co_number)
+    # make a full company object (instance) for the membership application
+    ma.companies << make_new_company(co_number)
 
-      # do not send emails
-      user.grant_membership(send_email: false)
+    # do not send emails
+    user.grant_membership(send_email: false)
 
-      start_date, expire_date = User.next_membership_payment_dates(user.id)
+    start_date, expire_date = User.next_membership_payment_dates(user.id)
 
-      user.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
-                                      user_id: user.id,
-                                      hips_id: 'none',
-                                      status: Payment.order_to_payment_status('successful'),
-                                      start_date: start_date,
-                                      expire_date: expire_date)
+    user.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
+                                    user_id: user.id,
+                                    hips_id: 'none',
+                                    status: Payment.order_to_payment_status('successful'),
+                                    start_date: start_date,
+                                    expire_date: expire_date)
 
-      start_date, expire_date = Company.next_branding_payment_dates(ma.companies[0].id)
+    start_date, expire_date = Company.next_branding_payment_dates(ma.companies[0].id)
 
-      ma.companies[0].payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
-                                      user_id: user.id,
-                                      company_id: ma.companies[0].id,
-                                      hips_id: 'none',
-                                      status: Payment.order_to_payment_status('successful'),
-                                      start_date: start_date,
-                                      expire_date: expire_date)
-    end
+    ma.companies[0].payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
+                                    user_id: user.id,
+                                    company_id: ma.companies[0].id,
+                                    hips_id: 'none',
+                                    status: Payment.order_to_payment_status('successful'),
+                                    start_date: start_date,
+                                    expire_date: expire_date)
 
     user.shf_application = ma
 

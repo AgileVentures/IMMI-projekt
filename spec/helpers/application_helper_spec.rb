@@ -247,9 +247,9 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it 'adds a count of errors' do
-      expect(errors_html_sv).to match(/#{t('model_errors', count: 2)}/)
+      expect(errors_html_sv).to match(/#{t('model_errors', count: 3)}/)
 
-      expect(errors_html_en).to match(/#{t('model_errors', count: 3)}/)
+      expect(errors_html_en).to match(/#{t('model_errors', count: 4)}/)
     end
 
     it 'returns all model errors - swedish' do
