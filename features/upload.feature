@@ -25,9 +25,8 @@ Feature: Applicant uploads a file for their application
     Given I am logged in as "applicant_2@random.com"
     And I am on the "submit new membership application" page
     And I fill in the translated form with data:
-      | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 031-1234567                       | applicant_2@random.com             |
-    And I select "5560360793" in select list "company_id"
+      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
     And I choose a file named "diploma.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)

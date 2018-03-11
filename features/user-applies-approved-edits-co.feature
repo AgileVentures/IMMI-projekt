@@ -33,10 +33,9 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I am on the "landing" page
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
-      | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 031-1234567                       | new_user@example.com               |
+      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 5560360793                          | 031-1234567                       | new_user@example.com               |
     And I select "Groomer" Category
-    And I select "5560360793" in select list "company_id"
     And I click on t("shf_applications.new.submit_button_label")
     And I should see t("shf_applications.create.success", email_address: new_user@example.com)
 
