@@ -290,7 +290,7 @@ en:
       last_name: *last_name
       phone_number: Phone number
       company_number: *company_number
-      select_company_number: Enter your company number (or create a new company
+      enter_company_number: Enter your company number (or create a new company
                              if not yet in the system)
       contact_email: *contact_email
 

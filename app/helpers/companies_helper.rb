@@ -80,6 +80,7 @@ module CompaniesHelper
   end
 
   def company_number_entry_field(company_number=nil)
-    number_field_tag :company_number, company_number
+    number_field_tag :company_number, company_number,
+                     id: 'shf_application_company_number'
   end
 end

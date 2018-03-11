@@ -51,15 +51,7 @@
 
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
 
-    -# NOTE: Capybara cannot find link without 'href' attribute
-    -# %a.btn.btn-warning.btn-sm{ href: '#', 'data-toggle': 'modal',
-    -#                            'data-target': '#company-create-modal',
-    -#                            style: 'float: right;' }
-    -#
-    -#   = t('companies.new.title')
-
-    %p.field-instruction= t('shf_applications.new.select_company_number')
-
+    %p.field-instruction= t('shf_applications.new.enter_company_number')
 
     .div
 

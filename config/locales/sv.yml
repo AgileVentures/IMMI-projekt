@@ -291,7 +291,7 @@ sv:
       first_name: *first_name
       last_name: *last_name
       company_number: *company_number
-      select_company_number: Ange ditt företagsnummer (eller skapa ett nytt
+      enter_company_number: Ange ditt företagsnummer (eller skapa ett nytt
                              företag om det inte finns i systemet)
       contact_email: *contact_email
 
