@@ -77,24 +77,18 @@ Feature: Admin sees as many or few SHF Applications as they want (pagination)
     And I hide the search form
     Then "items_count" should have "All" selected
     And I select "10" in select list "items_count"
-    And I wait for all ajax requests to complete
-    And I reload the page
     Then "items_count" should have "10" selected
     # prevents getting the element not clickable at that position error in Chrome
     And I scroll to the top
     When I click on t("shf_applications.index.org_nr")
     And I should see "6914762726"
-    And I wait for all ajax requests to complete
-    And I reload the page
     And I should not see "7661057765"
     Then I click on t("will_paginate.next_label") link
-    And I wait for all ajax requests to complete
     And I should see "7661057765"
     And I should see "8728875504"
     And I should not see "6914762726"
     And I should not see "8764985894"
     Then I click on t("will_paginate.next_label") link
-    And I wait for all ajax requests to complete
     And I should see "8764985894"
     And I should not see "8728875504"
 
