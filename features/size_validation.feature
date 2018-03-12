@@ -12,7 +12,11 @@ Feature: Applicant uploads too large a file for their application
 
     And the following applications exist:
       | user_email         | company_number | state        |
-      | emma@happymutts.se | 5560360793     | under_review |
+      | emma@happymutts.se | 5562252998     | under_review |
+
+    And the following companies exist:
+      | name                 | company_number | email                  | region     |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
 
 
   Scenario: New application - Uploads a file that is too large
