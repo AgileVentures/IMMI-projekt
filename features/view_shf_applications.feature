@@ -77,6 +77,7 @@ Feature: Admin sees as many or few SHF Applications as they want (pagination)
     And I hide the search form
     Then "items_count" should have "All" selected
     And I select "10" in select list "items_count"
+    And I wait 2 seconds
     And I reload the page
     Then "items_count" should have "10" selected
     # prevents getting the element not clickable at that position error in Chrome
