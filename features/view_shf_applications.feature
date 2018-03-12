@@ -85,6 +85,7 @@ Feature: Admin sees as many or few SHF Applications as they want (pagination)
     When I click on t("shf_applications.index.org_nr")
     And I should see "6914762726"
     And I wait for all ajax requests to complete
+    And I reload the page
     And I should not see "7661057765"
     Then I click on t("will_paginate.next_label") link
     And I wait for all ajax requests to complete
