@@ -43,12 +43,7 @@ class RemoveCmpyNumberFromApplication < ActiveRecord::Migration[5.1]
 
           app.companies_tmp = app.companies
 
-          if app.state == 'rejected'
-
-            app.companies[0].destroy if (app.companies[0]&.count == 1)
-
-          elsif app.company_number &&
-                ! Company.find_by(company_number: app.company_number)
+          if app.company_number && ! Company.find_by(company_number: app.company_number)
 
             app.companies_tmp << Company
               .create(company_number: app.company_number,
@@ -65,7 +60,7 @@ class RemoveCmpyNumberFromApplication < ActiveRecord::Migration[5.1]
       end
 
       dir.down do
-        # Recreate join table
+        # Recreate join table has HABTM associations
         create_join_table :shf_applications, :companies do |t|
           t.index [:shf_application_id, :company_id],
                   name: 'index_application_company'
@@ -73,7 +68,6 @@ class RemoveCmpyNumberFromApplication < ActiveRecord::Migration[5.1]
                   name: 'index_company_application'
         end
 
-        # Add column company_number to shf_applications table
         add_column :shf_applications, :company_number, :string
 
         add_column :shf_applications, :company_id, :integer
