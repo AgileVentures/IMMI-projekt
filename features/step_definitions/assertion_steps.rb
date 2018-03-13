@@ -260,6 +260,8 @@ Then "{capture_string} should{negate} have {capture_string} selected" do | selec
     raise
   end
 
+  # https://www.seleniumhq.org/exceptions/stale_element_reference.jsp
+
   expect(field_value).send( (negate ? :not_to : :to),  eq(expected_string) )
 
 end
