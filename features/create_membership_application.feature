@@ -86,6 +86,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
     And I wait for all ajax requests to complete
+    And I wait 2 seconds
     And I click on t("shf_applications.new.submit_button_label")
 
     Then I should be on the "user instructions" page
