@@ -31,15 +31,15 @@ SET default_with_oids = false;
 --
 
 CREATE TABLE public.addresses (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     street_address character varying,
     post_code character varying,
     city character varying,
     country character varying DEFAULT 'Sverige'::character varying NOT NULL,
-    region_id bigint,
+    region_id integer,
     addressable_type character varying,
-    addressable_id bigint,
-    kommun_id bigint,
+    addressable_id integer,
+    kommun_id integer,
     latitude double precision,
     longitude double precision,
     visibility character varying DEFAULT 'street_address'::character varying,
@@ -121,7 +121,7 @@ CREATE TABLE public.ar_internal_metadata (
 --
 
 CREATE TABLE public.business_categories (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     name character varying,
     description character varying,
     created_at timestamp without time zone NOT NULL,
@@ -153,9 +153,9 @@ ALTER SEQUENCE public.business_categories_id_seq OWNED BY public.business_catego
 --
 
 CREATE TABLE public.business_categories_shf_applications (
-    id bigint NOT NULL,
-    shf_application_id bigint,
-    business_category_id bigint
+    id integer NOT NULL,
+    shf_application_id integer,
+    business_category_id integer
 );
 
 
@@ -183,7 +183,7 @@ ALTER SEQUENCE public.business_categories_shf_applications_id_seq OWNED BY publi
 --
 
 CREATE TABLE public.ckeditor_assets (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     data_file_name character varying NOT NULL,
     data_content_type character varying,
     data_file_size integer,
@@ -193,7 +193,7 @@ CREATE TABLE public.ckeditor_assets (
     height integer,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    company_id bigint
+    company_id integer
 );
 
 
@@ -221,7 +221,7 @@ ALTER SEQUENCE public.ckeditor_assets_id_seq OWNED BY public.ckeditor_assets.id;
 --
 
 CREATE TABLE public.companies (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     name character varying,
     company_number character varying,
     phone_number character varying,
@@ -289,7 +289,7 @@ ALTER SEQUENCE public.company_applications_id_seq OWNED BY public.company_applic
 --
 
 CREATE TABLE public.kommuns (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     name character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -320,7 +320,7 @@ ALTER SEQUENCE public.kommuns_id_seq OWNED BY public.kommuns.id;
 --
 
 CREATE TABLE public.member_app_waiting_reasons (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     name_sv character varying,
     description_sv character varying,
     name_en character varying,
@@ -397,7 +397,7 @@ ALTER SEQUENCE public.member_app_waiting_reasons_id_seq OWNED BY public.member_a
 --
 
 CREATE TABLE public.member_pages (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     filename character varying NOT NULL,
     title character varying,
     created_at timestamp without time zone NOT NULL,
@@ -479,7 +479,7 @@ ALTER SEQUENCE public.payments_id_seq OWNED BY public.payments.id;
 --
 
 CREATE TABLE public.regions (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     name character varying,
     code character varying,
     created_at timestamp without time zone NOT NULL,
@@ -520,11 +520,11 @@ CREATE TABLE public.schema_migrations (
 --
 
 CREATE TABLE public.shf_applications (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     phone_number character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    user_id bigint,
+    user_id integer,
     contact_email character varying,
     state character varying DEFAULT 'new'::character varying,
     member_app_waiting_reasons_id integer,
@@ -556,8 +556,8 @@ ALTER SEQUENCE public.shf_applications_id_seq OWNED BY public.shf_applications.i
 --
 
 CREATE TABLE public.shf_documents (
-    id bigint NOT NULL,
-    uploader_id bigint NOT NULL,
+    id integer NOT NULL,
+    uploader_id integer NOT NULL,
     title character varying,
     description text,
     created_at timestamp without time zone NOT NULL,
@@ -593,14 +593,14 @@ ALTER SEQUENCE public.shf_documents_id_seq OWNED BY public.shf_documents.id;
 --
 
 CREATE TABLE public.uploaded_files (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     actual_file_file_name character varying,
     actual_file_content_type character varying,
     actual_file_file_size integer,
     actual_file_updated_at timestamp without time zone,
-    shf_application_id bigint
+    shf_application_id integer
 );
 
 
@@ -628,7 +628,7 @@ ALTER SEQUENCE public.uploaded_files_id_seq OWNED BY public.uploaded_files.id;
 --
 
 CREATE TABLE public.users (
-    id bigint NOT NULL,
+    id integer NOT NULL,
     email character varying DEFAULT ''::character varying NOT NULL,
     encrypted_password character varying DEFAULT ''::character varying NOT NULL,
     reset_password_token character varying,
