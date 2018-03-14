@@ -48,8 +48,13 @@ class RemoveCmpyNumberFromApplication < ActiveRecord::Migration[5.1]
             # that has the same company associated with it twice.
             # Removing the second association (join record will be destroy,
             # NOT the actual company)
+            first_company = app.companies_tmp.first
             second_company = app.companies_tmp.second
-            app.companies_tmp = [second_company]
+
+            app.companies_tmp.destroy(first_company)
+
+            app.companies_tmp << second_company if app.companies_tmp.count == 0
+            # ^^ In case first and second company are the same
           end
 
           if (app.companies.count == 0) && app.company_number &&
