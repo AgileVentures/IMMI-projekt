@@ -43,7 +43,20 @@ class RemoveCmpyNumberFromApplication < ActiveRecord::Migration[5.1]
 
           app.companies_tmp = app.companies
 
-          if app.company_number && ! Company.find_by(company_number: app.company_number)
+          if app.companies_tmp.count == 2
+            # At this time (Mar 14, 2018) there is *one* application in production
+            # that has the same company associated with it twice.
+            # Removing the second association (join record will be destroy,
+            # NOT the actual company)
+            second_company = app.companies_tmp.second
+            app.companies_tmp.destroy(second_company)
+          end
+
+          if (app.companies.count == 0) && app.company_number &&
+             ! Company.find_by(company_number: app.company_number)
+             # This logic prevents creating a second company for an
+             # application that was accepted and subsequently the
+             # user changed the company_number in that company
 
             app.companies_tmp << Company
               .create(company_number: app.company_number,
