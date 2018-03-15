@@ -30,7 +30,7 @@
         %tr.company
           %td{ style: 'white-space: nowrap;' }
             = company.business_categories.distinct.order(:name).each.map{|bc| bc.name}.join('<br/>').html_safe
-          %td= link_to company.name, company
+          %td= link_to company.name.blank? ? t('name_missing') : company.name, company
           %td{style: 'white-space: nowrap;'}
             = company.addresses.each.map{|address| address.region&.name}.uniq.join('<br/>').html_safe
           %td{style: 'white-space: nowrap;'}

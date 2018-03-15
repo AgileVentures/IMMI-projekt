@@ -42,6 +42,7 @@ sv:
   application: &application Ansökan
   user_activity: Användaraktivitet
   none: &none Inget
+  name_missing: Namn Saknas
 
   time_ago: '%{amount_of_time} sedan'
 
