@@ -664,6 +664,8 @@ sv:
       membership_expire_date_tooltip: Efter detta datum går perioden för ditt medlemskap ut.
       proof_of_membership: Behörighetsbevis
       proof_of_membership_describe: Detta är ditt behörighetsbevis.
+      proof_of_membership_photo_needed: 'Om du ser "Photo Unavailable" ladda 
+                                         sedan upp ett foto av dig själv här: '
       proof_of_membership_image: Du kan ladda ner den här bilden och använda den
                                  som du vill, inklusive på din webbplats, eller
                                  skriva ut den och visa upp fysiskt i möten med kunder.

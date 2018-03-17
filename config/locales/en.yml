@@ -662,6 +662,8 @@ en:
       membership_expire_date_tooltip: Membership expires after this date
       proof_of_membership: Proof of Membership
       proof_of_membership_describe: This image is your proof of membership in SHF.
+      proof_of_membership_photo_needed: 'If you see "Photo Unavailable" then please
+                                         upload a photo of yourself here: '
       proof_of_membership_image: You can download this image and use it as you want,
                                  including on your website, or printed out
                                  and displayed at your place of business.
