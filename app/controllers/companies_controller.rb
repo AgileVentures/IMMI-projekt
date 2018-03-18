@@ -37,8 +37,7 @@ class CompaniesController < ApplicationController
     @all_visible_companies.each { |co| geocode_if_needed co }
 
     @companies = @all_companies.page(params[:page]).per_page(items_per_page)
-
-    render partial: 'companies_list' if request.xhr?
+    respond_to :js, :html
   end
 
   def show
