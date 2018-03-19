@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.2'
+ruby '2.4.3'
 gem 'dotenv-rails'
 gem 'rails', '5.1'
 gem 'pg', '~> 0.18'
@@ -89,7 +89,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'  # needed to make better_errors work well
 
-  gem 'i18n-tasks'
+  gem 'i18n-tasks', '~> 0.9.21'
 
 end
 

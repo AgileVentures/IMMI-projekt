@@ -19,8 +19,10 @@ end
 #   Does *not* include any text about 'email us with questions...'
 RSpec.shared_examples 'a successfully created email' do |subject, recipient, greeting_name, signoff, signature|
 
-  DEFAULT_SIGNOFF =   I18n.t('mailers.application_mailer.signoff')
-  DEFAULT_SIGNATURE = I18n.t('mailers.application_mailer.signature')
+  DEFAULT_SIGNOFF =   I18n.t('mailers.application_mailer.signoff') unless
+                        defined?(DEFAULT_SIGNOFF)
+  DEFAULT_SIGNATURE = I18n.t('mailers.application_mailer.signature') unless
+                        defined?(DEFAULT_SIGNATURE)
 
   it 'subject is correct' do
     expect(email_created).to have_subject(subject)
