@@ -110,6 +110,10 @@ group :development do
 
   gem 'rubycritic'   # code quality analysis tools and reports
 
+  gem 'rack-mini-profiler' # Performance profiler
+  gem 'flamegraph'
+  gem 'stackprof'
+  gem 'memory_profiler'
 end
 
 group :test do
