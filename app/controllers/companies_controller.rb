@@ -41,9 +41,7 @@ class CompaniesController < ApplicationController
     render partial: 'companies_list' if request.xhr?
   end
 
-
   def show
-    @categories = @company.business_categories
   end
 
 
