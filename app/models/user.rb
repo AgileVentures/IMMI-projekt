@@ -22,7 +22,7 @@ class User < ApplicationRecord
                                     content_type:  /\Aimage\/.*(jpg|jpeg|png)\z/
   validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/, /PNG\z/,/JPE?G\z/]
 
-  validates_presence_of :first_name, :last_name, unless: :updating_without_name_changes
+  validates :first_name, :last_name, presence: true, unless: :updating_without_name_changes
 
   def updating_without_name_changes
     # Not a new record and not saving changes to either first or last name
@@ -34,7 +34,7 @@ class User < ApplicationRecord
                       will_save_change_to_attribute?('last_name'))
   end
 
-  validates_uniqueness_of :membership_number, allow_blank: true
+  validates :membership_number, uniqueness: true, allow_blank: true
 
   scope :admins, -> { where(admin: true) }
 
