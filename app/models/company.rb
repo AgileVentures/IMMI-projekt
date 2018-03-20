@@ -37,11 +37,29 @@ class Company < ApplicationRecord
   has_many :pictures, class_name: 'Ckeditor::Picture', dependent: :destroy
 
   accepts_nested_attributes_for :addresses, allow_destroy: true
+  alias_method :categories, :business_categories
+  delegate :visible, to: :addresses, prefix: true
 
   def approved_applications_from_members
     # Returns ActiveRecord Relation
     shf_applications.accepted.includes(:user)
       .order('users.last_name').where('users.member = ?', true)
+  end
+
+  def any_visible_addresses?
+    addresses_visible.any?
+  end
+
+  def categories_names
+    categories.select(:name).distinct.order(:name).pluck(:name)
+  end
+
+  def addresses_region_names
+    addresses.joins(:region).select('regions.name').distinct.pluck('regions.name')
+  end
+
+  def kommuns_names
+    addresses.joins(:kommun).select('kommuns.name').distinct.pluck('kommuns.name')
   end
 
   def most_recent_branding_payment

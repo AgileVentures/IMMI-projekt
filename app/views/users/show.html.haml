@@ -122,6 +122,10 @@
         &nbsp;
         = link_to(t('.show_image'), proof_of_membership_path(@user),
                    class: 'btn btn-warning btn-xs')
+        %br
+        %br
+        = t('.proof_of_membership_photo_needed')
+        = link_to(t('devise.registrations.edit.title'), edit_user_registration_path)
 
 
 = render partial: 'edit_status_modal', locals: { user: @user }
