@@ -2,7 +2,6 @@
 
   %li{ class: li_class }
     = link_to t('menus.nav.members.shf_meeting_minutes'), shf_documents_path
-
-  - HighVoltage.page_ids.each do |page|
+  - HighVoltage.page_ids.each do |page_id|
     %li{ class: li_class }
-      = link_to MemberPage.title(page), contents_show_path(page: page)
+      = link_to MemberPage.title(page_id).titleize, contents_show_path(page: page_id)
