@@ -5,6 +5,7 @@
     %h1.entry-title= t('.admin_title')
 
 .entry-content
+
   .row
     = render 'map_companies',
              markers: location_and_markers_for(@all_visible_companies)
@@ -32,4 +33,4 @@
     %strong
       #{t('.no_search_results')}
   - else
-    = render 'companies_list'
+    = render 'companies_list', companies: @companies

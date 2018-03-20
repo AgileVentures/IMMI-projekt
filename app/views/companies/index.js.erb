@@ -1,0 +1,3 @@
+$('#companies_list').html("<%= j(render 'companies_list', companies: @companies) %>");
+// In case there is tooltip(s) in rendered element:
+$('[data-toggle="tooltip"]').tooltip();

@@ -26,7 +26,7 @@
           %th
 
     %tbody
-      - @companies.each do |company|
+      - companies.each do |company|
         %tr.company
           %td{ style: 'white-space: nowrap;' }
             = safe_join(company.categories_names, tag.br)
@@ -41,7 +41,7 @@
               %td= link_to "#{t('delete')}", company, method: :delete,
                               data: { :confirm => "#{t('confirm_are_you_sure')}" }
 
-  = render 'application/paginate_footer', entities: @companies,
+  = render 'application/paginate_footer', entities: companies,
                                           paginate_class: 'companies_pagination',
                                           items_count: @items_count,
                                           url: companies_path
