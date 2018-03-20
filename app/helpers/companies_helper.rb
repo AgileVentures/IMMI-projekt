@@ -4,17 +4,15 @@ module CompaniesHelper
     user.in_company_numbered?(company.company_number) || user.admin?
   end
 
-  def list_categories company, separator=' '
-    if company.business_categories.any?
-      company.business_categories.includes(:shf_applications).map(&:name).sort.join(separator)
-    end
+  def list_categories(company, separator=' ')
+    company.categories_names.join(separator)
   end
 
 
   # return a nicely formed URI for the company website
   # if the company website starts with with https://, return that.
   #  else ensure it starts with 'http://'
-  def full_uri company
+  def full_uri(company)
     uri = company.website
     uri =~ %r(https?://) ? uri : "http://#{uri}"
   end
@@ -28,10 +26,10 @@ module CompaniesHelper
     companies.flat_map do |company|
       name_html = link_name ?  nil : company.name
 
-      company.addresses.visible.includes(:kommun).map do |address|
-        {latitude: address.latitude,
-         longitude: address.longitude,
-         text: html_marker_text(company, address, name_html: name_html) }
+      company.addresses.visible.map do |address|
+        { latitude: address.latitude,
+          longitude: address.longitude,
+          text: html_marker_text(company, address, name_html: name_html) }
       end
     end
   end

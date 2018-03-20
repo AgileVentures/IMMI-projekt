@@ -81,7 +81,6 @@ Rails.application.configure do
   config.paperclip_defaults = { url: attachment_folder,
                                 path: ":rails_root/public/:url"
   }
-
 end
 
 =begin
