@@ -109,15 +109,13 @@ group :development do
   gem 'rb-readline'
 
   gem 'rubycritic'   # code quality analysis tools and reports
-<<<<<<< HEAD
 
   gem 'rack-mini-profiler' # Performance profiler
   gem 'flamegraph'
   gem 'stackprof'
   gem 'memory_profiler'
-=======
+
   gem 'rubocop'
->>>>>>> develop
 end
 
 group :test do

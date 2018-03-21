@@ -205,12 +205,8 @@ GEM
       factory_bot (~> 4.8.2)
       railties (>= 3.0.0)
     ffaker (2.8.1)
-<<<<<<< HEAD
-    ffi (1.9.21)
-    flamegraph (0.9.5)
-=======
     ffi (1.9.23)
->>>>>>> develop
+    flamegraph (0.9.5)
     flay (2.10.0)
       erubis (~> 2.7.0)
       path_expander (~> 1.0)
@@ -282,7 +278,7 @@ GEM
       rb-fsevent (~> 0.9, >= 0.9.4)
       rb-inotify (~> 0.9, >= 0.9.7)
       ruby_dep (~> 1.2)
-    loofah (2.2.0)
+    loofah (2.2.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
     mail (2.7.0)
@@ -446,7 +442,7 @@ GEM
       virtus (~> 1.0)
     rubyzip (1.2.1)
     safe_yaml (1.0.4)
-    sanitize (4.6.2)
+    sanitize (4.6.3)
       crass (~> 1.0.2)
       nokogiri (>= 1.4.4)
       nokogumbo (~> 1.4)

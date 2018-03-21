@@ -38,7 +38,7 @@ class CompaniesController < ApplicationController
 
     @companies = @all_companies.page(params[:page]).per_page(items_per_page)
 
-    render partial: 'companies_list' if request.xhr?
+    render partial: 'companies_list', locals: { companies: @companies } if request.xhr?
   end
 
   def show
