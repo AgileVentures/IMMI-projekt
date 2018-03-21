@@ -5,9 +5,7 @@ module CompaniesHelper
   end
 
   def list_categories company, separator=' '
-    if company.business_categories.any?
-      company.business_categories.order(:name).pluck(:name).join(separator)
-    end
+    company.business_categories.order(:name).pluck(:name).join(separator)
   end
 
 
