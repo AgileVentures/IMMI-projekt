@@ -90,7 +90,7 @@ class Company < ApplicationRecord
   #  name could be NULL or it could be an empty string
 
   def self.complete
-    where.not(name: nil, id: Address.lacking_region.pluck(:addressable_id))
+    where.not(name: '', id: Address.lacking_region.pluck(:addressable_id))
   end
 
   def self.branding_licensed
