@@ -84,13 +84,13 @@ class Company < ApplicationRecord
 
 
   # All addresses for a company are complete AND the name is not blank
-  # must qualify name with 'company' because there are other tables that use 'name' and if
+  # must qualify name with 'companies' because there are other tables that use 'name' and if
   # this scope is combined with a clause for a different table that also uses 'name',
   # SQL won't know which table to get 'name' from
   #  name could be NULL or it could be an empty string
-
   def self.complete
-    where.not(name: '', id: Address.lacking_region.pluck(:addressable_id))
+    where.not('companies.name' => '',
+              id: Address.lacking_region.pluck(:addressable_id))
   end
 
   def self.branding_licensed
