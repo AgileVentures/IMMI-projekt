@@ -109,7 +109,8 @@ group :development do
   gem 'rb-readline'
 
   gem 'rubycritic'   # code quality analysis tools and reports
-  gem 'rubocop'
+  gem 'rubocop', require: false
+  gem 'rack-mini-profiler', require: false
 end
 
 group :test do
