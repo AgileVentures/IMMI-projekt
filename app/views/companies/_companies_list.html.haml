@@ -29,21 +29,19 @@
       - @companies.each do |company|
         %tr.company
           %td{ style: 'white-space: nowrap;' }
-            = company.business_categories.distinct.order(:name).each.map{|bc| bc.name}.join('<br/>').html_safe
+            = safe_join(company.categories_names, tag.br)
           %td= link_to company.name.blank? ? t('name_missing') : company.name, company
-          %td{style: 'white-space: nowrap;'}
-            = company.addresses.each.map{|address| address.region&.name}.uniq.join('<br/>').html_safe
-          %td{style: 'white-space: nowrap;'}
-            = company.addresses.each.map{|address| address.kommun&.name}.uniq.join('<br/>').html_safe
+          %td{ style: 'white-space: nowrap;' }
+            = safe_join(company.addresses_region_names, tag.br)
+          %td{ style: 'white-space: nowrap;' }
+            = safe_join(company.kommuns_names, tag.br)
+            - if current_user.admin?
+              %td= company.company_number
+              %td= link_to "#{t('edit')}", edit_company_path(company)
+              %td= link_to "#{t('delete')}", company, method: :delete,
+                              data: { :confirm => "#{t('confirm_are_you_sure')}" }
 
-          - if current_user.admin?
-            %td= company.company_number
-            %td= link_to "#{t('edit')}", edit_company_path(company)
-            %td= link_to "#{t('delete')}", company, method: :delete,
-                            data: { :confirm => "#{t('confirm_are_you_sure')}" }
-
-  = render partial: 'application/paginate_footer',
-           locals: { entities: @companies,
-                     paginate_class: 'companies_pagination',
-                     items_count: @items_count,
-                     url: companies_path }
+  = render 'application/paginate_footer', entities: @companies,
+                                          paginate_class: 'companies_pagination',
+                                          items_count: @items_count,
+                                          url: companies_path

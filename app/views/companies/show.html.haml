@@ -1,13 +1,16 @@
-%div{ :id => "#{unique_css_id(@company)}", class: "#{item_view_class(@company, controller.action_name)}" }
+
+%div{ id: "#{unique_css_id(@company)}",
+      class: "#{item_view_class(@company, controller.action_name)}" }
 
   %header.entry-header
     %h1.entry-title= @company.name
     .post-title-divider
     %span
 
-    - unless @categories.nil?
+    - if @company.categories
       .categories
-        = render 'business_categories/as_list', categories: @categories
+        = render 'business_categories/as_list',
+          categories_names: @company.categories_names
 
   .entry-content
     .row
@@ -16,7 +19,7 @@
 
     .row
       .col-md-5
-        = field_or_none t('.name'), @company.name, tag_options: {class: 'hidden', id: 'location-text'}
+        = field_or_none t('.name'),@company.name, tag_options: {class: 'hidden', id: 'location-text'}
 
         - if current_user.admin?
           = field_or_none t('.org_nr'), @company.company_number, tag_options: {class: 'company-number'}
@@ -27,23 +30,21 @@
 
         = field_or_none t('.website'), link_to(@company.website, sanitize(full_uri(@company)), target: '_blank'), tag_options: {class: 'website'}
 
-        - if current_user.in_company_numbered?(@company.company_number) || |
-            current_user.admin?                                               |
+        - if payment_visible_for_user?(current_user, @company)                                              |
 
           = render partial: 'branding_payment_status', locals: { company: @company }
 
       .col-md-7
-        - if @company.addresses.visible
+        - if @company.any_visible_addresses?
           = render partial: 'map_companies',
                    locals: { markers: location_and_markers_for([@company],
                    link_name: false )}
 
     - user_can_edit = policy(@company).update?
 
-    = render partial: 'company_members', locals: { company: @company }
+    = render 'company_members', company: @company
 
-    = render partial: 'company_addresses',
-                      locals: { company: @company, user_can_edit: user_can_edit }
+    = render 'company_addresses', company: @company, user_can_edit: user_can_edit
 
     .row.center.item-nav-buttons#item-nav-buttons
 
@@ -64,4 +65,4 @@
                   class:'btn btn-danger delete-company',
                   data: { confirm: "#{t('.confirm_are_you_sure')}" }
 
-= render partial: 'edit_branding_modal', locals: { company: @company }
+= render 'edit_branding_modal', company: @company
