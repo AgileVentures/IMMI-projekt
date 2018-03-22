@@ -5,7 +5,7 @@ module CompaniesHelper
   end
 
   def list_categories company, separator=' '
-    company.business_categories.order(:name).pluck(:name).join(separator)
+    company.categories_names.join(separator)
   end
 
 

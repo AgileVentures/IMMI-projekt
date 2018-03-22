@@ -90,16 +90,12 @@ class Company < ApplicationRecord
   #  name could be NULL or it could be an empty string
 
   def self.complete
-    where.not('companies.name' => '',
-              id: Address.lacking_region.pluck(:addressable_id))
+    where.not(name: nil, id: Address.lacking_region.pluck(:addressable_id))
   end
 
   def self.branding_licensed
     # All companies (distinct) with at least one unexpired branding payment
-    joins(:payments)
-      .where('payments.id IN (?)',
-             Payment.branding_fee.completed.unexpired.pluck(:id))
-      .distinct
+    joins(:payments).merge(Payment.branding_fee.completed.unexpired).distinct
   end
 
   def self.address_visible
