@@ -8,6 +8,8 @@ module SeedHelper
 
   MA_ACCEPTED_STATE = :accepted unless defined?(MA_ACCEPTED_STATE)
 
+  MA_ACCEPTED_STATE_STR = MA_ACCEPTED_STATE.to_s unless defined?(MA_ACCEPTED_STATE_STR)
+
   MA_BEING_DESTROYED_STATE = :being_destroyed unless defined?(MA_BEING_DESTROYED_STATE)
 
   FIRST_MEMBERSHIP_NUMBER = 100 unless defined?(FIRST_MEMBERSHIP_NUMBER)
@@ -77,7 +79,7 @@ module SeedHelper
       # set a random state (except accepted) for the rest of the applications
       states = ShfApplication.aasm.states.map(&:name) -
                [MA_ACCEPTED_STATE, MA_BEING_DESTROYED_STATE]
-               
+
       state = FFaker.fetch_sample( states )
     end
 
@@ -98,11 +100,10 @@ module SeedHelper
     # make a full company object (instance) for the membership application
     ma.companies << make_new_company(co_number)
 
-    # do not send emails
-    user.grant_membership(send_email: false)
-
     # Create payment records for accepted app and associated company
-    if ma.state == MA_ACCEPTED_STATE
+    if ma.state == MA_ACCEPTED_STATE_STR
+
+      user.grant_membership(send_email: false)
 
       start_date, expire_date = User.next_membership_payment_dates(user.id)
 
