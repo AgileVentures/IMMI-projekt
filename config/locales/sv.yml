@@ -315,7 +315,7 @@ sv:
     create:
       success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
       error: Ett eller flera problem hindrade din ansökan från att skickas.
-      success_with_file_problem: DIN ANSÖKAN SKAPAS, MEN OBSERVERA PROBLEM (ER) OVANFÖR
+      success_with_file_problem: DIN ANSÖKAN HAR SKAPATS, MEN OBSERVERA FELMEDDELANDE(N) OVAN
 
     edit:
       title: Redigera ansökan om medlemskap
