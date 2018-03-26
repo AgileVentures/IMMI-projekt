@@ -315,6 +315,7 @@ sv:
     create:
       success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
       error: Ett eller flera problem hindrade din ansökan från att skickas.
+      success_with_file_problem: DIN ANSÖKAN HAR SKAPATS, MEN OBSERVERA FELMEDDELANDE(N) OVAN
 
     edit:
       title: Redigera ansökan om medlemskap
@@ -667,7 +668,7 @@ sv:
       membership_expire_date_tooltip: Efter detta datum går perioden för ditt medlemskap ut.
       proof_of_membership: Behörighetsbevis
       proof_of_membership_describe: Detta är ditt behörighetsbevis.
-      proof_of_membership_photo_needed: 'Om du ser "Photo Unavailable" ladda 
+      proof_of_membership_photo_needed: 'Om du ser "Photo Unavailable" ladda
                                          sedan upp ett foto av dig själv här: '
       proof_of_membership_image: Du kan ladda ner den här bilden och använda den
                                  som du vill, inklusive på din webbplats, eller
