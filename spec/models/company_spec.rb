@@ -89,7 +89,8 @@ RSpec.describe Company, type: :model do
 
   describe 'Associations' do
     it { is_expected.to have_many(:business_categories).through(:shf_applications) }
-    it { is_expected.to have_and_belong_to_many(:shf_applications) }
+    it { is_expected.to have_many(:company_applications) }
+    it { is_expected.to have_many(:shf_applications).through(:company_applications) }
     it { is_expected.to have_many(:addresses).dependent(:destroy) }
     it { is_expected.to accept_nested_attributes_for(:addresses).allow_destroy(true) }
     it do
@@ -189,7 +190,7 @@ RSpec.describe Company, type: :model do
 
   describe 'categories = all employee categories' do
 
-    let(:company) { create(:company, company_number: '5562252998') }
+    let(:company) { create(:company) }
 
     let(:employee1) { create(:user) }
     let(:employee2) { create(:user) }
@@ -200,24 +201,19 @@ RSpec.describe Company, type: :model do
     let(:cat3) { create(:business_category, name: 'cat3') }
 
     let(:m1) do
-      create(:shf_application,
-             :accepted,
-             user: employee1,
-             num_categories: 0,
-             company_number: company.company_number)
+      m = create(:shf_application, :accepted, user: employee1, num_categories: 0)
+      m.companies = [company]
+      m
     end
     let(:m2) do
-      create(:shf_application,
-             :accepted, user: employee2,
-             num_categories: 0,
-             company_number: company.company_number)
+      m = create(:shf_application, :accepted, user: employee2, num_categories: 0)
+      m.companies = m1.companies.to_a
+      m
     end
     let(:m3) do
-      create(:shf_application,
-             :accepted,
-             user: employee3,
-             num_categories: 0,
-             company_number: company.company_number)
+      m = create(:shf_application, :accepted, user: employee3, num_categories: 0)
+      m.companies = m1.companies.to_a
+      m
     end
 
     it '3 employees, each with 1 unique category' do
@@ -484,35 +480,43 @@ RSpec.describe Company, type: :model do
     let(:user2) { create(:user, member: true) }
     let(:user3) { create(:user, member: true) }
     let(:user4) { create(:user) }
+    let(:user5) { create(:user, member: true) }
+    let(:user6) { create(:user, member: true) }
 
     let!(:cmpy1_app1) do
-      create(:shf_application, :accepted,
-             company_number: cmpy1.company_number, user: user1)
+      m = create(:shf_application, :accepted, user: user1)
+      m.companies = [cmpy1]
+      m
     end
 
     let!(:cmpy1_app2) do
-      create(:shf_application, :accepted,
-             company_number: cmpy1.company_number, user: user2)
+      m = create(:shf_application, :accepted, user: user2)
+      m.companies = [cmpy1]
+      m
     end
 
     let!(:cmpy1_app3) do
-      create(:shf_application, :rejected,
-             company_number: cmpy1.company_number, user: user3)
+      m = create(:shf_application, :rejected, user: user3)
+      m.companies = [cmpy1]
+      m
     end
 
     let!(:cmpy2_app1) do
-      create(:shf_application, :accepted,
-             company_number: cmpy2.company_number, user: user1)
+      m = create(:shf_application, :accepted, user: user4)
+      m.companies = [cmpy2]
+      m
     end
 
     let!(:cmpy2_app2) do
-      create(:shf_application, :accepted,
-             company_number: cmpy2.company_number, user: user2)
+      m = create(:shf_application, :accepted, user: user5)
+      m.companies = [cmpy2]
+      m
     end
 
     let!(:cmpy2_app3) do
-      create(:shf_application, :accepted,
-             company_number: cmpy1.company_number, user: user4)
+      m = create(:shf_application, :accepted, user: user6)
+      m.companies = [cmpy2]
+      m
     end
 
     it 'returns only apps that are 1) accepted and 2) from members' do
@@ -520,7 +524,7 @@ RSpec.describe Company, type: :model do
         .to contain_exactly(cmpy1_app1, cmpy1_app2)
 
       expect(cmpy2.approved_applications_from_members)
-        .to contain_exactly(cmpy2_app1, cmpy2_app2)
+        .to contain_exactly(cmpy2_app2, cmpy2_app3)
     end
   end
 
@@ -530,18 +534,25 @@ RSpec.describe Company, type: :model do
 
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
+    let(:user3) { create(:user) }
 
     let(:app_co1_user1) do
-      create(:shf_application, user: user1, company_number: cmpy1.company_number)
+      app = create(:shf_application, user: user1)
+      app.companies = [cmpy1]
+      app
     end
     let(:app_co1_user2) do
-      create(:shf_application, user: user2, company_number: cmpy1.company_number)
+      app = create(:shf_application, user: user2)
+      app.companies = [cmpy1]
+      app
     end
-    let(:app_co2_user2) do
-      create(:shf_application, user: user2, company_number: cmpy2.company_number)
+    let(:app_co2_user3) do
+      app = create(:shf_application, user: user3)
+      app.companies = [cmpy2]
+      app
     end
 
-    before(:each) { app_co1_user1; app_co1_user2; app_co2_user2 }
+    before(:each) { app_co1_user1; app_co1_user2; app_co2_user3 }
 
     it 'returns no companies if no members' do
       expect(Company.with_members).to be_empty
@@ -554,9 +565,9 @@ RSpec.describe Company, type: :model do
 
       expect(Company.with_members).to contain_exactly(cmpy1)
 
-      app_co2_user2.start_review
-      app_co2_user2.accept!
-      user2.update(member: true)
+      app_co2_user3.start_review
+      app_co2_user3.accept!
+      user3.update(member: true)
 
       expect(Company.with_members).to contain_exactly(cmpy1, cmpy2)
     end

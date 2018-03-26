@@ -21,27 +21,15 @@ Feature: As an applicant
       | nils@random.com   | 2120000142     | accepted              |
       | bob@barkybobs.com | 5560360793     | rejected              |
 
-  Scenario: Applicant wants to edit his own application
-    Given I am logged in as "emma@random.com"
-    And I am on the "landing" page
-    And I click on t("menus.nav.users.my_application")
-    Then I should be on "Edit My Application" page
-    And I fill in t("shf_applications.show.first_name") with "Anna"
-    And I click on t("shf_applications.edit.submit_button_label")
-    Then I should see t("shf_applications.update.success")
-    And I should be on the "application" page for "emma@random.com"
-    And I should see "Anna Lastname"
-
   Scenario: Applicant makes mistake when editing his own application
     Given I am logged in as "emma@random.com"
     And I am on the "landing" page
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
-    And I fill in t("shf_applications.show.contact_email") with "sussimmi.nu"
-    And I fill in t("shf_applications.show.company_number") with ""
+    And I fill in t("shf_applications.show.contact_email") with ""
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.error")
-    And I should see error t("shf_applications.show.company_number") t("errors.messages.blank")
+    And I should see error t("shf_applications.show.contact_email") t("errors.messages.blank")
     And I should see button t("shf_applications.edit.submit_button_label")
 
   Scenario: Applicant can not edit applications not created by him
@@ -93,7 +81,6 @@ Feature: As an applicant
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     And I fill in t("shf_applications.show.contact_email") with "sussimmi.nu"
-    And I fill in t("shf_applications.show.company_number") with ""
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("shf_applications.update.error")
     And I should not see t("show_in_swedish") image

@@ -19,9 +19,8 @@ describe ShfApplicationPolicy do
 
   let(:user_not_owner) { create(:user, email: 'user_not_owner@random.com') }
   let(:user_applicant) { create(:user_with_membership_app, email: 'user_owner@random.com') }
-  let(:application) { create(:shf_application,
-                             user: user_applicant,
-                             state: :new) }
+  let(:user_2) { create(:user) }
+  let(:application) { create(:shf_application, state: :new) }
 
   let(:visitor) { build(:visitor) }
 
@@ -141,44 +140,80 @@ describe ShfApplicationPolicy do
 
     describe 'Member or User not the owner can only create a new one and view information' do
 
-      { 'Member': :member_not_owner,
-        'User': :user_not_owner }.each do |user_class, current_user|
+      describe "For User (without an application)" do
 
-        describe "For #{user_class} (not the owner of the application)" do
+        let(:current_user) { :user_not_owner }
 
-          it 'permits new for a new application (not already instantiated)' do
-            expect(described_class.new(self.send(current_user), ShfApplication)).to permit_action :new
-          end
-
-          it 'forbids new for an existing application (already instantiated)' do
-            expect(described_class.new(self.send(current_user), application)).to forbid_action :new
-          end
-
-          it 'permits create for a new application (not already instantiated)' do
-            expect(described_class.new(self.send(current_user), ShfApplication)).to permit_action :create
-          end
-
-          it 'forbids create for an existing application (already instantiated)' do
-            expect(described_class.new(self.send(current_user), application)).to forbid_action :create
-          end
-
-          it 'forbids all other CRUD actions (that are not :new or :create)' do
-            expect(described_class.new(self.send(current_user), application)).to forbid_actions(CRUD_ACTIONS - [:new, :create])
-          end
-
-          it 'permits :information' do
-            expect(described_class.new(self.send(current_user), application)).to permit_action :information
-          end
-
-          it 'forbids :index' do
-            expect(described_class.new(self.send(current_user), application)).to forbid_action :index
-          end
-
-          it 'forbids all application state change actions' do
-            expect(described_class.new(self.send(current_user), application)).to forbid_actions APP_STATE_CHANGE_ACTIONS
-          end
-
+        it 'permits new for a new application (not already instantiated)' do
+          expect(described_class.new(self.send(current_user), ShfApplication)).to permit_action :new
         end
+
+        it 'forbids new for an existing application (already instantiated)' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_action :new
+        end
+
+        it 'permits create for a new application (not already instantiated)' do
+          expect(described_class.new(self.send(current_user), ShfApplication)).to permit_action :create
+        end
+
+        it 'forbids create for an existing application (already instantiated)' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_action :create
+        end
+
+        it 'forbids all other CRUD actions (that are not :new or :create)' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_actions(CRUD_ACTIONS - [:new, :create])
+        end
+
+        it 'permits :information' do
+          expect(described_class.new(self.send(current_user), application)).to permit_action :information
+        end
+
+        it 'forbids :index' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_action :index
+        end
+
+        it 'forbids all application state change actions' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_actions APP_STATE_CHANGE_ACTIONS
+        end
+
+      end
+
+      describe "For Member (who already has application)" do
+
+        let(:current_user) { :member_not_owner }
+
+        it 'forbids new for a new application (not already instantiated)' do
+          expect(described_class.new(self.send(current_user), ShfApplication)).to forbid_action :new
+        end
+
+        it 'forbids new for an existing application (already instantiated)' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_action :new
+        end
+
+        it 'forbids create for a new application (not already instantiated)' do
+          expect(described_class.new(self.send(current_user), ShfApplication)).to forbid_action :create
+        end
+
+        it 'forbids create for an existing application (already instantiated)' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_action :create
+        end
+
+        it 'forbids all other CRUD actions (that are not :new or :create)' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_actions(CRUD_ACTIONS - [:new, :create])
+        end
+
+        it 'permits :information' do
+          expect(described_class.new(self.send(current_user), application)).to permit_action :information
+        end
+
+        it 'forbids :index' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_action :index
+        end
+
+        it 'forbids all application state change actions' do
+          expect(described_class.new(self.send(current_user), application)).to forbid_actions APP_STATE_CHANGE_ACTIONS
+        end
+
       end
 
     end
@@ -193,8 +228,8 @@ describe ShfApplicationPolicy do
 
           let(:app_being_checked) { self.send(current_user).shf_application }
 
-          it 'permits new for a new application (not already instantiated)' do
-            expect(described_class.new(self.send(current_user), ShfApplication)).to permit_action :new
+          it 'forbids new for a new application (not already instantiated)' do
+            expect(described_class.new(self.send(current_user), ShfApplication)).to forbid_action :new
           end
 
           describe 'For other users of ShfApplication' do
@@ -203,8 +238,8 @@ describe ShfApplicationPolicy do
               expect(described_class.new(self.send(current_user), app_being_checked)).to forbid_action :new
             end
 
-            it 'permits create for a new application (not already instantiated)' do
-              expect(described_class.new(self.send(current_user), described_class)).to permit_action :create
+            it 'forbids create for a new application (not already instantiated)' do
+              expect(described_class.new(self.send(current_user), described_class)).to forbid_action :create
             end
 
             it 'permits create for an existing application (already instantiated)' do
@@ -285,16 +320,16 @@ describe ShfApplicationPolicy do
 
       subject { described_class.new(member_applicant, application) }
 
-      it 'permits new for a new application (not already instantiated)' do
-        expect(described_class.new(member_applicant, ShfApplication)).to permit_action :new
+      it 'forbids new for a new application (not already instantiated)' do
+        expect(described_class.new(member_applicant, ShfApplication)).to forbid_action :new
       end
 
       it 'forbids new for an existing application (already instantiated)' do
         is_expected.to forbid_action :new
       end
 
-      it 'permits create for a new application (not already instantiated)' do
-        expect(described_class.new(member_applicant, ShfApplication)).to permit_action :create
+      it 'forbids create for a new application (not already instantiated)' do
+        expect(described_class.new(member_applicant, ShfApplication)).to forbid_action :create
       end
 
       it 'permits create for an existing application (already instantiated)' do

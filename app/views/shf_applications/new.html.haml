@@ -7,11 +7,15 @@
   .entry-content
     .wpcf7
       .instructions= t('shf_applications.new.instructions_html')
+
       = form_for @shf_application, html: {multipart: true}, url: shf_applications_path do |f|
 
         != model_errors_helper(@shf_application)
 
-        = render partial: 'shf_application_fields', locals: {f: f}
+        = render partial: 'shf_application_fields', locals: { f: f, company: @company }
+
         = render 'application/required_fields'
 
         = f.submit t('.submit_button_label')
+
+= render partial: 'companies/company_create_modal', locals: { company: @company }

@@ -44,11 +44,12 @@ BusinessCategory.find_or_create_by(name: 'Sociala tjänstehundar', description: 
 BusinessCategory.find_or_create_by(name: 'Civila tjänstehundar', description: 'Assistanshundar dvs hundar som jobbar åt sin ägare som service-, signal, diabetes, PH-hund mm')
 
 puts 'Creating admin user'
+
+email = env_invalid_blank('SHF_ADMIN_EMAIL')
+pwd = env_invalid_blank('SHF_ADMIN_PWD')
+
 if Rails.env.production?
   begin
-    email = env_invalid_blank('SHF_ADMIN_EMAIL')
-    pwd = env_invalid_blank('SHF_ADMIN_PWD')
-
     User.create!(email: email, password: pwd, admin: true,
                  first_name: 'SHF', last_name: 'Admin')
   rescue => e
@@ -57,8 +58,6 @@ if Rails.env.production?
     raise
   end
 else
-  email = 'admin@sverigeshundforetagare.se'
-  pwd = 'hundapor'
   User.create(email: email, password: pwd, admin: true,
               first_name: 'SHF', last_name: 'Admin')
 end

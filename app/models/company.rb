@@ -17,7 +17,8 @@ class Company < ApplicationRecord
 
   before_save :sanitize_website, :sanitize_description
 
-  has_and_belongs_to_many :shf_applications
+  has_many :company_applications
+  has_many :shf_applications, through: :company_applications, dependent: :destroy
 
   has_many :users, through: :shf_applications
 
@@ -37,11 +38,29 @@ class Company < ApplicationRecord
   has_many :pictures, class_name: 'Ckeditor::Picture', dependent: :destroy
 
   accepts_nested_attributes_for :addresses, allow_destroy: true
+  alias_method :categories, :business_categories
+  delegate :visible, to: :addresses, prefix: true
 
   def approved_applications_from_members
     # Returns ActiveRecord Relation
     shf_applications.accepted.includes(:user)
       .order('users.last_name').where('users.member = ?', true)
+  end
+
+  def any_visible_addresses?
+    addresses_visible.any?
+  end
+
+  def categories_names
+    categories.select(:name).distinct.order(:name).pluck(:name)
+  end
+
+  def addresses_region_names
+    addresses.joins(:region).select('regions.name').distinct.pluck('regions.name')
+  end
+
+  def kommuns_names
+    addresses.joins(:kommun).select('kommuns.name').distinct.pluck('kommuns.name')
   end
 
   def most_recent_branding_payment
@@ -66,11 +85,10 @@ class Company < ApplicationRecord
 
 
   # All addresses for a company are complete AND the name is not blank
-  # must qualify name with 'company' because there are other tables that use 'name' and if
+  # must qualify name with 'companies' because there are other tables that use 'name' and if
   # this scope is combined with a clause for a different table that also uses 'name',
   # SQL won't know which table to get 'name' from
   #  name could be NULL or it could be an empty string
-
   def self.complete
     where.not('companies.name' => '',
               id: Address.lacking_region.pluck(:addressable_id))
@@ -78,10 +96,7 @@ class Company < ApplicationRecord
 
   def self.branding_licensed
     # All companies (distinct) with at least one unexpired branding payment
-    joins(:payments)
-      .where('payments.id IN (?)',
-             Payment.branding_fee.completed.unexpired.pluck(:id))
-      .distinct
+    joins(:payments).merge(Payment.branding_fee.completed.unexpired).distinct
   end
 
   def self.address_visible
@@ -98,17 +113,16 @@ class Company < ApplicationRecord
 
   def destroy_checks
 
-    error_if_has_accepted_applications?
+    error_if_has_applications?
 
   end
 
 
   # do not delete a Company if it has ShfApplications that are accepted
-  def error_if_has_accepted_applications?
-
+  def error_if_has_applications?
     shf_applications.reload
 
-    if shf_applications.where(state: 'accepted').any?
+    if shf_applications.where.not(state: 'being_destroyed').any?
       errors.add(:base, 'activerecord.errors.models.company.company_has_active_memberships')
       # Rails 5: must throw
       throw(:abort)

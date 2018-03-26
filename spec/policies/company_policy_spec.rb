@@ -4,7 +4,7 @@ include PoliciesHelper
 RSpec.describe CompanyPolicy do
 
   let(:user_1) { create(:user, email: 'user_1@random.com') }
-  let(:member) { create(:member_with_membership_app, email: 'member@random.com', company_number: '5562728336')}
+  let(:member) { create(:member_with_membership_app, email: 'member@random.com')}
   let(:admin)  { create(:user, email: 'admin@sfh.com', admin: true) }
   let(:visitor) { build(:visitor) }
   let(:company) { create(:company, company_number: '5712213304')}
@@ -22,7 +22,10 @@ RSpec.describe CompanyPolicy do
   end
 
   describe 'For a member that is a part of a company' do
-    let(:members_company) { Company.find_by_company_number('5562728336')}
+    let(:members_company) do
+      co_number = member.shf_application.companies.first.company_number
+      Company.find_by_company_number(co_number)
+    end
     subject { described_class.new(member, members_company) }
 
     it { is_expected.to permit_action :index }
@@ -30,7 +33,7 @@ RSpec.describe CompanyPolicy do
     it { is_expected.to permit_action :edit }
     it { is_expected.to permit_action :update }
     it { is_expected.to forbid_action :new }
-    it { is_expected.to forbid_action :create }
+    it { is_expected.to permit_action :create }
     it { is_expected.to forbid_action :edit_payment }
   end
 
@@ -42,7 +45,7 @@ RSpec.describe CompanyPolicy do
     it { is_expected.to forbid_action :edit }
     it { is_expected.to forbid_action :update }
     it { is_expected.to forbid_action :new }
-    it { is_expected.to forbid_action :create }
+    it { is_expected.to permit_action :create }
     it { is_expected.to forbid_action :edit_payment }
   end
 
@@ -54,7 +57,7 @@ RSpec.describe CompanyPolicy do
     it { is_expected.to forbid_action :edit }
     it { is_expected.to forbid_action :update }
     it { is_expected.to forbid_action :new }
-    it { is_expected.to forbid_action :create }
+    it { is_expected.to permit_action :create }
     it { is_expected.to forbid_action :edit_payment }
   end
 

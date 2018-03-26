@@ -66,7 +66,7 @@ RSpec.describe AdminMailer, type: :mailer do
 
     it 'has the company number' do
       expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.company.company_number'))
-      expect(email_sent).to have_body_text(new_app.company_number)
+      expect(email_sent).to have_body_text(new_app.companies.first.company_number)
     end
 
   end

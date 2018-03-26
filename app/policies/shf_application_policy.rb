@@ -51,12 +51,13 @@ class ShfApplicationPolicy < ApplicationPolicy
 
   # an Admin cannot create an Application because we currently have no way to say who the application is for (which User)
   def new?
-    super && !user.admin? && not_a_visitor
+    super && !user.admin? && not_a_visitor && !user_has_other_application?
   end
 
 
   def create?
-    record.is_a?(ShfApplication) ? owner? : !user.admin? && not_a_visitor
+    record.is_a?(ShfApplication) ? owner? : !user.admin? && not_a_visitor &&
+                                            !user_has_other_application?
   end
 
 
@@ -103,7 +104,6 @@ class ShfApplicationPolicy < ApplicationPolicy
 
   def user_owner_attributes
     [
-        :company_number,
         :contact_email,
         :phone_number,
         { business_category_ids: [] },
@@ -115,9 +115,7 @@ class ShfApplicationPolicy < ApplicationPolicy
                                     :actual_file_file_size,
                                     :actual_file_content_type,
                                     :actual_file_updated_at,
-                                    :_destroy],
-        user_attributes: [:first_name,
-                          :last_name]
+                                    :_destroy]
     ]
   end
 
@@ -158,11 +156,6 @@ class ShfApplicationPolicy < ApplicationPolicy
 
   def owner?
     record.respond_to?(:user) && record.user == user
-  end
-
-
-  def not_a_visitor
-    !user.is_a? Visitor
   end
 
 end

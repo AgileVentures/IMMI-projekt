@@ -6,7 +6,8 @@
 = render layout: 'layouts/mail_from_membership' do
   = t('welcome', scope: message_scope) + '.'
   \
-  = t('youre_active', scope: message_scope)  + company_url(@member.company)
+  - company = @member.shf_application.companies.first
+  = t('youre_active', scope: message_scope)  + company_url(company)
   \
   = t('access_fb_group', scope: message_scope)
   = t('shf_facebook_group_url')

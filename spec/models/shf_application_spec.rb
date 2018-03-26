@@ -41,19 +41,18 @@ RSpec.describe ShfApplication, type: :model do
 
   describe 'DB Table' do
     it { is_expected.to have_db_column :id }
-    it { is_expected.to have_db_column :company_number }
     it { is_expected.to have_db_column :phone_number }
     it { is_expected.to have_db_column :contact_email }
     it { is_expected.to have_db_column :state }
     it { is_expected.to have_db_column :custom_reason_text }
     it { is_expected.to have_db_column :user_id }
-    it { is_expected.to have_db_column :company_id }
     it { is_expected.to have_db_column :member_app_waiting_reasons_id }
   end
 
   describe 'Associations' do
     it { is_expected.to belong_to :user }
-    it { is_expected.to have_and_belong_to_many :companies }
+    it { is_expected.to have_many(:company_applications) }
+    it { is_expected.to have_many(:companies).through(:company_applications) }
     it { is_expected.to have_and_belong_to_many :business_categories }
     it { is_expected.to have_many :uploaded_files }
     it { is_expected.to belong_to(:waiting_reason)
@@ -67,25 +66,14 @@ RSpec.describe ShfApplication, type: :model do
 
   describe 'Validations' do
     it { is_expected.to validate_presence_of :contact_email }
-    it { is_expected.to validate_presence_of :company_number }
     it { is_expected.to validate_presence_of :state }
 
     it { is_expected.to allow_value('user@example.com').for(:contact_email) }
     it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
 
-    it { is_expected.to validate_length_of(:company_number).is_equal_to(10) }
-
-    describe 'uniqueness of user scoped within company_number' do
+    describe 'uniqueness of user across all applications' do
       subject { FactoryBot.build(:shf_application) }
-      it { is_expected.to validate_uniqueness_of(:user_id)
-                                .scoped_to(:company_number) }
-    end
-
-    describe 'swedish org number' do
-      it { is_expected.to allow_values('5560360793', '2120000142')
-                            .for(:company_number) }
-      it { is_expected.not_to allow_values('0123456789', '212000')
-                            .for(:company_number) }
+      it { is_expected.to validate_uniqueness_of(:user_id) }
     end
   end
 
@@ -149,6 +137,7 @@ RSpec.describe ShfApplication, type: :model do
 
   end
 
+
   describe 'destroy callbacks' do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
@@ -163,8 +152,7 @@ RSpec.describe ShfApplication, type: :model do
     let(:application2) do
       create(:shf_application, user: user2,
              uploaded_files: [uploaded_file], state: :new,
-             companies: [application.companies.last],
-             company_number: application.company_number)
+             companies: [application.companies.last])
     end
 
     it 'invokes method to destroy uploaded files' do
@@ -176,6 +164,22 @@ RSpec.describe ShfApplication, type: :model do
       application2
       expect(application.companies.last).not_to receive(:destroy)
       application.destroy
+    end
+
+    it 'destroys CompanyApplication record' do
+      application
+      expect { application.destroy }.to change(CompanyApplication, :count).by(-1)
+    end
+
+    it 'destroys associated companies' do
+      application
+      expect { application.destroy }.to change(Company, :count).by(-1)
+    end
+
+    it 'does not destroy company if other app(s) exist' do
+      application
+      application2
+      expect { application.destroy }.not_to change(Company, :count)
     end
   end
 
@@ -327,18 +331,39 @@ RSpec.describe ShfApplication, type: :model do
     end
 
     context 'actions taken on state transition' do
+      let(:uploaded_files) { create(:uploaded_file,
+                                    actual_file: (File.new(File.join(FIXTURE_DIR,
+                                                  'image.jpg')))) }
       describe 'application accepted' do
         before(:each) do
+          application.uploaded_files = [uploaded_files]
           application.start_review!
           application.accept!
         end
+
         it "assigns app's latest-added-company email to application contact_email" do
           expect(application.companies.last.email).to eq application.contact_email
         end
       end
 
       describe 'application rejected' do
-        xit 'need tests here' do
+        before(:each) do
+          application.uploaded_files = [uploaded_files]
+          application.user.membership_number = 10
+          application.start_review!
+          application.reject!
+        end
+
+        it 'assigns user membership_number to nil' do
+          expect(application.user.membership_number).to be_nil
+        end
+
+        it 'destroys uploaded files' do
+          expect(application.uploaded_files.count).to be 0
+        end
+
+        it 'destroys associated company(s)' do
+          expect(application.companies.count).to be 1
         end
       end
     end
@@ -349,7 +374,11 @@ RSpec.describe ShfApplication, type: :model do
   describe '#se_mailing_csv_str (comma sep string) of the address for the swedish postal service' do
 
     let(:accepted_app) { create(:shf_application, :accepted) }
-    let(:rejected_app) { create(:shf_application, :rejected)}  # no company for this
+    let(:app_no_company) do
+      app = create(:shf_application)
+      app.companies = []
+      app
+    end
 
     it "uses the app's latest-added-company main address" do
 
@@ -362,7 +391,7 @@ RSpec.describe ShfApplication, type: :model do
 
     it 'blanks (just commas with no data between them) if there is no company' do
 
-      expect(rejected_app.se_mailing_csv_str).to eq AddressExporter.se_mailing_csv_str(nil)
+      expect(app_no_company.se_mailing_csv_str).to eq AddressExporter.se_mailing_csv_str(nil)
 
     end
 

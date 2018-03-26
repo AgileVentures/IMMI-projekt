@@ -5,11 +5,18 @@ RSpec.describe 'load business categories, regions, kommuns, users and applicatio
   # seed with a minimum of 4 users to cover: admin, no application, single application, double application
   seed_users = 4
 
+  env_shf_email = 'SHF_ADMIN_EMAIL'
+  env_shf_pwd = 'SHF_ADMIN_PWD'
+  admin_email = 'the-shfadmin@shf.org'
+  admin_pwd = 'insecure-password'
+
   before(:all) do
     DatabaseCleaner.start
     RSpec::Mocks.with_temporary_scope do
       allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
-      stub_const('ENV', {'SHF_SEED_USERS' => seed_users.to_s})
+      stub_const('ENV', { 'SHF_SEED_USERS' => seed_users.to_s,
+                          env_shf_email => admin_email,
+                          env_shf_pwd => admin_pwd })
       SHFProject::Application.load_tasks
       SHFProject::Application.load_seed
     end
@@ -38,11 +45,11 @@ RSpec.describe 'load business categories, regions, kommuns, users and applicatio
   end
 
   it "addresses are in the db" do
-    expect(Address.all.size).to eq(ShfApplication.where(state: :accepted).count)
+    expect(Address.count).to eq(ShfApplication.count)
   end
 
   it "companies are in the db" do
-    expect(Company.all.size).to eq(ShfApplication.where(state: :accepted).count)
+    expect(Company.count).to eq(ShfApplication.count)
   end
 
   it "memberships applications are in the db" do
