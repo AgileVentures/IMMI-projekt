@@ -66,7 +66,9 @@ class ShfApplicationsController < ApplicationController
         helpers.flash_message(:notice, t('.success', email_address: @shf_application.contact_email))
         redirect_to information_path
       else
-        create_error(t('.error'))
+        helpers.flash_message(:notice, t('.success_with_file_problem'))
+        load_update_objects
+        render :edit
       end
 
     else

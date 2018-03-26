@@ -10,7 +10,7 @@
 
       = render partial: 'membership_number', locals: { user: @shf_application.user }
 
-      = form_for @shf_application, html: {multipart: true}, url: shf_application_path do |f|
+      = form_for @shf_application do |f|
 
         != model_errors_helper(@shf_application)
 
