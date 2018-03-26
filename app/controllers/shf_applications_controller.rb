@@ -8,6 +8,7 @@ class ShfApplicationsController < ApplicationController
 
   def new
     @shf_application = ShfApplication.new(user: current_user)
+    @company = Company.new
     @all_business_categories = BusinessCategory.all
     @uploaded_file = @shf_application.uploaded_files.build
   end
@@ -43,13 +44,17 @@ class ShfApplicationsController < ApplicationController
 
 
   def edit
-    @all_business_categories = BusinessCategory.all
+    @company = @shf_application.companies.first
+    load_update_objects
   end
 
 
   def create
-    @shf_application = ShfApplication.new(user: current_user)
-    @shf_application.update(shf_application_params)
+
+    @shf_application = ShfApplication.new(shf_application_params
+                                          .merge(user: current_user))
+
+    set_companies_for_application
 
     if @shf_application.save
 
@@ -88,29 +93,37 @@ class ShfApplicationsController < ApplicationController
         head :ok
       end
 
-    elsif @shf_application.update(shf_application_params)
+    else
 
-      if new_file_uploaded params
+      set_companies_for_application
 
-        check_and_mark_if_ready_for_review params['shf_application'] if params.fetch('shf_application', false)
+      company_valid = @company.valid?
 
-        respond_to do |format|
-          format.js do
-            head :ok # just let the receiver know everything is OK. no need to render anything
+      if @shf_application.update(shf_application_params) && company_valid
+
+        if new_file_uploaded params
+
+          check_and_mark_if_ready_for_review params['shf_application'] if params.fetch('shf_application', false)
+
+          respond_to do |format|
+            format.js do
+              head :ok # just let the receiver know everything is OK. no need to render anything
+            end
+
+            rendering(format, shf_application_params)
+
           end
 
-          rendering(format, shf_application_params)
-
+        else
+          update_error(t('.error'))
         end
 
       else
+        @shf_application.errors.add(:companies, :blank) unless company_valid
         update_error(t('.error'))
       end
 
-    else
-      update_error(t('.error'))
     end
-
   end
 
 
@@ -272,9 +285,25 @@ class ShfApplicationsController < ApplicationController
       render json: @shf_application.errors.full_messages, status: :unprocessable_entity if request.xhr?
     else
       helpers.flash_message(:alert, error_message)
+      load_update_objects
       render :edit
     end
 
+  end
+
+  def load_update_objects
+    @all_business_categories = BusinessCategory.all
+    @new_company = Company.new   # In case user wants to create a new company
+  end
+
+  def set_companies_for_application
+    if (company = Company.find_by_company_number(params[:company_number]))
+      @company = company
+      @shf_application.companies = [company]
+    else
+      @company = Company.new(company_number: params[:company_number])
+      # @shf_application.companies.clear
+    end
   end
 
 

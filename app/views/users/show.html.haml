@@ -52,8 +52,10 @@
                   %span.yes= i18n_state
                 - else
                   %span.maybe= i18n_state
-              %td= link_to(app.company_number, shf_application_path(app))
-              %td= app.company&.name
+              - company = app.companies.first
+              - if company
+                %td= link_to(company.company_number, shf_application_path(app))
+                %td= company&.name
 
   .col-sm-12
 

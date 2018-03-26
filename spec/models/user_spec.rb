@@ -149,9 +149,9 @@ RSpec.describe User, type: :model do
   describe '#has_company?' do
 
     after(:each) {
-      Company.delete_all
-      ShfApplication.delete_all
-      User.delete_all
+      Company.destroy_all
+      ShfApplication.destroy_all
+      User.destroy_all
     }
 
     describe 'user: no application' do
@@ -161,7 +161,7 @@ RSpec.describe User, type: :model do
 
     describe 'user: 1 saved application' do
       subject { create(:user_with_membership_app) }
-      it { expect(subject.has_company?).to be_falsey }
+      it { expect(subject.has_company?).to be_truthy }
     end
 
     describe 'member with 1 app' do
@@ -208,32 +208,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#company' do
-    describe 'user: no application' do
-      subject { create(:user) }
-      it { expect(subject.company).to be_nil }
-    end
-
-    describe 'user: 1 saved application' do
-      subject { create(:user_with_membership_app) }
-      it { expect(subject.company).to be_nil }
-    end
-
-    describe 'member with 1 app' do
-      let(:member) { create(:member_with_membership_app) }
-      it { expect(member.company).not_to be_nil }
-    end
-
-    describe 'member with 0 apps (should not happen)' do
-      let(:member) { create(:user) }
-      it { expect(member.company).to be_nil }
-    end
-
-    describe 'admin' do
-      subject { create(:user, admin: true) }
-      it { expect(subject.company).to be_nil }
-    end
-  end
 
   describe '#member_or_admin?' do
 
@@ -280,15 +254,16 @@ RSpec.describe User, type: :model do
     end
 
     describe 'is a member, so is in companies' do
+      let(:co_number) { member.shf_application&.companies&.first&.company_number }
 
       describe 'member with 1 app' do
         let(:member) { create(:member_with_membership_app) }
-        it { expect(member.in_company_numbered?(default_co_number)).to be_truthy }
+        it { expect(member.in_company_numbered?(co_number)).to be_truthy }
       end
 
       describe 'member with 0 apps (should not happen)' do
         let(:member) { create(:user) }
-        it { expect(member.in_company_numbered?(default_co_number)).to be_falsey }
+        it { expect(member.in_company_numbered?(co_number)).to be_falsey }
       end
 
     end
@@ -303,14 +278,9 @@ RSpec.describe User, type: :model do
   describe '#companies' do
     describe 'not yet a member, so not in any full companies' do
 
-      describe 'user: no applications, so not in any companies' do
-        subject { create(:user) }
-        it { expect(subject.companies.size).to eq(0) }
-      end
-
       describe 'user: 1 saved application' do
         subject { create(:user_with_membership_app) }
-        it { expect(subject.companies.size).to eq(0) }
+        it { expect(subject.companies.size).to eq(1) }
       end
     end
 

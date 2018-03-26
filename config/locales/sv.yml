@@ -170,6 +170,7 @@ sv:
         state/ready_for_review: &status_ready_for_review Redo för granskning
         state/accepted: &status_accepted Godkänd
         state/rejected: &status_rejected Avböjd
+        state/being_destroyed: &status_being_destroyed Förstört
 
 
 
@@ -255,6 +256,8 @@ sv:
           attributes:
             company_number:
               invalid: "%{company_number} är inte ett svenskt organisationsnummer"
+            companies:
+              blank: '- Ange ett befintligt företagsnummer (eller skapa ett nytt företag)'
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
@@ -288,7 +291,8 @@ sv:
       first_name: *first_name
       last_name: *last_name
       company_number: *company_number
-      org_nr_no_hyphens: &orgnr_no_hyphens "Endast siffror (ej bindestreck)"
+      enter_company_number: Ange ditt företagsnummer (eller skapa ett nytt
+                             företag om det inte finns i systemet)
       contact_email: *contact_email
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
@@ -316,7 +320,6 @@ sv:
       title: Redigera ansökan om medlemskap
       is_ready_for_review: Redo för granskning
       submit_button_label: *save
-      org_nr_no_hyphens: *orgnr_no_hyphens
 
     update:
       success: Ansökan har uppdaterats.
@@ -329,7 +332,6 @@ sv:
       last_name: *last_name
       phone_number: *phone_number
       company_number: *company_number
-      org_nr_no_hyphens: *orgnr_no_hyphens
       contact_email: *contact_email
       app_status: Ansökans status
       change_status: Ändra status
@@ -495,6 +497,7 @@ sv:
     create:
       error: Ett eller flera problem hindrade företaget från att skapas.
       success: Företaget har skapats.
+      create_submit: Skapa företag
     update:
       error: Ett problem förhindrade uppdatering av företaget.
       success: Företaget har uppdaterats.

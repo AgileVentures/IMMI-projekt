@@ -3,9 +3,9 @@ Feature: Whole process of a new user creating a login, applying, being approved,
 
   Background:
     Given the following users exists
-      | email                | admin |
-      | new_user@example.com |       |
-      | admin@shf.se         | true  |
+      | email                | admin | first_name | last_name |
+      | new_user@example.com |       | NewUser1   | Lastname  |
+      | admin@shf.se         | true  |            |           |
 
     Given the following regions exist:
       | name         |
@@ -21,16 +21,20 @@ Feature: Whole process of a new user creating a login, applying, being approved,
       | Groomer      |
       | Psychologist |
 
+    And the following companies exist:
+      | name                 | company_number | email                  | region     |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
+
 
   @admin, @user, @member
-  Scenario: User creates login, admin approves, user edits company, blank main address is displayed
+  Scenario: User creates application, admin approves, user edits company, blank main address is displayed
     Given I am in "new_user@example.com" browser
     And I am logged in as "new_user@example.com"
     And I am on the "landing" page
     And I click on t("menus.nav.users.apply_for_membership")
     And I fill in the translated form with data:
-      | shf_applications.new.first_name | shf_applications.new.last_name | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | NewUser1                        | NewLastName                    | 5562252998                          | 031-1234567                       | new_user@example.com               |
+      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 5560360793                          | 031-1234567                       | new_user@example.com               |
     And I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
     And I should see t("shf_applications.create.success", email_address: new_user@example.com)

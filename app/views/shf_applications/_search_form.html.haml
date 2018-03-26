@@ -24,12 +24,12 @@
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
     .col-sm-2
-      = f.label :company_number_in,
+      = f.label :companies_company_number_in,
                 "#{t('shf_applications.index.org_nr')}",
                 class: 'control-label',
                 style: 'text-align: left; font-size: 12px;'
-      = f.collection_select :company_number_in,
-                      ShfApplication.order(:company_number).pluck(:company_number),
+      = f.collection_select :companies_company_number_in,
+                      ShfApplication.joins(:companies).order('companies.company_number').pluck('companies.company_number'),
                       :to_s, :to_s, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
                         class: 'form-control search_field',

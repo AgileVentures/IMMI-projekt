@@ -15,4 +15,12 @@ $(function() {
   $('#editBrandingStatusSubmit').click(function() {
     $('#edit-branding-modal').modal('hide');
   });
+
+  $('#companyCreateForm').on('ajax:success', function (e, data) {
+    $('#' + data.id).html(data.html);
+    if (data.status === 'success') {
+      $('#company-create-modal').modal('hide');
+      $('#company-create-errors').html('');
+    }
+  });
 });

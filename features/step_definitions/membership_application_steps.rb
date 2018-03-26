@@ -1,5 +1,5 @@
 And(/^the following applications exist:$/) do |table|
- table.hashes.each do |hash|
+ table.hashes.each do |hash|   
    attributes = hash.except('user_email', 'categories', 'company_name')
    user = User.find_by(email: hash[:user_email].downcase)
 

@@ -1,7 +1,18 @@
 FactoryBot.define do
   factory :company do
     name 'SomeCompany'
-    company_number '0000000000'
+    company_number do
+      org_number = nil
+
+      100.times do
+        org_number = OrgNummersGenerator.generate_one
+
+        # stop if number not already used
+        break if ! Company.find_by_company_number(org_number)
+      end
+
+      org_number
+    end
     phone_number '123123123'
     email 'thiscompany@example.com'
     website 'http://www.example.com'

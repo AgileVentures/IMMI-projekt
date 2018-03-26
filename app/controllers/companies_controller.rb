@@ -67,12 +67,30 @@ class CompaniesController < ApplicationController
 
     @company = Company.new(sanitize_params(company_params))
 
-    if @company.save
-      redirect_to @company, notice: t('.success')
-    else
-      flash.now[:alert] = t('.error')
-      render :new
+    saved = @company.save
+
+    unless request.xhr?
+      if @company.save
+        redirect_to @company, notice: t('.success')
+      else
+        flash.now[:alert] = t('.error')
+        render :new
+      end
+      return
     end
+
+    # XHR request from modal in ShfApplication create view (to create company)
+    if saved
+      status = 'success'
+      id = 'company-number-entry'
+      html = helpers.company_number_entry_field(@company.company_number)
+    else
+      status = 'errors'
+      id = 'company-create-errors'
+      html = helpers.model_errors_helper(@company)
+    end
+
+    render json: { status: status, id: id, html: html }
   end
 
 
