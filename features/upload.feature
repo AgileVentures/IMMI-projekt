@@ -16,13 +16,17 @@ Feature: Applicant uploads a file for their application
       | user_email             | company_number | state                 |
       | applicant_1@random.com | 5562252998     | waiting_for_applicant |
 
+    And the following companies exist:
+      | name                 | company_number | email                  | region     |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
+
 
   Scenario: Upload a file during a new application
     Given I am logged in as "applicant_2@random.com"
     And I am on the "submit new membership application" page
     And I fill in the translated form with data:
-      | shf_applications.new.first_name | shf_applications.new.last_name | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | Hans                            | Newfoundland                   | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
+      | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
     And I choose a file named "diploma.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)

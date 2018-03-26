@@ -12,27 +12,47 @@ Feature: Applicant uploads too large a file for their application
 
     And the following applications exist:
       | user_email         | company_number | state        |
-      | emma@happymutts.se | 5560360793     | under_review |
+      | emma@happymutts.se | 5562252998     | under_review |
+
+    And the following companies exist:
+      | name                 | company_number | email                  | region     |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
 
 
   Scenario: New application - Uploads a file that is too large
     Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
-    When I fill in the translated form with data:
-      | shf_applications.new.first_name | shf_applications.new.last_name | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | Hans                            | Newfoundland                   | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
+    When I fill in the form with data:
+      | shf_application_company_number | shf_application_phone_number | shf_application_contact_email |
+      | 5560360793                     | 031-1234567                  | applicant_2@random.com        |
     And I choose a file named "diploma_huge.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should not see t("shf_applications.create.success")
 
+  Scenario: New application - Uploads a file that is too large then uploads ok file
+    Given I am logged in as "hans@new_applicant.se"
+    And I am on the "submit new membership application" page
+    When I fill in the form with data:
+      | shf_application_company_number | shf_application_phone_number | shf_application_contact_email |
+      | 5560360793                     | 031-1234567                  | applicant_2@random.com        |
+    And I choose a file named "diploma_huge.pdf" to upload
+    When I click on t("shf_applications.new.submit_button_label")
+    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
+    And I should see t("shf_applications.create.success_with_file_problem")
+
+    Then I choose a file named "diploma.pdf" to upload
+    When I click on t("shf_applications.edit.submit_button_label")
+
+    And I should see t("shf_applications.update.success")
+
 
   Scenario: New application - Uploads a file just under the size limit
     Given I am logged in as "hans@new_applicant.se"
     And I am on the "submit new membership application" page
-    When I fill in the translated form with data:
-      | shf_applications.new.first_name | shf_applications.new.last_name | shf_applications.new.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | Hans                            | Newfoundland                   | 5560360793                          | 031-1234567                       | applicant_2@random.com             |
+    When I fill in the form with data:
+      | shf_application_company_number | shf_application_phone_number | shf_application_contact_email |
+      | 5560360793                     | 031-1234567                  | applicant_2@random.com        |
     And I choose a file named "upload-just-under-limit.pdf" to upload
     When I click on t("shf_applications.new.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
@@ -46,6 +66,19 @@ Feature: Applicant uploads too large a file for their application
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should not see t("shf_applications.update.success")
+
+  Scenario: Existing application - Uploads a file that is too large then uploads ok file
+    Given I am logged in as "emma@happymutts.se"
+    And I am on the "edit my application" page
+    And I choose a file named "diploma_huge.pdf" to upload
+    When I click on t("shf_applications.edit.submit_button_label")
+    Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
+    And I should not see t("shf_applications.update.success")
+
+    Then I choose a file named "diploma.pdf" to upload
+    When I click on t("shf_applications.edit.submit_button_label")
+
+    And I should see t("shf_applications.update.success")
 
 
   Scenario: Existing application - Uploads a file just under the size limit
@@ -90,5 +123,3 @@ Feature: Applicant uploads too large a file for their application
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
     And I set the locale to "sv"
-
-

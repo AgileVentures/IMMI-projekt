@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180116141245) do
+ActiveRecord::Schema.define(version: 20180219132317) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -88,11 +88,13 @@ ActiveRecord::Schema.define(version: 20180116141245) do
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
   end
 
-  create_table "companies_shf_applications", id: false, force: :cascade do |t|
-    t.bigint "shf_application_id", null: false
+  create_table "company_applications", force: :cascade do |t|
     t.bigint "company_id", null: false
-    t.index ["company_id", "shf_application_id"], name: "index_company_application"
-    t.index ["shf_application_id", "company_id"], name: "index_application_company"
+    t.bigint "shf_application_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_company_applications_on_company_id"
+    t.index ["shf_application_id"], name: "index_company_applications_on_shf_application_id"
   end
 
   create_table "kommuns", force: :cascade do |t|
@@ -141,17 +143,14 @@ ActiveRecord::Schema.define(version: 20180116141245) do
   end
 
   create_table "shf_applications", force: :cascade do |t|
-    t.string "company_number"
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
     t.string "contact_email"
-    t.bigint "company_id"
     t.string "state", default: "new"
     t.integer "member_app_waiting_reasons_id"
     t.string "custom_reason_text"
-    t.index ["company_id"], name: "index_shf_applications_on_company_id"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"
   end
@@ -210,6 +209,8 @@ ActiveRecord::Schema.define(version: 20180116141245) do
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
+  add_foreign_key "company_applications", "companies"
+  add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "payments", "companies"
   add_foreign_key "payments", "users"
   add_foreign_key "shf_applications", "member_app_waiting_reasons", column: "member_app_waiting_reasons_id"

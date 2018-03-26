@@ -17,7 +17,8 @@ class Company < ApplicationRecord
 
   before_save :sanitize_website, :sanitize_description
 
-  has_and_belongs_to_many :shf_applications
+  has_many :company_applications
+  has_many :shf_applications, through: :company_applications, dependent: :destroy
 
   has_many :users, through: :shf_applications
 
@@ -116,17 +117,16 @@ class Company < ApplicationRecord
 
   def destroy_checks
 
-    error_if_has_accepted_applications?
+    error_if_has_applications?
 
   end
 
 
   # do not delete a Company if it has ShfApplications that are accepted
-  def error_if_has_accepted_applications?
-
+  def error_if_has_applications?
     shf_applications.reload
 
-    if shf_applications.where(state: 'accepted').any?
+    if shf_applications.where.not(state: 'being_destroyed').any?
       errors.add(:base, 'activerecord.errors.models.company.company_has_active_memberships')
       # Rails 5: must throw
       throw(:abort)

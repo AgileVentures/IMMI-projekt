@@ -253,13 +253,35 @@ ALTER SEQUENCE public.companies_id_seq OWNED BY public.companies.id;
 
 
 --
--- Name: companies_shf_applications; Type: TABLE; Schema: public; Owner: -
+-- Name: company_applications; Type: TABLE; Schema: public; Owner: -
 --
 
-CREATE TABLE public.companies_shf_applications (
+CREATE TABLE public.company_applications (
+    id bigint NOT NULL,
+    company_id bigint NOT NULL,
     shf_application_id bigint NOT NULL,
-    company_id bigint NOT NULL
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: company_applications_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.company_applications_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: company_applications_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.company_applications_id_seq OWNED BY public.company_applications.id;
 
 
 --
@@ -499,13 +521,11 @@ CREATE TABLE public.schema_migrations (
 
 CREATE TABLE public.shf_applications (
     id bigint NOT NULL,
-    company_number character varying,
     phone_number character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     user_id bigint,
     contact_email character varying,
-    company_id bigint,
     state character varying DEFAULT 'new'::character varying,
     member_app_waiting_reasons_id integer,
     custom_reason_text character varying
@@ -695,6 +715,13 @@ ALTER TABLE ONLY public.companies ALTER COLUMN id SET DEFAULT nextval('public.co
 
 
 --
+-- Name: company_applications id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.company_applications ALTER COLUMN id SET DEFAULT nextval('public.company_applications_id_seq'::regclass);
+
+
+--
 -- Name: kommuns id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -814,6 +841,14 @@ ALTER TABLE ONLY public.companies
 
 
 --
+-- Name: company_applications company_applications_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.company_applications
+    ADD CONSTRAINT company_applications_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: kommuns kommuns_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -922,13 +957,6 @@ CREATE INDEX index_addresses_on_region_id ON public.addresses USING btree (regio
 
 
 --
--- Name: index_application_company; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_application_company ON public.companies_shf_applications USING btree (shf_application_id, company_id);
-
-
---
 -- Name: index_ckeditor_assets_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -950,10 +978,17 @@ CREATE UNIQUE INDEX index_companies_on_company_number ON public.companies USING 
 
 
 --
--- Name: index_company_application; Type: INDEX; Schema: public; Owner: -
+-- Name: index_company_applications_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_company_application ON public.companies_shf_applications USING btree (company_id, shf_application_id);
+CREATE INDEX index_company_applications_on_company_id ON public.company_applications USING btree (company_id);
+
+
+--
+-- Name: index_company_applications_on_shf_application_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_company_applications_on_shf_application_id ON public.company_applications USING btree (shf_application_id);
 
 
 --
@@ -982,13 +1017,6 @@ CREATE INDEX index_payments_on_company_id ON public.payments USING btree (compan
 --
 
 CREATE INDEX index_payments_on_user_id ON public.payments USING btree (user_id);
-
-
---
--- Name: index_shf_applications_on_company_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_shf_applications_on_company_id ON public.shf_applications USING btree (company_id);
 
 
 --
@@ -1105,6 +1133,22 @@ ALTER TABLE ONLY public.shf_applications
 
 
 --
+-- Name: company_applications fk_rails_cf393e2864; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.company_applications
+    ADD CONSTRAINT fk_rails_cf393e2864 FOREIGN KEY (company_id) REFERENCES public.companies(id);
+
+
+--
+-- Name: company_applications fk_rails_cfd957fb2a; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.company_applications
+    ADD CONSTRAINT fk_rails_cfd957fb2a FOREIGN KEY (shf_application_id) REFERENCES public.shf_applications(id);
+
+
+--
 -- Name: addresses fk_rails_f7aa0f06a9; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1174,6 +1218,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20171213174816'),
 ('20180103171241'),
 ('20180110215208'),
-('20180116141245');
+('20180116141245'),
+('20180219132317');
 
 

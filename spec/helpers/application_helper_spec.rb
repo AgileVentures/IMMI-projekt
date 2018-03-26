@@ -237,7 +237,7 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     let(:errors_html_en)  do
       I18n.locale = :en
-      ma = ShfApplication.new(user: user)
+      ma = ShfApplication.new(user: good_ma.user)
       ma.valid?
       model_errors_helper(ma)
     end
@@ -247,33 +247,23 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it 'adds a count of errors' do
-      expect(errors_html_sv).to match(/#{t('model_errors', count: 4)}/)
+      expect(errors_html_sv).to match(/#{t('model_errors', count: 3)}/)
 
       expect(errors_html_en).to match(/#{t('model_errors', count: 4)}/)
     end
 
     it 'returns all model errors - swedish' do
-      expect(errors_html_sv).to match(/Organisationsnummer måste anges/)
-
-      expect(errors_html_sv).
-        to match(/Organisationsnummer har fel längd \(ska vara 10 tecken\)/)
-
       expect(errors_html_sv).to match(/Kontakt e-post måste anges/)
 
       expect(errors_html_sv).to match(/Kontakt e-post har fel format/)
-
     end
 
     it 'returns all model errors - english' do
-      expect(errors_html_en).to match(/Company number cannot be blank/)
-
-      expect(errors_html_en).
-        to match(/Company number is the wrong length \(should be 10 characters\)/)
-
       expect(errors_html_en).to match(/Contact Email cannot be blank/)
 
       expect(errors_html_en).to match(/Contact Email is invalid/)
 
+      expect(errors_html_en).to match(/User has already been taken/)
     end
   end
 

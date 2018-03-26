@@ -3,7 +3,6 @@ FactoryBot.define do
   sequence(:cat_name_seq, "Business Category", 1) { |name, num| "#{name} #{num}" }
 
   factory :shf_application do
-    company_number '5562252998'
     phone_number 'MyString'
     contact_email 'MyString@email.com'
     state :new
@@ -21,6 +20,7 @@ FactoryBot.define do
     transient do
       num_categories 0
       category_name "Business Category"
+      company_number nil
     end
 
     after(:build) do |shf_app, evaluator|
@@ -33,17 +33,16 @@ FactoryBot.define do
         end
       end
 
-      if (evaluator.state) && evaluator.state.to_sym == :accepted
-        shf_app.state = :accepted
-
+      if evaluator.company_number
         company = Company.find_by(company_number: evaluator.company_number)
         unless company
           company = FactoryBot.create(:company, company_number: evaluator.company_number)
         end
-        shf_app.companies << company
+      else
+        company = FactoryBot.create(:company)
       end
+      shf_app.companies << company
     end
-
 
   end
 end

@@ -99,7 +99,7 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
 
 
       let(:accepted_app_branding_paid) {
-        create(:shf_application, :accepted, user: user1, company_number: co_branding_paid.company_number)
+        create(:shf_application, :accepted, user: user1)
       }
 
       let(:email_sent_branding_paid) { ShfApplicationMailer.app_approved(accepted_app_branding_paid) }

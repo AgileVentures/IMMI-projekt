@@ -235,20 +235,32 @@ end
 # Checks that a certain option is selected for a text field (from https://github.com/makandra/spreewald)
 Then "{capture_string} should{negate} have {capture_string} selected" do | select_list, negate, expected_string |
 
-  field = find_field(select_list)
+  try_again = true
 
-  field_value = case field.tag_name
-                  when 'select'
-                    options = field.all('option')
-                    selected_option = options.detect(&:selected?) || options.first
-                    if selected_option && selected_option.text.present?
-                      selected_option.text.strip
+  begin
+    field = find_field(select_list)
+
+    field_value = case field.tag_name
+                    when 'select'
+                      options = field.all('option')
+                      selected_option = options.detect(&:selected?) || options.first
+                      if selected_option && selected_option.text.present?
+                        selected_option.text.strip
+                      else
+                        ''
+                      end
                     else
-                      ''
-                    end
-                  else
-                    field.value
-                end
+                      field.value
+                  end
+  rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    if try_again
+      try_again = false
+      retry
+    end
+    raise
+  end
+
+  # https://www.seleniumhq.org/exceptions/stale_element_reference.jsp
 
   expect(field_value).send( (negate ? :not_to : :to),  eq(expected_string) )
 

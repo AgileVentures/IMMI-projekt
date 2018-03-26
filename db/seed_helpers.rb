@@ -8,6 +8,8 @@ module SeedHelper
 
   MA_ACCEPTED_STATE = :accepted unless defined?(MA_ACCEPTED_STATE)
 
+  MA_BEING_DESTROYED_STATE = :being_destroyed unless defined?(MA_BEING_DESTROYED_STATE)
+
   FIRST_MEMBERSHIP_NUMBER = 100 unless defined?(FIRST_MEMBERSHIP_NUMBER)
 
   class SeedAdminENVError < StandardError
@@ -21,7 +23,7 @@ module SeedHelper
   end
 
 
-  def get_company_number(r)
+  def get_company_number(r=Random.new)
     company_number = nil
     100.times do
       # loop until done or we find a valid Org number
@@ -29,7 +31,7 @@ module SeedHelper
       next unless org_number.valid?
 
       # keep going if number already used
-      unless ShfApplication.find_by_company_number(org_number.number)
+      unless Company.find_by_company_number(org_number.number)
         company_number = org_number.number
         break
       end
@@ -73,7 +75,9 @@ module SeedHelper
       state = MA_ACCEPTED_STATE
     else
       # set a random state (except accepted) for the rest of the applications
-      states = ShfApplication.aasm.states.map(&:name) - [MA_ACCEPTED_STATE]
+      states = ShfApplication.aasm.states.map(&:name) -
+               [MA_ACCEPTED_STATE, MA_BEING_DESTROYED_STATE]
+               
       state = FFaker.fetch_sample( states )
     end
 
@@ -82,18 +86,23 @@ module SeedHelper
   end
 
 
-  def make_n_save_app(user, state, co_number = get_company_number(Random.new))
+  def make_n_save_app(user, state, co_number = get_company_number)
+
     # create a basic app
-    ma = make_app(user, co_number )
+    ma = make_app(user)
+
+    ma.companies = [] # We validate that this association is present
 
     ma.state = state
 
-    if state == MA_ACCEPTED_STATE then
-      # make a full company object (instance) for the accepted membership application
-      ma.companies << make_new_company(ma.company_number)
+    # make a full company object (instance) for the membership application
+    ma.companies << make_new_company(co_number)
 
-      # do not send emails
-      user.grant_membership(send_email: false)
+    # do not send emails
+    user.grant_membership(send_email: false)
+
+    # Create payment records for accepted app and associated company
+    if ma.state == MA_ACCEPTED_STATE
 
       start_date, expire_date = User.next_membership_payment_dates(user.id)
 
@@ -153,16 +162,16 @@ module SeedHelper
   end
 
 
-  def make_app(u, company_number)
+  def make_app(user)
 
     r = Random.new
 
     business_categories = BusinessCategory.all.to_a
 
     # for 1 in 8 apps, use a different contact email than the user's email
-    ma = ShfApplication.new(contact_email: ( (Random.new.rand(1..8)) == 0 ? FFaker::InternetSE.disposable_email : u.email),
-                            company_number: company_number,
-                            user: u)
+    email = (Random.new.rand(1..8) == 0) ? FFaker::InternetSE.disposable_email : user.email
+
+    ma = ShfApplication.new(contact_email: email, user: user)
 
     # add 1 to 3 business_categories, picked at random from them
     cats = FFaker.fetch_sample(business_categories, { count: (r.rand(1..3)) })

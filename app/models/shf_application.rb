@@ -8,18 +8,15 @@ class ShfApplication < ApplicationRecord
   belongs_to :user
 
   #  A Company for a membership application (an instantiated one)
-  #  is created (instantiated) only when a membership is *accepted* --
+  #  is created (instantiated) when a embership application is created,
   #  unless the company already exists, in which case that existing instance
-  #  is associated with a membership application.
-  #  See the 'accept_membership' method below; note the .find_or_create method
-  #
-  #  Until a membership application is accepted, we just keep the
-  #  company_number.  That's what we'll later use to create (instantiate)
-  #  a company if/when needed.
-  #
-  has_and_belongs_to_many :companies
+  #  is associated with the new membership application.
+
+  has_many :company_applications
+  has_many :companies, through: :company_applications, dependent: :destroy
 
   has_and_belongs_to_many :business_categories
+
   has_many :uploaded_files
 
   belongs_to :waiting_reason, optional: true,
@@ -27,17 +24,23 @@ class ShfApplication < ApplicationRecord
              class_name: 'AdminOnly::MemberAppWaitingReason'
 
 
-  validates_presence_of :company_number,
-                        :contact_email,
-                        :state
+  validates_presence_of :contact_email, :state
 
-  validates_length_of :company_number, is: 10
+  validates_presence_of :companies
+
   validates_format_of :contact_email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
-  validates_uniqueness_of :user_id, scope: :company_number
-  validate :swedish_organisationsnummer
+
+  validates_uniqueness_of :user_id
 
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
+
   accepts_nested_attributes_for :user, update_only: true
+  # ^^ We are not explicitly using any user attributes in the app form.  However,
+  # we are delegating the "membership_number" getter and setter methods to
+  # User from ShfApplication ("membership_number" used to be an attribute of
+  # ShfApplication and was moved to User).
+  # The update to "membership_number" (via delegation) will not work without
+  # the above statement.
 
   scope :open, -> { where.not(state: [:accepted, :rejected]) }
 
@@ -60,6 +63,7 @@ class ShfApplication < ApplicationRecord
     state :ready_for_review
     state :accepted
     state :rejected
+    state :being_destroyed
 
 
     event :start_review do
@@ -80,11 +84,11 @@ class ShfApplication < ApplicationRecord
     end
 
     event :accept do
-      transitions from: [:under_review, :rejected], to: :accepted, after: :accept_membership
+      transitions from: [:under_review, :rejected], to: :accepted, after: :accept_application
     end
 
     event :reject do
-      transitions from: [:under_review, :accepted], to: :rejected, after: :reject_membership
+      transitions from: [:under_review, :accepted], to: :rejected, after: :reject_application
     end
 
   end
@@ -100,25 +104,16 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  def swedish_organisationsnummer
-    errors.add(:company_number, :invalid, company_number: self.company_number) unless errors.include?(:company_number) || Orgnummer.new(self.company_number).valid?
-  end
-
-
   def not_a_member?
     !user.member?
   end
 
 
-  def accept_membership
+  def accept_application
     begin
 
-      company = Company.find_or_create_by!(company_number: company_number) do |co|
-        co.email = contact_email
-      end
-
-      self.companies << company
-      self.save
+      # Default company email = user's membership contact email
+      companies.first.email = contact_email
 
       # email the applicant to let them know the application was approved:
       ShfApplicationMailer.app_approved(self).deliver_now
@@ -130,15 +125,20 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  def reject_membership
+  def reject_application
+
     user.update(membership_number: nil)
+
     destroy_uploaded_files
+
   end
 
 
   def before_destroy_checks
 
     destroy_uploaded_files
+
+    destroy_associated_companies
 
   end
 
@@ -158,6 +158,16 @@ class ShfApplication < ApplicationRecord
     end
 
     save
+  end
+
+  def destroy_associated_companies
+    # Destroy company if no other associated applications
+
+    self.update(state: :being_destroyed)
+
+    companies.all.each do |cmpy|
+      cmpy.destroy if cmpy.shf_applications.count == 1
+    end
   end
 
 

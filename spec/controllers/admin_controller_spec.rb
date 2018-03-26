@@ -150,10 +150,9 @@ RSpec.describe AdminController, type: :controller do
         let(:c1) { FactoryBot.create(:company) }
 
         let(:member1) { FactoryBot.create :shf_application,
-                                                      contact_email:  "u1@example.com",
-                                                      state:          :accepted,
-                                                      company_number: c1.company_number,
-                                                      user:           u1
+                                           contact_email:  "u1@example.com",
+                                           state:          :accepted,
+                                           user:           u1
         }
 
 
@@ -211,10 +210,9 @@ RSpec.describe AdminController, type: :controller do
         let(:c1) { FactoryBot.create(:company) }
 
         let(:member1) { FactoryBot.create :shf_application,
-                                                contact_email:  "u1@example.com",
-                                                state:          :accepted,
-                                                company_number: c1.company_number,
-                                                user:           u1
+                                           contact_email:  "u1@example.com",
+                                           state:          :accepted,
+                                           user:           u1
                       }
 
         let(:csv_response) { post :export_ansokan_csv

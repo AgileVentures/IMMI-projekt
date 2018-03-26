@@ -9,7 +9,7 @@
   %p.user-name= @shf_app.user.full_name
   %p.user-email= I18n.t('activerecord.attributes.shf_application.contact_email') + ': ' +@shf_app.contact_email
   %p.phone-number= I18n.t('activerecord.attributes.shf_application.phone_number') + ': ' + (@shf_app.phone_number.nil? ? '' : @shf_app.phone_number)
-  %p.company-number= I18n.t('activerecord.attributes.company.company_number') +': ' + @shf_app.company_number
+  %p.company-number= I18n.t('activerecord.attributes.company.company_number') +': ' + (@shf_app.companies.first&.company_number || '')
 
   %p.number-files-uploaded= '# ' + I18n.t('activerecord.attributes.shf_application.uploaded_files.many') + ': ' + @shf_app.uploaded_files.count.to_s
 

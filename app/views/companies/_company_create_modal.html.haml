@@ -1,0 +1,49 @@
+.modal.fade#company-create-modal(tabindex='-1' role='dialog')
+  .modal-dialog(role='document')
+    .modal-content
+
+      = form_for company, url: companies_path,
+                 method: :post, remote: true,
+                 html: { id: 'companyCreateForm' } do |f|
+
+        .modal-header
+          %button(type='button' class='close' data-dismiss='modal')
+            %span(aria-hidden='true') &times;
+          %h3.modal-title.text-center
+            = t('companies.new.title')
+
+        .modal-body
+          .container-fluid
+
+            #company-create-errors
+              != model_errors_helper(company)
+
+            .form-group
+              .row
+                .col-sm-5
+
+                  = f.label :company_number, "#{t('companies.show.company_number')}",
+                            class: 'required'
+
+                  - title = 'companies.form.org_nr_tooltip'
+                  %span.glyphicon.glyphicon-info-sign{ title: "#{t(title)}",
+                                                       data: {toggle: 'tooltip'} }
+
+                .col-sm-7
+                  = f.text_field :company_number, class: 'wpcf7-form-control', size: 10
+
+              .row
+                .col-sm-5
+
+                  = f.label :email, "#{t('companies.show.email')}", class: 'required'
+
+                .col-sm-7
+
+                  = f.text_field :email, class: 'wpcf7-form-control', size: 30
+
+        .modal-footer
+          = f.submit t('companies.create.create_submit'), class: "btn btn-primary",
+                     id: 'companyCreateSubmit'
+
+          %button(type='button' class='btn btn-default' data-dismiss='modal')
+            = t('cancel')

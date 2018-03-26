@@ -8,7 +8,8 @@
 
   %p
     = t('youre_active', scope: message_scope)
-    = link_to(company_url(@member.company),  company_url(@member.company), target: '_blank')
+    - company = @member.shf_application.companies.first
+    = link_to(company.name,  company_url(company), target: '_blank')
 
   %p
     = t('access_fb_group', scope: message_scope)
@@ -17,4 +18,3 @@
     %br
     = t('and_member_pages', scope: message_scope)
     = link_to(t('shf_medlemssystem_url'), t('shf_medlemssystem_url'), target: '_blank')
-
