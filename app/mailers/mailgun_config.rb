@@ -3,7 +3,7 @@ module MailgunConfig
 
 
   def mailgun_client
-    Mailgun::Client.new(ENV['MAILGUN_API_KEY'])
+    Mailgun::Client.new(ENV['SHF_MAILGUN_API_KEY'])
   end
 
 
@@ -16,7 +16,7 @@ module MailgunConfig
 
   # the specific SHF domain for the Mailgun account (it's not the sandbox domain)
   def domain
-    ENV['MAILGUN_DOMAIN']
+    ENV['SHF_MAILGUN_DOMAIN']
   end
 
 end

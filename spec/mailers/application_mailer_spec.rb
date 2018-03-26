@@ -67,14 +67,14 @@ RSpec.describe ApplicationMailer, type: :mailer do
     it 'can be nil (which would then rightly mean an error response from Mailgun)' do
 
       stub_const('ENV', ENV.to_hash)
-      ENV.delete('MAILGUN_DOMAIN')
+      ENV.delete('SHF_MAILGUN_DOMAIN')
 
       expect(subject.domain).to be_nil
     end
 
 
     it 'can be some value (not nil)' do
-      stub_const('ENV', ENV.to_hash.merge('MAILGUN_DOMAIN' => 'blorf.com'))
+      stub_const('ENV', ENV.to_hash.merge('SHF_MAILGUN_DOMAIN' => 'blorf.com'))
       expect(subject.domain).to eq 'blorf.com'
     end
 

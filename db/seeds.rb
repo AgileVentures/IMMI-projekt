@@ -19,7 +19,7 @@ SEED_USERS = 100 unless defined?(SEED_USERS)
 DEFAULT_PASSWORD = 'whatever' unless defined?(DEFAULT_PASSWORD)
 
 unless Rails.env.development? || Rails.env.production? ||
-       Rails.env.test?        || ENV['HEROKU_STAGING']
+       Rails.env.test?        || ENV['SHF_HEROKU_STAGING']
 
   puts 'Unknown Rails environment !!'
   abort SEED_STOP_MSG
@@ -62,7 +62,7 @@ else
               first_name: 'SHF', last_name: 'Admin')
 end
 
-if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
+if Rails.env.development? || Rails.env.staging? || ENV['SHF_HEROKU_STAGING']
 
   puts 'Creating additional users ...'
 
