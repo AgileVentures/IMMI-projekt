@@ -10,20 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180219132317) do
+ActiveRecord::Schema.define(version: 20180116141245) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "addresses", force: :cascade do |t|
+  create_table "addresses", id: :serial, force: :cascade do |t|
     t.string "street_address"
     t.string "post_code"
     t.string "city"
     t.string "country", default: "Sverige", null: false
-    t.bigint "region_id"
+    t.integer "region_id"
     t.string "addressable_type"
-    t.bigint "addressable_id"
-    t.bigint "kommun_id"
+    t.integer "addressable_id"
+    t.integer "kommun_id"
     t.float "latitude"
     t.float "longitude"
     t.string "visibility", default: "street_address"
@@ -47,21 +47,21 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.datetime "shf_logo_updated_at"
   end
 
-  create_table "business_categories", force: :cascade do |t|
+  create_table "business_categories", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "business_categories_shf_applications", force: :cascade do |t|
-    t.bigint "shf_application_id"
-    t.bigint "business_category_id"
+  create_table "business_categories_shf_applications", id: :serial, force: :cascade do |t|
+    t.integer "shf_application_id"
+    t.integer "business_category_id"
     t.index ["business_category_id"], name: "index_on_categories"
     t.index ["shf_application_id"], name: "index_on_applications"
   end
 
-  create_table "ckeditor_assets", force: :cascade do |t|
+  create_table "ckeditor_assets", id: :serial, force: :cascade do |t|
     t.string "data_file_name", null: false
     t.string "data_content_type"
     t.integer "data_file_size"
@@ -71,12 +71,12 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.integer "height"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "company_id"
+    t.integer "company_id"
     t.index ["company_id"], name: "index_ckeditor_assets_on_company_id"
     t.index ["type"], name: "index_ckeditor_assets_on_type"
   end
 
-  create_table "companies", force: :cascade do |t|
+  create_table "companies", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "company_number"
     t.string "phone_number"
@@ -88,22 +88,20 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
   end
 
-  create_table "company_applications", force: :cascade do |t|
-    t.bigint "company_id", null: false
+  create_table "companies_shf_applications", id: false, force: :cascade do |t|
     t.bigint "shf_application_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["company_id"], name: "index_company_applications_on_company_id"
-    t.index ["shf_application_id"], name: "index_company_applications_on_shf_application_id"
+    t.bigint "company_id", null: false
+    t.index ["company_id", "shf_application_id"], name: "index_company_application"
+    t.index ["shf_application_id", "company_id"], name: "index_application_company"
   end
 
-  create_table "kommuns", force: :cascade do |t|
+  create_table "kommuns", id: :serial, force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "member_app_waiting_reasons", force: :cascade, comment: "reasons why SHF is waiting for more info from applicant. Add more columns when more locales needed." do |t|
+  create_table "member_app_waiting_reasons", id: :serial, force: :cascade, comment: "reasons why SHF is waiting for more info from applicant. Add more columns when more locales needed." do |t|
     t.string "name_sv", comment: "name of the reason in svenska/Swedish"
     t.string "description_sv", comment: "description for the reason in svenska/Swedish"
     t.string "name_en", comment: "name of the reason in engelsk/English"
@@ -113,7 +111,7 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "member_pages", force: :cascade do |t|
+  create_table "member_pages", id: :serial, force: :cascade do |t|
     t.string "filename", null: false
     t.string "title"
     t.datetime "created_at", null: false
@@ -135,28 +133,31 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.index ["user_id"], name: "index_payments_on_user_id"
   end
 
-  create_table "regions", force: :cascade do |t|
+  create_table "regions", id: :serial, force: :cascade do |t|
     t.string "name"
     t.string "code"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "shf_applications", force: :cascade do |t|
+  create_table "shf_applications", id: :serial, force: :cascade do |t|
+    t.string "company_number"
     t.string "phone_number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.bigint "user_id"
+    t.integer "user_id"
     t.string "contact_email"
+    t.integer "company_id"
     t.string "state", default: "new"
     t.integer "member_app_waiting_reasons_id"
     t.string "custom_reason_text"
+    t.index ["company_id"], name: "index_shf_applications_on_company_id"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"
   end
 
-  create_table "shf_documents", force: :cascade do |t|
-    t.bigint "uploader_id", null: false
+  create_table "shf_documents", id: :serial, force: :cascade do |t|
+    t.integer "uploader_id", null: false
     t.string "title"
     t.text "description"
     t.datetime "created_at", null: false
@@ -168,18 +169,18 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.index ["uploader_id"], name: "index_shf_documents_on_uploader_id"
   end
 
-  create_table "uploaded_files", force: :cascade do |t|
+  create_table "uploaded_files", id: :serial, force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "actual_file_file_name"
     t.string "actual_file_content_type"
     t.integer "actual_file_file_size"
     t.datetime "actual_file_updated_at"
-    t.bigint "shf_application_id"
+    t.integer "shf_application_id"
     t.index ["shf_application_id"], name: "index_uploaded_files_on_shf_application_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", id: :serial, force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
@@ -209,8 +210,6 @@ ActiveRecord::Schema.define(version: 20180219132317) do
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
-  add_foreign_key "company_applications", "companies"
-  add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "payments", "companies"
   add_foreign_key "payments", "users"
   add_foreign_key "shf_applications", "member_app_waiting_reasons", column: "member_app_waiting_reasons_id"
