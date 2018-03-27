@@ -1,9 +1,9 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
-require_relative(File.join( SERVICES_PATH, 'hips'))
 
-
-RSpec.describe HipsService do
-  let(:nil_urls) { {success: nil, error: nil, webhook: nil} }
+describe HipsService do
+  let(:nil_urls) { { success: nil, error: nil, webhook: nil } }
 
   let(:invalid_type) do
     payment_data = { id: 1, type: 'invalid', currency: 'SEK' }
@@ -31,12 +31,12 @@ RSpec.describe HipsService do
 
   let(:token_bad_issuer) do
     file = File.new('spec/fixtures/hips_service/token_bad_issuer.yaml')
-    YAML.load(file.read)
+    YAML.safe_load(file.read)
   end
 
   let(:token_bad_algo) do
     file = File.new('spec/fixtures/hips_service/token_bad_algo.yaml')
-    YAML.load(file.read)
+    YAML.safe_load(file.read)
   end
 
   describe '.create_order', :vcr do

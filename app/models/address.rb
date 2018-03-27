@@ -13,11 +13,8 @@ class Address < ApplicationRecord
 
   belongs_to :kommun, optional: true
 
-  validates_presence_of :addressable
-  validates_presence_of :country
-  validates_presence_of :street_address
-  validates_presence_of :post_code
-  validates_presence_of :city
+  validates :addressable, :country, :street_address, :post_code, :city,
+            presence: true
 
   # Business rule: addressable (business, member) can have only one mailing address
   validates_uniqueness_of :mail, scope: :addressable_id,

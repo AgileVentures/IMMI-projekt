@@ -1,15 +1,12 @@
-require 'spec_helper'
-require_relative(File.join( SERVICES_PATH, 'input_sanitizer'))
+# frozen_string_literal: true
 
+require 'rails_helper'
 
-RSpec.describe InputSanitizer  do
-
+describe InputSanitizer do
   context 'URL sanitizer' do
-
     it 'handles nil' do
       expect(InputSanitizer.sanitize_url(nil)).to eq ''
     end
-
 
     it 'removes javascript' do
       expect(InputSanitizer.sanitize_url('blorfo///"javascript//"')).to eq 'blorfo///"//"'
@@ -23,14 +20,12 @@ RSpec.describe InputSanitizer  do
       expect(InputSanitizer.sanitize_url('<IMG SRC="javascript:alert(\'XSS\');">')).to eq ''
     end
 
-
     it 'uses remove tags and javascript' do
       expect(InputSanitizer.sanitize_url('<STYLE>@import"javascript:alert(\'XSS\')";</STYLE>')).to eq '@import":alert(\'XSS\')";'
     end
   end
 
   context 'HTML Sanitizer' do
-
     it 'handles nil and empty string' do
       expect(InputSanitizer.sanitize_html(nil)).to eq ''
       expect(InputSanitizer.sanitize_html('')).to eq ''
@@ -49,10 +44,10 @@ RSpec.describe InputSanitizer  do
 
     it 'removes javascript' do
       str = "<img src=javascript:alert('Hello')>"
-      expect(InputSanitizer.sanitize_html(str)).to eq "<img>"
+      expect(InputSanitizer.sanitize_html(str)).to eq '<img>'
 
       str = %{<table background="javascript:alert('Hello')">}
-      expect(InputSanitizer.sanitize_html(str)).to eq "<table></table>"
+      expect(InputSanitizer.sanitize_html(str)).to eq '<table></table>'
     end
 
     it 'removes other unwanted tags' do
@@ -87,6 +82,4 @@ RSpec.describe InputSanitizer  do
       expect(InputSanitizer.sanitize_html(str)).to eq 'Please click me'
     end
   end
-
-
 end

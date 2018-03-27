@@ -97,6 +97,18 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.index ["shf_application_id"], name: "index_company_applications_on_shf_application_id"
   end
 
+  create_table "events", force: :cascade do |t|
+    t.decimal "fee", precision: 5, scale: 2
+    t.date "start_date"
+    t.text "description"
+    t.string "sing_up_url"
+    t.integer "event_type"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_events_on_company_id"
+  end
+
   create_table "kommuns", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -151,6 +163,7 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.string "state", default: "new"
     t.integer "member_app_waiting_reasons_id"
     t.string "custom_reason_text"
+    t.index ["company_id"], name: "index_shf_applications_on_company_id"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"
   end

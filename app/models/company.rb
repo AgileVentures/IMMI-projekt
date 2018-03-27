@@ -21,6 +21,7 @@ class Company < ApplicationRecord
   has_many :shf_applications, through: :company_applications, dependent: :destroy
 
   has_many :users, through: :shf_applications
+  has_many :events
 
   has_many :payments, dependent: :destroy
   accepts_nested_attributes_for :payments
