@@ -2,7 +2,7 @@ module AdminOnly
 
   class DashboardController < ApplicationController
 
-    before_action :authorize_dashboard
+    before_action :authorize_admin
     before_action :set_data_gatherer
 
 
@@ -10,18 +10,7 @@ module AdminOnly
     end
 
 
-    def show
-    end
-
-
-    def show_recent_activity
-      respond_to do |format|
-        format.js
-      end
-    end
-
-
-    # WIP to change the timeframe for "recent" data.  See commented out .row in the _recent_activity partial
+    # WIP to change the timeframe for "recent" data.
     def update_timeframe
       # params['data_gatherer']['timeframe']
       if request.xhr?
@@ -47,20 +36,9 @@ module AdminOnly
     end
 
 
-    def self.policy_class
-      AdminOnly::DashboardPolicy
-    end
-
-
     # manually set and check the pundit policy because the default Pundit policy finder chokes on this (we do not have a 'Dashboard' class)
-    def authorize_dashboard
-      query ||= params[:action].to_s + "?"
-
-      policy = AdminOnly::DashboardPolicy.new(current_user, nil)
-      unless policy.public_send(query)
-        raise NotAuthorizedError, query: query, record: current_user, policy: policy
-      end
-
+    def authorize_admin
+      AdminOnly::DashboardPolicy.new(current_user).authorized?
     end
 
 
