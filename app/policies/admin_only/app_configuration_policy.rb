@@ -1,6 +1,6 @@
 module AdminOnly
 
-  class AppConfigurationPolicy < AdminPolicy
+  class AppConfigurationPolicy < AdminOnlyPolicy
   end
 
 end
