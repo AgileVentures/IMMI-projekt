@@ -1,4 +1,4 @@
-FactoryGirl.define do
+FactoryBot.define do
   sequence(:email) { |num| "email_#{num}@random.com" }
 
   factory :user do
@@ -10,10 +10,6 @@ FactoryGirl.define do
     member false
     member_photo do
       File.new("#{Rails.root}/spec/fixtures/member_photos/photo_unavailable.png")
-    end
-
-    transient do
-      company_number 5712213304
     end
 
     factory :user_without_first_and_lastname do
@@ -28,7 +24,7 @@ FactoryGirl.define do
     factory :user_with_membership_app do
 
       after(:create) do |user, evaluator|
-        create_list(:shf_application, 1, user: user, contact_email: evaluator.email, company_number: evaluator.company_number)
+        create_list(:shf_application, 1, user: user, contact_email: evaluator.email)
       end
     end
 
@@ -42,8 +38,7 @@ FactoryGirl.define do
 
       after(:create) do |user, evaluator|
         create_list(:shf_application, 1, :accepted, user: user,
-                    contact_email: evaluator.email,
-                    company_number:  evaluator.company_number)
+                    contact_email: evaluator.email)
       end
     end
   end

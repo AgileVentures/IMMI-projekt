@@ -42,6 +42,7 @@ en:
   application: &application Application
   user_activity: User Activity
   none: &none None
+  name_missing: Name Missing
 
   time_ago: '%{amount_of_time} ago'
 
@@ -169,6 +170,7 @@ en:
         state/ready_for_review: &status_ready_for_review Ready for review
         state/accepted: &status_accepted Approved
         state/rejected: &status_rejected Rejected
+        state/being_destroyed: &status_being_destroyed Being Destroyed
 
       member:
         true: Member
@@ -256,6 +258,8 @@ en:
           attributes:
             company_number:
               invalid: "%{company_number} is not a valid Swedish company number"
+            companies:
+              blank: '- Specify an existing company number (or create new company)'
 
 
       messages:
@@ -289,7 +293,8 @@ en:
       last_name: *last_name
       phone_number: Phone number
       company_number: *company_number
-      org_nr_no_hyphens: &orgnr_no_hyphens  "Numbers only (no hyphens)"
+      enter_company_number: Enter your company number (or create a new company
+                             if not yet in the system)
       contact_email: *contact_email
 
       can_be_same_email: Can be the same that you logged in with, but need not be.
@@ -312,12 +317,12 @@ en:
     create:
       success: "Thank You. Your membership application has been submitted. You should receive an email shortly at %{email_address} with information about what to expect next."
       error: The was a problem creating and submitting your application.
+      success_with_file_problem: YOUR APPLICATION WAS CREATED, BUT PLEASE NOTE PROBLEM(S) ABOVE
 
     edit:
       title: Edit Membership Application
       is_ready_for_review: Is Ready for Review
       submit_button_label: *save
-      org_nr_no_hyphens: *orgnr_no_hyphens
 
     update:
       success: The application was updated.
@@ -330,7 +335,6 @@ en:
       last_name: *last_name
       phone_number: Phone number
       company_number: *company_number
-      org_nr_no_hyphens: *orgnr_no_hyphens
       contact_email: *contact_email
       app_status: Application status
       change_status: Change the status
@@ -493,6 +497,7 @@ en:
     create:
       error: One or more problems prevented the company from being created.
       success: The company was created successfully.
+      create_submit: Create Company
     edit:
       title: 'Editing: %{company_name}'
     update:
@@ -664,6 +669,8 @@ en:
       membership_expire_date_tooltip: Membership expires after this date
       proof_of_membership: Proof of Membership
       proof_of_membership_describe: This image is your proof of membership in SHF.
+      proof_of_membership_photo_needed: 'If you see "Photo Unavailable" then please
+                                         upload a photo of yourself here: '
       proof_of_membership_image: You can download this image and use it as you want,
                                  including on your website, or printed out
                                  and displayed at your place of business.

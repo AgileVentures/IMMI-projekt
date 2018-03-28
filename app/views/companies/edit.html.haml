@@ -3,7 +3,8 @@
   .post-title-divider
     %span
   - unless assocation_empty?(@all_business_categories)
-    = render 'business_categories/as_list'
+    = render 'business_categories/as_list',
+        categories_names: @company.categories_names
 .entry-content.wpcf7
   = render 'form'
   .center

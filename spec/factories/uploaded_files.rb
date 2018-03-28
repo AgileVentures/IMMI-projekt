@@ -1,7 +1,4 @@
-FactoryGirl.define do
-
-  # NOTE: This will create a ShfApplication if one is not provided
-  #
+FactoryBot.define do
   factory :uploaded_file do
 
     shf_application

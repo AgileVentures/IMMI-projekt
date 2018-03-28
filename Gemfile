@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.4.2'
+ruby '2.4.3'
 gem 'dotenv-rails'
 gem 'rails', '5.1'
 gem 'pg', '~> 0.18'
@@ -78,7 +78,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'pundit-matchers'
-  gem 'factory_girl_rails'
+  gem 'factory_bot_rails'
   gem 'pry'
   gem 'pry-byebug'
   gem 'cucumber-rails', require: false
@@ -91,7 +91,7 @@ group :development, :test do
   gem 'better_errors'
   gem 'binding_of_caller'  # needed to make better_errors work well
 
-  gem 'i18n-tasks'
+  gem 'i18n-tasks', '~> 0.9.21'
 
 end
 
@@ -111,7 +111,8 @@ group :development do
   gem 'rb-readline'
 
   gem 'rubycritic'   # code quality analysis tools and reports
-
+  gem 'rubocop', require: false
+  gem 'rack-mini-profiler', require: false
 end
 
 group :test do

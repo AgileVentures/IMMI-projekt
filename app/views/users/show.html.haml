@@ -52,8 +52,10 @@
                   %span.yes= i18n_state
                 - else
                   %span.maybe= i18n_state
-              %td= link_to(app.company_number, shf_application_path(app))
-              %td= app.company&.name
+              - company = app.companies.first
+              - if company
+                %td= link_to(company.company_number, shf_application_path(app))
+                %td= company&.name
 
   .col-sm-12
 
@@ -122,6 +124,10 @@
         &nbsp;
         = link_to(t('.show_image'), proof_of_membership_path(@user),
                    class: 'btn btn-warning btn-xs')
+        %br
+        %br
+        = t('.proof_of_membership_photo_needed')
+        = link_to(t('devise.registrations.edit.title'), edit_user_registration_path)
 
 
 = render partial: 'edit_status_modal', locals: { user: @user }

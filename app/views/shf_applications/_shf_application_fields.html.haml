@@ -49,16 +49,26 @@
       = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
       = f.text_field :membership_number, class: 'wpcf7-form-control'
 
-    = f.fields_for :user do |ff|
-      = ff.label :first_name, t('shf_applications.show.first_name'), class: 'required'
-      = ff.text_field :first_name, class: 'wpcf7-form-control'
-
-      = ff.label :last_name, t('shf_applications.show.last_name'), class: 'required'
-      = ff.text_field :last_name, class: 'wpcf7-form-control'
-
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
-    %p.field-instruction= t('shf_applications.show.org_nr_no_hyphens')
-    = f.number_field :company_number, class: 'wpcf7-form-control'
+
+    %p.field-instruction= t('shf_applications.new.enter_company_number')
+
+    .div
+
+      #company-number-entry
+        = company_number_entry_field(company.company_number)
+
+      .new-company-link
+
+        -# NOTE: Capybara cannot find link without 'href' attribute
+        %a.btn.btn-warning.btn-sm{ href: '#', 'data-toggle': 'modal',
+                                   'data-target': '#company-create-modal' }
+
+          = t('companies.new.title')
+
+    .clearfix
+
+    %br
 
     = f.label :contact_email, t('shf_applications.show.contact_email'), class: 'required'
     %p.field-instruction= t('shf_applications.new.can_be_same_email')

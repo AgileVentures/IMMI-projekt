@@ -61,73 +61,100 @@ Feature: Visitor sees all companies
       | Company02    | Uppsala    | Aneby   |
 
     And the following users exists
-      | email        | admin | member |
-      | a@mutts.com  |       | true   |
-      | b@mutts.com  |       | false  |
-      | admin@shf.se | true  |        |
+      | email         | admin | member |
+      | u1@mutts.com  |       | true   |
+      | u2@mutts.com  |       | true   |
+      | u3@mutts.com  |       | true   |
+      | u4@mutts.com  |       | true   |
+      | u5@mutts.com  |       | true   |
+      | u6@mutts.com  |       | true   |
+      | u7@mutts.com  |       | true   |
+      | u8@mutts.com  |       | true   |
+      | u9@mutts.com  |       | true   |
+      | u10@mutts.com |       | true   |
+      | u11@mutts.com |       | true   |
+      | u12@mutts.com |       | true   |
+      | u13@mutts.com |       | true   |
+      | u14@mutts.com |       | true   |
+      | u15@mutts.com |       | true   |
+      | u16@mutts.com |       | true   |
+      | u17@mutts.com |       | true   |
+      | u18@mutts.com |       | true   |
+      | u19@mutts.com |       | true   |
+      | u20@mutts.com |       | true   |
+      | u21@mutts.com |       | true   |
+      | u22@mutts.com |       | true   |
+      | u23@mutts.com |       | true   |
+      | u24@mutts.com |       | true   |
+      | u25@mutts.com |       | true   |
+      | u26@mutts.com |       | true   |
+      | u27@mutts.com |       | true   |
+      | u29@mutts.com |       | true   |
+      | b@mutts.com   |       | false  |
+      | admin@shf.se  | true  |        |
 
     And the following payments exist
       | user_email  | start_date | expire_date | payment_type | status | hips_id | company_name |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company01    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company02    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company03    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company04    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company05    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company06    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company07    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company08    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company09    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company10    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company11    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company12    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company13    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company14    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company15    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company16    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company17    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company18    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company19    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company20    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company21    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company22    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company23    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company24    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company25    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company26    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company27    |
-      | a@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company28    |
+      | u1@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company01    |
+      | u2@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company02    |
+      | u3@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company03    |
+      | u4@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company04    |
+      | u5@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company05    |
+      | u6@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company06    |
+      | u7@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company07    |
+      | u8@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company08    |
+      | u9@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company09    |
+      | u10@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company10    |
+      | u11@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company11    |
+      | u12@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company12    |
+      | u13@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company13    |
+      | u14@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company14    |
+      | u15@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company15    |
+      | u16@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company16    |
+      | u17@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company17    |
+      | u18@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company18    |
+      | u19@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company19    |
+      | u20@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company20    |
+      | u21@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company21    |
+      | u22@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company22    |
+      | u23@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company23    |
+      | u24@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company24    |
+      | u25@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company25    |
+      | u26@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company26    |
+      | u27@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company27    |
+      | u29@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company28    |
 
     And the following applications exist:
-      | user_email  | company_name | state    | categories |
-      | a@mutts.com | Company01    | accepted | Groomer    |
-      | a@mutts.com | Company02    | accepted | Groomer    |
-      | a@mutts.com | Company03    | accepted | Groomer    |
-      | a@mutts.com | Company04    | accepted | Groomer    |
-      | a@mutts.com | Company05    | accepted | Groomer    |
-      | a@mutts.com | Company06    | accepted | Groomer    |
-      | a@mutts.com | Company07    | accepted | Groomer    |
-      | a@mutts.com | Company08    | accepted | Groomer    |
-      | a@mutts.com | Company09    | accepted | Groomer    |
-      | a@mutts.com | Company10    | accepted | Groomer    |
-      | a@mutts.com | Company11    | accepted | Groomer    |
-      | a@mutts.com | Company12    | accepted | Groomer    |
-      | a@mutts.com | Company13    | accepted | Groomer    |
-      | a@mutts.com | Company14    | accepted | Groomer    |
-      | a@mutts.com | Company15    | accepted | Groomer    |
-      | a@mutts.com | Company16    | accepted | Groomer    |
-      | a@mutts.com | Company17    | accepted | Groomer    |
-      | a@mutts.com | Company18    | accepted | Groomer    |
-      | a@mutts.com | Company19    | accepted | Groomer    |
-      | a@mutts.com | Company20    | accepted | Groomer    |
-      | a@mutts.com | Company21    | accepted | Groomer    |
-      | a@mutts.com | Company22    | accepted | Groomer    |
-      | a@mutts.com | Company23    | accepted | Groomer    |
-      | a@mutts.com | Company24    | accepted | Groomer    |
-      | a@mutts.com | Company25    | accepted | Groomer    |
-      | a@mutts.com | Company26    | accepted | Groomer    |
-      | a@mutts.com | Company27    | accepted | Groomer    |
-      | b@mutts.com | Company28    | accepted | Groomer    |
-      | a@mutts.com | Company29    | accepted | Groomer    |
+      | user_email    | company_name | state    | categories |
+      | u1@mutts.com  | Company01    | accepted | Groomer    |
+      | u2@mutts.com  | Company02    | accepted | Groomer    |
+      | u3@mutts.com  | Company03    | accepted | Groomer    |
+      | u4@mutts.com  | Company04    | accepted | Groomer    |
+      | u5@mutts.com  | Company05    | accepted | Groomer    |
+      | u6@mutts.com  | Company06    | accepted | Groomer    |
+      | u7@mutts.com  | Company07    | accepted | Groomer    |
+      | u8@mutts.com  | Company08    | accepted | Groomer    |
+      | u9@mutts.com  | Company09    | accepted | Groomer    |
+      | u10@mutts.com | Company10    | accepted | Groomer    |
+      | u11@mutts.com | Company11    | accepted | Groomer    |
+      | u12@mutts.com | Company12    | accepted | Groomer    |
+      | u13@mutts.com | Company13    | accepted | Groomer    |
+      | u14@mutts.com | Company14    | accepted | Groomer    |
+      | u15@mutts.com | Company15    | accepted | Groomer    |
+      | u16@mutts.com | Company16    | accepted | Groomer    |
+      | u17@mutts.com | Company17    | accepted | Groomer    |
+      | u18@mutts.com | Company18    | accepted | Groomer    |
+      | u19@mutts.com | Company19    | accepted | Groomer    |
+      | u20@mutts.com | Company20    | accepted | Groomer    |
+      | u21@mutts.com | Company21    | accepted | Groomer    |
+      | u22@mutts.com | Company22    | accepted | Groomer    |
+      | u23@mutts.com | Company23    | accepted | Groomer    |
+      | u24@mutts.com | Company24    | accepted | Groomer    |
+      | u25@mutts.com | Company25    | accepted | Groomer    |
+      | u26@mutts.com | Company26    | accepted | Groomer    |
+      | u27@mutts.com | Company27    | accepted | Groomer    |
+      | b@mutts.com   | Company28    | accepted | Groomer    |
+      | u29@mutts.com | Company29    | accepted | Groomer    |
 
   @selenium @time_adjust
   Scenario: Visitor sees all companies
@@ -161,7 +188,7 @@ Feature: Visitor sees all companies
   @time_adjust
   Scenario: User sees all the companies
     Given the date is set to "2017-10-01"
-    Given I am logged in as "a@mutts.com"
+    Given I am logged in as "u1@mutts.com"
     And I am on the "landing" page
     Then I should see t("companies.index.title")
     And I should see "Company02"

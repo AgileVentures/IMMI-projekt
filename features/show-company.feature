@@ -34,16 +34,18 @@ Feature: As a visitor,
       | Company8 | 7736362901     | cmpy8@mail.com | Stockholm    | Alingsås | street_address |
 
     And the following users exists
-      | email               | admin | member |
-      | emma@happymutts.com |       | true   |
-      | a@happymutts.com    |       | true   |
-      | b@happymutts.com    |       | false  |
-      | member@cmpy6.com    |       | true   |
-      | admin@shf.se        | true  | false  |
+      | email           | admin | member |
+      | user1@mutts.com |       | true   |
+      | user2@mutts.com |       | true   |
+      | user3@mutts.com |       | true   |
+      | user4@mutts.com |       | true   |
+      | user5@mutts.com |       | true   |
+      | admin@shf.se    | true  | false  |
 
     Given the following payments exist
-      | user_email       | start_date | expire_date | payment_type | status | hips_id |
-      | member@cmpy6.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+      | user_email      | start_date | expire_date | payment_type | status | hips_id |
+      | user2@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+      | user3@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
 
     And the following business categories exist
@@ -56,16 +58,12 @@ Feature: As a visitor,
       | JustForFun   |
 
     And the following applications exist:
-      | user_email          | company_number | categories              | state    |
-      | emma@happymutts.com | 5560360793     | Groomer, JustForFun     | accepted |
-      | a@happymutts.com    | 2120000142     | Groomer, Trainer, Rehab | accepted |
-      | emma@happymutts.com | 2120000142     | Psychologist, Groomer   | accepted |
-      | a@happymutts.com    | 6613265393     | Groomer                 | accepted |
-      | a@happymutts.com    | 6222279082     | Groomer                 | accepted |
-      | a@happymutts.com    | 8025085252     | Groomer                 | accepted |
-      | member@cmpy6.com    | 6914762726     | Groomer                 | accepted |
-      | a@happymutts.com    | 7661057765     | Groomer                 | rejected |
-      | b@happymutts.com    | 7736362901     | Groomer                 | accepted |
+      | user_email      | company_number | categories              | state    |
+      | user1@mutts.com | 5560360793     | Groomer, JustForFun     | accepted |
+      | user2@mutts.com | 2120000142     | Groomer, Trainer, Rehab | accepted |
+      | user3@mutts.com | 6914762726     | Psychologist, Groomer   | accepted |
+      | user4@mutts.com | 6613265393     | Groomer                 | accepted |
+      | user5@mutts.com | 2120000142     | Psychologist            | accepted |
 
     And the following payments exist
       | user_email   | start_date | expire_date | payment_type | status | hips_id | company_number |
@@ -107,8 +105,8 @@ Feature: As a visitor,
     And I should see "Harplinge"
     And I should see "http://www.example.com"
 
-  Scenario: Show company details to member of the company, but don't show the org nr.
-    Given I am logged in as "emma@happymutts.com"
+  Scenario: Show company details to member of the company.
+    Given I am logged in as "user1@mutts.com"
     And I am the page for company number "5560360793"
     Then I should not see "5560360793"
     And I should see "Company1"
@@ -160,7 +158,7 @@ Feature: As a visitor,
   @time_adjust
   Scenario: Show company address to member regardless of visibility setting
     Given the date is set to "2017-10-01"
-    Given I am logged in as "member@cmpy6.com"
+    Given I am logged in as "user3@mutts.com"
     And I am the page for company number "6914762726"
     And I should see "Hundforetagarevägen 1"
     And I should see "310 40"

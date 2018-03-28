@@ -10,8 +10,6 @@ class User < ApplicationRecord
 
   has_one :shf_application
 
-  has_many :companies, through: :shf_application
-
   has_many :payments
   accepts_nested_attributes_for :payments
 
@@ -22,8 +20,19 @@ class User < ApplicationRecord
                                     content_type:  /\Aimage\/.*(jpg|jpeg|png)\z/
   validates_attachment_file_name :member_photo, matches: [/png\z/, /jpe?g\z/, /PNG\z/,/JPE?G\z/]
 
-  validates_presence_of :first_name, :last_name, unless: Proc.new {!new_record? && !(first_name_changed? || last_name_changed?)}
-  validates_uniqueness_of :membership_number, allow_blank: true
+  validates :first_name, :last_name, presence: true, unless: :updating_without_name_changes
+
+  def updating_without_name_changes
+    # Not a new record and not saving changes to either first or last name
+
+    # https://github.com/rails/rails/pull/25337#issuecomment-225166796
+    # ^^ Useful background
+
+    !new_record? && !(will_save_change_to_attribute?('first_name') ||
+                      will_save_change_to_attribute?('last_name'))
+  end
+
+  validates :membership_number, uniqueness: true, allow_blank: true
 
   scope :admins, -> { where(admin: true) }
 
@@ -65,7 +74,7 @@ class User < ApplicationRecord
 
 
   def has_shf_application?
-    ! shf_application.nil? && shf_application.valid?
+    shf_application&.valid?
   end
 
   def check_member_status
@@ -78,18 +87,16 @@ class User < ApplicationRecord
 
 
   def has_company?
-    companies.any?
+    shf_application&.companies&.any?
   end
 
-
-  def company
-    companies.last
-  end
 
   def companies
     return Company.all if admin?
 
-    super
+    return [] unless has_company?
+
+    shf_application.companies
   end
 
 
@@ -99,7 +106,7 @@ class User < ApplicationRecord
 
 
   def in_company_numbered?(company_num)
-    member? && companies.where(company_number: company_num).any?
+    member? && shf_application&.companies&.where(company_number: company_num)&.any?
   end
 
 

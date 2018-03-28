@@ -37,9 +37,9 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
   describe 'returns a list of reasons_for_waiting for the right locale' do
 
     before(:each) do
-      FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv1', name_en: 'name_en1', description_sv: 'desc_sv1', description_en: 'desc_en1')
-      FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv2', name_en: 'name_en2', description_sv: 'desc_sv2', description_en: 'desc_en2')
-      FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv3', name_en: 'name_en3', description_sv: 'desc_sv3', description_en: 'desc_en3')
+      FactoryBot.create(:member_app_waiting_reason, name_sv: 'name_sv1', name_en: 'name_en1', description_sv: 'desc_sv1', description_en: 'desc_en1')
+      FactoryBot.create(:member_app_waiting_reason, name_sv: 'name_sv2', name_en: 'name_en2', description_sv: 'desc_sv2', description_en: 'desc_en2')
+      FactoryBot.create(:member_app_waiting_reason, name_sv: 'name_sv3', name_en: 'name_en3', description_sv: 'desc_sv3', description_en: 'desc_en3')
     end
 
     let(:reason1) { AdminOnly::MemberAppWaitingReason.find_by_name_sv('name_sv1') }
@@ -168,8 +168,8 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
 
     it 'other reason is at the end of the list' do
 
-      FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv1', name_en: 'name_en1', description_sv: 'desc_sv1', description_en: 'desc_en1')
-      FactoryGirl.create(:member_app_waiting_reason, name_sv: 'name_sv2', name_en: 'name_en2', description_sv: 'desc_sv2', description_en: 'desc_en2')
+      FactoryBot.create(:member_app_waiting_reason, name_sv: 'name_sv1', name_en: 'name_en1', description_sv: 'desc_sv1', description_en: 'desc_en1')
+      FactoryBot.create(:member_app_waiting_reason, name_sv: 'name_sv2', name_en: 'name_en2', description_sv: 'desc_sv2', description_en: 'desc_en2')
 
       last_r = helper.reasons_collection(-999, 'other').last
       expect(last_r.name_sv).to eq 'other'

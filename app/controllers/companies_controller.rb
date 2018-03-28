@@ -17,7 +17,6 @@ class CompaniesController < ApplicationController
     # only select companies that are 'complete'; see the Company.complete scope
 
     @all_companies = @search_params.result(distinct: true)
-                         .complete
                          .includes(:business_categories)
                          .includes(addresses: [:region, :kommun])
                          .joins(addresses: [:region, :kommun])
@@ -27,7 +26,10 @@ class CompaniesController < ApplicationController
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
 
     unless current_user.admin?
-      @all_companies = @all_companies.branding_licensed.with_members
+      @all_companies = @all_companies
+                           .branding_licensed
+                           .with_members
+                           .complete
     end
 
     @all_visible_companies = @all_companies.address_visible
@@ -36,12 +38,10 @@ class CompaniesController < ApplicationController
 
     @companies = @all_companies.page(params[:page]).per_page(items_per_page)
 
-    render partial: 'companies_list' if request.xhr?
+    render partial: 'companies_list', locals: { companies: @companies } if request.xhr?
   end
 
-
   def show
-    @categories = @company.business_categories
   end
 
 
@@ -67,12 +67,30 @@ class CompaniesController < ApplicationController
 
     @company = Company.new(sanitize_params(company_params))
 
-    if @company.save
-      redirect_to @company, notice: t('.success')
-    else
-      flash.now[:alert] = t('.error')
-      render :new
+    saved = @company.save
+
+    unless request.xhr?
+      if @company.save
+        redirect_to @company, notice: t('.success')
+      else
+        flash.now[:alert] = t('.error')
+        render :new
+      end
+      return
     end
+
+    # XHR request from modal in ShfApplication create view (to create company)
+    if saved
+      status = 'success'
+      id = 'company-number-entry'
+      html = helpers.company_number_entry_field(@company.company_number)
+    else
+      status = 'errors'
+      id = 'company-create-errors'
+      html = helpers.model_errors_helper(@company)
+    end
+
+    render json: { status: status, id: id, html: html }
   end
 
 

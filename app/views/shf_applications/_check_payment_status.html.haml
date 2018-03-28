@@ -28,8 +28,9 @@
 
 
 - if current_user.has_company?
+  - company = current_user.companies.first
 
-  - if ! current_user.company.most_recent_branding_payment
+  - if ! company.most_recent_branding_payment
     -# User has never paid
 
     - need_to_pay = true
@@ -37,20 +38,20 @@
     %h4= t('shf_applications.information.check_payment_status.pay_h_here')
 
 
-  - elsif ! current_user.company.branding_license?
+  - elsif ! company.branding_license?
     -# User has paid but payment has expired
 
     - need_to_pay = true
 
     %h4
       = t('shf_applications.information.check_payment_status.h_expires')
-      %strong= current_user.company.branding_expire_date
+      %strong= company.branding_expire_date
 
 
 - if need_to_pay
 
 
 
-  = link_to(t('menus.nav.company.pay_branding_fee'), company_path(current_user.company), class: 'btn btn-info')
+  = link_to(t('menus.nav.company.pay_branding_fee'), company_path(company), class: 'btn btn-info')
   %br
   %br

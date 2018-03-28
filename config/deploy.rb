@@ -2,7 +2,7 @@
 lock '3.6.1'
 
 set :rbenv_type, :user
-set :rbenv_ruby, '2.4.2'
+set :rbenv_ruby, '2.4.3'
 
 set :application, 'shf'
 set :repo_url, 'git@github.com:AgileVentures/shf-project.git'

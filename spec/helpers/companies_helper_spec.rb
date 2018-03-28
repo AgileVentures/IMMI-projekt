@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CompaniesHelper, type: :helper do
-  let!(:company) { create(:company) }
+  let(:company) { create(:company) }
   let(:user) { create(:user) }
 
   describe 'companies' do
@@ -10,28 +10,25 @@ RSpec.describe CompaniesHelper, type: :helper do
     let(:employee3) { create(:user) }
 
     let!(:ma1) do
-      ma = create(:shf_application, :accepted,
-                  user: employee1,
-                  company_number: company.company_number)
+      ma = create(:shf_application, :accepted, user: employee1)
       ma.business_categories << create(:business_category, name: 'cat1')
       ma
     end
     let!(:ma2) do
-      ma = create(:shf_application, :accepted,
-                  user: employee2,
-                  company_number: company.company_number)
+      ma = create(:shf_application, :accepted, user: employee2)
       ma.business_categories << create(:business_category, name: 'cat2')
+      ma.companies = ma1.companies
       ma
     end
     let!(:ma3) do
-      ma = create(:shf_application, :accepted,
-                  user: employee3,
-                  company_number: company.company_number)
+      ma = create(:shf_application, :accepted, user: employee3)
       ma.business_categories << create(:business_category, name: 'cat3')
+      ma.companies = ma1.companies
       ma
     end
 
     it '#list_categories' do
+      company = ma1.companies.first
       expect(helper.list_categories(company)).to eq 'cat1 cat2 cat3'
       expect(helper.list_categories(company)).not_to include 'Träning'
     end
@@ -156,6 +153,35 @@ RSpec.describe CompaniesHelper, type: :helper do
     it 'returns pay-fee link with company and user id' do
       expect(pay_branding_fee_link(company.id, user.id))
         .to match Regexp.new(Regexp.escape(expected_path))
+    end
+  end
+
+  describe '#company_number_selection_field' do
+    4.times do |n|
+      let!("cmpy_#{n+1}".to_sym) { create(:company) }
+    end
+
+    it 'returns select field for company_number, value == company ID' do
+      Company.all.each do |cmpy|
+        expect(company_number_selection_field).to match(/option value="#{cmpy.id}"/)
+      end
+    end
+
+    it 'sets selected value when given an argument' do
+      expect(company_number_selection_field(cmpy_3.id))
+        .to match(/option selected="selected" value="#{cmpy_3.id}"/)
+    end
+  end
+
+  describe '#company_number_entry_field' do
+    it 'returns number entry field for company_number' do
+      expect(company_number_entry_field)
+        .to match(/input type="number" name="company_number" id="shf_application_company_number"/)
+    end
+
+    it 'returns entry field with initial value when given an argument' do
+      expect(company_number_entry_field('0000000000'))
+        .to match(/id="shf_application_company_number" value="0000000000"/)
     end
   end
 end

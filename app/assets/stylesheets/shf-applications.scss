@@ -53,7 +53,18 @@ $app-state-border-blue: rgb(142, 173, 206);
         margin-bottom: 0;
       }
 
+      .new-company-link {
+        display: inline-block;
+        margin-left: 30px;
+        vertical-align: middle;
+      }
+
     }
+  }
+
+  #company-number-entry {
+    display: inline-block;
+    width: 30%;
   }
 
   #supporting-files {
