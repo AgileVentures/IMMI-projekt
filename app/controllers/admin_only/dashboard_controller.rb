@@ -36,9 +36,8 @@ module AdminOnly
     end
 
 
-    # manually set and check the pundit policy because the default Pundit policy finder chokes on this (we do not have a 'Dashboard' class)
     def authorize_admin
-      AdminOnly::DashboardPolicy.new(current_user).authorized?
+      authorize :'admin_only/dashboard'
     end
 
 

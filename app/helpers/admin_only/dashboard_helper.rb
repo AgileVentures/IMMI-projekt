@@ -51,7 +51,7 @@ module AdminOnly
     # Can be used to emphasize something at the start of some text
     #
     # Ex:
-    # We want to empahsize the "New!" in "New! 101 Dalmations" so that it is bold and red via the CSS 'important-new' class
+    # We want to emphasize the "New!" in "New! 101 Dalmations" so that it is bold and red via the CSS 'important-new' class
     #
     #    styled_item_then_text('New!', 'important-new', '101 Dalmations')
     #
@@ -83,7 +83,7 @@ module AdminOnly
     #   followed by the spacer, followed by the text
     #
     def styled_item_then_text(css_class = '', item = '', text = '', spacer: ' ')
-      content_tag(:span, "#{item}", class: "#{css_class}") + ("#{spacer}#{text}")
+      tag.span("#{item}", class: "#{css_class}") + ("#{spacer}#{text}")
     end
 
 

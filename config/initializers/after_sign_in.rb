@@ -1,5 +1,5 @@
 Warden::Manager.after_authentication do |user, _auth, _opts|
-  user.check_member_status if user
+  user&.check_member_status
 end
 
 # https://github.com/hassox/warden/blob/
