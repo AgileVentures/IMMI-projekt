@@ -1,11 +1,11 @@
 .section
   %h3.section-title
     H-branding fee Payments
-    - h_paid = Company.branding_licensed
-    - c_total = @data_gatherer.total_companies
-    - h_unpaid = @data_gatherer.companies_branding_not_paid
-    - h_percent = h_paid.count.fdiv(c_total)
-    - h_percent =  h_percent * 100
+    :ruby
+      h_paid = Company.branding_licensed
+      c_total = @data_gatherer.total_companies
+      h_unpaid = @data_gatherer.companies_branding_not_paid
+      h_percent = (h_paid.count.fdiv(c_total)) * 100
   .progress
     .progress-bar(aria-valuemax='100' aria-valuemin='0' aria-valuenow="#{h_percent.to_i}" role='progressbar' style="width:#{h_percent.to_i}%")
       ="#{h_percent.to_i}% of all companies have paid H-branding"
@@ -19,4 +19,4 @@
     .card.card-body
       - h_unpaid.each do |c|
         = link_to c.name, (company_path(c))
-        = '|'
+        |

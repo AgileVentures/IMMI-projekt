@@ -33,19 +33,19 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
         it "nil is converted to an empty String (nil.to_s = '')" do
           expect(helper.styled_total(42,
                                      nil,
-                                     css_class: 'some-css-class')).to eq  "<span class=\"some-css-class\">42</span> "
+                                     css_class: 'some-css-class')).to eq "<span class=\"some-css-class\">42</span> "
         end
 
         it 'empty string is just an empty string' do
           expect(helper.styled_total(42,
                                      '',
-                                     css_class: 'some-css-class')).to eq  "<span class=\"some-css-class\">42</span> "
+                                     css_class: 'some-css-class')).to eq "<span class=\"some-css-class\">42</span> "
         end
 
         it '424242 / 7 / 6  becomes the String representation of the result of that expression' do
           expect(helper.styled_total(42,
                                      424242 / 7 / 6,
-                                     css_class: 'some-css-class')).to eq  "<span class=\"some-css-class\">42</span> 10101"
+                                     css_class: 'some-css-class')).to eq "<span class=\"some-css-class\">42</span> 10101"
         end
       end
 
@@ -54,7 +54,8 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
         it "comes after 'class =' within the <span></span> tag, surrounded by single quote marks" do
           expect(helper.styled_total(42,
                                      'All the things',
-                                     css_class: 'blorf')).to match /<span class=\"(.*)\">42<\/span> All the things/
+                                     css_class: 'blorf'))
+            .to match(/<span class=\"(.*)\">42<\/span> All the things/)
         end
 
         it "nil is converted to an empty String (nil.to_s = '')" do
@@ -119,7 +120,8 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
           expect(helper.styled_item_then_text('css-class',
                                               'leading item',
                                               'some text',
-                                              spacer: '--')).to match /<span class=\"(.*)\">leading item<\/span>--some text/
+                                              spacer: '--'))
+            .to match(/<span class=\"(.*)\">leading item<\/span>--some text/)
         end
 
         it "nil is converted to an empty String (nil.to_s = '')" do
@@ -151,7 +153,8 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
           expect(helper.styled_item_then_text('css-class',
                                               'leading item',
                                               'some text',
-                                              spacer: '--')).to match /<span class=\"css-class\">(.*)<\/span>--some text/
+                                              spacer: '--'))
+            .to match(/<span class=\"css-class\">(.*)<\/span>--some text/)
         end
 
         it "nil is converted to an empty String (nil.to_s = '')" do
@@ -183,7 +186,8 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
           expect(helper.styled_item_then_text('css-class',
                                               'leading item',
                                               'some text',
-                                              spacer: '--')).to match /<span class=\"css-class\">leading item<\/span>--(.)+/
+                                              spacer: '--'))
+            .to match(/<span class=\"css-class\">leading item<\/span>--(.)+/)
 
         end
 
@@ -303,4 +307,3 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
   end
 
 end
-

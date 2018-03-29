@@ -21,41 +21,18 @@ module DataCreationHelper
   UPLOADS_PATH = File.join(FIXTURES_PATH, 'uploaded_files')
   UPLOAD_PNG_FILE = File.join(UPLOADS_PATH, 'image.png')
 
+  NUM_APPS_IN_STATE = { new: 2, under_review: 3, waiting_for_applicant: 4,
+                        ready_for_review: 5, accepted: 6, rejected: 7 }.freeze
+
 
   # create [num] SHF applications in the given state
   # return the list of SHF applications created
-  def create_shf_apps_in_state(num, state, create_date: Time.zone.now)
+  def create_shf_apps_in_state(num, state, create_date: Time.current)
     shf_apps = []
 
-    app_transitions = [] # transition events that have to happen to put the SHF app into the correct state
-
-    case state
-      when :new
-        app_transitions = [] # no transitions; initial state is correct
-
-      when :under_review
-        app_transitions = [:start_review!]
-
-      when :waiting_for_applicant
-        app_transitions = [:start_review!, :ask_applicant_for_info!]
-
-      when :ready_for_review
-        app_transitions = [:start_review!, :ask_applicant_for_info!, :is_ready_for_review!]
-
-      when :accepted
-        app_transitions = [:start_review!, :accept!]
-
-      when :rejected
-        app_transitions = [:start_review!, :reject!]
-
-    end
-
     num.times do
-      u = create(:user_with_membership_app)
-      app_transitions.each { |transition_event| u.shf_application.send(transition_event) }
-      u.shf_application.update(created_at: create_date, updated_at: create_date)
-
-      shf_apps << u.shf_application
+      shf_apps << create(:shf_application, state: state, created_at: create_date,
+                         updated_at: create_date)
     end
 
     shf_apps
@@ -64,22 +41,13 @@ module DataCreationHelper
 
   # create applications in all states and set the created_at: and updated_at dates to create_date
   # default create_date = Time.zone.now
-  def create_apps_in_states(num_new: 2,
-                      num_under_review: 3,
-                      num_waiting_for_applicant: 4,
-                      num_ready_for_review: 5,
-                      num_accepted: 6,
-                      num_rejected: 7,
-                            create_date: Time.zone.now)
+  def create_apps_in_states(create_date: Time.current)
 
-    create_shf_apps_in_state(num_new, :new, create_date: create_date)
-    create_shf_apps_in_state(num_under_review, :under_review, create_date: create_date)
-    create_shf_apps_in_state(num_waiting_for_applicant, :waiting_for_applicant, create_date: create_date)
-    create_shf_apps_in_state(num_ready_for_review, :ready_for_review, create_date: create_date)
-    create_shf_apps_in_state(num_accepted, :accepted, create_date: create_date)
-    create_shf_apps_in_state(num_rejected, :rejected, create_date: create_date)
+    NUM_APPS_IN_STATE.each_pair do |state, number|
+      create_shf_apps_in_state(number, state, create_date: create_date)
+    end
+
   end
-
 
 
   # add an uploaded file to the SHF application

@@ -23,7 +23,7 @@
           %a(data-toggle='tab' href='#n5') H-branding
 
       .tab-content
-        #n1.tab-pane.fade.in.active
+        .tab-pane.fade.in.active#n1
           -# smell:  passing so many vars to a view -> should encapsulate in a class
           .section
             = render 'current_items_to_note', apps_without_uploads: @data_gatherer.apps_without_uploads,
@@ -31,7 +31,7 @@
              companies_branding_not_paid: @data_gatherer.companies_branding_not_paid,
              companies_info_not_completed: @data_gatherer.companies_info_not_completed
 
-        #n2.tab-pane.fade
+        .tab-pane.fade#n2
           -# smell:  passing so many vars to a view -> should encapsulate in a class
           .section
             = render 'recent_activity', recent_num_days: @data_gatherer.timeframe,
@@ -41,17 +41,17 @@
                                         recent_member_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym],
                                         recent_branding_fee_payments: @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym]
 
-        #n3.tab-pane.fade
+        .tab-pane.fade#n3
           .section.membership-totals-current
             %h3.total-members
               = styled_total(@data_gatherer.total_members, t('admin_only.dashboard.total_members'))
 
-        #n4.tab-pane.fade
+        .tab-pane.fade#n4
           = render 'admin_only/dashboard/m_fee_payments'
-        #n5.tab-pane.fade
+        .tab-pane.fade#n5
           = render 'admin_only/dashboard/h_branding'
 
-        #n6.tab-pane.fade
+        .tab-pane.fade#n6
           .section
             %h3.section-title Applications
             %p= @data_gatherer.app_states_translated.map{|k, v| "#{k}: #{v}"}.join(', ')
@@ -59,7 +59,5 @@
             = line_chart ShfApplication.group_by_day(:created_at).count
 
 
-        #n7.tab-pane.fade
+        .tab-pane.fade#n7
           = render 'admin_only/dashboard/users'
-
-
