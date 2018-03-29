@@ -91,22 +91,22 @@ RSpec.describe 'AdminOnly::DataGatherer' do
     it 'timeframe change triggers a data refresh data' do
 
       recent_app_state_counts = subject.recent_app_state_counts
-      expect(recent_app_state_counts[:new]).to eq 2
-      expect(recent_app_state_counts[:under_review]).to eq 3
-      expect(recent_app_state_counts[:waiting_for_applicant]).to eq 4
-      expect(recent_app_state_counts[:ready_for_review]).to eq 5
-      expect(recent_app_state_counts[:accepted]).to eq 6
-      expect(recent_app_state_counts[:rejected]).to eq 7
+      expect(recent_app_state_counts[:new]).to eq 1
+      expect(recent_app_state_counts[:under_review]).to eq 2
+      expect(recent_app_state_counts[:waiting_for_applicant]).to eq 1
+      expect(recent_app_state_counts[:ready_for_review]).to eq 2
+      expect(recent_app_state_counts[:accepted]).to eq 1
+      expect(recent_app_state_counts[:rejected]).to eq 2
 
       subject.timeframe = 30
 
       recent_app_state_counts = subject.recent_app_state_counts
-      expect(recent_app_state_counts[:new]).to eq 4
-      expect(recent_app_state_counts[:under_review]).to eq 6
-      expect(recent_app_state_counts[:waiting_for_applicant]).to eq 8
-      expect(recent_app_state_counts[:ready_for_review]).to eq 10
-      expect(recent_app_state_counts[:accepted]).to eq 12
-      expect(recent_app_state_counts[:rejected]).to eq 14
+      expect(recent_app_state_counts[:new]).to eq 2
+      expect(recent_app_state_counts[:under_review]).to eq 4
+      expect(recent_app_state_counts[:waiting_for_applicant]).to eq 2
+      expect(recent_app_state_counts[:ready_for_review]).to eq 4
+      expect(recent_app_state_counts[:accepted]).to eq 2
+      expect(recent_app_state_counts[:rejected]).to eq 4
     end
 
     context "recent_app_state_counts = application states for the current timeframe (= 'recent')" do
@@ -116,43 +116,35 @@ RSpec.describe 'AdminOnly::DataGatherer' do
         # verify that our data is constructed properly
         app_state_counts = subject.shf_apps_state_counts
 
-        expect(app_state_counts[:new]).to eq(2 * 4)
-        expect(app_state_counts[:under_review]).to eq(3 * 4)
-        expect(app_state_counts[:waiting_for_applicant]).to eq(4 * 4)
-        expect(app_state_counts[:ready_for_review]).to eq(5 * 4)
-        expect(app_state_counts[:accepted]).to eq(6 * 4)
-        expect(app_state_counts[:rejected]).to eq(7 * 4)
+        expect(app_state_counts[:new]).to eq(1 * 4)
+        expect(app_state_counts[:under_review]).to eq(2 * 4)
+        expect(app_state_counts[:waiting_for_applicant]).to eq(1 * 4)
+        expect(app_state_counts[:ready_for_review]).to eq(2 * 4)
+        expect(app_state_counts[:accepted]).to eq(1 * 4)
+        expect(app_state_counts[:rejected]).to eq(2 * 4)
 
 
         recent_app_state_counts = subject.recent_app_state_counts
-        expect(recent_app_state_counts[:new]).to eq 2
-        expect(recent_app_state_counts[:under_review]).to eq 3
-        expect(recent_app_state_counts[:waiting_for_applicant]).to eq 4
-        expect(recent_app_state_counts[:ready_for_review]).to eq 5
-        expect(recent_app_state_counts[:accepted]).to eq 6
-        expect(recent_app_state_counts[:rejected]).to eq 7
+        expect(recent_app_state_counts[:new]).to eq 1
+        expect(recent_app_state_counts[:under_review]).to eq 2
+        expect(recent_app_state_counts[:waiting_for_applicant]).to eq 1
+        expect(recent_app_state_counts[:ready_for_review]).to eq 2
+        expect(recent_app_state_counts[:accepted]).to eq 1
+        expect(recent_app_state_counts[:rejected]).to eq 2
 
       end
 
       it "recent application state counts are correct, then change the timeframe and they are updated and correct" do
 
-        recent_app_state_counts = subject.recent_app_state_counts
-        expect(recent_app_state_counts[:new]).to eq 2
-        expect(recent_app_state_counts[:under_review]).to eq 3
-        expect(recent_app_state_counts[:waiting_for_applicant]).to eq 4
-        expect(recent_app_state_counts[:ready_for_review]).to eq 5
-        expect(recent_app_state_counts[:accepted]).to eq 6
-        expect(recent_app_state_counts[:rejected]).to eq 7
-
         subject.timeframe = 30
 
         recent_app_state_counts = subject.recent_app_state_counts
-        expect(recent_app_state_counts[:new]).to eq 4
-        expect(recent_app_state_counts[:under_review]).to eq 6
-        expect(recent_app_state_counts[:waiting_for_applicant]).to eq 8
-        expect(recent_app_state_counts[:ready_for_review]).to eq 10
-        expect(recent_app_state_counts[:accepted]).to eq 12
-        expect(recent_app_state_counts[:rejected]).to eq 14
+        expect(recent_app_state_counts[:new]).to eq 2
+        expect(recent_app_state_counts[:under_review]).to eq 4
+        expect(recent_app_state_counts[:waiting_for_applicant]).to eq 2
+        expect(recent_app_state_counts[:ready_for_review]).to eq 4
+        expect(recent_app_state_counts[:accepted]).to eq 2
+        expect(recent_app_state_counts[:rejected]).to eq 4
       end
     end
 
@@ -160,16 +152,14 @@ RSpec.describe 'AdminOnly::DataGatherer' do
 
       it "recent_shf_apps is correct for default 'recent' (7 days)" do
 
-        expect(subject.recent_shf_apps.count).to eq 27
+        expect(subject.recent_shf_apps.count).to eq 9
       end
 
-      it "recent_shf_apps.count is correct, then change the timeframe and it is updated and correct" do
-
-        expect(subject.recent_shf_apps.count).to eq 27
+      it "change the timeframe and it is updated and correct" do
 
         subject.timeframe = 30
 
-        expect(subject.recent_shf_apps.count).to eq 54
+        expect(subject.recent_shf_apps.count).to eq 18
       end
     end
 
@@ -210,12 +200,12 @@ RSpec.describe 'AdminOnly::DataGatherer' do
 
       app_state_counts = subject.shf_apps_state_counts
       expect(subject.shf_apps_state_counts).not_to be_empty
-      expect(app_state_counts[:new]).to eq 2
-      expect(app_state_counts[:under_review]).to eq 3
-      expect(app_state_counts[:waiting_for_applicant]).to eq 4
-      expect(app_state_counts[:ready_for_review]).to eq 5
-      expect(app_state_counts[:accepted]).to eq 6
-      expect(app_state_counts[:rejected]).to eq 7
+      expect(app_state_counts[:new]).to eq 1
+      expect(app_state_counts[:under_review]).to eq 2
+      expect(app_state_counts[:waiting_for_applicant]).to eq 1
+      expect(app_state_counts[:ready_for_review]).to eq 2
+      expect(app_state_counts[:accepted]).to eq 1
+      expect(app_state_counts[:rejected]).to eq 2
 
     end
 
@@ -230,8 +220,8 @@ RSpec.describe 'AdminOnly::DataGatherer' do
 
     it 'some apps with uploads, some without' do
 
-      # create apps in each state so we're sure to test them all (27 apps total; 14 'open' applications)
-      # add uploaded files to some of them (5 with uploaded files.  4 'open' applications with uploaded files)
+      # create apps in each state so we're sure to test them all (9 apps total; 6 'open' applications)
+      # add uploaded files to some of them (6 with uploaded files.  2 'open' applications with uploaded files)
 
       create_apps_now
 
@@ -254,7 +244,7 @@ RSpec.describe 'AdminOnly::DataGatherer' do
       add_uploaded_file(rejected_apps.first)
 
 
-      expect(subject.apps_without_uploads.count).to eq 10
+      expect(subject.apps_without_uploads.count).to eq 2
     end
   end
 
@@ -339,7 +329,7 @@ RSpec.describe 'AdminOnly::DataGatherer' do
     describe "recent_payments = all payments in the current timeframe (= 'recent')" do
 
       let(:time_now) { Time.current }
-      let(:num_payments_this_month) { time_now.month }
+      let(:num_payments_this_month) { 1 }
 
       let!(:create_two_years_of_payments_num_is_month_number) do
         2.times do |years_ago|
@@ -347,9 +337,7 @@ RSpec.describe 'AdminOnly::DataGatherer' do
           12.times do |months_ago|
             create_date = time_now - years_ago.years - months_ago.months
 
-            create_date.month.times do
-              create_member_with_member_and_branding_payments_expiring(create_date + 1.year, payment_create_date: create_date)
-            end
+            create_member_with_member_and_branding_payments_expiring(create_date + 1.year, payment_create_date: create_date)
           end
         end
       end
@@ -377,23 +365,16 @@ RSpec.describe 'AdminOnly::DataGatherer' do
         subject.timeframe = 120 # 4 months ago
         total_expected = 0
 
-        # this shows how the total is computed. It's a little clearer than the loop
-        #  total_expected = now.month + (now - 1.months).month + (now - 2.months).month + ....
-
         #  Note by the time the query runs to get the data, some time has elapsed.
         #  So any payments created exactly 1 month after the initial time (now)
         #  are now > 1 month old by the amount of time that has elapsed.
         #  Thus they will *not* show up in the '30 days ago' query;
         #  they will show up in the '60 days ago' query (or any query more than 30 days ago)
 
-        4.times do |months_ago|
-          total_expected += (time_now - months_ago.months).month
-        end
-
         recent_payments = subject.recent_payments
 
-        expect(recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count).to eq total_expected
-        expect(recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym].count).to eq total_expected
+        expect(recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count).to eq 4
+        expect(recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym].count).to eq 4
 
       end
 
@@ -507,26 +488,6 @@ RSpec.describe 'AdminOnly::DataGatherer' do
       expect(subject.total_members).to eq 1
     end
 
-    it '@shf_apps_state_counts is updated' do
-
-      subject.shf_apps_state_counts.each do |_k, v|
-        expect(v).to eq 0
-      end
-
-      create_apps_now
-
-      subject.send(:refresh_data)
-
-      app_state_counts = subject.shf_apps_state_counts
-      expect(subject.shf_apps_state_counts).not_to be_empty
-      expect(app_state_counts[:new]).to eq 2
-      expect(app_state_counts[:under_review]).to eq 3
-      expect(app_state_counts[:waiting_for_applicant]).to eq 4
-      expect(app_state_counts[:ready_for_review]).to eq 5
-      expect(app_state_counts[:accepted]).to eq 6
-      expect(app_state_counts[:rejected]).to eq 7
-
-    end
 
     it '@apps_without_uploads is updated' do
 

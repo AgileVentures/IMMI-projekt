@@ -21,8 +21,8 @@ module DataCreationHelper
   UPLOADS_PATH = File.join(FIXTURES_PATH, 'uploaded_files')
   UPLOAD_PNG_FILE = File.join(UPLOADS_PATH, 'image.png')
 
-  NUM_APPS_IN_STATE = { new: 2, under_review: 3, waiting_for_applicant: 4,
-                        ready_for_review: 5, accepted: 6, rejected: 7 }.freeze
+  NUM_APPS_IN_STATE = { new: 1, under_review: 2, waiting_for_applicant: 1,
+                        ready_for_review: 2, accepted: 1, rejected: 2 }.freeze
 
 
   # create [num] SHF applications in the given state
