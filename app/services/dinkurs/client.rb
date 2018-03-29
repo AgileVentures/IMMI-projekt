@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Dinkurs
   class Client
     BASE_URL = ENV['DINKURS_XML_URL']
@@ -11,6 +13,7 @@ module Dinkurs
     end
 
     private
+
     attr_reader :company_id
 
     def request_dinkurs_for_company

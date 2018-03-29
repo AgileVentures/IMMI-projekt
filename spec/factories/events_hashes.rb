@@ -7,22 +7,24 @@ FactoryBot.define do
           {
             dinkurs_id: '26230',
             name: 'Intresselista',
-            fee: '0',
+            fee: 0.0,
             start_date: '2040-01-01'.to_date,
             description: nil,
             sing_up_url:
-              'https://dinkurs.se/appliance/?event_key=LGbRBLplIUHsNJHF'
+              'https://dinkurs.se/appliance/?event_key=LGbRBLplIUHsNJHF',
+            company_id: 1
           },
           {
             dinkurs_id: '41988',
             name: 'stav',
-            fee: '300',
+            fee: 300.0,
             start_date: '2040-01-01'.to_date,
             description: 'Informationstext innan anmälningsformuläret\n\nLämna'\
                          ' denna ruta tom för att låta deltagaren komma direkt'\
                          ' till anmälningsformuläret',
             sing_up_url:
-              'https://dinkurs.se/appliance/?event_key=BLQHndUsZcZHrJhR'
+              'https://dinkurs.se/appliance/?event_key=BLQHndUsZcZHrJhR',
+            company_id: 1
           }
       ]
     end

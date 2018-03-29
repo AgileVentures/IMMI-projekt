@@ -79,6 +79,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'pundit-matchers'
   gem 'factory_bot_rails'
+  gem 'pry-rails'
   gem 'pry'
   gem 'pry-byebug'
   gem 'cucumber-rails', require: false

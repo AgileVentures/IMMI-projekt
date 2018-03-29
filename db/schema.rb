@@ -98,11 +98,12 @@ ActiveRecord::Schema.define(version: 20180219132317) do
   end
 
   create_table "events", force: :cascade do |t|
-    t.decimal "fee", precision: 5, scale: 2
+    t.decimal "fee", precision: 8, scale: 2
     t.date "start_date"
     t.text "description"
+    t.string "dinkurs_id"
+    t.string "name"
     t.string "sing_up_url"
-    t.integer "event_type"
     t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -222,6 +223,7 @@ ActiveRecord::Schema.define(version: 20180219132317) do
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
+  add_foreign_key "events", "companies"
   add_foreign_key "company_applications", "companies"
   add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "payments", "companies"

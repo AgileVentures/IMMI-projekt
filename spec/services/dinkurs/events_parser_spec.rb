@@ -6,7 +6,7 @@ describe Dinkurs::EventsParser do
   let(:events_array) { build :dinkurs_events }
   let(:parsed_events) { build :events_hashes }
 
-  subject(:events_parser) { described_class.new(events_array) }
+  subject(:events_parser) { described_class.new(events_array, 1) }
 
   it 'return array of items' do
     expect(events_parser.call).to be_a_kind_of(Array)
