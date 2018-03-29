@@ -1,10 +1,10 @@
 .section
   %h3.section-title
     Member fee Payments
-    - m_paid = @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count
-    - m_total = @data_gatherer.total_members
-    - m_percent = m_paid.fdiv(m_total)
-    - m_percent =  m_percent * 100
+    :ruby
+      m_paid = @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count
+      m_total = @data_gatherer.total_members
+      m_percent = (m_paid.fdiv(m_total)) * 100
   .progress
     .progress-bar(aria-valuemax='100' aria-valuemin='0' aria-valuenow="#{m_percent.to_i}" role='progressbar' style="width:#{m_percent.to_i}%")
       ="#{m_percent.to_i}% of all members have paid"
