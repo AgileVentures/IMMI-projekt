@@ -20,7 +20,7 @@ module AdminOnly
     private
 
     def authorize_admin
-      AdminOnly::AppConfigurationPolicy.new(current_user).authorized?
+      authorize AdminOnly::AppConfiguration
     end
 
     def get_app_configuration
