@@ -65,16 +65,17 @@ module DataCreationHelper
                             user: u,
                             payment_type: Payment::PAYMENT_TYPE_MEMBER,
                             status: SUCCESSFUL_PAYMENT,
-                            expire_date: member_pay_expires)
-    member_payment.update(created_at: payment_create_date, updated_at: payment_create_date)
+                            expire_date: member_pay_expires,
+                            created_at: payment_create_date,
+                            updated_at: payment_create_date)
 
     branding_payment  = create(:payment,
                                user: u,
                                payment_type: Payment::PAYMENT_TYPE_BRANDING,
                                status: SUCCESSFUL_PAYMENT,
-                               expire_date: member_pay_expires)
-    branding_payment.update(created_at: payment_create_date, updated_at: payment_create_date)
-
+                               expire_date: member_pay_expires,
+                               created_at: payment_create_date,
+                               updated_at: payment_create_date)
     u
   end
 
@@ -91,15 +92,17 @@ module DataCreationHelper
                             user: u,
                             payment_type: Payment::PAYMENT_TYPE_MEMBER,
                             status: SUCCESSFUL_PAYMENT,
-                            expire_date: member_pay_expires)
-    member_payment.update(created_at: payment_create_date, updated_at: payment_create_date)
+                            expire_date: member_pay_expires,
+                            created_at: payment_create_date,
+                            updated_at: payment_create_date)
 
     branding_payment = create(:payment,
                               user: u,
                               payment_type: Payment::PAYMENT_TYPE_BRANDING,
                               status: SUCCESSFUL_PAYMENT,
-                              expire_date: payment_exp_date)
-    branding_payment.update(created_at: payment_create_date, updated_at: payment_create_date)
+                              expire_date: payment_exp_date,
+                              created_at: payment_create_date,
+                              updated_at: payment_create_date)
 
     co.payments << branding_payment
     co
