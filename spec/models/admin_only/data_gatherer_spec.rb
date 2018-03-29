@@ -363,7 +363,6 @@ RSpec.describe 'AdminOnly::DataGatherer' do
           .to eq num_payments_this_month
 
         subject.timeframe = 120 # 4 months ago
-        total_expected = 0
 
         #  Note by the time the query runs to get the data, some time has elapsed.
         #  So any payments created exactly 1 month after the initial time (now)

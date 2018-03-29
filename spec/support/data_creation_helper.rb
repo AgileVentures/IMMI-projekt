@@ -61,21 +61,21 @@ module DataCreationHelper
     u = create(:member_with_membership_app)
     u.shf_application.update(created_at: payment_create_date, updated_at: payment_create_date)
 
-    member_payment = create(:payment,
-                            user: u,
-                            payment_type: Payment::PAYMENT_TYPE_MEMBER,
-                            status: SUCCESSFUL_PAYMENT,
-                            expire_date: member_pay_expires,
-                            created_at: payment_create_date,
-                            updated_at: payment_create_date)
+    create(:payment,
+           user: u,
+           payment_type: Payment::PAYMENT_TYPE_MEMBER,
+           status: SUCCESSFUL_PAYMENT,
+           expire_date: member_pay_expires,
+           created_at: payment_create_date,
+           updated_at: payment_create_date)
 
-    branding_payment  = create(:payment,
-                               user: u,
-                               payment_type: Payment::PAYMENT_TYPE_BRANDING,
-                               status: SUCCESSFUL_PAYMENT,
-                               expire_date: member_pay_expires,
-                               created_at: payment_create_date,
-                               updated_at: payment_create_date)
+    create(:payment,
+            user: u,
+            payment_type: Payment::PAYMENT_TYPE_BRANDING,
+            status: SUCCESSFUL_PAYMENT,
+            expire_date: member_pay_expires,
+            created_at: payment_create_date,
+            updated_at: payment_create_date)
     u
   end
 
@@ -88,13 +88,13 @@ module DataCreationHelper
 
     co = u.shf_application.company
 
-    member_payment = create(:payment,
-                            user: u,
-                            payment_type: Payment::PAYMENT_TYPE_MEMBER,
-                            status: SUCCESSFUL_PAYMENT,
-                            expire_date: member_pay_expires,
-                            created_at: payment_create_date,
-                            updated_at: payment_create_date)
+    create(:payment,
+           user: u,
+           payment_type: Payment::PAYMENT_TYPE_MEMBER,
+           status: SUCCESSFUL_PAYMENT,
+           expire_date: member_pay_expires,
+           created_at: payment_create_date,
+           updated_at: payment_create_date)
 
     branding_payment = create(:payment,
                               user: u,
