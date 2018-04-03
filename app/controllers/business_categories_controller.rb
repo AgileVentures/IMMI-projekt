@@ -11,7 +11,9 @@ class BusinessCategoriesController < ApplicationController
 
   def show
 
-    @companies = @business_category.companies.includes(:addresses).complete.order(:name)
+    @companies = @business_category.companies.includes(:addresses).order(:name)
+
+    @companies = @companies.searchable unless current_user.admin?
 
   end
 

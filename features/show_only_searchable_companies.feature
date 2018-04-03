@@ -74,21 +74,24 @@ Feature: So that I do not get frustrated by trying to find out more
     And I should not see "NoPayment"
     And I should not see "NoMember"
 
-  @visitor
-  Scenario: Visitor on Kategori - only complete companies are shown
+  @visitor @time_adjust
+  Scenario: Visitor on Kategori - only searchable companies are shown
     Given I am Logged out
     When I am on the business category "Groomer"
-    And show me the page
     Then I should not see "5906055081"
     And I should not see "NoRegion"
     And I should not see "Bowsers"
     And I should not see "2120000142"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
     And I should see "Happy Mutts"
     When I am on the business category "Trainer"
     Then I should not see "5906055081"
     And I should not see "NoRegion"
     And I should not see "Happy Mutts"
     And I should not see "5560360793"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
     And I should see "Bowsers"
 
   @member @time_adjust
@@ -102,20 +105,24 @@ Feature: So that I do not get frustrated by trying to find out more
     And I should not see "NoPayment"
     And I should not see "NoMember"
 
-  @member
-  Scenario: Member on Kategori - only complete companies are shown
+  @member @time_adjust
+  Scenario: Member on Kategori - only searchable companies are shown
     Given I am logged in as "emmagroomer@happymutts.com"
     When I am on the business category "Groomer"
     Then I should not see "5906055081"
     And I should not see "NoRegion"
     And I should not see "Bowsers"
     And I should not see "2120000142"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
     And I should see "Happy Mutts"
     When I am on the business category "Trainer"
     Then I should not see "5906055081"
     And I should not see "NoRegion"
     And I should not see "Happy Mutts"
     And I should not see "5560360793"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
     And I should see "Bowsers"
 
   @admin @time_adjust
@@ -132,19 +139,14 @@ Feature: So that I do not get frustrated by trying to find out more
     And I should see "NoPayment"
     And I should see "NoMember"
 
-
-  @admin
+  @admin @time_adjust
   Scenario: admin Kategori list - all companies are shown
     Given I am logged in as "admin@shf.se"
     When I am on the business category "Groomer"
-    Then I should not see "5906055081"
-    And I should not see "NoRegion"
-    And I should not see "Bowsers"
-    And I should not see "2120000142"
+    And I should see "NoRegion"
     And I should see "Happy Mutts"
+    And I should see "NoPayment"
     When I am on the business category "Trainer"
-    Then I should not see "5906055081"
-    And I should not see "NoRegion"
-    And I should not see "Happy Mutts"
-    And I should not see "5560360793"
+    And I should see "NoRegion"
     And I should see "Bowsers"
+    And I should see "NoPayment"

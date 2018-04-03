@@ -25,12 +25,7 @@ class CompaniesController < ApplicationController
     # allowing sorting on an associated table column ("region" in this case)
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
 
-    unless current_user.admin?
-      @all_companies = @all_companies
-                           .branding_licensed
-                           .with_members
-                           .complete
-    end
+    @all_companies = @all_companies.searchable unless current_user.admin?
 
     @all_visible_companies = @all_companies.address_visible
 
