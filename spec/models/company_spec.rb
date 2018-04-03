@@ -47,6 +47,32 @@ RSpec.describe Company, type: :model do
     incomplete_cos
   end
 
+  let(:user) { create(:user) }
+
+  let(:success) { Payment.order_to_payment_status('successful') }
+
+  let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
+
+  let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
+
+  let(:payment1) do
+    start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
+    create(:payment, user: user, status: success, company: complete_co,
+           payment_type: Payment::PAYMENT_TYPE_BRANDING,
+           notes: 'these are notes for branding payment1',
+           start_date: start_date,
+           expire_date: expire_date)
+  end
+  let(:payment2) do
+    start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
+    create(:payment, user: user, status: success, company: complete_co,
+           payment_type: Payment::PAYMENT_TYPE_BRANDING,
+           notes: 'these are notes for branding payment2',
+           start_date: start_date,
+           expire_date: expire_date)
+  end
+
+
   describe 'Factory' do
     it 'has a valid factory' do
       expect(create(:company)).to be_valid
@@ -159,34 +185,6 @@ RSpec.describe Company, type: :model do
       expect { company.destroy }.to change(Payment, :count).by(-2)
     end
   end
-
-  describe 'complete scope' do
-    let(:complete_scope) { Company.complete }
-
-    before(:each) do
-      complete_companies
-      incomplete_companies
-    end
-
-    it 'only returns companies that are complete' do
-      expect(complete_scope).to match_array(complete_companies)
-    end
-
-    it 'does not return any incomplete companies' do
-      expect(complete_scope & incomplete_companies).to match_array([])
-    end
-
-  end
-
-  describe '.address_visible' do
-    it 'only returns companies that have one or more visible addresses' do
-      complete_co2
-      complete_co3
-      expect(Company.address_visible).
-          to contain_exactly(no_name, nil_region, complete_co, complete_co2)
-    end
-  end
-
 
   describe 'categories = all employee categories' do
 
@@ -340,56 +338,31 @@ RSpec.describe Company, type: :model do
   end
 
   context 'payment and branding license period' do
-    let(:user) { create(:user) }
-    let(:company) { create(:company) }
-
-    let(:success) { Payment.order_to_payment_status('successful') }
-
-    let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
-
-    let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
-
-    let(:payment1) do
-      start_date, expire_date = Company.next_branding_payment_dates(company.id)
-      create(:payment, user: user, status: success, company: company,
-             payment_type: Payment::PAYMENT_TYPE_BRANDING,
-             notes: 'these are notes for branding payment1',
-             start_date: start_date,
-             expire_date: expire_date)
-    end
-    let(:payment2) do
-      start_date, expire_date = Company.next_branding_payment_dates(company.id)
-      create(:payment, user: user, status: success, company: company,
-             payment_type: Payment::PAYMENT_TYPE_BRANDING,
-             notes: 'these are notes for branding payment2',
-             start_date: start_date,
-             expire_date: expire_date)
-    end
 
     describe '#branding_expire_date' do
       it 'returns date for latest completed payment' do
         payment1
-        expect(company.branding_expire_date).to eq payment1.expire_date
+        expect(complete_co.branding_expire_date).to eq payment1.expire_date
         payment2
-        expect(company.branding_expire_date).to eq payment2.expire_date
+        expect(complete_co.branding_expire_date).to eq payment2.expire_date
       end
     end
 
     describe '#branding_payment_notes' do
       it 'returns notes for latest completed payment' do
         payment1
-        expect(company.branding_payment_notes).to eq payment1.notes
+        expect(complete_co.branding_payment_notes).to eq payment1.notes
         payment2
-        expect(company.branding_payment_notes).to eq payment2.notes
+        expect(complete_co.branding_payment_notes).to eq payment2.notes
       end
     end
 
     describe '#most_recent_branding_payment' do
       it 'returns latest completed payment' do
         payment1
-        expect(company.most_recent_branding_payment).to eq payment1
+        expect(complete_co.most_recent_branding_payment).to eq payment1
         payment2
-        expect(company.most_recent_branding_payment).to eq payment2
+        expect(complete_co.most_recent_branding_payment).to eq payment2
       end
     end
 
@@ -404,24 +377,24 @@ RSpec.describe Company, type: :model do
         end
 
         it "returns today's date for first payment start date" do
-          expect(Company.next_branding_payment_dates(company.id)[0])
+          expect(Company.next_branding_payment_dates(complete_co.id)[0])
             .to eq Time.zone.today
         end
 
         it 'returns Dec 31, 2018 for first payment expire date' do
-          expect(Company.next_branding_payment_dates(company.id)[1])
+          expect(Company.next_branding_payment_dates(complete_co.id)[1])
             .to eq Time.zone.local(2018, 12, 31)
         end
 
         it 'returns Jan 1, 2019 for second payment start date' do
           payment1
-          expect(Company.next_branding_payment_dates(company.id)[0])
+          expect(Company.next_branding_payment_dates(complete_co.id)[0])
             .to eq Time.zone.local(2019, 1, 1)
         end
 
         it 'returns Dec 31, 2019 for second payment expire date' do
           payment1
-          expect(Company.next_branding_payment_dates(company.id)[1])
+          expect(Company.next_branding_payment_dates(complete_co.id)[1])
             .to eq Time.zone.local(2019, 12, 31)
         end
       end
@@ -435,39 +408,25 @@ RSpec.describe Company, type: :model do
         end
 
         it "returns today's date for first payment start date" do
-          expect(Company.next_branding_payment_dates(company.id)[0]).to eq Time.zone.today
+          expect(Company.next_branding_payment_dates(complete_co.id)[0]).to eq Time.zone.today
         end
 
         it 'returns one year later for first payment expire date' do
-          expect(Company.next_branding_payment_dates(company.id)[1])
+          expect(Company.next_branding_payment_dates(complete_co.id)[1])
             .to eq Time.zone.today + 1.year - 1.day
         end
 
         it 'returns date-after-expiration for second payment start date' do
           payment1
-          expect(Company.next_branding_payment_dates(company.id)[0])
+          expect(Company.next_branding_payment_dates(complete_co.id)[0])
             .to eq Time.zone.today + 1.year
         end
 
         it 'returns one year later for second payment expire date' do
           payment1
-          expect(Company.next_branding_payment_dates(company.id)[1])
+          expect(Company.next_branding_payment_dates(complete_co.id)[1])
             .to eq Time.zone.today + 1.year + 1.year - 1.day
         end
-      end
-    end
-
-    describe 'scope: branding_licensed' do
-      it 'returns all currently-licensed companies' do
-        payment1.update(expire_date: Time.zone.today - 1.day)
-        payment2.update(expire_date: Time.zone.today - 1.day)
-        expect(Company.branding_licensed).to be_empty
-
-        payment1.update(expire_date: Time.zone.today)
-        expect(Company.branding_licensed).to contain_exactly(company)
-
-        payment2.update(expire_date: Time.zone.today)
-        expect(Company.branding_licensed).to contain_exactly(company)
       end
     end
   end
@@ -528,8 +487,8 @@ RSpec.describe Company, type: :model do
     end
   end
 
-  describe 'scope: with_members' do
-    let(:cmpy1) { create(:company, company_number: '5560360793') }
+  describe 'scopes' do
+
     let(:cmpy2) { create(:company, company_number: '5562252998') }
 
     let(:user1) { create(:user) }
@@ -538,12 +497,12 @@ RSpec.describe Company, type: :model do
 
     let(:app_co1_user1) do
       app = create(:shf_application, user: user1)
-      app.companies = [cmpy1]
+      app.companies = [complete_co]
       app
     end
     let(:app_co1_user2) do
       app = create(:shf_application, user: user2)
-      app.companies = [cmpy1]
+      app.companies = [complete_co]
       app
     end
     let(:app_co2_user3) do
@@ -552,36 +511,120 @@ RSpec.describe Company, type: :model do
       app
     end
 
-    before(:each) { app_co1_user1; app_co1_user2; app_co2_user3 }
+    let(:complete_scope) { Company.complete }
 
-    it 'returns no companies if no members' do
-      expect(Company.with_members).to be_empty
+    context '.complete' do
+
+      before(:each) do
+        complete_companies
+        incomplete_companies
+      end
+
+      it 'only returns companies that are complete' do
+        expect(complete_scope).to match_array(complete_companies)
+      end
+
+      it 'does not return any incomplete companies' do
+        expect(complete_scope & incomplete_companies).to match_array([])
+      end
+
     end
 
-    it 'returns all companies with members' do
-      app_co1_user1.start_review
-      app_co1_user1.accept!
-      user1.update(member: true)
+    context '.address_visible' do
 
-      expect(Company.with_members).to contain_exactly(cmpy1)
-
-      app_co2_user3.start_review
-      app_co2_user3.accept!
-      user3.update(member: true)
-
-      expect(Company.with_members).to contain_exactly(cmpy1, cmpy2)
+      it 'only returns companies that have one or more visible addresses' do
+        complete_co2
+        complete_co3
+        expect(Company.address_visible).
+            to contain_exactly(no_name, nil_region, complete_co, complete_co2)
+      end
     end
 
-    it 'returns company only once even if multiple members' do
-      app_co1_user1.start_review
-      app_co1_user1.accept!
-      user1.update(member: true)
+    context '.with_members' do
 
-      app_co1_user2.start_review; app_co1_user2.accept!
-      user2.update(member: true)
+      before(:each) { app_co1_user1; app_co1_user2; app_co2_user3 }
 
-      expect(Company.with_members).to contain_exactly(cmpy1)
+      it 'returns no companies if no members' do
+        expect(Company.with_members).to be_empty
+      end
+
+      it 'returns all companies with members' do
+        app_co1_user1.start_review
+        app_co1_user1.accept!
+        user1.update(member: true)
+
+        expect(Company.with_members).to contain_exactly(complete_co)
+
+        app_co2_user3.start_review
+        app_co2_user3.accept!
+        user3.update(member: true)
+
+        expect(Company.with_members).to contain_exactly(complete_co, cmpy2)
+      end
+
+      it 'returns company only once even if multiple members' do
+        app_co1_user1.start_review
+        app_co1_user1.accept!
+        user1.update(member: true)
+
+        app_co1_user2.start_review; app_co1_user2.accept!
+        user2.update(member: true)
+
+        expect(Company.with_members).to contain_exactly(complete_co)
+      end
     end
 
+    context '.branding_licensed' do
+
+      it 'returns all currently-licensed companies' do
+        payment1.update(expire_date: Time.zone.today - 1.day)
+        payment2.update(expire_date: Time.zone.today - 1.day)
+        expect(Company.branding_licensed).to be_empty
+
+        payment1.update(expire_date: Time.zone.today)
+        expect(Company.branding_licensed).to contain_exactly(complete_co)
+
+        payment2.update(expire_date: Time.zone.today)
+        expect(Company.branding_licensed).to contain_exactly(complete_co)
+      end
+    end
+
+    context '.searchable' do
+
+      it 'returns no companies if no companies exist' do
+        expect(Company.searchable).to be_empty
+      end
+
+      it 'returns all companies that are complete, have member(s) and paid-up' do
+        app_co1_user1.start_review
+        app_co1_user1.accept!
+        user1.update(member: true)
+        payment1
+        expect(Company.searchable).to contain_exactly(complete_co)
+      end
+
+      it 'returns no companies if none have members' do
+        app_co1_user1.start_review
+        app_co1_user1.accept!
+        payment1
+        expect(Company.searchable).to be_empty
+      end
+
+      it 'returns no companies if none are paid-up' do
+        app_co1_user1.start_review
+        app_co1_user1.accept!
+        user1.update(member: true)
+        expect(Company.searchable).to be_empty
+      end
+
+      it 'returns no companies if none have members' do
+        app_co1_user1.start_review
+        app_co1_user1.accept!
+        payment1
+        expect(Company.searchable).to be_empty
+      end
+
+    end
   end
+
 end
