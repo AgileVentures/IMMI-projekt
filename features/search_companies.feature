@@ -11,6 +11,7 @@ Background:
     | john@happymutts.com  |       | true   |
     | anna@dogsrus.com     |       | true   |
     | emma@weluvdogs.com   |       | true   |
+    | lars@nopayment.se    |       | true   |
 
   And the following business categories exist
     | name         |
@@ -39,6 +40,8 @@ Background:
     | HappyMutts  | 2120000142     | woof@happymutts.com  | Västerbotten | Bromölla  |
     | Dogs R Us   | 5562252998     | chief@dogsrus.com    | Norrbotten   | Östersund |
     | We Luv Dogs | 5569467466     | alpha@weluvdogs.com  | Sweden       | Laxå      |
+    | NoPayment   | 8028973322     | hello@nopayment.se   | Stockholm    | Alingsås  |
+    | NoMember    | 9697222900     | hello@nomember.se    | Stockholm    | Alingsås  |
 
   And the following payments exist
     | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
@@ -53,18 +56,21 @@ Background:
     | john@happymutts.com | 2120000142     | accepted | Psychologist    |
     | anna@dogsrus.com    | 5562252998     | accepted | Trainer         |
     | emma@weluvdogs.com  | 5569467466     | accepted | Groomer, Walker |
+    | lars@nopayment.se   | 8028973322     | accepted | Groomer, Trainer|
 
   Given the date is set to "2017-10-01"
 
 
 @selenium @time_adjust
-Scenario: View all companies, sort by columns
+Scenario: View all searchable companies, sort by columns
   Given I am Logged out
   And I am on the "landing" page
   And I should see "Barky Boys"
   And I should see "HappyMutts"
   And I should see "Dogs R Us"
   And I should see "We Luv Dogs"
+  And I should not see "NoPayment"
+  And I should not see "NoMember"
   And I click on t("activerecord.attributes.company.region") link
   And I should see "Norrbotten" before "Stockholm"
   And I should see "Stockholm" before "Sweden"
@@ -110,9 +116,11 @@ Scenario: Search by region
   And I should not see "We Luv Dogs"
 
 @selenium @time_adjust
-Scenario: Search by company
+Scenario: Search by company (and confirm cannot search with non-searchable company name)
   Given I am Logged out
   And I am on the "landing" page
+  And I cannot select "NoPayment" in select list t("activerecord.models.company.one")
+  And I cannot select "NoMember" in select list t("activerecord.models.company.one")
   Then I select "We Luv Dogs" in select list t("activerecord.models.company.one")
   And I click on t("search")
   Then I click on t("toggle.company_search_form.hide")
