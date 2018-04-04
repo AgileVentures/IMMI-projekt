@@ -6,8 +6,8 @@ And(/^the following companies exist:$/) do |table|
 
     cmpy = FactoryBot.create(:company, company)
 
-    cmpy.addresses.first.update(region: Region.find_by_name(region),
-                                kommun: Kommun.find_by_name(kommun),
+    cmpy.addresses.first.update(region: Region.find_or_create_by(name: region),
+                                kommun: Kommun.find_or_create_by(name: kommun),
                                 visibility: visibility)
 
   end

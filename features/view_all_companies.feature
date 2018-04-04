@@ -94,16 +94,17 @@ Feature: Visitor sees all companies
       | admin@shf.se  | true  |        |
 
     And the following payments exist
-      | user_email  | start_date | expire_date | payment_type | status | hips_id | company_name |
-      | u1@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company01    |
-      | u2@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company02    |
-      | u3@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company03    |
-      | u4@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company04    |
-      | u5@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company05    |
-      | u6@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company06    |
-      | u7@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company07    |
-      | u8@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company08    |
-      | u9@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company09    |
+      | user_email    | start_date | expire_date | payment_type | status | hips_id | company_name |
+      | u1@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company01    |
+      | u1@mutts.com  | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |              |
+      | u2@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company02    |
+      | u3@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company03    |
+      | u4@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company04    |
+      | u5@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company05    |
+      | u6@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company06    |
+      | u7@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company07    |
+      | u8@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company08    |
+      | u9@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company09    |
       | u10@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company10    |
       | u11@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company11    |
       | u12@mutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company12    |

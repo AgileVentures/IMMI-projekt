@@ -71,10 +71,6 @@ When "I select {capture_string} in select list {capture_string}" do |option, lis
   select option, from: list
 end
 
-When "I cannot select {capture_string} in select list {capture_string}" do |option, list|
-  expect(find_field(list).text.match(option)).to be_nil
-end
-
 When "I select radio button {capture_string}" do |label_text|
   find(:xpath, "//label[contains(.,'#{label_text}')]/input[@type='radio']").click
 end

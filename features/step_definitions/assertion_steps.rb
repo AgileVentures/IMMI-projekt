@@ -305,3 +305,7 @@ Then(/^I should get a downloaded image with the filename "([^\"]*)"$/) do |filen
   expect(page.driver.response_headers['Content-Type'])
     .to eq 'image/jpg'
 end
+
+When "I cannot select {capture_string} in select list {capture_string}" do |option, list|
+  expect(find_field(list).text.match(option)).to be_nil
+end

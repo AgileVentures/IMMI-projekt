@@ -5,11 +5,11 @@ Feature: As any type of visitor
 
   Background:
     Given the following users exists
-      | email               | admin |
-      | emma@happymutts.com |       |
-      | ernt@mutts.com      |       |
-      | anna@sadmutts.com   |       |
-      | admin@shf.se        | true  |
+      | email               | admin | member |
+      | emma@happymutts.com |       | true   |
+      | ernt@mutts.com      |       | true   |
+      | anna@sadmutts.com   |       | true   |
+      | admin@shf.se        | true  |        |
 
     Given the following regions exist:
       | name         |
@@ -42,6 +42,16 @@ Feature: As any type of visitor
       | ernt@mutts.com      | 5569467466     | Awesome    | accepted |
       | anna@sadmutts.com   | 2120000142     | Sadness    | accepted |
 
+    And the following payments exist
+      | user_email           | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | emma@happymutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
+      | ernt@mutts.com       | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5569467466     |
+      | anna@sadmutts.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+      | anna@sadmutts.com    | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
+
+    Given the date is set to "2017-10-01"
+
+  @time_adjust
   Scenario: Categories list multiple businesses
     Given I am Logged out
     And I am on the business category "Awesome"
@@ -51,6 +61,7 @@ Feature: As any type of visitor
     And I should see "Västerbotten"
     And I should not see "Sad Sad Snarky Barky"
 
+  @time_adjust
   Scenario: Categories list businesses
     Given I am Logged out
     And I am on the business category "Sadness"
