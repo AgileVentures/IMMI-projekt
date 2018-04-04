@@ -20,6 +20,13 @@
   = f.label :website, "#{t('companies.website_include_http')}", class: 'required'
   = f.text_field :website, class: 'wpcf7-form-control'
 
+  %p.dinkurs-help
+    = t('companies.show.dinkurs_help')
+    %br
+    = t('companies.show.dinkurs_help_can_leave_blank')
+    = f.label :dinkurs_company_id, "#{t('companies.show.dinkurs_key')}"
+    = f.text_field :dinkurs_company_id, class: 'wpcf7-form-control'
+
   = f.label :description, "#{t('companies.description')}"
   = f.cktext_area :description, class: 'wpcf7-form-control'
 

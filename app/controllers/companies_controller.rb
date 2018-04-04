@@ -64,7 +64,6 @@ class CompaniesController < ApplicationController
     @company = Company.new(sanitize_params(company_params))
 
     saved = @company.save
-
     unless request.xhr?
       if @company.save
         redirect_to @company, notice: t('.success')
@@ -101,7 +100,6 @@ class CompaniesController < ApplicationController
 
 
   def destroy
-
     if @company.destroy
       redirect_to companies_url, notice: t('companies.destroy.success')
     else
@@ -141,13 +139,13 @@ class CompaniesController < ApplicationController
     company.save! if needs_geocoding.count > 0
   end
 
-
   # Never trust parameters from the scary internet, only allow the white list through.
   def company_params
     params.require(:company).permit(:name, :company_number, :phone_number,
                                     :email,
                                     :website,
                                     :description,
+                                    :dinkurs_company_id,
                                     addresses_attributes: [:id,
                                                            :street_address,
                                                            :post_code,

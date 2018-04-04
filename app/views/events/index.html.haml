@@ -1,0 +1,12 @@
+%h1 Events list
+
+%table
+  %thead
+    %tr
+      %th Name
+      %th Show
+  %tbody
+    - @events.each do |event|
+      %tr
+        %td = event.name
+        %td= link_to 'Show', event

@@ -2,10 +2,10 @@
 
 module Dinkurs
   class Client
-    BASE_URL = ENV['DINKURS_XML_URL']
+    BASE_URL = ENV['SHF_DINKURS_XML_URL']
 
-    def initialize(company_id)
-      @company_id = company_id
+    def initialize(dinkurs_company_id)
+      @dinkurs_company_id = dinkurs_company_id
     end
 
     def company_events_hash
@@ -14,10 +14,10 @@ module Dinkurs
 
     private
 
-    attr_reader :company_id
+    attr_reader :dinkurs_company_id
 
     def request_dinkurs_for_company
-      HTTParty.get("#{BASE_URL}?company_key=#{company_id}")
+      HTTParty.get("#{BASE_URL}?company_key=#{dinkurs_company_id}")
     end
   end
 end

@@ -103,11 +103,16 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.text "description"
     t.string "dinkurs_id"
     t.string "name"
-    t.string "sing_up_url"
+    t.string "sign_up_url"
+    t.string "place"
+    t.float "latitude"
+    t.float "longitude"
     t.bigint "company_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["company_id"], name: "index_events_on_company_id"
+    t.index ["latitude", "longitude"], name: "index_events_on_latitude_and_longitude"
+    t.index ["start_date"], name: "index_events_on_start_date"
   end
 
   create_table "kommuns", force: :cascade do |t|
@@ -164,7 +169,6 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.string "state", default: "new"
     t.integer "member_app_waiting_reasons_id"
     t.string "custom_reason_text"
-    t.index ["company_id"], name: "index_shf_applications_on_company_id"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"
   end
@@ -223,6 +227,8 @@ ActiveRecord::Schema.define(version: 20180219132317) do
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
+  add_foreign_key "company_applications", "companies"
+  add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "events", "companies"
   add_foreign_key "company_applications", "companies"
   add_foreign_key "company_applications", "shf_applications"

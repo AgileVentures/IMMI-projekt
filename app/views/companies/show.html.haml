@@ -49,6 +49,12 @@
     .row.center.item-nav-buttons#item-nav-buttons
 
       - if user_can_edit
+        .dinkurs-fetch
+          = button_to 'get Dinkurs events',
+                      fetch_from_dinkurs_company_events_path(@company),
+                      id: 'getDinkursEvents',
+                      remote: true,
+                      data: {disable_with: "Getting the events..."}
 
         = link_to "#{t('.add_address')}",
                   new_company_address_path(@company),

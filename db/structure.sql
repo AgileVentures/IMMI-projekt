@@ -291,12 +291,15 @@ ALTER SEQUENCE public.company_applications_id_seq OWNED BY public.company_applic
 
 CREATE TABLE public.events (
     id bigint NOT NULL,
-    fee numeric(5,2),
+    fee numeric(8,2),
     start_date date,
     description text,
     dinkurs_id character varying,
     name character varying,
-    sing_up_url character varying,
+    sign_up_url character varying,
+    place character varying,
+    latitude double precision,
+    longitude double precision,
     company_id bigint,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
@@ -1049,6 +1052,20 @@ CREATE INDEX index_company_applications_on_shf_application_id ON public.company_
 --
 
 CREATE INDEX index_events_on_company_id ON public.events USING btree (company_id);
+
+
+--
+-- Name: index_events_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_latitude_and_longitude ON public.events USING btree (latitude, longitude);
+
+
+--
+-- Name: index_events_on_start_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_start_date ON public.events USING btree (start_date);
 
 
 --

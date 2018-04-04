@@ -7,17 +7,27 @@ module Dinkurs
     end
 
     def call
-      Event.create!(events_hashes)
+      Event.create!(missed_events_hashes)
     end
 
     private
 
     attr_reader :company
 
-    def events_hashes
+    def all_events_hashes
       Dinkurs::EventsParser
-        .new(dinkurs_events.dig('events', 'event'), company.id)
-        .call
+          .new(dinkurs_events.dig('events', 'event'), company.id)
+          .call
+    end
+
+    def missed_events_hashes
+      all_events_hashes.reject do |event_hash|
+        event_hash[:dinkurs_id].in?(current_events_keys)
+      end
+    end
+
+    def current_events_keys
+      @current_events_keys ||= Event.pluck(:dinkurs_id)
     end
 
     def dinkurs_events

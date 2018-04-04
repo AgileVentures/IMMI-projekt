@@ -24,7 +24,7 @@ module Dinkurs
         fee: event.dig('event_fee', '__content__').to_f,
         start_date: event.dig('event_start', '__content__').to_date,
         description: event.dig('event_infotext', '__content__'),
-        sing_up_url: event.dig('event_url_key', '__content__'),
+        sign_up_url: event.dig('event_url_key', '__content__'),
         company_id: company_id
       }
     end
