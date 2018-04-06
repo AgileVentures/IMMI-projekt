@@ -115,6 +115,7 @@ Feature: Applicant uploads a file for their application
     And I am on the "edit my application" page
     And I click on trash icon for "diploma.pdf"
     Then I should not see "diploma.pdf" uploaded for this membership application
+    And I should see t("shf_applications.update.success")
 
 
   Scenario: User uploads a file to an existing membership application

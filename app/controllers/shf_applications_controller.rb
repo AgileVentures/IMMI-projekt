@@ -299,13 +299,18 @@ class ShfApplicationsController < ApplicationController
   end
 
   def set_companies_for_application
-    if (company = Company.find_by_company_number(params[:company_number]))
+
+    @company = nil
+
+    if params[:company_number].present? &&
+       (company = Company.find_by_company_number(params[:company_number]))
       @company = company
-      @shf_application.companies = [company]
+      @shf_application.companies = [@company]
     else
-      @company = Company.new(company_number: params[:company_number])
-      # @shf_application.companies.clear
+      @company = @shf_application.companies.first
     end
+
+    @company = Company.new unless @company
   end
 
 
