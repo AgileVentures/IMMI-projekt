@@ -67,6 +67,10 @@ class ShfApplicationPolicy < ApplicationPolicy
     user == record.user && EDITABLE_STATES_FOR_APPLICATION.include?(record.state.to_sym)
   end
 
+  def update_reason_waiting?
+    update?
+  end
+
 
   def information?
     not_a_visitor

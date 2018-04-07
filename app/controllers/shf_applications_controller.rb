@@ -3,7 +3,8 @@ class ShfApplicationsController < ApplicationController
 
   before_action :get_shf_application, except: [:information, :index, :new, :create]
   before_action :authorize_shf_application
-  before_action :set_other_waiting_reason, only: [:show, :edit, :update, :need_info]
+  before_action :set_other_waiting_reason,
+    only: [:show, :edit, :update_reason_waiting, :need_info]
   before_action :set_allowed_file_types, only: [:edit, :new, :update, :create]
 
   def new
@@ -78,54 +79,49 @@ class ShfApplicationsController < ApplicationController
 
 
   def update
-    if request.xhr?
+    set_companies_for_application
 
-      if params[:member_app_waiting_reasons] && params[:member_app_waiting_reasons] != "#{@other_waiting_reason_value}"
-        @shf_application
-            .update(member_app_waiting_reasons_id: params[:member_app_waiting_reasons],
-                    custom_reason_text: nil)
-        head :ok
-      else
-        render plain: "#{@other_waiting_reason_value}"
-      end
+    company_valid = @company.valid?
 
-      if params[:custom_reason_text]
-        @shf_application.update(custom_reason_text: params[:custom_reason_text],
-                                member_app_waiting_reasons_id: nil)
-        head :ok
-      end
+    if @shf_application.update(shf_application_params) &&
+         company_valid && new_file_uploaded(params)
+
+      check_and_mark_if_ready_for_review params['shf_application'] if
+        params.fetch('shf_application', false)
+
+      helpers.flash_message(:notice, t('.success'))
+      redirect_to define_path(evaluate_update(params))
 
     else
+      
+      @shf_application.errors.add(:companies, :blank) unless company_valid
+      update_error(t('.error'))
+    end
+  end
 
-      set_companies_for_application
+  def update_reason_waiting
 
-      company_valid = @company.valid?
+    raise 'Unsupported request' unless request.xhr?
 
-      if @shf_application.update(shf_application_params) && company_valid
+    # One or the other of the params keys will be present - but not both
+    if params[:member_app_waiting_reasons]
 
-        if new_file_uploaded params
-
-          check_and_mark_if_ready_for_review params['shf_application'] if params.fetch('shf_application', false)
-
-          respond_to do |format|
-            format.js do
-              head :ok # just let the receiver know everything is OK. no need to render anything
-            end
-
-            rendering(format, shf_application_params)
-
-          end
-
-        else
-          update_error(t('.error'))
-        end
-
-      else
-        @shf_application.errors.add(:companies, :blank) unless company_valid
-        update_error(t('.error'))
+      if params[:member_app_waiting_reasons] == "#{@other_waiting_reason_value}"
+        render plain: "#{@other_waiting_reason_value}" and return
       end
 
+      @shf_application
+          .update(member_app_waiting_reasons_id: params[:member_app_waiting_reasons],
+                  custom_reason_text: nil)
+      head :ok
+
+    elsif params[:custom_reason_text]
+
+      @shf_application.update(custom_reason_text: params[:custom_reason_text],
+                              member_app_waiting_reasons_id: nil)
+      head :ok
     end
+
   end
 
 
@@ -181,13 +177,6 @@ class ShfApplicationsController < ApplicationController
 
 
   private
-
-  def rendering(format, params)
-    format.html do
-      helpers.flash_message(:notice, t('.success'))
-      redirect_to define_path(evaluate_update(params))
-    end
-  end
 
   def define_path(user_deleted_file)
     return edit_shf_application_path(@shf_application) if user_deleted_file
@@ -253,9 +242,6 @@ class ShfApplicationsController < ApplicationController
         end
 
       end
-
-    else # no file to upload, so all is OK. (no errors encountered since we didn't do anything)
-      successful
     end
 
     successful
