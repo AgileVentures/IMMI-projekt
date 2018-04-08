@@ -34,8 +34,7 @@ class ShfApplicationsController < ApplicationController
                             .includes(:user)
                             .page(params[:page]).per_page(items_per_page)
 
-    render partial: 'shf_applications_list' if request.xhr?
-
+    respond_to :js, :html
   end
 
 
@@ -86,41 +85,36 @@ class ShfApplicationsController < ApplicationController
     if @shf_application.update(shf_application_params) &&
          company_valid && new_file_uploaded(params)
 
-      check_and_mark_if_ready_for_review params['shf_application'] if
-        params.fetch('shf_application', false)
+      check_and_mark_if_ready_for_review(params['shf_application']) if
+        params['shf_application']
 
       helpers.flash_message(:notice, t('.success'))
       redirect_to define_path(evaluate_update(params))
-
     else
-      
-      @shf_application.errors.add(:companies, :blank) unless company_valid
-      update_error(t('.error'))
+
+      update_error(t('.error'), company_valid)
     end
   end
 
   def update_reason_waiting
 
-    raise 'Unsupported request' unless request.xhr?
-
     # One or the other of the params keys will be present - but not both
-    if params[:member_app_waiting_reasons]
+    if (reason_id = params[:member_app_waiting_reasons])
 
-      if params[:member_app_waiting_reasons] == "#{@other_waiting_reason_value}"
-        render plain: "#{@other_waiting_reason_value}" and return
+      if reason_id == "#{@other_waiting_reason_value}"
+        render plain: "#{reason_id}" and return
       end
 
       @shf_application
-          .update(member_app_waiting_reasons_id: params[:member_app_waiting_reasons],
+          .update(member_app_waiting_reasons_id: reason_id,
                   custom_reason_text: nil)
-      head :ok
-
-    elsif params[:custom_reason_text]
+    else
 
       @shf_application.update(custom_reason_text: params[:custom_reason_text],
                               member_app_waiting_reasons_id: nil)
-      head :ok
     end
+
+    head :ok
 
   end
 
@@ -147,10 +141,9 @@ class ShfApplicationsController < ApplicationController
     begin
       @shf_application.accept!
       helpers.flash_message(:notice, t('shf_applications.accept.success'))
-      redirect_to edit_shf_application_url(@shf_application)
-      return
-    rescue => e
-      helpers.flash_message(:alert, t('.error') + e.message)
+    rescue => exception
+      helpers.flash_message(:alert, t('.error') + exception.message)
+    ensure
       redirect_to edit_shf_application_path(@shf_application)
     end
   end
@@ -199,7 +192,7 @@ class ShfApplicationsController < ApplicationController
 
 
   def authorize_shf_application
-    @shf_application.nil? ? (authorize ShfApplication) : (authorize @shf_application)
+    @shf_application ? (authorize @shf_application) : (authorize ShfApplication)
   end
 
 
@@ -252,9 +245,9 @@ class ShfApplicationsController < ApplicationController
     begin
       @shf_application.send state_method
       helpers.flash_message(:notice, success_msg)
-      render :show
-    rescue => e
-      helpers.flash_message(:error, error_msg + e.message)
+    rescue => exception
+      helpers.flash_message(:error, error_msg + exception.message)
+    ensure
       render :show
     end
   end
@@ -267,16 +260,11 @@ class ShfApplicationsController < ApplicationController
   end
 
 
-  def update_error(error_message)
-
-    if request.xhr?
-      render json: @shf_application.errors.full_messages, status: :unprocessable_entity if request.xhr?
-    else
-      helpers.flash_message(:alert, error_message)
-      load_update_objects
-      render :edit
-    end
-
+  def update_error(error_message, company_valid)
+    @shf_application.errors.add(:companies, :blank) unless company_valid
+    helpers.flash_message(:alert, error_message)
+    load_update_objects
+    render :edit
   end
 
   def load_update_objects
@@ -285,12 +273,15 @@ class ShfApplicationsController < ApplicationController
   end
 
   def set_companies_for_application
-    if (company = Company.find_by_company_number(params[:company_number]))
+    company_number = params[:company_number]
+
+    if (company = Company.find_by_company_number(company_number))
+
       @company = company
       @shf_application.companies = [company]
     else
-      @company = Company.new(company_number: params[:company_number])
-      # @shf_application.companies.clear
+
+      @company = Company.new(company_number: company_number)
     end
   end
 
