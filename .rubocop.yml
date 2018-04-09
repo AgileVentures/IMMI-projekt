@@ -31,7 +31,7 @@ Lint/AssignmentInCondition:
   StyleGuide: 'https://github.com/bbatsov/ruby-style-guide#safe-assignment-in-condition'
   Enabled: true
 
-Lint/BlockAlignment:
+Layout/BlockAlignment:
   Description: 'Align block ends correctly.'
   Enabled: true
 
@@ -39,7 +39,7 @@ Lint/CircularArgumentReference:
   Description: "Don't refer to the keyword argument in the default value."
   Enabled: true
 
-Lint/ConditionPosition:
+Layout/ConditionPosition:
   Description: >-
                  Checks for condition placed in a confusing position relative to
                  the keyword.
@@ -50,7 +50,7 @@ Lint/Debugger:
   Description: 'Check for debugger calls.'
   Enabled: true
 
-Lint/DefEndAlignment:
+Layout/DefEndAlignment:
   Description: 'Align ends corresponding to defs correctly.'
   Enabled: true
 
@@ -78,7 +78,7 @@ Lint/EmptyInterpolation:
   Description: 'Checks for empty string interpolation.'
   Enabled: true
 
-Lint/EndAlignment:
+Layout/EndAlignment:
   Description: 'Align ends correctly.'
   Enabled: true
 
@@ -157,7 +157,7 @@ Lint/UnderscorePrefixedVariableName:
   Description: 'Do not use prefix `_` for a variable that is used.'
   Enabled: true
 
-Lint/UnneededDisable:
+Lint/UnneededCopDisableDirective:
   Description: >-
                  Checks for rubocop:disable comments that can be removed.
                  Note: this cop is not disabled when disabling all cops.
