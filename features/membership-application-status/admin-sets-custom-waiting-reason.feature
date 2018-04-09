@@ -66,6 +66,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select t("admin_only.member_app_waiting_reasons.other_custom_reason") in select list "member_app_waiting_reasons"
     And I wait for all ajax requests to complete
+    And I wait 2 seconds
     When I fill in "custom_reason_text" with "This is my reason"
     And I press enter in "custom_reason_text"
     And I am on the "membership applications" page
@@ -81,6 +82,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     Given I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select t("admin_only.member_app_waiting_reasons.other_custom_reason") in select list "member_app_waiting_reasons"
     And I wait for all ajax requests to complete
+    And I wait 2 seconds
     And I fill in "custom_reason_text" with "This is my reason"
     And I press enter in "custom_reason_text"
     And I wait for all ajax requests to complete
@@ -100,6 +102,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     And I press enter in "custom_reason_text"
     And I select "need doc" in select list "member_app_waiting_reasons"
     And I wait for all ajax requests to complete
+    And I wait 2 seconds
     # change back so the custom reason field shows. it should be blank
     And I select t("admin_only.member_app_waiting_reasons.other_custom_reason") in select list "member_app_waiting_reasons"
     And I wait for all ajax requests to complete
@@ -119,6 +122,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     Then I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
     When I select t("admin_only.member_app_waiting_reasons.other_custom_reason") in select list "member_app_waiting_reasons"
     And I wait for all ajax requests to complete
+    And I wait 2 seconds
     And I fill in "custom_reason_text" with "This is my reason"
     Then I click the browser back button and "dismiss" the prompt
     And the t("shf_applications.need_info.other_reason_label") field should be set to "This is my reason"
