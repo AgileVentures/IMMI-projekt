@@ -46,6 +46,8 @@
 
     = render 'company_addresses', company: @company, user_can_edit: user_can_edit
 
+    = render 'events/teaser_list', events: @company.events
+
     .row.center.item-nav-buttons#item-nav-buttons
 
       - if user_can_edit

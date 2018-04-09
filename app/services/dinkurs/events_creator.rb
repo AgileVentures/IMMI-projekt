@@ -7,7 +7,7 @@ module Dinkurs
     end
 
     def call
-      Event.create!(missed_events_hashes)
+      Event.create!(missed_or_changed_events_hashes)
     end
 
     private
@@ -20,7 +20,7 @@ module Dinkurs
           .call
     end
 
-    def missed_events_hashes
+    def missed_or_changed_events_hashes
       all_events_hashes.reject do |event_hash|
         event_hash[:dinkurs_id].in?(current_events_keys)
       end
