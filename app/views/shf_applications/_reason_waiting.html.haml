@@ -40,6 +40,14 @@
 
   $(document).ready(function () {
 
+    $('#member_app_waiting_reasons').on('ajax:success', function (e, show_other_reason) {
+      if (show_other_reason == 'true') {
+        $('#other-text-field').show();
+      } else {
+        $('#other-text-field').hide();
+      }
+    });
+
     $('#custom_reason_text').on('input', ChangeStatus.received_input);
 
     $('#custom_reason_text').on('change', function (e) {

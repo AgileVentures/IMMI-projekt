@@ -98,24 +98,23 @@ class ShfApplicationsController < ApplicationController
 
   def update_reason_waiting
 
-    @show_other_reason = true
-
     if (reason_id = params[:member_app_waiting_reasons])
 
-      unless reason_id == @other_waiting_reason_value
-        @show_other_reason = false
-
-        @shf_application.update(member_app_waiting_reasons_id: reason_id,
-                                custom_reason_text: nil)
+      if reason_id == @other_waiting_reason_value
+        render plain: 'true' and return
       end
 
+      @shf_application
+          .update(member_app_waiting_reasons_id: reason_id,
+                  custom_reason_text: nil)
     else
 
       @shf_application.update(custom_reason_text: params[:custom_reason_text],
                               member_app_waiting_reasons_id: nil)
     end
 
-    respond_to :js
+    head :ok
+
   end
 
 
