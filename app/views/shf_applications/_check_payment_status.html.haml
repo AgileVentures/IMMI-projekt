@@ -27,8 +27,7 @@
   - need_to_pay = false
 
 
-- if current_user.has_company?
-  - company = current_user.companies.first
+- if (company = current_user.companies.first)
 
   - if ! company.most_recent_branding_payment
     -# User has never paid

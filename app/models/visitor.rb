@@ -20,10 +20,6 @@ class Visitor
     nil
   end
 
-  def has_company?
-    false
-  end
-
   def in_company_numbered?(_company_number_)
     false
   end

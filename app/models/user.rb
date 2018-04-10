@@ -10,6 +10,8 @@ class User < ApplicationRecord
 
   has_one :shf_application
 
+  has_many :companies, through: :shf_application
+
   has_many :payments
   accepts_nested_attributes_for :payments
 
@@ -83,20 +85,6 @@ class User < ApplicationRecord
     if member? && ! membership_current?
       update(member: false)
     end
-  end
-
-
-  def has_company?
-    shf_application&.companies&.any?
-  end
-
-
-  def companies
-    return Company.all if admin?
-
-    return [] unless has_company?
-
-    shf_application.companies
   end
 
 

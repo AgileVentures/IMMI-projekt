@@ -43,18 +43,25 @@
 
                   = render 'navigation_member_pages'
 
-                  - if current_user.has_company?
-                    - member_company = current_user.shf_application&.company
+                  - if (company_count = current_user.companies.count) > 0
+
                     %li.menu-item.menu-item-has-children
-                      = link_to t('menus.nav.members.manage_company.submenu_title'),
-                                company_path(member_company)
+                      %a.link-no-styling{ href: '#' }
+                        = t('my_company', count: company_count)
+
                       %ul.sub-menu
-                        %li.menu-item
-                          = link_to t('menus.nav.members.manage_company.view_company'),
-                                    company_path(member_company)
-                        %li.menu-item
-                          = link_to t('menus.nav.members.manage_company.edit_company'),
-                                    edit_company_path(member_company)
+
+                        - current_user.companies.each do |company|
+
+                          %li.menu-item.menu-item-has-children
+                            %a.link-no-styling{ href: '#' }= company.name
+                            %ul.sub-menu
+                              %li.menu-item
+                                = link_to t('menus.nav.members.manage_company.view_company'),
+                                          company_path(company)
+                              %li.menu-item
+                                = link_to t('menus.nav.members.manage_company.edit_company'),
+                                          edit_company_path(company)
 
                   = render 'navigation_edit_my_application', shf_app: current_user.shf_application
 

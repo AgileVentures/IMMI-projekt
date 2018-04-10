@@ -101,6 +101,10 @@ en:
     spoofed_media_type: &spoofed_media file name (type) does not match the file
                         content.  Please use another photo file.
 
+  my_company:
+    one: My Company
+    other: My Companies
+
  # Automatic and manual lookup for ActiveRecords:
   activerecord:
     models:
@@ -1046,7 +1050,6 @@ en:
         member_pages: *member_pages
         shf_meeting_minutes: *member_pages_board_meetings
         manage_company:
-          submenu_title: My company
           view_company: View Company
           edit_company: Edit My Company
         my_application: *my_application

@@ -275,41 +275,6 @@ RSpec.describe User, type: :model do
     end
   end
 
-  describe '#companies' do
-    describe 'not yet a member, so not in any full companies' do
-
-      describe 'user: 1 saved application' do
-        subject { create(:user_with_membership_app) }
-        it { expect(subject.companies.size).to eq(1) }
-      end
-    end
-
-    describe 'is a member, so is in companies' do
-
-      describe 'member with 1 app' do
-        let(:member) { create(:member_with_membership_app) }
-        it { expect(member.companies.size).to eq(1) }
-      end
-
-      describe 'member with 0 apps (should not happen)' do
-        let(:member) { create(:user) }
-        it { expect(member.companies.size).to eq(0) }
-      end
-
-    end
-
-    describe 'admin will get all Companies' do
-      subject { create(:user, admin: true) }
-      it do
-        create(:company, company_number: '0000000000')
-        create(:company, company_number: '5560360793')
-        create(:company, company_number: '2120000142')
-        num_companies = Company.all.size
-        expect(subject.companies.size).to eq(num_companies)
-      end
-    end
-  end
-
   describe '#admin?' do
     describe 'user: no application' do
       subject { create(:user) }
