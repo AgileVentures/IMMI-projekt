@@ -101,6 +101,10 @@ sv:
     spoofed_media_type: &spoofed_media filnamn (typ) matchar inte filinnehållet.
                         Vänligen använd en annan bildfil.
 
+  my_company:
+    one: Mitt företag
+    other: Mina företag
+
   # Automatisk och manuell sökning för Active Records
   activerecord:
     models:
@@ -1049,7 +1053,6 @@ sv:
         member_pages: *member_pages
         shf_meeting_minutes: *member_pages_board_meetings
         manage_company:
-          submenu_title: Mitt företag
           view_company: Visa företagssida
           edit_company: Redigera företag
         my_application: *my_application

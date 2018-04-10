@@ -8,8 +8,9 @@ RSpec.describe 'companies/index' do
 
   let(:user)    { FactoryBot.create(:user_with_membership_app) }
 
-  let(:cmpy_id) { member.shf_application.company.id }
-  let(:cmpy_id) { member.shf_application.company.id }
+  let(:cmpy_id) { member.shf_application.companies.first.id }
+
+  let(:cmpy2)   { FactoryBot.create(:company, name: 'Second Company') }
 
   let(:app_id)  { member.shf_application.id }
 
@@ -69,23 +70,77 @@ RSpec.describe 'companies/index' do
       end
     end
 
-    context 'manage my company menu' do
+    context 'manage my company(s) menu' do
 
-      it 'renders default menu link == view-my-company' do
-        text = t('menus.nav.members.manage_company.submenu_title')
-        expect(rendered).to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\">#{text}}
+      context 'single company for member' do
+
+        it 'renders menu title == "My Company"' do
+          expect(rendered).to match t('my_company', count: 1)
+        end
+
+        it 'renders sub-menu title with company name' do
+          text = %r{href=\'\#\'>#{member.companies.first.name}}
+          expect(rendered).to match text
+        end
+
+        it 'renders view-my-company link' do
+          text = t('menus.nav.members.manage_company.view_company')
+          expect(rendered)
+            .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\">#{text}}
+        end
+
+        it 'renders edit-my-company link' do
+          text = t('menus.nav.members.manage_company.edit_company')
+          expect(rendered)
+            .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\/redigera\">#{text}}
+        end
       end
 
-      it 'renders view-my-company link' do
-        text = t('menus.nav.members.manage_company.view_company')
-        expect(rendered)
-          .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\">#{text}}
-      end
+      context 'two companies for member' do
 
-      it 'renders edit-my-company link' do
-        text = t('menus.nav.members.manage_company.edit_company')
-        expect(rendered)
-          .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\/redigera\">#{text}}
+        before(:each) do
+          member.shf_application.companies << cmpy2
+          member.reload
+          render 'application/navigation'
+        end
+
+        it 'renders menu title == "My Companies"' do
+          expect(rendered).to match t('my_company', count: 2)
+        end
+
+        it 'renders sub-menu title with first company name' do
+          text = %r{href=\'\#\'>#{member.companies.first.name}}
+          expect(rendered).to match text
+        end
+
+        it 'renders view-my-company link - first company' do
+          text = t('menus.nav.members.manage_company.view_company')
+          expect(rendered)
+            .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\">#{text}}
+        end
+
+        it 'renders edit-my-company link - first company' do
+          text = t('menus.nav.members.manage_company.edit_company')
+          expect(rendered)
+            .to match %r{<a href=\"\/hundforetag\/#{cmpy_id}\/redigera\">#{text}}
+        end
+
+        it 'renders sub-menu title with second company name' do
+          text = %r{href=\'\#\'>#{member.companies.second.name}}
+          expect(rendered).to match text
+        end
+
+        it 'renders view-my-company link - second company' do
+          text = t('menus.nav.members.manage_company.view_company')
+          expect(rendered)
+            .to match %r{<a href=\"\/hundforetag\/#{cmpy2.id}\">#{text}}
+        end
+
+        it 'renders edit-my-company link - second company' do
+          text = t('menus.nav.members.manage_company.edit_company')
+          expect(rendered)
+            .to match %r{<a href=\"\/hundforetag\/#{cmpy2.id}\/redigera\">#{text}}
+        end
       end
     end
 
