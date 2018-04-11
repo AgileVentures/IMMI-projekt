@@ -119,7 +119,7 @@ Feature: So that I do not get frustrated by trying to find out more
     When I am on the business category "Trainer"
     Then I should not see "5906055081"
     And I should not see "NoRegion"
-    And I should not see "Happy Mutts"
+    And I should not see "Happy Mutts" in the business categories table
     And I should not see "5560360793"
     And I should not see "NoPayment"
     And I should not see "NoMember"

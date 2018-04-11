@@ -123,11 +123,6 @@ RSpec.describe User, type: :model do
       it { expect(subject.has_shf_application?).to be_truthy }
     end
 
-    describe 'user: 1 not yet saved application' do
-      let(:user_with_app) { build(:user_with_membership_app) }
-      it { expect(subject.has_company?).to be_falsey }
-    end
-
     describe 'member with 1 app' do
       let(:member) { create(:member_with_membership_app) }
       let(:member_app) { create(:shf_application, user: user_with_app) }
@@ -144,40 +139,6 @@ RSpec.describe User, type: :model do
       it { expect(subject.has_shf_application?).to be_falsey }
     end
 
-  end
-
-  describe '#has_company?' do
-
-    after(:each) {
-      Company.destroy_all
-      ShfApplication.destroy_all
-      User.destroy_all
-    }
-
-    describe 'user: no application' do
-      subject { create(:user) }
-      it { expect(subject.has_company?).to be_falsey }
-    end
-
-    describe 'user: 1 saved application' do
-      subject { create(:user_with_membership_app) }
-      it { expect(subject.has_company?).to be_truthy }
-    end
-
-    describe 'member with 1 app' do
-      let(:member) { create(:member_with_membership_app) }
-      it { expect(member.has_company?).to be_truthy }
-    end
-
-    describe 'member with 0 apps (should not happen)' do
-      let(:member) { create(:user) }
-      it { expect(member.has_company?).to be_falsey }
-    end
-
-    describe 'admin' do
-      subject { create(:user, admin: true) }
-      it { expect(subject.has_company?).to be_falsey }
-    end
   end
 
   describe '#shf_application' do

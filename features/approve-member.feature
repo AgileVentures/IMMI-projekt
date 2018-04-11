@@ -67,7 +67,7 @@ Feature: As an admin
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the payment
     And I should see t("payments.success.success")
-    Then I should see t("menus.nav.members.manage_company.submenu_title")
+    Then I should see t("my_company", count: "1.to_i")
     And I am on the "show my application" page for "anna@nosnarkybarky.se"
     Then I should see t("shf_applications.show.membership_number")
     And I should not see "902"

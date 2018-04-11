@@ -18,3 +18,7 @@ Given(/^I am on the business category "([^"]*)"$/) do |name|
   business_category = BusinessCategory.find_by(name: name)
   visit path_with_locale(business_category_path(business_category))
 end
+
+And(/I should( not)? see "([^"]*)" in the business categories table$/) do | negate, cmpy |
+  step %{I should#{negate} see xpath "tr[td//text()[contains(., '#{cmpy}')]]"}
+end

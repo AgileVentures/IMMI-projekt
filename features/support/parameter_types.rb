@@ -63,6 +63,13 @@ def parse_i18n_string(i18n_string)
       keyvalue = e.sub(' :', ' ').split(':')
       key = keyvalue[0].strip.to_sym
       value = keyvalue[1].strip
+
+      # Parameters other than strings can be handled by specifying a
+      # string transformation method in the cucumber step, e.g.:
+      #  Then I should see t("my_company", count: '1.to_i')
+      if (idx = value.index('.to_'))
+        value = value[0..idx-1].send(value[idx+1..-1])
+      end
       parameters[key] = value
     end
   end
