@@ -48,12 +48,6 @@ class ShfApplication < ApplicationRecord
   delegate :full_name, to: :user, prefix: true
   delegate :membership_number, :membership_number=, to: :user, prefix: false
 
-  def company
-    # Method used during restructuring to allow an application to have_many
-    # companies.  Remove when restructuring complete.
-    companies.last
-  end
-
   include AASM
 
   aasm :column => 'state' do

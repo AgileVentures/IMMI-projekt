@@ -51,7 +51,7 @@ module PathHelpers
       when 'my third company'
         path = company_path(user.shf_application.companies.third)
       when 'edit my company'
-        path = edit_company_path(user.shf_application.company)
+        path = edit_company_path(user.shf_application.companies.first)
       when 'all users'
         path = users_path
       when 'all shf documents'

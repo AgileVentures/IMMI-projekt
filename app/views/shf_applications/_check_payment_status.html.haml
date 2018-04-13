@@ -28,7 +28,7 @@
 
 - if current_user.companies.any?
 
-  - current_user.companies.each do |company|
+  - current_user.companies.order(:id).each do |company|
 
     - if ! company.most_recent_branding_payment
       -# User has never paid

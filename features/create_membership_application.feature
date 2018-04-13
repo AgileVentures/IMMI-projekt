@@ -85,6 +85,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.company_number") with "2286411992"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
+    And I wait 2 seconds
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
 
@@ -118,6 +119,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.company_number") with "5562252998"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
+    And I wait 2 seconds
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
 

@@ -86,7 +86,7 @@ module DataCreationHelper
     u = create(:member_with_membership_app, company_number: company_number)
     u.shf_application.update(created_at: payment_create_date, updated_at: payment_create_date)
 
-    co = u.shf_application.company
+    co = u.shf_application.companies.first
 
     create(:payment,
            user: u,
