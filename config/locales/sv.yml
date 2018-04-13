@@ -383,8 +383,8 @@ sv:
         pay_m_here: 'Ditt medlemskap betalas på denna sida:'
         approved_since_before: Du är godkänd sedan innan men du har just nu en eller flera avgifter som inte är betalda.
         m_expires: 'Ditt medlemskap är betalt till:'
-        h_expires: 'Din H-märkningspremie är betald till:'
-        pay_h_here: 'Din H-märkningspremie behöver betalas:'
+        h_expires_html: 'Din H-branding avgift-betalning för företaget <b>%{company}</b> utgått:'
+        pay_h_here_html: 'Din H-branding avgift för företaget <b>%{company}</b> måste betalas:'
 
       user:
         title: Hej, kul att du är intresserad

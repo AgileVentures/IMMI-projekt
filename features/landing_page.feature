@@ -12,19 +12,24 @@ Feature: As a Member
       | admin@shf.se    | true  | false  |                   |
 
     Given the following companies exist:
-      | name       | company_number | email                 | region    |
-      | HappyMutts | 2120000142     | woof@happymutts.com   | Stockholm |
-      | HappyMuffs | 6222279082     | woof@happymuffs.com   | Stockholm |
+      | name            | company_number | email                | region    |
+      | HappyMutts      | 2120000142     | woof@happymutts.com  | Stockholm |
+      | HappyMuffs      | 6222279082     | woof@happymuffs.com  | Stockholm |
+      | BrandingNotPaid | 5560360793     | nobranding@mail.com  | Stockholm |
+      | BrandingExpired | 7661057765     | exbranding@mail.com  | Stockholm |
 
     Given the following applications exist:
       | user_email      | company_number | category_name | state         |
       | emma@mutts.com  | 2120000142     | rehab         | accepted      |
+      | emma@mutts.com  | 5560360793     | rehab         | accepted      |
+      | emma@mutts.com  | 7661057765     | rehab         | accepted      |
       | anna@muffs.com  | 6222279082     | other         | under_review  |
-      | fanny@mutts.com | 6222279082     | other         | accepted  |
+      | fanny@mutts.com | 6222279082     | other         | accepted      |
 
     Given the following payments exist
       | user_email     | start_date | expire_date | payment_type | status | hips_id | company_number |
       | emma@mutts.com | 2017-10-1  | 2018-01-31  | branding_fee | betald | none    | 2120000142     |
+      | emma@mutts.com | 2017-10-1  | 2018-01-31  | branding_fee | betald | none    | 7661057765     |
       | emma@mutts.com | 2017-10-1  | 2018-02-27  | member_fee   | betald | none    |                |
 
   Scenario: After login, Admin still sees new memberships on their landing page
@@ -72,11 +77,19 @@ Feature: As a Member
     Given the date is set to "2018-02-01"
     And I am logged in as "emma@mutts.com"
     When I am on the "user instructions" page
-    Then I should see t("shf_applications.information.check_payment_status.h_expires")
+    Then I should see t("shf_applications.information.check_payment_status.h_expires_html", company: 'HappyMutts')
+    And I should see t("shf_applications.information.check_payment_status.h_expires_html", company: 'BrandingExpired')
+    And I should see t("shf_applications.information.check_payment_status.pay_h_here_html", company: 'BrandingNotPaid')
     And I should not see t("shf_applications.information.check_payment_status.m_expires")
     And I should not see t("shf_applications.information.waiting_for_approval.in_process")
-    When I click on t("menus.nav.company.pay_branding_fee")
-    Then I should be on the "my company" page for "emma@mutts.com"
+    When I click on first t("menus.nav.company.pay_branding_fee") link
+    Then I should be on the "my first company" page for "emma@mutts.com"
+    Then I am on the "user instructions" page
+    And I click on second t("menus.nav.company.pay_branding_fee") link
+    Then I should be on the "my second company" page for "emma@mutts.com"
+    Then I am on the "user instructions" page
+    And I click on third t("menus.nav.company.pay_branding_fee") link
+    Then I should be on the "my third company" page for "emma@mutts.com"
 
   Scenario: After login, user with accepted app but with no membership payment sees instructions to pay
     And I am logged in as "fanny@mutts.com"
@@ -90,11 +103,11 @@ Feature: As a Member
   Scenario: After login, Member without previously paid H-branding sees correct instructions about H branding
     And I am logged in as "fanny@mutts.com"
     When I am on the "user instructions" page
-    Then I should see t("shf_applications.information.check_payment_status.pay_h_here")
-    And I should not see t("shf_applications.information.check_payment_status.h_expires")
+    Then I should see t("shf_applications.information.check_payment_status.pay_h_here_html", company: 'HappyMuffs')
+    And I should not see t("shf_applications.information.check_payment_status.h_expires, company: 'HappyMuffs'")
     And I should not see t("shf_applications.information.waiting_for_approval.in_process")
     When I click on t("menus.nav.company.pay_branding_fee")
-    Then I should be on the "my company" page for "fanny@mutts.com"
+    Then I should be on the "my first company" page for "fanny@mutts.com"
 
   Scenario: After login, user with accepted app sees info about their app being handled
     Given I am logged in as "anna@muffs.com"

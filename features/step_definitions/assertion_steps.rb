@@ -44,8 +44,12 @@ module PathHelpers
         path = new_company_path
       when 'submit new membership application'
         path = new_shf_application_path
-      when 'my company'
-        path = company_path(user.shf_application.company)
+      when 'my first company'
+        path = company_path(user.shf_application.companies.first)
+      when 'my second company'
+        path = company_path(user.shf_application.companies.second)
+      when 'my third company'
+        path = company_path(user.shf_application.companies.third)
       when 'edit my company'
         path = edit_company_path(user.shf_application.company)
       when 'all users'

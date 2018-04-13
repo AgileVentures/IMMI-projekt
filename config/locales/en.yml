@@ -395,8 +395,8 @@ en:
         pay_m_here: 'Pay your membership on this page:'
         approved_since_before: You are approved since earlier but have one or more unpaid fees.
         m_expires: 'Your membership-payment expired:'
-        h_expires: 'Your H-branding fee-payment expired:'
-        pay_h_here: 'Your H-branding fee needs to be paid:'
+        h_expires_html: 'Your H-branding fee-payment for company <b>%{company}</b> expired:'
+        pay_h_here_html: 'Your H-branding fee for company <b>%{company}</b>BrandingNotPaid needs to be paid:'
 
     start_review:
       success: The review has been started.

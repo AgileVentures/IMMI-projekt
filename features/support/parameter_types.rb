@@ -12,7 +12,9 @@ ParameterType(
     else
       cleaned_content = content.delete("\"'")[2..-2]
       key, parameters = parse_i18n_string(cleaned_content)
-      i18n_content(key, parameters)
+      Rails::Html::FullSanitizer.new.sanitize(i18n_content(key, parameters))
+      # ^ strip html styling tags in i18n string (otherwise comparison of the
+      #   string to the rendered version will fail)
     end
   end
 )
