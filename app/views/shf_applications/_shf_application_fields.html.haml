@@ -53,18 +53,16 @@
 
     %p.field-instruction= t('shf_applications.new.enter_company_number')
 
-    .div
+    #company-number-entry
+      = company_number_entry_field(companies)
 
-      #company-number-entry
-        = company_number_entry_field(company.company_number)
+    .new-company-link
 
-      .new-company-link
+      -# NOTE: Capybara cannot find link without 'href' attribute
+      %a.btn.btn-warning.btn-sm{ href: '#', 'data-toggle': 'modal',
+                                 'data-target': '#company-create-modal' }
 
-        -# NOTE: Capybara cannot find link without 'href' attribute
-        %a.btn.btn-warning.btn-sm{ href: '#', 'data-toggle': 'modal',
-                                   'data-target': '#company-create-modal' }
-
-          = t('companies.new.title')
+        = t('companies.new.title')
 
     .clearfix
 

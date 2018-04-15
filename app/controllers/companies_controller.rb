@@ -78,15 +78,15 @@ class CompaniesController < ApplicationController
     # XHR request from modal in ShfApplication create view (to create company)
     if saved
       status = 'success'
-      id = 'company-number-entry'
-      html = helpers.company_number_entry_field(@company.company_number)
+      id = 'shf_application_company_number'
+      value = @company.company_number
     else
       status = 'errors'
       id = 'company-create-errors'
-      html = helpers.model_errors_helper(@company)
+      value = helpers.model_errors_helper(@company)
     end
 
-    render json: { status: status, id: id, html: html }
+    render json: { status: status, id: id, value: value }
   end
 
 

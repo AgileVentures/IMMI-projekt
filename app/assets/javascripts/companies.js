@@ -17,8 +17,14 @@ $(function() {
   });
 
   $('#companyCreateForm').on('ajax:success', function (e, data) {
-    $('#' + data.id).html(data.html);
-    if (data.status === 'success') {
+    var ele = $('#' + data.id);
+
+    if (data.status === 'errors') {
+      ele.html(data.value);
+    } else {
+      ele.val( function( index, val ) {
+        return (val.length > 0 ? val + ', ' + data.value : data.value);
+      });
       $('#company-create-modal').modal('hide');
       $('#company-create-errors').html('');
     }

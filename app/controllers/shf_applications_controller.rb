@@ -9,7 +9,7 @@ class ShfApplicationsController < ApplicationController
 
   def new
     @shf_application = ShfApplication.new(user: current_user)
-    @company = Company.new
+    @companies = [Company.new]
     @all_business_categories = BusinessCategory.all
     @uploaded_file = @shf_application.uploaded_files.build
   end
@@ -44,7 +44,7 @@ class ShfApplicationsController < ApplicationController
 
 
   def edit
-    @company = @shf_application.companies.first
+    @companies = @shf_application.companies
     load_update_objects
   end
 
