@@ -73,7 +73,7 @@ Feature: Create a new membership application
     Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
-  @selenium
+  @selenium_browser
   Scenario: A user can submit a new Membership Application with no categories
     Given I am on the "new application" page
     And I fill in the translated form with data:
@@ -85,7 +85,6 @@ Feature: Create a new membership application
     And I fill in t("companies.show.company_number") with "2286411992"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
-    And I wait 2 seconds
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
 
@@ -107,7 +106,7 @@ Feature: Create a new membership application
     And the field t("shf_applications.new.phone_number") should not have a required field indicator
     And I should see t("is_required_field")
 
-  @selenium
+  @selenium_browser
   Scenario: Two users can submit a new Membership Application (with empty membershipnumbers)
     And I am on the "new application" page
     And I fill in the translated form with data:
@@ -119,7 +118,6 @@ Feature: Create a new membership application
     And I fill in t("companies.show.company_number") with "5562252998"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
-    And I wait 2 seconds
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
 
@@ -137,7 +135,6 @@ Feature: Create a new membership application
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
     And I wait for all ajax requests to complete
-    And I wait 2 seconds
     And I click on t("shf_applications.new.submit_button_label")
 
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)
