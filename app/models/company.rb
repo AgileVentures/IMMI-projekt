@@ -111,6 +111,11 @@ class Company < ApplicationRecord
       .joins(:users).where('users.member = ?', true).distinct
   end
 
+  def self.searchable
+    # Criteria limiting visibility of companies to non-admin users
+    complete.with_members.branding_licensed
+  end
+
   def destroy_checks
 
     error_if_has_applications?

@@ -25,6 +25,7 @@ Feature: All companies are geocoded before being shown on the view all companies
       | email               | admin | member |
       | emma@happymutts.com |       | true   |
       | a@happymutts.com    |       | true   |
+      | me@notvisible.com   |       | true   |
       | admin@shf.se        | true  |        |
 
     And the following business categories exist
@@ -36,11 +37,13 @@ Feature: All companies are geocoded before being shown on the view all companies
       | user_email          | company_number | categories | state    |
       | emma@happymutts.com | 5560360793     | Groomer    | accepted |
       | a@happymutts.com    | 2120000142     | Trainer    | accepted |
+      | me@notvisible.com   | 5569467466     | Trainer    | accepted |
 
     And the following payments exist
       | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
       | emma@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
       | a@happymutts.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+      | me@notvisible.com   | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5569467466     |
 
 
   @time_adjust

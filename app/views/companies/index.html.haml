@@ -32,4 +32,4 @@
     %strong
       #{t('.no_search_results')}
   - else
-    = render 'companies_list', companies: @companies
+    = render 'companies_list', companies: @companies, search_params: @search_params

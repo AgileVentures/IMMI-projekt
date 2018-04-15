@@ -25,12 +25,7 @@ class CompaniesController < ApplicationController
     # allowing sorting on an associated table column ("region" in this case)
     # https://github.com/activerecord-hackery/ransack#problem-with-distinct-selects
 
-    unless current_user.admin?
-      @all_companies = @all_companies
-                           .branding_licensed
-                           .with_members
-                           .complete
-    end
+    @all_companies = @all_companies.searchable unless current_user.admin?
 
     @all_visible_companies = @all_companies.address_visible
 
@@ -38,7 +33,8 @@ class CompaniesController < ApplicationController
 
     @companies = @all_companies.page(params[:page]).per_page(items_per_page)
 
-    render partial: 'companies_list', locals: { companies: @companies } if request.xhr?
+    render partial: 'companies_list', locals: { companies: @companies,
+                    search_params: @search_params } if request.xhr?
   end
 
   def show

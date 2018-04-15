@@ -27,83 +27,105 @@ Feature: So that I do not get frustrated by trying to find out more
       | Bowsers      | 2120000142     | bowwow@bowsersy.com    | Västerbotten          | Bromölla |
       | NoRegion     | 8028973322     | hello@NoRegion.se      | ThisNameWillBeDeleted | Laxå     |
       |              | 5906055081     | hello@noName.se        | Stockholm             | Alingsås |
+      | NoPayment    | 5562252998     | hello@nopayment.se     | Stockholm             | Alingsås |
+      | NoMember     | 9697222900     | hello@nomember.se      | Stockholm             | Alingsås |
 
     And the following users exists
-      | email                        | admin |
-      | emmagroomer@happymutts.com   |       |
-      | annaTrainer@bowsers.com      |       |
-      | ole@noOldRegion.se           |       |
-      | maja@onlyNoRegion.se         |       |
-      | kikki@noName.se              |       |
-      | larsGroomer@noRegionOrOld.se |       |
-      | larsTrainer@noRegionOrOld.se |       |
-      | admin@shf.se                 | true  |
-
+      | email                        | admin | member |
+      | emmagroomer@happymutts.com   |       | true   |
+      | annatrainer@bowsers.com      |       | true   |
+      | ole@noOldRegion.se           |       | true   |
+      | maja@onlyNoRegion.se         |       | true   |
+      | kikki@noName.se              |       | true   |
+      | lars@nopayment.se            |       | true   |
+      | larsTrainer@noRegionOrOld.se |       | true   |
+      | admin@shf.se                 | true  | false  |
 
     And the following applications exist:
       | user_email                 | company_number | categories       | state    |
-      | emmaGroomer@happymutts.com | 5560360793     | Groomer          | accepted |
-      | annaTrainer@bowsers.com    | 2120000142     | Trainer          | accepted |
+      | emmagroomer@happymutts.com | 5560360793     | Groomer          | accepted |
+      | annatrainer@bowsers.com    | 2120000142     | Trainer          | accepted |
       | ole@noOldRegion.se         | 5569467466     | Groomer, Trainer | accepted |
       | maja@onlyNoRegion.se       | 8028973322     | Groomer, Trainer | accepted |
       | kikki@noName.se            | 5906055081     | Groomer, Trainer | accepted |
+      | lars@nopayment.se          | 5562252998     | Groomer, Trainer | accepted |
 
+    And the following payments exist
+      | user_email                  | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | emmagroomer@happymutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
+      | emmagroomer@happymutts.com  | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
+      | annatrainer@bowsers.com     | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+      | annatrainer@bowsers.com     | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
+      | admin@shf.se                | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 9697222900     |
+
+    Given the date is set to "2017-10-01"
     And the region for company named "NoRegion" is set to nil
 
 
-  @visitor
-  Scenario: Visitor on landing page - only complete companies are shown
+  @visitor @time_adjust
+  Scenario: Visitor on landing page - only searchable companies are shown
     Given I am Logged out
-    And the region for company named "NoRegion" is set to nil
     And I am on the "landing" page
     When I click on t("search") button
     Then I should see "Happy Mutts"
     And I should see "Bowsers"
     And I should not see "NoRegion"
     And I should not see "5906055081"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
 
-  @visitor
-  Scenario: Visitor on Kategori - only complete companies are shown
+  @visitor @time_adjust
+  Scenario: Visitor on Kategori - only searchable companies are shown
     Given I am Logged out
     When I am on the business category "Groomer"
     Then I should not see "5906055081"
     And I should not see "NoRegion"
     And I should not see "Bowsers"
     And I should not see "2120000142"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
     And I should see "Happy Mutts"
     When I am on the business category "Trainer"
     Then I should not see "5906055081"
     And I should not see "NoRegion"
     And I should not see "Happy Mutts"
     And I should not see "5560360793"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
     And I should see "Bowsers"
 
-  @member
-  Scenario: Member on landing page - only complete companies are shown
+  @member @time_adjust
+  Scenario: Member on landing page - only searchable companies are shown
     Given I am logged in as "emmagroomer@happymutts.com"
     When I am on the "landing" page
     Then I should see "Happy Mutts"
     And I should see "Bowsers"
     And I should not see "NoRegion"
     And I should not see "5906055081"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
 
-  @member
-  Scenario: Member on Kategori - only complete companies are shown
+  @member @time_adjust
+  Scenario: Member on Kategori - only searchable companies are shown
     Given I am logged in as "emmagroomer@happymutts.com"
     When I am on the business category "Groomer"
     Then I should not see "5906055081"
     And I should not see "NoRegion"
     And I should not see "Bowsers"
     And I should not see "2120000142"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
     And I should see "Happy Mutts"
     When I am on the business category "Trainer"
     Then I should not see "5906055081"
     And I should not see "NoRegion"
     And I should not see "Happy Mutts"
     And I should not see "5560360793"
+    And I should not see "NoPayment"
+    And I should not see "NoMember"
     And I should see "Bowsers"
 
-  @admin
+  @admin @time_adjust
   Scenario: admin is on companies list - all companies are shown
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
@@ -114,20 +136,17 @@ Feature: So that I do not get frustrated by trying to find out more
     And I should see "Bowsers"
     And I should see "2120000142"
     And I should see "5569467466"
+    And I should see "NoPayment"
+    And I should see "NoMember"
 
-
-  @admin
+  @admin @time_adjust
   Scenario: admin Kategori list - all companies are shown
     Given I am logged in as "admin@shf.se"
     When I am on the business category "Groomer"
-    Then I should not see "5906055081"
-    And I should not see "NoRegion"
-    And I should not see "Bowsers"
-    And I should not see "2120000142"
+    And I should see "NoRegion"
     And I should see "Happy Mutts"
+    And I should see "NoPayment"
     When I am on the business category "Trainer"
-    Then I should not see "5906055081"
-    And I should not see "NoRegion"
-    And I should not see "Happy Mutts"
-    And I should not see "5560360793"
+    And I should see "NoRegion"
     And I should see "Bowsers"
+    And I should see "NoPayment"

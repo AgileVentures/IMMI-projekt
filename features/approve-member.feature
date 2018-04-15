@@ -35,6 +35,7 @@ Feature: As an admin
       | hans@happymutts.se    | 5562252998     | dog grooming | under_review |
       | anna@nosnarkybarky.se | 5560360793     | rehab        | under_review |
 
+
   Scenario: Admin approves, no company exists so one is created
     Given I am logged in as "admin@shf.com"
     And I am on the "application" page for "emma@happymutts.se"
@@ -59,9 +60,6 @@ Feature: As an admin
     And I am on the "all companies" page
     And I should see "No More Snarky Barky"
     And I am Logged out
-    And I am on the "landing" page
-    And I should see "No More Snarky Barky"
-    And I should see "rehab"
 
     Then I am in "anna@nosnarkybarky.se" browser
     And I am logged in as "anna@nosnarkybarky.se"
@@ -73,6 +71,13 @@ Feature: As an admin
     And I am on the "show my application" page for "anna@nosnarkybarky.se"
     Then I should see t("shf_applications.show.membership_number")
     And I should not see "902"
+
+    Then I am the page for company number "5560360793"
+    Then I complete the branding payment for "No More Snarky Barky"
+
+    Then I am on the "landing" page
+    And I should see "No More Snarky Barky"
+    And I should see "rehab"
 
     Then I am in "admin@shf.com" browser
     And I am logged in as "admin@shf.com"

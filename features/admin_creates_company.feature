@@ -26,12 +26,13 @@ Feature: As an admin
 
     Given the following kommuns exist:
       | name      |
+      | Stockholm |
       | Bromölla  |
 
     And the following companies exist:
-      | name                 | company_number | email                  | region     |
-      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
-      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Norrbotten |
+      | name                 | company_number | email                  | region     | kommun    |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  | Stockholm |
+      | Bowsers              | 2120000142     | bowwow@bowsersy.com    | Norrbotten | Bromölla  |
 
     Given the following payments exist
       | user_email                 | start_date | expire_date | payment_type | status | hips_id | company_number |

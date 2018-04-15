@@ -86,6 +86,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
     And I wait for all ajax requests to complete
+    And I wait 2 seconds
     And I click on t("shf_applications.new.submit_button_label")
 
     Then I should be on the "user instructions" page
@@ -108,7 +109,6 @@ Feature: Create a new membership application
 
   @selenium
   Scenario: Two users can submit a new Membership Application (with empty membershipnumbers)
-    Given I am logged in as "applicant_1@random.com"
     And I am on the "new application" page
     And I fill in the translated form with data:
       | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -120,6 +120,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
     And I wait for all ajax requests to complete
+    And I wait 2 seconds
     And I click on t("shf_applications.new.submit_button_label")
 
     Then I should see t("shf_applications.create.success", email_address: applicant_1@random.com)
@@ -136,6 +137,7 @@ Feature: Create a new membership application
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
     And I wait for all ajax requests to complete
+    And I wait 2 seconds
     And I click on t("shf_applications.new.submit_button_label")
 
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)
