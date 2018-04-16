@@ -13,6 +13,6 @@ describe Dinkurs::Client, vcr: { cassette_name: 'dinkurs/company_events' } do
 
   it 'returns proper number of events' do
     expect(dinkurs_client.company_events_hash['events']['event'].count)
-      .to eq(9)
+      .to eq(11)
   end
 end

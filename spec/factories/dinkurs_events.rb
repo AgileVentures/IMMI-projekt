@@ -4,6 +4,7 @@ FactoryBot.define do
   factory :dinkurs_events, class: Array do
     array do
       [{ 'event_id' => ['26230', { '__content__' => '26230', 'type' => 'PropertyNumber' }],
+         'event_modstamp'=>{'__content__'=> '2015-02-06 10:01:53', 'type'=>'PropertyNumber'},
          'event_name' => { '__content__' => 'Intresselista', 'type' => 'PropertyString' },
          'event_place' => { '__content__' => 'Intresselista/Nyhetsbrev', 'type' => 'PropertyString' },
          'event_place_geometry_location' => nil,
@@ -36,6 +37,7 @@ FactoryBot.define do
          'event_aftertext' => nil,
          'event_event_dates' => nil },
        { 'event_id' => ['41988', { '__content__' => '41988', 'type' => 'PropertyNumber' }],
+         'event_modstamp'=>{'__content__'=>'2015-02-07 10:01:53', 'type'=>'PropertyNumber'},
          'event_name' => { '__content__' => 'stav', 'type' => 'PropertyString' },
          'event_place' => { '__content__' => 'Stavsnäs', 'type' => 'PropertyString' },
          'event_place_geometry_location' => { '__content__' => '(59.2911887, 18.690457000000038)', 'type' => 'PropertyString' },

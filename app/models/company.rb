@@ -16,7 +16,8 @@ class Company < ApplicationRecord
   validate :swedish_organisationsnummer
 
   before_save :sanitize_website, :sanitize_description
-  after_save :enqueue_dinkurs_fetch, if: :saved_change_to_company_dinkurs_id?
+  after_save :enqueue_dinkurs_fetch,
+             if: -> { saved_change_to_attribute?(:dinkurs_company_id) }
 
   has_many :company_applications
   has_many :shf_applications, through: :company_applications, dependent: :destroy
