@@ -76,10 +76,8 @@ module CompaniesHelper
        data: {language: "#{@locale}" }
   end
 
-  def company_number_entry_field(companies)
-    numbers = companies.map(&:company_number).join(', ')
-
-    text_field_tag :company_number, numbers,
+  def company_number_entry_field(company_numbers)
+    text_field_tag :company_number, company_numbers,
                      id: 'shf_application_company_number'
   end
 end

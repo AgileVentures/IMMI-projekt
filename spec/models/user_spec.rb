@@ -63,6 +63,7 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:payments) }
     it { is_expected.to accept_nested_attributes_for(:payments) }
     it { is_expected.to have_attached_file(:member_photo) }
+    it { is_expected.to have_many(:companies).through(:shf_application)}
   end
 
   describe 'Admin' do

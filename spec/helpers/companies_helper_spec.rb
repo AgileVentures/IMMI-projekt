@@ -174,10 +174,6 @@ RSpec.describe CompaniesHelper, type: :helper do
   end
 
   describe '#company_number_entry_field' do
-    it 'returns number entry field for company_number' do
-      expect(company_number_entry_field)
-        .to match(/input type="number" name="company_number" id="shf_application_company_number"/)
-    end
 
     it 'returns entry field with initial value when given an argument' do
       expect(company_number_entry_field('0000000000'))

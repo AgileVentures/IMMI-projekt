@@ -517,4 +517,22 @@ RSpec.describe ShfApplication, type: :model do
 
   end
 
+  describe '#company_numbers and #company_names' do
+    let(:cmpy1) { create(:company, name: 'Company One') }
+    let(:cmpy2) { create(:company, name: 'Company Two') }
+    let(:app) do
+      app = create(:shf_application)
+      app.companies = [cmpy1, cmpy2]
+      app
+    end
+
+    it '#company_numbers returns string of company numbers' do
+      expect(app.company_numbers).to eq "#{cmpy1.company_number}, #{cmpy2.company_number}"
+    end
+
+    it '#company_names returns string of company names' do
+      expect(app.company_names).to eq "#{cmpy1.name}, #{cmpy2.name}"
+    end
+  end
+
 end

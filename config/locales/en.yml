@@ -260,10 +260,9 @@ en:
 
         shf_application:
           attributes:
-            company_number:
-              invalid: "%{company_number} is not a valid Swedish company number"
             companies:
               blank: '- Specify an existing company number (or create new company)'
+              invalid: "%{value} is not a valid Swedish company number"
 
 
       messages:
@@ -397,6 +396,10 @@ en:
         m_expires: 'Your membership-payment expired:'
         h_expires_html: 'Your H-branding fee-payment for company <b>%{company}</b> expired:'
         pay_h_here_html: 'Your H-branding fee for company <b>%{company}</b>BrandingNotPaid needs to be paid:'
+
+    shf_application_fields:
+      company_numbers_tooltip: You can enter multiple company numbers, separated by
+                               a comma or blank spaces
 
     start_review:
       success: The review has been started.

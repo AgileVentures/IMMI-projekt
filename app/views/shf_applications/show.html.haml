@@ -21,7 +21,7 @@
     - if @shf_application.phone_number
       %p #{t('.phone_number')}: #{@shf_application.phone_number}
 
-    %p #{t('.company_number')}: #{@shf_application.companies.first&.company_number}
+    %p #{t('.company_number')}: #{@shf_application.company_numbers}
 
     - unless assocation_empty?(@categories)
       %h4 #{t('.with_categories')}:

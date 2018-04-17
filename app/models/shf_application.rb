@@ -131,6 +131,14 @@ class ShfApplication < ApplicationRecord
     !user.member?
   end
 
+  def company_numbers
+    companies.order(:id).map(&:company_number).join(', ')
+  end
+
+  def company_names
+    companies.order(:id).map(&:name).join(', ')
+  end
+
 
   def accept_application
     begin

@@ -8,8 +8,8 @@ class ShfApplicationsController < ApplicationController
   before_action :set_allowed_file_types, only: [:edit, :new, :update, :create]
 
   def new
+    @new_company = Company.new # object for company_create_modal
     @shf_application = ShfApplication.new(user: current_user)
-    @companies = [Company.new]
     @all_business_categories = BusinessCategory.all
     @uploaded_file = @shf_application.uploaded_files.build
   end
@@ -44,19 +44,22 @@ class ShfApplicationsController < ApplicationController
 
 
   def edit
-    @companies = @shf_application.companies
-    load_update_objects
+    load_update_objects(@shf_application.company_numbers)
   end
 
 
   def create
-
     @shf_application = ShfApplication.new(shf_application_params
                                           .merge(user: current_user))
 
-    set_companies_for_application
+    numbers_str = params[:company_number]
 
-    if @shf_application.save
+    companies_and_numbers, all_valid = validate_company_numbers(@shf_application,
+                                                                numbers_str)
+
+    @shf_application.companies = companies_and_numbers[:companies] if all_valid
+
+    if all_valid && @shf_application.save
 
       file_uploads_successful = new_file_uploaded(params)
 
@@ -67,23 +70,26 @@ class ShfApplicationsController < ApplicationController
         redirect_to information_path
       else
         helpers.flash_message(:notice, t('.success_with_file_problem'))
-        load_update_objects
+        load_update_objects(numbers_str)
         render :edit
       end
 
     else
-      create_error(t('.error'))
+      create_error(t('.error'), companies_and_numbers, numbers_str)
     end
   end
 
 
   def update
-    set_companies_for_application
+    numbers_str = params[:company_number]
 
-    company_valid = @company.valid?
+    companies_and_numbers, all_valid = validate_company_numbers(@shf_application,
+                                                                numbers_str)
 
-    if @shf_application.update(shf_application_params) &&
-         company_valid && new_file_uploaded(params)
+    @shf_application.companies = companies_and_numbers[:companies] if all_valid
+
+    if all_valid && @shf_application.update(shf_application_params) &&
+         new_file_uploaded(params)
 
       check_and_mark_if_ready_for_review(params['shf_application']) if
         params['shf_application']
@@ -92,7 +98,7 @@ class ShfApplicationsController < ApplicationController
       redirect_to define_path(evaluate_update(params))
     else
 
-      update_error(t('.error'), company_valid)
+      update_error(t('.error'), companies_and_numbers, numbers_str)
     end
   end
 
@@ -176,7 +182,7 @@ class ShfApplicationsController < ApplicationController
   end
 
   def evaluate_update(params)
-    params.has_key?('uploaded_files_attributes').&('_destroy')
+    params.dig(:shf_application, :uploaded_files_attributes)&.key?('_destroy')
   end
 
   def shf_application_params
@@ -252,37 +258,82 @@ class ShfApplicationsController < ApplicationController
   end
 
 
-  def create_error(error_message)
+  def create_error(error_message, companies_and_numbers, company_numbers_str)
+
+    @shf_application = add_company_errors_to_model(@shf_application,
+                                                   companies_and_numbers)
+
     helpers.flash_message(:alert, error_message)
-    @all_business_categories = BusinessCategory.all
+    load_update_objects(company_numbers_str)
     render :new
   end
 
 
-  def update_error(error_message, company_valid)
-    @shf_application.errors.add(:companies, :blank) unless company_valid
+  def update_error(error_message, companies_and_numbers, company_numbers_str)
+
+    @shf_application = add_company_errors_to_model(@shf_application,
+                                                   companies_and_numbers)
+
     helpers.flash_message(:alert, error_message)
-    load_update_objects
+    load_update_objects(company_numbers_str)
     render :edit
   end
 
-  def load_update_objects
+  def add_company_errors_to_model(application, companies_and_numbers)
+    # see #validate_company_numbers for structure of companies_and_numbers
+
+    numbers = companies_and_numbers[:numbers]
+    numbers.each_index do |idx|
+
+      unless numbers[idx]
+        application.errors.add(:companies, :blank)
+        break
+      end
+
+      unless companies_and_numbers[:companies][idx]
+        application.errors.add(:companies, :invalid, value: numbers[idx])
+      end
+
+    end
+    application
+  end
+
+  def load_update_objects(numbers_str)
+    @company_numbers = numbers_str
     @all_business_categories = BusinessCategory.all
     @new_company = Company.new   # In case user wants to create a new company
   end
 
-  def set_companies_for_application
+  def validate_company_numbers(application, numbers_str)
+    # Validates company numbers specified in shf application form
+    # Returns two parameters:
+    #  >> a hash with two keys:
+    #     :numbers => array of company numbers
+    #     :companies => array of companies (nil if not in DB)
+    #  >> true/false indicating whether *all* company numbers are valid
 
-    @company = nil
+    companies = []
+    numbers   = []
 
-    if (company = Company.find_by_company_number(params[:company_number]))
-      @company = company
-      @shf_application.companies = [@company]
+    if ! numbers_str # delete-file action params do not include company numbers
+      application.companies.each do |company|
+        companies << company
+        numbers   << company.company_number
+      end
     else
-      @company = @shf_application.companies.first
+
+      numbers_str.split(/(?:\s*,+\s*|\s+)/).each do |number|
+
+        company = Company.find_by(company_number: number)
+
+        companies << company
+        numbers   << number
+
+      end
+
     end
 
-    @company = Company.new unless @company
+    [{ companies: companies, numbers: numbers }, ! companies.include?(nil)]
   end
 
 
@@ -299,6 +350,5 @@ class ShfApplicationsController < ApplicationController
       AdminMailer.new_shf_application_received(new_shf_app, admin).deliver_now
     end
   end
-
 
 end

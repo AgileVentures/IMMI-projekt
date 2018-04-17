@@ -261,10 +261,9 @@ sv:
 
         shf_application:
           attributes:
-            company_number:
-              invalid: "%{company_number} är inte ett svenskt organisationsnummer"
             companies:
               blank: '- Ange ett befintligt företagsnummer (eller skapa ett nytt företag)'
+              invalid: "%{value} är inte ett svenskt organisationsnummer"
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
@@ -401,7 +400,9 @@ sv:
                         sökbara företagssida."
 
 
-
+    shf_application_fields:
+      company_numbers_tooltip: Du kan ange flera företagsnummer, åtskilda av
+                               ett kommatecken eller tomma mellanslag
 
     start_review:
       success: Granskningen har påbörjats.

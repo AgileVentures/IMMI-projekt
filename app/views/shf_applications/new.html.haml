@@ -12,10 +12,11 @@
 
         != model_errors_helper(@shf_application)
 
-        = render partial: 'shf_application_fields', locals: { f: f, companies: @companies }
+        = render partial: 'shf_application_fields',
+                 locals: { f: f, company_numbers: @company_numbers }
 
         = render 'application/required_fields'
 
         = f.submit t('.submit_button_label')
 
-= render partial: 'companies/company_create_modal', locals: { company: @company }
+= render partial: 'companies/company_create_modal', locals: { company: @new_company }

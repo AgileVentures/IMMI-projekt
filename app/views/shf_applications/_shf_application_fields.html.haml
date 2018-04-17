@@ -51,10 +51,13 @@
 
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
 
+    %span.glyphicon.glyphicon-info-sign{ title: "#{t('.company_numbers_tooltip')}",
+                                         data: {toggle: 'tooltip'} }
+
     %p.field-instruction= t('shf_applications.new.enter_company_number')
 
     #company-number-entry
-      = company_number_entry_field(companies)
+      = company_number_entry_field(company_numbers)
 
     .new-company-link
 
