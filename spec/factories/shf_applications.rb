@@ -40,10 +40,8 @@ FactoryBot.define do
         unless company
           company = FactoryBot.create(:company, company_number: evaluator.company_number)
         end
-      else
-        company = FactoryBot.create(:company)
+        shf_app.companies << company
       end
-      shf_app.companies << company
     end
 
   end
