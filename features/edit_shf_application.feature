@@ -15,11 +15,11 @@ Feature: As an applicant
       | admin@shf.se      | true      | true  |
 
     And the following applications exist:
-      | user_email        | company_number | state                 |
-      | emma@random.com   | 5560360793     | waiting_for_applicant |
-      | hans@random.com   | 2120000142     | under_review          |
-      | nils@random.com   | 2120000142     | accepted              |
-      | bob@barkybobs.com | 5560360793     | rejected              |
+      | user_email        | company_number         | state                 |
+      | emma@random.com   | 5560360793             | waiting_for_applicant |
+      | hans@random.com   | 2120000142, 5560360793 | under_review          |
+      | nils@random.com   | 2120000142             | accepted              |
+      | bob@barkybobs.com | 5560360793             | rejected              |
 
   Scenario: Applicant makes mistake when editing his own application
     Given I am logged in as "emma@random.com"
@@ -31,6 +31,55 @@ Feature: As an applicant
     Then I should see t("shf_applications.update.error")
     And I should see error t("shf_applications.show.contact_email") t("errors.messages.blank")
     And I should see button t("shf_applications.edit.submit_button_label")
+
+  Scenario: Applicant adds second company to application
+    Given I am logged in as "emma@random.com"
+    And I am on the "landing" page
+    And I click on t("menus.nav.users.my_application")
+    Then I should be on "Edit My Application" page
+    Then I fill in t("shf_applications.show.company_number") with "5560360793, 2120000142"
+    And I click on t("shf_applications.edit.submit_button_label")
+    Then I should be on the "show my application" page for "emma@random.com"
+    And I should see t("shf_applications.update.success", email_address: info@craft.se)
+    And I should see "5560360793, 2120000142"
+
+  @selenium_browser
+  Scenario: Applicant creates second company for application
+    Given I am logged in as "emma@random.com"
+    Given I am on the "edit application" page
+    Then I should be on "Edit My Application" page
+
+    # Create new company in modal
+    And I click on t("companies.new.title")
+    And I fill in t("companies.show.company_number") with "2286411992"
+    And I fill in t("companies.show.email") with "info@craft.se"
+    And I click on t("companies.create.create_submit")
+    And I wait 2 seconds
+    And I wait for all ajax requests to complete
+
+    And I click on t("shf_applications.edit.submit_button_label")
+    Then I should be on the "show my application" page for "emma@random.com"
+    And I should see t("shf_applications.update.success", email_address: info@craft.se)
+    And I should see "5560360793, 2286411992"
+
+  Scenario: User edit app with two companies, corrects an error in company number
+    Given I am logged in as "hans@random.com"
+    And I am on the "landing" page
+    And I click on t("menus.nav.users.my_application")
+    Then I should be on "Edit My Application" page
+    And the t("shf_applications.show.company_number") field should be set to "5560360793, 2120000142"
+
+    And I fill in the translated form with data:
+      | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 55603607, 2120000142                 | 031-1234567                       | info@craft.se                      |
+
+    And I click on t("shf_applications.edit.submit_button_label")
+    And I should see t("activerecord.errors.models.shf_application.attributes.companies.invalid", value: '55603607')
+    Then I fill in t("shf_applications.show.company_number") with "5560360793, 2120000142"
+    And I click on t("shf_applications.edit.submit_button_label")
+    Then I should be on the "show my application" page for "hans@random.com"
+    And I should see t("shf_applications.update.success", email_address: info@craft.se)
+    And I should see "5560360793, 2120000142"
 
   Scenario: Applicant can not edit applications not created by him
     Given I am logged in as "emma@random.com"

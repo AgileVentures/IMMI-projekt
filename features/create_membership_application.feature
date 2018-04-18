@@ -4,7 +4,7 @@ Feature: Create a new membership application
   In order to get a membership with SHF (which makes my business more valuable )
   I need to be able to submit a Membership Application
   And as part of the process of creating an application,
-  I need to either select an existing company number for my company, or,
+  I need to either specify an existing company number for my company, or,
   If that is not available, I need to create a new company
 
   PT: https://www.pivotaltracker.com/story/show/133940725
@@ -33,6 +33,7 @@ Feature: Create a new membership application
     And the following companies exist:
       | name                 | company_number | email                  | region     |
       | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com | Stockholm  |
+      | Good Dog Spot        | 2120000142     | spot@gooddog.com       | Stockholm  |
 
     And the following applications exist:
       | user_email        | company_number | state    |
@@ -59,6 +60,65 @@ Feature: Create a new membership application
     Then "admin@shf.se" should receive an email
     And I open the email
     And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
+
+  Scenario: A user creates new Application associated with two companies
+    Given I am on the "landing" page
+    And I click on t("menus.nav.users.apply_for_membership")
+    And I fill in the translated form with data:
+      | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 5560360793, 2120000142               | 031-1234567                       | info@craft.se                      |
+    And I select "Groomer" Category
+    And I click on t("shf_applications.new.submit_button_label")
+    Then I should be on the "user instructions" page
+    And I should see t("shf_applications.create.success", email_address: info@craft.se)
+    When I am on the "show my application" page for "applicant_1@random.com"
+    And I should see "5560360793, 2120000142"
+    Then "applicant_1@random.com" should receive an email
+    And I open the email
+    And I should see t("mailers.shf_application_mailer.acknowledge_received.subject") in the email subject
+    And I am logged in as "admin@shf.se"
+    Then "admin@shf.se" should receive an email
+    And I open the email
+    And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
+
+  Scenario: User creates App with two companies, corrects an error in company number
+    Given I am on the "landing" page
+    And I click on t("menus.nav.users.apply_for_membership")
+    And I fill in the translated form with data:
+      | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 55603607, 2120000142                 | 031-1234567                       | info@craft.se                      |
+    And I select "Groomer" Category
+    And I click on t("shf_applications.new.submit_button_label")
+    And I should see t("activerecord.errors.models.shf_application.attributes.companies.invalid", value: '55603607')
+    Then I fill in t("shf_applications.show.company_number") with "5560360793, 2120000142"
+    And I click on t("shf_applications.new.submit_button_label")
+    Then I should be on the "user instructions" page
+    And I should see t("shf_applications.create.success", email_address: info@craft.se)
+    When I am on the "show my application" page for "applicant_1@random.com"
+    And I should see "5560360793, 2120000142"
+
+  @selenium_browser
+  Scenario: User creates App with two companies, creates one company, corrects error in company number
+    Given I am on the "new application" page
+    And I fill in the translated form with data:
+      | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 55603607                             | 031-1234567                       | info@craft.se                      |
+
+    # Create new company in modal
+    And I click on t("companies.new.title")
+    And I fill in t("companies.show.company_number") with "2286411992"
+    And I fill in t("companies.show.email") with "info@craft.se"
+    And I click on t("companies.create.create_submit")
+    And I wait for all ajax requests to complete
+
+    And I click on t("shf_applications.new.submit_button_label")
+    And I should see t("activerecord.errors.models.shf_application.attributes.companies.invalid", value: '55603607')
+    Then I fill in t("shf_applications.show.company_number") with "5560360793, 2286411992"
+    And I click on t("shf_applications.new.submit_button_label")
+    Then I should be on the "user instructions" page
+    And I should see t("shf_applications.create.success", email_address: info@craft.se)
+    When I am on the "show my application" page for "applicant_1@random.com"
+    And I should see "5560360793, 2286411992"
 
 
   Scenario: A user can submit a new Membership Application with multiple categories
@@ -119,7 +179,6 @@ Feature: Create a new membership application
     And I fill in t("companies.show.company_number") with "5562252998"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
-    And I wait 2 seconds
     And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
 
@@ -128,17 +187,10 @@ Feature: Create a new membership application
     Given I am logged in as "applicant_2@random.com"
     And I am on the "new application" page
     And I fill in the translated form with data:
-      | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 031-1234567                       | applicant_2@random.com             |
+      | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
+      | 2120000142                           | 031-1234567                       | applicant_2@random.com             |
 
-    # Create new company in modal
-    And I click on t("companies.new.title")
-    And I fill in t("companies.show.company_number") with "2120000142"
-    And I fill in t("companies.show.email") with "info@craft.se"
-    And I click on t("companies.create.create_submit")
-    And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
-
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)
 
 

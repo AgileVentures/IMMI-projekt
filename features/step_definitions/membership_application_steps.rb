@@ -1,33 +1,40 @@
 And(/^the following applications exist:$/) do |table|
   table.hashes.each do |hash|
-    attributes = hash.except('user_email', 'categories', 'company_name')
+    attributes = hash.except('user_email', 'categories', 'company_name', 'company_number')
     user = User.find_by(email: hash[:user_email].downcase)
 
+    companies = []
 
-    if hash['company_name']
-      company = Company.find_by(name: hash['company_name'])
+    company_names = hash.delete('company_name')
+    company_numbers = hash.delete('company_number')
+
+    if company_names
+      company_names.split(/(?:\s*,+\s*|\s+)/).each do |co_name|
+        companies << Company.find_by(name: co_name)
+      end
     else
-      company = Company.find_by(company_number: hash['company_number'])
-      unless company
-        company = FactoryBot.create(:company, company_number: hash['company_number'])
+      company_numbers.split(/(?:\s*,+\s*|\s+)/).each do |co_number|
+        if (company = Company.find_by(company_number: co_number))
+          companies << company
+        else
+          companies << FactoryBot.create(:company, company_number: co_number)
+        end
       end
     end
 
     contact_email = hash['contact_email'] && ! hash['contact_email'].empty? ?
                     hash['contact_email'] : hash[:user_email]
 
-    company_number = company.company_number
-
     if (ma = user.shf_application)
 
-      user.shf_application.companies << company
+      user.shf_application.companies << companies
 
     else
-
-      ma = FactoryBot.create(:shf_application,
-                              attributes.merge(user: user,
-                              company_number: company_number,
-                              contact_email: contact_email))
+      ma = FactoryBot.build(:shf_application,
+                            attributes.merge(user: user,
+                            contact_email: contact_email))
+      ma.companies = companies
+      ma.save
     end
 
     if hash['categories']
