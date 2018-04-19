@@ -38,6 +38,7 @@ FactoryBot.define do
 
       after(:create) do |user, evaluator|
         create_list(:shf_application, 1, :accepted, user: user,
+                    company_number: evaluator.company_number,
                     contact_email: evaluator.email)
       end
     end

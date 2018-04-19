@@ -32,7 +32,8 @@ And(/^the following applications exist:$/) do |table|
     else
       ma = FactoryBot.build(:shf_application,
                             attributes.merge(user: user,
-                            contact_email: contact_email))
+                            contact_email: contact_email,
+                            create_company: false))
       ma.companies = companies
       ma.save
     end
