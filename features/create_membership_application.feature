@@ -190,6 +190,13 @@ Feature: Create a new membership application
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 2120000142                           | 031-1234567                       | applicant_2@random.com             |
 
+    # Create new company in modal
+    And I click on t("companies.new.title")
+    And I wait 2 seconds
+    And I fill in t("companies.show.company_number") with "2120000142"
+    And I fill in t("companies.show.email") with "info@craft.se"
+    And I click on t("companies.create.create_submit")
+    And I wait for all ajax requests to complete
     And I click on t("shf_applications.new.submit_button_label")
     Then I should see t("shf_applications.create.success", email_address: applicant_2@random.com)
 
