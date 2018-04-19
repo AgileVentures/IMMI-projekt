@@ -37,7 +37,7 @@
 
       %h4
         = t('shf_applications.information.check_payment_status.pay_h_here_html',
-             company: company.name)
+             company: (company.name.present? ? company.name : t('name_missing')))
 
 
     - elsif ! company.branding_license?
