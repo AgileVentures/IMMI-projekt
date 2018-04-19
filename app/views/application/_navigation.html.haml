@@ -54,7 +54,8 @@
                         - current_user.companies.each do |company|
 
                           %li.menu-item.menu-item-has-children
-                            %a.link-no-styling{ href: '#' }= company.name
+                            %a.link-no-styling{ href: '#' }
+                              = company.name.present? ? company.name : t('name_missing')
                             %ul.sub-menu
                               %li.menu-item
                                 = link_to t('menus.nav.members.manage_company.view_company'),
