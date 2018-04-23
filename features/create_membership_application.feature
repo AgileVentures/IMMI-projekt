@@ -193,7 +193,7 @@ Feature: Create a new membership application
     # Create new company in modal
     And I click on t("companies.new.title")
     And I wait 2 seconds
-    And I fill in t("companies.show.company_number") with "2120000142"
+    And I fill in t("companies.show.company_number") with "6112107039"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
     And I wait for all ajax requests to complete
