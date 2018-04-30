@@ -59,6 +59,9 @@ gem 'geocoder'
 
 gem 'sanitize'
 
+gem 'sidekiq'
+gem 'sidekiq-scheduler'
+
 gem 'mailgun-ruby'
 gem 'premailer-rails'  # converts css to inline; required for html emails to look ok
 gem 'nokogiri'         # must explicity require this gem for premailer-rails
@@ -79,6 +82,7 @@ group :development, :test do
   gem 'shoulda-matchers'
   gem 'pundit-matchers'
   gem 'factory_bot_rails'
+  gem 'pry-rails'
   gem 'pry'
   gem 'pry-byebug'
   gem 'cucumber-rails', require: false

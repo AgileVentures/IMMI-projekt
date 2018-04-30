@@ -16,11 +16,14 @@ class Company < ApplicationRecord
   validate :swedish_organisationsnummer
 
   before_save :sanitize_website, :sanitize_description
+  after_save :enqueue_dinkurs_fetch,
+             if: -> { saved_change_to_attribute?(:dinkurs_company_id) }
 
   has_many :company_applications
   has_many :shf_applications, through: :company_applications, dependent: :destroy
 
   has_many :users, through: :shf_applications
+  has_many :events
 
   has_many :payments, dependent: :destroy
   accepts_nested_attributes_for :payments
@@ -45,6 +48,10 @@ class Company < ApplicationRecord
     # Returns ActiveRecord Relation
     shf_applications.accepted.includes(:user)
       .order('users.last_name').where('users.member = ?', true)
+  end
+
+  def enqueue_dinkurs_fetch
+    FetchEventsFromDinkursJob.perform_later(self)
   end
 
   def any_visible_addresses?

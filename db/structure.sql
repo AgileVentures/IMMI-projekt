@@ -229,7 +229,8 @@ CREATE TABLE public.companies (
     website character varying,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
-    description text
+    description text,
+    dinkurs_company_id character varying
 );
 
 
@@ -282,6 +283,46 @@ CREATE SEQUENCE public.company_applications_id_seq
 --
 
 ALTER SEQUENCE public.company_applications_id_seq OWNED BY public.company_applications.id;
+
+
+--
+-- Name: events; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.events (
+    id bigint NOT NULL,
+    fee numeric(8,2),
+    start_date date,
+    description text,
+    dinkurs_id character varying,
+    name character varying,
+    sign_up_url character varying,
+    place character varying,
+    latitude double precision,
+    longitude double precision,
+    company_id bigint,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.events_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: events_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.events_id_seq OWNED BY public.events.id;
 
 
 --
@@ -722,6 +763,13 @@ ALTER TABLE ONLY public.company_applications ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: events id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events ALTER COLUMN id SET DEFAULT nextval('public.events_id_seq'::regclass);
+
+
+--
 -- Name: kommuns id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -846,6 +894,14 @@ ALTER TABLE ONLY public.companies
 
 ALTER TABLE ONLY public.company_applications
     ADD CONSTRAINT company_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: events events_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT events_pkey PRIMARY KEY (id);
 
 
 --
@@ -992,6 +1048,27 @@ CREATE INDEX index_company_applications_on_shf_application_id ON public.company_
 
 
 --
+-- Name: index_events_on_company_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_company_id ON public.events USING btree (company_id);
+
+
+--
+-- Name: index_events_on_latitude_and_longitude; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_latitude_and_longitude ON public.events USING btree (latitude, longitude);
+
+
+--
+-- Name: index_events_on_start_date; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_events_on_start_date ON public.events USING btree (start_date);
+
+
+--
 -- Name: index_on_applications; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1117,6 +1194,14 @@ ALTER TABLE ONLY public.addresses
 
 
 --
+-- Name: events fk_rails_88786fdf2d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.events
+    ADD CONSTRAINT fk_rails_88786fdf2d FOREIGN KEY (company_id) REFERENCES public.companies(id);
+
+
+--
 -- Name: shf_documents fk_rails_bb6df17516; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1219,6 +1304,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180103171241'),
 ('20180110215208'),
 ('20180116141245'),
-('20180219132317');
+('20180219132317'),
+('20180326103433'),
+('20180328105100');
 
 

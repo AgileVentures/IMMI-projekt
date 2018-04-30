@@ -97,6 +97,24 @@ ActiveRecord::Schema.define(version: 20180219132317) do
     t.index ["shf_application_id"], name: "index_company_applications_on_shf_application_id"
   end
 
+  create_table "events", force: :cascade do |t|
+    t.decimal "fee", precision: 8, scale: 2
+    t.date "start_date"
+    t.text "description"
+    t.string "dinkurs_id"
+    t.string "name"
+    t.string "sign_up_url"
+    t.string "place"
+    t.float "latitude"
+    t.float "longitude"
+    t.bigint "company_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["company_id"], name: "index_events_on_company_id"
+    t.index ["latitude", "longitude"], name: "index_events_on_latitude_and_longitude"
+    t.index ["start_date"], name: "index_events_on_start_date"
+  end
+
   create_table "kommuns", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -209,6 +227,9 @@ ActiveRecord::Schema.define(version: 20180219132317) do
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
+  add_foreign_key "company_applications", "companies"
+  add_foreign_key "company_applications", "shf_applications"
+  add_foreign_key "events", "companies"
   add_foreign_key "company_applications", "companies"
   add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "payments", "companies"

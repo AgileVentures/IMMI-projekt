@@ -84,6 +84,9 @@ Rails.application.routes.draw do
       member do
         put 'edit_payment', to: 'companies#edit_payment', as: 'edit_payment'
       end
+      resources :events, only: [] do
+        post :fetch_from_dinkurs, on: :collection
+      end
     end
 
     resources :users, path: 'anvandare' do
@@ -150,5 +153,11 @@ Rails.application.routes.draw do
   get 'information', to: 'shf_applications#information'
 
   root to: 'companies#index'
+
+  require 'sidekiq/web'
+
+  authenticate :user, ->(u) { u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
 end

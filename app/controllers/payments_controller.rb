@@ -1,5 +1,4 @@
 class PaymentsController < ApplicationController
-  require 'hips'
 
   class NotAuthorizedError < Pundit::NotAuthorizedError
   end

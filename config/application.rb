@@ -54,6 +54,7 @@ module SHFProject
         domain: ENV['MAILGUN_DOMAIN']
     }
 
+    config.active_job.queue_adapter = :sidekiq
 
     # Mail templates will need to use "_url" helpers rather than "_path" helpers
     # since the template will not have the context of a request
