@@ -1,15 +1,15 @@
 #company-events
 
-  %table.table.table-hover
+  %table.table.table-hover{ style: 'table-layout: fixed;'}
     %thead
       %tr
-        %th
+        %th{ style: 'width: 40%;' }
           #{t('events.show.name')}
-        %th
+        %th{ style: 'width: 35%;' }
           #{t('events.show.location')}
-        %th
+        %th{ style: 'text-align: right; width: 10%;'}
           #{t('events.show.fee')}
-        %th
+        %th{ style: 'text-align: center; width: 15%;'}
           #{t('events.show.start_date')}
       %tr
     %tbody
@@ -20,10 +20,10 @@
               = link_to event.name, event.sign_up_url, target: '_blank'
             %td.location
               = event.location
-            %td.fee
+            %td.fee{ style: 'text-align: right;'}
               = number_to_currency(event.fee, locale: 'sv', format: '%n',
-                                   precision: 0)
-            %td.event-start-date
+                                   delimiter: ' ', precision: 0)
+            %td.event-start-date{ style: 'text-align: center;'}
               = event.start_date
       - else
         %tr.event

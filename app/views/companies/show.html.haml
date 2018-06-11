@@ -47,7 +47,7 @@
     = render 'company_addresses', company: @company, user_can_edit: user_can_edit
 
     .col-md-12
-      - if @company.dinkurs_company_id
+      - unless @company.dinkurs_company_id.blank?
 
         - if user_can_edit
 

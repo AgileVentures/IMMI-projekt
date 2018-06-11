@@ -617,7 +617,7 @@ sv:
   events:
     show:
       name: Företagshändelser
-      start_date: Start Datum
+      start_date: Startdatum
       location: Plats
       fee: Pris
       no_events: (Inga planerade händelser)
