@@ -6,6 +6,23 @@ namespace :shf do
   ACCEPTED_STATE = 'accepted' unless defined?(ACCEPTED_STATE)
   LOG_FILE = 'log/shf_tasks' unless defined?(LOG_FILE)
 
+  desc 'load Dinkurs events for companies'
+  task :dinkurs_load => [:environment] do
+
+    LOG = 'log/dinkurs_load_events'
+
+    ActivityLogger.open(LOG, 'SHF_TASK', 'Load Dinkurs Events') do |log|
+
+      Company.where.not(dinkurs_company_id: nil).each do |company|
+
+        company.fetch_dinkurs_events
+        company.reload
+        log.record('info', "Company #{company.id}: #{company.events.count} events.")
+
+      end
+    end
+  end
+
   desc 'recreate db (current env): drop, setup, migrate, seed the db.'
   task :db_recreate => [:environment] do
     Rake::Task['db:drop'].invoke if database_exists?
