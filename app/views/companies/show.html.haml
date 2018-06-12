@@ -58,11 +58,8 @@
                       form_class: 'dinkurs-fetch-events',
                       data: { disable_with: "#{t('.dinkurs_fetching')}" }
 
-        -# %div{ style: 'border-style: solid; border-width: 1px;'}
-        .table-with-border
-
-          = render 'events/teaser_list', events: @events, company: @company,
-                                         items_count: @items_count
+        = render 'events/teaser_list', events: @events, company: @company,
+                                       items_count: @items_count
 
     .row.center.item-nav-buttons#item-nav-buttons
 

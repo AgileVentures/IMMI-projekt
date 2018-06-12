@@ -74,11 +74,31 @@ $btn-hover-color: #7EDD8B;
     padding-top: 3px;
   }
 
-  .table-with-border {
+  .fixed-table-with-border {
     border-color: #bfbfbf;
     border-style: solid;
     border-width: 1px;
     margin-bottom: 20px;
+    table-layout: fixed;
+  }
+  
+  .col-width-40pc {
+    width: 40%;
+  }
+  .col-width-35pc {
+    width: 35%;
+  }
+  .col-width-15pc {
+    width: 15%;
+  }
+  .col-width-10pc {
+    width: 10%;
+  }
+  .text-align-center {
+    text-align: center;
+  }
+  .text-align-right {
+    text-align: right;
   }
 
   .search-instructions {
