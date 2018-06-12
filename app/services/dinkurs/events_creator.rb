@@ -32,8 +32,12 @@ module Dinkurs
     attr_reader :company, :events_start_date
 
     def dinkurs_events_hashes
+      events_data = dinkurs_events.dig('events', 'event')
+      events_data = [events_data] if events_data.is_a? Hash
+      # ^^ Parser expects an array of events.  HTTParty only returns an
+      #    an array if there are multiple events, otherwise a Hash
       Dinkurs::EventsParser
-        .new(dinkurs_events.dig('events', 'event'), company.id)
+        .new(events_data, company.id)
         .call
     end
 
