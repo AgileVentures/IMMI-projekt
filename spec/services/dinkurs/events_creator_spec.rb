@@ -10,12 +10,15 @@ describe Dinkurs::EventsCreator,
            id: 1,
            dinkurs_company_id: ENV['DINKURS_COMPANY_TEST_ID']
   end
-  let(:events_hashes) { build :events_hashes }
 
   subject(:event_creator) { described_class.new(company) }
 
   it 'creating events' do
+    Timecop.freeze(Time.zone.local(2018, 6, 1))
+
     expect { event_creator.call }.to change { Event.count }.by(3)
+    
+    Timecop.return
   end
 
   it 'properly fills data for events' do
