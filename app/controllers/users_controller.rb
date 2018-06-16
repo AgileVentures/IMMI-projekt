@@ -11,11 +11,11 @@ class UsersController < ApplicationController
   end
 
   def proof_of_membership
-    download_image('proof_of_membership', params[:render_to], 260)
+    download_or_show_image('proof_of_membership', params[:render_to], 260)
   end
 
   def company_h_brand
-    download_image('company_h_brand', params[:render_to], 300)
+    download_or_show_image('company_h_brand', params[:render_to], 300)
   end
 
   def index
@@ -74,7 +74,7 @@ class UsersController < ApplicationController
 
   private
 
-  def download_image(type, render_to, width)
+  def download_or_show_image(type, render_to, width)
     html = image_html(type)
 
     render html: html.html_safe and return unless render_to == 'jpg'
