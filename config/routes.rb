@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  resources :vue_tests
+
   mount Ckeditor::Engine => '/ckeditor'
   filter :locale
 

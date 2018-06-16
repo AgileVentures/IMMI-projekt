@@ -19,11 +19,10 @@
     = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=" + |
                              "#{Geocoder.config[:api_key]}&language=#{I18n.locale}" + |
                              "&region=SE" |
-                             
+
     = javascript_pack_tag 'hello_vue'
 
     = yield :javascript_for_view  # javascript markup specific to a view
-
 
     - if Rails.env.test?
       -#

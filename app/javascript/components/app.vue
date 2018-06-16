@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <p>{{ message }}</p>
+    <p>{{ message2 }}</p>
   </div>
 </template>
 
@@ -8,7 +9,8 @@
 export default {
   data: function () {
     return {
-      message: "Hello Vue!"
+      message: "Hello Vue!",
+      message2: "This is a test"
     }
   }
 }
