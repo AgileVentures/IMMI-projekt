@@ -57,3 +57,8 @@ config/secrets.yml
 # ignore all directories named rubycritic no matter where they are
 # (rubycritic gem reports: do not put individual rubycritic reports into the repo)
 /**/rubycritic/
+/public/packs
+/public/packs-test
+/node_modules
+yarn-debug.log*
+.yarn-integrity

@@ -75,6 +75,9 @@ gem 'wkhtmltoimage-binary'
 gem 'chartkick'
 gem 'groupdate'
 
+gem 'webpacker'
+gem 'foreman'
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
