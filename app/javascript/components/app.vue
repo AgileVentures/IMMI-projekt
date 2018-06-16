@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <br>
+    This in the "app" component (child of "hello" component)
+    <br>
+    <br>
     <p>{{ message }}</p>
     <p>{{ message2 }}</p>
   </div>
@@ -7,10 +11,10 @@
 
 <script>
 export default {
+  props: ['message2'],
   data: function () {
     return {
       message: "Hello Vue!",
-      message2: "This is a test"
     }
   }
 }

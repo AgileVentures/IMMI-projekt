@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
     el: '#hello',
     data: {
       message: "Can you say hello?",
-      message2: 'Initial message from controller'
+      // message2: 'Initial message from controller'
     },
     components: { App }
   })
