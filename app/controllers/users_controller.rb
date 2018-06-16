@@ -74,13 +74,12 @@ class UsersController < ApplicationController
 
   private
 
-
   def download_image(type, render_to, width)
     html = image_html(type)
 
     render html: html.html_safe and return unless render_to == 'jpg'
 
-    kit = build_kit(html, "#{type.gsub /_/, '-'}.css", width)
+    kit = build_kit(html, "#{type.tr('_', '-')}.css", width)
 
     send_data(kit.to_jpg, type: 'image/jpg', filename: "#{type}.jpeg")
   end
