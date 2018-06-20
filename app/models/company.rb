@@ -54,6 +54,16 @@ class Company < ApplicationRecord
     Dinkurs::EventsCreator.new(self, events_start_date).call
   end
 
+  def validate_key_and_fetch_dinkurs_events
+    company.events.clear
+
+    return true if dinkurs_company_id.blank?
+
+    return true unless will_save_change_to_attribute?(dinkurs_company_id)
+
+    Dinkurs::EventsCreator.new(self, events_start_date).call
+  end
+
   def events_start_date
     # Fetch events that start on or after this date
     1.day.ago.to_date

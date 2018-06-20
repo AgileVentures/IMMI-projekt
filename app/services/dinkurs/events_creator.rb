@@ -8,14 +8,9 @@ module Dinkurs
     end
 
     def call
-      # Business rules for storing dinkurs events in our DB:
-      # 1. Clear all existing company events before fetching events
-      # 2. Reject events that started earlier than "events_start_date"
-      # 3. Reject events that do not have a location specified
-
-      company.events.clear
-
-      return if company.dinkurs_company_id.blank?
+      # Business rules for fetching dinkurs events:
+      # 1. Reject events that started earlier than "events_start_date"
+      # 2. Reject events that do not have a location specified
 
       return unless (events_hashes = dinkurs_events_hashes)
 

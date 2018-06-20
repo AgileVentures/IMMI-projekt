@@ -93,8 +93,9 @@ class CompaniesController < ApplicationController
     @company = Company.new(sanitize_params(company_params))
 
     saved = @company.save
+
     unless request.xhr?
-      if @company.save
+      if saved
         redirect_to @company, notice: t('.success')
       else
         flash.now[:alert] = t('.error')
@@ -119,7 +120,15 @@ class CompaniesController < ApplicationController
 
 
   def update
-    if @company.update(sanitize_params(company_params))
+    if (company_valid = @company.valid?)
+      # Will add model error if key is not blank and not valid:
+      dinkurs_key_ok = @company.validate_key_and_fetch_dinkurs_events
+    else
+      dinkurs_key_ok = true
+    end
+
+    if company_valid? && dinkurs_key_ok?
+      @company.update(sanitize_params(company_params))
       redirect_to @company, notice: t('.success')
     else
       flash.now[:alert] = t('.error')
