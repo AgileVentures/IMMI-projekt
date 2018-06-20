@@ -1,6 +1,14 @@
 # frozen_string_literal: true
 
 module Dinkurs
+
+  module Errors
+    class InvalidKey < StandardError
+    end
+  end
+
+  INVALID_KEY_MSG = 'Non existent company key'
+
   class EventsCreator
     def initialize(company, events_start_date=1.day.ago.to_date)
       @company = company
@@ -27,6 +35,8 @@ module Dinkurs
     attr_reader :company, :events_start_date
 
     def dinkurs_events_hashes
+      raise InvalidKey if dinkurs_events[:company] == INVALID_KEY_MSG
+
       events_data = dinkurs_events.dig('events', 'event')
       events_data = [events_data] if events_data.is_a? Hash
       # ^^ Parser expects an array of events.  HTTParty only returns an

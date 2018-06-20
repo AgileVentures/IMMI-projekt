@@ -55,6 +55,7 @@ class Company < ApplicationRecord
   end
 
   def validate_key_and_fetch_dinkurs_events
+    debugger
     company.events.clear
 
     return true if dinkurs_company_id.blank?
@@ -62,6 +63,10 @@ class Company < ApplicationRecord
     return true unless will_save_change_to_attribute?(dinkurs_company_id)
 
     Dinkurs::EventsCreator.new(self, events_start_date).call
+
+  rescue Dinkurs::InvalidKey
+    a=1
+    return false
   end
 
   def events_start_date
