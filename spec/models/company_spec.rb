@@ -250,7 +250,7 @@ RSpec.describe Company, type: :model do
         result = company.validate_key_and_fetch_dinkurs_events
 
         expect(result).to eq false
-        expect(company.errors.full_messages.first).to match /#{err}/
+        expect(company.errors.full_messages.first).to match(/#{err}/)
       end
     end
   end
