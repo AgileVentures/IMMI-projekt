@@ -129,5 +129,8 @@ group :test do
   gem 'vcr'      # to record and 'playback' (mock) http requests
 
   gem 'timecop'
+end
 
+group :production do
+  gem 'aws-sdk-s3'
 end

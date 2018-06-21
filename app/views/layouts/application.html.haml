@@ -35,6 +35,12 @@
       :javascript
         $.fx.off = true;
 
+      :css
+        .modal.fade .modal-dialog {
+          transition: inherit;
+          -webkit-transition: inherit;
+          }
+
 
 
   %body{class: "#{controller_name} #{action_name} page page-template page-template-page-sidebar-none"}

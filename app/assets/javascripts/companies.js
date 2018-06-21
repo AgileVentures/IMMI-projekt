@@ -33,10 +33,13 @@ $(function() {
     if (data.status === 'errors') {
       ele.html(data.value);
     } else {
-      ele.val( function( index, val ) {
-        return (val.length > 0 ? val + ', ' + data.value : data.value);
-      });
-      $('#company-create-modal').modal('hide');
+      
+      $('#company-create-modal').on('hidden.bs.modal', function() {
+        ele.val( function( index, val ) {
+          return (val.length > 0 ? val + ', ' + data.value : data.value);
+        });
+      }).modal('hide');
+
       $('#company-create-errors').html('');
     }
   });

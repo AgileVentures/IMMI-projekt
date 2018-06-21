@@ -11,23 +11,11 @@ class UsersController < ApplicationController
   end
 
   def proof_of_membership
-    html = image_html('proof_of_membership')
-
-    render html: html.html_safe and return unless params[:render_to] == 'jpg'
-
-    kit = build_kit(html, 'proof-of-membership.css', 260)
-
-    send_data(kit.to_jpg, type: 'image/jpg', filename: 'proof_of_membership.jpeg')
+    download_or_show_image('proof_of_membership', params[:render_to], 260)
   end
 
   def company_h_brand
-    html = image_html('company_h_brand')
-
-    render html: html.html_safe and return unless params[:render_to] == 'jpg'
-
-    kit = build_kit(html, 'company-h-brand.css', 300)
-
-    send_data(kit.to_jpg, type: 'image/jpg', filename: 'company_h_brand.jpeg')
+    download_or_show_image('company_h_brand', params[:render_to], 300)
   end
 
   def index
@@ -85,6 +73,16 @@ class UsersController < ApplicationController
 
 
   private
+
+  def download_or_show_image(type, render_to, width)
+    html = image_html(type)
+
+    render html: html.html_safe and return unless render_to == 'jpg'
+
+    kit = build_kit(html, "#{type.tr('_', '-')}.css", width)
+
+    send_data(kit.to_jpg, type: 'image/jpg', filename: "#{type}.jpeg")
+  end
 
   def image_html(image_type)
     render_to_string(partial: image_type,
