@@ -17,7 +17,7 @@ describe Dinkurs::EventsCreator,
     Timecop.freeze(Time.zone.local(2018, 6, 1))
 
     expect { event_creator.call }.to change { Event.count }.by(3)
-    
+
     Timecop.return
   end
 
@@ -28,12 +28,6 @@ describe Dinkurs::EventsCreator,
                   'name' => 'Deltagarhantering har aldrig varit enklare!',
                   'sign_up_url' =>
                     'https://dinkurs.se/appliance/?event_key=kNzMWFFQTWKBgLPM')
-  end
-
-  it 'not creating same events twice' do
-    event_creator.call
-    expect { described_class.new(company).call }
-      .not_to change { Event.count }
   end
 
   context 'when date given' do

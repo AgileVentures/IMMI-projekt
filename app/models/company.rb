@@ -6,18 +6,18 @@ class Company < ApplicationRecord
 
   include HasSwedishOrganization
 
+  include Dinkurs::Errors
+
   before_destroy :destroy_checks
 
   validates_presence_of :company_number
   validates_uniqueness_of :company_number,
-    message: I18n.t('activerecord.errors.models.company.company_number.taken')
+    message: I18n.t('activerecord.errors.models.company.attributes.company_number.taken')
   validates_length_of :company_number, is: 10
   validates_format_of :email, with: /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i, on: [:create, :update]
   validate :swedish_organisationsnummer
 
   before_save :sanitize_website, :sanitize_description
-  after_save :fetch_dinkurs_events,
-             if: -> { saved_change_to_attribute?(:dinkurs_company_id) }
 
   has_many :company_applications
   has_many :shf_applications, through: :company_applications, dependent: :destroy
@@ -50,23 +50,19 @@ class Company < ApplicationRecord
       .order('users.last_name').where('users.member = ?', true)
   end
 
-  def fetch_dinkurs_events
-    Dinkurs::EventsCreator.new(self, events_start_date).call
+  def validate_key_and_fetch_dinkurs_events(on_update: true)
+    return true if on_update and !will_save_change_to_attribute?('dinkurs_company_id')
+    fetch_dinkurs_events
+    true
+  rescue Dinkurs::Errors::InvalidKey
+    errors.add(:dinkurs_company_id, :invalid)
+    return false
   end
 
-  def validate_key_and_fetch_dinkurs_events
-    debugger
-    company.events.clear
-
-    return true if dinkurs_company_id.blank?
-
-    return true unless will_save_change_to_attribute?(dinkurs_company_id)
-
+  def fetch_dinkurs_events
+    events.clear
+    return if dinkurs_company_id.blank?
     Dinkurs::EventsCreator.new(self, events_start_date).call
-
-  rescue Dinkurs::InvalidKey
-    a=1
-    return false
   end
 
   def events_start_date

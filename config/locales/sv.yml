@@ -206,6 +206,7 @@ sv:
         region: *region
         region_short: *region_short
         dinkurs_key: &dinkurs_company_key Dinkurs Företag key
+        dinkurs_company_id: Dinkurs företagsnyckel
 
       business_category:
         name: &business_category_name  Namn
@@ -235,9 +236,12 @@ sv:
               file_too_large: 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
 
         company:
-          company_number:
-            taken: Detta företag (org nr) finns redan i systemet.
-          company_has_active_memberships: "Företaget har aktiva (godkända) medlemskap."
+          attributes:
+            company_number:
+              taken: Detta företag (org nr) finns redan i systemet.
+            dinkurs_company_id:
+              invalid: erkänns inte som en företagsnyckel av Dinkurs
+            company_has_active_memberships: "Företaget har aktiva (godkända) medlemskap."
 
         user:
           attributes:
@@ -332,7 +336,7 @@ sv:
     create:
       success: "Tack, din ansökan har skickats. Du borde få en bekräftelse inom kort till %{email_address}."
       error: Ett eller flera problem hindrade din ansökan från att skickas.
-      success_with_file_problem: DIN ANSÖKAN HAR SKAPATS, MEN OBSERVERA FELMEDDELANDE(N) OVAN
+      success_with_file_problem: DIN ANSÖKAN HAR SKAPATS, MEN OBSERVERA FELMEDDELANDE(ER) HÄR
 
     edit:
       title: Redigera ansökan om medlemskap
@@ -518,9 +522,12 @@ sv:
       error: Ett eller flera problem hindrade företaget från att skapas.
       success: Företaget har skapats.
       create_submit: Skapa företag
+      success_with_dinkurs_problem: FÖRETAGET SKAPADES, MEN VAR VÄNLIG NOTERA
+                                    MEDDELANDEN (ER) NEDANFÖR
     update:
       error: Ett problem förhindrade uppdatering av företaget.
       success: Företaget har uppdaterats.
+
     edit:
       title: 'Redigera företag: %{company_name}'
     show:

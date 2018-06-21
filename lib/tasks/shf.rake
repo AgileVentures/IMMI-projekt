@@ -13,7 +13,7 @@ namespace :shf do
 
     ActivityLogger.open(LOG, 'SHF_TASK', 'Load Dinkurs Events') do |log|
 
-      Company.where.not(dinkurs_company_id: nil).order(:id).each do |company|
+      Company.where.not(dinkurs_company_id: [nil, '']).order(:id).each do |company|
 
         company.fetch_dinkurs_events
         company.reload
