@@ -151,7 +151,7 @@ class Company < ApplicationRecord
     shf_applications.reload
 
     if shf_applications.where.not(state: 'being_destroyed').any?
-      errors.add(:base, 'activerecord.errors.models.company.company_has_active_memberships')
+      errors.add(:base, 'activerecord.errors.models.company.attributes.company_has_active_memberships')
       # Rails 5: must throw
       throw(:abort)
     end
