@@ -272,6 +272,8 @@ sv:
               not_found: 'med organisationsnummer %{value} inte hittat.
                           Klicka på knappen "Nytt företag" för att skapa företaget
                           och försök sedan skicka din ansökan igen.'
+            company_number: 
+              invalid: " är inte ett svenskt organisationsnummer"
 
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'

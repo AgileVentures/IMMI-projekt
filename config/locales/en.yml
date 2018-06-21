@@ -273,6 +273,9 @@ en:
               not_found: 'with number %{value} not found.
                           Click the “New company” button to create the company,
                           then try to send your application again.'
+            company_number: 
+              invalid: " is not a valid Swedish company number"
+
 
 
       messages:
