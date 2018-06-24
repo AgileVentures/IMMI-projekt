@@ -63,8 +63,12 @@
                       form_class: 'dinkurs-fetch-events',
                       data: { disable_with: "#{t('.dinkurs_fetching')}" }
 
-        = render 'events/teaser_list', events: @events, company: @company,
-                                       items_count: @items_count
+        #company-events-table
+          -# Added this div ^^ to try to get pagination and Vue to work
+             together.  Did not work - see link in events_table.js.
+
+          = render 'events/teaser_list', events: @events, company: @company,
+                                         items_count: @items_count
 
     .row.center.item-nav-buttons#item-nav-buttons
 

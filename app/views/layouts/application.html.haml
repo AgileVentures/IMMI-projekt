@@ -20,7 +20,8 @@
                              "#{Geocoder.config[:api_key]}&language=#{I18n.locale}" + |
                              "&region=SE" |
 
-    = yield :javascript_for_view  # javascript markup specific to a view
+    - if content_for? :javascript_for_view
+      = yield :javascript_for_view  # javascript specific to a view
 
     - if content_for? :javascript_pack_for_view
       = yield :javascript_pack_for_view  # webpack specific to a view

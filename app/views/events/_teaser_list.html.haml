@@ -1,3 +1,6 @@
+- content_for :javascript_pack_for_view do
+  = javascript_pack_tag 'events_table'
+
 #company-events
 
   %table.table.table-hover.fixed-table-with-border
@@ -18,8 +21,14 @@
           %tr.event
             %td.event-name
               = link_to event.name, event.sign_up_url, target: '_blank'
-            %td.location
-              = event.location
+            -# %td.location
+            -#   = event.location
+
+            %td( is='event_location'
+                 v-bind:loc="\"#{event.location}\""
+                 v-bind:lat="\"#{event.latitude}\""
+                 v-bind:long="\"#{event.longitude}\"")
+
             %td.fee.text-align-right
               = number_to_currency(event.fee, locale: 'sv', format: '%n',
                                    delimiter: ' ', precision: 0)
