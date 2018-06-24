@@ -43,14 +43,14 @@ Feature: As a member of a company
     And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
-    And I should see "4" events
+    And I should see "2" events
     Then I am logged out
     And I am logged in as "visitor@mail.com"
     And I am on the "landing" page
     And I click on "Mutts"
     And I should see t("events.show.name")
     And I should not see t("events.show.no_events")
-    And I should see "4" events
+    And I should see "2" events
 
   @time_adjust
   Scenario: Member edits company, enters invalid Dinkurs ID, sees validation error
@@ -70,10 +70,11 @@ Feature: As a member of a company
     And I am on the edit company page for "5560360793"
     And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
     And I click on t("submit")
-    And I should see "4" events
+    And I should not see t("events.show.no_events")
+    And I should see "2" events
     Then all events for the company named "Mutts" are deleted from the database
     And I reload the page
     And I should see t("events.show.no_events")
     Then I click on t("companies.show.dinkurs_fetch_events") button
     And I wait for all ajax requests to complete
-    Then I should see "4" events
+    Then I should see "2" events
