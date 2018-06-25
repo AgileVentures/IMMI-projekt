@@ -97,7 +97,7 @@ Feature: As an admin
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Bromölla"
-    And I should see "4" events
+    And I should see "2" events
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
 
   Scenario: Admin creates company with invalid Dinkurs key
