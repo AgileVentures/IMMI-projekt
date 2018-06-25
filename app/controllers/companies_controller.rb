@@ -193,6 +193,7 @@ class CompaniesController < ApplicationController
                                     :website,
                                     :description,
                                     :dinkurs_company_id,
+                                    :show_dinkurs_events,
                                     addresses_attributes: [:id,
                                                            :street_address,
                                                            :post_code,
