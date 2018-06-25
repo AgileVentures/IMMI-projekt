@@ -4,12 +4,18 @@ $btn-hover-color: #7EDD8B;
   font-weight: bold;
 }
 
-
-.edit_company {
-  
+@mixin form-flex {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+}
+
+.new_company {
+  @include form-flex;
+}
+
+.edit_company {
+  @include form-flex;
 
   .main-address {
     font-size: larger;
