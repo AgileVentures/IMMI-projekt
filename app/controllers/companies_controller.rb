@@ -93,9 +93,15 @@ class CompaniesController < ApplicationController
     @company = Company.new(sanitize_params(company_params))
 
     saved = @company.save
+
     unless request.xhr?
-      if @company.save
-        redirect_to @company, notice: t('.success')
+      if saved
+        if @company.validate_key_and_fetch_dinkurs_events(on_update: false)
+          redirect_to @company, notice: t('.success')
+        else
+          helpers.flash_message(:notice, t('.success_with_dinkurs_problem'))
+          render :edit
+        end
       else
         flash.now[:alert] = t('.error')
         render :new
@@ -119,7 +125,19 @@ class CompaniesController < ApplicationController
 
 
   def update
-    if @company.update(sanitize_params(company_params))
+    cmpy_params = sanitize_params(company_params)
+
+    @company.assign_attributes(cmpy_params)
+
+    if (company_valid = @company.valid?)
+      # Will add model error if key is not blank and not valid:
+      dinkurs_key_ok = @company.validate_key_and_fetch_dinkurs_events
+    else
+      dinkurs_key_ok = true
+    end
+
+    if company_valid && dinkurs_key_ok
+      @company.update(cmpy_params)
       redirect_to @company, notice: t('.success')
     else
       flash.now[:alert] = t('.error')

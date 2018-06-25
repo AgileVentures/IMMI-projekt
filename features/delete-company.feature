@@ -155,7 +155,7 @@ Feature: As an admin
     And I click on and accept the t("companies.index.delete") link
     Then I should not see t("companies.destroy.success")
     And I should see t("companies.destroy.error")
-    And I should see t("activerecord.errors.models.company.company_has_active_memberships")
+    And I should see t("activerecord.errors.models.company.attributes.company_has_active_memberships")
     When I am on the "all companies" page
     And I should see "Happy Mutts"
     And I should see "7" companies

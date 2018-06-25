@@ -102,7 +102,7 @@ RSpec.describe Company, type: :model do
     it { is_expected.not_to allow_value('userexample.com').for(:email) }
 
     describe 'uniqueness of company_number' do
-      let(:msg) { I18n.t('activerecord.errors.models.company.company_number.taken') }
+      let(:msg) { I18n.t('activerecord.errors.models.company.attributes.company_number.taken') }
       subject { FactoryBot.build(:company) }
 
       it 'uniqueness of company_number' do
@@ -230,6 +230,27 @@ RSpec.describe Company, type: :model do
         expect(company.events.count).to eq 0
         expect(company.fetch_dinkurs_events).to_not be_nil
         expect(company.events.count).to_not eq 0
+      end
+    end
+
+    context '#validate_key_and_fetch_dinkurs_events', :vcr do
+      it 'returns true if dinkurs key is unchanged' do
+        expect(company.validate_key_and_fetch_dinkurs_events).to eq true
+      end
+
+      it 'returns true if events are fetched' do
+        company.dinkurs_company_id = ENV['DINKURS_COMPANY_TEST_ID']
+        expect(company.validate_key_and_fetch_dinkurs_events).to eq true
+      end
+
+      it 'adds model error and returns false if invalid dinkurs key' do
+        company.dinkurs_company_id = 'xyz'
+        err = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid')
+
+        result = company.validate_key_and_fetch_dinkurs_events
+
+        expect(result).to eq false
+        expect(company.errors.full_messages.first).to match(/#{err}/)
       end
     end
   end

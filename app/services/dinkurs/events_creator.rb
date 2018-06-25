@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module Dinkurs
+  include Dinkurs::Errors
+
+  INVALID_KEY_MSG = 'Non existent company key'
+
   class EventsCreator
     def initialize(company, events_start_date=1.day.ago.to_date)
       @company = company
@@ -8,14 +12,9 @@ module Dinkurs
     end
 
     def call
-      # Business rules for storing dinkurs events in our DB:
-      # 1. Clear all existing company events before fetching events
-      # 2. Reject events that started earlier than "events_start_date"
-      # 3. Reject events that do not have a location specified
-
-      company.events.clear
-
-      return if company.dinkurs_company_id.blank?
+      # Business rules for fetching dinkurs events:
+      # 1. Reject events that started earlier than "events_start_date"
+      # 2. Reject events that do not have a location specified
 
       return unless (events_hashes = dinkurs_events_hashes)
 
@@ -32,7 +31,11 @@ module Dinkurs
     attr_reader :company, :events_start_date
 
     def dinkurs_events_hashes
-      events_data = dinkurs_events.dig('events', 'event')
+      events_data = dinkurs_events
+
+      raise Dinkurs::Errors::InvalidKey if events_data['company'] == INVALID_KEY_MSG
+
+      events_data = events_data.dig('events', 'event')
       events_data = [events_data] if events_data.is_a? Hash
       # ^^ Parser expects an array of events.  HTTParty only returns an
       #    an array if there are multiple events, otherwise a Hash

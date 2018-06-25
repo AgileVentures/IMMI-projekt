@@ -40,10 +40,6 @@ Feature: As a member of a company
     And I am on the "my first company" page for "member@mutts.com"
     And I should not see t("events.show.name")
     And I am on the edit company page for "5560360793"
-    And I fill in t("companies.show.dinkurs_key") with "wrongkey"
-    And I click on t("submit")
-    And I should see t("events.show.no_events")
-    Then I am on the edit company page for "5560360793"
     And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
@@ -56,19 +52,28 @@ Feature: As a member of a company
     And I should not see t("events.show.no_events")
     And I should see "4" events
 
-    @time_adjust @selenium
-    Scenario: Member fetches Dinkurs events
-      Given the date is set to "2017-10-01"
-      And I am logged in as "member@mutts.com"
-      And I am on the "my first company" page for "member@mutts.com"
-      And I should not see t("events.show.name")
-      And I am on the edit company page for "5560360793"
-      And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
-      And I click on t("submit")
-      And I should see "4" events
-      Then all events for the company named "Mutts" are deleted from the database
-      And I reload the page
-      And I should see t("events.show.no_events")
-      Then I click on t("companies.show.dinkurs_fetch_events") button
-      And I wait for all ajax requests to complete
-      Then I should see "4" events
+  @time_adjust
+  Scenario: Member edits company, enters invalid Dinkurs ID, sees validation error
+    Given the date is set to "2017-10-01"
+    And I am logged in as "member@mutts.com"
+    And I am on the edit company page for "5560360793"
+    And I fill in t("companies.show.dinkurs_key") with "wrongkey"
+    And I click on t("submit")
+    Then I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid")
+
+  @time_adjust @selenium
+  Scenario: Member fetches Dinkurs events
+    Given the date is set to "2017-10-01"
+    And I am logged in as "member@mutts.com"
+    And I am on the "my first company" page for "member@mutts.com"
+    And I should not see t("events.show.name")
+    And I am on the edit company page for "5560360793"
+    And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
+    And I click on t("submit")
+    And I should see "4" events
+    Then all events for the company named "Mutts" are deleted from the database
+    And I reload the page
+    And I should see t("events.show.no_events")
+    Then I click on t("companies.show.dinkurs_fetch_events") button
+    And I wait for all ajax requests to complete
+    Then I should see "4" events

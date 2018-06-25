@@ -205,6 +205,7 @@ en:
         website: Website
         org_nr: *org_nr
         dinkurs_key: &dinkurs_company_key Dinkurs Company key
+        dinkurs_company_id: Dinkurs company key
 
 
       business_category:
@@ -236,9 +237,12 @@ en:
               file_too_large: 'The uploaded file size must be smaller than %{max}. (Your file is %{value} bytes.)'
 
         company:
-          company_number:
-            taken: This company (organization number) already exists in the system.
-          company_has_active_memberships: "The company has active (accepted) membership applications."
+          attributes:
+            company_number:
+              taken: This company (organization number) already exists in the system.
+            dinkurs_company_id:
+              invalid: is not recognized as a company key by Dinkurs
+            company_has_active_memberships: "The company has active (accepted) membership applications."
 
         user:
           attributes:
@@ -335,7 +339,7 @@ en:
     create:
       success: "Thank You. Your membership application has been submitted. You should receive an email shortly at %{email_address} with information about what to expect next."
       error: The was a problem creating and submitting your application.
-      success_with_file_problem: YOUR APPLICATION WAS CREATED, BUT PLEASE NOTE PROBLEM(S) ABOVE
+      success_with_file_problem: YOUR APPLICATION WAS CREATED, BUT PLEASE NOTE PROBLEM(S) BELOW
 
     edit:
       title: Edit Membership Application
@@ -520,6 +524,7 @@ en:
       error: One or more problems prevented the company from being created.
       success: The company was created successfully.
       create_submit: Create Company
+      success_with_dinkurs_problem: THE COMPANY WAS CREATED, BUT PLEASE NOTE PROBLEM(S) BELOW
     edit:
       title: 'Editing: %{company_name}'
     update:

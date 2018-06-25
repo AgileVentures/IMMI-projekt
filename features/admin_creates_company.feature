@@ -72,12 +72,15 @@ Feature: As an admin
     And I am on the "create a new company" page
     Then I should see t("errors.not_permitted")
 
+  @time_adjust
   Scenario: Admin creates a company
     Given I am logged in as "admin@shf.se"
+    And the date is set to "2017-10-01"
     When I am on the "create a new company" page
     And I fill in the translated form with data:
       | companies.company_name | companies.show.company_number | companies.show.email | companies.website_include_http |
       | Happy Mutts            | 5569467466                    | kicki@gladajyckar.se | http://www.gladajyckar.se      |
+    And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
     And I click on t("submit")
     Then I should see t("companies.create.success")
     Then I click on t("companies.show.add_address")
@@ -94,7 +97,20 @@ Feature: As an admin
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Bromölla"
+    And I should see "4" events
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
+
+  Scenario: Admin creates company with invalid Dinkurs key
+    Given I am logged in as "admin@shf.se"
+    When I am on the "create a new company" page
+    And I fill in the translated form with data:
+      | companies.company_name | companies.show.company_number | companies.show.email | companies.website_include_http |
+      | Happy Mutts            | 5569467466                    | kicki@gladajyckar.se | http://www.gladajyckar.se      |
+    And I fill in t("companies.show.dinkurs_key") with "xyz"
+    And I click on t("submit")
+    Then I should see t("companies.create.success_with_dinkurs_problem")
+    And I should see "Happy Mutts"
+    And I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid")
 
   Scenario Outline: Admin creates company - when things go wrong
     Given I am logged in as "admin@shf.se"
@@ -111,7 +127,7 @@ Feature: As an admin
       | Happy Mutts | 00         | 0706898525 | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10)                 |
       | Happy Mutts | 5562252998 |            | kickiimmi.nu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
       | Happy Mutts | 5562252998 |            | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
-      | Happy Mutts | 5560360793 | 0706898525 | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.company_number.taken") |
+      | Happy Mutts | 5560360793 | 0706898525 | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.attributes.company_number.taken") |
 
   @time_adjust
   Scenario: Admin edits a company and visitor views changes
