@@ -238,7 +238,8 @@ CREATE TABLE public.companies (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     description text,
-    dinkurs_company_id character varying
+    dinkurs_company_id character varying,
+    show_dinkurs_events boolean
 );
 
 
@@ -1316,6 +1317,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180219132317'),
 ('20180326103433'),
 ('20180328105100'),
-('20180428103625');
+('20180428103625'),
+('20180624155644');
 
 

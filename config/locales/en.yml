@@ -590,6 +590,7 @@ en:
     website_include_http: Company website
     description: Customized Company Description
     address_visibility: Visibility
+    show_dinkurs_events: Show Dinkurs Events
 
     all_companies: All companies
     edit_company: Edit company

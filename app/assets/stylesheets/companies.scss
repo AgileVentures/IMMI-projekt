@@ -6,6 +6,10 @@ $btn-hover-color: #7EDD8B;
 
 
 .edit_company {
+  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 
   .main-address {
     font-size: larger;
@@ -133,4 +137,72 @@ $btn-hover-color: #7EDD8B;
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+ /* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+
+  /* Hide default HTML checkbox */
+  & input {display:none;}
+  }
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  height: 45px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f4f4f8;
+  -webkit-transition: .4s;
+  transition: .4s;
+
+  &:before {
+    position: absolute;
+    content: "";
+    height: 37px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+      transition: .4s;
+    }
+
+  input:checked + & {
+    background-color: #2196F3;
+  }
+
+  input:focus + & {
+    box-shadow: 0 0 1px #2196F3;
+  }
+
+  input:checked + &:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+  }
+}
+
+.dinkurs_company_id, .dinkurs_company_show {
+  width: 50%;
+}
+.dinkurs_company_show {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label, .glyphicon {
+  flex: 1, 1, 100%;
+}
+
+[for="company_show_dinkurs_events"] {
+  margin-bottom: 5px;
 }
