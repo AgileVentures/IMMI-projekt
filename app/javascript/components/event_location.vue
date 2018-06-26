@@ -1,5 +1,5 @@
 <template>
-  <td v-on:click='doSomething'>
+  <td v-on:click='openMap'>
     {{ location }}
   </td>
 </template>
@@ -16,9 +16,10 @@ export default {
     return eleData;
   },
   methods: {
-    doSomething: function () {
-      alert('Location: ' + this.location)
-      alert('Lat/Long: ' + this.latitude + '/' + this.longitude)
+    openMap: function () {
+      var url = 'https://www.google.com/maps/search/?api=1&query=' +
+                 this.latitude + ',' + this.longitude
+      window.open(url)
     }
   }
 }
