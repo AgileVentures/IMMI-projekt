@@ -5,7 +5,7 @@ Vue.component('location_map', LocationMap)
 
 document.addEventListener('DOMContentLoaded', () => {
   const event = new Vue({
-    el: '#company-events',
+    el: '#company-addresses',
     components: { LocationMap }
   })
 })

@@ -1,10 +1,13 @@
+- content_for :javascript_pack_for_view do
+  = javascript_pack_tag 'company_addresses_table'
+
 - addresses = user_can_edit ? company.addresses : company.addresses.visible
 
 - if addresses.any?
 
   .col-md-12
 
-    %table.table.table-hover
+    %table.table.table-hover#company-addresses
       %thead
         %tr
           %th
@@ -35,5 +38,9 @@
                             params: 'type=mail',
                             method: :post })
             - else
-              %td
-                = address.entire_address
+              %td( is='location_map'
+                   v-bind:loc="\"#{address.entire_address}\""
+                   v-bind:lat="\"#{address.latitude}\""
+                   v-bind:long="\"#{address.longitude}\"")
+              -# %td
+              -#   = address.entire_address
