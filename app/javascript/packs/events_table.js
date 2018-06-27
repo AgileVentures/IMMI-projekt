@@ -1,7 +1,7 @@
 import Vue from 'vue/dist/vue.esm'
 import LocationMap from '../components/location_map.vue'
 
-Vue.component('location_map', LocationMap)
+Vue.component('location-map', LocationMap)
 
 document.addEventListener('DOMContentLoaded', () => {
   const event = new Vue({
