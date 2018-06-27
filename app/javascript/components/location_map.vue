@@ -8,12 +8,11 @@
 export default {
   props: ['loc', 'lat', 'long'],
   data: function () {
-    var eleData = {
+    return {
       location: this.loc,
       latitude: this.lat,
       longitude: this.long
     }
-    return eleData;
   },
   methods: {
     openMap: function () {
