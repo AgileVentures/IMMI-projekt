@@ -68,6 +68,7 @@ gem 'jwt'
 
 gem 'exception_notification' # send notifications if there are errors
 gem 'slack-notifier'  # send notifications to Slack
+gem 'exception_notification-rake', '~> 0.3.0'
 
 gem 'imgkit'
 gem 'wkhtmltoimage-binary'

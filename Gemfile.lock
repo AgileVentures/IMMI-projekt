@@ -214,6 +214,9 @@ GEM
     exception_notification (4.2.2)
       actionmailer (>= 4.0, < 6)
       activesupport (>= 4.0, < 6)
+    exception_notification-rake (0.3.0)
+      exception_notification (~> 4.2.0)
+      rake (>= 0.9.0)
     execjs (2.7.0)
     factory_bot (4.8.2)
       activesupport (>= 3.0.0)
@@ -587,6 +590,7 @@ DEPENDENCIES
   email_spec
   erb2haml
   exception_notification
+  exception_notification-rake (~> 0.3.0)
   factory_bot_rails
   ffaker
   font-awesome-rails
