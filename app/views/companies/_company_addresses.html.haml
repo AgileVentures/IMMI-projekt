@@ -40,7 +40,7 @@
             - else
               %td( is='location-map'
                    v-bind:loc="\"#{address.entire_address}\""
-                   v-bind:lat="\"#{address.latitude}\""
-                   v-bind:long="\"#{address.longitude}\"")
+                   v-bind:lat="#{address.latitude}"
+                   v-bind:long="#{address.longitude}" )
               -# %td
               -#   = address.entire_address

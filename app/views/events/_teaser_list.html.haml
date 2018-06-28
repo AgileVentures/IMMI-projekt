@@ -24,10 +24,15 @@
             -# %td.location
             -#   = event.location
 
+            -# Pass geo params as numbers
+               https://vuejs.org/v2/guide/components-props.html#Passing-a-Number
+               
+            - latitude = event.latitude ? "#{event.latitude}" : '0'
+            - longitude = event.longitude ? "#{event.longitude}" : '0'
             %td( is='location-map'
                  v-bind:loc="\"#{event.location}\""
-                 v-bind:lat="\"#{event.latitude}\""
-                 v-bind:long="\"#{event.longitude}\"")
+                 v-bind:lat="#{latitude}"
+                 v-bind:long="#{longitude}" )
 
             %td.fee.text-align-right
               = number_to_currency(event.fee, locale: 'sv', format: '%n',

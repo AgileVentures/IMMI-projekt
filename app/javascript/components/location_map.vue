@@ -6,7 +6,9 @@
 
 <script>
 export default {
-  props: ['loc', 'lat', 'long'],
+  props: { loc: String,
+           lat: Number,
+           long: Number },
   data: function () {
     return {
       location: this.loc,
@@ -16,6 +18,10 @@ export default {
   },
   methods: {
     openMap: function () {
+      if (this.latitude === 0) {
+        alert('Coordinates not available')
+        return
+      }
       var url = 'https://www.google.com/maps/search/?api=1&query=' +
                  this.latitude + ',' + this.longitude
       window.open(url)
