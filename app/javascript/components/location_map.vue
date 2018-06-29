@@ -1,5 +1,8 @@
 <template>
-  <td v-on:click='openMap'>
+  <td v-if="latitude != 0" v-on:click='openMap'>
+    <a> {{ location }} </a>
+  </td>
+  <td v-else>
     {{ location }}
   </td>
 </template>
