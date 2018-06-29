@@ -30,7 +30,12 @@
     = f.text_field :dinkurs_company_id, class: 'wpcf7-form-control'
 
   .dinkurs_company_show
-    = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
+    %div
+      = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
+
+      %span.glyphicon.glyphicon-info-sign{ title: "#{t('.dinkurs_show_tooltip')}",
+                                           data: {toggle: 'tooltip'} }
+
     %label.switch
       = f.check_box :show_dinkurs_events, {}, "true", "false"
       %span.slider

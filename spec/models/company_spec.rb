@@ -93,6 +93,7 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :website }
     it { is_expected.to have_db_column :description }
     it { is_expected.to have_db_column :dinkurs_company_id }
+    it { is_expected.to have_db_column :show_dinkurs_events }
   end
 
   describe 'Validations' do

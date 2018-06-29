@@ -41,7 +41,7 @@ class CompaniesController < ApplicationController
   def show
     setup_events_and_events_pagination
 
-    show_events_list if request.xhr?
+    show_events_list if request.xhr? 
   end
 
   def fetch_from_dinkurs
