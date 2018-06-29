@@ -68,7 +68,7 @@ Feature: As a member of a company
     And I am logged in as "visitor@mail.com"
     And I am on the "landing" page
     And I click on "Mutts"
-    And I should not see t("features/**.show.name")
+    And I should not see t("events.show.name")
     And I should not see t("events.show.no_events")
 
   @time_adjust
