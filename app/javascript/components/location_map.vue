@@ -1,5 +1,5 @@
 <template>
-  <td v-if="latitude != 0" v-on:click='openMap'>
+  <td v-if="latitude != null" v-on:click='openMap'>
     <a> {{ location }} </a>
   </td>
   <td v-else>
@@ -21,7 +21,7 @@ export default {
   },
   methods: {
     openMap: function () {
-      if (this.latitude === 0) {
+      if (this.latitude === null) {
         alert('Coordinates not available')
         return
       }
