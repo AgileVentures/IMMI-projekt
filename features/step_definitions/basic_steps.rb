@@ -86,7 +86,9 @@ When "I click and accept the {capture_string} action for the row with {capture_s
 end
 
 When "I {action} the checkbox with id {capture_string}" do |action, element_id|
-  send action, element_id
+  send action, id: element_id
+rescue Capybara::ElementNotFound
+  page.execute_script("document.getElementById(\"#{element_id}\").click()")
 end
 
 When "I click the radio button with id {capture_string}" do |element_id|
