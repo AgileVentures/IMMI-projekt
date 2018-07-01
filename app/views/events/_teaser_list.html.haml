@@ -27,14 +27,9 @@
               %td.event-start-date.text-align-center
                 = event.start_date
         - else
-          %tr.event
-            %td.event-name{ colspan: 4 }
-              #{t('events.show.no_events')}
+          = render 'events/empty_with_message', message: t('events.show.no_events')
       - else
-        - if current_user.companies.include? company
-          %tr.event
-            %td.event-name{ colspan: 4 }
-              #{t('events.show_not')}
+        = render 'events/empty_with_message', message: t('events.show_not')
 
   = render 'application/paginate_footer', entities: events,
                                           paginate_class: 'events_pagination',

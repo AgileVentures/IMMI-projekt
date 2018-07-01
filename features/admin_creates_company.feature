@@ -81,6 +81,7 @@ Feature: As an admin
       | companies.company_name | companies.show.company_number | companies.show.email | companies.website_include_http |
       | Happy Mutts            | 5569467466                    | kicki@gladajyckar.se | http://www.gladajyckar.se      |
     And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
+    And I check the checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
     Then I should see t("companies.create.success")
     Then I click on t("companies.show.add_address")
@@ -98,6 +99,7 @@ Feature: As an admin
     And I should see "Bromma"
     And I should see "Bromölla"
     And I should see "2" events
+    And I should not see t("events.show_not")
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
 
   Scenario: Admin creates company with invalid Dinkurs key

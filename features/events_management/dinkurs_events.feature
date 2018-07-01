@@ -11,6 +11,7 @@ Feature: As a member of a company
       | email            | admin | member |
       | member@mutts.com |       | true   |
       | visitor@mail.com |       |        |
+      | admin@shf.se     | true  |        |
 
     And the following regions exist:
       | name         |
@@ -34,7 +35,7 @@ Feature: As a member of a company
       | member@mutts.com | 5560360793     | accepted |
 
   @time_adjust
-  Scenario: Member adds Dinkurs ID and visitor sees events in company page
+  Scenario: Member adds Dinkurs ID, checks as visible and visitor sees events in company page
     Given the date is set to "2017-10-01"
     And I am logged in as "member@mutts.com"
     And I am on the "my first company" page for "member@mutts.com"
@@ -44,6 +45,7 @@ Feature: As a member of a company
     And I check the checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
+    And I should not see t("events.show_not")
     And I should see "2" events
     Then I am logged out
     And I am logged in as "visitor@mail.com"
@@ -54,7 +56,25 @@ Feature: As a member of a company
     And I should see "2" events
 
   @time_adjust
-  Scenario: Member adds Dinkurs ID, without checking it as visible and visitor does not see events in company page
+  Scenario: Member adds Dinkurs ID and visitor does not see events in company page
+    Given the date is set to "2017-10-01"
+    And I am logged in as "member@mutts.com"
+    And I am on the "my first company" page for "member@mutts.com"
+    And I should not see t("events.show.name")
+    And I am on the edit company page for "5560360793"
+    And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
+    And I click on t("submit")
+    And I should not see t("events.show.no_events")
+    Then I am logged out
+    And I am logged in as "visitor@mail.com"
+    And I am on the "landing" page
+    And I click on "Mutts"
+    And I should not see t("events.show.name")
+    And I should not see t("events.show.no_events")
+    And I should not see t("events.show_not")
+
+  @time_adjust 
+  Scenario: Member adds Dinkurs ID then member himself and admin, too, sees information about Showing Dinkurs Events being disabled
     Given the date is set to "2017-10-01"
     And I am logged in as "member@mutts.com"
     And I am on the "my first company" page for "member@mutts.com"
@@ -65,11 +85,11 @@ Feature: As a member of a company
     And I should not see t("events.show.no_events")
     And I should see t("events.show_not")
     Then I am logged out
-    And I am logged in as "visitor@mail.com"
-    And I am on the "landing" page
+    And I am logged in as "admin@shf.se"
+    And I am on the "all companies" page
     And I click on "Mutts"
-    And I should not see t("events.show.name")
     And I should not see t("events.show.no_events")
+    And I should see t("events.show_not")
 
   @time_adjust
   Scenario: Member edits company, enters invalid Dinkurs ID, sees validation error
