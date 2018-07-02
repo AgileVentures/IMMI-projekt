@@ -581,7 +581,7 @@ sv:
        flera län, eller "Online" om det (i huvudsak) finns på nätet
       visibility_tooltip: Hur detaljerat din adress visas för besökare (inkl kartor). Välj 'Ingen' för att inte visa din adress för besökare alls.
       org_nr_tooltip: Endast siffror (ej bindestreck)
-      dinkurs_show_tooltip: Sätt den här knappen på (växla till höger) 
+      dinkurs_show_tooltip: Växla den här knappen till på (till höger)
                             för att visa kommande dinkurs händelser på din företagsida.
       dinkurs_id_tooltip: Om du har ett Dinkurs.se konto och vill visa
                           företagshändelser här, ange Dinkurs.se företagsnyckel.
@@ -633,8 +633,8 @@ sv:
       location: Plats
       fee: Pris
       no_events: (Inga planerade händelser)
-    show_not: (Visar Dinkurs-händelser på den här sidan har inaktiverats.
-              Redigera företaget för att aktivera det.)
+    show_not: (Visning av Dinkurs-händelser på den här sidan har inaktiverats.
+              Redigera företaget för att aktivera visning av händelser.)
 
   business_categories:
 
