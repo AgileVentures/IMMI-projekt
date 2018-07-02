@@ -1,3 +1,5 @@
+- content_for :javascript_pack_for_view do
+  = javascript_pack_tag 'company_numbers_input'
 
 .app-section
   - unless assocation_empty?(@all_business_categories)
@@ -61,7 +63,10 @@
     %p.field-instruction= t('shf_applications.new.enter_company_number')
 
     #company-number-entry
-      = company_number_entry_field(company_numbers)
+      %component( is='company-numbers' type='text' name='company_number'
+                  v-model="#{company_numbers}" )
+
+      -# = company_number_entry_field(company_numbers)
 
     .new-company-link
 
@@ -72,6 +77,9 @@
         = t('companies.new.title')
 
     .clearfix
+
+    %p
+      = "Value is: #{company_numbers}"
 
     %br
 
