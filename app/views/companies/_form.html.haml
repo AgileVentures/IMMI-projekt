@@ -21,7 +21,7 @@
   = f.label :website, "#{t('companies.website_include_http')}"
   = f.text_field :website, class: 'wpcf7-form-control'
 
-  .dinkurs_company_id
+  .dinkurs-company-id
     = f.label :dinkurs_company_id, "#{t('companies.show.dinkurs_key')}"
 
     %span.glyphicon.glyphicon-info-sign{ title: "#{t('.dinkurs_id_tooltip')}",
@@ -29,7 +29,7 @@
 
     = f.text_field :dinkurs_company_id, class: 'wpcf7-form-control'
 
-  .dinkurs_company_show
+  .dinkurs-company-show
     %div
       = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
 

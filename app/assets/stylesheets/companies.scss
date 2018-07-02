@@ -1,4 +1,7 @@
 $btn-hover-color: #7EDD8B;
+$slider-checked: #2196f3;
+$slider-background-color: #f4f4f8;
+$slider-before-background-color: #ffffff;
 
 .field-label {
   font-weight: bold;
@@ -145,31 +148,33 @@ $btn-hover-color: #7EDD8B;
   width: 100%;
 }
 
- /* The switch - the box around the slider */
+ // The switch - the box around the slider
 .switch {
-  position: relative;
   display: inline-block;
-  width: 60px;
   height: 34px;
+  position: relative;
+  width: 60px;
 
-  /* Hide default HTML checkbox */
-  & input {display:none;}
+  // Hide default HTML checkbox
+  input {
+    display:none;
   }
+}
 
-/* The slider */
+// The slider
 .slider {
-  position: absolute;
+  background-color: $slider-background-color;
+  bottom: 0;
   cursor: pointer;
   height: 45px;
-  top: 0;
   left: 0;
+  position: absolute;
   right: 0;
-  bottom: 0;
-  background-color: #f4f4f8;
+  top: 0;
   transition: 0.4s;
 
   &::before {
-    background-color: #ffffff;
+    background-color: $slider-before-background-color;
     bottom: 4px;
     content: "";
     height: 37px;
@@ -179,31 +184,31 @@ $btn-hover-color: #7EDD8B;
     width: 26px;
     }
 
-  input::checked + & {
-    background-color: #2196f3;
+  input:checked + & {
+    background-color: $slider-checked;
   }
 
-  input::focus + & {
-    box-shadow: 0 0 1px #2196f3;
+  input:focus + & {
+    box-shadow: 0 0 1px $slider-checked;
   }
 
-  input::checked + &::before {
+  input:checked + &::before {
     transform: translateX(26px);
   }
 }
 
-.dinkurs_company_id, 
-.dinkurs_company_show {
+.dinkurs-company-id, 
+.dinkurs-company-show {
   width: 50%;
 }
 
-.dinkurs_company_show {
+.dinkurs-company-show {
   align-items: center;
   display: flex;
   flex-direction: column;
 }
 
-label, 
+label,
 .glyphicon {
   flex: 1, 1, 100%;
 }
