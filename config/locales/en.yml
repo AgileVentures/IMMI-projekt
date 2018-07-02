@@ -634,7 +634,7 @@ en:
       location: Location
       fee: Fee
       no_events: (No Scheduled Events)
-    show_not: Showing Dinkurs events on this page has been disabled.  Edit the company to enable that.
+    show_not: (Showing Dinkurs events on this page has been disabled.  Edit the company to enable that.)
 
   business_categories:
 

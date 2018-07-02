@@ -69,7 +69,7 @@ $btn-hover-color: #7EDD8B;
     color: black;
     text-transform: none;
 
-    &:hover {
+    &::hover {
       color: $btn-hover-color;
     }
   }
@@ -166,49 +166,52 @@ $btn-hover-color: #7EDD8B;
   right: 0;
   bottom: 0;
   background-color: #f4f4f8;
-  -webkit-transition: .4s;
-  transition: .4s;
+  transition: 0.4s;
 
-  &:before {
-    position: absolute;
+  &::before {
+    background-color: #ffffff;
+    bottom: 4px;
     content: "";
     height: 37px;
-    width: 26px;
     left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-      transition: .4s;
+    position: absolute;
+    transition: 0.4s;
+    width: 26px;
     }
 
-  input:checked + & {
-    background-color: #2196F3;
+  input::checked + & {
+    background-color: #2196f3;
   }
 
-  input:focus + & {
-    box-shadow: 0 0 1px #2196F3;
+  input::focus + & {
+    box-shadow: 0 0 1px #2196f3;
   }
 
-  input:checked + &:before {
-    -webkit-transform: translateX(26px);
-    -ms-transform: translateX(26px);
+  input::checked + &::before {
     transform: translateX(26px);
   }
 }
 
-.dinkurs_company_id, .dinkurs_company_show {
+.dinkurs_company_id, 
+.dinkurs_company_show {
   width: 50%;
 }
+
 .dinkurs_company_show {
+  align-items: center;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
-label, .glyphicon {
+label, 
+.glyphicon {
   flex: 1, 1, 100%;
 }
 
 [for="company_show_dinkurs_events"] {
   margin-bottom: 5px;
+}
+
+.dinkurs-show-not {
+  margin: 20px 0;
 }

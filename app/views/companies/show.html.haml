@@ -47,7 +47,12 @@
     = render 'company_addresses', company: @company, user_can_edit: user_can_edit
 
     .col-md-12
-      - unless @company.dinkurs_company_id.blank? || !(current_user.member_or_admin? || @company.show_dinkurs_events)
+      - if ! @company.dinkurs_company_id.blank? && ! @company.show_dinkurs_events && user_can_edit
+
+        .text-align-center.dinkurs-show-not
+          = t('events.show_not')
+
+      - elsif @company.show_dinkurs_events && ! @company.dinkurs_company_id.blank?
 
         - if user_can_edit
 

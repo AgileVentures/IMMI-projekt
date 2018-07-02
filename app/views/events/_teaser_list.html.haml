@@ -13,23 +13,22 @@
           #{t('events.show.start_date')}
       %tr
     %tbody
-      - if company.show_dinkurs_events
-        - if events.any?
-          - events.each do |event|
-            %tr.event
-              %td.event-name
-                = link_to event.name, event.sign_up_url, target: '_blank'
-              %td.location
-                = event.location
-              %td.fee.text-align-right
-                = number_to_currency(event.fee, locale: 'sv', format: '%n',
-                                     delimiter: ' ', precision: 0)
-              %td.event-start-date.text-align-center
-                = event.start_date
-        - else
-          = render 'events/empty_with_message', message: t('events.show.no_events')
+      - if events.any?
+        - events.each do |event|
+          %tr.event
+            %td.event-name
+              = link_to event.name, event.sign_up_url, target: '_blank'
+            %td.location
+              = event.location
+            %td.fee.text-align-right
+              = number_to_currency(event.fee, locale: 'sv', format: '%n',
+                                   delimiter: ' ', precision: 0)
+            %td.event-start-date.text-align-center
+              = event.start_date
       - else
-        = render 'events/empty_with_message', message: t('events.show_not')
+        %tr.event
+          %td.event-name{ colspan: 4 }
+            #{t('events.show.no_events')}
 
   = render 'application/paginate_footer', entities: events,
                                           paginate_class: 'events_pagination',
