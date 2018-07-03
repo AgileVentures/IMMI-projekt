@@ -1,4 +1,4 @@
-= form_for @company do |f|
+= form_for @company, html: { class: "#{class_name}" } do |f|
 
   != model_errors_helper(@company)
 

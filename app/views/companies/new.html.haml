@@ -3,6 +3,6 @@
   .post-title-divider
     %span
 .entry-content.wpcf7
-  = render 'form'
+  = render 'form', class_name: 'new-company'
   .center
     = link_to "#{t('companies.all_companies')}", companies_path

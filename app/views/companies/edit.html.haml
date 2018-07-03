@@ -9,7 +9,7 @@
     = render 'business_categories/as_list',
         categories_names: @company.categories_names
 .entry-content.wpcf7
-  = render 'form'
+  = render 'form', class_name: 'edit-company' 
   .center
     = link_to "#{t('companies.view_company')}", @company
     \|

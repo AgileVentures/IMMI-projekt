@@ -13,11 +13,11 @@ $slider-before-background-color: #ffffff;
   justify-content: center;
 }
 
-.new_company {
+.new-company {
   @include form-flex;
 }
 
-.edit_company {
+.edit-company {
   @include form-flex;
 
   .main-address {
@@ -218,5 +218,6 @@ label,
 }
 
 .dinkurs-show-not {
+  font-weight: bold;
   margin: 20px 0;
 }
