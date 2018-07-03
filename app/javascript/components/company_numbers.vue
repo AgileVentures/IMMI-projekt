@@ -8,9 +8,6 @@
 <script>
 export default {
   props: ['value'],
-  data: function () {
-    return { company_numbers: this.value }
-  },
   methods: {
     openMap: function () {
       if (this.latitude === null) {

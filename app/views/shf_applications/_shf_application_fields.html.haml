@@ -63,8 +63,9 @@
     %p.field-instruction= t('shf_applications.new.enter_company_number')
 
     #company-number-entry
-      %component( is='company-numbers' type='text' name='company_number'
-                  v-bind:value="#{company_numbers}"
+      %component( id='shf_application_company_number'
+                  is='company-numbers' type='text' name='company_number'
+                  v-bind:value="\"#{company_numbers}\""
                   v-on:input="company_numbers = $event" )
 
       -# v-model="#{company_numbers}" )
