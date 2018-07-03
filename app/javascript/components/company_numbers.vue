@@ -2,6 +2,7 @@
   <input
     v-bind:value='value'
     v-on:input="$emit('input', $event.target.value)"
+    v-on:change="handle_change"
   />
 </template>
 
@@ -9,14 +10,10 @@
 export default {
   props: ['value'],
   methods: {
-    openMap: function () {
-      if (this.latitude === null) {
-        alert('Coordinates not available')
-        return
-      }
-      var url = 'https://www.google.com/maps/search/?api=1&query=' +
-                 this.latitude + ',' + this.longitude
-      window.open(url)
+    handle_change: function (event, data) {
+      alert('Value: ' + event.target.value)
+      alert('Data: ' + data)
+      "$emit('change', 'inhandler')"
     }
   }
 }
