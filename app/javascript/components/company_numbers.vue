@@ -1,6 +1,6 @@
 <template>
   <input
-    v-bind:value="value"
+    v-bind:value='value'
     v-on:input="$emit('input', $event.target.value)"
   />
 </template>
@@ -8,6 +8,9 @@
 <script>
 export default {
   props: ['value'],
+  data: function () {
+    return { company_numbers: this.value }
+  },
   methods: {
     openMap: function () {
       if (this.latitude === null) {
