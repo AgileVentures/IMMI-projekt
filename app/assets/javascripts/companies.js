@@ -32,16 +32,14 @@ $(function() {
 
     if (data.status === 'errors') {
       ele.html(data.value);
-    } else {
-
-      $('#company-create-modal').on('hidden.bs.modal', function() {
-        ele.trigger('change', [{ new_co_number: data.value }]);
-        // ele.val( function( index, val ) {
-        //   return (val.length > 0 ? val + ', ' + data.value : data.value);
-        // });
-      }).modal('hide');
-
-      $('#company-create-errors').html('');
+      return;
     }
+
+    $('#company-create-modal').modal('hide');
+    $('#company-create-errors').html('');
+
+    var event = document.createEvent('Event');
+    event.initEvent('company-created', true, true); //can bubble, is cancellable
+    ele.get(0).dispatchEvent(event);
   });
 });
