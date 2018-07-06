@@ -41,14 +41,11 @@ Feature: As an applicant
     Then I should see error t("activerecord.attributes.shf_application.business_categories") t("errors.messages.blank")
     And I should see button t("shf_applications.edit.submit_button_label")
 
-  @selenium_browser
+  @selenium
   Scenario: Applicant adds second company to application
     Given I am logged in as "emma@random.com"
-    And I am on the "landing" page
+    And I am on the "edit application" page
 
-    And I wait 20 seconds
-    
-    And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     Then I fill in t("shf_applications.show.company_number") with "5560360793, 212000-0142"
     And I click on t("shf_applications.edit.submit_button_label")
@@ -60,7 +57,6 @@ Feature: As an applicant
   Scenario: Applicant creates second company for application
     Given I am logged in as "emma@random.com"
     Given I am on the "edit application" page
-    Then I should be on "Edit My Application" page
 
     # Create new company in modal
     And I click on t("companies.new.title")
@@ -75,11 +71,11 @@ Feature: As an applicant
     And I should see t("shf_applications.update.success", email_address: info@craft.se)
     And I should see "5560360793, 2286411992"
 
+  @selenium
   Scenario: User edit app with two companies, corrects an error in company number
     Given I am logged in as "hans@random.com"
-    And I am on the "landing" page
-    And I click on t("menus.nav.users.my_application")
-    Then I should be on "Edit My Application" page
+    And I am on the "edit application" page
+
     And the t("shf_applications.show.company_number") field should be set to "5560360793, 2120000142"
 
     And I fill in the translated form with data:
