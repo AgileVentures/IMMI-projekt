@@ -21,19 +21,8 @@
           %tr.event
             %td.event-name
               = link_to event.name, event.sign_up_url, target: '_blank'
-            -# %td.location
-            -#   = event.location
-
-            -# Pass geo params as numbers
-               https://vuejs.org/v2/guide/components-props.html#Passing-a-Number
-
-            - latitude = event.latitude ? "#{event.latitude}" : 'null'
-            - longitude = event.longitude ? "#{event.longitude}" : 'null'
-            %td( is='location-map'
-                 v-bind:loc="\"#{event.location}\""
-                 v-bind:lat="#{latitude}"
-                 v-bind:long="#{longitude}" )
-
+            %td.location
+              = event.location
             %td.fee.text-align-right
               = number_to_currency(event.fee, locale: 'sv', format: '%n',
                                    delimiter: ' ', precision: 0)

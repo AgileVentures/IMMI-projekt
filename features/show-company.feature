@@ -76,7 +76,7 @@ Feature: As a visitor,
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7661057765     |
       | admin@shf.se | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7736362901     |
 
-
+  @selenium
   Scenario: Show company details to a visitor, but don't show the org nr.
     Given I am Logged out
     And I am the page for company number "5560360793"
@@ -105,6 +105,7 @@ Feature: As a visitor,
     And I should see "Harplinge"
     And I should see "http://www.example.com"
 
+  @selenium
   Scenario: Show company details to member of the company.
     Given I am logged in as "user1@mutts.com"
     And I am the page for company number "5560360793"
@@ -165,6 +166,7 @@ Feature: As a visitor,
     And I should see "Harplinge"
     And I should see "Alingsås"
 
+  @selenium
   Scenario: Visitor: Don't show company street address
     Given I am Logged out
     And I am the page for company number "6613265393"
@@ -174,6 +176,7 @@ Feature: As a visitor,
     And I should see "Harplinge"
     And I should see "Alingsås"
 
+  @selenium
   Scenario: Visitor: Don't show company street address or postal code
     Given I am Logged out
     And I am the page for company number "6222279082"
@@ -183,6 +186,7 @@ Feature: As a visitor,
     And I should see "Harplinge"
     And I should see "Alingsås"
 
+  @selenium
   Scenario: Visitor: Don't show company street, postal code or city
     Given I am Logged out
     And I am the page for company number "8025085252"

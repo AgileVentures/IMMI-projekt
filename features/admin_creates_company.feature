@@ -132,7 +132,7 @@ Feature: As an admin
       | Happy Mutts | 5562252998 |            | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
       | Happy Mutts | 5560360793 | 0706898525 | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.attributes.company_number.taken") |
 
-  @time_adjust
+  @selenium @time_adjust
   Scenario: Admin edits a company and visitor views changes
     Given the date is set to "2017-10-01"
     And I am logged in as "admin@shf.se"
@@ -151,7 +151,7 @@ Feature: As an admin
     And I select "Västerbotten" in select list t("activerecord.attributes.address.region")
     And I select "Bromölla" in select list t("activerecord.attributes.address.kommun")
     Then I click on t("submit")
-    And I wait 10 seconds
+    And I wait 2 seconds
     And I should see "Algovik"
     And I should see "Bromölla"
     And I should see t("address_visibility.street_address")

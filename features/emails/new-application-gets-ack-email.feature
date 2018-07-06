@@ -38,7 +38,7 @@ Feature: New Applicant gets an email acknowledging their application
     And I should see t("mailers.shf_application_mailer.acknowledge_received.subject") in the email subject
     And I should see t("mailers.shf_application_mailer.acknowledge_received.message_text") in the email body
 
-  @selenium_browser
+  @selenium
   Scenario: User submits a new application app with bad info so it is not created, so no email sent [SAD PATH]
     Given I am logged in as "emma@happymutts.com"
     Given I am on the "user instructions" page

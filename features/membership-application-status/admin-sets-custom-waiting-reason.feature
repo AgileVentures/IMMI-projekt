@@ -113,7 +113,7 @@ Feature: Admin sets or enters the reason they are waiting for info from a user
     Then I should not see t("shf_applications.need_info.reason_title")
 
 
-  @selenium_browser @admin
+  @selenium @admin
   Scenario: Press `back` button before saving custom reason
     Given I am on the "landing" page
     Then I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
