@@ -4,7 +4,7 @@ import CompanyNumbers from '../components/company_numbers.vue'
 Vue.component('company-numbers', CompanyNumbers)
 
 document.addEventListener('DOMContentLoaded', () => {
-  const company_numbers = new Vue({
+  const company_numbers_input = new Vue({
     el: '#company-number-entry',
     data: { company_numbers: '' },
     components: { CompanyNumbers }
