@@ -160,6 +160,7 @@ Feature: Create a new membership application
 
     Then I select "Groomer" Category
     And I click on t("shf_applications.new.submit_button_label")
+
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
 
@@ -177,7 +178,7 @@ Feature: Create a new membership application
     And the field t("shf_applications.new.phone_number") should not have a required field indicator
     And I should see t("is_required_field")
 
-  @selenium_browser
+  @selenium
   Scenario: Two users can submit a new Membership Application (with empty membershipnumbers)
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link

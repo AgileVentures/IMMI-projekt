@@ -21,7 +21,7 @@ export default {
       var modal_num = document.getElementById('company_company_number').value;
       var form_nums = document.getElementById('shf_application_company_number').value;
 
-      var company_numbers = (form_nums.length > 0 ? form_nums + ', ' + modal_num : form_nums);
+      var company_numbers = (form_nums.length > 0 ? form_nums + ', ' + modal_num : modal_num);
 
       // Update "value" attribute of input field
       this.value = company_numbers;

@@ -41,9 +41,13 @@ Feature: As an applicant
     Then I should see error t("activerecord.attributes.shf_application.business_categories") t("errors.messages.blank")
     And I should see button t("shf_applications.edit.submit_button_label")
 
+  @selenium_browser
   Scenario: Applicant adds second company to application
     Given I am logged in as "emma@random.com"
     And I am on the "landing" page
+
+    And I wait 20 seconds
+    
     And I click on t("menus.nav.users.my_application")
     Then I should be on "Edit My Application" page
     Then I fill in t("shf_applications.show.company_number") with "5560360793, 212000-0142"
