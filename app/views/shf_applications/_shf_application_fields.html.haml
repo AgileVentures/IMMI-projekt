@@ -69,12 +69,6 @@
                   v-on:input="company_numbers = $event"
                   v-on:update-company-numbers="company_numbers = $event" )
 
-      Cmpy Numbers: {{ company_numbers }}
-
-      -# v-model="#{company_numbers}" )
-
-      -# = company_number_entry_field(company_numbers)
-
     .new-company-link
 
       -# NOTE: Capybara cannot find link without 'href' attribute
@@ -84,10 +78,6 @@
         = t('companies.new.title')
 
     .clearfix
-
-    %p Initial Value is: #{company_numbers}
-
-    %br
 
     = f.label :contact_email, t('shf_applications.show.contact_email'), class: 'required'
     %p.field-instruction= t('shf_applications.new.can_be_same_email')
