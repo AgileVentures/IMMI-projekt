@@ -106,7 +106,9 @@ Feature: As a member of a company
     And I am logged in as "member@mutts.com"
     And I am on the "my first company" page for "member@mutts.com"
     And I should not see t("events.show.name")
+
     And I am on the edit company page for "5560360793"
+
     And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
     And I check the checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
