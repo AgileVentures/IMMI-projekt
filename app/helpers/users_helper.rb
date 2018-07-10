@@ -1,5 +1,7 @@
 module UsersHelper
 
+  require 'tinyurl'
+
   def most_recent_login_time user
     user.current_sign_in_at.blank? ? user.last_sign_in_at : user.current_sign_in_at
   end
@@ -39,6 +41,14 @@ module UsersHelper
     return nil unless user.shf_application
 
     user.shf_application.state.to_sym.in?([:accepted, :rejected]) ? nil : t('yes')
+  end
+
+  def short_proof_of_membership_url(user)
+    TinyURL.short(proof_of_membership_url(user))
+  end
+
+  def short_company_h_brand_url(user, company_id)
+    TinyURL.short(company_h_brand_url(user, company_id: company_id))
   end
 
 end

@@ -131,5 +131,4 @@ class UsersController < ApplicationController
     # cannot-display-my-rails-4-app-in-iframe-even-if-x-frame-options-is-allowall
   end
 
-
 end
