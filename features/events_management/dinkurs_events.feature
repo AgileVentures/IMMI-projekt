@@ -34,7 +34,7 @@ Feature: As a member of a company
       | user_email       | company_number | state    |
       | member@mutts.com | 5560360793     | accepted |
 
-  @time_adjust
+  @time_adjust @dinkurs_fetch
   Scenario: Member adds Dinkurs ID, checks as visible and visitor sees events in company page
     Given the date is set to "2017-10-01"
     And I am logged in as "member@mutts.com"
@@ -46,16 +46,16 @@ Feature: As a member of a company
     And I click on t("submit")
     And I should not see t("events.show.no_events")
     And I should not see t("events.show_not")
-    And I should see "2" events
+    And I should see "3" events
     Then I am logged out
     And I am logged in as "visitor@mail.com"
     And I am on the "landing" page
     And I click on "Mutts"
     And I should see t("events.show.name")
     And I should not see t("events.show.no_events")
-    And I should see "2" events
+    And I should see "3" events
 
-  @time_adjust
+  @time_adjust @dinkurs_fetch
   Scenario: Member adds Dinkurs ID and visitor does not see events in company page
     Given the date is set to "2017-10-01"
     And I am logged in as "member@mutts.com"
@@ -73,7 +73,7 @@ Feature: As a member of a company
     And I should not see t("events.show.no_events")
     And I should not see t("events.show_not")
 
-  @time_adjust 
+  @time_adjust @dinkurs_fetch
   Scenario: Member adds Dinkurs ID then member himself and admin, too, sees information about Showing Dinkurs Events being disabled
     Given the date is set to "2017-10-01"
     And I am logged in as "member@mutts.com"
@@ -91,7 +91,7 @@ Feature: As a member of a company
     And I should not see t("events.show.no_events")
     And I should see t("events.show_not")
 
-  @time_adjust
+  @time_adjust @dinkurs_invalid_key
   Scenario: Member edits company, enters invalid Dinkurs ID, sees validation error
     Given the date is set to "2017-10-01"
     And I am logged in as "member@mutts.com"
@@ -100,7 +100,7 @@ Feature: As a member of a company
     And I click on t("submit")
     Then I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid")
 
-  @time_adjust @selenium
+  @time_adjust @selenium @dinkurs_fetch
   Scenario: Member fetches Dinkurs events
     Given the date is set to "2017-10-01"
     And I am logged in as "member@mutts.com"
@@ -111,10 +111,10 @@ Feature: As a member of a company
     And I check the checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
-    And I should see "2" events
+    And I should see "3" events
     Then all events for the company named "Mutts" are deleted from the database
     And I reload the page
     And I should see t("events.show.no_events")
     Then I click on t("companies.show.dinkurs_fetch_events") button
     And I wait for all ajax requests to complete
-    Then I should see "2" events
+    Then I should see "3" events

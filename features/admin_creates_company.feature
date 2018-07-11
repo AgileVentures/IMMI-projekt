@@ -72,7 +72,7 @@ Feature: As an admin
     And I am on the "create a new company" page
     Then I should see t("errors.not_permitted")
 
-  @time_adjust
+  @time_adjust @dinkurs_fetch
   Scenario: Admin creates a company
     Given I am logged in as "admin@shf.se"
     And the date is set to "2017-10-01"
@@ -98,7 +98,7 @@ Feature: As an admin
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Bromölla"
-    And I should see "2" events
+    And I should see "3" events
     And I should not see t("events.show_not")
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
 
