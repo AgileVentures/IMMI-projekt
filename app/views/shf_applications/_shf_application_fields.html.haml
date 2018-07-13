@@ -1,6 +1,10 @@
 - content_for :javascript_pack_for_view do
   = javascript_pack_tag 'company_numbers_input'
 
+= tag.div nil, id: 'initial_data',
+          data: { companynumbers: @company_numbers }
+
+
 .app-section
   - unless assocation_empty?(@all_business_categories)
     %h2= t('shf_applications.new.application_dog_category')
@@ -63,11 +67,15 @@
     %p.field-instruction= t('shf_applications.new.enter_company_number')
 
     #company-number-entry
-      %component( id='shf_application_company_number'
-                  is='company-numbers' type='text' name='company_number'
-                  v-bind:initial_value="\"#{company_numbers}\""
-                  v-on:input="company_numbers = $event"
-                  v-on:update-company-numbers="company_numbers = $event" )
+      = text_field_tag :company_number, company_numbers,
+                       id: 'shf_application_company_number',
+                       'v-model': 'company_numbers',
+                       'v-on:company-created': 'company_created'
+
+      -# %component( id='shf_application_company_number'
+      -#             is='company-numbers' type='text' name='company_number'
+      -#             v-model='company_numbers'
+      -#             v-on:update-company-numbers="company_numbers = $event" )
 
     .new-company-link
 

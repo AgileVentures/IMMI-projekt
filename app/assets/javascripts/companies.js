@@ -35,11 +35,14 @@ $(function() {
       return;
     }
 
-    $('#company-create-modal').modal('hide');
-    $('#company-create-errors').html('');
+    $('#company-create-modal').on('hidden.bs.modal', function() {
 
-    var event = document.createEvent('Event');
-    event.initEvent('company-created', true, true); //can bubble, is cancellable
-    ele.get(0).dispatchEvent(event);
+      var event = document.createEvent('Event');
+      event.initEvent('company-created', true, true);
+      ele.get(0).dispatchEvent(event);
+
+    }).modal('hide');
+
+    $('#company-create-errors').html('');
   });
 });
