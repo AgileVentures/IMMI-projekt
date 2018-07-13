@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180428103625) do
+ActiveRecord::Schema.define(version: 20180713091110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -94,6 +94,9 @@ ActiveRecord::Schema.define(version: 20180428103625) do
     t.datetime "updated_at", null: false
     t.text "description"
     t.string "dinkurs_company_id"
+    t.boolean "show_dinkurs_events"
+    t.string "short_h_brand_url"
+    t.string "short_proof_of_membership_url"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
   end
 
@@ -237,9 +240,6 @@ ActiveRecord::Schema.define(version: 20180428103625) do
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
   add_foreign_key "ckeditor_assets", "companies"
-  add_foreign_key "company_applications", "companies"
-  add_foreign_key "company_applications", "shf_applications"
-  add_foreign_key "events", "companies"
   add_foreign_key "company_applications", "companies"
   add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "events", "companies"

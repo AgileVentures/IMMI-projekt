@@ -177,6 +177,12 @@ class Company < ApplicationRecord
       AddressExporter.se_mailing_csv_str( main_address )
   end
 
+  def get_or_create_short_h_brand_url(user)
+    found = self.short_h_brand_url
+    return found unless found.nil?
+    ShortenUrl.short(company_id: self.id)
+  end
+
 
   private
 

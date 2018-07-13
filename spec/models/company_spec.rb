@@ -5,6 +5,10 @@ require_relative File.join('..', '..', 'app', 'services', 'address_exporter')
 
 RSpec.describe Company, type: :model do
 
+  let(:with_short_urls) do
+    create(:company, short_h_brand_url: 'http://www.tinyurl.com/hbrand', short_proof_of_membership_url: 'http://tinyurl.com/memproof')
+  end
+
   let(:no_name) do
     create(:company, name: '', company_number: '2120000142')
   end
@@ -94,6 +98,8 @@ RSpec.describe Company, type: :model do
     it { is_expected.to have_db_column :description }
     it { is_expected.to have_db_column :dinkurs_company_id }
     it { is_expected.to have_db_column :show_dinkurs_events }
+    it { is_expected.to have_db_column :short_h_brand_url }
+    it { is_expected.to have_db_column :short_proof_of_membership_url }
   end
 
   describe 'Validations' do
@@ -697,4 +703,18 @@ RSpec.describe Company, type: :model do
     end
   end
 
+  describe '#get_or_create_short_h_brand_url', focus: true do
+    context 'there is already a shortened url in the table' do
+      it 'returns shortened url' do
+        expect(with_short_urls.get_or_create_short_h_brand_url(user)).to eq('http://www.tinyurl.com/hbrand')
+      end
+    end 
+    context 'there is no shortened url in the table and ShortenUrl.short is called' do
+      it 'saves the result if the result is not nil and returns shortened url' do
+        allow(ShortenUrl).to receive(:short).and_return('http://tinyurl.com/hbrand2')
+        expect(complete_co.get_or_create_short_h_brand_url(user)).to eq(ShortenUrl.short('a'))
+      end
+      it 'does not save anything if the result is nil and returns unshortened url'
+    end
+  end
 end
