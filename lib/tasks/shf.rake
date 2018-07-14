@@ -196,7 +196,7 @@ namespace :shf do
   desc "geocode all addresses args=[sleep_time=2,batch_num=40] (those without latitude, longitude info) NO SPACES between arguments"
   task :geocode_all_addresses, [:sleep_time, :batch_num] => :environment do |_task_name, args|
 
-    arg = args.with_defaults(sleep_time: 0.2, batch_num: 50)
+    args = args.with_defaults(sleep_time: 0.2, batch_num: 50)
 
     Geocoder.configure( timeout: 20)   # geocoding service timeout (secs)
 
