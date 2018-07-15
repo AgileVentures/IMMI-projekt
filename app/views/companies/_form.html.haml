@@ -45,18 +45,19 @@
                      'v-model': 'dinkurs_key'
 
     .col-sm-6
-      %div( v-if="dinkurs_key.length > 0" )
-        %div
-          = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
+      %transition( name='fade' )
+        %div( v-if="dinkurs_key.length > 0" )
+          %div
+            = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
 
-          -# %span.glyphicon.glyphicon-info-sign{ title: "#{t('.dinkurs_show_tooltip')}",
-          -#                                      data: {toggle: 'tooltip'} }
+            -# %span.glyphicon.glyphicon-info-sign{ title: "#{t('.dinkurs_show_tooltip')}",
+            -#                                      data: {toggle: 'tooltip'} }
 
-          %span.glyphicon.glyphicon-info-sign( v-tooltip:top="\"#{t('.dinkurs_show_tooltip')}\"" )
+            %span.glyphicon.glyphicon-info-sign( v-tooltip:top="\"#{t('.dinkurs_show_tooltip')}\"" )
 
-        %label.switch
-          = f.check_box :show_dinkurs_events, {}, "true", "false"
-          %span.slider
+          %label.switch
+            = f.check_box :show_dinkurs_events, {}, "true", "false"
+            %span.slider
 
   = f.label :description, "#{t('companies.description')}"
   = f.cktext_area :description, class: 'wpcf7-form-control'
