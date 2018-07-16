@@ -35,14 +35,13 @@ $(function() {
       return;
     }
 
-    $('#company-create-modal').on('hidden.bs.modal', function() {
-
-      var event = document.createEvent('Event');
-      event.initEvent('company-created', true, true);
-      ele.get(0).dispatchEvent(event);
-
-    }).modal('hide');
-
     $('#company-create-errors').html('');
+    $('#company-create-modal').modal('hide');
+
+    // Trigger event to be handled by Vue instance
+    var event = document.createEvent('Event');
+    event.initEvent('company-created', true, true);
+    ele.get(0).dispatchEvent(event);
+
   });
 });

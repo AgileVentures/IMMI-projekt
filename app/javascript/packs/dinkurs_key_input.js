@@ -1,5 +1,7 @@
 import Vue from 'vue/dist/vue.esm'
 
+require('../directives/tooltip')
+
 document.addEventListener('DOMContentLoaded', () => {
   let initial_data = document.getElementById('initial_data')
   let dinkurs_key = initial_data.dataset.dinkurskey || ''
@@ -9,15 +11,5 @@ document.addEventListener('DOMContentLoaded', () => {
     data: {
       dinkurs_key: dinkurs_key
     }
-  })
-})
-
-// This should be pulled in from a separate directive file - need to figure
-// out how to do that ....
-Vue.directive('tooltip', function(el, binding){
-  $(el).tooltip({
-    title: binding.value,
-    placement: binding.arg,
-    trigger: 'hover'
   })
 })
