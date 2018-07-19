@@ -102,13 +102,14 @@ Feature: As an admin
     And I should not see t("events.show_not")
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"
 
+  @dinkurs_invalid_key
   Scenario: Admin creates company with invalid Dinkurs key
     Given I am logged in as "admin@shf.se"
     When I am on the "create a new company" page
     And I fill in the translated form with data:
       | companies.company_name | companies.show.company_number | companies.show.email | companies.website_include_http |
       | Happy Mutts            | 5569467466                    | kicki@gladajyckar.se | http://www.gladajyckar.se      |
-    And I fill in t("companies.show.dinkurs_key") with "xyz"
+    And I fill in t("companies.show.dinkurs_key") with "wrongkey"
     And I click on t("submit")
     Then I should see t("companies.create.success_with_dinkurs_problem")
     And I should see "Happy Mutts"

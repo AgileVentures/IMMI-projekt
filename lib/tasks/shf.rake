@@ -196,7 +196,7 @@ namespace :shf do
   desc "geocode all addresses args=[sleep_time=2,batch_num=40] (those without latitude, longitude info) NO SPACES between arguments"
   task :geocode_all_addresses, [:sleep_time, :batch_num] => :environment do |_task_name, args|
 
-    args.with_defaults(sleep_time: 0.2, batch_num: 50)
+    args = args.with_defaults(sleep_time: 0.2, batch_num: 50)
 
     Geocoder.configure( timeout: 20)   # geocoding service timeout (secs)
 
@@ -252,8 +252,39 @@ namespace :shf do
     end
   end
 
+  # Create one org num: "rake shf:orgnum"
+  # Create 5 org nums: "rake shf:orgnum[5]"
+
+  desc "Create one or more unused Swedish Organization Numbers (aka 'company numbers' in SHF)"
+  task :orgnum, [:how_many] => :environment do |_task_name, args|
+
+    how_many = args.with_defaults(how_many: 1)[:how_many].to_i
+
+    puts "\n#{how_many} available Org (Company) #{'Number'.pluralize(how_many)}: \n\n"
+
+    how_many.times do
+      puts create_one_unused_org_number
+    end
+
+    puts "\n"
+  end
+
+
 
   # -------------------------------------------------
+
+  def create_one_unused_org_number
+    org_number = nil
+
+    100.times do
+      org_number = OrgNummersGenerator.generate_one
+
+      # stop if number is available (not used)
+      break if ! Company.find_by_company_number(org_number)
+    end
+
+    org_number
+  end
 
   def database_exists?
     ActiveRecord::Base.connection

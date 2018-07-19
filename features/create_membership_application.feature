@@ -100,7 +100,7 @@ Feature: Create a new membership application
     When I am on the "show my application" page for "applicant_1@random.com"
     And I should see "5560360793, 2120000142"
 
-  @selenium_browser
+  @selenium
   Scenario: User creates App with two companies, creates one company, corrects error in company number
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link
@@ -139,7 +139,7 @@ Feature: Create a new membership application
     Then I should be on the "user instructions" page
     And I should see t("shf_applications.create.success", email_address: info@craft.se)
 
-  @selenium_browser
+  @selenium
   Scenario: A user cannot submit a new Membership Application with no category
     Given I am on the "user instructions" page
     And I click on first t("menus.nav.users.apply_for_membership") link

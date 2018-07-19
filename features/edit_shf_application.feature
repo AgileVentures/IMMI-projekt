@@ -52,7 +52,7 @@ Feature: As an applicant
     And I should see t("shf_applications.update.success", email_address: info@craft.se)
     And I should see "5560360793, 2120000142"
 
-  @selenium_browser
+  @selenium
   Scenario: Applicant creates second company for application
     Given I am logged in as "emma@random.com"
     Given I am on the "edit application" page
