@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180713091110) do
+ActiveRecord::Schema.define(version: 20180719021503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,7 +96,6 @@ ActiveRecord::Schema.define(version: 20180713091110) do
     t.string "dinkurs_company_id"
     t.boolean "show_dinkurs_events"
     t.string "short_h_brand_url"
-    t.string "short_proof_of_membership_url"
     t.index ["company_number"], name: "index_companies_on_company_number", unique: true
   end
 
@@ -232,6 +231,7 @@ ActiveRecord::Schema.define(version: 20180713091110) do
     t.string "member_photo_content_type"
     t.integer "member_photo_file_size"
     t.datetime "member_photo_updated_at"
+    t.string "short_proof_of_membership_url"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["membership_number"], name: "index_users_on_membership_number", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

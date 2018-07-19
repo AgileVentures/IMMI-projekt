@@ -1,0 +1,43 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://tinyurl.com/api-create.php?url=http://sverigeshundforetagare.se/anvandare/2/proof_of_membership
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Date:
+      - Thu, 19 Jul 2018 09:59:00 GMT
+      Content-Type:
+      - text/plain;charset=UTF-8
+      Content-Length:
+      - '27'
+      Connection:
+      - keep-alive
+      Set-Cookie:
+      - __cfduid=d14ad65ee49b23fb7f48f3a850778021c1531994339; expires=Fri, 19-Jul-19
+        09:58:59 GMT; path=/; domain=.tinyurl.com; HttpOnly
+      Cache-Control:
+      - max-age=3600
+      Server:
+      - cloudflare
+      Cf-Ray:
+      - 43cc552ed12c2b21-WAW
+    body:
+      encoding: UTF-8
+      string: http://tinyurl.com/ya6sa84h
+    http_version: 
+  recorded_at: Thu, 19 Jul 2018 09:59:00 GMT
+recorded_with: VCR 4.0.0

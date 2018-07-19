@@ -240,8 +240,7 @@ CREATE TABLE public.companies (
     description text,
     dinkurs_company_id character varying,
     show_dinkurs_events boolean,
-    short_h_brand_url character varying,
-    short_proof_of_membership_url character varying
+    short_h_brand_url character varying
 );
 
 
@@ -702,7 +701,8 @@ CREATE TABLE public.users (
     member_photo_file_name character varying,
     member_photo_content_type character varying,
     member_photo_file_size integer,
-    member_photo_updated_at timestamp without time zone
+    member_photo_updated_at timestamp without time zone,
+    short_proof_of_membership_url character varying
 );
 
 
@@ -1321,6 +1321,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180328105100'),
 ('20180428103625'),
 ('20180624155644'),
-('20180713091110');
+('20180717043851'),
+('20180719021503');
 
 

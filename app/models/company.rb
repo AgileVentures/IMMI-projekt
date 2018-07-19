@@ -8,6 +8,8 @@ class Company < ApplicationRecord
 
   include Dinkurs::Errors
 
+  include Rails.application.routes.url_helpers
+
   before_destroy :destroy_checks
 
   validates_presence_of :company_number
@@ -177,10 +179,17 @@ class Company < ApplicationRecord
       AddressExporter.se_mailing_csv_str( main_address )
   end
 
-  def get_or_create_short_h_brand_url(user)
+  def get_or_create_short_h_brand_url(user_id=0)
     found = self.short_h_brand_url
     return found unless found.nil?
-    ShortenUrl.short(company_id: self.id)
+    url = company_h_brand_url(user_id, company_id: self.id)
+    short_url = ShortenUrl.short(url)
+    unless short_url.nil?
+      self.update_attribute(:short_h_brand_url, short_url)
+      short_url
+    else
+      url
+    end
   end
 
 

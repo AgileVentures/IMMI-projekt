@@ -2,9 +2,16 @@ require 'rails_helper'
 require 'email_spec/rspec'
 
 RSpec.describe User, type: :model do
+
+  include Rails.application.routes.url_helpers
+
   let(:user) { create(:user) }
   let(:user_with_app) { create(:user_with_membership_app) }
   let(:member) { create(:member_with_membership_app) }
+
+  let(:with_short_proof_of_membership_url) do
+    create(:user, short_proof_of_membership_url: 'http://www.tinyurl.com/proofofmembership')
+  end
 
   let(:application) do
     create(:shf_application, user: user, state: :accepted)
@@ -532,6 +539,28 @@ RSpec.describe User, type: :model do
         expect(user.member).to be false
 
         Timecop.return
+      end
+    end
+  end
+
+  describe '#get_or_create_short_proof_of_membership_url' do
+    context 'there is already a shortened url in the table' do
+      it 'returns shortened url' do
+        expect(with_short_proof_of_membership_url.get_or_create_short_proof_of_membership_url).to eq('http://www.tinyurl.com/proofofmembership')
+      end
+    end
+    context 'there is no shortened url in the table and ShortenUrl.short is called' do
+      it 'saves the result if the result is not nil and returns shortened url' do
+        url = proof_of_membership_url(user.id)
+        allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/proofofmembership2')
+        expect(user.get_or_create_short_proof_of_membership_url).to eq(ShortenUrl.short(url))
+        expect(user.short_proof_of_membership_url).to eq(ShortenUrl.short(url))
+      end
+      it 'does not save anything if the result is nil and returns unshortened url' do
+        url = proof_of_membership_url(user.id)
+        allow(ShortenUrl).to receive(:short).with(url).and_return(nil)
+        expect(user.get_or_create_short_proof_of_membership_url).to eq(url)
+        expect(user.short_proof_of_membership_url).to eq(nil)
       end
     end
   end

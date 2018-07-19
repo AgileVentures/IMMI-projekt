@@ -1,6 +1,8 @@
 class User < ApplicationRecord
   include PaymentUtility
 
+  include Rails.application.routes.url_helpers
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -115,6 +117,19 @@ class User < ApplicationRecord
 
   ransacker :padded_membership_number do
     Arel.sql("lpad(membership_number, 20, '0')")
+  end
+
+  def get_or_create_short_proof_of_membership_url
+    found = self.short_proof_of_membership_url
+    return found unless found.nil?
+    url = proof_of_membership_url(self.id)
+    short_url = ShortenUrl.short(url)
+    unless short_url.nil?
+      self.update_attribute(:short_proof_of_membership_url, short_url)
+      short_url
+    else
+      url
+    end
   end
 
   private

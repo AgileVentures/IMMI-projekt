@@ -17,7 +17,6 @@ FactoryBot.define do
     email 'thiscompany@example.com'
     website 'http://www.example.com'
     short_h_brand_url nil
-    short_proof_of_membership_url nil
 
     transient do
       num_addresses 1

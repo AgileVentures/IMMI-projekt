@@ -8,6 +8,7 @@ FactoryBot.define do
     password 'my_password'
     admin false
     member false
+    short_proof_of_membership_url nil
     member_photo do
       File.new("#{Rails.root}/spec/fixtures/member_photos/photo_unavailable.png")
     end
@@ -43,5 +44,6 @@ FactoryBot.define do
       end
     end
   end
+
 
 end

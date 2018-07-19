@@ -57,7 +57,7 @@
         %br
         %br
         = t('users.show.use_this_image_link_html')
-        = proof_of_membership_url(user)
+        = user.get_or_create_short_proof_of_membership_url
 
       :javascript
         window.onload = function(){
