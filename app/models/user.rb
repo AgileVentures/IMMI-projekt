@@ -119,12 +119,12 @@ class User < ApplicationRecord
     Arel.sql("lpad(membership_number, 20, '0')")
   end
 
-  def get_or_create_short_proof_of_membership_url
+  def get_short_proof_of_membership_url
     found = self.short_proof_of_membership_url
-    return found unless found.nil?
+    return found if found
     url = proof_of_membership_url(self.id)
     short_url = ShortenUrl.short(url)
-    unless short_url.nil?
+    if short_url
       self.update_attribute(:short_proof_of_membership_url, short_url)
       short_url
     else
