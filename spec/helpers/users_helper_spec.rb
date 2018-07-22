@@ -93,4 +93,12 @@ RSpec.describe UsersHelper, type: :helper do
       expect(user_has_open_application(user)).to be_nil
     end
   end
+
+  describe '#short_proof_of_membership_url' do
+    it 'returns value returned by User#get_short_proof_of_membership_url using generated url' do
+      url = proof_of_membership_url(user.id)
+      allow(user).to receive(:get_short_proof_of_membership_url).with(url).and_return(url)
+      expect(short_proof_of_membership_url(user)).to eq(url)
+    end
+  end
 end

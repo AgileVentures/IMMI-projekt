@@ -86,12 +86,6 @@ Rails.application.configure do
   # Routes
   #
 
-  # Needed to create shortened urls in the ShortLinksContainer model.
-  routes.default_url_options = { host: ENV['DEFAULT_HOST'] }
-
-  #
-  ###
-
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
   config.i18n.fallbacks = true

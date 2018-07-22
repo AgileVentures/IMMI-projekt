@@ -177,4 +177,13 @@ RSpec.describe CompaniesHelper, type: :helper do
         .to match(/id="shf_application_company_number" value="0000000000"/)
     end
   end
+
+  describe '#short_h_brand_url' do
+    it 'returns value returned by Company#get_short_h_brand_url using generated url' do
+      url = company_h_brand_url(0, company_id: company.id)
+      allow(company).to receive(:get_short_h_brand_url).with(url).and_return(url)
+      expect(short_h_brand_url(company)).to eq(url)
+    end
+  end
+
 end

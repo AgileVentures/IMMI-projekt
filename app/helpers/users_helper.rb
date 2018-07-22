@@ -41,4 +41,8 @@ module UsersHelper
     user.shf_application.state.to_sym.in?([:accepted, :rejected]) ? nil : t('yes')
   end
 
+  def short_proof_of_membership_url(user)
+    url = proof_of_membership_url(user.id)
+    user.get_short_proof_of_membership_url(url)
+  end
 end

@@ -61,7 +61,6 @@ module SHFProject
 
     # Default for development and testing.  production.rb overrides this
     config.action_mailer.default_url_options = { host: 'localhost', port: '3000' }
-    routes.default_url_options = { host: 'localhost', port: '3000' }
 
     # Ensure this is false by default (to be secure).
     # Only change in development or test environments where really needed

@@ -80,4 +80,9 @@ module CompaniesHelper
     text_field_tag :company_number, company_numbers,
                      id: 'shf_application_company_number'
   end
+
+  def short_h_brand_url(company)
+    url = company_h_brand_url(0, company_id: company.id)
+    company.get_short_h_brand_url(url)
+  end
 end

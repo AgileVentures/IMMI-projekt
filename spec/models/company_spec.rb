@@ -5,8 +5,6 @@ require_relative File.join('..', '..', 'app', 'services', 'address_exporter')
 
 RSpec.describe Company, type: :model do
 
-  include Rails.application.routes.url_helpers
-
   let(:with_short_h_brand_url) do
     create(:company, short_h_brand_url: 'http://www.tinyurl.com/hbrand')
   end
@@ -707,20 +705,21 @@ RSpec.describe Company, type: :model do
   describe '#get_short_h_brand_url' do
     context 'there is already a shortened url in the table' do
       it 'returns shortened url' do
-        expect(with_short_h_brand_url.get_short_h_brand_url).to eq('http://www.tinyurl.com/hbrand')
+        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
+        expect(with_short_h_brand_url.get_short_h_brand_url(url)).to eq('http://www.tinyurl.com/hbrand')
       end
     end
     context 'there is no shortened url in the table and ShortenUrl.short is called' do
       it 'saves the result if the result is not nil and returns shortened url' do
-        url = company_h_brand_url(0, company_id: complete_co.id)
+        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
         allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/hbrand2')
-        expect(complete_co.get_short_h_brand_url).to eq(ShortenUrl.short(url))
+        expect(complete_co.get_short_h_brand_url(url)).to eq(ShortenUrl.short(url))
         expect(complete_co.short_h_brand_url).to eq(ShortenUrl.short(url))
       end
       it 'does not save anything if the result is nil and returns unshortened url' do
-        url = company_h_brand_url(0, company_id: complete_co.id)
+        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
         allow(ShortenUrl).to receive(:short).with(url).and_return(nil)
-        expect(complete_co.get_short_h_brand_url).to eq(url)
+        expect(complete_co.get_short_h_brand_url(url)).to eq(url)
         expect(complete_co.short_h_brand_url).to eq(nil)
       end
     end
