@@ -23,7 +23,7 @@ Feature: As an user I want to be able to view and download my proof-of-membershi
       | emma@mutts.se | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
   @time_adjust
-  Scenario: User downloads proof-of-membership image
+  Scenario: Member downloads proof-of-membership image
     Given I am logged in as "emma@mutts.se"
     And I am on the "landing" page for "emma@mutts.se"
     And I should see t("hello", name: 'Emma')
@@ -32,3 +32,13 @@ Feature: As an user I want to be able to view and download my proof-of-membershi
     And I should see "groom, rehab"
     And I click on the t("users.show.download_image") link
     Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
+
+  Scenario: Member views proof-of-membership image
+    Given I am logged in as "emma@mutts.se"
+    And I am on the "landing" page for "emma@mutts.se"
+    And I should see t("hello", name: 'Emma')
+    Then I click on the t("menus.nav.users.your_account") link
+    And I should see t("users.show.proof_of_membership")
+    And I should see "groom, rehab"
+    And I click on the t("users.show.show_image") link
+    And I should see t("users.show.use_this_image_link_html")

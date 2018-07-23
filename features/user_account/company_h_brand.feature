@@ -28,7 +28,7 @@ Feature: As an user I want to be able to view and download my company h-brand
       | emma@mutts.se | 2017-10-1  | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
 
   @time_adjust
-  Scenario: User downloads company-h-brand image
+  Scenario: Member downloads company-h-brand image
     Given I am logged in as "emma@mutts.se"
     And I am on the "landing" page for "emma@mutts.se"
     And I should see t("hello", name: 'Emma')
@@ -37,3 +37,14 @@ Feature: As an user I want to be able to view and download my company h-brand
     And I should see "groom, rehab"
     And I click on the second t("users.show.download_image") link
     Then I should get a downloaded image with the filename "company_h_brand.jpeg"
+
+  @time_adjust
+  Scenario: Member views company-h-brand image
+    Given I am logged in as "emma@mutts.se"
+    And I am on the "landing" page for "emma@mutts.se"
+    And I should see t("hello", name: 'Emma')
+    Then I click on the t("menus.nav.users.your_account") link
+    And I should see t("users.show.company_h_brand", company: 'EmmaCmpy')
+    And I should see "groom, rehab"
+    And I click on the second t("users.show.show_image") link
+    And I should see t("users.show.use_this_image_link_html")

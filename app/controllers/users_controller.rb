@@ -105,7 +105,7 @@ class UsersController < ApplicationController
 
 
   def set_user
-    @user = User.find(params[:id])
+    @user = User.find_by_id(params[:id]) || Visitor.new
   end
 
   def set_app_config
