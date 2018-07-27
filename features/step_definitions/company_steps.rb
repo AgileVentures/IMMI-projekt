@@ -33,6 +33,7 @@ And(/^the following company addresses exist:$/) do |table|
     region = Region.find_by_name(address.delete('region') || 'Stockholm')
     kommun = Kommun.find_by_name(address.delete('kommun') || 'Stockholm')
     FactoryBot.create(:company_address, region: region, kommun: kommun, addressable: company)
+    debugger
   end
 end
 

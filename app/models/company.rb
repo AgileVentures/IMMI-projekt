@@ -172,11 +172,6 @@ class Company < ApplicationRecord
     new_address
   end
 
-  def regions
-    regions_ids = self.addresses.has_region.pluck(:region_id)
-    regions_ids.map { |id| Region.find(id).name }
-  end
-
 
   def se_mailing_csv_str
       AddressExporter.se_mailing_csv_str( main_address )

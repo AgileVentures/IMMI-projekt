@@ -8,7 +8,6 @@ Feature: As any type of visitor
       | email               | admin | member |
       | emma@happymutts.com |       | true   |
       | ernt@mutts.com      |       | true   |
-      | barkro@2regions.com |       | true   | 
       | anna@sadmutts.com   |       | true   |
       | admin@shf.se        | true  |        |
 
@@ -17,19 +16,16 @@ Feature: As any type of visitor
       | Stockholm    |
       | Västerbotten |
       | Norrbotten   |
-      | Uppsala      |
 
     And the following kommuns exist:
       | name      |
       | Alingsås  |
       | Bromölla  |
       | Laxå      |
-      | Aneby     |
 
     And the following companies exist:
       | name                 | company_number | email               | region       | kommun   |
       | No More Snarky Barky | 5562252998     | emma@happymutts.com | Stockholm    | Alingsås |
-      | 2regions             | 5133869346     | barkro@2regions.com | Stockholm    | Aneby    |
       | WOOF                 | 5569467466     | ernt@mutts.com      | Västerbotten | Bromölla |
       | Sad Sad Snarky Barky | 2120000142     | anna@sadmutts.com   | Norrbotten   | Laxå     |
 
@@ -42,7 +38,6 @@ Feature: As any type of visitor
 
     And the following applications exist:
       | user_email          | company_number | categories | state    |
-      | barkro@2regions.com | 5133869346     | Awesome    | accepted |
       | emma@happymutts.com | 5562252998     | Awesome    | accepted |
       | ernt@mutts.com      | 5569467466     | Awesome    | accepted |
       | anna@sadmutts.com   | 2120000142     | Sadness    | accepted |
@@ -54,6 +49,9 @@ Feature: As any type of visitor
       | anna@sadmutts.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
       | anna@sadmutts.com    | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
 
+    And the following company addresses exist:
+      | company_name         | region     | kommun |
+      | No More Snarky Barky | Norrbotten | Laxå   | 
 
     Given the date is set to "2017-10-01"
 
@@ -63,8 +61,7 @@ Feature: As any type of visitor
     And I am on the business category "Awesome"
     Then I should see "No More Snarky Barky"
     And I should see "Stockholm"
-    And I should see "2regions"
-    And I should see "Uppsala"
+    And I should see "Norrbotten"
     And I should see "WOOF"
     And I should see "Västerbotten"
     And I should not see "Sad Sad Snarky Barky"
