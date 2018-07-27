@@ -16,12 +16,14 @@ Feature: As any type of visitor
       | Stockholm    |
       | Västerbotten |
       | Norrbotten   |
+      | Uppsala      |
 
     And the following kommuns exist:
       | name      |
       | Alingsås  |
       | Bromölla  |
       | Laxå      |
+      | Dalarna   |
 
     And the following companies exist:
       | name                 | company_number | email               | region       | kommun   |
@@ -50,8 +52,8 @@ Feature: As any type of visitor
       | anna@sadmutts.com    | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
 
     And the following company addresses exist:
-      | company_name         | region     | kommun |
-      | No More Snarky Barky | Norrbotten | Laxå   | 
+      | company_name         | region     | kommun    |
+      | No More Snarky Barky | Uppsala    | Dalarna   | 
 
     Given the date is set to "2017-10-01"
 
@@ -61,7 +63,7 @@ Feature: As any type of visitor
     And I am on the business category "Awesome"
     Then I should see "No More Snarky Barky"
     And I should see "Stockholm"
-    And I should see "Norrbotten"
+    And I should see "Uppsala"
     And I should see "WOOF"
     And I should see "Västerbotten"
     And I should not see "Sad Sad Snarky Barky"
