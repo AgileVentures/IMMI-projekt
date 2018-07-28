@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
 
   private
 
-def download_or_show_image(type, render_to, width)
+  def download_or_show_image(type, render_to, width)
     html = image_html(type)
 
     render html: html.html_safe and return unless render_to == 'jpg'
@@ -70,7 +70,7 @@ def download_or_show_image(type, render_to, width)
     kit
   end
 
-def set_app_config
+  def set_app_config
     # Need app config items for proof-of-membership
     @app_configuration = AdminOnly::AppConfiguration.last
   end
