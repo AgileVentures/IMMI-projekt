@@ -5,6 +5,8 @@ class CompaniesController < ApplicationController
                                      :edit_payment, :fetch_from_dinkurs]
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
 
+  before_action :set_app_config, only: [:company_h_brand]
+  before_action :allow_iframe_request, only: [:company_h_brand]
 
   def index
     authorize Company
@@ -42,6 +44,10 @@ class CompaniesController < ApplicationController
     setup_events_and_events_pagination
 
     show_events_list if request.xhr? 
+  end
+
+  def company_h_brand
+    download_or_show_image('company_h_brand', params[:render_to], 300)
   end
 
   def fetch_from_dinkurs

@@ -140,7 +140,7 @@
         %hr
       .row
         .col-md-5
-          = render partial: 'company_h_brand',
+          = render partial: 'companies/company_h_brand',
                    locals: { app_config: @app_configuration, company: company,
                              context: :user_show, user: @user }
 
@@ -153,13 +153,11 @@
           %br
           = t('.image_how_to_use_html',
               download_link: link_to(t('.download_image'),
-                                     company_h_brand_path(@user,
-                                                           company_id: company.id,
+                                     company_h_brand_path(company,
                                                            render_to: :jpg),
                                      class: 'btn btn-xs btn-info'),
               show_link: link_to(t('.show_image'),
-                                 company_h_brand_path(@user,
-                                                      company_id: company.id,
+                                 company_h_brand_path(company,
                                                       context: :internal),
                                      class: 'btn btn-xs btn-info'))
           %br

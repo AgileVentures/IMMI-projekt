@@ -82,7 +82,7 @@ module CompaniesHelper
   end
 
   def short_h_brand_url(company)
-    url = company_h_brand_url(0, company_id: company.id)
+    url = company_h_brand_url(company)
     company.get_short_h_brand_url(url)
   end
 end

@@ -5,7 +5,6 @@
   %body
 
     #company-h-brand
-
       - render_to = :html unless local_assigns[:render_to]
 
       - if app_config.h_brand_logo
@@ -22,6 +21,9 @@
       %hr.company-info-separator
 
       %p.company-info
+
+        - company = Company.find(params[:id])
+
         %span.company-name
           = company.name
         %br
