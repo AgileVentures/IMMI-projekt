@@ -53,7 +53,7 @@ Feature: As any type of visitor
 
     And the following company addresses exist:
       | company_name         | region     | kommun    |
-      | No More Snarky Barky | Uppsala    | Dalarna   | 
+      | No More Snarky Barky | Uppsala    | Dalarna   |
 
     Given the date is set to "2017-10-01"
 
@@ -64,6 +64,7 @@ Feature: As any type of visitor
     Then I should see "No More Snarky Barky"
     And I should see "Stockholm"
     And I should see "Uppsala"
+    And I should see raw HTML "Stockholm<br>Uppsala"
     And I should see "WOOF"
     And I should see "Västerbotten"
     And I should not see "Sad Sad Snarky Barky"

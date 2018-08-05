@@ -83,6 +83,11 @@ Then "I should{negate} see {capture_string}" do |negate, content|
 end
 
 
+Then "I should see raw HTML {capture_string}" do |html|
+  expect(page.body).to match html
+end
+
+
 Then "I should{negate} see {capture_string} image" do |negate, alt_text|
   expect(page).send (negate ? :not_to : :to),  have_xpath("//img[contains(@alt,'#{alt_text}')]")
 end
