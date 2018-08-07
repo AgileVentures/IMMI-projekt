@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   include PaginationUtility
+  include ImagesUtility
 
   before_action :set_user, except: :index
   before_action :set_app_config, only: [:show, :proof_of_membership, :update,

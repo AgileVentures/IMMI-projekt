@@ -1,5 +1,6 @@
 class CompaniesController < ApplicationController
   include PaginationUtility
+  include ImagesUtility
 
   before_action :set_company, only: [:show, :edit, :update, :destroy,
                                      :edit_payment, :fetch_from_dinkurs]
