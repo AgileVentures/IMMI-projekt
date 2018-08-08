@@ -15,7 +15,7 @@ class UsersController < ApplicationController
     if params[:render_to] == 'jpg'
       download_image('proof_of_membership', 260, image_html)
     else
-      show_image('proof_of_membership', image_html)
+      show_image(image_html)
     end
   end
 

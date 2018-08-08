@@ -52,7 +52,7 @@ class CompaniesController < ApplicationController
     if params[:render_to] == 'jpg'
       download_image('company_h_brand', 300, image_html)
     else
-      show_image('company_h_brand', image_html)
+      show_image(image_html)
     end
   end
 
