@@ -3,16 +3,15 @@ class UsersController < ApplicationController
   include ImagesUtility
 
   before_action :set_user, except: :index
-  before_action :set_app_config, only: [:show, :proof_of_membership, :update,
-                                        :company_h_brand]
+  before_action :set_app_config, only: [:show, :proof_of_membership, :update]
   before_action :authorize_user, only: [:show]
-  before_action :allow_iframe_request, only: [:proof_of_membership, :company_h_brand]
+  before_action :allow_iframe_request, only: [:proof_of_membership]
 
   def show
   end
 
   def proof_of_membership
-    download_or_show_image('proof_of_membership', params[:render_to], 260)
+    download_or_show_image('proof_of_membership', params[:render_to], 260, @app_configuration, user: @user)
   end
 
   def index

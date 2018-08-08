@@ -1,21 +1,20 @@
 module ImagesUtility
-  extend ActiveSupport::Concern
 
   private
 
-  def download_or_show_image(type, render_to, width)
-    html = image_html(type) 
-    render html: html.html_safe and return unless render_to == 'jpg' 
-    kit = build_kit(html, "#{type.tr('_', '-')}.css", width) 
+  def download_or_show_image(type, render_to, width, app_config, company: nil, user: nil)
+    html = image_html(type, app_config,  company, user)
+    render html: html.html_safe and return unless render_to == 'jpg'
+    kit = build_kit(html, "#{type.tr('_', '-')}.css", width)
     send_data(kit.to_jpg, type: 'image/jpg', filename: "#{type}.jpeg")
   end
 
-  def image_html(image_type)
+  def image_html(image_type, app_config, company, user)
     render_to_string(partial: image_type,
-                     locals: { app_config: @app_configuration, user: @user,
+                     locals: { app_config: app_config, user: user,
                                render_to: params[:render_to]&.to_sym,
                                context: params[:context]&.to_sym,
-                               company: Company.find_by_id(params[:company_id]) })
+                               company: company})
   end
 
   def build_kit(html, image_css, width)

@@ -3,9 +3,9 @@ class CompaniesController < ApplicationController
   include ImagesUtility
 
   before_action :set_company, only: [:show, :edit, :update, :destroy,
-                                     :edit_payment, :fetch_from_dinkurs]
+                                     :edit_payment, :fetch_from_dinkurs,
+                                     :company_h_brand]
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
-
   before_action :set_app_config, only: [:company_h_brand]
   before_action :allow_iframe_request, only: [:company_h_brand]
 
@@ -48,7 +48,7 @@ class CompaniesController < ApplicationController
   end
 
   def company_h_brand
-    download_or_show_image('company_h_brand', params[:render_to], 300)
+    download_or_show_image('company_h_brand', params[:render_to], 300, @app_configuration, company: @company)
   end
 
   def fetch_from_dinkurs
