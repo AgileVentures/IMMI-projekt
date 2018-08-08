@@ -48,7 +48,12 @@ class CompaniesController < ApplicationController
   end
 
   def company_h_brand
-    download_or_show_image('company_h_brand', params[:render_to], 300, @app_configuration, @company)
+    image_html = image_html('company_h_brand', @app_configuration, @company)
+    if params[:render_to] == 'jpg'
+      download_image('company_h_brand', 300, image_html)
+    else
+      show_image('company_h_brand', image_html)
+    end
   end
 
   def fetch_from_dinkurs

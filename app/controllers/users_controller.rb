@@ -11,7 +11,12 @@ class UsersController < ApplicationController
   end
 
   def proof_of_membership
-    download_or_show_image('proof_of_membership', params[:render_to], 260, @app_configuration, @user)
+    image_html = image_html('proof_of_membership', @app_configuration, @user)
+    if params[:render_to] == 'jpg'
+      download_image('proof_of_membership', 260, image_html)
+    else
+      show_image('proof_of_membership', image_html)
+    end
   end
 
   def index
