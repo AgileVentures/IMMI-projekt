@@ -7,7 +7,7 @@ module ImagesUtility
     send_data(kit.to_jpg, type: 'image/jpg', filename: "#{type}.jpeg")
   end
 
-  def show_image(type, image_html)
+  def show_image(image_html)
     render html: image_html.html_safe
   end
 
