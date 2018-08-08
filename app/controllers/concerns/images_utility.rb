@@ -2,19 +2,20 @@ module ImagesUtility
 
   private
 
-  def download_or_show_image(type, render_to, width, app_config, company: nil, user: nil)
-    html = image_html(type, app_config,  company, user)
+  def download_or_show_image(type, render_to, width, app_config, object)
+    html = image_html(type, app_config,  object)
     render html: html.html_safe and return unless render_to == 'jpg'
     kit = build_kit(html, "#{type.tr('_', '-')}.css", width)
     send_data(kit.to_jpg, type: 'image/jpg', filename: "#{type}.jpeg")
   end
 
-  def image_html(image_type, app_config, company, user)
+  def image_html(image_type, app_config, object)
+    object_sym = object.class.to_s.downcase.to_sym
     render_to_string(partial: image_type,
-                     locals: { app_config: app_config, user: user,
+                     locals: { app_config: app_config, 
                                render_to: params[:render_to]&.to_sym,
                                context: params[:context]&.to_sym,
-                               company: company})
+                               object_sym => object})
   end
 
   def build_kit(html, image_css, width)

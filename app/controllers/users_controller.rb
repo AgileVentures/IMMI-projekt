@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   end
 
   def proof_of_membership
-    download_or_show_image('proof_of_membership', params[:render_to], 260, @app_configuration, user: @user)
+    download_or_show_image('proof_of_membership', params[:render_to], 260, @app_configuration, @user)
   end
 
   def index

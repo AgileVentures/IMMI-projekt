@@ -48,7 +48,7 @@ class CompaniesController < ApplicationController
   end
 
   def company_h_brand
-    download_or_show_image('company_h_brand', params[:render_to], 300, @app_configuration, company: @company)
+    download_or_show_image('company_h_brand', params[:render_to], 300, @app_configuration, @company)
   end
 
   def fetch_from_dinkurs
