@@ -24,7 +24,7 @@
         - @companies.each do | company |
           %tr.company
             %td= link_to company.name, company
-            %td= company.main_address.region ?  company.main_address.region.name  : ''
+            %td= safe_join(company.addresses_region_names, tag.br)
             - if current_user.admin?
               %td= company.company_number
               %td= link_to t('edit'), edit_company_path(company)
