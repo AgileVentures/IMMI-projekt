@@ -327,8 +327,9 @@ sv:
       upload_button: Välj dina filer...
       will_be_uploaded: 'Dessa filer kommer att laddas upp när du skickar in din ansökan:'
       upload_multiple_files: ctrl-tangenten (Windows) eller command/cmd på (Mac) för att välja flera.
-
       submit_button_label: *submit
+      need_to_enter_name: Du måste ha ditt för- och efternamn definierat
+                          för att skapa en medlemsansökan. Ändra din profil.
 
     rendering:
       success: Aktion utfördes framgångsrikt

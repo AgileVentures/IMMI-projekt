@@ -8,6 +8,10 @@ class ShfApplicationsController < ApplicationController
   before_action :set_allowed_file_types, only: [:edit, :new, :update, :create]
 
   def new
+    unless current_user.has_full_name?
+      helpers.flash_message(:alert, t('.need_to_enter_name'))
+      redirect_back(fallback_location: root_path) and return
+    end
     @new_company = Company.new # object for company_create_modal
     @shf_application = ShfApplication.new(user: current_user)
     @all_business_categories = BusinessCategory.all

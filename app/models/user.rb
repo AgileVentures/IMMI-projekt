@@ -104,6 +104,10 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
+  def has_full_name?
+    first_name.present? && last_name.present?
+  end
+
 
   def grant_membership(send_email: true)
     return if self.member && self.membership_number.present?

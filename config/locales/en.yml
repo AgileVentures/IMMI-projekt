@@ -277,7 +277,7 @@ en:
               not_found: 'with number %{value} not found.
                           Click the “New company” button to create the company,
                           then try to send your application again.'
-            company_number: 
+            company_number:
               invalid: " is not a valid Swedish company number"
 
 
@@ -330,8 +330,10 @@ en:
       will_be_uploaded: 'These files will be uploaded when you submit your application:'
       upload_multiple_files: To upload multiple files at once hold down the
                              control key (Windows) or command key (Mac).
-
       submit_button_label: *submit
+      need_to_enter_name: You must have your first and last name defined
+                          in order to create a membership application.
+                          Please edit your profile.
 
     rendering:
       success: Action performed successfully
@@ -583,7 +585,7 @@ en:
       visibility_tooltip: Level of detail as seen by visitor (including maps).
         Set to 'None' for no address visibility.
       org_nr_tooltip: Numbers only (no hyphens)
-      dinkurs_show_tooltip: Set this switch to on (toggle to the right) to show 
+      dinkurs_show_tooltip: Set this switch to on (toggle to the right) to show
                             upcoming Dinkurs events on your company page.
       dinkurs_id_tooltip: If you have a Dinkurs.se account and want to also show
                           the company events here, enter the Dinkurs.se company key.
