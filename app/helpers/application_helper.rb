@@ -23,6 +23,7 @@ module ApplicationHelper
     if flash_value.instance_of? String
       flash_value
     else
+      flash_value[0] = flash_value[0].html_safe
       safe_join(flash_value, '<br/>'.html_safe)
     end
   end

@@ -331,9 +331,9 @@ en:
       upload_multiple_files: To upload multiple files at once hold down the
                              control key (Windows) or command key (Mac).
       submit_button_label: *submit
-      need_to_enter_name: You must have your first and last name defined
+      need_to_enter_name_html: You must have your first and last name defined
                           in order to create a membership application.
-                          Please edit your profile.
+                          %{edit_profile}.
 
     rendering:
       success: Action performed successfully

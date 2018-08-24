@@ -9,7 +9,10 @@ class ShfApplicationsController < ApplicationController
 
   def new
     unless current_user.has_full_name?
-      helpers.flash_message(:alert, t('.need_to_enter_name'))
+      msg = t('.need_to_enter_name_html',
+              edit_profile: helpers.link_to(t('devise.registrations.edit.title'),
+              edit_user_registration_path))
+      helpers.flash_message(:alert, msg)
       redirect_back(fallback_location: root_path) and return
     end
     @new_company = Company.new # object for company_create_modal
