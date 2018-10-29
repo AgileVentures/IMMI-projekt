@@ -4,12 +4,12 @@ Feature: As an admin
 
   Background:
     Given the following users exist
-      | email               | admin | member |
-      | emma@happymutts.com |       |        |
-      | anna@sadmutts.com   |       | true   |
-      | ernt@mutts.com      |       |        |
-      | admin@shf.se        | true  |        |
-      | david@dogs.com      |       |        |
+      | email               | admin | member | first_name | last_name  |
+      | emma@happymutts.com |       |        | Emma       | Happymutts |
+      | anna@sadmutts.com   |       | true   | Anna       | Sadmutts   |
+      | ernt@mutts.com      |       |        | Ernt       | Mutts      |
+      | admin@shf.se        | true  |        | | |
+      | david@dogs.com      |       |        | David      | Dogs       |
 
     Given the following payments exist
       | user_email        | start_date | expire_date | payment_type | status | hips_id |
@@ -34,6 +34,22 @@ Feature: As an admin
     And I should see "emma@happymutts.com"
     And I should see "anna@sadmutts.com"
     And I should see "ernt@mutts.com"
+
+  @selenium
+  Scenario: Admin can delete users
+    Given I am logged in as "admin@shf.se"
+    When I am on the "all users" page
+    And I should see "admin@shf.se"
+    And I should see "emma@happymutts.com"
+    And I should see "anna@sadmutts.com"
+    And I should see "ernt@mutts.com"
+    Then I click on and accept "delete Emma Happymutts"
+    And I click on and accept "delete David Dogs"
+    And I should not see "emma@happymutts.com"
+    And I should see "anna@sadmutts.com"
+    And I should see "ernt@mutts.com"
+    And I should not see "david@dogs.com"
+
 
   @time_adjust
   Scenario: The right info is displayed for a user

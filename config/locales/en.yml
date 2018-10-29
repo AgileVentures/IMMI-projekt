@@ -777,6 +777,9 @@ en:
       applications_tooltip: User has an open application
       expire_date: *expire_date
 
+    destroy:
+      success: User deleted successfully.
+
   payments:
     create:
       page_title: &page_title '%{payment_type} Payment by: %{user_name}'

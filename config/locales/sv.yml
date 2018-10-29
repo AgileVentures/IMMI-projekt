@@ -777,6 +777,9 @@ sv:
       applications_tooltip: Användaren har en öppen ansökan
       expire_date: *expire_date
 
+    destroy:
+      success: Användaren raderades framgångsrikt.
+
   payments:
     create:
       page_title: &page_title '%{payment_type} betalning av: %{user_name}'

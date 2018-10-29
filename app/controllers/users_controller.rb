@@ -72,6 +72,13 @@ class UsersController < ApplicationController
            locals: { user: @user, error: t('users.update.error') }
   end
 
+  def destroy
+    @user.destroy
+
+    redirect_back(fallback_location: users_path, notice: t('.success'))
+  end
+
+
 
   private
 
