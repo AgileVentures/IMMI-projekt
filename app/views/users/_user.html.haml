@@ -19,4 +19,4 @@
   %td.delete
     = link_to "<span class='glyphicon glyphicon-trash text-danger'>".html_safe,
               user_path(user), method: :delete, title: "delete #{user.full_name}",
-              :data => {:confirm => "Delete this user?"}
+              :data => {:confirm => "Delete #{user.full_name}?"}
