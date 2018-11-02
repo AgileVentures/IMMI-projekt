@@ -688,6 +688,8 @@ sv:
       title: Alla Användare
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
 
+    delete_user: Radera %{user}
+
     show:
       membership_number: *membership_number
       email: *email

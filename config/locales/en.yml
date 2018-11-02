@@ -688,6 +688,8 @@ en:
       title: All Users
       no_search_results: No records matched your search criteria.
 
+    delete_user: Delete %{user}
+
     show:
       membership_number: *membership_number
       email: *email

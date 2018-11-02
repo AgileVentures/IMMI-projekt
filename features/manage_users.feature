@@ -43,8 +43,8 @@ Feature: As an admin
     And I should see "emma@happymutts.com"
     And I should see "anna@sadmutts.com"
     And I should see "ernt@mutts.com"
-    Then I click on and accept "delete Emma Happymutts"
-    And I click on and accept "delete David Dogs"
+    Then I click on and accept t("users.delete_user", user: "Emma Happymutts")
+    And I click on and accept t("users.delete_user", user: "David Dogs")
     And I should not see "emma@happymutts.com"
     And I should see "anna@sadmutts.com"
     And I should see "ernt@mutts.com"
