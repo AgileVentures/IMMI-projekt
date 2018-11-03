@@ -17,7 +17,8 @@
       %span{ class: expire_date_css_class(expire_date) }
         = expire_date
   %td.delete
+    - delete_user = t('users.delete_user', user: "#{user.full_name}")
     = link_to "<span class='glyphicon glyphicon-trash text-danger'>".html_safe,
               user_path(user), method: :delete,
-              title: t('users.delete_user', user: "#{user.full_name}"),
-              :data => { :confirm => t('users.delete_user', user: "#{user.full_name}") + '?' }
+              title: delete_user,
+              :data => { :confirm => delete_user + '?' }
