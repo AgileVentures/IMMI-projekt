@@ -2,6 +2,8 @@ class UsersController < ApplicationController
   include PaginationUtility
   include ImagesUtility
 
+  LOG_FILE = 'log/users.log'
+
   before_action :set_user, except: :index
   before_action :set_app_config, only: [:show, :proof_of_membership, :update]
   before_action :authorize_user, only: [:show]
@@ -74,6 +76,10 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
+
+    ActivityLogger.open(LOG_FILE, 'Manage Users', 'Delete') do |log|
+      log.record('info', "User #{@user.id}, #{@user.full_name} (#{@user.email})")
+    end
 
     redirect_back(fallback_location: users_path, notice: t('.success'))
   end
