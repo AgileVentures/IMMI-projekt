@@ -51,6 +51,8 @@ Feature: When a new application is received, all admins get an email notificatio
     And I should see t("mailers.admin_mailer.new_application_received.message_text.must_be_logged_in") in the email body
     And I should not see "http://localhost:3000/ansokan/1/redigera" in the email body
     And I should see "http://localhost:3000/ansokan/1" in the email body
+    And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
+    And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
     When I follow "http://localhost:3000/ansokan/1" in the email
     Then I should see t("shf_applications.show.title", user_full_name: 'Emma HappyMutts')
     And I am logged out
@@ -64,6 +66,8 @@ Feature: When a new application is received, all admins get an email notificatio
     And I should see t("mailers.admin_mailer.new_application_received.message_text.must_be_logged_in") in the email body
     And I should not see "http://localhost:3000/ansokan/1/redigera" in the email body
     And I should see "http://localhost:3000/ansokan/1" in the email body
+    And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
+    And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
     When I follow "http://localhost:3000/ansokan/1" in the email
     Then I should see t("shf_applications.show.title", user_full_name: 'Emma HappyMutts')
     Then "admin3@shf.se" should receive an email
@@ -75,6 +79,8 @@ Feature: When a new application is received, all admins get an email notificatio
     And I should see t("mailers.admin_mailer.new_application_received.message_text.must_be_logged_in") in the email body
     And I should not see "http://localhost:3000/ansokan/1/redigera" in the email body
     And I should see "http://localhost:3000/ansokan/1" in the email body
+    And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
+    And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
     When I follow "http://localhost:3000/ansokan/1" in the email
     Then I should see t("shf_applications.show.title", user_full_name: 'Emma HappyMutts')
 

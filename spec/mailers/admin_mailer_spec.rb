@@ -31,6 +31,13 @@ RSpec.describe AdminMailer, type: :mailer do
       let(:email_created) { email_sent }
     end
 
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent }
+    end
 
     it 'has text for the number of files uploaded' do
       expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.many'))

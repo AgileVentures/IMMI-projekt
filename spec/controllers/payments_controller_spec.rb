@@ -40,7 +40,7 @@ RSpec.describe PaymentsController, type: :controller do
       expect{ request }.to_not change(Payment, :count)
 
       flash_msg = I18n.t('payments.create.something_wrong',
-                         admin_email: ENV['SHF_MEMBERSHIP_EMAIL'])
+                         admin_email: ENV['SHF_REPLY_TO_EMAIL'])
 
       expect(flash[:alert]).to eq [flash_msg]
     end

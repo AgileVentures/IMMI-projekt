@@ -59,7 +59,7 @@ class PaymentsController < ApplicationController
     log_hips_activity('create order', 'error', nil, @hips_id, exc.cause)
 
     helpers.flash_message(:alert, t('.something_wrong',
-                                    admin_email: ENV['SHF_MEMBERSHIP_EMAIL']))
+                                    admin_email: ENV['SHF_REPLY_TO_EMAIL']))
 
     redirect_back fallback_location: root_path
   end

@@ -12,19 +12,19 @@ module CommonMailUtils
   end
 
 
-  def set_greeting_name(record)
+  def set_greeting_name(recipient)
 
-    if record.respond_to?(:full_name)
-      @greeting_name = "#{record.full_name}"
-    elsif record.respond_to? :email
-      @greeting_name = record.email
+    if recipient.respond_to?(:full_name)
+      @greeting_name = "#{recipient.full_name}"
+    elsif recipient.respond_to? :email
+      @greeting_name = recipient.email
     end
 
   end
 
 
-  def set_recipient_email(record)
-    @recipient_email = record.email if record.respond_to? :email
+  def set_recipient_email(recipient)
+    @recipient_email = recipient.email if recipient.respond_to? :email
   end
 
 

@@ -1,3 +1,4 @@
+# Emails sent out regarding user passwords, etc., as managed with Devise
 class UserMailer < Devise::Mailer
 
 # @see https://github.com/plataformatec/devise/wiki/How-To:-Use-custom-mailer

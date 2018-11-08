@@ -32,6 +32,15 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
       let(:email_created) { email_sent }
     end
 
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent }
+    end
+
+
     it 'says your app is approved' do
       expect(email_sent).to have_body_text(I18n.t('app_approved_and_next', scope: approved_text))
     end
@@ -124,6 +133,16 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
                     'Firstname Lastname' do
       let(:email_created) { email_sent }
     end
+
+
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent }
+    end
+
 
   end
 

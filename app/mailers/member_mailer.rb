@@ -1,5 +1,4 @@
-
-# Sends out emails to Members.
+# Sends out emails to Members when membership is granted or renewed
 class MemberMailer < ApplicationMailer
 
 
@@ -7,7 +6,7 @@ class MemberMailer < ApplicationMailer
 
     set_mail_info __method__, member
     @member = member
-    mail to: @recipient_email, subject: t('mailers.member_mailer.membership_granted.subject')
+    mail to: recipient_email, subject: t('mailers.member_mailer.membership_granted.subject')
 
   end
 

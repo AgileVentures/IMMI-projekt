@@ -1,6 +1,8 @@
 require 'activity_logger'
 
 
+# Common info and behavior for emails sent from the Application.
+# Note that emails sent via Devise have a different parent class (e.g. UserMailer)
 class ApplicationMailer < ActionMailer::Base
 
   # Formatting email is tricky because you cannot use the same CSS as you can in web pages,
@@ -12,25 +14,50 @@ class ApplicationMailer < ActionMailer::Base
   #
   #  @url http://www.simonnordberg.com/creating-robust-email-templates-in-action-mailer/
   #
+  # Note: Railgun  does not handle 'reply_to:' properly.  Railgun does not recognize it as
+  # a standard field; 'reply_to' is not in Railgun::Mailer::IGNORED_HEADERS
+  # Railgun will create an upper case version of it ('Reply-to') *and* the (original)
+  # lower-case version 'reply-to', which will ultimately and incorrectly create
+  # two 'Reply-To' entries in the delivered mail. (Railgun does this in
+  # Railgun::Mailer#transform_for_mailgun)
+  #
+  # Thus we have to add 'reply-to' to Railgun::Mailer::IGNORED_HEADERS
+  #
+
+
+
+  LOG_FILE = File.join(Rails.configuration.paths['log'].absolute_current, "#{Rails.env}_#{self.class.name}.log")
+  LOG_FACILITY = 'ApplicationMailer'
+
+
+  attr_accessor :recipient_email, :greeting_name, :action_name
+
 
   include MailgunConfig
 
   include CommonMailUtils
 
+  Railgun::Mailer::IGNORED_HEADERS << 'reply-to' # have to add this so that Railgun
+  # treats the reply-to as a 'standard' header field and does not duplicate it
 
-  default from: ENV['SHF_NOREPLY_EMAIL']
+  from_address = Mail::Address.new
+  from_address.address =  ENV['SHF_FROM_EMAIL']
+  from_address.display_name = ENV['SHF_EMAIL_DISPLAY_NAME']
+
+  reply_to_address = Mail::Address.new
+  reply_to_address.address = ENV['SHF_REPLY_TO_EMAIL']
+  reply_to_address.display_name = ENV['SHF_EMAIL_DISPLAY_NAME']
+
+  default from: from_address.format,
+    reply_to: reply_to_address.format
 
   layout 'mailer'
 
   helper :application # gives access to all helpers defined within `application_helper`.
 
 
-  LOG_FILE = File.join(Rails.configuration.paths['log'].absolute_current, 'mailgun.log')
-  LOG_FACILITY = 'Mailgun REST'
-
-
   # If there is a problem communicating with the MailGun REST server, log the problem
-  # TODO notify the SHF admin(s) using the ExceptionNotfication gem (must be able to send a notification that does not use MailGun)
+  # TODO notify the SHF admin(s) using the ExceptionNotfication gem
   # Do not raise the error.  Do not want to show anything to the user
   def self.deliver_mail(mail)
 
@@ -48,6 +75,7 @@ class ApplicationMailer < ActionMailer::Base
 
 
   def test_email(user)
+
     @action_name = __method__.to_s
     @greeting_name = set_greeting_name(user)
 

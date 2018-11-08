@@ -29,7 +29,7 @@ module EmailHelpers
     # Replace with your a way to find your current email. e.g @current_user.email
     # last_email_address will return the last email address used by email spec to find an email.
     # Note that last_email_address will be reset after each Scenario.
-    last_email_address || ENV['SHF_NOREPLY_EMAIL']
+    last_email_address || ENV['SHF_FROM_EMAIL']
   end
 end
 
@@ -137,7 +137,7 @@ Then /^(?:I|they) should see the email reply to "([^"]*?)"$/ do |text|
   expect(current_email).to have_reply_to(text)
 end
 
-Then /^(?:I|they) should see "([^\"]*)" in the email "([^"]*?)" header$/ do |text, name|
+Then /^(?:I|they) should see "(.*)" in the email "([^"]*?)" header$/ do |text, name|
   expect(current_email).to have_header(name, text)
 end
 

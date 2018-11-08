@@ -141,6 +141,9 @@ class ShfApplication < ApplicationRecord
     companies.order(:id).map(&:name).join(', ')
   end
 
+  def company_branding_fee_paid?
+    companies.last&.branding_license?
+  end
 
   def accept_application
     begin
