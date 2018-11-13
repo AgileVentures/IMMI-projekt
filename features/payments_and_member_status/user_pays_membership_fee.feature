@@ -18,7 +18,7 @@ Feature: As a user
 
   @time_adjust
   Scenario: Set app state to accepted, User pays membership fee (2017)
-    Given the date is set to "2017-10-01"
+    Given the date is set to "2018-10-13"
 
     When I am in "emma@mutts.com" browser
     And I am logged in as "emma@mutts.com"
@@ -37,7 +37,7 @@ Feature: As a user
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the payment
     And I should see t("payments.success.success")
-    And I should see "2018-12-31"
+    And I should see "2019-10-12"
 
   @time_adjust
   Scenario: Set app state to accepted, User pays membership fee (post-2017)

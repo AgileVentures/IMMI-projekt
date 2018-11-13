@@ -56,8 +56,8 @@ RSpec.describe Company, type: :model do
   let(:success) { Payment.order_to_payment_status('successful') }
 
   let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
-
   let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
+  let(:payment_date_2020) { Time.zone.local(2020, 3, 15) }
 
   let(:payment1) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
@@ -442,66 +442,50 @@ RSpec.describe Company, type: :model do
 
     describe '.self.next_branding_payment_dates' do
 
-      context 'during the year 2017' do
+      around(:each) do |example|
+        Timecop.freeze(payment_date_2018)
+        example.run
+        Timecop.return
+      end
 
-        around(:each) do |example|
-          Timecop.freeze(payment_date_2017)
-          example.run
-          Timecop.return
-        end
+      it "returns today's date for first payment start date" do
+        expect(Company.next_branding_payment_dates(complete_co.id)[0]).to eq Time.zone.today
+      end
 
-        it "returns today's date for first payment start date" do
-          expect(Company.next_branding_payment_dates(complete_co.id)[0])
-            .to eq Time.zone.today
-        end
+      it 'returns one year later for first payment expire date' do
+        expect(Company.next_branding_payment_dates(complete_co.id)[1])
+          .to eq Time.zone.today + 1.year - 1.day
+      end
 
-        it 'returns Dec 31, 2018 for first payment expire date' do
-          expect(Company.next_branding_payment_dates(complete_co.id)[1])
-            .to eq Time.zone.local(2018, 12, 31)
-        end
+      it 'returns date-after-expiration for second payment start date' do
+        payment1
+        expect(Company.next_branding_payment_dates(complete_co.id)[0])
+          .to eq Time.zone.today + 1.year
+      end
 
-        it 'returns Jan 1, 2019 for second payment start date' do
+      it 'returns one year later for second payment expire date' do
+        payment1
+        expect(Company.next_branding_payment_dates(complete_co.id)[1])
+          .to eq Time.zone.today + 1.year + 1.year - 1.day
+      end
+
+      context 'if next payment occurs after prior payment expire date' do
+
+        it 'returns actual payment date for start date' do
           payment1
+          Timecop.freeze(payment_date_2020)
           expect(Company.next_branding_payment_dates(complete_co.id)[0])
-            .to eq Time.zone.local(2019, 1, 1)
+            .to eq payment_date_2020
         end
 
-        it 'returns Dec 31, 2019 for second payment expire date' do
+        it 'returns payment date + 1 year for expire date' do
           payment1
+          Timecop.freeze(payment_date_2020)
           expect(Company.next_branding_payment_dates(complete_co.id)[1])
-            .to eq Time.zone.local(2019, 12, 31)
+            .to eq payment_date_2020 + 1.year - 1.day
         end
       end
 
-      context 'after the year 2017' do
-
-        around(:each) do |example|
-          Timecop.freeze(payment_date_2018)
-          example.run
-          Timecop.return
-        end
-
-        it "returns today's date for first payment start date" do
-          expect(Company.next_branding_payment_dates(complete_co.id)[0]).to eq Time.zone.today
-        end
-
-        it 'returns one year later for first payment expire date' do
-          expect(Company.next_branding_payment_dates(complete_co.id)[1])
-            .to eq Time.zone.today + 1.year - 1.day
-        end
-
-        it 'returns date-after-expiration for second payment start date' do
-          payment1
-          expect(Company.next_branding_payment_dates(complete_co.id)[0])
-            .to eq Time.zone.today + 1.year
-        end
-
-        it 'returns one year later for second payment expire date' do
-          payment1
-          expect(Company.next_branding_payment_dates(complete_co.id)[1])
-            .to eq Time.zone.today + 1.year + 1.year - 1.day
-        end
-      end
     end
   end
 
