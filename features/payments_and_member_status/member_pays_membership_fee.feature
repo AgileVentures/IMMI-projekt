@@ -20,7 +20,8 @@ Feature: As a member
       | user_email     | start_date | expire_date | payment_type | status | hips_id |
       | emma@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
-  Scenario: Member pays fee and extends membership
+  @time_adjust
+  Scenario: Member pays membership fee after prior payment expiration date
     Given the date is set to "2018-02-12"
     And I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
@@ -30,6 +31,7 @@ Feature: As a member
     And I should see t("payments.success.success")
     And I should see "2019-02-11"
 
+  @time_adjust
   Scenario: Member pays fee and extends membership
     Given the date is set to "2017-12-01"
     And I am logged in as "emma@mutts.com"
