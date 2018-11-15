@@ -20,9 +20,9 @@ RSpec.describe User, type: :model do
   end
 
   let(:success) { Payment.order_to_payment_status('successful') }
-  let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
-  let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
-  let(:payment_date_2020) { Time.zone.local(2020, 3, 15) }
+  let(:payment_date_2017_10_01) { Time.zone.local(2017, 10, 1) }
+  let(:payment_date_2018_11_21) { Time.zone.local(2018, 11, 21) }
+  let(:payment_date_2020_03_15) { Time.zone.local(2020, 3, 15) }
 
   let(:member_payment1) do
     start_date, expire_date = User.next_membership_payment_dates(user.id)
@@ -438,7 +438,7 @@ RSpec.describe User, type: :model do
     describe '.self.next_membership_payment_dates' do
 
       around(:each) do |example|
-        Timecop.freeze(payment_date_2018)
+        Timecop.freeze(payment_date_2018_11_21)
         example.run
         Timecop.return
       end
@@ -467,17 +467,26 @@ RSpec.describe User, type: :model do
       context 'if next payment occurs after prior payment expire date' do
 
         it 'returns actual payment date for start date' do
+          # User renews membership (pays fee) *after* the prior payment has expired.
+          # In this case, the new payment period starts on the day of payment (2020/03/15).
           member_payment1
-          Timecop.freeze(payment_date_2020)
-          expect(User.next_membership_payment_dates(user.id)[0])
-            .to eq payment_date_2020
+          Timecop.freeze(payment_date_2020_03_15)
+
+          payment_start_date = User.next_membership_payment_dates(user.id)[0]
+
+          expect(payment_start_date).to eq payment_date_2020_03_15
         end
 
         it 'returns payment date + 1 year for expire date' do
+          # User renews membership (pays fee) *after* the prior payment has expired.
+          # In this case, the new payment period expires one year after
+          # the day of payment (expire date should be 2021/03/14).
           member_payment1
-          Timecop.freeze(payment_date_2020)
-          expect(User.next_membership_payment_dates(user.id)[1])
-            .to eq payment_date_2020 + 1.year - 1.day
+          Timecop.freeze(payment_date_2020_03_15)
+
+          payment_expire_date = User.next_membership_payment_dates(user.id)[1]
+
+          expect(payment_expire_date).to eq payment_date_2020_03_15 + 1.year - 1.day
         end
       end
     end
@@ -510,7 +519,7 @@ RSpec.describe User, type: :model do
       end
 
       it 'revokes membership if a member and payment has expired' do
-        Timecop.freeze(payment_date_2018)
+        Timecop.freeze(payment_date_2018_11_21)
 
         member_payment1
         user.update(member: true)
