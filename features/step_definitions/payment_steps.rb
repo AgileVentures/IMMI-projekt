@@ -17,35 +17,36 @@ Given(/^the following payments exist$/) do |table|
   end
 end
 
-And(/^I complete the payment$/) do
+And(/^I complete the membership payment$/) do
   # Emulate webhook payment-update and direct to "success" action
-  payment = @user.payments.last # present for member, nil for user
 
-  payment = FactoryBot.create(:payment, user: @user) unless payment
+  # NOTE: The "most recent payment" of any type is determined via the
+  #       "created_at" attribute. This means that any payments created
+  #       in your feature "Background" section should be created with
+  #       appropriate dates (using step "Given the date is set to <date>").
 
   start_date, expire_date = User.next_membership_payment_dates(@user.id)
-  payment.update!(status: Payment.order_to_payment_status('successful'),
-                  start_date: start_date, expire_date: expire_date)
 
-  @user.grant_membership
-  @user.save
+  payment = FactoryBot.create(:payment, user: @user,
+                              payment_type: 'member_fee',
+                              status: Payment.order_to_payment_status('successful'),
+                              start_date: start_date, expire_date: expire_date)
 
   visit payment_success_path(user_id: @user.id, id: payment.id)
 end
 
 And(/^I complete the branding payment for "([^"]*)"$/) do |company_name|
   # Emulate webhook payment-update and direct to "success" action
+  # (see note in step above)
 
   company = Company.find_by_name(company_name)
 
-  payment = company.most_recent_branding_payment
+  start_date, expire_date = Company.next_branding_payment_dates(company.id)
 
   payment = FactoryBot.create(:payment, user: @user, company: company,
-                               payment_type: Payment::PAYMENT_TYPE_BRANDING) unless payment
-
-  start_date, expire_date = Company.next_branding_payment_dates(company.id)
-  payment.update!(status: Payment.order_to_payment_status('successful'),
-                  start_date: start_date, expire_date: expire_date)
+                              payment_type: 'branding_fee',
+                              status: Payment.order_to_payment_status('successful'),
+                              start_date: start_date, expire_date: expire_date)
 
   visit payment_success_path(user_id: @user.id, id: payment.id)
 end

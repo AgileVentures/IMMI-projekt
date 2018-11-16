@@ -3,6 +3,8 @@ Feature: As a member
   I need to be able to pay my branding fee
 
   Background:
+    Given the date is set to "2017-01-01"
+
     Given the following users exist
       | email          | admin | member | membership_number |
       | emma@mutts.com |       | true   | 1001              |

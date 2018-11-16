@@ -3,6 +3,7 @@ Feature: As a member
   I need to be able to pay my membership fee
 
   Background:
+    Given the date is set to "2017-01-10"
     Given the following users exist
       | email          | admin | member    | membership_number |
       | emma@mutts.com |       | true      | 1001              |
@@ -27,7 +28,7 @@ Feature: As a member
     And I am on the "user details" page for "emma@mutts.com"
     And I should see "1001"
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
     And I should see "2019-02-11"
 
@@ -38,7 +39,7 @@ Feature: As a member
     And I am on the "user details" page for "emma@mutts.com"
     And I should see "1001"
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
     And I should see "2018-12-31"
 

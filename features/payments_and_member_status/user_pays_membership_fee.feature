@@ -35,7 +35,7 @@ Feature: As a user
     And I reload the page
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
     And I should see "2019-10-12"
 
@@ -58,6 +58,6 @@ Feature: As a user
     And I reload the page
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
     And I should see "2019-06-30"
