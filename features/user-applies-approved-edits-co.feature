@@ -56,7 +56,7 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I am logged in as "new_user@example.com"
     And I am on the "user details" page for "new_user@example.com"
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
 
     Then I am in "admin@shf.se" browser

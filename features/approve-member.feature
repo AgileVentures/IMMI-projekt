@@ -65,7 +65,7 @@ Feature: As an admin
     And I am logged in as "anna@nosnarkybarky.se"
     And I am on the "user details" page for "anna@nosnarkybarky.se"
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
     Then I should see t("my_company", count: "1.to_i")
     And I am on the "show my application" page for "anna@nosnarkybarky.se"
@@ -104,7 +104,7 @@ Feature: As an admin
     And I am logged in as "emma@happymutts.se"
     And I am on the "user details" page for "emma@happymutts.se"
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
 
     Then I am in "admin@shf.com" browser

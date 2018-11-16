@@ -41,7 +41,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     And I am on the "user details" page for "emma@happymutts.se"
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
-    And I complete the payment
+    And I complete the membership payment
     And I should see t("payments.success.success")
     And I should see "2018-12-31"
     Then "emma@happymutts.se" should receive an email
