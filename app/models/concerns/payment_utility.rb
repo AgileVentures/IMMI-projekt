@@ -21,8 +21,6 @@ module PaymentUtility
     def next_payment_dates(entity_id, payment_type)
       entity = find(entity_id)
 
-      payment_found = false
-
       expire_date = entity.payment_expire_date(payment_type)
 
       if expire_date && expire_date.future?
