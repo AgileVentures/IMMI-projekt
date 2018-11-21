@@ -8,15 +8,15 @@
       - render_to = :html unless local_assigns[:render_to]
 
       - if app_config.h_brand_logo
-        = image_tag(paperclip_path(app_config.h_brand_logo, :standard, render_to).to_s,
+        = image_tag(paperclip_path_str(app_config.h_brand_logo, :standard, render_to),
                     class: 'h-brand-logo')
 
       .current-year
         = Time.zone.now.year
 
       - if app_config.sweden_dog_trainers
-        = image_tag(paperclip_path(app_config.sweden_dog_trainers,
-                    :standard, render_to).to_s, class: 'sweden-dog-trainers')
+        = image_tag(paperclip_path_str(app_config.sweden_dog_trainers,
+                    :standard, render_to), class: 'sweden-dog-trainers')
 
       %hr.company-info-separator
 

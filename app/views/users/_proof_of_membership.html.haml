@@ -8,7 +8,7 @@
 
     #proof-of-membership
       - if app_config.shf_logo
-        = image_tag(paperclip_path(app_config.shf_logo, :standard, render_to).to_s,
+        = image_tag(paperclip_path_str(app_config.shf_logo, :standard, render_to),
                     class: 'shf-logo')
 
       %p.proof-banner
@@ -16,7 +16,7 @@
 
       .member-photo-div
         - if user.member_photo
-          = image_tag(paperclip_path(user.member_photo, :standard, render_to).to_s,
+          = image_tag(paperclip_path_str(user.member_photo, :standard, render_to),
                       class: 'member-photo')
 
       %p.member-info
@@ -37,8 +37,8 @@
             Utfärdat av:
           %br
           - if app_config.chair_signature
-            = image_tag(paperclip_path(app_config.chair_signature,
-                                       :standard, render_to).to_s)
+            = image_tag(paperclip_path_str(app_config.chair_signature,
+                                       :standard, render_to))
           %br
           Giltigt till #{user.membership_expire_date}
           %br

@@ -58,24 +58,24 @@ RSpec.describe UsersHelper, type: :helper do
     end
   end
 
-  describe 'paperclip_path' do
+  describe 'paperclip_path_str' do
 
     it 'returns relative path if to be rendered via HTML' do
-      expect(paperclip_path(user.member_photo, :standard, :html))
+      expect(paperclip_path_str(user.member_photo, :standard, :html))
         .to eq user.member_photo.url
     end
 
     it 'returns absolute path if to be rendered within image' do
-      expect(paperclip_path(user.member_photo, :standard, :jpg))
+      expect(paperclip_path_str(user.member_photo, :standard, :jpg))
         .to eq user.member_photo.path
     end
 
     it 'returns absolute path to default image if no attached file' do
       user.update(member_photo: nil)
       default_path = Rails.root.join('app', 'assets', 'images',
-                                     user.member_photo.url(:standard))
+                                     user.member_photo.url(:standard)).to_s
 
-      expect(paperclip_path(user.member_photo, :standard, :jpg))
+      expect(paperclip_path_str(user.member_photo, :standard, :jpg))
         .to eq default_path
     end
   end
