@@ -10,8 +10,8 @@ Feature: As a registered user
       | user@random.com   | password | false | false     | ulysses    | user      |
 
     And the following applications exist:
-      | user_email        | company_number | state    |
-      | member@random.com | 5560360793     | accepted |
+      | user_email        | company_number | state    | contact_email     |
+      | member@random.com | 5560360793     | accepted | public@random.com |
 
     And the following payments exist
       | user_email        | start_date | expire_date | payment_type | status | hips_id |
@@ -81,3 +81,15 @@ Feature: As a registered user
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label") button
     And I should see t("hello", name: 'NewUlysses')
+
+  Scenario: Member edits profile
+    Given I am logged in as "member@random.com"
+    And I am on the "landing" page
+    Then I click on the t("devise.registrations.edit.title") link
+    And I fill in t("activerecord.attributes.user.first_name") with "NewUlysses"
+    And I fill in t("activerecord.attributes.shf_application.contact_email") with "changed@random.com"
+    And I fill in t("devise.registrations.edit.current_password") with "password"
+    And I click on t("devise.registrations.edit.submit_button_label") button
+    And I should see t("hello", name: 'NewUlysses')
+    Then I click on the t("devise.registrations.edit.title") link
+    And the t("activerecord.attributes.shf_application.contact_email") field should be set to "changed@random.com"
