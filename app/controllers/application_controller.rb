@@ -26,7 +26,8 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    additional_permissions = [:first_name, :last_name, :member_photo]
+    additional_permissions = [:first_name, :last_name, :member_photo,
+                              { shf_application_attributes: :contact_email }]
     devise_parameter_sanitizer.permit(:sign_up, keys: additional_permissions)
     devise_parameter_sanitizer.permit(:account_update, keys: additional_permissions)
   end

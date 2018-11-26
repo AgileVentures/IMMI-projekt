@@ -9,6 +9,7 @@ class User < ApplicationRecord
   before_destroy { self.member_photo = nil } # remove photo file from file system
 
   has_one :shf_application, dependent: :destroy
+  accepts_nested_attributes_for :shf_application, update_only: true
 
   has_many :companies, through: :shf_application
 

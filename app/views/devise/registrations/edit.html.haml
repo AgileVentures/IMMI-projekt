@@ -23,6 +23,10 @@
         %div
           "#{t('.unconfirmed_email_for', unconfirmed_email: resource.unconfirmed_email )}"
 
+      = f.fields_for :shf_application do |app_form|
+        .field
+          = app_form.label :contact_email
+          = app_form.email_field :contact_email
 
       .field
         = f.label :password

@@ -138,7 +138,7 @@ en:
       user:
         first_name: &first_name First name
         last_name: &last_name Last name
-        email: &email Profile Email
+        email: &email Login Email
         password: *password
         password_confirmation: Password confirmation
         membership_number: &membership_number Membership number

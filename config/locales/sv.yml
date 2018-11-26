@@ -138,7 +138,7 @@ sv:
       user:
         first_name: &first_name Förnamn
         last_name: &last_name Efternamn
-        email: &email Profil E-post
+        email: &email Logga e-post
         password: *password
         password_confirmation: Lösenordsbekräftelse
         membership_number: &membership_number Medlemsnummer
@@ -390,7 +390,7 @@ sv:
         using_the_h_mark: 'Vi önskar även att du pryder din hemsida med H-märket.
                           För att visa att ni är just H-märkta med allt vad det innebär.
                           Bilden nedan nyttjas i detta syfte och länkas till: "http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
-        ffs: Du hittar ditt h-märke och ditt behörighetsbevis under ditt konto. 
+        ffs: Du hittar ditt h-märke och ditt behörighetsbevis under ditt konto.
       waiting_for_approval:
         title: Hej, kul att du vill bli medlem
         in_process: Vi håller på att hantera din ansökan.
