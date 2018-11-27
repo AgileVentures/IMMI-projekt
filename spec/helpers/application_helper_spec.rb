@@ -230,14 +230,14 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     let(:errors_html_sv)  do
       I18n.locale = :sv
-      ma = ShfApplication.new(user: user)
+      ma = ShfApplication.new
       ma.valid?
       model_errors_helper(ma)
     end
 
     let(:errors_html_en)  do
       I18n.locale = :en
-      ma = ShfApplication.new(user: good_ma.user)
+      ma = ShfApplication.new
       ma.valid?
       model_errors_helper(ma)
     end
@@ -247,8 +247,9 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
 
     it 'adds a count of errors' do
-      expect(errors_html_sv).to match(/#{t('model_errors', count: 4)}/)
-
+      I18n.locale = :sv
+      expect(errors_html_sv).to match(/#{t('model_errors', count: 5)}/)
+      I18n.locale = :en
       expect(errors_html_en).to match(/#{t('model_errors', count: 5)}/)
     end
 
@@ -262,8 +263,6 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(errors_html_en).to match(/Contact Email cannot be blank/)
 
       expect(errors_html_en).to match(/Contact Email is invalid/)
-
-      expect(errors_html_en).to match(/User has already been taken/)
     end
   end
 
