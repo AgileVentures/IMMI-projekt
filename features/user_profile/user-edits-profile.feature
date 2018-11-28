@@ -82,14 +82,12 @@ Feature: As a registered user
     And I click on t("devise.registrations.edit.submit_button_label") button
     And I should see t("hello", name: 'NewUlysses')
 
-  Scenario: Member edits profile
+  Scenario: Member edits contact email in profile
     Given I am logged in as "member@random.com"
     And I am on the "landing" page
     Then I click on the t("devise.registrations.edit.title") link
-    And I fill in t("activerecord.attributes.user.first_name") with "NewUlysses"
     And I fill in t("activerecord.attributes.shf_application.contact_email") with "changed@random.com"
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label") button
-    And I should see t("hello", name: 'NewUlysses')
     Then I click on the t("devise.registrations.edit.title") link
     And the t("activerecord.attributes.shf_application.contact_email") field should be set to "changed@random.com"
