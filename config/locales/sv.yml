@@ -1020,6 +1020,15 @@ sv:
           access_fb_group: "Som medlem får du även tillgång till vår slutna Facebookgrupp: "
           and_member_pages: "samt dolda sidor i vårt medlemssystem: "
 
+      membership_will_expire:
+        subject: 'Ditt medlemskap löper ut snart'
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: Observera att din nuvarande medlemsperiod löper ut den
+                        <span style="background-color:yellow;">%{expire_date}</span>.
+          extend_membership_html: Du kan förlänga ditt medlemskap i ytterligare
+                                  12 månader genom att betala medlemsavgiften.
+                                  %{account_link}
 
 
   devise:

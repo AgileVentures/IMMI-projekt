@@ -1,5 +1,9 @@
 module PickRandomHelpers
 
+  # Note: random User instances can cause discrepencies between the email
+  #       header and the body.  This is because the preview method is called
+  #       twice - once to render the header and once to render the body.
+  #       More info: https://github.com/rails/rails/issues/13430
 
 
   # return a random new membership application
@@ -56,5 +60,3 @@ module PickRandomHelpers
 
 
 end
-
-

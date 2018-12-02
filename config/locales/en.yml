@@ -1018,6 +1018,16 @@ en:
           access_fb_group: "As a member, you will also have access to our closed Facebook group: "
           and_member_pages: "as well as hidden pages in our member system: "
 
+      membership_will_expire:
+        subject: 'Your membership will expire soon'
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: Please note that your current membership period will
+                        expire on <span style="background-color:yellow;">%{expire_date}</span>.
+          extend_membership_html: You can extend your membership for another
+                                  12 months by paying the membership fee.
+                                  %{account_link}
+
 
 
   devise:

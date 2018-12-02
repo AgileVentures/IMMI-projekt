@@ -1,4 +1,5 @@
-# Sends out emails to Members when membership is granted or renewed
+# Sends out emails to Members regarding changes in membership status, including:
+# membership granted, renewed, soon-to-be-expired, etc.
 class MemberMailer < ApplicationMailer
 
 
@@ -10,5 +11,14 @@ class MemberMailer < ApplicationMailer
 
   end
 
-end
+  def membership_will_expire(member)
 
+    set_mail_info __method__, member
+    @member = member
+    @expire_date = member.membership_expire_date
+    mail to: @recipient_email,
+      subject: t('mailers.member_mailer.membership_will_expire.subject')
+
+  end
+
+end
