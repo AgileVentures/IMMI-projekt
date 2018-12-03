@@ -167,6 +167,30 @@ class User < ApplicationRecord
     self.membership_number = self.membership_number.blank? ? get_next_membership_number : self.membership_number
   end
 
+  def self.condition_response(condition, log)
+
+    case condition.name
+    when 'membership_will_expire'
+      case condition.timing
+      when 'before'
+        send_alert_membership_will_expire(condition.config, log)
+      end
+    end
+  end
+
+  def self.send_alert_membership_will_expire(config, log)
+
+    User.all.each do |user|
+      if user.membership_current?
+        days_until = (user.membership_expire_date - Date.current).to_i
+
+        MemberMailer.membership_will_expire(user) if config[:days].include?(days_until)
+
+        log.record('info', "Membership will expire alert sent to #{user.email}")
+      end
+    end
+  end
+
 
   private
 

@@ -296,6 +296,40 @@ ALTER SEQUENCE public.company_applications_id_seq OWNED BY public.company_applic
 
 
 --
+-- Name: conditions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.conditions (
+    id bigint NOT NULL,
+    class_name character varying,
+    name character varying,
+    timing character varying,
+    config text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: conditions_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.conditions_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: conditions_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.conditions_id_seq OWNED BY public.conditions.id;
+
+
+--
 -- Name: events; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -775,6 +809,13 @@ ALTER TABLE ONLY public.company_applications ALTER COLUMN id SET DEFAULT nextval
 
 
 --
+-- Name: conditions id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.conditions ALTER COLUMN id SET DEFAULT nextval('public.conditions_id_seq'::regclass);
+
+
+--
 -- Name: events id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -906,6 +947,14 @@ ALTER TABLE ONLY public.companies
 
 ALTER TABLE ONLY public.company_applications
     ADD CONSTRAINT company_applications_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: conditions conditions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.conditions
+    ADD CONSTRAINT conditions_pkey PRIMARY KEY (id);
 
 
 --
@@ -1322,6 +1371,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20180428103625'),
 ('20180624155644'),
 ('20180717043851'),
-('20180719021503');
+('20180719021503'),
+('20181203121315');
 
 
