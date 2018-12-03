@@ -88,9 +88,8 @@ RSpec.describe MemberMailer, type: :mailer do
     end
 
     it 'tells how to extend membership' do
-      expect(email_sent).to have_body_text(I18n.t('message_text.extend_membership_html',
-                                                  scope: TEXT_SCOPE,
-                                                  account_link: nil))
+      expect(email_sent).to have_body_text(I18n.t('message_text.extend_membership',
+                                                  scope: TEXT_SCOPE))
     end
 
     it_behaves_like 'from address is correct' do
