@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180719021503) do
+ActiveRecord::Schema.define(version: 2018_07_19_021503) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -133,7 +133,7 @@ ActiveRecord::Schema.define(version: 20180719021503) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "member_app_waiting_reasons", force: :cascade, comment: "reasons why SHF is waiting for more info from applicant. Add more columns when more locales needed." do |t|
+  create_table "member_app_waiting_reasons", comment: "reasons why SHF is waiting for more info from applicant. Add more columns when more locales needed.", force: :cascade do |t|
     t.string "name_sv", comment: "name of the reason in svenska/Swedish"
     t.string "description_sv", comment: "description for the reason in svenska/Swedish"
     t.string "name_en", comment: "name of the reason in engelsk/English"
