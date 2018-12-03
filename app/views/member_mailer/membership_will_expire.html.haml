@@ -8,5 +8,8 @@
     = t('expire_alert_html', scope: message_scope, expire_date: @expire_date)
 
   %p
-    = t('extend_membership_html', scope: message_scope,
+    = t('extend_membership', scope: message_scope)
+
+  %p
+    = t('account_login_html', scope: message_scope,
         account_link: link_to(t('menus.nav.users.your_account'), user_url(@member)))

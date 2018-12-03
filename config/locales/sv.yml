@@ -1021,14 +1021,14 @@ sv:
           and_member_pages: "samt dolda sidor i vårt medlemssystem: "
 
       membership_will_expire:
-        subject: 'Ditt medlemskap löper ut snart'
+        subject: Ditt medlemskap löper ut snart
         greeting: *email_greeting
         message_text:
           expire_alert_html: Observera att din nuvarande medlemsperiod löper ut den
                         <span style="background-color:yellow;">%{expire_date}</span>.
-          extend_membership_html: Du kan förlänga ditt medlemskap i ytterligare
+          extend_membership: Du kan förlänga ditt medlemskap i ytterligare
                                   12 månader genom att betala medlemsavgiften.
-                                  %{account_link}
+          account_login_html: "%{account_link} (du kan behöva logga in först innan länken fungerar)."
 
 
   devise:
