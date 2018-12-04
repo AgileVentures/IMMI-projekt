@@ -184,9 +184,11 @@ class User < ApplicationRecord
       if user.membership_current?
         days_until = (user.membership_expire_date - Date.current).to_i
 
-        MemberMailer.membership_will_expire(user) if config[:days].include?(days_until)
+        if config[:days].include?(days_until)
 
-        log.record('info', "Expire alert sent to #{user.email}")
+          MemberMailer.membership_will_expire(user)
+          log.record('info', "Expire alert sent to #{user.email}")
+        end
       end
     end
   end
