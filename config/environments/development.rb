@@ -98,22 +98,25 @@ Rails.application.configure do
                                 path: ":rails_root/public/:url"
   }
 
-end
+# end
 
-=begin
+# =begin
        # Uncomment this block to test exception notifications in a development environment.
        # WARNING:  it will *really* send notifications!
 
-# Notify of any exceptions using the exception_notification gem
-Rails.application.config.middleware.use ExceptionNotification::Rack,
-
-                                        :slack => {
-                                            webhook_url:    ENV['SHF_SLACK_WEBHOOKURL'],
-                                            channel:        ENV['SHF_SLACK_CHANNEL'],
-                                            username:       ENV['SHF_SLACK_USERNAME'],
-                                            additional_parameters: {
-                                                mrkdwn: true
-                                            },
-                                            additional_fields: [ icon_emoji: ':bangbang:' ]
-                                        }
-=end
+  # Notify of any exceptions using the exception_notification gem
+  # Rails.application.config.middleware.use ExceptionNotification::Rack,
+  #
+  #                                         :slack => {
+  #                                             webhook_url:    ENV['SHF_SLACK_WEBHOOKURL'],
+  #                                             channel:        ENV['SHF_SLACK_CHANNEL'],
+  #                                             username:       ENV['SHF_SLACK_USERNAME'],
+  #                                             additional_parameters: {
+  #                                                 mrkdwn: true
+  #                                             },
+  #                                             additional_fields: [ icon_emoji: ':bangbang:' ]
+  #                                         }
+  # # Enable exception_notification for rake tasks
+  # ExceptionNotifier::Rake.configure
+# =end
+end
