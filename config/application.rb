@@ -77,6 +77,9 @@ module SHFProject
     # the framework and any gems in your application.
   end
 
+  # Load from sub-folders of "models"
+  Rails.application.config.autoload_paths += Dir[Rails.root.join("app", "models", "{*/}")]
+
   ############### New defaults from Rails version 5.0 ###############
 
   # Enable per-form CSRF tokens. Previous versions had false.

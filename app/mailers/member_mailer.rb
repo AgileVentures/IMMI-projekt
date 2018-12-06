@@ -11,7 +11,7 @@ class MemberMailer < ApplicationMailer
 
   end
 
-  def membership_will_expire(member)
+  def membership_expiration_reminder(member)
 
     set_mail_info __method__, member
     @member = member

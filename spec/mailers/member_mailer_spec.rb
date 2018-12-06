@@ -59,7 +59,7 @@ RSpec.describe MemberMailer, type: :mailer do
 
   end
 
-  describe '#membership_will_expire' do
+  describe '#membership_expiration_reminder' do
 
     TEXT_SCOPE = 'mailers.member_mailer.membership_will_expire'
 
@@ -72,7 +72,7 @@ RSpec.describe MemberMailer, type: :mailer do
       test_user
     end
 
-    let(:email_sent) { MemberMailer.membership_will_expire(member) }
+    let(:email_sent) { MemberMailer.membership_expiration_reminder(member) }
 
     it_behaves_like 'a successfully created email',
                     I18n.t('subject', scope: TEXT_SCOPE),

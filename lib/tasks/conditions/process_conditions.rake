@@ -20,9 +20,9 @@ task :process_conditions => [:environment] do
         log.record('info', "#{class_name}: #{condition.name} ...")
 
         klass.condition_response(condition, log)
-        
+
       rescue StandardError => e
-        log.record('info', "Exception: #{e.inspect}")
+        log.record('error', "Exception: #{e.inspect}")
         raise
       end
     end

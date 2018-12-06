@@ -11,9 +11,9 @@ class MemberMailerPreview < ActionMailer::Preview
     MemberMailer.membership_granted(approved_app.user)
   end
 
-  def membership_will_expire
+  def membership_expiration_reminder
     member = User.where(member: true).first
-    MemberMailer.membership_will_expire(member)
+    MemberMailer.membership_expiration_reminder(member)
   end
 
 end

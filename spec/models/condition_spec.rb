@@ -4,7 +4,7 @@ RSpec.describe Condition, type: :model do
 
   describe 'Factory' do
     it 'has a valid factory' do
-      expect(create(:condition)).to be_valid
+      expect(build(:condition)).to be_valid
     end
   end
 
@@ -14,5 +14,9 @@ RSpec.describe Condition, type: :model do
     it { is_expected.to have_db_column :class_name }
     it { is_expected.to have_db_column :timing }
     it { is_expected.to have_db_column :config }
+  end
+
+  describe 'Validations' do
+    it { is_expected.to validate_presence_of(:class_name) }
   end
 end
