@@ -1,29 +1,37 @@
 require 'active_support/logger'
 
-desc 'process conditions'
-task :process_conditions => [:environment] do
+namespace :shf do
 
-  LOG = 'log/conditions'
+  desc 'process conditions'
+  task :process_conditions => [:environment] do
 
-  ActivityLogger.open(LOG, 'SHF_TASK', 'Conditions') do |log|
+    LOG = 'log/conditions'
 
-    begin
-      class_name = nil
+    ActivityLogger.open(LOG, 'SHF_TASK', 'Conditions') do |log|
 
-      Condition.order(:class_name).each do |condition|
+      begin
+        class_name = nil
+        klass = nil
 
-        unless condition.class_name == class_name
-          klass = condition.class_name.constantize
-          class_name = condition.class_name
+        Condition.order(:class_name).each do |condition|
+
+          unless condition.class_name == class_name
+            klass = condition.class_name.constantize
+            class_name = condition.class_name
+          end
+
+          log.record('info', "#{class_name}: #{condition.name} ...")
+
+          if klass
+            klass.condition_response(condition, log)
+          else
+            raise 'klass not assigned in task shf:process_conditions'
+          end
+
+        rescue StandardError => e
+          log.record('error', "Exception: #{e.inspect}")
+          raise
         end
-
-        log.record('info', "#{class_name}: #{condition.name} ...")
-
-        klass.condition_response(condition, log)
-
-      rescue StandardError => e
-        log.record('error', "Exception: #{e.inspect}")
-        raise
       end
     end
   end
