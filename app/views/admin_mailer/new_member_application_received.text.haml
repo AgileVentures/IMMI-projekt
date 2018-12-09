@@ -11,7 +11,7 @@
 = '        ' + I18n.t('activerecord.attributes.shf_application.phone_number') + ': ' + (@member_app.phone_number.nil? ? '' : @member_app.phone_number)
 = '        ' + I18n.t('activerecord.attributes.company.company_number') + ': ' + (@shf_app.companies.first&.company_number || '')
 
-= '        # ' + I18n.t('activerecord.attributes.shf_application.uploaded_files.many') + ': ' + @shf_app.uploaded_files.count.to_s
+= '        # ' + I18n.t('activerecord.attributes.shf_application.uploaded_files.other') + ': ' + @shf_app.uploaded_files.count.to_s
 - @shf_app.uploaded_files.each do |uploaded_file|
   = '            ' + uploaded_file.actual_file_file_name
 

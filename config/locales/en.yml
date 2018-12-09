@@ -167,7 +167,7 @@ en:
         phone_number: Phone number
         uploaded_files:
           one: Uploaded file
-          many: Uploaded files
+          other: Uploaded files
         state/new: &status_new New
         state/under_review: &status_under_review Under review
         state/waiting_for_applicant: &status_waiting_for_applicant  Waiting for Applicant

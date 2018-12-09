@@ -40,7 +40,7 @@ RSpec.describe AdminMailer, type: :mailer do
     end
 
     it 'has text for the number of files uploaded' do
-      expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.many'))
+      expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.other'))
     end
 
     describe 'shows the number of files uploaded' do
@@ -48,14 +48,14 @@ RSpec.describe AdminMailer, type: :mailer do
       UPLOAD_FIXTURES_DIR = File.join(Rails.root, 'spec', 'fixtures','uploaded_files')
 
       it 'no files uploaded' do
-        expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.many') + ': 0')
+        expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.other') + ': 0')
       end
 
       it '1 file uploaded' do
         fn1 = File.join(UPLOAD_FIXTURES_DIR, 'diploma.pdf')
         new_app.uploaded_files.create(actual_file: File.open(fn1, 'r') )
 
-        expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.many') + ': 1')
+        expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.other') + ': 1')
       end
 
       it '3 files uploaded' do
@@ -66,7 +66,7 @@ RSpec.describe AdminMailer, type: :mailer do
         fn3 = File.join(UPLOAD_FIXTURES_DIR, 'image.gif')
         new_app.uploaded_files.create(actual_file: File.open(fn3, 'r') )
 
-        expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.many') + ': 3')
+        expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.other') + ': 3')
       end
     end
 

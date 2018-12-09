@@ -167,7 +167,7 @@ sv:
         phone_number: Telefonnummer
         uploaded_files:
           one: Uppladdad fil
-          many: Uppladdade filer
+          other: Uppladdade filer
         state/new: &status_new Ny
         state/under_review: &status_under_review Behandlas
         state/waiting_for_applicant: &status_waiting_for_applicant Avvaktar sökande
