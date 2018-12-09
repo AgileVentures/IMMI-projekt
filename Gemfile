@@ -1,5 +1,5 @@
 source 'https://rubygems.org'
-ruby '2.5.3'
+ruby '2.5.1'
 gem 'dotenv-rails'
 gem 'rails', '5.2.2'
 gem 'bootsnap', require: false
