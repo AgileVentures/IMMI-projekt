@@ -11,7 +11,7 @@ require 'email_spec/cucumber'
 require_relative '../../spec/support/geocoder'
 
 # version required on SemaphoreCI as of 2018-12-13
-Chromedriver.set_version "2.24" if ENV.has_key?('SEMAPHORECI')
+Chromedriver.set_version "2.24" unless ENV.has_key?('SEMAPHORECI')
 
 ActionController::Base.allow_rescue = false
 

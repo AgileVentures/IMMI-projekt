@@ -133,7 +133,7 @@ group :test do
   # SemaphoreCI.  The ENV variable below excludes the gem on SemaphoreCI
   # and fixes that problem. (2018-12-12 ashley e/weedySeaDragon)
   gem 'chromedriver-helper' unless ENV.key?('SEMAPHORECI')
-  gem 'chromedriver-helper'
+  #gem 'chromedriver-helper'
 
   gem 'webmock'  # to mock web (HTTP) interactions.  Required by the vcr gem
   gem 'vcr'      # to record and 'playback' (mock) http requests
