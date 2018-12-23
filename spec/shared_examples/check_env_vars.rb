@@ -1,7 +1,7 @@
 # RSpec shared example to check that all needed ENV variables are defined
 #
 # Ex:
-#   require 'check_env_vars_shared'
+#   require 'check_env_vars'
 #
 #   RSpec.describe 'whatever' do
 #

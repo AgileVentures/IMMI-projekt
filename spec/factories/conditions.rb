@@ -19,4 +19,8 @@ FactoryBot.define do
     timing { :on }
   end
 
+  trait :every_day  do
+    timing { :every_day }
+  end
+
 end

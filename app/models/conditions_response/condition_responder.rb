@@ -29,9 +29,10 @@ class ConditionResponder
 
   Timing = Symbol
 
-  TIMING_BEFORE = :before
-  TIMING_AFTER  = :after
-  TIMING_ON     = :on
+  TIMING_BEFORE    = :before
+  TIMING_AFTER     = :after
+  TIMING_ON        = :on
+  TIMING_EVERY_DAY = :every_day
 
   DEFAULT_TIMING = TIMING_ON
   DEFAULT_CONFIG = {}
@@ -61,7 +62,7 @@ class ConditionResponder
   # @return timing [Timing] - condition.timing if condition is nil,
   #                           return the DEFAULT_TIMING
   def self.get_timing(condition)
-    condition.nil? ? DEFAULT_TIMING : condition.timing.to_sym
+    condition.nil? ? DEFAULT_TIMING : condition.timing
   end
 
 
@@ -101,5 +102,9 @@ class ConditionResponder
   end
 
 
-end # ConditionResponder
+  def self.timing_is_every_day?(timing)
+    timing == TIMING_EVERY_DAY
+  end
 
+
+end # ConditionResponder

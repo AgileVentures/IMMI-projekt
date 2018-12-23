@@ -1,5 +1,5 @@
 require 'active_support/logger'
-require_relative './shf_notify_slack'
+# require_relative './shf_notify_slack'
 
 
 LOG_FILE         = 'log/backup.log'

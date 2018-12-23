@@ -1,10 +1,8 @@
 require 'rails_helper'
 
-require_relative './check_env_vars_shared_ex'
+require 'shared_examples/check_env_vars'
 
 require 'timecop'
-
-require_relative '../../lib/tasks/shf_notify_slack'
 
 NOTIFICATION_SOURCE = 'test task'
 
@@ -93,7 +91,7 @@ end
 
 # ===============================================================
 
-RSpec.describe 'SHFNotifySlack' do
+RSpec.describe 'SHFNotifySlack', type: :model do
 
   before(:all) do
     # send the notifications to the _testing_ channel

@@ -9,29 +9,31 @@ namespace :shf do
 
     ActivityLogger.open(LOG, 'SHF_TASK', 'Conditions') do |log|
 
-      begin
-        class_name = nil
-        klass = nil
+      class_name = nil
+      klass = nil
 
-        Condition.order(:class_name).each do |condition|
+      Condition.order(:class_name).each do |condition|
 
-          unless condition.class_name == class_name
-            klass = condition.class_name.constantize
-            class_name = condition.class_name
-          end
+        unless condition.class_name == class_name
+          class_name = condition.class_name
+          klass = class_name.constantize
+        end
 
-          log.record('info', "#{class_name} ...")
+        log.record('info', "#{class_name} ...")
+
+        SHFNotifySlack.notify_after(class_name) do
 
           if klass
             klass.condition_response(condition, log)
           else
-            raise 'klass not assigned in task shf:process_conditions'
+            raise 'klass is nil in task shf:process_conditions'
           end
-
-        rescue StandardError => e
-          log.record('error', "Exception: #{e.inspect}")
-          raise
+          
         end
+
+      rescue StandardError => e
+        log.record('error', "Exception: #{e.inspect}")
+        raise
       end
     end
   end

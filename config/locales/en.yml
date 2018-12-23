@@ -280,6 +280,11 @@ en:
             company_number:
               invalid: " is not a valid Swedish company number"
 
+        condition:
+          attributes:
+            timing:
+              invalid: must be a symbol
+
 
 
       messages:

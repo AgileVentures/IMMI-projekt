@@ -21,17 +21,23 @@
 # Attributes: These are all essentially *class variables* as they apply
 #   to every instance of a class.
 #
-#   class_name - the name of the class to instantiate
-#   timing - this can be mostly descriptive so that the code
+#   class_name - (string) the name of the class to instantiate
+#   timing - (symbol) this can be mostly descriptive so that the code
 #             reads much more naturally.  Some classes may need to use
-#             this when running :process_condition
-#   config - whatever configuration information is required for a
-#         particular ConditionResponse class
+#             this when running :process_condition.
+#             NOTE: this is serialized, so the value can be specified as a symbol.
+#   config - (hash) whatever configuration information is required for a
+#             particular ConditionResponse class
 #
 #  @author:  Patrick Bolger
 #
 class Condition < ApplicationRecord
   serialize :config
+  serialize :timing
 
   validates :class_name, presence: true
+
+  validate do
+    errors.add(:timing, :invalid) unless timing.blank? || timing.is_a?(Symbol)
+  end
 end

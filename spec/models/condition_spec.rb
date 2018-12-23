@@ -17,12 +17,16 @@ RSpec.describe Condition, type: :model do
 
   describe 'Validations' do
     it { is_expected.to validate_presence_of(:class_name) }
+    context 'timing' do
+      it { is_expected.to allow_value(:test).for(:timing) }
+      it { is_expected.to_not allow_value('test').for(:timing)}
+    end
   end
 
   describe 'required attributes' do
     let(:example_condition) do
       create(:condition, class_name: 'MembershipExpireAlert',
-                         timing: 'before',
+                         timing: :before,
                          config: { days: [10, 5, 2] })
     end
     it 'class_name is required' do

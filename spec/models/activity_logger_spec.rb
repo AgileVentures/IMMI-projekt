@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+require 'shared_context/activity_logger'
+
 # ===========================================================================
 #  shared examples
 
@@ -18,15 +20,9 @@ end
 
 RSpec.describe ActivityLogger do
 
-  SPEC_LOGDIR_PREFIX = 'alspec'
-  SPEC_LOGNAME       = 'testlog.log'
-
+  include_context 'create logger'
 
   describe 'log file' do
-
-    let(:filepath) { File.join(Dir.mktmpdir(SPEC_LOGDIR_PREFIX), SPEC_LOGNAME) }
-    let(:log) { ActivityLogger.open(filepath, 'TEST', 'open', false) }
-
 
     before(:each) do
       File.delete(filepath) if File.file?(filepath)

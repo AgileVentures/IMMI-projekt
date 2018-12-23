@@ -279,6 +279,11 @@ sv:
             company_number:
               invalid: " är inte ett svenskt organisationsnummer"
 
+        condition:
+          attributes:
+            timing:
+              invalid: måste vara en symbol
+
       messages:
         record_invalid: 'Ett fel uppstod: %{errors}'
         restrict_dependent_destroy:

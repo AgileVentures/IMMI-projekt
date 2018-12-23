@@ -3,7 +3,7 @@ require 'aasm/rspec'
 
 require 'support/ae_aasm_matchers/ae_aasm_matchers'
 
-require_relative './shared_ex_scope_updated_in_date_range_spec'
+require 'shared_examples/scope_updated_in_date_range_spec'
 
 
 # alias shared example call for readability

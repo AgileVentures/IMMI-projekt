@@ -27,7 +27,7 @@ RSpec.describe ConditionResponder, type: :model do
   describe '.get_timing' do
 
     it 'always returns a symbol' do
-      expect(ConditionResponder.get_timing(create(:condition, timing: 'blorf'))).to eq(:blorf)
+      expect(ConditionResponder.get_timing(create(:condition, timing: :blorf))).to eq(:blorf)
     end
 
     context 'condition is nil' do
@@ -152,4 +152,21 @@ RSpec.describe ConditionResponder, type: :model do
   describe '.timing_is_on?(timing)' do
 
   end
+
+
+  describe '.timing_is_every_day?(timing)' do
+    let(:condition) { build(:condition, :every_day) }
+    let(:timing) { ConditionResponder.get_timing(condition) }
+
+    it 'returns true if timing == :every_day' do
+      expect(ConditionResponder.timing_is_every_day?(timing)).to be true
+    end
+
+    it 'returns false otherwise' do
+      condition.timing = ConditionResponder::DEFAULT_TIMING
+      expect(ConditionResponder.timing_is_every_day?(timing)).to be false
+    end
+
+  end
+  
 end
