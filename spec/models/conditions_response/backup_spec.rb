@@ -8,7 +8,7 @@ RSpec.describe Backup, type: :model do
   include_context 'create logger'
 
   let(:condition) { build(:condition, timing: Backup::TIMING_EVERY_DAY) }
-  let(:today) { today = Time.now.strftime '%Y-%m-%d' }
+  let(:today) { Time.now.strftime '%Y-%m-%d' }
 
   describe '.condition_response' do
 

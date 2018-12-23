@@ -117,7 +117,7 @@ class Backup < ConditionResponder
   end
 
 
-  def self.delete_excess_backup_files(file_pattern, num_files_to_keep)
+  def self.delete_excess_backup_files(file_pattern, number_of_files_to_keep)
 
     backup_files = Dir.glob(file_pattern)
 
