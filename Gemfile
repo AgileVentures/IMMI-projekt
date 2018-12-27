@@ -84,9 +84,9 @@ group :development, :test do
 
   # Note: pry fails when a utf-8 character is used in a string.
   # pry calls the rb-readline gem, which is actually where the failure happens.
-  #gem 'pry-rails'
-  #gem 'pry'
-  #gem 'pry-byebug'
+  # gem 'pry-rails'
+  gem 'pry'
+  gem 'pry-byebug'
   gem 'cucumber-rails', require: false
   gem 'database_cleaner'
   gem 'rake'

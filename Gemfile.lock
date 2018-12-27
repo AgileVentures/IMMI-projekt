@@ -100,6 +100,7 @@ GEM
     bullet (5.9.0)
       activesupport (>= 3.0.0)
       uniform_notifier (~> 1.11)
+    byebug (10.0.2)
     capistrano (3.6.1)
       airbrussh (>= 1.0.0)
       capistrano-harrow
@@ -357,6 +358,12 @@ GEM
     premailer-rails (1.10.2)
       actionmailer (>= 3, < 6)
       premailer (~> 1.7, >= 1.7.9)
+    pry (0.12.2)
+      coderay (~> 1.1.0)
+      method_source (~> 0.9.0)
+    pry-byebug (3.6.0)
+      byebug (~> 10.0)
+      pry (~> 0.10)
     public_suffix (3.0.3)
     puma (3.12.0)
     pundit (2.0.0)
@@ -619,6 +626,8 @@ DEPENDENCIES
   pg (~> 0.18)
   poltergeist
   premailer-rails
+  pry
+  pry-byebug
   puma (~> 3.0)
   pundit
   pundit-matchers
