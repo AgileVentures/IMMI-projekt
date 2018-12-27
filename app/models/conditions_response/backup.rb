@@ -24,7 +24,6 @@ class Backup < ConditionResponder
 
     # "keep" key defines how many daily backups to retain on _local_ storage.
     # AWS (S3) backup files are retained based on settings in AWS.
-    # ":location" values may need to change if production environment is altered.
 
     code_backups_to_keep = config.dig(:days_to_keep, :code_backup) || DEFAULT_CODE_BACKUPS_TO_KEEP
     db_backups_to_keep =   config.dig(:days_to_keep, :db_backup) || DEFAULT_DB_BACKUPS_TO_KEEP
