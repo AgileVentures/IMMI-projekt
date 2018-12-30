@@ -57,10 +57,10 @@ RSpec.describe User, type: :model do
   let(:member_payment1) do
     start_date, expire_date = User.next_membership_payment_dates(user.id)
     create(:payment, user: user, status: success,
-           payment_type: Payment::PAYMENT_TYPE_MEMBER,
-           notes: 'these are notes for member payment1',
-           start_date: start_date,
-           expire_date: expire_date)
+           payment_type:   Payment::PAYMENT_TYPE_MEMBER,
+           notes:          'these are notes for member payment1',
+           start_date:     start_date,
+           expire_date:    expire_date)
   end
   let(:member_payment2) do
     start_date, expire_date = User.next_membership_payment_dates(user.id)
@@ -310,7 +310,7 @@ RSpec.describe User, type: :model do
         both_exp_jan01_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan01 1')
         both_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 1')
         both_exp_jan02_2 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 2')
-
+        
         branding_exp_jan15_1 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 1')
         branding_exp_jan15_2 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 2')
         branding_exp_jan15_3 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 3')
@@ -459,7 +459,7 @@ RSpec.describe User, type: :model do
         it_behaves_like 'it finds the right number of branding fee expires for date', 0, 2, Date.new(2019, 1, 1)
         it_behaves_like 'it finds the right number of branding fee expires for date', -1, 1, Date.new(2018, 12, 31)
         it_behaves_like 'it finds the right number of branding fee expires for date', 14, 4, Date.new(2019, 1, 15)
-
+        
         it 'only gets users that have made branding fee payments (+1 day)' do
           branding_expires = User.company_hbrand_expires_in_x_days(1)
           expect(branding_expires.count).to eq 2
@@ -686,18 +686,8 @@ RSpec.describe User, type: :model do
 
   context 'payment and membership period' do
 
-    describe '#membership_start_date' do
-      it 'returns the start_date for latest completed payment' do
-        member_payment1
-        expect(user.membership_start_date).to eq member_payment1.start_date
-        member_payment2
-        expect(user.membership_start_date).to eq member_payment2.start_date
-      end
-    end
-
-
     describe '#membership_expire_date' do
-      it 'returns the expire_date for latest completed payment' do
+      it 'returns date for latest completed payment' do
         member_payment1
         expect(user.membership_expire_date).to eq member_payment1.expire_date
         member_payment2

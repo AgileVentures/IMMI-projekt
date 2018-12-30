@@ -110,7 +110,7 @@ And(/^show me the page$/) do
 end
 
 Given(/^the date is set to "([^"]*)"$/) do |date|
-  Timecop.freeze( Time.find_zone("UTC").parse(date))
+  Timecop.freeze(Time.zone.parse(date))
 end
 
 # Hide (or show) the search form by clicking on the button

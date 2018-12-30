@@ -38,11 +38,11 @@ RSpec.describe MembershipFeeOverdueAlert, type: :model do
         pending "We don't have a way to calculate how many days _past_due_ the membership_fee payment is!"
 
         #it "true when today (dec 1) is in the config list of days [1] to send the alert" do
-          #'expect(described_class.instance.send_alert_this_day?(timing, config, user)).to be_truthy'
+          #'expect(described_class.send_alert_this_day?(timing, config, user)).to be_truthy'
         #end
 
         it 'false when today is not in the config list of days to send the alert' do # dec_3
-          expect(described_class.instance.send_alert_this_day?(timing, config, user)).to be_falsey
+          expect(described_class.send_alert_this_day?(timing, config, user)).to be_falsey
         end
       end
 
@@ -64,11 +64,11 @@ RSpec.describe MembershipFeeOverdueAlert, type: :model do
         let(:user) { membership_app.user }
 
         it "false when today is in the config list of days to send the alert" do #dec2
-          expect(described_class.instance.send_alert_this_day?(timing, config, user)).to be_falsey
+          expect(described_class.send_alert_this_day?(timing, config, user)).to be_falsey
         end
 
         it 'false when today is not in the config list of days to send the alert' do #dec3
-          expect(described_class.instance.send_alert_this_day?(timing, config, user)).to be_falsey
+          expect(described_class.send_alert_this_day?(timing, config, user)).to be_falsey
         end
 
       end # context 'next membership payment is NOT past due'
@@ -80,11 +80,11 @@ RSpec.describe MembershipFeeOverdueAlert, type: :model do
       let(:user) { create( :user ) }
 
       it "false when today is in the config list of days to send the alert" do #dec2
-        expect(described_class.instance.send_alert_this_day?(timing, config, user)).to be_falsey
+        expect(described_class.send_alert_this_day?(timing, config, user)).to be_falsey
       end
 
       it 'false when today is not in the config list of days to send the alert' do #dec3
-        expect(described_class.instance.send_alert_this_day?(timing, config, user)).to be_falsey
+        expect(described_class.send_alert_this_day?(timing, config, user)).to be_falsey
       end
 
     end # context 'user does NOT have an approved application'
@@ -93,7 +93,7 @@ RSpec.describe MembershipFeeOverdueAlert, type: :model do
 
 
   it '.mailer_method' do
-    expect(described_class.instance.mailer_method).to eq :membership_payment_due
+    expect(described_class.mailer_method).to eq :membership_payment_due
   end
 
 end

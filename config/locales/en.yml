@@ -1035,14 +1035,6 @@ en:
                              12 months by paying the membership fee.
           account_login_html: "%{account_link} (you may need to login first before the link works)."
 
-      h_branding_fee_past_due:
-        subject: The H-Branding fee for your company is unpaid/past due
-        greeting: *email_greeting
-        message_text:
-          fee_is_unpaid: "The branding fee for your company %{company_name} has not yet been paid."
-          how_to_pay_fee: "To pay the fee, go to the xxx page and ..."
-          account_login_html: "%{account_link} (you may need to login first before the link works)."
-
 
   devise:
     min_length: '(at least %{minimum_length} characters)'

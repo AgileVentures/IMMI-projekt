@@ -21,43 +21,23 @@
 # Attributes: These are all essentially *class variables* as they apply
 #   to every instance of a class.
 #
-#   class_name - (String) the name of the class to instantiate
-#   timing - (Symbol) this can be mostly descriptive so that the code
+#   class_name - (string) the name of the class to instantiate
+#   timing - (symbol) this can be mostly descriptive so that the code
 #             reads much more naturally.  Some classes may need to use
 #             this when running :process_condition.
 #             NOTE: this is serialized, so the value can be specified as a symbol.
-#   config - (Hash) whatever configuration information is required for a
+#   config - (hash) whatever configuration information is required for a
 #             particular ConditionResponse class
 #
 #  @author:  Patrick Bolger
-#
 #
 class Condition < ApplicationRecord
   serialize :config
   serialize :timing
 
-
   validates :class_name, presence: true
-  # Note that we cannot validate the presence of an empty Hash because serialize persists is as NULL
 
   validate do
     errors.add(:timing, :invalid) unless timing.blank? || timing.is_a?(Symbol)
-    errors.add(:config, :invalid) unless config.is_a?(Hash)
   end
-
-
-  after_initialize :init_config
-
-  DEFAULT_CONFIG = {}
-
-
-  # ------------------------------------------
-
-  private
-
-  # config is initialized to an empty Hash
-  def init_config
-    update(config: DEFAULT_CONFIG) if config.nil?
-  end
-
 end

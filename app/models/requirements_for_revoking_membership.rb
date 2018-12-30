@@ -23,7 +23,7 @@
 class RequirementsForRevokingMembership < AbstractRequirements
 
   def self.has_expected_arguments?(args)
-    args_have_keys?(args, [:user])
+    args && args.key?(:user)
   end
 
 

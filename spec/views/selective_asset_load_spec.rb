@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'selective loading of external assets on specific pages' do
+RSpec.describe 'selective loading of external assets on specific pages', focus: true do
 
   before(:each) { view.lookup_context.prefixes +=
                    ['application', 'companies', 'shf_documents'] }

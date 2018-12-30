@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_12_29_015347) do
+ActiveRecord::Schema.define(version: 2018_12_28_073947) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -109,9 +109,9 @@ ActiveRecord::Schema.define(version: 2018_12_29_015347) do
   end
 
   create_table "conditions", force: :cascade do |t|
-    t.string "class_name", null: false, comment: "name of the Condition class of this condition (required)"
-    t.string "timing", comment: "(optional) specific timing about the Condition"
-    t.text "config", default: "--- {}", comment: "a serialize Hash with configuration information (required; must be a Hash)"
+    t.string "class_name"
+    t.string "timing"
+    t.text "config"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -189,6 +189,7 @@ ActiveRecord::Schema.define(version: 2018_12_29_015347) do
     t.string "state", default: "new"
     t.integer "member_app_waiting_reasons_id"
     t.string "custom_reason_text"
+    t.datetime "when_approved"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"
   end

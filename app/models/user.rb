@@ -70,12 +70,6 @@ class User < ApplicationRecord
 
 
   # TODO this should not be the responsibility of the User class.
-  def membership_start_date
-    payment_start_date(Payment::PAYMENT_TYPE_MEMBER)
-  end
-
-
-  # TODO this should not be the responsibility of the User class.
   def membership_expire_date
     payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
   end

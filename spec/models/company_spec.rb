@@ -31,12 +31,12 @@ RSpec.describe Company, type: :model, focus: true do
 
   let(:complete_co2) do
     create(:company, name: 'Complete Company 2',
-           company_number: '5560360793')
+                company_number: '5560360793')
   end
 
   let(:complete_co3) do
     co = create(:company, name: 'Complete Company 3',
-                company_number: '5569467466', num_addresses: 0)
+               company_number: '5569467466', num_addresses: 0)
     create(:address, visibility: 'none', addressable: co)
     co.save!
     co
@@ -53,31 +53,27 @@ RSpec.describe Company, type: :model, focus: true do
 
   let(:user) { create(:user) }
 
+  let(:success) { Payment.order_to_payment_status('successful') }
+
   let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
   let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
   let(:payment_date_2020) { Time.zone.local(2020, 3, 15) }
 
   let(:payment1) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
-    create(:payment,
-           :successful,
-           user: user,
-           company:        complete_co,
-           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-           notes:          'these are notes for branding payment1',
-           start_date:     start_date,
-           expire_date:    expire_date)
+    create(:payment, user: user, status: success, company: complete_co,
+           payment_type: Payment::PAYMENT_TYPE_BRANDING,
+           notes: 'these are notes for branding payment1',
+           start_date: start_date,
+           expire_date: expire_date)
   end
   let(:payment2) do
     start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
-    create(:payment,
-           :successful,
-           user: user,
-           company:        complete_co,
-           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-           notes:          'these are notes for branding payment2',
-           start_date:     start_date,
-           expire_date:    expire_date)
+    create(:payment, user: user, status: success, company: complete_co,
+           payment_type: Payment::PAYMENT_TYPE_BRANDING,
+           notes: 'these are notes for branding payment2',
+           start_date: start_date,
+           expire_date: expire_date)
   end
 
   let(:company) { create(:company, num_addresses: 3) }
@@ -117,15 +113,15 @@ RSpec.describe Company, type: :model, focus: true do
 
       it 'uniqueness of company_number' do
         expect(subject).to validate_uniqueness_of(:company_number)
-                               .with_message(msg).case_insensitive
+                             .with_message(msg).case_insensitive
       end
     end
 
     describe 'swedish org number' do
       it { is_expected.to allow_values('5560360793', '2120000142')
-                              .for(:company_number) }
+                            .for(:company_number) }
       it { is_expected.not_to allow_values('0123456789', '212000')
-                                  .for(:company_number) }
+                            .for(:company_number) }
     end
   end
 
@@ -137,7 +133,7 @@ RSpec.describe Company, type: :model, focus: true do
     it { is_expected.to accept_nested_attributes_for(:addresses).allow_destroy(true) }
     it do
       is_expected.to have_many(:pictures).dependent(:destroy)
-                         .class_name(Ckeditor::Picture)
+                       .class_name(Ckeditor::Picture)
     end
     it { is_expected.to have_many(:users).through(:shf_applications) }
     it { is_expected.to have_many(:payments) }
@@ -146,15 +142,15 @@ RSpec.describe Company, type: :model, focus: true do
   end
 
   describe 'destroy associated records when company is destroyed' do
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
+    let(:user1)   { create(:user) }
+    let(:user2)   { create(:user) }
     let(:application1) do
       create(:shf_application, company: company,
-             company_number:            company.company_number, user: user1)
+             company_number: company.company_number, user: user1)
     end
     let(:application2) do
       create(:shf_application, company: company,
-             company_number:            company.company_number, user: user2)
+             company_number: company.company_number, user: user2)
     end
 
     let(:payment_type) { Payment::PAYMENT_TYPE_BRANDING }
@@ -166,16 +162,16 @@ RSpec.describe Company, type: :model, focus: true do
     end
 
     let(:picture1) do
-      pic                = Ckeditor::Picture.new
-      pic.company_id     = company.id
+      pic = Ckeditor::Picture.new
+      pic.company_id = company.id
       pic.data_file_name = 'test'
       pic.save!(validate: false)
       pic
     end
 
     let(:picture2) do
-      pic                = Ckeditor::Picture.new
-      pic.company_id     = company.id
+      pic = Ckeditor::Picture.new
+      pic.company_id = company.id
       pic.data_file_name = 'test'
       pic.save!(validate: false)
       pic
@@ -255,7 +251,7 @@ RSpec.describe Company, type: :model, focus: true do
 
       it 'adds model error and returns false if invalid dinkurs key' do
         company.dinkurs_company_id = 'xyz'
-        err                        = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid')
+        err = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid')
 
         result = company.validate_key_and_fetch_dinkurs_events
 
@@ -278,17 +274,17 @@ RSpec.describe Company, type: :model, focus: true do
     let(:cat3) { create(:business_category, name: 'cat3') }
 
     let(:m1) do
-      m           = create(:shf_application, :accepted, user: employee1)
+      m = create(:shf_application, :accepted, user: employee1)
       m.companies = [company]
       m
     end
     let(:m2) do
-      m           = create(:shf_application, :accepted, user: employee2)
+      m = create(:shf_application, :accepted, user: employee2)
       m.companies = m1.companies.to_a
       m
     end
     let(:m3) do
-      m           = create(:shf_application, :accepted, user: employee3)
+      m = create(:shf_application, :accepted, user: employee3)
       m.companies = m1.companies.to_a
       m
     end
@@ -315,60 +311,6 @@ RSpec.describe Company, type: :model, focus: true do
     end
   end
 
-
-  describe '#current_members' do
-
-    it 'is empty if no members' do
-      company = create(:company)
-      expect(company.current_members).to be_empty
-    end
-
-    it 'is empty if all members expiration date has past' do
-
-      mem1_shf = create(:shf_application, :accepted)
-      mem1_exp = mem1_shf.user
-      mem1_co  = mem1_shf.companies.first
-
-      create(:payment,
-             :successful,
-             user: mem1_exp,
-             company: mem1_co,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1',
-             start_date:     payment_date_2017,
-             expire_date:    payment_date_2017 + 365)
-
-
-      Timecop.freeze(Date.new(2019, 1, 1)) do
-        expect(mem1_co.current_members).to be_empty
-      end
-    end
-
-    it 'only returns members with current membership' do
-
-      ShfApplication.all_states.reject { |s| s == :accepted }.each do |a_state|
-        create(:shf_application, state: a_state)
-      end
-
-      mem1_shf = create(:shf_application, :accepted)
-      mem1_exp = mem1_shf.user
-      mem1_co  = mem1_shf.companies.first
-
-      create(:payment,
-             :successful,
-             user: mem1_exp,
-             company: mem1_co,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1',
-             start_date:     Date.new(2018, 12, 1),
-             expire_date:    Date.new(2018, 12, 1) + 365)
-
-      Timecop.freeze(Date.new(2019, 1, 1)) do
-        expect(mem1_co.current_members).to match_array([mem1_exp])
-      end
-    end
-
-  end
 
   describe '#main_address' do
 
@@ -512,19 +454,19 @@ RSpec.describe Company, type: :model, focus: true do
 
       it 'returns one year later for first payment expire date' do
         expect(Company.next_branding_payment_dates(complete_co.id)[1])
-            .to eq Time.zone.today + 1.year - 1.day
+          .to eq Time.zone.today + 1.year - 1.day
       end
 
       it 'returns date-after-expiration for second payment start date' do
         payment1
         expect(Company.next_branding_payment_dates(complete_co.id)[0])
-            .to eq Time.zone.today + 1.year
+          .to eq Time.zone.today + 1.year
       end
 
       it 'returns one year later for second payment expire date' do
         payment1
         expect(Company.next_branding_payment_dates(complete_co.id)[1])
-            .to eq Time.zone.today + 1.year + 1.year - 1.day
+          .to eq Time.zone.today + 1.year + 1.year - 1.day
       end
 
       context 'if next payment occurs after prior payment expire date' do
@@ -533,14 +475,14 @@ RSpec.describe Company, type: :model, focus: true do
           payment1
           Timecop.freeze(payment_date_2020)
           expect(Company.next_branding_payment_dates(complete_co.id)[0])
-              .to eq payment_date_2020
+            .to eq payment_date_2020
         end
 
         it 'returns payment date + 1 year for expire date' do
           payment1
           Timecop.freeze(payment_date_2020)
           expect(Company.next_branding_payment_dates(complete_co.id)[1])
-              .to eq payment_date_2020 + 1.year - 1.day
+            .to eq payment_date_2020 + 1.year - 1.day
         end
       end
 
@@ -559,47 +501,47 @@ RSpec.describe Company, type: :model, focus: true do
     let(:user6) { create(:user, member: true) }
 
     let!(:cmpy1_app1) do
-      m           = create(:shf_application, :accepted, user: user1)
+      m = create(:shf_application, :accepted, user: user1)
       m.companies = [cmpy1]
       m
     end
 
     let!(:cmpy1_app2) do
-      m           = create(:shf_application, :accepted, user: user2)
+      m = create(:shf_application, :accepted, user: user2)
       m.companies = [cmpy1]
       m
     end
 
     let!(:cmpy1_app3) do
-      m           = create(:shf_application, :rejected, user: user3)
+      m = create(:shf_application, :rejected, user: user3)
       m.companies = [cmpy1]
       m
     end
 
     let!(:cmpy2_app1) do
-      m           = create(:shf_application, :accepted, user: user4)
+      m = create(:shf_application, :accepted, user: user4)
       m.companies = [cmpy2]
       m
     end
 
     let!(:cmpy2_app2) do
-      m           = create(:shf_application, :accepted, user: user5)
+      m = create(:shf_application, :accepted, user: user5)
       m.companies = [cmpy2]
       m
     end
 
     let!(:cmpy2_app3) do
-      m           = create(:shf_application, :accepted, user: user6)
+      m = create(:shf_application, :accepted, user: user6)
       m.companies = [cmpy2]
       m
     end
 
     it 'returns only apps that are 1) accepted and 2) from members' do
       expect(cmpy1.approved_applications_from_members)
-          .to contain_exactly(cmpy1_app1, cmpy1_app2)
+        .to contain_exactly(cmpy1_app1, cmpy1_app2)
 
       expect(cmpy2.approved_applications_from_members)
-          .to contain_exactly(cmpy2_app2, cmpy2_app3)
+        .to contain_exactly(cmpy2_app2, cmpy2_app3)
     end
   end
 
@@ -607,9 +549,9 @@ RSpec.describe Company, type: :model, focus: true do
 
     let(:cmpy2) do
       create(:company, company_number: '5562252998',
-             street_address:           'Rehnsgatan 15',
-             post_code:                '113 57',
-             city:                     'Stockholm')
+             street_address: 'Rehnsgatan 15',
+             post_code: '113 57',
+             city: 'Stockholm')
     end
 
     let(:user1) { create(:user) }
@@ -617,17 +559,17 @@ RSpec.describe Company, type: :model, focus: true do
     let(:user3) { create(:user) }
 
     let(:app_co1_user1) do
-      app           = create(:shf_application, user: user1)
+      app = create(:shf_application, user: user1)
       app.companies = [complete_co]
       app
     end
     let(:app_co1_user2) do
-      app           = create(:shf_application, user: user2)
+      app = create(:shf_application, user: user2)
       app.companies = [complete_co]
       app
     end
     let(:app_co2_user3) do
-      app           = create(:shf_application, user: user3)
+      app = create(:shf_application, user: user3)
       app.companies = [cmpy2]
       app
     end
@@ -750,36 +692,27 @@ RSpec.describe Company, type: :model, focus: true do
 
     context '.at_addresses(addresses)' do
 
-        let(:kista_co) do
-            create(:company,
-                 name:           'Stockholm Co',
-                 street_address: 'Rehnsgatan 15',
-                 post_code:      '113 57',
-                 city:           'Stockholm')
-        end
+      before(:all) do
+        create(:company,
+               name: 'Stockholm Co',
+               street_address:'Rehnsgatan 15',
+        post_code: '113 57',
+        city: 'Stockholm'
+        )
 
-        let(:stockholm_co) do
-          create(:company,
-                 name:           'Kista Co',
-                 street_address: 'AKALLALÄNKEN 10',
-                 post_code:      '164 74',
-                 city:           'Kista')
-        end
-
-
+        create(:company,
+               name: 'Kista Co',
+               street_address: 'AKALLALÄNKEN 10',
+               post_code: '164 74',
+               city: 'Kista')
+      end
 
       it 'returns all companies at these addresses' do
-        kista_co
-        stockholm_co
-
         kista_address = Address.find_by_city('Kista')
         expect(Company.at_addresses([kista_address]).map(&:name)).to match_array(['Kista Co'])
       end
 
       it 'no companies if addresses is empty' do
-        kista_co
-        stockholm_co
-
         expect(Company.at_addresses([]).size).to eq 0
       end
 
@@ -809,182 +742,4 @@ RSpec.describe Company, type: :model, focus: true do
       end
     end
   end
-
-
-  describe '#branding_license? always returns true || false, never nil' do
-
-    context 'no payments' do
-
-      it 'is false (never nil)' do
-        expect(complete_co2.branding_license?).not_to be_nil
-        expect(complete_co2.branding_license?).to be_falsey
-      end
-
-    end
-
-
-    context 'payments expire before today - always false (never nil)' do
-
-      let(:past_payments_co) { create(:company) }
-
-      payment_statuses = Payment::ORDER_PAYMENT_STATUS.keys.reject(&:nil?)
-
-      payment_statuses.each do | payment_status |
-
-        context "#{payment_status} payments" do
-
-          let(:payment_2017_10_1) do
-            create(:payment, user: user, status: Payment::ORDER_PAYMENT_STATUS[payment_status],
-                   company:        past_payments_co,
-                   payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-                   notes:          'these are notes for branding payment1',
-                   start_date:     payment_date_2017,
-                   expire_date:    (payment_date_2017.advance(days: 364) ) )
-          end
-
-          it 'is false (never nil)' do
-            Timecop.freeze(2019, 1, 1) do
-              payment_2017_10_1
-              expect(past_payments_co.payments.size).to eq 1
-              expect(past_payments_co.branding_license?).not_to be_nil
-              expect(past_payments_co.branding_license?).to be false
-            end
-
-          end
-        end #  context 'successful payments'
-
-      end
-    end # context 'payments before today'
-
-
-    context 'payments expire after today' do
-
-      context 'successful payments' do
-
-        let(:successful_payments_co) { create(:company) }
-
-        let(:payment_2018_1_3) do
-          create(:payment, :successful, user: user,
-                 company:        successful_payments_co,
-                 payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-                 notes:          'these are notes for branding payment1',
-                 start_date:     Time.zone.local(2018, 1, 3),
-                 expire_date:    Time.zone.local(2019, 1, 2) )
-        end
-
-        it 'is true' do
-          payment_2018_1_3
-          expect(successful_payments_co.payments.size).to eq 1
-          expect(successful_payments_co.branding_license?).to be_truthy
-        end
-      end
-
-
-      context 'not successful payments' do
-
-        let(:not_successful_payments_co) { create(:company) }
-
-        payment_statuses = Payment::ORDER_PAYMENT_STATUS.keys.reject(&:nil?).reject{|status| status == 'successful'}
-
-        payment_statuses.each do | payment_status |
-
-          let(:payment_2018_1_3) do
-            create(:payment, user: user, status: Payment::ORDER_PAYMENT_STATUS[payment_status],
-                   company:        not_successful_payments_co,
-                   payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-                   notes:          'these are notes for branding payment1',
-                   start_date:     Time.zone.local(2018, 1, 3),
-                   expire_date:    Time.zone.local(2019, 1, 2) )
-          end
-
-          it "payment status #{payment_status}: is false (never nil)" do
-            payment_2018_1_3
-            expect(not_successful_payments_co.payments.size).to eq 1
-            expect(not_successful_payments_co.branding_license?).not_to be_nil
-            expect(not_successful_payments_co.branding_license?).to be_falsey
-          end
-
-        end
-
-      end # context 'not successful payments'
-
-    end # context 'payments after today'
-  end # describe '#branding_license?'
-
-
-  describe '#earliest_current_member_fee_paid' do
-    #current_members.empty? ? nil : current_members.map(&:membership_start_date).sort.first'
-
-    it 'is nil if there are no current members' do
-      expect( (create(:company)).earliest_current_member_fee_paid ).to be_nil
-    end
-
-
-    it 'is the earliest membership_fee paid date for all current members' do
-
-      dec_3 = Date.new(2018, 12, 3)
-      dec_5 = Date.new(2018, 12, 5)
-
-      member_paid_dec_3_shf_app = create(:shf_application, :accepted)
-      member_paid_dec_3 = member_paid_dec_3_shf_app.user
-      co_with_1_member_expires  = member_paid_dec_3_shf_app.companies.first
-
-      create(:payment,
-             :successful,
-             user: member_paid_dec_3,
-             company: co_with_1_member_expires,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1',
-             start_date:     dec_3,
-             expire_date:    User.expire_date_for_start_date(dec_3) )
-
-      member_paid_dec_5_shf_app = create(:shf_application, :accepted, company_number: co_with_1_member_expires.company_number)
-      member_paid_dec_5 = member_paid_dec_5_shf_app.user
-
-      create(:payment,
-             :successful,
-             user: member_paid_dec_5,
-             company: co_with_1_member_expires,
-             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1',
-             start_date:     dec_5,
-             expire_date:    User.expire_date_for_start_date(dec_5) )
-
-      member_dec_3_start = member_paid_dec_3.payment_start_date(Payment::PAYMENT_TYPE_MEMBER)
-      member_dec_3_start_time = Time.utc(member_dec_3_start.year, member_dec_3_start.month, member_dec_3_start.day)
-
-      member_dec_3_expiry = member_paid_dec_3.payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
-      member_dec_3_expiry_time = Time.utc(member_dec_3_expiry.year, member_dec_3_expiry.month, member_dec_3_expiry.day)
-
-      day_before_member_dec_3_expiry = member_dec_3_expiry - 1
-      day_before_member_dec_3_expiry_time = Time.utc(day_before_member_dec_3_expiry.year, day_before_member_dec_3_expiry.month, day_before_member_dec_3_expiry.day)
-
-      member_dec_5_start = member_paid_dec_5.payment_start_date(Payment::PAYMENT_TYPE_MEMBER)
-      member_dec_5_start_time = Time.utc(member_dec_5_start.year, member_dec_5_start.month, member_dec_5_start.day)
-
-
-      Timecop.freeze( day_before_member_dec_3_expiry_time ) do
-
-        # update membership status based on today's date
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
-
-        expect(co_with_1_member_expires.current_members.size).to eq 2
-        expect( co_with_1_member_expires.earliest_current_member_fee_paid ).to eq member_dec_3_start_time
-      end
-
-
-      Timecop.freeze( member_dec_3_expiry_time) do
-        # update membership status based on today's date
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
-
-        expect(co_with_1_member_expires.current_members.size).to eq 1
-        expect( co_with_1_member_expires.earliest_current_member_fee_paid ).to eq member_dec_5_start_time
-      end
-
-    end
-
-  end # describe '#earliest_current_member_fee_paid'
-
 end

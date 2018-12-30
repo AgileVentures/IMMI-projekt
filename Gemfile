@@ -76,8 +76,6 @@ gem 'wkhtmltoimage-binary'
 gem 'chartkick'
 gem 'groupdate'
 
-gem 'hashie'  # powerful methods for searching nested Hashes (ex: params) and more
-
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'

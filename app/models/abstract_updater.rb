@@ -78,9 +78,9 @@ class AbstractUpdater
   # AbstractRequirements class to use for checking that the requirements
   # are met for doing the update_action
   #
-   def self.update_requirements_checker
-     raise NoMethodError, "Subclass must define the #{__method__} method and return true or false", caller
-   end
+  # def self.update_requirements_checker
+  #
+  # end
 
 
   # This is just a reminder that subclasses must implement this method.
@@ -90,9 +90,9 @@ class AbstractUpdater
   # AbstractRequirements class to use for checking that the requirements
   # are met for doing the revoke_update_action
   #
-   def self.revoke_requirements_checker
-    raise NoMethodError, "Subclass must define the #{__method__} method and return true or false", caller
-   end
+  # def self.revoke_requirements_checker
+  #
+  # end
 
 
   # It is the responsibility of each subclass to parse the arguments as needed.
@@ -123,9 +123,9 @@ class AbstractUpdater
   # Requirements were satisified, so do the update.
   #  Set states (values) and do any behaviors (events) needed.
   #
-   def update_action(_args = {})
-     raise NoMethodError, "Subclass must define the #{__method__} method and return true or false", caller
-   end
+  # def update_action(args = {})
+  #
+  # end
 
 
   # This is just a reminder that subclasses must implement this method.
@@ -138,9 +138,9 @@ class AbstractUpdater
   #   ex:  May need to 'revoke membership' if membershipship requirements are no longer met.
   #        This could mean setting some states (values) and sending out an email.
   #
-   def revoke_update_action(_args = {})
-    raise NoMethodError, "Subclass must define the #{__method__} method and return true or false", caller
-   end
+  # def revoke_update_action(args = {})
+  #
+  # end
 
 
   def log_filename

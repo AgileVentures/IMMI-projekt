@@ -62,7 +62,7 @@ class ConditionResponder
   # @return timing [Timing] - condition.timing if condition is nil,
   #                           return the DEFAULT_TIMING
   def self.get_timing(condition)
-    condition.nil? ? DEFAULT_TIMING : condition.timing.to_sym
+    condition.nil? ? DEFAULT_TIMING : condition.timing
   end
 
 
