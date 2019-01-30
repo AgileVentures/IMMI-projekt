@@ -4,6 +4,9 @@ default: &default
   collation: sv_SE.UTF-8
   ctype: sv_SE.UTF-8
   template: template0
+  host: <%= ENV['DB_HOST'] || ""%>
+  username: <%= ENV["DATABASE_POSTGRESQL_USERNAME"] %>
+  password: <%= ENV["DATABASE_POSTGRESQL_PASSWORD"] %>
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
 development:
