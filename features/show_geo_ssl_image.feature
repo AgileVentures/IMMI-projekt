@@ -6,5 +6,6 @@ Feature: As a visitor
 
 
   Scenario:
-    Given I am on the search page with the map
-    Then I should see the GeoTrust SSL certificate Image
+    Given I am on the search page with the map "https://hitta.sverigeshundforetagare.se/"
+    Then show me the page
+    And I should see the GeoTrust SSL certificate Image
