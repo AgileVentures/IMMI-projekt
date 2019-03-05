@@ -1,5 +1,5 @@
 Given("I am on the search page with the map") do
-  pending # Write code here that turns the phrase above into concrete actions
+  visit 'https://hitta.sverigeshundforetagare.se/'
 end
 
 Then("I should see the GeoTrust SSL certificate Image") do
