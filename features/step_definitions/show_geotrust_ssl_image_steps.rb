@@ -3,5 +3,5 @@ Given("I am on the search page with the map") do
 end
 
 Then("I should see the GeoTrust SSL certificate Image") do
-  pending # Write code here that turns the phrase above into concrete actions
+  expect(page).to have_xpath("//img[contains(@src,'RapidSSL_SEAL-90x50.gif')]")
 end
