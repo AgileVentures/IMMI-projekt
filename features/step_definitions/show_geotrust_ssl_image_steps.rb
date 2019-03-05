@@ -1,5 +1,4 @@
 Given(/^I am on the search page with the map "([^"]*)"$/) do |page|
-  #page = root_path
   visit page
 end
 
