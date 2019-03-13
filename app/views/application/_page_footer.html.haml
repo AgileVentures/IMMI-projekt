@@ -12,5 +12,7 @@
       %a.share-mail{href: "mailto:?subject=Sveriges%20Hundf%C3%B6retagare&body=#{request.url}"}
         = fa_icon 'envelope'
     .geo-ssl-seal
-      %a.ssl-seal{ href: "https://www.rapidssl.com/about/", target: '_blank'}
-        = image_tag('RapidSSL_SEAL-90x50.gif')
+      = link_to(image_tag('RapidSSL_SEAL-90x50.gif', alt: 'Secured by RapidSSL',
+            title: 'RapidSSL seal'),
+            'https://www.rapidssl.com/about/',
+            target: '_blank', rel: 'nofollow')
