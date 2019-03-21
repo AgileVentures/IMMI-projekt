@@ -1,6 +1,10 @@
 Feature: As a member
   So that I can maintain my membership
   I need to be able to pay my membership fee
+  And so that I can be sure that the map search is secure
+  And I need to see the GeoTrust SSL certificate Image
+
+  PivotalTracker https://www.pivotaltracker.com/story/show/162063275
 
   Background:
     Given the date is set to "2017-01-10"
@@ -77,3 +81,12 @@ Feature: As a member
     And I should see t("payments.error.error")
     And I should see "2017-12-31"
     And I should not see "2018-12-31"
+
+  Scenario:
+    Given I am logged in as "emma@mutts.com"
+    And I am on the "user details" page for "emma@mutts.com"
+    And I click on t("menus.nav.members.pay_membership")
+    Then I should see the GeoTrust SSL certificate Image
+  #  And when I click the GeoTrust SSL certificate Image
+  #  Then I should be on X page
+  #  And I should see
