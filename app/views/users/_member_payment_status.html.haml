@@ -2,19 +2,26 @@
   - if defined?(error) && error
     .alert.alert-danger= error
 
-  .col-sm-4
-    - is_member = user.member? ? 'Yes' : 'No'
-    = field_or_none("#{t('users.show.member')}", "#{t(is_member)}",
-                    label_class: 'standard-label',
-                    value_class: is_member)
-  .col-sm-4
-    = expire_date_label_and_value(user)
+  .row
+    .col-sm-4
+      - is_member = user.member? ? 'Yes' : 'No'
+      = field_or_none("#{t('users.show.member')}", "#{t(is_member)}",
+                      label_class: 'standard-label',
+                      value_class: is_member)
+      = expire_date_label_and_value(user)
 
-  .col-sm-4
-    - link = pay_member_fee_link(user)
-    - if link
-      = link
-      = fas_tooltip(t('users.show.pay_membership_tooltip'))
+      - link = pay_member_fee_link(user)
+      - if link
+        = link
+        = fas_tooltip(t('users.show.pay_membership_tooltip'))
+
+    .col-sm-4
+      .geo-ssl-seal
+        = link_to(image_tag('RapidSSL_SEAL-90x50.gif', alt: 'Secured by RapidSSL',
+              title: 'RapidSSL seal'),
+              'https://www.rapidssl.com/about/',
+              target: '_blank', rel: 'nofollow')
+
 
   - if current_user.admin?
     -# .row
