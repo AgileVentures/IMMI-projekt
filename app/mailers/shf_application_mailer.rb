@@ -4,6 +4,7 @@ class ShfApplicationMailer < ApplicationMailer
 
   def acknowledge_received(shf_application)
 
+    @shf_application = shf_application
     send_mail_for __method__, shf_application, t('mailers.shf_application_mailer.acknowledge_received.subject')
 
   end

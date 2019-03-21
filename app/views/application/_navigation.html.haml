@@ -1,83 +1,39 @@
-.scroll-to-top
-  %a{ href: '#' }
-    = fa_icon 'angle-up'
-.container-fluid.hfeed.site
-  %header.site-header#masthead{ role: 'banner' }
-    %a.skip-link.screen-reader-text{ href: '#content' } Skip to content
-    / main navigation
-    %nav.main-navigation.fixed-nav#site-navigation{ role: 'navigation' }
-      %a.menu-toggle{ href: '#' }
-        %span.bars
-          %span.bar.bar-1
-          %span.bar.bar-2
-          %span.bar.bar-3
+%nav.navbar.navbar-expand-md
+  %a.logooo.navbar-brand{ :href => "https://hitta.sverigeshundforetagare.se" }
+    %img{ :src => "https://media.sverigeshundforetagare.se/2016/12/cropped-16465585_1046630372149121_513430848809205760_n.jpg", :alt => "Sveriges Hundforetagare",  :height => "257", :width => "120" }/
+  %button.navbar-toggler{ "aria-controls" => "dropdown-menu", "aria-expanded" => "false", "aria-label" => "Toggle navigation", "data-target" => "#dropdown-menu", "data-toggle" => "collapse", :type => "button" }
+    = t('menus.menu')
+  .collapse.navbar-collapse#dropdown-menu
 
-      .nav-wrapper
+    - if user_signed_in?
+      - if current_user.admin?
+        %ul.navbar-nav.ml-auto#menu-menu-3
+          %li
+            = link_to t('menus.nav.shf_main_site'), https_shf_main_site_home_url, class: 'nav-link'
+          = render 'navigation_member_pages'
+          = render 'navigation_admin'
+      - else
+        %ul.navbar-nav.ml-auto#menu-menu-2
+          %li
+            = link_to t('menus.nav.shf_main_site'), https_shf_main_site_home_url, class: 'nav-link'
+          %li.dropdown
+            = link_to t('menus.nav.members.shf_companies'), root_path, class: 'nav-link'
 
-        - if user_signed_in?
-
-          - if current_user.admin?
-
-            .menu#menu-menu-3-container
-
-              %ul.menu#menu-menu-3
-                %li.menu-item
-                  = link_to t('menus.nav.shf_main_site'), 'http://sverigeshundforetagare.se/'
-
-                = render 'navigation_member_pages'
-
-                = render 'navigation_admin'
+          - if current_user.member?
+            = render 'navigation_member_pages'
+            = render 'navigation_member_companies'
+            = render 'navigation_edit_my_application', shf_app: current_user.shf_application
 
           - else
+            -# User is not a member nor admin
+            - if current_user.has_shf_application?
+              = render 'navigation_edit_my_application', shf_app: current_user.shf_application
+            - else
+              %li
+                = link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path, class: 'nav-link'
 
-            .menu#menu-menu-2-container
+    - else
+      -# Visitor navigation
+      = render 'navigation_visitor'
 
-              %ul.menu#menu-menu-2
-                %li.menu-item
-                  = link_to t('menus.nav.shf_main_site'), 'http://sverigeshundforetagare.se/'
-
-                %li.menu-item
-                  = link_to t('menus.nav.members.shf_companies'), root_path
-
-                - if current_user.member?
-
-                  = render 'navigation_member_pages'
-
-                  - if (company_count = current_user.companies.count) > 0
-
-                    %li.menu-item.menu-item-has-children
-                      %a.link-no-styling{ href: '#' }
-                        = t('my_company', count: company_count)
-
-                      %ul.sub-menu
-
-                        - current_user.companies.each do |company|
-
-                          %li.menu-item.menu-item-has-children
-                            - company_name = company.name.present? ? company.name : t('name_missing')
-                            %a.link-no-styling{ href: '#' }= company_name
-                            %ul.sub-menu
-                              %li.menu-item
-                                = link_to t('menus.nav.members.manage_company.view_company'),
-                                          company_path(company)
-                              %li.menu-item
-                                = link_to t('menus.nav.members.manage_company.edit_company'),
-                                          edit_company_path(company)
-
-                  = render 'navigation_edit_my_application', shf_app: current_user.shf_application
-
-                - else
-                  -# User is not a member nor admin
-
-                  - if current_user.has_shf_application?
-                    = render 'navigation_edit_my_application', shf_app: current_user.shf_application
-                  - else
-                    %li.menu-item
-                      = link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path
-
-        - else
-          -# Visitor navigation
-          .menu#menu-menu-1-container
-            = render 'navigation_visitor'
-
-        = render 'login_nav'
+    = render 'login_nav'

@@ -7,35 +7,27 @@
                  html: { id: 'brandingStatusForm' } do |f|
 
         .modal-header
+          %h4.modal-title.text-center
+            = t('companies.show.edit_branding_status')
           %button.close{ type: 'button', data: { dismiss: 'modal' } }
             %span{ 'aria-hidden' => 'true' } &times;
-          %h3.modal-title.text-center
-            = t('companies.show.edit_branding_status')
 
         .modal-body
           .container-fluid
-            .form-group
-
-              = fields_for :payment, company.most_recent_branding_payment do |pf|
-                .row
-                  .col-sm-4
-                    %label
-                      #{t('activerecord.attributes.payment.expire_date')}:
-                  .com-sm-8
-                    = pf.date_select(:expire_date,
-                                     { start_year: Time.current.year,
-                                       end_year: Time.current.year + 2},
-                                     { class: 'select-box' })
-                .row
-                  .col-sm-4
-                    = pf.label :notes,
-                               "#{t('activerecord.attributes.payment.notes')}:"
-                  .col-sm-8
-                    = pf.text_area :notes
+            = fields_for :payment, company.most_recent_branding_payment do |pf|
+              %label #{t('activerecord.attributes.payment.expire_date')}:
+              = pf.date_select(:expire_date,
+                               { start_year: Time.current.year,
+                                 end_year: Time.current.year + 2},
+                               { class: 'form-control select-box form-control-sm' })
+              %hr
+              = pf.label :notes,
+                         "#{t('activerecord.attributes.payment.notes')}:"
+              = pf.text_area :notes, class: 'form-control'
 
         .modal-footer
-          = f.submit t('companies.company.submit_button_label'), class: "btn btn-primary",
+          = f.submit t('companies.company.submit_button_label'), class: "btn btn-sm btn-primary",
                      id: 'editBrandingStatusSubmit'
 
-          %button{ type: 'button', class: 'btn btn-default', data: { dismiss: 'modal' } }
+          %button{ type: 'button', class: 'btn btn-sm btn-default', data: { dismiss: 'modal' } }
             = t('cancel')

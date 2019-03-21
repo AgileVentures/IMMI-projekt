@@ -212,6 +212,21 @@ $warning-yellow: #ffff00;
 
             }
 
+
+            .shf-application-info {
+
+              margin-left: 2rem;
+
+              .field-value {
+                font-weight: bold;
+              }
+
+              .no-files-uploaded {
+                color: #ff0000;
+                font-weight: bold;
+              }
+            }
+
             p {
               color: $dark-gray;
               font-family: 'Open Sans', 'HelveticaNeue', Helvetica, Arial, sans-serif;

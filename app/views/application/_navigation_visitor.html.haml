@@ -1,61 +1,79 @@
-%ul.menu#menu-menu-1
-  %li.menu-item
-    = link_to t('menus.nav.home'), 'http://sverigeshundforetagare.se/'
+%ul.navbar-nav.ml-auto#menu-menu-1
+  %li
+    = link_to t('menus.nav.home'), https_shf_main_site_home_url, class: 'nav-link'
 
-  %li.menu-item
-    = link_to t('menus.nav.visitor.brochure'), 'http://sverigeshundforetagare.se/broschyr/'
 
-  %li.menu-item.menu-item-has-children
-    = link_to t('menus.nav.visitor.dog_owners.submenu_title'), 'http://sverigeshundforetagare.se/agare/'
-    %ul.sub-menu
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.about_us'), 'http://sverigeshundforetagare.se/agare/om-sveriges-hundforetagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.h_label'), 'http://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-hundagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.are_you_unsatisfied'), 'http://sverigeshundforetagare.se/agare/ar-du-inte-nojd/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.become_supporter'), 'http://sverigeshundforetagare.se/agare/bli-stodmedlem/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.dog_owners.being_dog_owners'), 'http://sverigeshundforetagare.se/agare/att-vara-hundagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.find_dog_businesses'), root_path
 
-  %li.menu-item.menu-item-has-children
-    = link_to t('menus.nav.visitor.entrepreneurs.submenu_title'), 'http://sverigeshundforetagare.se/foretag/'
-    %ul.sub-menu
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.about_us'), 'http://sverigeshundforetagare.se/foretag/om-sveriges-hundforetagare/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.sign_up'), 'http://sverigeshundforetagare.se/foretag/bli-medlem/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.be_h_labeled'), 'http://sverigeshundforetagare.se/foretag/bli-h-markt/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.member_criteria'), 'http://sverigeshundforetagare.se/medlemskriterier/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.member_benefits'), 'http://sverigeshundforetagare.se/foretag/detta-far-du-som-medlem/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.quality_standards'), 'http://sverigeshundforetagare.se/foretag/kvalitetskontroll/'
-      %li.menu-item
-        = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank'), 'http://sverigeshundforetagare.se/category/kunskapsbank-foretagare/'
+  %li.dropdown
+    %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: https_shf_main_site_association_url }
+      = t('menus.nav.visitor.association')
+    %ul.dropdown-menu
+      %li
+        = link_to t('menus.nav.visitor.brochure'), https_shf_main_site_brochure_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.board'), https_shf_main_site_board_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.our_policy'), https_shf_main_site_board_our_policy_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.board_statues'), https_shf_main_site_board_statues_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.history'), https_shf_main_site_history_url, class: 'nav-link'
 
-  %li.menu-item.menu-item-has-children
-    %a.link-no-styling{ href: '#' }= t('menus.nav.visitor.knowledge_bank.submenu_title')
-    %ul.sub-menu
-      %li.menu-item
-        = link_to 'Bloggar', 'http://sverigeshundforetagare.se/category/bloggar/'
-      %li.menu-item
-        = link_to 'Böcker', 'http://sverigeshundforetagare.se/category/bocker/'
-      %li.menu-item
-        = link_to 'Forskning', 'http://sverigeshundforetagare.se/category/forskning/'
-      %li.menu-item
-        = link_to 'Pod', 'http://sverigeshundforetagare.se/category/pod/'
-      %li.menu-item
-        = link_to 'Populärvetenskap', 'http://sverigeshundforetagare.se/category/popularvetenskap/'
-      %li.menu-item
-        = link_to 'Video', 'http://sverigeshundforetagare.se/category/video/'
 
-  %li.menu-item
-    = link_to t('menus.nav.visitor.contact'), 'http://sverigeshundforetagare.se/kontakt/'
+  %li.dropdown
+    %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: https_shf_main_site_for_dog_owners_url }
+      = t('menus.nav.visitor.dog_owners.submenu_title')
+    %ul.dropdown-menu
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.about_us'), https_shf_main_site_dog_owners_about_us_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.h_label'), https_shf_main_site_dog_owners_h_brand_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.knowledge_bank'), https_shf_main_site_dog_owners_knowledgebank_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.are_you_interested'), https_shf_main_site_dog_owners_contact_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.become_supporter'), https_shf_main_site_dog_owners_become_support_member_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.dog_owners.being_dog_owners'), https_shf_main_site_dog_owner_being_dog_owner_url, class: 'nav-link'
+
+  %li.dropdown
+    %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: https_shf_main_site_for_companies_url }
+      = t('menus.nav.visitor.entrepreneurs.submenu_title')
+    %ul.dropdown-menu
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.about_us'), https_shf_main_site_about_us_for_companies_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.sign_up'), https_shf_main_site_companies_sign_up_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.be_h_labeled'), https_shf_main_site_companies_become_h_licensed_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.member_criteria'), https_shf_main_site_companies_member_criteria_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.member_benefits'), https_shf_main_site_companies_member_benefits_url, class: 'nav-link'
+        %li
+        = link_to t('menus.nav.visitor.entrepreneurs.gdpr'), https_shf_main_site_companies_gdpr_url, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.visitor.entrepreneurs.quality_standards'), https_shf_main_site_companies_quality_control_companies_url, class: 'nav-link'
+
+      %li.dropdown
+        %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: "#" }
+          = t('menus.nav.visitor.entrepreneurs.knowledge_bank.submenu_title')
+
+        %ul.dropdown-menu
+          %li
+            = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank.blogs'), https_shf_main_site_companies_knowledgebank_blogs_url, class: 'nav-link'
+          %li
+            = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank.books'), https_shf_main_site_companies_knowledgebank_books_url, class: 'nav-link'
+          %li
+            = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank.research'), https_shf_main_site_companies_knowledgebank_research_url, class: 'nav-link'
+          %li
+            = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank.pod'), https_shf_main_site_companies_knowledgebank_podcasts_url, class: 'nav-link'
+          %li
+            = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank.popular_science'), https_shf_main_site_companies_knowledgebank_popsci_url, class: 'nav-link'
+          %li
+            = link_to t('menus.nav.visitor.entrepreneurs.knowledge_bank.video'), https_shf_main_site_companies_knowledgebank_videos_url, class: 'nav-link'
+  %li
+    = link_to t('menus.nav.visitor.contact'), https_shf_main_site_contact_url, class: 'nav-link'
+  %li.current-menu-item
+    = link_to t('menus.nav.visitor.find_dog_businesses'), root_path, class: 'nav-link'

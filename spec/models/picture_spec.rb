@@ -12,12 +12,22 @@ RSpec.describe Ckeditor::Picture, type: :model do
   let(:picture5) { Ckeditor::Picture.create(data: file_fixture('image.png').open) }
   let(:picture6) { Ckeditor::Picture.create(data: file_fixture('image.png').open) }
 
+  # Since we cannot test the :company association, all we can do is verify that
+  # it exists in the database:
   describe 'DB Table' do
-    it { is_expected.to have_db_column :company_id }
+    it { is_expected.to have_db_column(:company_id).with_options( null: true )}
   end
 
   describe 'Associations' do
-    it { is_expected.to belong_to(:company) }
+    # Note that we cannot test the belongs_to association because it can sometimes be nil
+    # and the presence is only required (validated) _ if => lambda { /company/.match(@@category) }_
+    #   (if the current class category matches /company/)
+    # and the shoulda-matchers gem version 4.0.1 is not sophisticated enough to be able to
+    # test validity of (belongs_to  ... optional: true) + (validates_presence_of ... with an :if clause)
+    #
+    # This fails because the matchers cannot also test
+    # for the validation_presence_of ... with the :if clause at the same time:
+    #   it { is_expected.to belong_to(:company).optional }
   end
 
   describe 'Validations' do
@@ -27,6 +37,29 @@ RSpec.describe Ckeditor::Picture, type: :model do
     it { is_expected.to validate_attachment_presence :data }
     it { is_expected.to validate_attachment_size(:data).in(0..2.megabytes) }
   end
+
+  describe "company can be nil" do
+
+    context "category = 'member_pages'" do
+      it 'company can be nil' do
+        Ckeditor::Picture.images_category = 'member_pages'
+        Ckeditor::Picture.for_company_id = nil
+        picture1
+        expect(picture1.company).to be_nil
+      end
+    end
+
+    context "category is not 'member_pages'" do
+      it "company can be nil" do
+        Ckeditor::Picture.images_category = 'blorf'
+        Ckeditor::Picture.for_company_id = nil
+        picture4
+        expect(picture4.company).to be_nil
+      end
+    end
+
+  end
+
 
   describe 'class and instance methods - company images' do
 

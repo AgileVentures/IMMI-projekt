@@ -1,47 +1,32 @@
 = form_for :address, method: method, url: url  do |f|
 
   != model_errors_helper(address)
+  .container
+    .row
+      .col.form-group
+        = f.label :street_address, "#{t('activerecord.attributes.address.street')}", class: 'required'
+        = f.text_field :street_address, class: 'form-control'
+    .row
+      .col.form-group
+        = f.label :post_code, "#{t('activerecord.attributes.address.post_code')}", class: 'required'
+        = f.text_field :post_code, class: 'form-control'
+      .col.form-group
+        = f.label :city, "#{t('activerecord.attributes.address.city')}", class: 'required'
+        = f.text_field :city,  class: 'form-control'
+    .row
+      .col.form-group
+        = f.label :kommun_id, "#{t('activerecord.attributes.address.kommun')}"
+        = f.collection_select :kommun_id, Kommun.all, :id, :name, {}, {class: 'form-control'}
+      .col.form-group
+        = f.label :region_id, "#{t('activerecord.attributes.address.region')}"
+        = fas_tooltip(t('companies.form.region_tooltip'))
+        = f.collection_select :region_id, Region.all, :id, :name, {}, {class: 'form-control'}
 
-  = f.label :street_address, "#{t('activerecord.attributes.address.street')}",
-            class: 'required'
-  = f.text_field :street_address, class: 'wpcf7-form-control'
-
-  = f.label :post_code, "#{t('activerecord.attributes.address.post_code')}",
-            class: 'required'
-  = f.text_field :post_code, class: 'wpcf7-form-control'
-
-  = f.label :city, "#{t('activerecord.attributes.address.city')}", class: 'required'
-  = f.text_field :city, class: 'wpcf7-form-control'
-
-  .form-group
-    .col-sm-4
-
-      = f.label :kommun_id, "#{t('activerecord.attributes.address.kommun')}"
-      %br
-      = f.collection_select(:kommun_id, Kommun.all, :id, :name)
-
-    .col-sm-4
-
-      = f.label :region_id, "#{t('activerecord.attributes.address.region')}"
-
-      %span.glyphicon.glyphicon-info-sign{ title: "#{t('companies.form.region_tooltip')}",
-                                           data: {toggle: 'tooltip'} }
-
-      %br
-      = f.collection_select(:region_id, Region.all, :id, :name)
-
-    .col-sm-4
-
-      = f.label :visibility, "#{t('companies.address_visibility')}"
-
-      %span.glyphicon.glyphicon-info-sign{ title: "#{t('companies.form.visibility_tooltip')}",
-                                           data: {toggle: 'tooltip'} }
-
-      %br
-      = f.select(:visibility, address_visibility_array)
-
-  %br
-  %br
-  %br
-  = f.submit "#{t('submit')}"
-  %br
+    .row
+      .col.form-group.mt-1
+        = f.label :visibility, "#{t('companies.address_visibility')}"
+        = fas_tooltip(t('companies.form.visibility_tooltip'))
+        = f.select :visibility, address_visibility_array, {}, {class: 'form-control'}
+    .row
+      .col
+        = f.submit "#{t('submit')}", class: 'btn btn-primary mt-auto'

@@ -256,9 +256,9 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     it 'adds a count of errors' do
       I18n.locale = :sv
-      expect(errors_html_sv).to match(/#{t('model_errors', count: 7)}/)
+      expect(errors_html_sv).to match(/#{t('model_errors', count: 6)}/)
       I18n.locale = :en
-      expect(errors_html_en).to match(/#{t('model_errors', count: 7)}/)
+      expect(errors_html_en).to match(/#{t('model_errors', count: 6)}/)
     end
 
     it 'returns all model errors - swedish' do
@@ -306,4 +306,38 @@ RSpec.describe ApplicationHelper, type: :helper do
       expect(collection_custom).to eq [ [true, 'Save'], [false, 'Delete'] ]
     end
   end
+
+
+  describe 'fas_tooltip' do
+
+    # <span><i data-toggle=\"tooltip\" data-original-title=\"test\" class=\"fas fa-info-circle\"></i></span>
+    it 'returns a <span> with an icon' do
+      expect(helper.fas_tooltip('test')).to match(/<span><i (.*)<\/i><\/span>/)
+    end
+
+    it "sets data-toggle:'tooltip' and puts the given text into data-original-title" do
+      expect(helper.fas_tooltip('test')).to match(/data-toggle="tooltip"/)
+    end
+
+    it "puts the text into the date-original-title" do
+      expect(helper.fas_tooltip('test')).to match(/data-original-title="test"/)
+    end
+
+    it "default icon is 'fa-info-circle'" do
+      expect(helper.fas_tooltip('test')).to match(/class="(.*)fa-info-circle"/)
+    end
+
+    it "default icon group is 'fas'" do
+      expect(helper.fas_tooltip('test')).to match(/class="fas(.*)"/)
+    end
+
+    it "can set the icon to 'blorf' and it prepends it with 'fa-'" do
+      expect(helper.fas_tooltip('test', fa_icon: 'blorf')).to match(/class="(.*)fa-blorf"/)
+    end
+
+    it "can set the icon group to 'faz'" do
+      expect(helper.fas_tooltip('test', fa_icon_group: 'faz')).to match(/class="faz(.*)"/)
+    end
+  end
+
 end

@@ -1,4 +1,10 @@
 Given(/^the following users exist(?:s|)$/) do |table|
+
+  # Hash value "is_legacy" indicates a user account that was created before we
+  # migrated the user's name attributes (first_name, last_name) from the
+  # ShfApplication model to the User model.
+  # If a "legacy" user, we create the user with nil values for those attributes.
+
   table.hashes.each do |user|
 
     user['membership_number'] = nil if user['membership_number'].blank?

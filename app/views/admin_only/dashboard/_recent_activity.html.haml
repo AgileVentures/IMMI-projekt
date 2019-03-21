@@ -1,8 +1,9 @@
+- i18n_scope = 'admin_only.dashboard.tabs.activity'
 #recent-activity
-  %h3.section-title= t('admin_only.dashboard.recent_activity_section_title', recent_num_days: recent_num_days)
+  %h3.section-title= t('title', recent_num_days: recent_num_days, scope: i18n_scope)
 
   .recent-activity
-    -#%p.timeframe-options
+    -# %p.timeframe-options
       change the timeframe (days):
       %span.not-working [JS NOT WORKING YET]
       = collection_radio_buttons(:data_gatherer, :timeframe,
@@ -20,9 +21,9 @@
 
       %h4.total-payments-weekly
         = styled_total(recent_member_fee_payments.count + recent_branding_fee_payments.count,
-                       t('admin_only.dashboard.payments'))
-      %p.detail-line= t('admin_only.dashboard.member_fee_payments', number_payments: recent_member_fee_payments.count)
-      %p.detail-line= t('admin_only.dashboard.branding_fee_payments', number_payments: recent_branding_fee_payments.count)
+                       t('payments', scope: i18n_scope))
+      %p.detail-line= t('member_fee_payments', scope: i18n_scope, number_payments: recent_member_fee_payments.count)
+      %p.detail-line= t('branding_fee_payments', scope: i18n_scope, number_payments: recent_branding_fee_payments.count)
 
 
 :javascript

@@ -109,7 +109,7 @@ module AdminOnly
           |k| I18n.t "activerecord.attributes.shf_application.state/#{k}"
       }
       @apps_without_uploads = ShfApplication.no_uploaded_files
-      @apps_approved_member_fee_not_paid = User.all.select(&:member_fee_payment_due?)
+      @apps_approved_member_fee_not_paid = User.all.select(&method(:membership_fee_due?))
 
       @companies_branding_not_paid = Company.all.reject(&:branding_license?)
       @companies_info_not_completed = Company.all - Company.complete
@@ -168,6 +168,20 @@ module AdminOnly
       recent_payments  # return this to make testing easier
     end
 
+
+    # This could become the logic for a requirements checker: RequirementsForMembershipFeeDue
+    # has approved application and never paid
+    # OR membership has lapsed
+    #
+    # @return [Boolean] - if the user owes a membership fee
+    def membership_fee_due?(user)
+
+      return false unless user.has_approved_shf_application?
+
+      most_recent_payment = user.payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
+
+      most_recent_payment.nil? || RequirementsForMembershipLapsed.requirements_met?({user: user})
+    end
 
   end # DataGatherer
 

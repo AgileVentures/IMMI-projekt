@@ -1,16 +1,12 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-.post-title-divider
-  %span
-
 .entry-content
-  .row.panel.panel-default
-    = render partial: 'search_form',
-             locals: { q: @q,
-                       filter_ignore_membership: @filter_ignore_membership,
-                       filter_are_members: @filter_are_members,
-                       filter_are_not_members: @filter_are_not_members }
-  .row.panel.panel-default
+  = render partial: 'search_form',
+           locals: { q: @q,
+                     filter_ignore_membership: @filter_ignore_membership,
+                     filter_are_members: @filter_are_members,
+                     filter_are_not_members: @filter_are_not_members }
+  .row
     - if @users.empty?
       %strong
         = t('.no_search_results')

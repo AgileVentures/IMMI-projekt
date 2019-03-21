@@ -62,4 +62,15 @@ class MemberMailer < ApplicationMailer
 
   end
 
+
+  def h_branding_fee_will_expire(company, recipient)
+
+    set_mail_info __method__, recipient
+    @member  = recipient
+    @company = company
+    @expire_date = company.branding_expire_date
+    mail to: @recipient_email,  subject: t('mailers.member_mailer.h_branding_fee_will_expire.subject')
+
+  end
+
 end

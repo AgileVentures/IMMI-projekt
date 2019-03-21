@@ -1,16 +1,14 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-.post-title-divider
-  %span
 .entry-content
+  .row{ style: 'margin-bottom: 30px;' }
+    .col-6
+      = render partial: 'administration_panel' if @current_user.admin?
 
-  = render partial: 'administration_panel' if @current_user.admin?
-
-  %p{ style: 'margin-bottom: 30px;' }
-    %button.btn.btn-success.btn-xs.pull-right{ id: 'toggle_search_form',
-                                      href: '#application_search_form',
-                                      style: 'color:black; text-transform:none;' }
-      #{t('toggle.application_search_form.hide')}
+    .col-6
+      %button.btn.btn-success.pull-right{ id: 'toggle_search_form',
+                                        href: '#application_search_form' }
+        #{t('toggle.application_search_form.hide')}
 
   .clearfix
 

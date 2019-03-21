@@ -1,45 +1,46 @@
 #companies_list
-  %table.table.table-hover
-    %thead
-      %tr
-        %th
-          = t('activerecord.models.business_category.one')
-        %th
-          = sort_link(search_params, :name,
-                      t('activerecord.attributes.company.name'), {},
-                      { class: 'companies_pagination', remote: true })
-        %th
-          = sort_link(search_params, :addresses_region_name,
-                      t('activerecord.attributes.address.region'), {},
-                      { class: 'companies_pagination', remote: true })
-        %th
-          = sort_link(search_params, :addresses_kommun_name,
-                      t('activerecord.attributes.address.kommun'), {},
-                      { class: 'companies_pagination', remote: true })
+  .table-responsive
+    %table.table.table-hover.table-sm.table-striped
+      %thead
+        %tr
+          %th
+            = t('activerecord.models.business_category.one')
+          %th
+            = sort_link(search_params, :name,
+                        t('activerecord.attributes.company.name'), {},
+                        { class: 'companies_pagination', remote: true })
+          %th
+            = sort_link(search_params, :addresses_region_name,
+                        t('activerecord.attributes.address.region'), {},
+                        { class: 'companies_pagination', remote: true })
+          %th
+            = sort_link(search_params, :addresses_kommun_name,
+                        t('activerecord.attributes.address.kommun'), {},
+                        { class: 'companies_pagination', remote: true })
 
-        - if current_user.admin?
-          %th
-            = sort_link(search_params, :company_number,
-                      t('activerecord.attributes.company.company_number'), {},
-                      { class: 'companies_pagination', remote: true })
-          %th
-          %th
+          - if current_user.admin?
+            %th
+              = sort_link(search_params, :company_number,
+                        t('activerecord.attributes.company.company_number'), {},
+                        { class: 'companies_pagination', remote: true })
+            %th
+            %th
 
-    %tbody
-      - companies.each do |company|
-        %tr.company
-          %td{ style: 'white-space: nowrap;' }
-            = safe_join(company.categories_names, tag.br)
-          %td= link_to company.name.blank? ? t('name_missing') : company.name, company
-          %td{ style: 'white-space: nowrap;' }
-            = safe_join(company.addresses_region_names, tag.br)
-          %td{ style: 'white-space: nowrap;' }
-            = safe_join(company.kommuns_names, tag.br)
-            - if current_user.admin?
-              %td= company.company_number
-              %td= link_to "#{t('edit')}", edit_company_path(company)
-              %td= link_to "#{t('delete')}", company, method: :delete,
-                              data: { :confirm => "#{t('confirm_are_you_sure')}" }
+      %tbody
+        - companies.each do |company|
+          %tr.company
+            %td.categories
+              = safe_join(company.categories_names, tag.br)
+            %td.name= link_to company.name.blank? ? t('name_missing') : company.name, company
+            %td.region
+              = safe_join(company.addresses_region_names, tag.br)
+            %td.kommun
+              = safe_join(company.kommuns_names, tag.br)
+              - if current_user.admin?
+                %td.company-number= company.company_number
+                %td.edit= link_to icon('fas', 'edit'), edit_company_path(company)
+                %td.delete= link_to icon('fas', 'trash', class: 'delete'), company, method: :delete,
+                                data: { :confirm => "#{t('confirm_are_you_sure')}" }
 
   = render 'application/paginate_footer', entities: companies,
                                           paginate_class: 'companies_pagination',

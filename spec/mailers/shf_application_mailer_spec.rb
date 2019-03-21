@@ -134,6 +134,29 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
       let(:email_created) { email_sent }
     end
 
+    it 'shows information submitted in the application' do
+        expect(email_sent).to have_body_text(I18n.t('mailers.shf_application_mailer.acknowledge_received.your_submitted_info'))
+    end
+
+
+    describe 'shows text We will do the review after we receive your files only if no files are uploaded' do
+
+      it 'no files uploaded' do
+        expect(email_sent).to have_body_text(I18n.t('mailers.shf_application_mailer.acknowledge_received.review_after_recevied_files'))
+      end
+
+      it 'a file uploaded (text not shown)' do
+        fn = file_fixture('image.gif')
+        received_app.uploaded_files.create(actual_file: File.open(fn, 'r'))
+        expect(email_sent).not_to have_body_text(I18n.t('mailers.shf_application_mailer.acknowledge_received.review_after_recevied_files'))
+        received_app.uploaded_files.delete_all
+      end
+
+    end
+
+    it_behaves_like  'it provides a link to the login page' do
+      let(:email_created) { email_sent }
+    end
 
     it_behaves_like 'from address is correct' do
       let(:mail_address) { email_sent.header['from'] }
@@ -142,7 +165,6 @@ RSpec.describe ShfApplicationMailer, type: :mailer do
     it_behaves_like 'reply-to address is correct' do
       let(:email_created) { email_sent }
     end
-
 
   end
 

@@ -1,16 +1,15 @@
-.modal.fade#company-create-modal(tabindex='-1' role='dialog')
-  .modal-dialog(role='document')
+.modal.fade#company-create-modal{ tabindex: '-1', role: 'dialog' }
+  .modal-dialog{ role: 'document' }
     .modal-content
-
       = form_for company, url: companies_path,
                  method: :post, remote: true,
                  html: { id: 'companyCreateForm' } do |f|
 
         .modal-header
-          %button(type='button' class='close' data-dismiss='modal')
-            %span(aria-hidden='true') &times;
-          %h3.modal-title.text-center
+          %h4.modal-title.text-center
             = t('companies.new.title')
+          %button.close{ type: 'button', data: { dismiss: 'modal' } }
+            %span{ 'aria-hidden' => 'true' } &times;
 
         .modal-body
           .container-fluid
@@ -20,26 +19,23 @@
 
             .form-group
               .row
-                .col-sm-5
+                .col
 
                   = f.label :company_number, "#{t('companies.show.company_number')}",
                             class: 'required'
+                  = fas_tooltip(t('companies.form.org_nr_tooltip'))
 
-                  - title = 'companies.form.org_nr_tooltip'
-                  %span.glyphicon.glyphicon-info-sign{ title: "#{t(title)}",
-                                                       data: {toggle: 'tooltip'} }
-
-                .col-sm-7
-                  = f.number_field :company_number, class: 'wpcf7-form-control', size: 10
-
+                .col
+                  = f.number_field :company_number, class: 'form-control', size: 10
+              %hr
               .row
-                .col-sm-5
+                .col
 
                   = f.label :email, "#{t('companies.show.email')}", class: 'required'
 
-                .col-sm-7
+                .col
 
-                  = f.text_field :email, class: 'wpcf7-form-control', size: 30
+                  = f.text_field :email, class: 'form-control', size: 30
 
         .modal-footer
           = f.submit t('companies.create.create_submit'), class: "btn btn-primary",

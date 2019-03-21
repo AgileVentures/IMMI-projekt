@@ -1,11 +1,11 @@
 = form_for @business_category do |f|
 
   != model_errors_helper(@business_category)
-
-  = f.label :name, t('activerecord.attributes.business_category.name') , class: 'required'
-  = f.text_field :name, class: 'wpcf7-form-control'
-
-  = f.label :description, t('activerecord.attributes.business_category.description')
-  = f.text_field :description, class: 'wpcf7-form-control'
-
-  = f.submit t('business_categories.form.save')
+  .form-group
+    = f.label :name, t('activerecord.attributes.business_category.name') , class: 'required'
+    = f.text_field :name, class: 'form-control'
+  .form-group
+    = f.label :description, t('activerecord.attributes.business_category.description')
+    = f.text_field :description, class: 'form-control'
+  .form-group
+    = f.submit t('business_categories.form.save'), class: 'btn btn-primary mb-2 float-right'

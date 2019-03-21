@@ -1,7 +1,11 @@
 -# This partial shows the account link for a member and the text explaining
 -# that they may need to log in to see it.
 -#
--# The partial expects the local
--# member - the member whose account this will link to
+-# The partial expects the locals
+-#   member - the member whose account this will link to
+-#   capitalize - (boolean) whether or not to capitalize the text for the link
+-#                 default = false
 -#
-= t('mailers.member_mailer.member_account_link', account_link: member_account_link(member)).html_safe
+- capitalize_linktext = local_assigns.fetch :capitalize, false
+- acct_link = member_account_link(member, capitalize: capitalize_linktext)
+= t('mailers.member_mailer.member_account_link', account_link: acct_link).html_safe

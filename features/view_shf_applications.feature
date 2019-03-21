@@ -79,7 +79,7 @@ Feature: Admin sees as many or few SHF Applications as they want (pagination)
     And I select "10" in select list "items_count"
     Then "items_count" should have "10" selected
     # prevents getting the element not clickable at that position error in Chrome
-    And I scroll to the top
+    And I scroll so the top of the list of companies is visible
     When I click on t("shf_applications.index.org_nr")
     And I should see "6222279082" before "6613265393"
     And I should see "6613265393" before "6914762726"

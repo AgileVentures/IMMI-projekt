@@ -1,0 +1,68 @@
+Description:
+    Generates the files and skeleton methods needed for a new email alert.
+    Some code WILL NEED TO BE COMPLETED.
+    "FIXME:" comments will be inserted where specific code will need to be written.
+
+Example:
+  Specify the alert class name (required) and use defaults for everything else:
+    rails generate shf:email_alert MembershipFeeWayPastDueAlert
+
+    This example will:
+      create app/models/conditions_response/membership_fee_way_past_due_alert.rb
+      create app/models/reqs_updaters/requirements_for_membership_fee_way_past_due_alert.rb  (the default requirement class name)
+      create app/models/reqs_updaters/requirements_for_membership_fee_way_past_due_alert_not.rb   # the opposite of RequirementClass
+      create app/views/mailers/member_mailer/membership_fee_way_past_due_alert.html.haml  (will use MemberMailer by default;
+         default method name is the name of the alert, underscored)
+      insert the membership_fee_way_past_due_alert method into the MemberMailer class
+      insert the membership_fee_way_past_due_alert method into spec/mailers/previews/member_mailer_preview.rb
+      insert a membership_fee_way_past_due_alert: entry into config/locales/sv.yml under mailers:member_mailer:
+      insert a membership_fee_way_past_due_alert: entry into config/locales/en.yml under mailers:member_mailer:
+      insert a hash entry into lib/tasks/conditions/load_conditions.rake for the alert that looks like this:
+          { alert_class_name: 'MembershipFeeWayPastDueAlert',
+            timing:     :before,
+            config:     { days: std_reminder_before_schedule } },
+
+      This example assumes that the following already exist:
+         /app/mailers/member_mailer.rb (MemberMailer)
+         /spec/mailers/previews/member_mailer_preview.rb
+         config/locales/sv.yml with mailers:member_mailer: entries
+         config/locales/en.yml with mailers:member_mailer: entries
+         lib/tasks/conditions/load_conditions.rake
+
+      If any of these did not exist, a minimal version of them would first be created.
+
+Example:
+  Specify the mailer method name (in addition to the alert class name):
+    rails g shf:email_alert MembershipFeeWayPastDueAlert --mailer-method=way_past_due_alert
+
+    This example will:
+      create app/models/conditions_response/membership_fee_way_past_due_alert.rb
+      create app/models/reqs_updaters/requirements_for_membership_fee_way_past_due_alert.rb
+      create app/models/reqs_updaters/requirements_for_membership_fee_way_past_due_alert_not.rb
+      create app/views/mailers/member_mailer/way_past_due_alert.html.haml
+      insert the membership_fee_way_past_due_alert method into the MemberMailer class
+      insert the membership_fee_way_past_due_alert method into spec/mailers/previews/member_mailer_preview.rb
+      insert a way_past_due_alert: entry into config/locales/sv.yml under mailers:member_mailer
+      insert a way_past_due_alert: entry into config/locales/en.yml under mailers:member_mailer
+      insert a hash entry into lib/tasks/conditions/load_conditions.rake for the alert with before as the timing
+
+Example:
+  Specify the timing (in addition to the alert class name):
+    rails g shf:email_alert MembershipFeeWayPastDueAlert --timing=after
+
+      This example will:
+      create app/models/conditions_response/membership_fee_way_past_due_alert.rb
+      create app/models/reqs_updaters/requirements_for_membership_fee_way_past_due_alert.rb
+      create app/models/reqs_updaters/requirements_for_membership_fee_way_past_due_alert_not.rb
+      create app/views/mailers/member_mailer/membership_fee_way_past_due_alert.html.haml
+      insert the membership_fee_way_past_due_alertmethod into the MemberMailer class
+      insert the membership_fee_way_past_due_alert method into spec/mailers/previews/member_mailer_preview.rb
+      insert a membership_fee_way_past_due_alert: entry into config/locales/sv.yml under mailers:member_mailer
+      insert a membership_fee_way_past_due_alert: entry into config/locales/en.yml under mailers:member_mailer
+      insert a hash entry into lib/tasks/conditions/load_conditions.rake for the alert that looks like this:
+          { alert_class_name: 'MembershipFeeWayPastDueAlert',
+            timing:     :after,
+            config:     { days: std_reminder_after_schedule } },
+
+To see this help info again, run the generator with no arguments use the --help option:
+       rails g shf:email_alert --help

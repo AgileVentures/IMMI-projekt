@@ -1,6 +1,10 @@
+class ActivityLoggerError < StandardError
+end
 
+class ActivityLoggerDirNotWritable < ActivityLoggerError
+end
 
-class ActivityLoggerDirNotWritable < StandardError
+class InvalidLogSeverityLevel < ActivityLoggerError
 end
 
 
@@ -71,8 +75,58 @@ class ActivityLogger
     record('info', "Started at #{@start_time}")
   end
 
+
+
+  # Record a log entry with severity level = INFO
+  #
+  # @param message [String] - the message to record
+  def info(message)
+    record('info', message)
+  end
+
+
+  # Record a log entry with severity level = WARN
+  #
+  # @param message [String] - the message to record
+  def warn(message)
+    record('warn', message)
+  end
+
+
+  # Record a log entry with severity level = ERROR
+  #
+  # @param message [String] - the message to record
+  def error(message)
+    record('error', message)
+  end
+
+
+  # Record a log entry with severity level = DEBUG
+  #
+  # @param message [String] - the message to record
+  def debug(message)
+    record('debug', message)
+  end
+
+
+  # Record a log entry with severity level = FATAL
+  #
+  # @param message [String] - the message to record
+  def fatal(message)
+    record('fatal', message)
+  end
+
+
+  # Record a log entry with severity level = UNKNOWN
+  #
+  # @param message [String] - the message to record
+  def unknown(message)
+    record('unknown', message)
+  end
+
+
   def record(log_level, message)
-    raise 'invalid log severity level' unless
+    raise InvalidLogSeverityLevel  unless
       ActiveSupport::Logger::Severity.constants.include?(log_level.upcase.to_sym)
 
     @log.tagged(@facility, @activity, log_level) do

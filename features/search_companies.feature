@@ -263,7 +263,6 @@ Scenario: Search by category and region 2
 Scenario: Toggle Hide/Show search form
   Given I am Logged out
   And I am on the "landing" page
-  Then I should see t("companies.index.how_to_search")
   And I should see t("toggle.company_search_form.hide")
   And t("activerecord.models.company.one") should be visible
   Then I click on t("toggle.company_search_form.hide")

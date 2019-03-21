@@ -1,17 +1,17 @@
 - applications = company.approved_applications_from_members
 
 - if applications.any?
+  .row
+    .col-12.company_member
 
-  .col-md-12.company_member
+      %table.table.table-hover.company-members
+        %thead
+          %tr
+            %th= t('companies.show.members')
+            %th= t('activerecord.models.business_category.other')
 
-    %table.table.table-hover.company-members
-      %thead
-        %tr
-          %th= t('companies.show.members')
-          %th= t('activerecord.models.business_category.other')
-
-      - applications.each do |application|
-        %tbody
-          %tr.member
-            %td= application.user.full_name
-            %td= application.business_categories.pluck(:name).join(', ')
+        - applications.each do |application|
+          %tbody
+            %tr.member
+              %td= application.user.full_name
+              %td= application.business_categories.pluck(:name).join(', ')

@@ -139,7 +139,6 @@ sv:
         one: Användaren
         other: Användare
 
-
     attributes:
 
       user:
@@ -147,7 +146,7 @@ sv:
         last_name: &last_name Efternamn
         email: &email E-post för inloggning
         password: *password
-        password_confirmation: Lösenordsbekräftelse
+        password_confirmation: &password_confirmation Lösenordsbekräftelse
         membership_number: &membership_number Medlemsnummer
         created: &created Skapad
         current_sign_in_at: &user_current_signed_in_time Inloggad
@@ -155,7 +154,6 @@ sv:
         last_login: &user_last_login Senast inloggad
         last_login_ip: &user_last_login_ip Senast inloggad med IP
         sign_in_count: &sign_in_count Inloggningar
-
         reset_password_sent_at: &user_reset_password_sent_at Information angående återställning av lösenord sändes
         member: &member Medlem
 
@@ -184,6 +182,7 @@ sv:
         state/being_destroyed: &status_being_destroyed Förstört
         companies: Företag
         business_categories: Företagstjänster
+        file_delivery_method: Filleveransmetod
 
       member:
         true: Medlem
@@ -353,6 +352,7 @@ sv:
       submit_button_label: *submit
       need_to_enter_name_html: Du måste ha angett ditt för- och efternamn
                           för att skapa en medlemsansökan. %{edit_profile}.
+      file_delivery_selection: 'Var god välj hur du ska leverera de filer som behövs för din ansökan:'
       submit_button_explain: Välj hur du vill leverera dina filer för att aktivera Skicka-knappen
       where_to_mail_files: Vi kommer att maila dig adressen
       email_files_subject: Mina applikationsfiler
@@ -529,12 +529,13 @@ sv:
     uploads:
       no_files: Inga filer är uppladdade för denna ansökan.
       files_uploaded: 'Uppladdade filer för denna ansökan:'
-      filename: Filnamn
-      file_was_uploaded: 'Filen laddades upp: %{filename}'
-      confirm_delete: 'Är du säker på att du vill radera %{filename}?'
+      filename: &filename Filnamn
+      file_was_uploaded: &file_was_uploaded 'Filen laddades upp: %{filename}'
+      confirm_delete: &upload_confirm_delete 'Är du säker på att du vill radera %{filename}?'
       invalid_upload_type: &invalid_upload_type Tyvärr kan du inte ladda upp denna filtypen.
       file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
       please_upload_again: Var god ladda upp dina filer igen.
+      will_review_after_received: &review_after_recevied_files "Vi kommer att handlägga din ansökan när vi har fått alla filer."
 
     update_the_status: Uppdatera status
     application_deleted: Ansökan raderad.
@@ -544,11 +545,11 @@ sv:
   file_uploads:
     no_files: Inga filer är uppladdade.
     files_uploaded: 'Uppladdade filer för denna ansökan:'
-    filename: Filnamn
-    file_was_uploaded: 'Filen laddades upp: %{filename}'
-    confirm_delete: 'Är du säker på att du vill radera %{filename}?'
-    invalid_upload_type: Tyvärr kan du inte ladda upp denna filtypen.
-    file_too_large: Filen måste vara mindre än 5 MB
+    filename: *filename
+    file_was_uploaded: *file_was_uploaded
+    confirm_delete: *upload_confirm_delete
+    invalid_upload_type: *invalid_upload_type
+    file_too_large: *file_too_large_5MB
 
 
 
@@ -984,25 +985,48 @@ sv:
 
     dashboard:
       title: ADMIN DASHBOARD
-      total_members: "members"
 
-      payments: *payments
+      tabs:
+        current:
+          tab-title: Nuvarande
+          title: "Current Items of Note:"
+          open_apps_no_files: "Open Applications with no files uploaded"
+          app_approved_no_payment: "Applications approved but no membership payment yet"
+          companies_no_branding_payment: "companies Branding license fee not yet paid"
+          companies_incomplete: "companies with information not yet complete"
 
-      member_fee_payments: "%{number_payments} member fee payments"
-      branding_fee_payments: "%{number_payments} branding fee payments"
+        activity:
+          tab-title: Aktivitet
+          title: "Activity in the past %{recent_num_days} days:"
+          payments: *payments
+          member_fee_payments: "%{number_payments} medlemskap betalningar"
+          branding_fee_payments: "%{number_payments} H-Branding betalningar"
 
-      recent_activity_section_title: "Activity in the past %{recent_num_days} days:"
+        applications:
+          tab-title: &applications Ansökningar
+          title: *applications
 
-      current_items_section_title: "Current Items of Note:"
-      open_apps_no_files: "Open Applications with no files uploaded"
-      app_approved_no_payment: "Applications approved but no membership payment yet"
-      companies_no_branding_payment: "companies Branding license fee not yet paid"
-      companies_incomplete: "companies with information not yet complete"
+        users:
+          tab-title: &users Användare
+          title: *users
+
+        members:
+          tab-title: &members Företagsmedlemmar
+          title: *members
+          total_members: *members
+
+        payments_memberships:
+          tab-title: &payments_membership "Betalningar: medlemskap"
+          title: *payments_membership
+
+        payments_h_branding:
+          tab-title: &payments_h_branding "Betalningar: H-Branding"
+          title: *payments_h_branding
+
 
   mailers:
-    login_here: "Klicka här för att gå till inloggningssidan."
+    login_here: "Klicka här för att gå till inloggningssidan:"
     may_need_to_login_first: "Du kan behöva logga in först.  Här är inloggningssidan:"
-    login_here: "Klicka här för att gå till SHF inloggningssidan."
 
     application_mailer:
       greeting: &email_greeting "Hej %{greeting_name}"
@@ -1037,6 +1061,11 @@ sv:
       acknowledge_received:
         subject: Din ansökan till Sveriges Hundföretagare är mottagen
         message_text: "Din ansökan är mottagen. Vi hanterar den så fort vi kan. Säkerställ att du laddat upp eller mailar in allt relevant underlag."
+        your_submitted_info: "Här är vad du har laddat upp:"
+        review_after_recevied_files: *review_after_recevied_files
+        upload_choice_intro: "Ditt val för att tillhandahålla underlag: "
+        need_to_upload: "Du måste ladda upp dina filer."
+        can_upload_more: "Du kan ladda upp fler filer."
         error_sending: &shf_email_error  "Det gick inte att skicka e-post till dig på {% email} om din ansökan."
 
       app_approved:
@@ -1076,13 +1105,21 @@ sv:
           extend_membership: Du kan förlänga ditt medlemskap i ytterligare
                                   12 månader genom att betala medlemsavgiften.
 
+      h_branding_fee_will_expire:
+        subject: Det är snart dags att betala din H-märkningspremie
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Observera att din nuvarande H-märkningspremie löper ut den %{expire_date}."
+          how_to_pay_fee:  &pay_hbrand_be_mapped  Betala den ett år till via länken nedan. Detta gör att du fortsätter synas på kartan och fortsätter ha ett H-märkt företag.
+          company_link_login_msg: "När du är inloggad ser du när din H-märkningspremie går ut och hur du betalar på din företagssida:"
+
       h_branding_fee_past_due:
         subject: Ditt företags H-märkespremie är obetald.
         greeting: *email_greeting
         message_text:
           fee_is_unpaid: Observera att ditt företags H-märkespremie inte är betald.
-          how_to_pay_fee: Betala den ett år till via länken nedan. Detta gör att du fortsätter synas på kartan och fortsätter ha ett H-märkt företag.
-          company_link_login_msg: &co_link_login " (du kan behöva logga in först innan du ser knappen för att betala)."
+          how_to_pay_fee: *pay_hbrand_be_mapped
+          company_link_login_msg: " (Du kan behöva logga in först innan du ser knappen för att betala)."
 
       co_info_incomplete:
         subject: Var god färdigställ din företagssida
@@ -1102,6 +1139,7 @@ sv:
         message_text:
           expire_alert_html: "Ditt medlemsskap gick ut <span class='date-warning'> %{expire_date}.</span>"
           renew_membership: Du kan förnya ditt medlemsskap och fortsätta dra nytta av medlemsfördelarna genom att logga in och betala.
+          pay_on_acct_page: "Du betalar via "
 
 
   devise:
@@ -1112,7 +1150,7 @@ sv:
         title: Skapa användare
         create_account: Skapa konto
         forgot_password: Glömt lösenord
-        confirm_password: &confirm_password Bekräfta lösenord
+        confirm_password: &confirm_password Bekräfta nytt lösenord
         submit_button_label: Skapa användare
         success: Ett nytt konto har skapats
       edit:
@@ -1128,9 +1166,14 @@ sv:
         confirm_are_you_sure: Är du säker på att du vill radera ditt konto?
         back: *back
         success: Ditt konto har uppdaterats
+        password_header: Byt lösenord
+        new_password: Nytt lösenord
+        info_header: Redigera namn och e-post
+        password_confirmation: *password_confirmation
+
     sessions:
       new:
-        log_in: &log_in Logga In
+        log_in: &log_in Logga in
         title: *log_in
         remember_me: Kom ihåg mig
         submit_button_label: *log_in
@@ -1166,19 +1209,25 @@ sv:
   #   the key for the section.)
   menus:
     skip_to_content: Gå direkt till innehållet
+    menu: Meny
     nav:
       shf_main_site: &shf_main_site SHF-sajten
       home: &home Hem
 
       visitor:
         home: *home
+        association: Föreningen
         brochure: Broschyr
+        board: Styrelse
+        our_policy: Vår Policy
+        board_statues: Stadgar
+        history: Historik
         dog_owners:
           submenu_title: Hundägare
           about_us: &about_us Om oss
           h_label: H-märket
-          knowledge_bank: &knowledge_bank Kunskapsbank
-          are_you_unsatisfied: 'Är du inte nöjd?'
+          knowledge_bank: &knowledge_bank_text Kunskapsbank
+          are_you_interested: 'Är du inte nöjd?'
           become_supporter: Bli stödmedlem
           being_dog_owners: Att vara hundägare
         entrepreneurs:
@@ -1189,15 +1238,15 @@ sv:
           member_criteria: Medlemskriterier
           member_benefits: Medlemsförmåner
           quality_standards: Kvalitetskontroll
-          knowledge_bank: *knowledge_bank
-        knowledge_bank:
-          submenu_title: *knowledge_bank
-          blogs: Bloggar
-          books: Böcker
-          research: Forskning
-          pod: Pod
-          popular_science: Populärvetenskap
-          video: Video
+          gdpr: "GDPR"
+          knowledge_bank:
+            submenu_title:  *knowledge_bank_text
+            blogs: Bloggar
+            books: Böcker
+            research: Forskning
+            pod: Pod
+            popular_science: Populärvetenskap
+            video: Video
         contact: Kontakt
         find_dog_businesses: Hitta hundföretagare
 
@@ -1270,7 +1319,7 @@ sv:
       not_a_number: är inte ett nummer
       not_an_integer: måste vara ett heltal
       odd: måste vara udda
-      required: must exist
+      required: måste existera
       taken: används redan
       too_long:
         one: är för lång (max är ett tecken)

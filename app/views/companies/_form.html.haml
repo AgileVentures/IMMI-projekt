@@ -1,46 +1,38 @@
 = form_for @company, html: { class: "#{class_name}" } do |f|
 
   != model_errors_helper(@company)
+  .container
+    .row
+      .col.form-group
+        = f.label :name, "#{t('companies.company_name')}", class: 'required'
+        = f.text_field :name,  class: 'form-control'
+      .col.form-group
+        = f.label :company_number, "#{t('companies.show.company_number')}", class: 'required'
+        = fas_tooltip(t('.org_nr_tooltip'))
+        = f.number_field :company_number,  class: 'form-control'
+    .row
+      .col.form-group
+        = f.label :phone_number, "#{t('companies.telephone_number')}"
+        = f.text_field :phone_number,  class: 'form-control'
+      .col.form-group
+        = f.label :email, "#{t('companies.show.email')}", class: 'required'
+        = f.text_field :email,  class: 'form-control'
+    .row
+      .col.form-group
+        = f.label :website, "#{t('companies.website_include_http')}"
+        = f.text_field :website,  class: 'form-control'
+      .col.form-group.dinkurs-company-id
+        = f.label :dinkurs_company_id, "#{t('companies.show.dinkurs_key')}"
+        = fas_tooltip(t('.dinkurs_id_tooltip'))
+        = f.text_field :dinkurs_company_id,  class: 'form-control'
+      .col.dinkurs-company-show
+        = f.check_box :show_dinkurs_events, {}, "true", "false"
+        = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
+        = fas_tooltip(t('.dinkurs_show_tooltip'))
 
-  = f.label :name, "#{t('companies.company_name')}", class: 'required'
-  = f.text_field :name, class: 'wpcf7-form-control'
+    .row
+      .col.form-group
+        = f.label :description, "#{t('companies.description')}"
+        = f.cktext_area :description,  class: 'form-control'
 
-  %div
-    = f.label :company_number, "#{t('companies.show.company_number')}", class: 'required'
-
-    %span.glyphicon.glyphicon-info-sign{ title: "#{t('.org_nr_tooltip')}",
-                                         data: {toggle: 'tooltip'} }
-  = f.number_field :company_number, class: 'wpcf7-form-control'
-
-  = f.label :phone_number, "#{t('companies.telephone_number')}"
-  = f.text_field :phone_number, class: 'wpcf7-form-control'
-
-  = f.label :email, "#{t('companies.show.email')}", class: 'required'
-  = f.text_field :email, class: 'wpcf7-form-control'
-
-  = f.label :website, "#{t('companies.website_include_http')}"
-  = f.text_field :website, class: 'wpcf7-form-control'
-
-  .dinkurs-company-id
-    = f.label :dinkurs_company_id, "#{t('companies.show.dinkurs_key')}"
-
-    %span.glyphicon.glyphicon-info-sign{ title: "#{t('.dinkurs_id_tooltip')}",
-                                         data: {toggle: 'tooltip'} }
-
-    = f.text_field :dinkurs_company_id, class: 'wpcf7-form-control'
-
-  .dinkurs-company-show
-    %div
-      = f.label :show_dinkurs_events, "#{t('companies.show_dinkurs_events')}"
-
-      %span.glyphicon.glyphicon-info-sign{ title: "#{t('.dinkurs_show_tooltip')}",
-                                           data: {toggle: 'tooltip'} }
-
-    %label.switch
-      = f.check_box :show_dinkurs_events, {}, "true", "false"
-      %span.slider
-
-  = f.label :description, "#{t('companies.description')}"
-  = f.cktext_area :description, class: 'wpcf7-form-control'
-
-  = f.submit "#{t('submit')}"
+    = f.submit "#{t('submit')}", class: 'btn btn-primary mb-2 form-control'

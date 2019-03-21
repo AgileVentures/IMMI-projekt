@@ -1,41 +1,32 @@
-@import "bootstrap/variables";
-@import "bootstrap/mixins";
-@import "bootstrap/buttons";
-
-$blue-button-color: #888;
-$disabled-button-background: #f8f8ff; // ghostwhite
-
-button:disabled,
-html input:disabled {
-  cursor: not-allowed;
-  opacity: 0.5;
-}
-
-
-#admin-change-status-buttons {
-  .header {
-    display: inline;
-    font-weight: bold;
-  }
-
-  form {
-    display: inline;
-  }
-
-  input {
-    @extend .btn;
-    margin-left: 1em;
-    text-transform: none;
-  }
-
-  input:hover,
-  .btn:hover {
-    border: 1px solid $blue-button-color;
-  }
-
-  input:disabled {
-    background: $disabled-button-background;
-    color: $blue-button-color;
-  }
-
-}
+//@import "bootstrap/variables";
+//@import "bootstrap/mixins";
+//@import "bootstrap/buttons";
+//$blue-button-color: #888;
+//$disabled-button-background: #f8f8ff; // ghostwhite
+//button:disabled,
+//html input:disabled {
+//  cursor: not-allowed;
+//  opacity: 0.5;
+//}
+//#admin-change-status-buttons {
+//  .header {
+//    display: inline;
+//    font-weight: bold;
+//  }
+//  form {
+//    display: inline;
+//  }
+//  input {
+//    @extend .btn;
+  //   margin-left: 1em;
+  //   text-transform: none;
+  // }
+  // input:hover,
+  // .btn:hover {
+  //   border: 1px solid $blue-button-color;
+  // }
+  // input:disabled {
+  //   background: $disabled-button-background;
+  //   color: $blue-button-color;
+  // }
+// }

@@ -2,8 +2,6 @@
   %h1.entry-title
     = t('.title')
     = @business_category.name
-.post-title-divider
-  %span
 .entry-content
   - unless @business_category.description.nil?
     %p
@@ -12,19 +10,20 @@
   - if @business_category.companies.empty?
     %p= t('.no_one_applied_category')
   - else
-    %table
-      %thead
-        %tr
-          %th= t('companies.index.name')
-          %th= t('companies.index.region_land')
-          - if current_user.admin?
-            %th= t('companies.index.company_number')
-            %th
-      %tbody
-        - @companies.each do | company |
-          %tr.company
-            %td= link_to company.name, company
-            %td= safe_join(company.addresses_region_names, tag.br)
+    .table-responsive
+      %table.table.table-hover.table-sm.table-striped
+        %thead
+          %tr
+            %th= t('companies.index.name')
+            %th= t('companies.index.region_land')
             - if current_user.admin?
-              %td= company.company_number
-              %td= link_to t('edit'), edit_company_path(company)
+              %th= t('companies.index.company_number')
+              %th
+        %tbody
+          - @companies.each do | company |
+            %tr.company
+              %td= link_to company.name, company
+              %td= safe_join(company.addresses_region_names, tag.br)
+              - if current_user.admin?
+                %td= company.company_number
+                %td= link_to t('edit'), edit_company_path(company)

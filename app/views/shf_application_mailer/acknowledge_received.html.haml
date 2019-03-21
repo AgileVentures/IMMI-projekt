@@ -1,5 +1,21 @@
 - provide :signoff do
   = render 'application_mailer/signoff'
 
+- i18n_scope = 'mailers.shf_application_mailer.acknowledge_received'
 = render layout: 'layouts/mail_from_membership' do
-  %p= t('mailers.shf_application_mailer.acknowledge_received.message_text')
+  %p= t('message_text', scope: i18n_scope)
+
+  %hr
+  %p= t('your_submitted_info', scope: i18n_scope)
+  .shf-application-info
+    %p
+      = shf_app_to_html(@shf_application)
+  %hr
+
+  - if @shf_application.uploaded_files.size == 0
+    %p.nofiles-will-review= t('review_after_recevied_files', scope: i18n_scope)
+    = t('need_to_upload', scope: i18n_scope)
+  - else
+    = t('can_upload_more', scope: i18n_scope)
+
+  = render 'mailers_shared/may_need_to_login'

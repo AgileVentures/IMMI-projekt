@@ -336,8 +336,8 @@ RSpec.describe Address, type: :model do
   end
 
   describe 'Associations' do
-    it { is_expected.to belong_to(:region) }
-    it { is_expected.to belong_to(:kommun) }
+    it { is_expected.to belong_to(:region).optional }
+    it { is_expected.to belong_to(:kommun).optional }
     it { is_expected.to belong_to(:addressable) }
   end
 

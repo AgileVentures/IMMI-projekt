@@ -1,0 +1,45 @@
+<% module_namespacing do -%>
+
+#--------------------------
+#
+# @class  <%= alert_class_name %>
+#
+# @desc Responsibility:  FIXME: resposibility for this Alert class in a single sentence
+#
+#  Only 1 is needed for the system.
+#
+# @author FIXME: your name and email
+# @date <%= Date.current %>
+# @file <%= alert_class_name.underscore %>.rb
+#
+#--------------------------
+
+
+# FIXME: if this alert needs to be sent to all members of a Company, it should be a subclass of CompanyEmailAlert and adjust as needed.
+class <%= alert_class_name %>  < UserEmailAlert
+
+  # FIXME: if this alert needs to be sent to all members of a company, the last argument should be a company:
+  #  def send_alert_this_day?(timing, config, company)
+  def send_alert_this_day?(timing, config, user)
+
+    # FIXME: if this alert needs to be sent to all members of a company, arguments has should at least include company:
+    #   if RequirementsForHBrandingFeeDue.requirements_met?({company: company})
+    if RequirementsFor<%= alert_class_name %>.requirements_met?({user: user})
+
+      # FIXME: the first argument should be the point in time you need to check (ex: user.membership_expire_date)
+      day_to_check = self.class.days_today_is_away_from( FIXME_INSERT_ARGUMENT, timing)
+
+      send_on_day_number?(day_to_check, config)
+
+    else
+        false
+    end
+  end
+
+
+  def mailer_method
+    :<%= alert_class_name.underscore %>
+  end
+
+end
+<% end -%>

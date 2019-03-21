@@ -4,6 +4,10 @@ var Utility = {
     // Toggles (hide or show) via an anchor element $(this) bound to
     // 'click' event.  The 'href' attribute of the element is the
     // id of the content (table, div, etc.) to be toggled
+    //
+    // Note that this expects the id to have underscores and not hyphens.
+    // This is because I18n.t expects underscores and this function is
+    // building the I18n.t string.
     var toggleId = $(this).attr('href');
     var showStr = 'toggle.' + toggleId.replace('#','') + '.show';
     var hideStr = 'toggle.' + toggleId.replace('#','') + '.hide';

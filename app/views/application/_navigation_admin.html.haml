@@ -1,32 +1,29 @@
-%li.menu-item.menu-item-has-children
-  %a.link-no-styling{ href: '#' }= t('menus.nav.admin.administration.submenu_title')
-  %ul.sub-menu
-    %li.menu-item.menu-item-has-children
-      %a.link-no-styling{ href: '#' }= t('menus.nav.admin.applications.submenu_title')
-      %ul.sub-menu
-        %li.menu-item
-          = link_to t('menus.nav.admin.manage_applications'),
-                    shf_applications_path
-        %li.menu-item
-          = link_to t('menus.nav.admin.applications.waiting_reasons'),
-                    admin_only_member_app_waiting_reasons_path
+%li.dropdown
+  %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#" }= t('menus.nav.admin.applications.submenu_title')
+  %ul.dropdown-menu
+    %li
+      = link_to t('menus.nav.admin.manage_applications'), shf_applications_path, class: 'nav-link'
+    %li
+      = link_to t('menus.nav.admin.applications.waiting_reasons'), admin_only_member_app_waiting_reasons_path, class: 'nav-link'
 
-    %li.menu-item.menu-item-has-children
-      %a.link-no-styling{ href: '#' }= t('menus.nav.admin.companies.submenu_title')
-      %ul.sub-menu
-        %li.menu-item
-          = link_to t('menus.nav.admin.companies.manage_companies'), companies_path
-        %li.menu-item
-          = link_to t('menus.nav.admin.companies.new_company'), new_company_path
+%li.dropdown
+  %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#" }= t('menus.nav.admin.companies.submenu_title')
+  %ul.dropdown-menu
+    %li
+      = link_to t('menus.nav.admin.companies.manage_companies'), companies_path, class: 'nav-link'
+    %li
+      = link_to t('menus.nav.admin.companies.new_company'), new_company_path, class: 'nav-link'
 
-    %li.menu-item.menu-item-has-children
-      %a.link-no-styling{ href: '#' }= t('menus.nav.admin.categories.submenu_title')
-      %ul.sub-menu
-        %li.menu-item
-          = link_to t('menus.nav.admin.categories.manage_categories'),
-                    business_categories_path
-        %li.menu-item
-          = link_to t('menus.nav.admin.categories.new_category'), new_business_category_path
+%li.dropdown
+  %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => "#" }= t('menus.nav.admin.categories.submenu_title')
+  %ul.dropdown-menu
+    %li
+      = link_to t('menus.nav.admin.categories.manage_categories'), business_categories_path, class: 'nav-link'
+    %li
+      = link_to t('menus.nav.admin.categories.new_category'), new_business_category_path, class: 'nav-link'
 
-%li.menu-item
-  = link_to t('menus.nav.admin.users.list_users'), users_path
+%li
+  = link_to t('menus.nav.admin.users.list_users'), users_path, class: 'nav-link'
+
+
+

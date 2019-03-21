@@ -1,29 +1,27 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-.post-title-divider
-  %span
-.entry-content.wpcf7
+.entry-content
   = form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
 
     != model_errors_helper(resource)
 
-    .field
+    .form-group
       = f.label :first_name, class: 'required'
-      = f.text_field :first_name, autofocus: true, class: 'wpcf7-form-control'
-    .field
+      = f.text_field :first_name, autofocus: true, class: 'form-control'
+    .form-group
       = f.label :last_name, class: 'required'
-      = f.text_field :last_name, class: 'wpcf7-form-control'
-    .field
+      = f.text_field :last_name, class: 'form-control'
+    .form-group
       = f.label :email, class: 'required'
-      = f.email_field :email, class: 'wpcf7-form-control'
-    .field
+      = f.email_field :email, class: 'form-control'
+    .form-group
       = f.label :password, class: 'required'
       = render 'devise/shared/min_password_length_info'
-      = f.password_field :password, autocomplete: 'off', class: 'wpcf7-form-control'
-    .field
+      = f.password_field :password, autocomplete: 'off', class: 'form-control'
       = f.label :password_confirmation, "#{t('.confirm_password')}", class: 'required'
-      = f.password_field :password_confirmation, autocomplete: 'off', class: 'wpcf7-form-control'
+      = f.password_field :password_confirmation, autocomplete: 'off', class: 'form-control'
     .actions
-      = f.submit "#{t('.submit_button_label')}"
+      = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary mb-2 form-control'
   = render 'application/required_fields'
+  %hr
   = render 'devise/shared/links'

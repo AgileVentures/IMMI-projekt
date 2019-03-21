@@ -1,5 +1,5 @@
-%li.menu-item.menu-item-has-children
-  = link_to t('menus.nav.members.member_pages'), member_pages_path
+%li.dropdown
+  %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", :href => member_pages_path }= t('menus.nav.members.member_pages')
 
   = render partial: 'shf_documents/documents_list',
-           locals: { ul_class: 'sub-menu', li_class: 'menu-item' }
+           locals: { ul_class: 'dropdown-menu', li_class: 'dropdown' }

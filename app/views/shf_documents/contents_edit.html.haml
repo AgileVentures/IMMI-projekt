@@ -1,14 +1,10 @@
 - content_for :javascript_for_view do
   = javascript_include_tag Ckeditor.cdn_url
-  
+
 %header.entry-header
   %h1.entry-title= t('.page_title', document_title: @page)
 
-.post-title-divider
-  %span
-
-
-.entry-content.wpcf7
+.entry-content
   = render 'contents_form'
 
 %br

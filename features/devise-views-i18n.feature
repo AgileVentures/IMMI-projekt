@@ -42,7 +42,7 @@ Feature: As a non-swedish speaking potential member
     Then I should see t("devise.registrations.edit.title")
     And I should see t("activerecord.attributes.user.password")
     And I should see t("activerecord.attributes.user.password")
-    And I should see t("devise.registrations.edit.confirm_password")
+    And I should see t("devise.registrations.edit.password_confirmation")
     And I should see t("devise.registrations.edit.current_password")
     And I should see t("devise.registrations.edit.leave_blank_if_no_change")
     And I should see t("devise.registrations.edit.required_to_save_changes")

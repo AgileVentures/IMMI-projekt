@@ -1,22 +1,17 @@
-= search_form_for @search_params, method: :get, url: companies_path,
-                                  class: 'form-horizontal' do |f|
-  .form-group
-    .col-sm-5
+= search_form_for @search_params, method: :get, url: companies_path do |f|
+  .row
+    .col-sm.form-group
       = f.label :business_categories_id_in,
-                "#{t('activerecord.models.business_category.one')}",
-                class: 'control-label',
-                style: 'text-align: left; font-size: 12px;'
+                "#{t('activerecord.models.business_category.one')}"
       = f.collection_select :business_categories_id_in,
                       BusinessCategory.order(:name).distinct,
                       :id, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
-    .col-sm-4
+    .col-sm.form-group
       = f.label :addresses_region_id_in,
-                "#{t('activerecord.attributes.address.region')}",
-                class: 'control-label',
-                style: 'text-align: left; font-size: 12px;'
+                "#{t('activerecord.attributes.address.region')}"
       = f.collection_select :addresses_region_id_in,
                       Region.all,
                       :id, :name, { include_blank: false },
@@ -24,30 +19,24 @@
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
 
-    .col-sm-3
+    .col-sm.form-group
       = f.label :addresses_kommun_id_in,
-                "#{t('activerecord.attributes.address.kommun')}",
-               class: 'control-label',
-               style: 'text-align: left; font-size: 12px;'
+                "#{t('activerecord.attributes.address.kommun')}"
       = f.collection_select :addresses_kommun_id_in,
                      Kommun.all,
                      :id, :name, { include_blank: false },
                      { multiple: true, size: 5, style: 'width: 100%;',
                        class: 'form-control search_field',
                        data: {language: "#{@locale}" } }
-  .form-group
-    .col-sm-8
+  .row
+    .col-sm
       = f.label :name_in,
-                "#{t('activerecord.models.company.one')}",
-                class: 'control-label',
-                style: 'text-align: left; font-size: 12px;'
+                "#{t('activerecord.models.company.one')}"
       = f.collection_select :name_in,
                       all_companies.order(:name),
                       :name, :name, { include_blank: false },
                       { multiple: true, size: 5, style: 'width: 100%;',
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
-
-    .col-sm-4
-      %br
-      = submit_tag "#{t('search')}", class: 'btn btn-primary pull-right'
+    .col-sm
+      = submit_tag "#{t('search')}", class: 'btn btn-primary mt-auto', style: 'width:90%;'

@@ -1,6 +1,15 @@
 And(/^the following applications exist:$/) do |table|
+
+  # Hash value "is_legacy" indicates an application that was created before we
+  # required the user to specify a file-delivery method (upload, email, etc.) for
+  # application files.
+  # We have to skip validation for such an application since it will fail with
+  # current validation rules.
+
   table.hashes.each do |hash|
-    attributes = hash.except('user_email', 'categories', 'company_name', 'company_number')
+
+    attributes = hash.except('user_email', 'categories', 'company_name',
+                             'company_number', 'is_legacy')
     user = User.find_by(email: hash[:user_email].downcase)
 
     companies = []
@@ -25,6 +34,8 @@ And(/^the following applications exist:$/) do |table|
     contact_email = hash['contact_email'] && ! hash['contact_email'].empty? ?
                     hash['contact_email'] : hash[:user_email]
 
+    legacy_app = hash['is_legacy'] == 'true' ? true : false
+
     if (ma = user.shf_application)
 
       user.shf_application.companies << companies
@@ -32,11 +43,18 @@ And(/^the following applications exist:$/) do |table|
     else
       num_categories = hash[:categories] ? 0 : 1
 
-      ma = FactoryBot.build(:shf_application,
-                            attributes.merge(user: user,
-                            contact_email: contact_email,
-                            create_company: false,
-                            num_categories: num_categories))
+      ma_attributes = attributes.merge(user: user,
+                                       contact_email: contact_email,
+                                       create_company: false,
+                                       num_categories: num_categories)
+
+      if legacy_app
+        ma = FactoryBot.build(:shf_application, :legacy_application,
+                              ma_attributes)
+      else
+        ma = FactoryBot.build(:shf_application,
+                              ma_attributes)
+      end
       ma.companies = companies
     end
 
@@ -48,7 +66,18 @@ And(/^the following applications exist:$/) do |table|
       end
       ma.business_categories = categories
     end
-    ma.save
+
+
+    if legacy_app
+      # We save without validation - so, confirm that the **only** validation errors
+      # would be associated with the missing file-delivery method.
+      ma.valid?
+      expect(ma.errors.keys)
+        .to match_array [:file_delivery_method,
+                         :'user.shf_application.file_delivery_method']
+    end
+
+    ma.save(validate: (legacy_app ? false : true))
   end
 end
 

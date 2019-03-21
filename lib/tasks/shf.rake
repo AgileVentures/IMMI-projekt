@@ -4,13 +4,13 @@ require 'active_support/logger'
 namespace :shf do
 
   ACCEPTED_STATE = 'accepted' unless defined?(ACCEPTED_STATE)
-  LOG_FILE = 'log/shf_tasks' unless defined?(LOG_FILE)
+  LOG_FILE       = 'log/shf_tasks.log' unless defined?(LOG_FILE)
 
   # TODO removed shf:dinkurs_load task once response condition (DinkursFetch) is deployed
   desc 'load Dinkurs events for companies'
   task :dinkurs_load => [:environment] do
 
-    LOG = 'log/dinkurs_load_events'
+    LOG = 'log/dinkurs_load_events.log'
 
     ActivityLogger.open(LOG, 'SHF_TASK', 'Load Dinkurs Events') do |log|
 
@@ -48,28 +48,28 @@ namespace :shf do
 
     headers_to_columns_mapping = {
         membership_number: :membership_number,
-        email: :email,
-        company_number: :company_number,
-        first_name: :first_name,
-        last_name: :last_name,
-        company_name: :company_name,
-        street: :street,
-        post_code: :post_code,
-        stad: :city,
-        region: :region,
-        phone_number: :phone_number,
-        website: :website,
-        category1: :category1,
-        category2: :category2
+        email:             :email,
+        company_number:    :company_number,
+        first_name:        :first_name,
+        last_name:         :last_name,
+        company_name:      :company_name,
+        street:            :street,
+        post_code:         :post_code,
+        stad:              :city,
+        region:            :region,
+        phone_number:      :phone_number,
+        website:           :website,
+        category1:         :category1,
+        category2:         :category2
     }
 
     csv_options = {
-        col_sep: ';',
-        headers_in_file: true,
+        col_sep:             ';',
+        headers_in_file:     true,
         remove_empty_values: false,
-        remove_zero_values: false,
-        file_encoding: 'UTF-8',
-        key_mapping: headers_to_columns_mapping
+        remove_zero_values:  false,
+        file_encoding:       'UTF-8',
+        key_mapping:         headers_to_columns_mapping
     }
 
     log = ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Import CSV')
@@ -81,7 +81,7 @@ namespace :shf do
         csv = SmarterCSV.process(args[:csv_filename], csv_options)
         #csv = CSV.parse(csv_text, :headers => true, :encoding => 'ISO-8859-1')
 
-        num_read = 0
+        num_read   = 0
         error_rows = 0
         csv.each do |row|
           begin
@@ -94,8 +94,8 @@ namespace :shf do
         end
 
         msg = "\nRead #{num_read + error_rows} rows.\n" +
-              "#{num_read} were valid and their information was imported.\n" +
-              "#{error_rows} had errors."
+            "#{num_read} were valid and their information was imported.\n" +
+            "#{error_rows} had errors."
         log.record('info', msg)
 
       else
@@ -170,26 +170,26 @@ namespace :shf do
       end
 
       delivery_methods = [
-        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:upload_now],
-          description_sv: 'Ladda upp nu',
-          description_en: 'Upload now',
-          default_option: true },
+          { name:           AdminOnly::FileDeliveryMethod::METHOD_NAMES[:upload_now],
+            description_sv: 'Ladda upp nu',
+            description_en: 'Upload now',
+            default_option: true },
 
-        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:upload_later],
-          description_sv: 'Ladda upp senare',
-          description_en: 'Upload later' },
+          { name:           AdminOnly::FileDeliveryMethod::METHOD_NAMES[:upload_later],
+            description_sv: 'Ladda upp senare',
+            description_en: 'Upload later' },
 
-        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:email],
-          description_sv: 'Skicka via e-post',
-          description_en: 'Send via email' },
+          { name:           AdminOnly::FileDeliveryMethod::METHOD_NAMES[:email],
+            description_sv: 'Skicka via e-post',
+            description_en: 'Send via email' },
 
-        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:mail],
-          description_sv: 'Skicka via vanlig post',
-          description_en: 'Send via regular mail' },
+          { name:           AdminOnly::FileDeliveryMethod::METHOD_NAMES[:mail],
+            description_sv: 'Skicka via vanlig post',
+            description_en: 'Send via regular mail' },
 
-        { name: AdminOnly::FileDeliveryMethod::METHOD_NAMES[:files_uploaded],
-          description_sv: 'Alla filer är uppladdade',
-          description_en: 'All files are uploaded' }
+          { name:           AdminOnly::FileDeliveryMethod::METHOD_NAMES[:files_uploaded],
+            description_sv: 'Alla filer är uppladdade',
+            description_en: 'All files are uploaded' }
       ]
 
       delivery_methods.each do |rec|
@@ -247,7 +247,7 @@ namespace :shf do
 
     args = args.with_defaults(sleep_time: 0.2, batch_num: 50)
 
-    Geocoder.configure( timeout: 20)   # geocoding service timeout (secs)
+    Geocoder.configure(timeout: 20) # geocoding service timeout (secs)
 
     ActivityLogger.open(LOG_FILE, 'SHF_TASK', 'Geocode Addresses') do |log|
 
@@ -259,21 +259,23 @@ namespace :shf do
       Address.geocode_all_needed(sleep_between: args[:sleep_time].to_f, num_per_batch: args[:batch_num].to_i)
 
       msg = " After running Address.geocode_all_needed(sleep_between: " +
-            "#{args[:sleep_time].to_f}, num_per_batch: #{args[:batch_num].to_i})"+
-            ", #{Address.not_geocoded.count} Addresses are not geocoded."
+          "#{args[:sleep_time].to_f}, num_per_batch: #{args[:batch_num].to_i})" +
+          ", #{Address.not_geocoded.count} Addresses are not geocoded."
       log.record('info', msg)
     end
   end
 
+
+  MEMBER_PAGES_PATH = File.join(Rails.root, 'app', 'views', 'pages')
+
+
   desc 'add member page arg=[filename]'
   task :add_member_page, [:filename] => :environment do |task_name, args|
 
-    ActivityLogger.open(LOG_FILE, 'SHF_TASK', task_name) do |log|
 
-      filename = args.fetch(:filename) do |_key|
-        log.record('error', 'You must specify a file name')
-        raise 'ERROR: You must specify a file name'
-      end
+    ActivityLogger.open(LogfileNamer.name_for(MemberPage), 'SHF_TASK', task_name) do |log|
+
+      filename = filename_from_args(args, log)
 
       if filename =~ /[^\w\-\.]/
         log.record('error', "Unacceptable characters in filename: #{filename}")
@@ -284,7 +286,7 @@ namespace :shf do
       # Add html file type if not present
       filename = filename + '.html' unless filename =~ /.*\.html$/
 
-      filepath = File.join(Rails.root, 'app', 'views', 'pages', filename)
+      filepath = File.join(MEMBER_PAGES_PATH, filename)
 
       unless File.file?(filepath)
         begin
@@ -301,158 +303,199 @@ namespace :shf do
     end
   end
 
-  # Create one org num: "rake shf:orgnum"
-  # Create 5 org nums: "rake shf:orgnum[5]"
 
-  desc "Create one or more unused Swedish Organization Numbers (aka 'company numbers' in SHF)"
-  task :orgnum, [:how_many] => :environment do |_task_name, args|
+  desc 'delete a member page arg=[filename] (deletes the file from the filesystem)'
+  task :delete_member_page, [:filename] => :environment do |task_name, args|
 
-    how_many = args.with_defaults(how_many: 1)[:how_many].to_i
+    ActivityLogger.open(LogfileNamer.name_for(MemberPage), 'SHF_TASK', task_name) do |log|
 
-    puts "\n#{how_many} available Org (Company) #{'Number'.pluralize(how_many)}: \n\n"
+      filename = filename_from_args(args, log)
 
-    how_many.times do
-      puts create_one_unused_org_number
+      member_page_abspath = File.expand_path(File.join(MEMBER_PAGES_PATH, filename))
+
+      if File.exist?(member_page_abspath)
+        begin
+          File.delete(member_page_abspath)
+          log.info( "Member Page file deleted: #{member_page_abspath}")
+
+        rescue => e
+          log.error( "Unable to delete #{member_page_abspath}.  Error: #{e}")
+          raise e
+        end
+
+    else
+      error_msg = "Member page file not found: #{member_page_abspath}"
+      log.error( error_msg)
+      raise error_msg
     end
 
-    puts "\n"
   end
 
+end
 
 
-  # -------------------------------------------------
+def filename_from_args(args, log)
+  args.fetch(:filename) do |_key|
+    error_message = 'No filename given. You must specify a file name.'
+    log.error(error_message)
+    raise "ERROR: #{error_message}"
+  end
+end
 
-  def create_one_unused_org_number
-    org_number = nil
 
-    100.times do
-      org_number = OrgNummersGenerator.generate_one
+# Create one org num: "rake shf:orgnum"
+# Create 5 org nums: "rake shf:orgnum[5]"
 
-      # stop if number is available (not used)
-      break if ! Company.find_by_company_number(org_number)
-    end
+desc "Create one or more unused Swedish Organization Numbers (aka 'company numbers' in SHF)"
+task :orgnum, [:how_many] => :environment do |_task_name, args|
 
-    org_number
+  how_many = args.with_defaults(how_many: 1)[:how_many].to_i
+
+  puts "\n#{how_many} available Org (Company) #{'Number'.pluralize(how_many)}: \n\n"
+
+  how_many.times do
+    puts create_one_unused_org_number
   end
 
-  def database_exists?
-    ActiveRecord::Base.connection
+  puts "\n"
+end
+
+
+# -------------------------------------------------
+
+def create_one_unused_org_number
+  org_number = nil
+
+  100.times do
+    org_number = OrgNummersGenerator.generate_one
+
+    # stop if number is available (not used)
+    break if !Company.find_by_company_number(org_number)
+  end
+
+  org_number
+end
+
+
+def database_exists?
+  ActiveRecord::Base.connection
   rescue ActiveRecord::NoDatabaseError
     false
   else
     true
+end
+
+
+def import_a_member_app_csv(row, log)
+
+  log.record('info', "Importing row: #{row.inspect}")
+
+  # log_and_show log, Logger::INFO, "Importing row: #{row.inspect}"
+
+  if (user = User.find_by(email: row[:email]))
+    puts_already_exists 'User', row[:email]
+  else
+    user = User.create!(email: row[:email], password: DEFAULT_PASSWORD)
+    puts_created 'User', row[:email]
   end
 
+  company = find_or_create_company(row[:company_number], user.email,
+                                   name:         row[:company_name],
+                                   street:       row[:street],
+                                   post_code:    row[:post_code],
+                                   city:         row[:city],
+                                   region:       row[:region],
+                                   phone_number: row[:phone_number],
+                                   website:      row[:website])
 
-  def import_a_member_app_csv(row, log)
+  if (membership = ShfApplication.find_by(user: user.id))
+    puts_already_exists('Membership application', " org number: #{row[:company_number]}")
+  else
+    membership = ShfApplication.create!(company_number:    row[:company_number],
+                                        first_name:        row[:first_name],
+                                        last_name:         row[:last_name],
+                                        contact_email:     user.email,
+                                        state:             ACCEPTED_STATE,
+                                        membership_number: row[:membership_number],
+                                        user:              user,
+                                        company:           company
+    )
 
-    log.record('info', "Importing row: #{row.inspect}")
-
-    # log_and_show log, Logger::INFO, "Importing row: #{row.inspect}"
-
-    if (user = User.find_by(email: row[:email]))
-      puts_already_exists 'User', row[:email]
-    else
-      user = User.create!(email: row[:email], password: DEFAULT_PASSWORD)
-      puts_created 'User', row[:email]
-    end
-
-    company = find_or_create_company(row[:company_number], user.email,
-                                     name: row[:company_name],
-                                     street: row[:street],
-                                     post_code: row[:post_code],
-                                     city: row[:city],
-                                     region: row[:region],
-                                     phone_number: row[:phone_number],
-                                     website: row[:website])
-
-    if (membership = ShfApplication.find_by(user: user.id))
-      puts_already_exists('Membership application', " org number: #{row[:company_number]}")
-    else
-      membership = ShfApplication.create!(company_number: row[:company_number],
-                                          first_name: row[:first_name],
-                                          last_name: row[:last_name],
-                                          contact_email: user.email,
-                                          state: ACCEPTED_STATE,
-                                          membership_number: row[:membership_number],
-                                          user: user,
-                                          company: company
-      )
-
-      puts_created('Membership application', " org number: #{row[:company_number]}")
-
-    end
-
-    membership = find_or_create_category(row[:category1], membership) unless row[:category1].nil?
-    membership = find_or_create_category(row[:category2], membership) unless row[:category2].nil?
-    membership.save!
-
-    if membership.accepted?
-      membership.company = company
-      user.save!
-    end
+    puts_created('Membership application', " org number: #{row[:company_number]}")
 
   end
 
+  membership = find_or_create_category(row[:category1], membership) unless row[:category1].nil?
+  membership = find_or_create_category(row[:category2], membership) unless row[:category2].nil?
+  membership.save!
 
-  def find_or_create_category(category_name, membership)
-    category = BusinessCategory.find_by_name(category_name)
-    if category
-      puts_already_exists 'Category', "#{category_name}"
-    else
-      category = BusinessCategory.create!(name: category_name)
-      puts_created 'Category', "#{category_name}"
-    end
-    membership.business_categories << category
-    membership
+  if membership.accepted?
+    membership.company = company
+    user.save!
   end
 
+end
 
-  def find_or_create_company(company_num, email,
-                             name:,
-                             street:,
-                             post_code:,
-                             city:,
-                             region:,
-                             phone_number:,
-                             website:)
+
+def find_or_create_category(category_name, membership)
+  category = BusinessCategory.find_by_name(category_name)
+  if category
+    puts_already_exists 'Category', "#{category_name}"
+  else
+    category = BusinessCategory.create!(name: category_name)
+    puts_created 'Category', "#{category_name}"
+  end
+  membership.business_categories << category
+  membership
+end
+
+
+def find_or_create_company(company_num, email,
+                           name:,
+                           street:,
+                           post_code:,
+                           city:,
+                           region:,
+                           phone_number:,
+                           website:)
+
+  company = Company.find_by_company_number(company_num)
+  if company
+    puts_already_exists 'Company', "#{company_num}"
+  else
+    region = Region.find_by name: region
+    Company.create!(company_number: company_num,
+                    email:          email,
+                    name:           name,
+                    phone_number:   phone_number,
+                    website:        website)
 
     company = Company.find_by_company_number(company_num)
-    if company
-      puts_already_exists 'Company', "#{company_num}"
-    else
-      region = Region.find_by name: region
-      Company.create!(company_number: company_num,
-                      email: email,
-                      name: name,
-                      phone_number: phone_number,
-                      website: website)
 
-      company = Company.find_by_company_number(company_num)
+    company.addresses << Address.new(street_address: street,
+                                     post_code:      post_code,
+                                     city:           city,
+                                     region:         region)
 
-      company.addresses << Address.new(street_address: street,
-                                       post_code: post_code,
-                                       city: city,
-                                       region: region)
-
-      puts_created 'Company', company.company_number
-    end
-    company
+    puts_created 'Company', company.company_number
   end
-
-  def puts_created(item_type, item_name)
-    puts " #{item_type} created and saved: #{item_name}"
-  end
+  company
+end
 
 
-  def puts_already_exists(item_type, item_name)
-    puts " #{item_type} already exists: #{item_name}"
-  end
+def puts_created(item_type, item_name)
+  puts " #{item_type} created and saved: #{item_name}"
+end
 
 
-  def puts_error_creating(item_type, item_name)
-    puts " ERROR: Could not create #{item_type} #{item_name}.  Skipped"
-  end
+def puts_already_exists(item_type, item_name)
+  puts " #{item_type} already exists: #{item_name}"
+end
+
+
+def puts_error_creating(item_type, item_name)
+  puts " ERROR: Could not create #{item_type} #{item_name}.  Skipped"
+end
 
 
 end

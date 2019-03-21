@@ -1,22 +1,20 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-.post-title-divider
-  %span
-.entry-content.wpcf7
+.entry-content
   = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-    .field
+    .form-group
       = f.label :email, class: 'required'
-      %br/
-      = f.email_field :email, autofocus: true, class: 'wpcf7-form-control'
-    .field
+      = f.email_field :email, placeholder: "#{t('activerecord.attributes.user.email')}", autofocus: true,  class: 'form-control'
+    .form-group
       = f.label :password, class: 'required'
-      %br/
-      = f.password_field :password, autocomplete: 'off', class: 'wpcf7-form-control'
+      = f.password_field :password, autocomplete: 'off',  class: 'form-control'
     - if devise_mapping.rememberable?
-      .checkbox
-        = f.check_box(:remember_me, class: 'text-nicelabel', position_class: 'text_checkbox')
-        = f.label :remember_me, "#{t('.remember_me')}"
+      .form-group
+        .form-check
+          = f.check_box(:remember_me)
+          = f.label :remember_me, "#{t('.remember_me')}", class: 'form-check-label'
     .actions
-      = f.submit "#{t('.submit_button_label')}"
+      = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary mb-2 form-control'
   = render 'application/required_fields'
+  %hr
   = render 'devise/shared/links'

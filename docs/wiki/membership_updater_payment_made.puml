@@ -1,0 +1,148 @@
+@startuml
+!include plantuml-ae-style.iuml
+
+
+'skinparam ActivityDiamondBackgroundColor white
+
+skinparam note {
+   FontSize 12
+   TextAlignment  left
+}
+
+skinparam lifelineStrategy solid
+
+skinparam Sequence {
+  FontColor black
+
+  Title {
+    FontSize 16
+    FontStyle plain
+  }
+
+  Group {
+    BorderThickness 1.2
+    BorderColor green
+  }
+
+  Arrow {
+            FontStyle         normal
+            BackgroundColor   DEFAULT_BACKGROUND_COLOR
+            BorderColor       DEFAULT_BORDER_COLOR
+            BorderColor       DEFAULT_NOT_SO_DARK
+
+            FontName          Courier
+            FontColor         black
+            FontSize          12
+        }
+
+
+  LifeLine {
+      BackgroundColor   white
+      BorderColor       black
+      BorderThickness   1
+  }
+
+
+    Participant {
+        BackgroundColor   white
+        BorderColor       black
+        BorderThickness   1
+        FontColor         black
+        FontSize          12
+    }
+
+  Box {
+    BorderColor red
+  }
+}
+
+
+skinparam footer {
+  FontSize 9
+}
+
+title MembershipStatusUpdater Sequence:  a payment is made and membership is granted\n
+
+left footer \nAshley Engelund  (weedySeaDragon @ github)  28 Feb. 2019
+
+
+activate Payment
+
+Payment -> Payment: <b><color: #black>update(status: SUCCESSFUL)
+Payment -> Payment: notify_observers(self)
+
+
+activate MembershipStatusUpdater
+
+Payment -> MembershipStatusUpdater: payment_made(payment)
+
+deactivate Payment
+
+
+MembershipStatusUpdater -> MembershipStatusUpdater: check_user_and_log({ user: payment.user })
+activate MembershipStatusUpdater
+
+note right of MembershipStatusUpdater #lightYellow
+ calls to ActivityLogger are left out for simplicity
+end note
+
+
+MembershipStatusUpdater -> MembershipStatusUpdater: [AbstractUpdater]\ncheck_requirements_and_act({ user: user })
+activate MembershipStatusUpdater
+
+MembershipStatusUpdater -> RequirementsForMembership: [AbstractRequirements]\nsatisfied?({user: user})
+
+activate RequirementsForMembership
+
+RequirementsForMembership <- RequirementsForMembership: requirements_met?[true | false]\n(assume TRUE for this example)
+activate RequirementsForMembership
+
+RequirementsForMembership -> User: membership_current?
+User --> RequirementsForMembership: true | false\n(assume FALSE for this example)
+
+RequirementsForMembership -> User: has_approved_shf_application?
+User --> RequirementsForMembership: true | false\n(assume TRUE for this example)
+
+
+
+MembershipStatusUpdater <-- RequirementsForMembership: [true | false]\n(assume TRUE for this example)
+
+deactivate RequirementsForMembership
+deactivate RequirementsForMembership
+
+
+note right of MembershipStatusUpdater #lightYellow
+ since RequirementsForMembership.satisfied?(user) is TRUE
+ update_action is called
+end note
+
+
+MembershipStatusUpdater -> MembershipStatusUpdater: update_action( { user: user, send_email: true | false } )
+
+group update_action
+
+MembershipStatusUpdater -> User: user.member?
+User --> MembershipStatusUpdater: true | false\n(assume FALSE for this example)
+
+note right of MembershipStatusUpdater #lightYellow
+ since the user is not (yet) a member,  grant_membership is called
+ else this would be a renewal and renew_membership would be called
+end note
+
+group grant membership
+
+MembershipStatusUpdater -> User: user.update( member: true, membership_number: ...)
+
+MembershipStatusUpdater -> MemberMailer:  membership_granted(user) if send_email
+
+
+end
+
+end
+
+
+
+deactivate MembershipStatusUpdater
+
+
+@enduml

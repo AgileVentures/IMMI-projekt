@@ -59,19 +59,19 @@ Feature:
   Scenario: Admin filters users by membership status
     Given I am on the "all users" page
 
-    When I select radio button t("users.search_form.all_users")
+    When I click the radio button with id "radio-membership-filter-all"
     And I click on t("search")
     Then I should see "sconnor@example.com"
     And I should see "luke@force.net"
     And I should see "ja@hotmail.com"
 
-    When I select radio button t("users.search_form.are_members")
+    When I click the radio button with id "radio-membership-filter-members"
     And I click on t("search")
     Then I should see "sconnor@example.com"
     And I should not see "luke@force.net"
     And I should not see "ja@hotmail.com"
 
-    When I select radio button t("users.search_form.are_not_members")
+    When I click the radio button with id "radio-membership-filter-not-members"
     And I click on t("search")
     Then I should see "luke@force.net"
     And I should see "ja@hotmail.com"

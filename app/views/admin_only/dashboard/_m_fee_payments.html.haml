@@ -1,14 +1,26 @@
-.section
-  %h3.section-title
-    Member fee Payments
-    :ruby
-      m_paid = @data_gatherer.recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count
-      m_total = @data_gatherer.total_members
-      m_percent = (m_paid.fdiv(m_total)) * 100
-  .progress
-    .progress-bar(aria-valuemax='100' aria-valuemin='0' aria-valuenow="#{m_percent.to_i}" role='progressbar' style="width:#{m_percent.to_i}%")
-      ="#{m_percent.to_i}% of all members have paid"
+-# This partial expects the following locals:
+-#   num_total - total number of members
+-#   num_paid - number of  total membership fee payments
+-#   those_not_paid - those that have not paid but need to
+-#
+-# TODO - finish refactoring this + _h_branding.html.haml partial: finish abstracting common things, parameterize
+%h3.section-title
+  = t('admin_only.dashboard.tabs.payments_memberships.title')
 
-  %p= styled_total(m_paid,'members have paid')
-  %p= styled_total(m_total, 'members in the system')
-  %p= styled_total(@data_gatherer.apps_approved_member_fee_not_paid.count, 'members have not paid')
+- percent = (num_paid.fdiv(num_total)) * 100
+
+.progress
+  .progress-bar{ progress_bar_html_styles(percent) }
+    #{percent.to_i}% of all members have paid
+
+%p= styled_total(num_paid,'members have paid')
+%p= styled_total(num_total, 'members in the system')
+%p= styled_total(those_not_paid.count, 'users have not paid. (Either they have been approved and not paid, or membership has lapsed.')
+
+%p
+  %a.btn.btn-success{ 'aria-controls': 'list-unpaid-members', 'aria-expanded': 'false', 'data-toggle': 'collapse', href: '#list-unpaid-members', role: 'button' }
+    View unpaid users
+.collapse#list-unpaid-members
+  .card.card-body
+    - those_not_paid.each do | not_paid |
+      = link_to not_paid.full_name, (user_path(not_paid))

@@ -93,7 +93,7 @@ Feature: Admin can see all SHF applications so they can be managed
   Scenario: Admin can see an application with multiple business categories given
     Given I am logged in as "emma_waits@waiting.se"
     Given I am on the "user instructions" page
-    And I click on t("menus.nav.users.my_application")
+    And I click on t("menus.nav.users.my_application") link
     And I select "Trainer" Category
     And I select "Psychologist" Category
     And I click on t("shf_applications.edit.submit_button_label")

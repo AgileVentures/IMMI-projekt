@@ -17,7 +17,8 @@ LOGMSG_MEMBERSHIP_REVOKED = 'Membership revoked'
 #
 # @class MembershipStatusUpdater
 #
-# @desc Responsibility:  Keep membership status up-to-date based the current business rules and requirements.
+# @desc Responsibility:  Keep membership status up-to-date based the current business rules
+#    and requirements.
 #  - gets notifications from events in the system and does what is needed with them to
 #    update the status of memberships for people in the system
 #
@@ -28,33 +29,31 @@ LOGMSG_MEMBERSHIP_REVOKED = 'Membership revoked'
 # @date   12/21/17
 # @file membership_status_updater.rb
 #
-# Goals with this PR:
-#   - show how the Observer pattern can and should be used to keep Membership status up to date
-#   - Single Responsibilty:  each class should have a *single* responsibility
-#     - Currently, the User class is waaay too big!  it has too many responsibilities.
-#       This moves the "update membership status based on the business rules"
-#       responsibility out of it into the MembershipStatusUpdater class
 #
-# The Observer pattern can and should also be used to update the company visibility:
-#   CompanyVisibilityUpdater has the responsibility of checking to see if the company should currently be visible
-#     based on the current business rules.  Thus all of the business rules are just in _one place_.
-#     Only 1 class has the responsibility for enforcing them.  No other classes have to care about them.
+# The Observer pattern is used to send notifications (methods) when something
+# 'interesting' has changed.  When the MembershipStatusUpdater receives one of these
+# notifications, it checks the membership to see if it needs to be changed (updated
+# or revoked).  It does this via the :check_requirements_and_act({ user: user })
+# method.  (This method is the public interface and main method for all
+# Updater classes.)
 #
-# Satisfies the "Open/Closed" principle in SOLID:  putting the business logic
+# This check is logged with the ActivityLogger so that anything that happens is
+# logged.
+#
+#
+#   MembershipStatusUpdater has the responsibility of checking to see if the membership
+#   should be updated or revoked based on the current business rules.
+#   Thus all of the business rules can be in just _one place_ (DRY).
+#   Only 1 class has the responsibility for enforcing them.  No other classes have to care about them.
+#
+#   Satisfies the "Open/Closed" principle in SOLID:  putting the business logic
 #   into 1 Observer class keeps it open to extension changes (just this class)
 #   but closed to having to modify lots of code when the requirements change
 #
-#   Business logic for when a Membership is granted or revoked is encapsulated into 1 class that others are _not_ coupled to
-#   Ditto with logic about Membership terms - whether they have expired or not, how the ending (expire) date is changed, etc.
-#
-#    - adding things that need to notify observers is easy:
-#      1. include Observable
-#      2. after_initialization :add_observers
-#      3. def add_observers (and add the observers in that method)
-#      4. where appropriate, let the observers know a change has been made so they can do their thing
-#
-#
-# Payments should split into a Factory and subclasses (MembershipFeePayment, BrandingFeePayment)
+#   Business logic for when a Membership is granted or revoked is encapsulated into 1 class
+#   that others are _not_ coupled to.
+#   Ditto with logic about Membership terms - whether they have expired or not,
+#   how the ending (expire) date is changed, etc.
 #
 #--------------------------
 

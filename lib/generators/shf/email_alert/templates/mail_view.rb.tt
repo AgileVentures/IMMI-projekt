@@ -1,0 +1,9 @@
+- provide :signoff do
+  = render 'application_mailer/signoff'
+
+- message_scope = 'mailers.<%= mailer_class.underscore %>.<%= mailer_method.underscore %>.message_text'
+
+= render layout: 'layouts/mail_from_membership' do
+
+  %p The body of the email message goes here.
+  %p You will need to create the I18n locale entries under mailers.<%= mailer_class.underscore %>.<%= mailer_method.underscore %>.message_text

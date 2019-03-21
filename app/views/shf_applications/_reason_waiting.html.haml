@@ -1,10 +1,10 @@
 -# Submit the changed reason via javascript when a member_app_waiting_reasons_id is selected from the list or custom_reason_text is changed.
-  Do not make user press a "save" or "submit" button for these changes. (use AJAX)
+-# Do not make user press a "save" or "submit" button for these changes. (use AJAX)
 #reason-waiting
   .row
-    .container
-      .reason-waiting-information
-        = label_tag :member_app_waiting_reasons, t('shf_applications.need_info.reason_title')
+    .col
+      .reason-waiting-information.form-group
+        %h3= label_tag :member_app_waiting_reasons, t('shf_applications.need_info.reason_title')
         -# have to set selected into an interim variable because this needs to be evaluated before the collection
         - selected = selected_reason_value(@shf_application, @other_waiting_reason_value)
         = select_tag(:member_app_waiting_reasons,
@@ -13,17 +13,16 @@
                                                             reason_name_method,
                                                             selected),
                          { include_blank: t('shf_applications.need_info.select_a_reason'),
-                           class: 'reason-waiting-list',
+                           class: 'form-control reason-waiting-list',
                            data: { remote: true,
                                    url: reason_waiting_shf_application_path(@shf_application),
                                    method: 'put' } })
 
-  .row
-    .container
-      #other-text-field{ style: "display: #{selected == @other_waiting_reason_value ? nil : 'none'}" }
+
+      .form-group#other-text-field{ style: "display: #{selected == @other_waiting_reason_value ? nil : 'none'}" }
         = label_tag :custom_reason_text, t('shf_applications.need_info.other_reason_label')
         = text_field_tag :custom_reason_text, @shf_application.custom_reason_text,
-                    { data: { remote: true,
+                    { class: 'form-control', data: { remote: true,
                               url: reason_waiting_shf_application_path(@shf_application),
                               method: 'put' } }
 

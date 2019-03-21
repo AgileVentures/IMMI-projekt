@@ -1,8 +1,6 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-  .post-title-divider
-    %span
-.entry-content.wpcf7
+.entry-content
   = render 'form', class_name: 'new-company'
   .center
     = link_to "#{t('companies.all_companies')}", companies_path

@@ -10,24 +10,17 @@
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
  */
-@import url("https://fonts.googleapis.com/css?family=Open+Sans");
-@import "bootstrap-sprockets";
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:200,400,700");
+@import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700');
+
+$warning:         #0067ce !default;
+
 @import "bootstrap";
 @import "font-awesome-sprockets";
 @import "font-awesome";
-@import "companies";
-@import "custom-shf-application-state";
-@import "custom";
 @import "maps";
-@import "shf-applications";
 @import "pagination";
-@import "shf-documents";
 @import "style";
-@import "users";
-@import "member-app-waiting-reason";
-@import "dashboard";
-
-
 .yes, .Yes {
   background-color: LightGreen;
 }
@@ -44,3 +37,5 @@
   padding-left: 5px;
   padding-right: 5px;
 }
+
+@import "dashboard";

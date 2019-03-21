@@ -141,3 +141,11 @@ RSpec.shared_examples 'it provides a link to the login page' do
   end
 
 end
+
+
+RSpec.shared_examples 'it has a link to the login page' do
+
+  it 'link and text are in the email' do
+    expect(email_created).to have_body_text(I18n.t('mailers.login_here'))
+  end
+end

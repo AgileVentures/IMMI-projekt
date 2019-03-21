@@ -345,6 +345,70 @@ RSpec.describe MemberMailer, type: :mailer do
 
   end
 
+
+  describe '#hbranding_fee_will_expire' do
+
+    HBRAND_FEE_WILLEXPIRE_SCOPE = 'mailers.member_mailer.h_branding_fee_will_expire'
+
+    let(:jan1_2020) { Date.new(2020, 1, 1) }
+
+    let(:company3) { create(:company) }
+
+    let(:member1_exp_jan1) do
+      app = create(:shf_application, :accepted, company_number: company3.company_number)
+      m   = app.user
+      m.email = 'only_member@example.com'
+      m.payments << create(:payment, :successful,
+                           expire_date: jan1_2020)
+      m.save!
+      m
+    end
+
+    let(:email_sent) do
+      # create the company and members
+      member1_exp_jan1
+      MemberMailer.h_branding_fee_will_expire(company3, member1_exp_jan1)
+    end
+
+
+    it_behaves_like 'a successfully created email',
+                    I18n.t('subject', scope: HBRAND_FEE_WILLEXPIRE_SCOPE),
+                    'only_member@example.com',
+                    'Firstname Lastname' do
+      let(:email_created) { email_sent }
+    end
+
+    it 'tells you when the HBranding license will expire' do
+      expect(email_sent).to have_body_text(I18n.t('message_text.expire_alert_html',
+                                                  scope:       HBRAND_FEE_WILLEXPIRE_SCOPE,
+                                                  expire_date: company3.branding_expire_date))
+    end
+
+    it 'tells how to pay the fee' do
+      expect(email_sent).to have_body_text(I18n.t('message_text.how_to_pay_fee',
+                                                  scope: HBRAND_FEE_WILLEXPIRE_SCOPE))
+    end
+
+    it 'has a link to the company' do
+      expect(email_sent).to have_body_text(/<a(.*)>#{company3.name}<\/a>/)
+    end
+
+    it 'says you may need to log in' do
+      expect(email_sent).to have_body_text(I18n.t('message_text.company_link_login_msg',
+                                                  scope: HBRAND_FEE_WILLEXPIRE_SCOPE))
+    end
+
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent }
+    end
+
+  end
+
+
   it 'has a previewer' do
     expect(MemberMailerPreview).to be
   end

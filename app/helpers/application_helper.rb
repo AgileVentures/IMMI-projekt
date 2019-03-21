@@ -139,12 +139,13 @@ module ApplicationHelper
     errs = model_instance.errors.count
 
     if errs > 0
-      html = content_tag(:div, "#{t('model_errors', count: errs)}:",
-                         class: 'wpcf7-response-output standard-label')
+      html = "<div class='alert alert-danger'>"
+      html << content_tag(:h4, "#{t('model_errors', count: errs)}:", class: 'alert-heading')
 
       model_instance.errors.full_messages.each do |msg|
-        html << content_tag(:div, msg, class: 'wpcf7-response-output')
+        html << content_tag(:p, msg)
       end
+    html << "</div>"
     end
 
     html.empty? ? nil : html + tag(:br)
@@ -161,6 +162,51 @@ module ApplicationHelper
   # return a span tag with class yes || no and text = t('yes')||t('no') depending on the boolean value
   def yes_no_span(boolean_value)
     boolean_value ? content_tag(:span, t('yes'), class: 'yes') : content_tag(:span, t('no'), class: 'no')
+  end
+
+
+  # Create and return a span tag for use as a tooltip with a FontAwesome icon.
+  # Sets the text to appear in the tooltip, sets data-toggle: 'tooltip',
+  # and by default uses the 'fas' 'fa-info-circle' icon.
+  # You can optionally give the name of the icon to be used ("fa-" will be prepended),
+  # and optionally the name of the FontAwesome group.
+  #
+  # Example: fas_tooltip("This is the text when the user hovers over the icon")
+  #   will return
+  #    '<span class="i fas fa-info-circle"
+  #        title=""
+  #        data-original-title="This is the text when the user hovers over the icon">
+  #        data-toggle="tooltip"
+  #     </span>'
+  #
+  # Example: fas_tooltip("tooltip text", fa_icon: 'calendar-alt')
+  #   will return
+  #    '<span class="i fas fa-calendar-alt"
+  #        title=""
+  #        data-original-title="tooltip text">
+  #        data-toggle="tooltip"
+  #     </span>'
+  #
+  # Example: fas_tooltip(I18n.t('share_on_facebook'), fa_icon_group: 'fab', fa_icon: 'facebook')
+  #   will return
+  #    '<span class="i fab fa-facebook"
+  #        title=""
+  #        data-original-title="Share on Facebook">
+  #        data-toggle="tooltip"
+  #     </span>'
+  #
+  #
+  # @param title [String] - text the will appear in the tooltip
+  # @param fa_icon_group [String] - one of the main FontAwesome groups. Default is 'fas'
+  # @param fa_icon [String] - the FontAwesome icon to use, _without_ the leading 'fa'. Default is 'info-circle'
+  #   The leading 'fa-' is added automatically
+  #
+  # @return [String] - the html safe string for the entire <span>
+  #
+  def fas_tooltip(title, fa_icon_group: 'fas', fa_icon: 'info-circle')
+    content_tag :span do
+      concat icon(fa_icon_group, fa_icon, '', data: {toggle: 'tooltip', original_title: title})
+    end
   end
 
 end

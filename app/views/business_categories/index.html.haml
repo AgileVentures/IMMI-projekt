@@ -1,24 +1,23 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-.post-title-divider
-  %span
 .entry-content
-  %table#business_categories
-    %thead
-      %tr
-        %th= t('.name')
-        %th= t('.description')
-        %th
-        %th
-        %th
-    %tbody
-      - @business_categories.each do |business_category|
-        %tr.business_category
-          %td= business_category.name
-          %td= business_category.description
-          %td= link_to t('.view'), business_category
-          %td= link_to t('.edit'), edit_business_category_path(business_category)
-          %td= link_to t('.delete'), business_category, method: :delete, data: { :confirm => t('.delete_confirm') }
+  .table-responsive
+    %table.table.table-hover.table-sm.table-striped#business_categories
+      %thead
+        %tr
+          %th= t('.name')
+          %th= t('.description')
+          %th
+          %th
+          %th
+      %tbody
+        - @business_categories.each do |business_category|
+          %tr.business_category
+            %td= business_category.name
+            %td= business_category.description
+            %td= link_to t('.view'), business_category
+            %td= link_to t('.edit'), edit_business_category_path(business_category)
+            %td= link_to t('.delete'), business_category, method: :delete, data: { :confirm => t('.delete_confirm') }
   %br
   .center
     = link_to t('business_categories.new_business_category'), new_business_category_path

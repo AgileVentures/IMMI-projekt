@@ -24,6 +24,10 @@ $app-state-border-blue: rgb(142, 173, 206);
     margin-left: 10px;
   }
 
+  input[type="radio"].radio-inline-button {
+    width: auto;
+  }
+
   .wpcf7 {
     margin-top: 0.3em;
     padding-top: 0;

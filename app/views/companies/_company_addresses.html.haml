@@ -1,39 +1,39 @@
 - addresses = user_can_edit ? company.addresses : company.addresses.visible
 
 - if addresses.any?
+  .row
+    .col-12
 
-  .col-md-12
+      %table.table.table-hover
+        %thead
+          %tr
+            %th
+              = t('companies.show.address')
+              = " (#{t('companies.show.click_to_edit')})" if user_can_edit
 
-    %table.table.table-hover
-      %thead
-        %tr
-          %th
-            = t('companies.show.address')
-            = " (#{t('companies.show.click_to_edit')})" if user_can_edit
-
-          - if user_can_edit
-
-            %th= t('companies.address_visibility')
-            %th= t('companies.show.mailing_address')
-
-      - addresses.includes(:kommun).order(:street_address).each do |address|
-        %tbody
-          %tr.address
             - if user_can_edit
-              %td
-                = link_to address.entire_address(full_visibility: true),
-                          edit_company_address_path(company.id, address.id)
-              %td
-                %span{ class: (address.visibility == 'none' ? 'maybe' : 'yes') }
-                  = t("address_visibility.#{address.visibility}")
-              %td
-                = radio_button_tag('mail', '1', address.mail,
-                    class: 'cb_address',
-                    id: "cb_address_#{address.id}",
-                    data: { remote: true,
-                            url: company_address_type_path(company.id, address.id),
-                            params: 'type=mail',
-                            method: :post })
-            - else
-              %td
-                = address.entire_address
+
+              %th= t('companies.address_visibility')
+              %th= t('companies.show.mailing_address')
+
+        - addresses.includes(:kommun).order(:street_address).each do |address|
+          %tbody
+            %tr.address
+              - if user_can_edit
+                %td
+                  = link_to address.entire_address(full_visibility: true),
+                            edit_company_address_path(company.id, address.id)
+                %td
+                  %span{ class: (address.visibility == 'none' ? 'maybe' : 'yes') }
+                    = t("address_visibility.#{address.visibility}")
+                %td
+                  = radio_button_tag('mail', '1', address.mail,
+                      class: 'cb_address',
+                      id: "cb_address_#{address.id}",
+                      data: { remote: true,
+                              url: company_address_type_path(company.id, address.id),
+                              params: 'type=mail',
+                              method: :post })
+              - else
+                %td
+                  = address.entire_address

@@ -79,12 +79,10 @@ module ShfApplicationsHelper
     collection = []
     footnotes = ''
 
-    text_method = "description_#{locale}".to_sym
-
     # Default option will be the first (left-most) button in the set
     AdminOnly::FileDeliveryMethod.order('default_option DESC').each do |delivery_method|
 
-      option_text = delivery_method.send(text_method)
+      option_text = delivery_method.description_for_locale(locale)
 
       if delivery_method.email?
 

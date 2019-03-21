@@ -1,5 +1,4 @@
 %tr
-
   %td.membership_number= user.membership_number
   %td.email{ id: "user-#{user.id}" }= link_to user.email, user
   %td.created-at
@@ -18,7 +17,7 @@
         = expire_date
   %td.delete
     - delete_user = t('users.delete_user', user: "#{user.full_name}")
-    = link_to "<span class='glyphicon glyphicon-trash text-danger'>".html_safe,
+    = link_to icon('fas', 'trash'),
               user_path(user), method: :delete,
               title: delete_user,
               :data => { :confirm => delete_user + '?' }

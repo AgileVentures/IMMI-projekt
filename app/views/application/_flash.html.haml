@@ -1,4 +1,4 @@
-#flashes.flashes
+.flashes#flashes
   - flash.each do |key, value|
     .alert.alert-dismissable.center{ class: "alert-#{flash_class(key)}", role: 'alert' }
       %button.close{ type: 'button', 'data-dismiss' => 'alert' }

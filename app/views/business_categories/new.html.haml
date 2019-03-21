@@ -1,8 +1,6 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-.post-title-divider
-  %span
-.entry-content.wpcf7
+.entry-content
   = render 'form'
-.center
-  = link_to t('business_categories.all_business_categories'), business_categories_path
+  .center
+    = link_to t('business_categories.all_business_categories'), business_categories_path

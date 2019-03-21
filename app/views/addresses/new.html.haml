@@ -1,8 +1,6 @@
 %header.entry-header
   %h1.entry-title= t('.title', company_name: @company.name)
-  .post-title-divider
-    %span
-.entry-content.wpcf7
+.entry-content
   = render partial: 'form',
            locals: { address: @address, method: :post,
                      url: company_addresses_path(@company.id) }

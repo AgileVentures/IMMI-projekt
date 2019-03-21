@@ -5,7 +5,7 @@
   - if shf_application.uploaded_files.count < 1
 
     %p.no-files-uploaded-warn
-      = fa_icon 'warning'
+      = icon('fas', 'warning')
       = t('shf_applications.uploads.no_files')
 
 
@@ -28,5 +28,5 @@
 
             - if show_delete
               %td{ class: "delete-uploaded-file-#{uploaded_file.id}" }
-                - trash_icon = fa_icon 'trash'
+                - trash_icon = icon('fas', 'trash')
                 = link_to trash_icon, shf_application_path(shf_application.id, shf_application: { uploaded_files_attributes: { id: uploaded_file.id,  '_destroy' => true }}), method: :put, id: "uploaded-file-#{uploaded_file.id}", class: "action-delete", data: { confirm: "#{t('shf_applications.uploads.confirm_delete', filename: uploaded_file.actual_file_file_name)}" }

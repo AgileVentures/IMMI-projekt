@@ -6,27 +6,24 @@
 
 .entry-content
   .row
-    = render 'map_companies',
-             markers: location_and_markers_for(@all_visible_companies)
+    .col-lg-4
+      = render 'map_companies',
+               markers: location_and_markers_for(@all_visible_companies)
 
 
-  - unless current_user.admin?
+    .col-lg-8
+      .row
+        .col-sm-8
+        .col-sm-4
+          %br
+          %button.btn.btn-small.hide-search-form.btn-success.ml-auto{ id: 'toggle_search_form',
+                                            href: '#company_search_form' }
+            #{t('toggle.company_search_form.hide')}
 
-    .search-instructions
-      %h3
-        #{t('.h_companies_listed_below')}
-        %br
-        #{t('.how_to_search')}
+      .panel.panel-default.search-form#company_search_form
 
-        %button.btn.hide-search-form.btn-success.btn-xs.pull-right{ id: 'toggle_search_form',
-                                          href: '#company_search_form',
-                                          style: 'color:black; text-transform:none;' }
-          #{t('toggle.company_search_form.hide')}
-
-  .panel.panel-default.search-form#company_search_form
-
-    = render 'search_form', all_companies: @all_companies,
-                            search_params: @search__params
+        = render 'search_form', all_companies: @all_companies,
+                                search_params: @search__params
 
 
   - if @companies.empty?

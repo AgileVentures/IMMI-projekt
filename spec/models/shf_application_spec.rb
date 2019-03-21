@@ -47,7 +47,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to have_db_column :member_app_waiting_reasons_id }
     it { is_expected.to have_db_column :when_approved }
     it { is_expected.to have_db_column :file_delivery_method_id }
-    it { is_expected.to have_db_column :file_delivery_selection_date }
+    it { is_expected.to have_db_column(:file_delivery_selection_date).with_options(null: true) }
   end
 
   describe 'Associations' do
@@ -58,13 +58,25 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to have_many :uploaded_files }
     it { is_expected.to belong_to(:waiting_reason)
                           .class_name(AdminOnly::MemberAppWaitingReason)
-                          .with_foreign_key('member_app_waiting_reasons_id') }
+                          .with_foreign_key('member_app_waiting_reasons_id')
+                          .optional}
     it { is_expected.to accept_nested_attributes_for(:uploaded_files)
                           .allow_destroy(true) }
     it { is_expected.to accept_nested_attributes_for(:user)
                           .update_only(true).allow_destroy(false) }
-    it { is_expected.to belong_to(:file_delivery_method)
-                          .class_name('AdminOnly::FileDeliveryMethod') }
+
+    # Note that we cannot test the file_delivery_method belongs_to association because it can sometimes be nil
+    # and the presence is only required (validated) _on create_
+    # and the shoulda-matchers gem version 4.0.1 is not sophisticated enough to be able to
+    # test validity of (belongs_to  ... optional: true) + (validates_presence_of ... with an :if clause)
+    #
+    # This fails because the matchers cannot also test
+    # for the validation_presence_of ... with the :if clause at the same time:
+    #   it { is_expected.to belong_to(:file_delivery_method)
+    #                    .without_validating_presence
+    #                    .class_name('AdminOnly::FileDeliveryMethod')
+    #                    .optional
+    #   }
   end
 
   describe 'Validations' do
@@ -72,7 +84,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to validate_presence_of :state }
     it { is_expected.to validate_presence_of :companies }
     it { is_expected.to validate_presence_of :business_categories }
-    it { is_expected.to validate_presence_of :file_delivery_method }
+    it { is_expected.to validate_presence_of(:file_delivery_method).on(:create) }
 
     it { is_expected.to allow_value('user@example.com').for(:contact_email) }
     it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
@@ -573,5 +585,19 @@ RSpec.describe ShfApplication, type: :model do
       expect(app.company_names).to eq "#{cmpy1.name}, #{cmpy2.name}"
     end
   end
+
+
+  describe 'file_delivery_methods' do
+
+    context 'can be nil' do
+      pending 'When is it valid for this to be nil?'
+    end
+
+    context 'cannot be nil' do
+      pending 'When must the file_deliver_method not be nil?'
+    end
+
+  end
+
 
 end

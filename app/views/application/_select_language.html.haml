@@ -1,12 +1,14 @@
 - if @language_change_allowed
-  - if locale == :sv
-    = link_to image_tag('eng.png', size: '20', alt: t('show_in_english'), title: t('show_in_english'), data: {toggle: 'tooltip', placement: 'bottom', container: 'body'} ),
-              {locale: :en}, class: 'language.en', id: 'change-lang-to-english'
-  - else
-    = link_to image_tag('sv.png', size: '20', alt: t('show_in_swedish'), title: t('show_in_swedish'), data: {toggle: 'tooltip', placement: 'bottom', container: 'body'} ) ,
-              {locale: :sv}, class: 'language.sv', id: 'change-lang-to-svenska'
+  %li
+    - if locale == :sv
+      = link_to image_tag('eng.png', size: '20', alt: t('show_in_english'), title: t('show_in_english'), data: {toggle: 'tooltip', placement: 'bottom', container: 'body'} ),
+          {locale: :en}, class: 'language.en', id: 'change-lang-to-english'
+    - else
+      = link_to image_tag('sv.png', size: '20', alt: t('show_in_swedish'), title: t('show_in_swedish'), data: {toggle: 'tooltip', placement: 'bottom', container: 'body'} ) ,
+          {locale: :sv}, class: 'language.sv', id: 'change-lang-to-svenska'
 - else
-  - if locale == :sv
-    = image_tag('eng_no_change.png', size: '20', alt: t('cannot_change_language'), title: t('cannot_change_language'), data: {toggle: 'tooltip', placement: 'bottom', container: 'body'} )
-  - else
-    = image_tag('sv_no_change.png', size: '20', alt: t('cannot_change_language'), title: t('cannot_change_language'), data: {toggle: 'tooltip', placement: 'bottom', container: 'body'} )
+  %li
+    - if locale == :sv
+      = image_tag('eng_no_change.png', size: '20', alt: t('cannot_change_language'), title: t('cannot_change_language'), data: {toggle: 'tooltip', placement: 'bottom', container: 'body'} )
+    - else
+      = image_tag('sv_no_change.png', size: '20', alt: t('cannot_change_language'), title: t('cannot_change_language'), data: {toggle: 'tooltip', placement: 'bottom', container: 'body'} )

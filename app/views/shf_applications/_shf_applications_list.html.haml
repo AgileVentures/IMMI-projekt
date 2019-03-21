@@ -1,33 +1,34 @@
 #shf_applications_list
-  %table
-    %thead
-      %tr
-        %th
-          = sort_link(@search_params, :user_padded_membership_number,
-                      t('shf_applications.index.membership_number'), {},
-                      { class: 'applications_pagination', remote: true })
-        %th
-          = sort_link(@search_params, :user_last_name,
-                      t('shf_applications.index.name'), {},
-                      { class: 'applications_pagination', remote: true })
-        %th
-          = sort_link(@search_params, :company_number,
-                      t('shf_applications.index.org_nr'), {},
-                      { class: 'applications_pagination', remote: true })
-        %th
-          = sort_link(@search_params, :state,
-                      t('shf_applications.index.state'), {},
-                      { class: 'applications_pagination', remote: true })
-        %th
-    %tbody
-      - @shf_applications.each do |shf_application|
-        %tr.applicant
-          %td.membership_number= shf_application.membership_number
-          %td.name= link_to "#{shf_application.user.last_name + ', ' + shf_application.user.first_name}", user_path(shf_application.user)
-          - company = shf_application.companies&.first
-          %td.company_number= company == nil ? '' : link_to(company.company_number, company_path(company))
-          %td.state=  shf_application.aasm.human_state
-          %td.action= link_to "#{t('manage')}", shf_application_path(shf_application.id)
+  .table-responsive
+    %table.table.table-hover.table-sm.table-striped
+      %thead
+        %tr
+          %th
+            = sort_link(@search_params, :user_padded_membership_number,
+                        t('shf_applications.index.membership_number'), {},
+                        { class: 'applications_pagination', remote: true })
+          %th
+            = sort_link(@search_params, :user_last_name,
+                        t('shf_applications.index.name'), {},
+                        { class: 'applications_pagination', remote: true })
+          %th
+            = sort_link(@search_params, :company_number,
+                        t('shf_applications.index.org_nr'), {},
+                        { class: 'applications_pagination', remote: true })
+          %th
+            = sort_link(@search_params, :state,
+                        t('shf_applications.index.state'), {},
+                        { class: 'applications_pagination', remote: true })
+          %th
+      %tbody
+        - @shf_applications.each do |shf_application|
+          %tr.applicant
+            %td.membership_number= shf_application.membership_number
+            %td.name= link_to "#{shf_application.user.last_name + ', ' + shf_application.user.first_name}", user_path(shf_application.user)
+            - company = shf_application.companies&.first
+            %td.company_number= company == nil ? '' : link_to(company.company_number, company_path(company))
+            %td.state=  shf_application.aasm.human_state
+            %td.action= link_to "#{t('manage')}", shf_application_path(shf_application.id)
 
   = render partial: 'application/paginate_footer',
            locals: { entities: @shf_applications,

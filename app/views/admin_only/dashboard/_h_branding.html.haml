@@ -1,22 +1,24 @@
-.section
-  %h3.section-title
-    H-branding fee Payments
-    :ruby
-      h_paid = Company.branding_licensed
-      c_total = @data_gatherer.total_companies
-      h_unpaid = @data_gatherer.companies_branding_not_paid
-      h_percent = (h_paid.count.fdiv(c_total)) * 100
-  .progress
-    .progress-bar(aria-valuemax='100' aria-valuemin='0' aria-valuenow="#{h_percent.to_i}" role='progressbar' style="width:#{h_percent.to_i}%")
-      ="#{h_percent.to_i}% of all companies have paid H-branding"
-  %p= styled_total(h_paid.count,'h-branding-fees are paid')
-  %p= styled_total(c_total, 'companies in the system')
-  %p= styled_total(h_unpaid.count, 'companies have not paid')
-  %p
-    %a.btn.btn-success(aria-controls='listCompanies' aria-expanded='false' data-toggle='collapse' href= '#listCompanies' role= 'button')
-      View unpaid companies
-  #listCompanies.collapse
-    .card.card-body
-      - h_unpaid.each do |c|
-        = link_to c.name, (company_path(c))
-        |
+-# This partial expects the following locals:
+-#   num_total - total number of companies
+-#   num_paid - the number of recent h-branding fee payments
+-#   those_not_paid - those that have not paid but need to
+-#
+-# TODO - finish refactoring this + _m_branding.html.haml partial: finish abstracting common things, parameterize
+%h3.section-title
+  = t('admin_only.dashboard.tabs.payments_h_branding.title')
+
+- percent = (num_paid.fdiv(num_total)) * 100
+
+.progress
+  .progress-bar{ progress_bar_html_styles(percent) }
+    #{percent.to_i}% of all companies have paid H-branding
+%p= styled_total(num_paid,'h-branding-fees are paid')
+%p= styled_total(num_total, 'companies in the system')
+%p= styled_total(those_not_paid.count, 'companies have not paid')
+%p
+  %a.btn.btn-success{ 'aria-controls': 'list-unpaid-companies', 'aria-expanded': 'false', 'data-toggle': 'collapse', href: '#list-unpaid-companies', role: 'button' }
+    View unpaid companies
+.collapse#list-unpaid-companies
+  .card.card-body
+    - those_not_paid.each do | not_paid |
+      = link_to not_paid.name, (company_path(not_paid))

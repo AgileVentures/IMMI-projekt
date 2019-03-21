@@ -1,5 +1,6 @@
-# This emails all current members in a company if the h-branding fee is past due.
+# This emails all current members in a company if the h-branding fee is PAST DUE.
 #
+# The alert is sent _after_ the HBranding license has expired.
 #
 class HBrandingFeeDueAlert < CompanyEmailAlert
 

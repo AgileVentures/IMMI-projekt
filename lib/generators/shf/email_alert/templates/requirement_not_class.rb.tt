@@ -1,0 +1,26 @@
+<% module_namespacing do -%>
+
+#--------------------------
+#
+# @class  <%= requirements_opposite_class %>
+#
+# @desc Responsibility:  FIXME: resposibility for this Requirements class in a single sentence
+#
+#  Only 1 is needed for the system.
+#
+# @author FIXME: your name and email
+# @date <%= Date.current %>
+# @file <%= requirements_opposite_class.underscore %>.rb
+#
+#--------------------------
+
+
+class <%= requirements_opposite_class %> < AbstractOppositeRequirements
+
+
+  def self.opposite_class
+    <%= requirements_class %>
+  end
+
+end
+<% end -%>

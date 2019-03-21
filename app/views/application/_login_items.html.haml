@@ -1,21 +1,18 @@
 - if user_signed_in?
-  %a.dropdown-toggle.link-no-styling.tall-line{ href: '#',
-     'data-toggle' => 'dropdown', role: 'button' }
-    = t('hello', name: current_user.first_name)
-    %span.caret
-
-  %ul.dropdown-menu
-    %li
-      = link_to(t('devise.registrations.edit.title'),
-                edit_user_registration_path)
-    %li
-      = link_to(t('menus.nav.users.your_account'), user_path(current_user))
-    - if current_user.admin?
+  %li.login.dropdown#menu-menu-login
+    %a.nav-link.dropdown-toggle{ href: '#', "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown" }
+      = t('hello', name: current_user.first_name)
+    %ul.dropdown-menu
       %li
-        = link_to(t('menus.nav.admin.app_configuration'), admin_only_app_configuration_path)
-    %li
-      = link_to(t('devise.sessions.destroy.log_out'),
-                destroy_user_session_path, method: :delete)
+        = link_to t('devise.registrations.edit.title'), edit_user_registration_path, class: 'nav-link'
+      %li
+        = link_to t('menus.nav.users.your_account'), user_path(current_user), class: 'nav-link'
+      - if current_user.admin?
+        %li
+          = link_to t('menus.nav.admin.app_configuration'), admin_only_app_configuration_path, class: 'nav-link'
+      %li
+        = link_to t('devise.sessions.destroy.log_out'),
+                  destroy_user_session_path, method: :delete, class: 'nav-link'
 - else
-  = link_to(t('devise.sessions.new.log_in'), new_user_session_path,
-            { class: 'tall-line' })
+  %li.login
+    = link_to t('devise.sessions.new.log_in'), new_user_session_path, class: 'nav-link'

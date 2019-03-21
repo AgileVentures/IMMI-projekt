@@ -1,0 +1,33 @@
+<% module_namespacing do -%>
+
+#--------------------------
+#
+# @class  <%= requirements_class %>
+#
+# @desc Responsibility:  FIXME: responsibility for this Requirements class in a single sentence
+#
+#  Only 1 is needed for the system.
+#
+# @author FIXME: your name and email
+# @date <%= Date.current %>
+# @file requirements_for<%= requirements_class.underscore %>.rb
+#
+#--------------------------
+
+
+class <%= requirements_class %> < AbstractRequirements
+
+  def self.has_expected_arguments?(args)
+
+    # FIXME: boolean test for all keys, etc, in the args hash.  Ex:  args_have_keys?(args, [:company])
+  end
+
+
+  # FIXME: write a simple description of how the requirements are checked
+  def self.requirements_met?(args)
+
+    # FIXME: code the check the args to see if the requirements are met. return a Boolean
+  end
+
+end
+<% end -%>

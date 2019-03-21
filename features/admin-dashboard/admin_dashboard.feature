@@ -100,23 +100,48 @@ Feature: Admin sees the dashboard with summary of important information
   Scenario: Admin sees the dashboard with summary info
     Given I am on the "admin dashboard" page
     Then I should see t("admin_only.dashboard.title")
-    And I should see t("admin_only.dashboard.total_members", total_num_members: 11)
-    And I should see t("admin_only.dashboard.current_items_section_title")
+
+    # TODO: for some reason the div for the 'current' tab doesn't appear at first. Must click on something else then come back to that tab.
+    When I click on t("admin_only.dashboard.tabs.activity.tab-title")
+    And I click on t("admin_only.dashboard.tabs.current.tab-title")
+
+    Then I should see t("admin_only.dashboard.tabs.current.title")
     And I should see "0 "
-    And I should see t("admin_only.dashboard.open_apps_no_files")
+    And I should see t("admin_only.dashboard.tabs.current.open_apps_no_files")
     And I should see "2 "
-    And I should see t("admin_only.dashboard.app_approved_no_payment")
+    And I should see t("admin_only.dashboard.tabs.current.app_approved_no_payment")
     And I should see "1 "
-    And I should see t("admin_only.dashboard.companies_no_branding_payment")
+    And I should see t("admin_only.dashboard.tabs.current.companies_no_branding_payment")
     And I should see "0 "
-    And I should see t("admin_only.dashboard.companies_incomplete")
-    When I click on "Activity"
-    Then I should see t("admin_only.dashboard.recent_activity_section_title", recent_num_days: 7)
+    And I should see t("admin_only.dashboard.tabs.current.companies_incomplete")
+
+    When I click on t("admin_only.dashboard.tabs.activity.tab-title")
+    Then I should see t("admin_only.dashboard.tabs.activity.title", recent_num_days: 7)
     And I should see t("activerecord.models.shf_application.other")
     And I should see "9 "
-    And I should see t("admin_only.dashboard.payments")
-    And I should see t("admin_only.dashboard.member_fee_payments", number_payments: 9)
-    And I should see t("admin_only.dashboard.branding_fee_payments", number_payments: 1)
+    And I should see t("admin_only.dashboard.tabs.activity.payments")
+    And I should see t("admin_only.dashboard.tabs.activity.member_fee_payments", number_payments: 9)
+    And I should see t("admin_only.dashboard.tabs.activity.branding_fee_payments", number_payments: 1)
+
+    When I click on the second t("admin_only.dashboard.tabs.applications.tab-title") link
+    # section title:
+    Then I should see t("admin_only.dashboard.tabs.applications.title")
+
+    When I click on the second t("admin_only.dashboard.tabs.users.tab-title") link
+    # section title:
+    Then I should see t("admin_only.dashboard.tabs.users.title")
+
+    When I click on t("admin_only.dashboard.tabs.members.tab-title")
+    Then I should see t("admin_only.dashboard.tabs.members.title")
+    And I should see t("admin_only.dashboard.tabs.members.total_members", total_num_members: 11)
+
+    When I click on t("admin_only.dashboard.tabs.payments_memberships.tab-title")
+    # section title:
+    Then I should see t("admin_only.dashboard.tabs.payments_memberships.title")
+
+    When I click on t("admin_only.dashboard.tabs.payments_h_branding.tab-title")
+    # section title:
+    Then I should see t("admin_only.dashboard.tabs.payments_h_branding.title")
 
 
     #And I should see "Change timeframe:"

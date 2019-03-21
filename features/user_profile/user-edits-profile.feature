@@ -7,15 +7,18 @@ Feature: As a registered user
       | email             | password | admin | member    | first_name | last_name |
       | admin@random.com  | password | true  | false     | emma       | admin     |
       | member@random.com | password | false | true      | mary       | member    |
+      | newmember@me.com  | password | false | true      | newest     | member    |
       | user@random.com   | password | false | false     | ulysses    | user      |
 
     And the following applications exist:
-      | user_email        | company_number | state    | contact_email     |
-      | member@random.com | 5560360793     | accepted | public@random.com |
+      | user_email        | company_number | state    | contact_email     | is_legacy |
+      | member@random.com | 5560360793     | accepted | public@random.com | true      |
+      | newmember@me.com  | 9999999999     | accepted | public@random.com |           |
 
     And the following payments exist
       | user_email        | start_date | expire_date | payment_type | status | hips_id |
       | member@random.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+      | newmember@me.com  | 2019-01-01 | 2019-12-31  | member_fee   | betald | none    |
 
   Scenario: Admin edits profile
     Given I am logged in as "admin@random.com"
@@ -41,7 +44,7 @@ Feature: As a registered user
     Then I should see t("devise.registrations.edit.success")
 
   @time_adjust
-  Scenario: Member edits profile, uploads photo, returns to prior page after update
+  Scenario: "Legacy" member edits profile, uploads photo, returns to prior page after update
     Given the date is set to "2017-10-01"
     And I am logged in as "member@random.com"
     And I am on the "show my application" page
@@ -52,6 +55,22 @@ Feature: As a registered user
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label") button
     And I should see t("hello", name: 'NewMary')
+    And I should be on "show my application" page
+    Then I click on the t("devise.registrations.edit.title") link
+    And I should see "member_with_dog.png"
+
+  @time_adjust
+  Scenario: Member edits profile
+    Given the date is set to "2019-01-02"
+    And I am logged in as "newmember@me.com"
+    And I am on the "show my application" page
+    And I should see t("hello", name: 'newest')
+    Then I click on the t("devise.registrations.edit.title") link
+    And I fill in t("activerecord.attributes.user.first_name") with "Henry"
+    And I choose a "user_member_photo" file named "member_with_dog.png" to upload
+    And I fill in t("devise.registrations.edit.current_password") with "password"
+    And I click on t("devise.registrations.edit.submit_button_label") button
+    And I should see t("hello", name: 'Henry')
     And I should be on "show my application" page
     Then I click on the t("devise.registrations.edit.title") link
     And I should see "member_with_dog.png"

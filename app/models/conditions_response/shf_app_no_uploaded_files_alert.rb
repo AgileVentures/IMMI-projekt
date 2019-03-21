@@ -19,11 +19,11 @@ class ShfAppNoUploadedFilesAlert < UserEmailAlert
 
       # If the applicant has said they will email or (postal) mail the files,
       # don't send this alert.
-      if shf_app.file_delivery_method.email? || shf_app.file_delivery_method.mail?
+
+      if shf_app.file_delivery_method&.email? || shf_app.file_delivery_method&.mail?
         false
 
       else
-
         # date that the application was last updated = the day to use ?
         day_to_check = self.class.days_today_is_away_from(shf_app.updated_at.to_date, timing)
 

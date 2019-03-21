@@ -1,5 +1,5 @@
-%li.menu-item
+%li
   - if policy(shf_app).update?
-    = link_to t('menus.nav.users.my_application'), edit_shf_application_path(shf_app)
+    = link_to t('menus.nav.users.my_application'), edit_shf_application_path(shf_app), class: 'nav-link'
   - else
-    = link_to t('menus.nav.users.my_application'), shf_application_path(shf_app)
+    = link_to t('menus.nav.users.my_application'), shf_application_path(shf_app), class: 'nav-link'

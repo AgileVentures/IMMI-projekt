@@ -78,7 +78,8 @@ module CompaniesHelper
 
   def company_number_entry_field(company_numbers)
     text_field_tag :company_number, company_numbers,
-                     id: 'shf_application_company_number'
+                     id: 'shf_application_company_number',
+                     class: 'form-control'
   end
 
   def short_h_brand_url(company)

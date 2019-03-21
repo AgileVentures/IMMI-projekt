@@ -12,7 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= require bootstrap-sprockets
+//= require popper
+//= require bootstrap
 //= require i18n/translations
 //= require_tree .
 //= require Chart.bundle
@@ -48,66 +49,35 @@ $(function() {
         CKEDITOR.replace ($(ele).attr('id'));
       })
     };
+} );
 
-    // Slide mobile navigation from left
-    jQuery('#site-navigation .menu-toggle').on('click', function () {
-        jQuery(this).toggleClass('active');
-        if (jQuery(this).hasClass('active')) {
-            jQuery('#site-navigation .menu').animate({left: 0}, {
-                duration: 225,
-                easing: 'swing'
-            });
-            return false;
-        } else {
-            jQuery('#site-navigation .menu').animate({left: -291}, {
-                duration: 225,
-                easing: 'linear'
-            });
-            return false;
+/*!
+ * Bootstrap 4 multi dropdown navbar ( https://bootstrapthemes.co/demo/resource/bootstrap-4-multi-dropdown-navbar/ )
+ * Copyright 2017.
+ * Licensed under the GPL license
+ */
+
+
+$( document ).ready( function () {
+    $( '.dropdown-menu a.dropdown-toggle' ).on( 'click', function ( e ) {
+        var $el = $( this );
+        var $parent = $( this ).offsetParent( ".dropdown-menu" );
+        if ( !$( this ).next().hasClass( 'show' ) ) {
+            $( this ).parents( '.dropdown-menu' ).first().find( '.show' ).removeClass( "show" );
         }
-    });
+        var $subMenu = $( this ).next( ".dropdown-menu" );
+        $subMenu.toggleClass( 'show' );
+        
+        $( this ).parent( "li" ).toggleClass( 'show' );
 
-    /*------------------
-     Main navigation
-     ------------------*/
-    // Add toggle button for mobile navigation sub menus
-    jQuery('.menu-item-has-children > a').after('<span class="toggle-sub-menu"></span>');
-
-    // Mobile nav sub menu toggle button click
-    jQuery('#site-navigation .toggle-sub-menu').on('click', function () {
-        jQuery(this).toggleClass('toggle-sub-menu-active');
-        jQuery(this).next().slideToggle('fast');
-    });
-
-    // Add mobile class to menu on load or resize
-    if (jQuery('body').width() <= 1200) {
-        jQuery('#site-navigation .menu').addClass('mobile-menu');
-    }
-    jQuery(window).on('resize', function () {
-        if (jQuery('body').width() <= 1200) {
-            jQuery('#site-navigation .menu').addClass('mobile-menu');
+        $( this ).parents( 'li.nav-item.dropdown.show' ).on( 'hidden.bs.dropdown', function ( e ) {
+            $( '.dropdown-menu .show' ).removeClass( "show" );
+        } );
+        
+         if ( !$parent.parent().hasClass( 'navbar-nav' ) ) {
+            $el.next().css( { "top": $el[0].offsetTop, "left": $parent.outerWidth() - 4 } );
         }
-    });
 
-    // Hide sub menus on desktop nav on resize
-    jQuery(window).on('resize', function () {
-        if (jQuery('body').width() > 1200) {
-            jQuery('#site-navigation .sub-menu').removeAttr('style');
-            jQuery('#site-navigation .toggle-sub-menu-active').removeClass('toggle-sub-menu-active');
-            jQuery('#site-navigation .menu').removeClass('mobile-menu');
-        }
-    });
-
-    // Add shadow to fixed nav after scroll
-    jQuery(window).scroll(function () {
-        if (jQuery(window).scrollTop() > 0) {
-            jQuery('#site-navigation.fixed-nav').addClass('nav-shadow');
-            jQuery('#site-navigation.fixed-nav .sub-menu').addClass('nav-shadow-sub');
-            jQuery('#site-navigation.fixed-nav ~ .search-toggle-container').addClass('nav-shadow-sub');
-        } else {
-            jQuery('#site-navigation.fixed-nav').removeClass('nav-shadow');
-            jQuery('#site-navigation.fixed-nav .sub-menu').removeClass('nav-shadow-sub');
-            jQuery('#site-navigation.fixed-nav ~ .search-toggle-container').removeClass('nav-shadow-sub');
-        }
-    });
-});
+        return false;
+    } );
+} );

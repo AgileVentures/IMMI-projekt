@@ -1,0 +1,15 @@
+# Preview all emails at http://localhost:3000/rails/mailers
+
+class <%= mailer_class %>Preview < ActionMailer::Preview
+
+  include PickRandomHelpers
+
+
+  private
+
+  # create a unique email address based on the Time right now
+  def unique_email
+    "user-#{Time.now.to_i}@example.com"
+  end
+
+end

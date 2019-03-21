@@ -110,7 +110,7 @@ Feature: As an admin
   Scenario: An Admin has the delete button on the companies list page
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
-    Then I should see t("delete")
+    Then I should see at least one column with class "delete"
 
   Scenario: An Admin has the delete button on the companies page
     Given I am logged in as "admin@shf.se"
@@ -125,7 +125,7 @@ Feature: As an admin
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
     Then I should see "7" companies
-    When I click and accept the t("delete") action for the row with "Unassociated Company"
+    When I click and accept the icon with CSS class "delete" for the row with "Unassociated Company"
     Then I should see t("companies.destroy.success")
     And I should not see "Unassociated Company"
     And I should see "6" companies
@@ -139,7 +139,7 @@ Feature: As an admin
     Then I should see "11" applications
     When I am on the "all companies" page
     Then I should see "7" companies
-    When I click and accept the t("delete") action for the row with "Kats"
+    When I click and accept the icon with CSS class "delete" for the row with "Kats"
     Then I should see t("companies.destroy.error")
 
   @selenium
@@ -173,7 +173,8 @@ Feature: As an admin
     Then I should see "11" applications
     When I am on the "all companies" page
     Then I should see "7" companies
-    When I click and accept the t("delete") action for the row with "Kitties"
+    #When I click and accept the t("delete") action for the row with "Kitties"
+    When I click and accept the icon with CSS class "delete" for the row with "Kitties"
     Then I should see t("companies.destroy.error")
 
 
@@ -186,7 +187,7 @@ Feature: As an admin
     Then I should see "11" applications
     When I am on the "all companies" page
     Then I should see "7" companies
-    When I click and accept the t("delete") action for the row with "No More Snarky Barky"
+    When I click and accept the icon with CSS class "delete" for the row with "No More Snarky Barky"
     Then I should see t("companies.destroy.error")
     Then I am on the "landing" page
     # We do NOT destroy applications when a company is destroyed
@@ -202,7 +203,8 @@ Feature: As an admin
     Then I should see "11" applications
     When I am on the "all companies" page
     Then I should see "7" companies
-    When I click and accept the t("delete") action for the row with "WOOF"
+    When I click and accept the icon with CSS class "delete" for the row with "WOOF"
+
     Then I should see t("companies.destroy.error")
     Then I am on the "business categories" page
     Then I should see "8" business categories

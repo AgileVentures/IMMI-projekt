@@ -68,7 +68,7 @@
 
       - else
 
-        = "#{t('.last_login')}:"
+        #{t('.last_login')}:
         #{most_recent_login_time @user}
         (#{i18n_time_ago_in_words(most_recent_login_time @user)})
         %br
@@ -92,7 +92,7 @@
 
         #{ t('toggle.set_new_password_form.show') }
 
-      .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form' ,
+      .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form',
                             style: 'display: none;' }
 
         = render 'password_form'
@@ -117,10 +117,10 @@
         = t('.image_how_to_use_html',
             download_link: link_to(t('.download_image'),
                                    proof_of_membership_path(@user, render_to: :jpg),
-                                   class: 'btn btn-xs btn-info'),
+                                   class: 'btn btn-sm btn-outline-info'),
             show_link: link_to(t('.show_image'),
                                  proof_of_membership_path(@user, context: :internal),
-                                 class: 'btn btn-xs btn-info'))
+                                 class: 'btn btn-sm btn-outline-info'))
         %br
         %br
         = t('.proof_of_membership_photo_needed')
@@ -155,11 +155,11 @@
               download_link: link_to(t('.download_image'),
                                      company_h_brand_path(company,
                                                            render_to: :jpg),
-                                     class: 'btn btn-xs btn-info'),
+                                     class: 'btn btn-sm btn-outline-info'),
               show_link: link_to(t('.show_image'),
                                  company_h_brand_path(company,
                                                       context: :internal),
-                                     class: 'btn btn-xs btn-info'))
+                                     class: 'btn btn-sm btn-outline-info'))
           %br
           %br
           = t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),

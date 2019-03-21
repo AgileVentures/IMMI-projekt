@@ -1,0 +1,25 @@
+namespace :shf do
+  desc 'load conditions to DB'
+  task load_conditions: [:environment] do
+
+    std_reminder_after_schedule = [2, 9, 14, 30, 60]
+
+    std_reminder_before_schedule = [60, 30, 14, 2]
+
+    # Add a Hash for each Condition to be created
+    #
+    conditions_to_create = [
+
+
+    ]
+
+
+    # Start from scratch
+    Condition.delete_all
+
+    if Condition.create(conditions_to_create)
+      puts "  #{conditions_to_create.size} Conditions were loaded into the db: #{conditions_to_create.map{|h_cond| h_cond[:class_name]}.join(', ')}"
+    end
+
+  end
+end

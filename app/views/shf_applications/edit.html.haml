@@ -2,27 +2,23 @@
 
   %header.entry-header
     %h1.entry-title= t('.title')
-  .post-title-divider
-    %span
   .entry-content
-    .wpcf7
-      .instructions= t('shf_applications.new.instructions_html')
+    .instructions= t('shf_applications.new.instructions_html')
 
-      = render partial: 'membership_number', locals: { user: @shf_application.user }
+    = render partial: 'membership_number', locals: { user: @shf_application.user }
 
-      = form_for @shf_application do |f|
+    = form_for @shf_application do |f|
 
-        != model_errors_helper(@shf_application)
+      != model_errors_helper(@shf_application)
 
-        = render partial: 'shf_application_fields',
-                 locals: { f: f, user: @shf_application.user,
-                           company_numbers:  @company_numbers }
+      = render partial: 'shf_application_fields',
+               locals: { f: f, user: @shf_application.user,
+                         company_numbers:  @company_numbers }
 
-        = render 'application/required_fields'
+      = render 'application/required_fields'
 
-        = f.submit t('.submit_button_label'), disabled: true, class: 'app-submit'
+      %p.submit-button-explain.strong.field-instruction= t('.submit_button_explain')
+      = f.submit t('.submit_button_label'), disabled: true, class: 'btn btn-warning mb-2 form-control app-submit'
 
-        .submit-button-explain.strong
-          = t('.submit_button_explain')
 
 = render partial: 'companies/company_create_modal', locals: { company: @new_company }

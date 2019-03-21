@@ -174,6 +174,9 @@ Then(/^I should see (\d+) (.*?) rows$/) do |n, css_class_name|
   expect(page).not_to have_selector(".#{css_class_name}", count: n+1)
 end
 
+Then(/^I should see at least one column with class "([^"]*)"/) do | css_class_name |
+  expect(page).to  have_xpath("//td[@class='#{css_class_name}']")
+end
 
 Then "I should see error {capture_string} {capture_string}" do |model_attribute, error|
   expect(page).to have_content("#{model_attribute} #{error}")

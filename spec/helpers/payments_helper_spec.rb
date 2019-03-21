@@ -15,6 +15,10 @@ RSpec.describe PaymentsHelper, type: :helper do
            payment_type: Payment::PAYMENT_TYPE_BRANDING)
   end
 
+  # Note that you have to call a helper method preceded with "helper." so that
+  # it will correctly find and use the FontAwesome helper method :icon
+  # (which is called from expire_date_label_and_value)
+
   describe 'expire_date_label_and_value' do
 
     context 'user' do
@@ -22,25 +26,25 @@ RSpec.describe PaymentsHelper, type: :helper do
       it 'returns date with style "yes" if expire_date more than a month away' do
         user_payment.update(expire_date: Time.zone.today + 1.month + 2.days)
         response = /class="Yes".*#{user_payment.expire_date}/
-        expect(expire_date_label_and_value(user)).to match response
+        expect(helper.expire_date_label_and_value(user)).to match response
       end
 
       it 'returns date with style "maybe" if expire_date within next month' do
         user_payment.update(expire_date: Time.zone.today + 1.month)
         response = /class="Maybe".*#{user_payment.expire_date}/
-        expect(expire_date_label_and_value(user)).to match response
+        expect(helper.expire_date_label_and_value(user)).to match response
       end
 
       it 'returns date with style "no" if expired' do
         user_payment.update(expire_date: Time.zone.today - 1.day)
         response = /class="No".*#{user_payment.expire_date}/
-        expect(expire_date_label_and_value(user)).to match response
+        expect(helper.expire_date_label_and_value(user)).to match response
       end
 
       it 'returns tooltip explaining expiration date' do
         user_payment.update(expire_date: Time.zone.today)
         response = /#{t('users.show.membership_expire_date_tooltip')}/
-        expect(expire_date_label_and_value(user)).to match response
+        expect(helper.expire_date_label_and_value(user)).to match response
       end
     end
 
@@ -49,25 +53,25 @@ RSpec.describe PaymentsHelper, type: :helper do
       it 'returns date with style "yes" if expire_date more than a month away' do
         brand_payment.update(expire_date: Time.zone.today + 1.month + 2.days)
         response = /class="Yes".*#{brand_payment.expire_date}/
-        expect(expire_date_label_and_value(company)).to match response
+        expect(helper.expire_date_label_and_value(company)).to match response
       end
 
       it 'returns date with style "maybe" if expire_date within next month' do
         brand_payment.update(expire_date: Time.zone.today + 1.month)
         response = /class="Maybe".*#{brand_payment.expire_date}/
-        expect(expire_date_label_and_value(company)).to match response
+        expect(helper.expire_date_label_and_value(company)).to match response
       end
 
       it 'returns date with style "no" if expired' do
         brand_payment.update(expire_date: Time.zone.today - 1.day)
         response = /class="No".*#{brand_payment.expire_date}/
-        expect(expire_date_label_and_value(company)).to match response
+        expect(helper.expire_date_label_and_value(company)).to match response
       end
 
       it 'returns tooltip explaining expiration date' do
         brand_payment.update(expire_date: Time.zone.today)
         response = /#{t('companies.show.branding_fee_expire_date_tooltip')}/
-        expect(expire_date_label_and_value(company)).to match response
+        expect(helper.expire_date_label_and_value(company)).to match response
       end
     end
   end

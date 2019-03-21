@@ -13,12 +13,12 @@
     %p= t('shf_applications.new.upload_files_instructions')
 
     .files
-      .container
+      .container.mt-3
         .row
           .col-md-6
             #upload-files
               %h3.upload-button-pre= t('shf_applications.new.upload_files')
-              %span{class: 'btn btn-warning btn-file'}
+              %span{ class: 'btn btn-warning mt-3 btn-file' }
                 = t('shf_applications.new.upload_button')
                 = f.file_field 'actual_files[]',
                   multiple: true,
@@ -39,13 +39,13 @@
 
               -# The table that lists the files to be uploaded when the form is submitted:
               %table.hidden.table#files-to-upload
-                %tbody.files{'data-toggle': "modal-gallery", 'data-target': "#modal-gallery"}
+                %tbody.files{ 'data-toggle': "modal-gallery", 'data-target': "#modal-gallery" }
           .col-md-6
             = render 'uploaded_files_list', shf_application: @shf_application
     %br
     %p
       %span.file-delivery-selection
-        Please select how you will deliver the files needed for your application:
+        = t('shf_applications.new.file_delivery_selection')
       %br
 
       - radio_buttons_collection, footnotes = file_delivery_radio_buttons_collection
@@ -53,10 +53,9 @@
       = f.collection_radio_buttons(:file_delivery_method_id,
                                    radio_buttons_collection,
                                    :first, :second, {}) do |rb|
-        = rb.label(class: 'radio-inline radio-inline-label') do
-          = rb.radio_button + ' ' + rb.text
-      %br
-      %span.file-delivery-footnotes
+        = rb.label(class: 'form-check form-check-inline') do
+          %small= rb.radio_button + ' ' + rb.text + ' '
+      %small.file-delivery-footnotes
         = footnotes
 
     %p.upload-more-note.instructions= t('shf_applications.new.upload_more_files') if controller.action_name == 'new'
@@ -65,13 +64,12 @@
   %h2= t('shf_applications.new.section_title_about_you')
   .answers
     - if current_user.admin? && user.membership_number
-      = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
-      = f.text_field :membership_number, class: 'wpcf7-form-control'
+      .form-group
+        = f.label :membership_number, t('shf_applications.show.membership_number'), class: 'required'
+        = f.text_field :membership_number,  class: 'form-control'
 
     = f.label :company_number, t('shf_applications.show.company_number'), class: 'required'
-
-    %span.glyphicon.glyphicon-info-sign{ title: "#{t('.company_numbers_tooltip')}",
-                                         data: {toggle: 'tooltip'} }
+    = fas_tooltip(t('.company_numbers_tooltip'))
 
     %p.field-instruction= t('shf_applications.new.enter_company_number')
 
@@ -92,10 +90,11 @@
 
     = f.label :contact_email, t('shf_applications.show.contact_email'), class: 'required'
     %p.field-instruction= t('shf_applications.new.can_be_same_email')
-    = f.email_field :contact_email, class: 'wpcf7-form-control'
-
+    = f.email_field :contact_email,  class: 'form-control'
+    %br
     = f.label :phone_number, t('shf_applications.show.phone_number')
-    = f.telephone_field :phone_number, class: 'wpcf7-form-control'
+    %br
+    = f.telephone_field :phone_number,  class: 'form-control'
 
 
 - if @shf_application.may_is_ready_for_review?

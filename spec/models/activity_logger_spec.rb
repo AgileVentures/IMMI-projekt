@@ -273,4 +273,60 @@ RSpec.describe ActivityLogger do
 
   end # context 'using stdout or stderr as the log' do
 
+
+  describe 'record' do
+
+    it 'raises InvalidLogSeverityLevell if a severity level is not allowed' do
+      expect{log.record('blorf', 'bad severity level')}.to raise_exception InvalidLogSeverityLevel
+    end
+
+    it 'logs the message with the given severity' do
+      #once with the Started...message,  once with the message we send below
+      expect_any_instance_of(Logger).to receive(:info).with(anything).twice
+
+      expect_any_instance_of(Logger).to receive(:warn).with('blorf')
+
+      log.record('info', 'hello')
+      log.record('warn', 'blorf')
+    end
+
+  end
+
+
+  it '#info records the a message with severity= info' do
+    expect(log).to receive(:record).with('info', 'hello')
+    log.info('hello')
+  end
+
+
+  it '#warn records the a message with severity= warn' do
+    expect(log).to receive(:record).with('warn', 'hello')
+    log.warn('hello')
+  end
+
+
+  it '#debug records the a message with severity= debug' do
+    expect(log).to receive(:record).with('debug', 'hello')
+    log.debug('hello')
+  end
+
+
+  it '#error records the a message with severity= error' do
+    expect(log).to receive(:record).with('error', 'hello')
+    log.error('hello')
+  end
+
+
+  it '#fatal records the a message with severity= fatal' do
+    expect(log).to receive(:record).with('fatal', 'hello')
+    log.fatal('hello')
+  end
+
+
+  it '#unknown records the a message with severity= unknown' do
+    expect(log).to receive(:record).with('unknown', 'hello')
+    log.unknown('hello')
+  end
+
+
 end

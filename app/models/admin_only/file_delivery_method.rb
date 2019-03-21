@@ -28,7 +28,7 @@ module AdminOnly
         raise ArgumentError, 'Argument must be a symbol and a known delivery name key'
       end
 
-      where(name: METHOD_NAMES[name_key])[0]
+      find_by(name: METHOD_NAMES[name_key])
     end
 
     def email?
@@ -37,6 +37,12 @@ module AdminOnly
 
     def mail?
       name == METHOD_NAMES[:mail]
+    end
+
+
+    def description_for_locale(locale)
+      text_method = "description_#{locale}".to_sym
+      self.send(text_method)
     end
 
   end

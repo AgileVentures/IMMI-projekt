@@ -1,51 +1,43 @@
 = search_form_for @search_params, method: :get, url: shf_applications_path,
                                   class: 'form-horizontal' do |f|
   .form-group
-    .col-sm-2
-      = f.label :user_membership_number_in,
-                "#{t('shf_applications.index.membership_number')}",
-                class: 'control-label',
-                style: 'text-align: left; font-size: 12px;'
-      = f.collection_select :user_membership_number_in,
-                      User.distinct.order(:membership_number).pluck(:membership_number).reject(&:blank?),
-                      :to_s, :to_s, { include_blank: false },
-                      { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control search_field',
-                        data: {language: "#{@locale}" } }
-    .col-sm-5
-      = f.label :user_last_name_in,
-                "#{t('activerecord.attributes.shf_application.last_name')}",
-                class: 'control-label',
-                style: 'text-align: left; font-size: 12px;'
-      = f.collection_select :user_last_name_in,
-                      User.distinct.order(:last_name).pluck(:last_name).reject(&:blank?),
-                      :to_s, :to_s, { include_blank: false },
-                      { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control search_field',
-                        data: {language: "#{@locale}" } }
-    .col-sm-2
-      = f.label :companies_company_number_in,
-                "#{t('shf_applications.index.org_nr')}",
-                class: 'control-label',
-                style: 'text-align: left; font-size: 12px;'
-      = f.collection_select :companies_company_number_in,
-                      ShfApplication.joins(:companies).order('companies.company_number').pluck('companies.company_number'),
-                      :to_s, :to_s, { include_blank: false },
-                      { multiple: true, size: 5, style: 'width: 100%;',
-                        class: 'form-control search_field',
-                        data: {language: "#{@locale}" } }
-
-    .col-sm-3
-      = f.label :state_in,
-                "#{t('shf_applications.index.state')}",
-               class: 'control-label',
-               style: 'text-align: left; font-size: 12px;'
-      = f.collection_select :state_in,
-                     states_selection_list,
-                     :second, :first, { include_blank: false },
-                     { multiple: true, size: 5, style: 'width: 100%;',
-                       class: 'form-control search_field',
-                       data: {language: "#{@locale}" } }
-    .col-sm-12
-      %br
-      = submit_tag "#{t('search')}", class: 'btn btn-primary pull-right'
+    .row
+      .col-sm-2
+        = f.label :user_membership_number_in,
+                  "#{t('shf_applications.index.membership_number')}"
+        = f.collection_select :user_membership_number_in,
+                        User.distinct.order(:membership_number).pluck(:membership_number).reject(&:blank?),
+                        :to_s, :to_s, { include_blank: false },
+                        { multiple: true, size: 5, style: 'width: 100%;',
+                          class: 'form-control search_field',
+                          data: {language: "#{@locale}" } }
+      .col-sm-3
+        = f.label :user_last_name_in,
+                  "#{t('activerecord.attributes.shf_application.last_name')}"
+        = f.collection_select :user_last_name_in,
+                        User.distinct.order(:last_name).pluck(:last_name).reject(&:blank?),
+                        :to_s, :to_s, { include_blank: false },
+                        { multiple: true, size: 5, style: 'width: 100%;',
+                          class: 'form-control search_field',
+                          data: {language: "#{@locale}" } }
+      .col-sm-2
+        = f.label :companies_company_number_in,
+                  "#{t('shf_applications.index.org_nr')}"
+        = f.collection_select :companies_company_number_in,
+                        ShfApplication.joins(:companies).order('companies.company_number').pluck('companies.company_number'),
+                        :to_s, :to_s, { include_blank: false },
+                        { multiple: true, size: 5, style: 'width: 100%;',
+                          class: 'form-control search_field',
+                          data: {language: "#{@locale}" } }
+      .col-sm-3
+        = f.label :state_in,
+                  "#{t('shf_applications.index.state')}"
+        = f.collection_select :state_in,
+                       states_selection_list,
+                       :second, :first, { include_blank: false },
+                       { multiple: true, size: 5, style: 'width: 100%;',
+                         class: 'form-control search_field',
+                         data: {language: "#{@locale}" } }
+      .col-sm-2
+        %br
+        = submit_tag "#{t('search')}", class: 'btn btn-primary btn-lg btn-block'

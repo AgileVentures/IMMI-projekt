@@ -1,3 +1,9 @@
+# When I click on <something> that matches on of the following patterns:
+#  When I click on t("")
+#  When I click on t("")
+#  When I click on t("") [link | button]
+#  When I click on [first | second | third | fourth | fifth ] t("") [link | button]
+#
 When "I click on{optional_string} {capture_string}{optional_string}" do |ordinal, element, type|
 # use 'ordinal' when selecting among links or buttons all of which
 # have the same selector (e.g., same label)
@@ -72,12 +78,25 @@ When "I select {capture_string} in select list {capture_string}" do |option, lis
 end
 
 When "I select radio button {capture_string}" do |label_text|
-  find(:xpath, "//label[contains(.,'#{label_text}')]/input[@type='radio']").click
+  find(:xpath, "//label[contains(.,'#{label_text}')]//input[@type='radio']").click
 end
 
 When "I click the {capture_string} action for the row with {capture_string}" do |action, row_content|
   find(:xpath, "//tr[contains(.,'#{row_content}')]/td/a", :text => "#{action}").click
 end
+
+
+When "I click the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |
+  find(:xpath, "//tr[contains(.,'#{row_content}')]//a/i[contains(@class, '#{icon_class}')]").click
+end
+
+
+When "I click and accept the icon with CSS class {capture_string} for the row with {capture_string}" do | icon_class, row_content |
+  page.driver.accept_modal(:confirm, wait: 4) do
+    step %{I click the icon with CSS class "#{icon_class}" for the row with "#{row_content}"}
+  end
+end
+
 
 When "I click and accept the {capture_string} action for the row with {capture_string}" do |action, row_content|
   page.driver.accept_modal(:confirm, wait: 4) do
@@ -126,4 +145,13 @@ end
 
 And(/^I scroll to the top$/) do
   page.evaluate_script("scroll(0, 0)")
+end
+
+And(/^I scroll so the( page)? title is visible/) do | _optional_page |
+  page.evaluate_script("document.getElementsByTagName('h1')[0].scrollIntoView()")
+end
+
+
+When(/^I scroll so( the)? element with id "([^"].*)" is visible/) do |_optional_the, element_id |
+  page.evaluate_script("document.getElementById('#{element_id}').scrollIntoView()")
 end

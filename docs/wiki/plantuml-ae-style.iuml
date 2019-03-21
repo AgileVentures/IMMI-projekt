@@ -197,6 +197,7 @@ skinparam sequence {
         ' FontSize
         FontStyle         italic
     }
+
     Group {
         BackgroundColor     white
         BodyBackgroundColor white
@@ -204,9 +205,10 @@ skinparam sequence {
         BorderThickness     2
 
         Header {
-            FontStyle     bold
+            FontStyle     normal
         }
     }
+
     LifeLine {
         BackgroundColor   white
         BorderColor       navy

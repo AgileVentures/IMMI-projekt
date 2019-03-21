@@ -87,6 +87,32 @@ module AdminOnly
     end
 
 
+    # The HTML styles for the navigation tabs on the dashboard index are nearly the same.
+    # The only things that vary are the id and the text that is displayed.
+    #
+    # @return [Hash] - the HTML styles to apply to a navigation tab on the dashboard
+    def nav_tab_html_styles(id, display_text, aria_is_selected = 'false')
+      {role: 'tab',
+       class: 'nav-link',
+       href: id,
+       'data-toggle': 'tab',
+       'aria-controls': display_text,
+       'aria-selected': aria_is_selected}
+    end
+
+
+    # The HTML styles for a progress bar.
+    # The only thing that varies is the value of the progress bar.
+    #
+    # @return [Hash] - the HTML styles to apply to a progress bar
+    def progress_bar_html_styles(value)
+      {'aria-valuemax': '100',
+       'aria-valuemin': '0',
+       'aria-valuenow': "#{value.to_i}",
+       role: 'progressbar',
+       style: "width:#{value.to_i}%"}
+    end
+
   end # DashboardHelper
 
 end # module AdminOnly

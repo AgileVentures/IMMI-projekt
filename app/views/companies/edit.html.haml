@@ -3,12 +3,11 @@
 
 %header.entry-header
   %h1.entry-title= t('.title', company_name: @company.name)
-  .post-title-divider
-    %span
-  - unless assocation_empty?(@all_business_categories)
-    = render 'business_categories/as_list',
-        categories_names: @company.categories_names
-.entry-content.wpcf7
+  .center
+    - unless assocation_empty?(@all_business_categories)
+      = render 'business_categories/as_list',
+          categories_names: @company.categories_names
+.entry-content
   = render 'form', class_name: 'edit-company'
   .center
     = link_to "#{t('companies.view_company')}", @company

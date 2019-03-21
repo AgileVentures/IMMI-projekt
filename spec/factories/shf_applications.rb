@@ -17,6 +17,11 @@ FactoryBot.define do
     file_delivery_method { AdminOnly::FileDeliveryMethod.first ||
                            association(:file_delivery_method) }
 
+    trait :legacy_application do
+      file_delivery_method { nil }
+      to_create { |instance| instance.save(validate: false) }
+    end
+
     trait :accepted do
       state { :accepted }
       when_approved { Time.zone.now }

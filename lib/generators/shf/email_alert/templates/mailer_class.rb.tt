@@ -1,0 +1,22 @@
+<% module_namespacing do -%>
+
+#--------------------------
+#
+# @class  <%= mailer_class %>
+#
+# @desc Responsibility:  FIXME: resposibility for this Alert class in a single sentence
+#
+#  Only 1 is needed for the system.
+#
+# @author FIXME: your name and email
+# @date <%= Date.current %>
+# @file <%= mailer_class.underscore %>.rb
+#
+#--------------------------
+
+
+class <%= mailer_class %>  < ApplicationMailer
+
+
+end
+<% end -%>

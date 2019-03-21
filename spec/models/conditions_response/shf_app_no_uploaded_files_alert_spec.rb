@@ -31,6 +31,7 @@ RSpec.describe ShfAppNoUploadedFilesAlert do
 
 
     describe 'only send if application is in a state waiting for files' do
+
       context "application state not one of #{APP_STATE_STILL_NEEDING_UPLOADS}" do
         OTHER_STATES.each do | app_state |
 
@@ -97,6 +98,30 @@ RSpec.describe ShfAppNoUploadedFilesAlert do
 
 
   end
+
+
+  describe 'file_delivery_method is nil (can happen with applications created before we implemented file_delivery_method)' do
+
+    let(:applicant) { create(:user_with_membership_app) }
+
+
+    it "do send if file delivery method = nil (and we should send it this day)" do
+
+      # ensure that the updated_at date is Nov 30
+      Timecop.freeze(nov30) do
+        applicant
+        applicant.shf_application.file_delivery_method = nil
+      end
+
+      alert_days.each do | alert_date |
+        Timecop.freeze(alert_date) do
+          expect(described_class.instance.send_alert_this_day?(timing, config, applicant)).to be_truthy
+        end
+      end
+    end
+
+  end
+
 
   context 'no files uploaded' do
 

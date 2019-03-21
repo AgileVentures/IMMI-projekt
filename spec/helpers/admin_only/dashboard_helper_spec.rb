@@ -306,4 +306,37 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
 
   end
 
+  describe '#nav_tab_html_styles' do
+    it 'returns a Hash with the id, display_text, and aria_is_selected as arguments' do
+      expect(helper.nav_tab_html_styles('someID', 'display this', aria_is_selected = 'true'))
+          .to include(role: 'tab',
+                      class: 'nav-link',
+                      href: 'someID',
+                      'data-toggle': 'tab',
+                      'aria-controls': 'display this',
+                      'aria-selected': 'true')
+    end
+
+    it 'aria_is_selected defaults to false since most tabs will not be the selected one' do
+      expect(helper.nav_tab_html_styles('someID', 'display this'))
+          .to include(role: 'tab',
+                      class: 'nav-link',
+                      href: 'someID',
+                      'data-toggle': 'tab',
+                      'aria-controls': 'display this',
+                      'aria-selected': 'false')
+    end
+  end
+
+
+  describe '#progress_bar_html_styles' do
+
+    it 'returns a Hash with the width and aria-valuenow as arguments' do
+      expect(helper.progress_bar_html_styles(17)).to include('aria-valuemax': '100',
+              'aria-valuemin': '0',
+              'aria-valuenow': "17",
+              role: 'progressbar',
+              style: "width:17%")
+    end
+  end
 end

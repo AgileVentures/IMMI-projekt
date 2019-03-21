@@ -1,53 +1,43 @@
-#editStatusModal.modal.fade(tabindex='-1' role='dialog')
-  .modal-dialog(role='document')
+.modal.fade#editStatusModal{ tabindex: '-1', role: 'dialog' }
+  .modal-dialog{ role: 'document' }
     .modal-content
 
       = form_for user, url: edit_status_user_path(user),
                  method: :put, remote: true,
                  html: { id: 'userStatusForm' } do |f|
-
         .modal-header
-          %button(type='button' class='close' data-dismiss='modal')
-            %span(aria-hidden='true') &times;
-          %h3.modal-title.text-center
+          %h4.modal-title.text-center
             = t('users.user.edit_member_status')
+          %button.close{ type: 'button', data: { dismiss: 'modal' } }
+            %span{ 'aria-hidden' => 'true' } &times;
 
         .modal-body
           .container-fluid
-            .form-group
-              .row
-                .col-sm-4
-                  %label
-                    #{t('users.show.member')}?
-                .col-sm-8
-                  = f.collection_radio_buttons(:member,
-                                               boolean_radio_buttons_collection,
-                                               :first, :second, {},
-                                               { class: 'radio-inline' }) do |rb|
+            %label
+              #{t('users.show.member')}?
+            %br
+            = f.collection_radio_buttons(:member,
+                                             boolean_radio_buttons_collection,
+                                             :first, :second, {}) do |rb|
 
-                    = rb.label(class: 'radio-inline-label') do
-                      = rb.radio_button + ' ' + rb.text
+              = rb.label(class: 'form-check form-check-inline') do
+                = rb.radio_button + ' ' + rb.text  + ' '
 
-              = fields_for :payment, user.most_recent_membership_payment do |pf|
-                .row
-                  .col-sm-4
-                    %label
-                      #{t('activerecord.attributes.payment.expire_date')}:
-                  .com-sm-8
-                    = pf.date_select(:expire_date,
-                                     { start_year: Time.zone.today.year,
-                                       end_year: Time.zone.today.year + 2},
-                                     { class: 'select-box' })
-                .row
-                  .col-sm-4
-                    = pf.label :notes,
-                               "#{t('activerecord.attributes.payment.notes')}:"
-                  .col-sm-8
-                    = pf.text_area :notes
+            %hr
+            = fields_for :payment, user.most_recent_membership_payment do |pf|
+              %label #{t('activerecord.attributes.payment.expire_date')}:
+              = pf.date_select(:expire_date,
+                               { start_year: Time.current.year,
+                                 end_year: Time.current.year + 2},
+                               { class: 'form-control select-box form-control-sm' })
+              %hr
+              = pf.label :notes,
+                         "#{t('activerecord.attributes.payment.notes')}:"
+              = pf.text_area :notes, class: 'form-control'
 
         .modal-footer
-          = f.submit t('users.user.submit_button_label'), class: "btn btn-primary",
+          = f.submit t('users.user.submit_button_label'), class: "btn btn-sm btn-primary",
                      id: 'editUserStatusSubmit'
 
-          %button(type='button' class='btn btn-default' data-dismiss='modal')
+          %button(type='button' class='btn btn-sm btn-default' data-dismiss='modal')
             = t('cancel')

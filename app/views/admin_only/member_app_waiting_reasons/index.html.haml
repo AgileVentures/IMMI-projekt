@@ -1,7 +1,5 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-.post-title-divider
-  %span
 
 .entry-content
 
@@ -33,4 +31,4 @@
           %td= link_to t('delete'), member_app_waiting_reason, :method => :delete, :data => { confirm: t('admin_only.member_app_waiting_reasons.delete_confirm', name_sv: member_app_waiting_reason.name_sv, name_en: member_app_waiting_reason.name_en) }
 
   %br
-    .center= link_to t('admin_only.member_app_waiting_reasons.new_member_app_waiting_reason'), new_admin_only_member_app_waiting_reason_path, class: 'button btn btn-default new-member-app-waiting-reason', id: 'new-member-app-waiting-reason'
+    .center= link_to t('admin_only.member_app_waiting_reasons.new_member_app_waiting_reason'), new_admin_only_member_app_waiting_reason_path, class: 'btn btn-warning new-member-app-waiting-reason', id: 'new-member-app-waiting-reason'

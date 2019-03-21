@@ -1,15 +1,19 @@
-.section
-  %h3.section-title Users
-  %p Some content in menu 6.
-  = @data_gatherer.translated_users.map{|k, v| "#{k}: #{v}"}.join(', ')
-  = pie_chart @data_gatherer.translated_users
-  = line_chart User.all.group_by_day(:created_at).count
-  %p
-    %a.btn.btn-success(aria-controls='listUsers' aria-expanded='false' data-toggle='collapse' href= '#listUsers' role= 'button')
-      View users who are not yet members
-  - not_members = User.all.reject(&:member?)
-  #listUsers.collapse
-    .card.card-body
-      - not_members.each do |c|
-        = link_to c.first_name, (user_path(c))
-        |
+-# This partial expects the following locals:
+-#   users_by_membership_summary - for each membership status, the status (key) and count (value)
+-#   users_grouped_by_membership - users, grouped by whether or not they are members
+-#   users_grouped_by_day_created - all users, grouped by the day they were created
+-#   not_members - Users that are not members
+%h3.section-title= t('admin_only.dashboard.tabs.users.title')
+%p
+= users_by_membership_summary
+= pie_chart users_grouped_by_membership
+= line_chart users_grouped_by_day_created
+
+%p
+  %a.btn.btn-success{ 'aria-controls': 'list-users', 'aria-expanded': 'false', 'data-toggle': 'collapse', 'href': '#list-users', 'role': 'button' }
+    View users who are not yet members
+
+.collapse#list-users
+  .card.card-body
+    - not_members.each do |c|
+      = link_to c.full_name, (user_path(c))

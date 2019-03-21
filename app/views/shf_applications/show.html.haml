@@ -2,45 +2,42 @@
 
   %header.entry-header
     %h1.entry-title= t('.title', user_full_name: @shf_application.user_full_name)
-  .post-title-divider
-    %span
-  .entry-content
+  .entry-content.container-fluid
+    .row
+      .col
+        %h2= @shf_application.user_full_name
 
-    %h2= @shf_application.user_full_name
+        = render partial: 'membership_number', locals: { user: @shf_application.user }
 
-    = render partial: 'membership_number', locals: { user: @shf_application.user }
+        %p= field_or_none("#{t('activerecord.attributes.user.email')}",
+                          mail_to(@shf_application.user.email),
+                          label_class: 'standard-label')
 
-    %p= field_or_none("#{t('activerecord.attributes.user.email')}",
-                      mail_to(@shf_application.user.email),
-                      label_class: 'standard-label')
+        %p= field_or_none("#{t('.contact_email')}",
+                          mail_to(@shf_application.contact_email),
+                          label_class: 'standard-label')
 
-    %p= field_or_none("#{t('.contact_email')}",
-                      mail_to(@shf_application.contact_email),
-                      label_class: 'standard-label')
+        - if @shf_application.phone_number
+          %p #{t('.phone_number')}: #{@shf_application.phone_number}
 
-    - if @shf_application.phone_number
-      %p #{t('.phone_number')}: #{@shf_application.phone_number}
+        %p #{t('.company_number')}: #{@shf_application.company_numbers}
 
-    %p #{t('.company_number')}: #{@shf_application.company_numbers}
+        - unless assocation_empty?(@categories)
+          %h4 #{t('.with_categories')}:
+          %ul
+            - @categories.each do | business_category |
+              %li= business_category.name
 
-    - unless assocation_empty?(@categories)
-      %h4 #{t('.with_categories')}:
-      %strong
-        %ul
-          - @categories.each do | business_category |
-            %li= business_category.name
+      .col
+        #supporting-files
+          = render 'uploaded_files_list', shf_application: @shf_application, show_delete: false
 
-    .post-title-divider
-      %span
+    .row
+      .col
+        %pre.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state} - #{@shf_application.updated_at.strftime('%F')}
 
-    #supporting-files
-      = render 'uploaded_files_list', shf_application: @shf_application, show_delete: false
-
-
-    %h3.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state}  - #{@shf_application.updated_at.strftime('%F')}
-
-    - if current_user.admin?
-      = render partial: 'application_status_form'
-
-      = link_to "#{t('shf_applications.edit_shf_application')}", edit_shf_application_path(@shf_application), class:'btn btn-warning'
-      = link_to "#{t('.delete')}", @shf_application, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }
+        - if current_user.admin?
+          = render partial: 'application_status_form'
+          %hr
+          = link_to "#{t('shf_applications.edit_shf_application')}", edit_shf_application_path(@shf_application), class:'btn btn-warning'
+          = link_to "#{t('.delete')}", @shf_application, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }

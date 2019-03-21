@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    = favicon_link_tag 'favicon.ico'
+    /= favicon_link_tag 'favicon.ico'
 
     %meta{ content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes', name: 'viewport' }/
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
@@ -53,8 +53,7 @@
           }
 
 
-
-  %body{class: "#{controller_name} #{action_name} page page-template page-template-page-sidebar-none"}
+  %body{ class: "#{controller_name} #{action_name} page page-template page-template-page-sidebar-none" }
     // This embedded script sets the locale for I18n on the client side.
     // It needs to be in the body since only the body will be re-rendered
     // by default when turbolinks is enabled.
@@ -63,13 +62,7 @@
       I18n.locale = "#{I18n.locale}";
 
     = render 'top'
-    #wrap
-      #content.site-content.container
-        .page-gutter.col-xs-12
-          = render 'flash'
-          %section#primary.content-area
-            %main#main.site-main{role: 'main'}
-              %article
-                = yield
-                = render 'page_footer'
-    = render 'bottom'
+
+    = render 'flash'
+    .main{ role: 'main' }
+      = yield

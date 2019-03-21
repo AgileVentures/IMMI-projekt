@@ -162,8 +162,7 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
-    And I should see "Company02"
+    Then I should see "Company02"
     And I should not see "2120000142"
     And I should see "Company01"
     And I should not see "5560360793"
@@ -174,7 +173,6 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
     And I should see "Company02"
@@ -203,7 +201,6 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
     And I click on t("toggle.company_search_form.hide")
     # Ensure the list is sorted by name so we will see Company02
     And I click on t("activerecord.attributes.company.name")
@@ -224,7 +221,6 @@ Feature: Visitor sees all companies
     Given I am Logged out
     And I set the locale to "sv"
     And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
     Then I click on t("toggle.company_search_form.hide") button
     And I should see "Verksamhetslän"
     And I should see "Kategori"
@@ -244,7 +240,6 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
     And I click on t("toggle.company_search_form.hide")
     And "items_count" should have "10" selected
     And I should see "10" companies
@@ -270,7 +265,6 @@ Feature: Visitor sees all companies
     Given the date is set to "2017-10-01"
     Given I am Logged out
     And I am on the "landing" page
-    Then I should see t("companies.index.h_companies_listed_below")
     And I click on t("toggle.company_search_form.hide")
     And "items_count" should have "10" selected
     Then I select "All" in select list "items_count"

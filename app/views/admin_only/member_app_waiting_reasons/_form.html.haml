@@ -1,25 +1,31 @@
 = form_for @member_app_waiting_reason do |f|
-
   != model_errors_helper(@member_app_waiting_reason)
-
-  = f.label :name_sv, t('activerecord.attributes.member_app_waiting_reason.name_sv'), class: 'required'
-  - name_sv_required = t('activerecord.attributes.member_app_waiting_reason.name_sv') + ' ' + t('errors.messages.blank')
-  = f.text_field :name_sv, class: 'wpcf7-form-control',
-         required: true,
-         oninvalid: "this.setCustomValidity('#{name_sv_required}')",
-         onchange: "this.setCustomValidity('')"
-
-  = f.label :name_en, t('activerecord.attributes.member_app_waiting_reason.name_en')
-  = f.text_field :name_en, class: 'wpcf7-form-control'
-
-  = f.label :description_sv, t('activerecord.attributes.member_app_waiting_reason.description_sv')
-  = f.text_field :description_sv, class: 'wpcf7-form-control'
-
-  = f.label :description_en, t('activerecord.attributes.member_app_waiting_reason.description_en')
-  = f.text_field :description_en, class: 'wpcf7-form-control'
-
-  = f.label :is_custom, t('activerecord.attributes.member_app_waiting_reason.is_custom') + '?', class: 'is-custom'
-  = f.check_box :is_custom, class: 'wpcf7-form-control is-custom'
-
-
-  = f.submit t('save')
+  .container
+    .row
+      .col.form-group
+        = f.label :name_sv, t('activerecord.attributes.member_app_waiting_reason.name_sv'), class: 'required'
+        - name_sv_required = t('activerecord.attributes.member_app_waiting_reason.name_sv') + ' ' + t('errors.messages.blank')
+        = f.text_field :name_sv, class: 'form-control',
+               required: true,
+               oninvalid: "this.setCustomValidity('#{name_sv_required}')",
+               onchange: "this.setCustomValidity('')"
+      .col.form-group
+        = f.label :name_en, t('activerecord.attributes.member_app_waiting_reason.name_en')
+        = f.text_field :name_en, class: 'form-control'
+    .row
+      .col.form-group
+        = f.label :description_sv, t('activerecord.attributes.member_app_waiting_reason.description_sv')
+        = f.text_field :description_sv, class: 'form-control'
+      .col.form-group
+        = f.label :description_en, t('activerecord.attributes.member_app_waiting_reason.description_en')
+        = f.text_field :description_en, class: 'form-control'
+    .row
+      .col.form-group
+        .form-check
+          .form-check-input
+            = f.check_box :is_custom
+          %label.form-check-label
+            = f.label :is_custom, t('activerecord.attributes.member_app_waiting_reason.is_custom') + '?', class: 'is-custom'
+    .row
+      .col
+        = f.submit t('save'), class: 'btn btn-primary float-right'
