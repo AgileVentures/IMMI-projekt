@@ -57,3 +57,9 @@ config/secrets.yml
 # ignore all directories named rubycritic no matter where they are
 # (rubycritic gem reports: do not put individual rubycritic reports into the repo)
 /**/rubycritic/
+   
+# Ignored user files below
+.DS_Store
+.ideas/
+.idea
+.idea*
