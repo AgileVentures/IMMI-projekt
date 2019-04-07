@@ -99,6 +99,11 @@ Then "I should{negate} see {capture_string} image" do |negate, alt_text|
   expect(page).send (negate ? :not_to : :to),  have_xpath("//img[contains(@alt,'#{alt_text}')]")
 end
 
+Then "I should{negate} see {capture_string} image" do |negate, file_name|
+  expect(page).send (negate ? :not_to : :to),  have_xpath("//
+  img[contains(@src,'#{file_name}')]")
+end
+
 
 Then "I should{negate} see button {capture_string}" do |negate, button|
   expect(page).send (negate ? :not_to : :to),  have_button(button)
