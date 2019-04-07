@@ -16,24 +16,24 @@ Feature: As an admin
       | dog grooming | grooming dogs from head to tail |
       | dog crooning | crooning to dogs                |
 
-
+  @selenium
   Scenario: Admin wants to edit a business category
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
-    And I click the t("business_categories.index.edit") action for the row with "dog grooming"
+    When I click the icon with CSS class "edit" for the row with "dog grooming"
     Then I should see t("business_categories.edit.title", category_name: "dog grooming")
     And I fill in t("activerecord.attributes.business_category.name") with "doggy grooming"
     And I click on t("business_categories.edit.submit_button_label")
     Then I should see t("business_categories.update.success")
     And I should see "doggy grooming"
 
-
+  @selenium
   Scenario: Admin makes a mistake when editing a business category = sad path
     Given I am logged in as "admin@shf.com"
     And I am on the "business categories" page
     Then I should see "dog crooning"
     And I should see "dog grooming"
-    And I click the t("business_categories.index.edit") action for the row with "dog crooning"
+    When I click the icon with CSS class "edit" for the row with "dog crooning"
     Then I should see t("business_categories.edit.title", category_name: "dog crooning")
     And I fill in t("activerecord.attributes.business_category.name") with ""
     And I click on t("business_categories.edit.submit_button_label")

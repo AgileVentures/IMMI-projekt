@@ -3,12 +3,10 @@
   %header.entry-header
     %h1.entry-title= t('.page_title')
 
-  .post-title-divider
-    %span
-
-  .entry-content.wpcf7
+  .entry-content
 
     = render 'form'
 
-  .center
-    = link_to "#{t('shf_documents.all_shf_minutes')}", shf_documents_path, class: 'btn btn-default btn-shf-documents-all'
+  %hr
+  .text-center
+    = link_to "#{t('shf_documents.all_shf_minutes')}", shf_documents_path, class: 'btn btn-light btn-sm btn-shf-documents-all'

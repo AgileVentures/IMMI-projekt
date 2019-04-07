@@ -1,11 +1,11 @@
 %div{ :id => "#{unique_css_id(@shf_application)}", class: "#{item_view_class(@shf_application, controller.action_name)}" }
 
   %header.entry-header
-    %h1.entry-title= t('.title', user_full_name: @shf_application.user_full_name)
+    %h1.entry-title= t('.title', user_full_name: @shf_application.user.full_name)
   .entry-content.container-fluid
     .row
       .col
-        %h2= @shf_application.user_full_name
+        %h2= @shf_application.user.full_name
 
         = render partial: 'membership_number', locals: { user: @shf_application.user }
 
@@ -32,12 +32,18 @@
         #supporting-files
           = render 'uploaded_files_list', shf_application: @shf_application, show_delete: false
 
+    .post-title-divider
+      %span
+
     .row
       .col
         %pre.app-status #{t('.app_status')}: #{@shf_application.aasm.human_state} - #{@shf_application.updated_at.strftime('%F')}
+        - unless @shf_application.accepted? || @shf_application.rejected?
+          %pre.app-status= file_delivery_method_status(@shf_application)
 
         - if current_user.admin?
           = render partial: 'application_status_form'
           %hr
-          = link_to "#{t('shf_applications.edit_shf_application')}", edit_shf_application_path(@shf_application), class:'btn btn-warning'
-          = link_to "#{t('.delete')}", @shf_application, method: :delete, class:'btn btn-danger', data: { confirm: "#{t('.confirm_are_you_sure')}" }
+          .text-center
+            = link_to "#{t('shf_applications.edit_shf_application')}", edit_shf_application_path(@shf_application), class:'btn btn-secondary btn-sm'
+            = link_to "#{t('.delete')}", @shf_application, method: :delete, class:'btn btn-danger btn-sm', data: { confirm: "#{t('.confirm_are_you_sure')}" }

@@ -9,6 +9,7 @@ class ApplicationController < ActionController::Base
   before_action :set_after_action_path, if: :devise_controller?
   before_action :store_current_location, :unless => :devise_controller?
   before_action :prepare_exception_notifier
+  before_action :set_hreflang_tag_urls
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
@@ -170,5 +171,17 @@ class ApplicationController < ActionController::Base
     params
   end
 
+
+  # Set the <link rel...  hlangref ...> tags that are put into the header.
+  # The languages are hard coded for now.  If necesssary (e.g. when more locales
+  # are added), they could be generated from I18n.config.available_locales
+  #
+  # Subclasses can override this to put information specific to a view or data.
+  def set_hreflang_tag_urls
+
+    @hreflang_default_url = request.url
+    @hreflang_sv_url = request.base_url + '/sv' + request.fullpath
+    @hreflang_en_url = request.base_url + '/en' + request.fullpath
+  end
 
 end

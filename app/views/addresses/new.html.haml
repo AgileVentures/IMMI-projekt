@@ -4,5 +4,6 @@
   = render partial: 'form',
            locals: { address: @address, method: :post,
                      url: company_addresses_path(@company.id) }
-  .center
-    = link_to "#{t('companies.view_company')}", @company
+  %hr
+  .text-center
+    = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'

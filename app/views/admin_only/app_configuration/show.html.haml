@@ -1,14 +1,6 @@
 %header.entry-header
   %h1.entry-title= t('.title')
-  .post-title-divider
-  %span
-
-= render  'show_action_buttons', app_config: @app_configuration
-
-
 .entry-content
-
-
   .row
     .col-sm-10
       %p.email_enabled_setting
@@ -16,7 +8,6 @@
           = t('.admin_email_new_apps_enabled')
           ?
         = yes_no_span( @app_configuration.email_admin_new_app_received_enabled )
-
 
   %hr
 
@@ -36,7 +27,5 @@
     .col-sm-6
       = render 'image_show', app_config: @app_configuration,
                                image_title: 'sweden_dog_trainers'
-
-
 
   = render  'show_action_buttons', app_config: @app_configuration

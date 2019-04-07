@@ -385,3 +385,63 @@ Then("the page head should{negate} include a link tag with rel = {capture_string
   expect(page).send (negate ? :not_to : :to), have_xpath(hreflang_xpath, visible: false)
 end
 
+
+And("the page head should{negate} include a ld+json script tag with key {capture_string}") do | negate, key |
+  ld_json = expect_head_has_ld_json_script(negated: negate)
+
+  expect(ld_json.key?(key)).to be_truthy
+end
+
+
+And("the page head should{negate} include a ld+json script tag with key {capture_string} and value {capture_string}") do | negate, key, value |
+
+  ld_json = expect_head_has_ld_json_script(negated: negate)
+
+  expect(ld_json.key?(key)).to be_truthy
+  expect(ld_json[key]).to eq value
+end
+
+
+And("the page head should{negate} include a ld+json script tag with key {capture_string} and subkey {capture_string} and value {capture_string}") do | negate, key, subkey, value |
+
+  ld_json = expect_head_has_ld_json_script(negated: negate)
+
+  expect(ld_json.key?(key)).to be_truthy
+  expect(ld_json[key].key?(subkey)).to be_truthy
+  expect(ld_json[key][subkey]).to eq value
+end
+
+
+And("the page head should{negate} include a ld+json script tag with key {capture_string} and subkey {capture_string} and subkey2 {capture_string} and value {capture_string}") do | negate, key, subkey1, subkey2, value |
+
+  ld_json = expect_head_has_ld_json_script(negated: negate)
+
+  expect(ld_json.key?(key)).to be_truthy
+  expect(ld_json[key].key?(subkey1)).to be_truthy
+  expect(ld_json[key][subkey1].key?(subkey2)).to be_truthy
+  expect((ld_json[key][subkey1][subkey2]).to_s).to eq value
+end
+
+
+def expect_head_has_ld_json_script(negated: false)
+  ld_json_text_xpath  = "/html/head/script[@type='application/ld+json']/text()"
+  expect(page).send (negated ? :not_to : :to), have_xpath(ld_json_text_xpath, visible: false)
+
+  ld_json = nil
+  unless negated
+    ld_json_node = find(:xpath, ld_json_text_xpath, visible: false)
+    ld_json_text = ld_json_node.text(:all)
+
+    ld_json = JSON.parse(ld_json_text)
+
+    expect(ld_json.key?('@context')).to be_truthy
+    expect(ld_json['@context']).to eq 'http://schema.org'
+
+    expect(ld_json.key?('@type')).to be_truthy
+    expect(ld_json['@type']).to eq 'LocalBusiness'
+
+    expect(ld_json.key?('@id')).to be_truthy
+  end
+
+  ld_json
+end

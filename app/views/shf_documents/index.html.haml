@@ -1,14 +1,11 @@
 %header.entry-header
   %h1.entry-title= t('.page_title')
 
-.post-title-divider
-  %span
-
 .entry-content
 
   %p= t('.instructions')
 
-  %table#shf-documents
+  %table.table.table-hover.table-sm#shf-documents
     %thead
       %tr
         %th= sort_link(@ransack_query_results, :title, t('.title'))
@@ -33,4 +30,4 @@
   - if current_user.admin?
     %br
     .center
-      = link_to t('shf_documents.new_shf_minutes'), new_shf_document_path, class: 'btn btn-default btn-shf-document-new'
+      = link_to t('shf_documents.new_shf_minutes'), new_shf_document_path, class: 'btn btn-primary btn-shf-document-new'

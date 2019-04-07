@@ -9,33 +9,22 @@
  * compiled file so the styles you add here take precedence over styles defined in any other CSS/SCSS
  * files in this directory. Styles in this file should be added after the last require_* statement.
  * It is generally better to create a new file per style scope.
- */
+  */
 @import url("https://fonts.googleapis.com/css?family=Open+Sans:200,400,700");
 @import url('https://fonts.googleapis.com/css?family=Crimson+Text:400,700');
 
-$warning:         #0067ce !default;
+$primary:         #003a78 !default;
+$light:           #dad9cd !default;
+$secondary:       #6e644b !default;
+$info:            #5692ce !default;
+$success:         #7ca059 !default;
 
 @import "bootstrap";
+@import "bootstrap-toggle";
 @import "font-awesome-sprockets";
 @import "font-awesome";
 @import "maps";
 @import "pagination";
 @import "style";
-.yes, .Yes {
-  background-color: LightGreen;
-}
-
-.maybe, .Maybe {
-  background-color: Yellow;
-}
-
-.no, .No {
-  background-color: LightCoral;
-}
-
-.search-form {
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
+@import "custom";
 @import "dashboard";

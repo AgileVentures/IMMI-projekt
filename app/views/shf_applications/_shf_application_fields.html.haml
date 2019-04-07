@@ -18,7 +18,7 @@
           .col-md-6
             #upload-files
               %h3.upload-button-pre= t('shf_applications.new.upload_files')
-              %span{ class: 'btn btn-warning mt-3 btn-file' }
+              %span{ class: 'btn btn-primary mt-3 btn-file' }
                 = t('shf_applications.new.upload_button')
                 = f.file_field 'actual_files[]',
                   multiple: true,
@@ -79,7 +79,7 @@
     .new-company-link
 
       -# NOTE: Capybara cannot find link without 'href' attribute
-      %a.btn.btn-warning.btn-sm{ href: '#', 'data-toggle': 'modal',
+      %a.btn.btn-secondary.btn-sm{ href: '#', 'data-toggle': 'modal',
                                  'data-target': '#company-create-modal' }
 
         = t('companies.new.title')

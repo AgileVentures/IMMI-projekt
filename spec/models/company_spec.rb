@@ -1,53 +1,21 @@
 require 'rails_helper'
 
+require 'shared_context/companies'
+
 require_relative File.join('..', '..', 'app', 'services', 'address_exporter')
 
 
 RSpec.describe Company, type: :model, focus: true do
 
-  let(:with_short_h_brand_url) do
-    create(:company, short_h_brand_url: 'http://www.tinyurl.com/hbrand')
-  end
+  include_context 'create companies'
 
-  let(:no_name) do
-    create(:company, name: '', company_number: '2120000142')
-  end
 
-  let(:nil_region) do
-    nil_co = create(:company, name: 'Nil Region',
-                    company_number: '6112107039')
-
-    no_region = build(:company_address, addressable: nil_co, region: nil)
-
-    no_region.save(validate: false)
-
-    nil_co
-  end
-
-  let(:complete_co) do
-    create(:company, name: 'Complete Company',
-           company_number: '4268582063')
-  end
-
-  let(:complete_co2) do
-    create(:company, name: 'Complete Company 2',
-           company_number: '5560360793')
-  end
-
-  let(:complete_co3) do
-    co = create(:company, name: 'Complete Company 3',
-                company_number: '5569467466', num_addresses: 0)
-    create(:address, visibility: 'none', addressable: co)
-    co.save!
-    co
-  end
-
-  let(:complete_companies) { [complete_co] }
+  let(:complete_companies) { [complete_co1] }
 
   let(:incomplete_companies) do
     incomplete_cos = []
-    incomplete_cos << no_name
-    incomplete_cos << nil_region
+    incomplete_cos << co_no_name
+    incomplete_cos << co_nil_region
     incomplete_cos
   end
 
@@ -56,35 +24,6 @@ RSpec.describe Company, type: :model, focus: true do
   let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
   let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
   let(:payment_date_2020) { Time.zone.local(2020, 3, 15) }
-
-  let(:payment1) do
-    start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
-    create(:payment,
-           :successful,
-           user: user,
-           company:        complete_co,
-           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-           notes:          'these are notes for branding payment1',
-           start_date:     start_date,
-           expire_date:    expire_date)
-  end
-  let(:payment2) do
-    start_date, expire_date = Company.next_branding_payment_dates(complete_co.id)
-    create(:payment,
-           :successful,
-           user: user,
-           company:        complete_co,
-           payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-           notes:          'these are notes for branding payment2',
-           start_date:     start_date,
-           expire_date:    expire_date)
-  end
-
-  let(:company) { create(:company, num_addresses: 3) }
-
-  let(:event1) { create(:event, company: company) }
-  let(:event2) { create(:event, company: company) }
-
 
   describe 'Factory' do
     it 'has a valid factory' do
@@ -149,25 +88,25 @@ RSpec.describe Company, type: :model, focus: true do
     let(:user1) { create(:user) }
     let(:user2) { create(:user) }
     let(:application1) do
-      create(:shf_application, company: company,
-             company_number:            company.company_number, user: user1)
+      create(:shf_application, company: company_3_addrs,
+             company_number:            company_3_addrs.company_number, user: user1)
     end
     let(:application2) do
-      create(:shf_application, company: company,
-             company_number:            company.company_number, user: user2)
+      create(:shf_application, company: company_3_addrs,
+             company_number:            company_3_addrs.company_number, user: user2)
     end
 
     let(:payment_type) { Payment::PAYMENT_TYPE_BRANDING }
     let(:brand_pymt1) do
-      create(:payment, company: company, payment_type: payment_type)
+      create(:payment, company: company_3_addrs, payment_type: payment_type)
     end
     let(:brand_pymt2) do
-      create(:payment, company: company, payment_type: payment_type)
+      create(:payment, company: company_3_addrs, payment_type: payment_type)
     end
 
     let(:picture1) do
       pic                = Ckeditor::Picture.new
-      pic.company_id     = company.id
+      pic.company_id     = company_3_addrs.id
       pic.data_file_name = 'test'
       pic.save!(validate: false)
       pic
@@ -175,41 +114,41 @@ RSpec.describe Company, type: :model, focus: true do
 
     let(:picture2) do
       pic                = Ckeditor::Picture.new
-      pic.company_id     = company.id
+      pic.company_id     = company_3_addrs.id
       pic.data_file_name = 'test'
       pic.save!(validate: false)
       pic
     end
 
     it 'addresses' do
-      expect { company }.to change(Address, :count).by(3)
-      expect { company.destroy }.to change(Address, :count).by(-3)
+      expect { company_3_addrs }.to change(Address, :count).by(3)
+      expect { company_3_addrs.destroy }.to change(Address, :count).by(-3)
     end
 
     it 'events' do
       event1
       event2
-      expect { company.destroy }.to change(Event, :count).by(-2)
+      expect { company_3_addrs.destroy }.to change(Event, :count).by(-2)
     end
 
     it 'pictures' do
-      Ckeditor::Picture.for_company_id = company.id
+      Ckeditor::Picture.for_company_id = company_3_addrs.id
       picture1
       picture2
-      expect(company.pictures.count).to eq 2
-      expect { company.destroy }.to change(Ckeditor::Picture, :count).by(-2)
+      expect(company_3_addrs.pictures.count).to eq 2
+      expect { company_3_addrs.destroy }.to change(Ckeditor::Picture, :count).by(-2)
     end
 
     it 'payments' do
       brand_pymt1
       brand_pymt2
-      expect(company.payments.count).to eq 2
-      expect { company.destroy }.to change(Payment, :count).by(-2)
+      expect(company_3_addrs.payments.count).to eq 2
+      expect { company_3_addrs.destroy }.to change(Payment, :count).by(-2)
     end
   end
 
   describe 'events update management' do
-    
+
     around(:each) do |example|
       Timecop.freeze(Time.zone.local(2018, 6, 1))
       example.run
@@ -217,64 +156,64 @@ RSpec.describe Company, type: :model, focus: true do
     end
 
     it '#events_start_date returns starting date for stored events' do
-      expect(company.events_start_date).to eq 1.day.ago.to_date
+      expect(company_3_addrs.events_start_date).to eq 1.day.ago.to_date
     end
 
     context '#fetch_dinkurs_events', :vcr do
       it 'returns nil if no dinkurs_company_id' do
-        expect(company.fetch_dinkurs_events).to be_nil
+        expect(company_3_addrs.fetch_dinkurs_events).to be_nil
       end
 
       it 'removes previous events and returns nil if no dinkurs_company_id' do
         event1
         event2
-        expect(company.events.count).to eq 2
-        expect(company.fetch_dinkurs_events).to be_nil
-        expect(company.events.count).to eq 0
+        expect(company_3_addrs.events.count).to eq 2
+        expect(company_3_addrs.fetch_dinkurs_events).to be_nil
+        expect(company_3_addrs.events.count).to eq 0
       end
 
       it 'removes previous events and returns nil if invalid dinkurs_company_id' do
-        company.dinkurs_company_id = 'nonesuch'
+        company_3_addrs.dinkurs_company_id = 'nonesuch'
         event1
         event2
-        expect(company.events.count).to eq 2
-        expect(company.fetch_dinkurs_events).to be_nil
-        expect(company.events.count).to eq 0
+        expect(company_3_addrs.events.count).to eq 2
+        expect(company_3_addrs.fetch_dinkurs_events).to be_nil
+        expect(company_3_addrs.events.count).to eq 0
       end
 
       it 'returns events for valid dinkurs_company_id' do
-        company.dinkurs_company_id = ENV['DINKURS_COMPANY_TEST_ID']
-        expect(company.events.count).to eq 0
-        expect(company.fetch_dinkurs_events).to_not be_nil
-        expect(company.events.count).to_not eq 0
+        company_3_addrs.dinkurs_company_id = ENV['DINKURS_COMPANY_TEST_ID']
+        expect(company_3_addrs.events.count).to eq 0
+        expect(company_3_addrs.fetch_dinkurs_events).to_not be_nil
+        expect(company_3_addrs.events.count).to_not eq 0
       end
     end
 
     context '#validate_key_and_fetch_dinkurs_events', :vcr do
       it 'returns true if dinkurs key is unchanged' do
-        expect(company.validate_key_and_fetch_dinkurs_events).to eq true
+        expect(company_3_addrs.validate_key_and_fetch_dinkurs_events).to eq true
       end
 
       it 'returns true if events are fetched' do
-        company.dinkurs_company_id = ENV['DINKURS_COMPANY_TEST_ID']
-        expect(company.validate_key_and_fetch_dinkurs_events).to eq true
+        company_3_addrs.dinkurs_company_id = ENV['DINKURS_COMPANY_TEST_ID']
+        expect(company_3_addrs.validate_key_and_fetch_dinkurs_events).to eq true
       end
 
       it 'adds model error and returns false if invalid dinkurs key' do
-        company.dinkurs_company_id = 'xyz'
+        company_3_addrs.dinkurs_company_id = 'xyz'
         err                        = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid')
 
-        result = company.validate_key_and_fetch_dinkurs_events
+        result = company_3_addrs.validate_key_and_fetch_dinkurs_events
 
         expect(result).to eq false
-        expect(company.errors.full_messages.first).to match(/#{err}/)
+        expect(company_3_addrs.errors.full_messages.first).to match(/#{err}/)
       end
     end
   end
 
   describe 'categories = all employee categories' do
 
-    let(:company) { create(:company) }
+    let(:company_emp_cats) { create(:company) }
 
     let(:employee1) { create(:user) }
     let(:employee2) { create(:user) }
@@ -286,7 +225,7 @@ RSpec.describe Company, type: :model, focus: true do
 
     let(:m1) do
       m           = create(:shf_application, :accepted, user: employee1)
-      m.companies = [company]
+      m.companies = [company_emp_cats]
       m
     end
     let(:m2) do
@@ -305,8 +244,8 @@ RSpec.describe Company, type: :model, focus: true do
       m2.business_categories = [cat2]
       m3.business_categories = [cat3]
 
-      expect(company.business_categories.count).to eq 3
-      expect(company.business_categories.map(&:name))
+      expect(company_emp_cats.business_categories.count).to eq 3
+      expect(company_emp_cats.business_categories.map(&:name))
           .to contain_exactly('cat1', 'cat2', 'cat3')
     end
 
@@ -315,9 +254,9 @@ RSpec.describe Company, type: :model, focus: true do
       m2.business_categories = [cat1]
       m3.business_categories = [cat1]
 
-      expect(company.business_categories.distinct.count).to eq 1
-      expect(company.business_categories.count).to eq 3
-      expect(company.business_categories.distinct.map(&:name))
+      expect(company_emp_cats.business_categories.distinct.count).to eq 1
+      expect(company_emp_cats.business_categories.count).to eq 3
+      expect(company_emp_cats.business_categories.distinct.map(&:name))
           .to contain_exactly('cat1')
     end
   end
@@ -341,7 +280,7 @@ RSpec.describe Company, type: :model, focus: true do
              user: mem1_exp,
              company: mem1_co,
              payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1',
+             notes:          'these are notes for branding payment1, mem1_co',
              start_date:     payment_date_2017,
              expire_date:    payment_date_2017 + 365)
 
@@ -366,7 +305,7 @@ RSpec.describe Company, type: :model, focus: true do
              user: mem1_exp,
              company: mem1_co,
              payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1',
+             notes:          'these are notes for branding payment1,mem1_co',
              start_date:     Date.new(2018, 12, 1),
              expire_date:    Date.new(2018, 12, 1) + 365)
 
@@ -443,36 +382,36 @@ RSpec.describe Company, type: :model, focus: true do
 
   describe '#sanitize_website' do
 
-    let(:company) { create(:company) }
+    let(:company_sani_site) { create(:company) }
 
     it 'website = "javascript://alert(alert-text)"' do
-      company.website = "javascript://alert('alert-text')"
-      company.save
-      expect(company.website).to eq("://alert('alert-text')")
+      company_sani_site.website = "javascript://alert('alert-text')"
+      company_sani_site.save
+      expect(company_sani_site.website).to eq("://alert('alert-text')")
     end
 
     it 'website = "<script>alert("scriptalert("Boo!")")</script>"' do
-      company.website = "<script>alert('scriptalert(Boo!)')</script>"
-      company.save
-      expect(company.website).to eq ''
+      company_sani_site.website = "<script>alert('scriptalert(Boo!)')</script>"
+      company_sani_site.save
+      expect(company_sani_site.website).to eq ''
     end
 
   end
 
   describe '#sanitize_description' do
 
-    let(:company) { create(:company) }
+    let(:company_sani_desc) { create(:company) }
 
     it 'removes unwanted/malicious text' do
-      company.description = "<img src=javascript:alert('Hello')>"
-      company.save
-      expect(company.description).to eq("<img>")
+      company_sani_desc.description = "<img src=javascript:alert('Hello')>"
+      company_sani_desc.save
+      expect(company_sani_desc.description).to eq("<img>")
     end
 
     it 'website = "<script>alert("scriptalert("Boo!")")</script>"' do
-      company.description = "<script>alert('scriptalert(Boo!)')</script>"
-      company.save
-      expect(company.description).to eq ''
+      company_sani_desc.description = "<script>alert('scriptalert(Boo!)')</script>"
+      company_sani_desc.save
+      expect(company_sani_desc.description).to eq ''
     end
   end
 
@@ -481,28 +420,28 @@ RSpec.describe Company, type: :model, focus: true do
 
     describe '#branding_expire_date' do
       it 'returns date for latest completed payment' do
-        payment1
-        expect(complete_co.branding_expire_date).to eq payment1.expire_date
+        payment1_co1
+        expect(complete_co1.branding_expire_date).to eq payment1_co1.expire_date
         payment2
-        expect(complete_co.branding_expire_date).to eq payment2.expire_date
+        expect(complete_co1.branding_expire_date).to eq payment2.expire_date
       end
     end
 
     describe '#branding_payment_notes' do
       it 'returns notes for latest completed payment' do
-        payment1
-        expect(complete_co.branding_payment_notes).to eq payment1.notes
+        payment1_co1
+        expect(complete_co1.branding_payment_notes).to eq payment1_co1.notes
         payment2
-        expect(complete_co.branding_payment_notes).to eq payment2.notes
+        expect(complete_co1.branding_payment_notes).to eq payment2.notes
       end
     end
 
     describe '#most_recent_branding_payment' do
       it 'returns latest completed payment' do
-        payment1
-        expect(complete_co.most_recent_branding_payment).to eq payment1
+        payment1_co1
+        expect(complete_co1.most_recent_branding_payment).to eq payment1_co1
         payment2
-        expect(complete_co.most_recent_branding_payment).to eq payment2
+        expect(complete_co1.most_recent_branding_payment).to eq payment2
       end
     end
 
@@ -516,39 +455,39 @@ RSpec.describe Company, type: :model, focus: true do
       end
 
       it "returns today's date for first payment start date" do
-        expect(Company.next_branding_payment_dates(complete_co.id)[0]).to eq Time.zone.today
+        expect(Company.next_branding_payment_dates(complete_co1.id)[0]).to eq Time.zone.today
       end
 
       it 'returns one year later for first payment expire date' do
-        expect(Company.next_branding_payment_dates(complete_co.id)[1])
+        expect(Company.next_branding_payment_dates(complete_co1.id)[1])
             .to eq Time.zone.today + 1.year - 1.day
       end
 
       it 'returns date-after-expiration for second payment start date' do
-        payment1
-        expect(Company.next_branding_payment_dates(complete_co.id)[0])
+        payment1_co1
+        expect(Company.next_branding_payment_dates(complete_co1.id)[0])
             .to eq Time.zone.today + 1.year
       end
 
       it 'returns one year later for second payment expire date' do
-        payment1
-        expect(Company.next_branding_payment_dates(complete_co.id)[1])
+        payment1_co1
+        expect(Company.next_branding_payment_dates(complete_co1.id)[1])
             .to eq Time.zone.today + 1.year + 1.year - 1.day
       end
 
       context 'if next payment occurs after prior payment expire date' do
 
         it 'returns actual payment date for start date' do
-          payment1
+          payment1_co1
           Timecop.freeze(payment_date_2020)
-          expect(Company.next_branding_payment_dates(complete_co.id)[0])
+          expect(Company.next_branding_payment_dates(complete_co1.id)[0])
               .to eq payment_date_2020
         end
 
         it 'returns payment date + 1 year for expire date' do
-          payment1
+          payment1_co1
           Timecop.freeze(payment_date_2020)
-          expect(Company.next_branding_payment_dates(complete_co.id)[1])
+          expect(Company.next_branding_payment_dates(complete_co1.id)[1])
               .to eq payment_date_2020 + 1.year - 1.day
         end
       end
@@ -627,12 +566,12 @@ RSpec.describe Company, type: :model, focus: true do
 
     let(:app_co1_user1) do
       app           = create(:shf_application, user: user1)
-      app.companies = [complete_co]
+      app.companies = [complete_co1]
       app
     end
     let(:app_co1_user2) do
       app           = create(:shf_application, user: user2)
-      app.companies = [complete_co]
+      app.companies = [complete_co1]
       app
     end
     let(:app_co2_user3) do
@@ -664,9 +603,9 @@ RSpec.describe Company, type: :model, focus: true do
 
       it 'only returns companies that have one or more visible addresses' do
         complete_co2
-        complete_co3
+        co_no_viz_addresses
         expect(Company.address_visible).
-            to contain_exactly(no_name, nil_region, complete_co, complete_co2)
+            to contain_exactly(co_no_name, co_nil_region, complete_co1, complete_co2)
       end
     end
 
@@ -683,13 +622,13 @@ RSpec.describe Company, type: :model, focus: true do
         app_co1_user1.accept!
         user1.update(member: true)
 
-        expect(Company.with_members).to contain_exactly(complete_co)
+        expect(Company.with_members).to contain_exactly(complete_co1)
 
         app_co2_user3.start_review
         app_co2_user3.accept!
         user3.update(member: true)
 
-        expect(Company.with_members).to contain_exactly(complete_co, cmpy2)
+        expect(Company.with_members).to contain_exactly(complete_co1, cmpy2)
       end
 
       it 'returns company only once even if multiple members' do
@@ -700,22 +639,22 @@ RSpec.describe Company, type: :model, focus: true do
         app_co1_user2.start_review; app_co1_user2.accept!
         user2.update(member: true)
 
-        expect(Company.with_members).to contain_exactly(complete_co)
+        expect(Company.with_members).to contain_exactly(complete_co1)
       end
     end
 
     context '.branding_licensed' do
 
       it 'returns all currently-licensed companies' do
-        payment1.update(expire_date: Time.zone.today - 1.day)
+        payment1_co1.update(expire_date: Time.zone.today - 1.day)
         payment2.update(expire_date: Time.zone.today - 1.day)
         expect(Company.branding_licensed).to be_empty
 
-        payment1.update(expire_date: Time.zone.today)
-        expect(Company.branding_licensed).to contain_exactly(complete_co)
+        payment1_co1.update(expire_date: Time.zone.today)
+        expect(Company.branding_licensed).to contain_exactly(complete_co1)
 
         payment2.update(expire_date: Time.zone.today)
-        expect(Company.branding_licensed).to contain_exactly(complete_co)
+        expect(Company.branding_licensed).to contain_exactly(complete_co1)
       end
     end
 
@@ -729,14 +668,14 @@ RSpec.describe Company, type: :model, focus: true do
         app_co1_user1.start_review
         app_co1_user1.accept!
         user1.update(member: true)
-        payment1
-        expect(Company.searchable).to contain_exactly(complete_co)
+        payment1_co1
+        expect(Company.searchable).to contain_exactly(complete_co1)
       end
 
       it 'returns no companies if none have members' do
         app_co1_user1.start_review
         app_co1_user1.accept!
-        payment1
+        payment1_co1
         expect(Company.searchable).to be_empty
       end
 
@@ -750,7 +689,7 @@ RSpec.describe Company, type: :model, focus: true do
       it 'returns no companies if none have members' do
         app_co1_user1.start_review
         app_co1_user1.accept!
-        payment1
+        payment1_co1
         expect(Company.searchable).to be_empty
       end
 
@@ -797,17 +736,17 @@ RSpec.describe Company, type: :model, focus: true do
     context '.with_dinkurs_id' do
 
       it 'returns nil if no companies with non-empty dinkurs_company_id' do
-        company
+        company_3_addrs
         expect(Company.with_dinkurs_id).to be_empty
       end
 
       it 'returns companies with dinkurs_company_id' do
-        complete_co
+        complete_co1
         complete_co2
-        complete_co3
-        company.update_attribute(:dinkurs_company_id, ENV['DINKURS_COMPANY_TEST_ID'])
+        co_no_viz_addresses
+        company_3_addrs.update_attribute(:dinkurs_company_id, ENV['DINKURS_COMPANY_TEST_ID'])
         expect(Company.with_dinkurs_id).not_to be_empty
-        expect(Company.with_dinkurs_id).to contain_exactly(company)
+        expect(Company.with_dinkurs_id).to contain_exactly(company_3_addrs)
       end
 
     end
@@ -818,21 +757,21 @@ RSpec.describe Company, type: :model, focus: true do
     context 'there is already a shortened url in the table' do
       it 'returns shortened url' do
         url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
-        expect(with_short_h_brand_url.get_short_h_brand_url(url)).to eq('http://www.tinyurl.com/hbrand')
+        expect(co_with_short_h_brand_url.get_short_h_brand_url(url)).to eq('http://www.tinyurl.com/hbrand')
       end
     end
     context 'there is no shortened url in the table and ShortenUrl.short is called' do
       it 'saves the result if the result is not nil and returns shortened url' do
         url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
         allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/hbrand2')
-        expect(complete_co.get_short_h_brand_url(url)).to eq(ShortenUrl.short(url))
-        expect(complete_co.short_h_brand_url).to eq(ShortenUrl.short(url))
+        expect(complete_co1.get_short_h_brand_url(url)).to eq(ShortenUrl.short(url))
+        expect(complete_co1.short_h_brand_url).to eq(ShortenUrl.short(url))
       end
       it 'does not save anything if the result is nil and returns unshortened url' do
         url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
         allow(ShortenUrl).to receive(:short).with(url).and_return(nil)
-        expect(complete_co.get_short_h_brand_url(url)).to eq(url)
-        expect(complete_co.short_h_brand_url).to eq(nil)
+        expect(complete_co1.get_short_h_brand_url(url)).to eq(url)
+        expect(complete_co1.short_h_brand_url).to eq(nil)
       end
     end
   end
@@ -864,7 +803,7 @@ RSpec.describe Company, type: :model, focus: true do
             create(:payment, user: user, status: Payment::ORDER_PAYMENT_STATUS[payment_status],
                    company:        past_payments_co,
                    payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-                   notes:          'these are notes for branding payment1',
+                   notes:          'these are notes for branding payment_2017_10_1, past_payments_co',
                    start_date:     payment_date_2017,
                    expire_date:    (payment_date_2017.advance(days: 364) ) )
           end
@@ -898,7 +837,7 @@ RSpec.describe Company, type: :model, focus: true do
           create(:payment, :successful, user: user,
                  company:        successful_payments_co,
                  payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-                 notes:          'these are notes for branding payment1',
+                 notes:          'these are notes for branding payment_2018_1_3, successful_payments_co',
                  start_date:     payment_start,
                  expire_date:    Company.expire_date_for_start_date(payment_start) )
         end
@@ -925,7 +864,7 @@ RSpec.describe Company, type: :model, focus: true do
             create(:payment, user: user, status: Payment::ORDER_PAYMENT_STATUS[payment_status],
                    company:        not_successful_payments_co,
                    payment_type:   Payment::PAYMENT_TYPE_BRANDING,
-                   notes:          'these are notes for branding payment1',
+                   notes:          'these are notes for branding payment_2018_1_3, not_successful_payments_co',
                    start_date:     payment_start,
                    expire_date:    Company.expire_date_for_start_date(payment_start) )
           end
@@ -969,7 +908,7 @@ RSpec.describe Company, type: :model, focus: true do
              user: member_paid_dec_3,
              company: co_with_1_member_expires,
              payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1',
+             notes:          'these are notes for a member payment, co_with_1_member_expires',
              start_date:     dec_3,
              expire_date:    Company.expire_date_for_start_date(dec_3) )
 
@@ -981,7 +920,7 @@ RSpec.describe Company, type: :model, focus: true do
              user: member_paid_dec_5,
              company: co_with_1_member_expires,
              payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1',
+             notes:          'these are notes for a member payment, co_with_1_member_expires',
              start_date:     dec_5,
              expire_date:    Company.expire_date_for_start_date(dec_5) )
 
@@ -1027,31 +966,31 @@ RSpec.describe Company, type: :model, focus: true do
 
     describe 'false if all addresses have a region' do
       it 'only address has a region' do
-        expect(complete_co.missing_region?).to be_falsey
+        expect(complete_co1.missing_region?).to be_falsey
       end
 
       it 'all addresses have a region' do
-        complete_co.addresses << build(:company_address, addressable: complete_co)
-        complete_co.addresses << build(:company_address, addressable: complete_co)
-        expect(complete_co.missing_region?).to be_falsey
+        complete_co1.addresses << build(:company_address, addressable: complete_co1)
+        complete_co1.addresses << build(:company_address, addressable: complete_co1)
+        expect(complete_co1.missing_region?).to be_falsey
       end
     end
 
     describe 'true if 1 or more addresses have no region' do
 
       it 'only address does not have a region' do
-        nil_region.addresses.first.region = nil  # just in case it's been changed by other tests
-        expect(nil_region.missing_region?).to be_truthy
+        co_nil_region.addresses.first.region = nil  # just in case it's been changed by other tests
+        expect(co_nil_region.missing_region?).to be_truthy
       end
 
       it 'one of many addresses does not have a region' do
-        nil_region.addresses.first.region = nil  # just in case it's been changed by other tests
+        co_nil_region.addresses.first.region = nil  # just in case it's been changed by other tests
 
       # add some valid addresses (Region is not nil)
-        nil_region.addresses << build(:company_address, addressable: nil_region)
-        nil_region.addresses << build(:company_address, addressable: nil_region)
+        co_nil_region.addresses << build(:company_address, addressable: co_nil_region)
+        co_nil_region.addresses << build(:company_address, addressable: co_nil_region)
 
-        expect(nil_region.missing_region?).to be_truthy
+        expect(co_nil_region.missing_region?).to be_truthy
       end
     end
   end

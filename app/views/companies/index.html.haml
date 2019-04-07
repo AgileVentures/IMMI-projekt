@@ -7,24 +7,23 @@
 .entry-content
   .row
     .col-lg-4
-      = render 'map_companies',
-               markers: location_and_markers_for(@all_visible_companies)
-
+      = render 'map_companies', markers: location_and_markers_for(@all_visible_companies)
 
     .col-lg-8
-      .row
-        .col-sm-8
-        .col-sm-4
-          %br
-          %button.btn.btn-small.hide-search-form.btn-success.ml-auto{ id: 'toggle_search_form',
-                                            href: '#company_search_form' }
-            #{t('toggle.company_search_form.hide')}
+      .panel-group.m-2#accordion{ "aria-multiselectable" => "true", :role => "tablist" }
+        .panel.panel-default
+          .panel-heading#heading-2{ :role => "tab" }
+            %h4.panel-title.hide-toggler
+              %a{ "aria-controls" => "collapse-2", "aria-expanded" => "true",
+                  "data-parent" => "#accordion", "data-toggle" => "collapse",
+                  :href => "#collapse-2", :role => "button",
+                  id: 'company_search_form' }
 
-      .panel.panel-default.search-form#company_search_form
+                #{t('accordion_label.company_search_form.hide')}
 
-        = render 'search_form', all_companies: @all_companies,
-                                search_params: @search__params
-
+          .panel-collapse.collapse.show#collapse-2{ "aria-labelledby" => "heading-2", :role => "tabpanel" }
+            .panel-body
+              = render 'search_form', all_companies: @all_companies, search_params: @search__params
 
   - if @companies.empty?
     %strong

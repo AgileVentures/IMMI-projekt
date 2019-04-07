@@ -1,19 +1,14 @@
-- if controller_name != 'sessions'
-  = link_to "#{t('devise.sessions.new.title')}", new_session_path(resource_name)
-  %br/
-- if devise_mapping.registerable? && controller_name != 'registrations'
-  = link_to "#{t('devise.registrations.new.create_account')}", new_registration_path(resource_name)
-  %br/
-- if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
-  = link_to "#{t('devise.registrations.new.forgot_password')}?", new_password_path(resource_name)
-  %br/
-- if devise_mapping.confirmable? && controller_name != 'confirmations'
-  = link_to "#{t('devise.confirmations.new.do_you_need_instructions')}", new_confirmation_path(resource_name)
-  %br/
-- if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
-  = link_to "#{t('devise.unlocks.new.do_you_need_instructions')}", new_unlock_path(resource_name)
-  %br/
-- if devise_mapping.omniauthable?
-  - resource_class.omniauth_providers.each do |provider|
-    = link_to "#{t('devise.omniauths.new.log_in_with')} #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider)
-    %br/
+.text-center
+  - if controller_name != 'sessions'
+    = link_to "#{t('devise.sessions.new.title')}", new_session_path(resource_name), class: 'btn btn-sm btn-light'
+  - if devise_mapping.registerable? && controller_name != 'registrations'
+    = link_to "#{t('devise.registrations.new.create_account')}", new_registration_path(resource_name), class: 'btn btn-sm btn-primary'
+  - if devise_mapping.recoverable? && controller_name != 'passwords' && controller_name != 'registrations'
+    = link_to "#{t('devise.registrations.new.forgot_password')}?", new_password_path(resource_name), class: 'btn btn-sm btn-light'
+  - if devise_mapping.confirmable? && controller_name != 'confirmations'
+    = link_to "#{t('devise.confirmations.new.do_you_need_instructions')}", new_confirmation_path(resource_name), class: 'btn btn-sm btn-light'
+  - if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'
+    = link_to "#{t('devise.unlocks.new.do_you_need_instructions')}", new_unlock_path(resource_name), class: 'btn btn-sm btn-light'
+  - if devise_mapping.omniauthable?
+    - resource_class.omniauth_providers.each do |provider|
+      = link_to "#{t('devise.omniauths.new.log_in_with')} #{OmniAuth::Utils.camelize(provider)}", omniauth_authorize_path(resource_name, provider), class: 'btn btn-sm btn-light'

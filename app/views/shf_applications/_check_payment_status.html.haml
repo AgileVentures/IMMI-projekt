@@ -20,7 +20,7 @@
 
 - if need_to_pay
 
-  = link_to(t('menus.nav.members.pay_membership'), user_path(current_user), class: 'btn btn-info')
+  = link_to(t('menus.nav.members.pay_membership'), user_path(current_user), class: 'btn btn-light')
   %br
   %br
 
@@ -55,6 +55,6 @@
     - if need_to_pay
 
       = link_to(t('menus.nav.company.pay_branding_fee'),
-                company_path(company), class: 'btn btn-info')
+                company_path(company), class: 'btn btn-light')
       %br
       %br

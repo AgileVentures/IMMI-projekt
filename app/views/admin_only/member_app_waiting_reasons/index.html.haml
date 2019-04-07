@@ -3,7 +3,7 @@
 
 .entry-content
 
-  %table#reasons_waiting
+  %table.table.table-hover.table-sm#reasons_waiting
     %thead
       %tr
         %th.name_sv= t('activerecord.attributes.member_app_waiting_reason.name_sv')
@@ -30,5 +30,7 @@
           %td= link_to t('edit'), edit_admin_only_member_app_waiting_reason_path(member_app_waiting_reason)
           %td= link_to t('delete'), member_app_waiting_reason, :method => :delete, :data => { confirm: t('admin_only.member_app_waiting_reasons.delete_confirm', name_sv: member_app_waiting_reason.name_sv, name_en: member_app_waiting_reason.name_en) }
 
-  %br
-    .center= link_to t('admin_only.member_app_waiting_reasons.new_member_app_waiting_reason'), new_admin_only_member_app_waiting_reason_path, class: 'btn btn-warning new-member-app-waiting-reason', id: 'new-member-app-waiting-reason'
+
+  %hr
+  .text-center
+    = link_to t('admin_only.member_app_waiting_reasons.new_member_app_waiting_reason'), new_admin_only_member_app_waiting_reason_path, class: 'btn btn-sm btn-light new-member-app-waiting-reason', id: 'new-member-app-waiting-reason'

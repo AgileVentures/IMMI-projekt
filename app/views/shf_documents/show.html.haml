@@ -4,9 +4,6 @@
   %header.entry-header
     %h1.entry-title= @shf_document.title
 
-  .post-title-divider
-    %span
-
   .entry-content
 
     = field_or_none t('.title'), @shf_document.title, tag_options: {class: 'shf-document-title'}
@@ -16,17 +13,17 @@
     = field_or_none t('.uploaded_by'), @shf_document.uploader.email, tag_options: {class: 'shf-document-uploader'}
 
     = field_or_none t('.uploaded_on'), @shf_document.created_at, tag_options: {class: 'shf-document-uploaded-on'}
-
-    %h3
+    %p
       = t('.filename')
       = link_to @shf_document.actual_file_file_name, @shf_document.actual_file.url, target: "_blank", id: "shf-document-link-#{@shf_document.id}", class: "shf-document-file-link"
 
-    .row.center.item-nav-buttons#item-nav-buttons
+    %hr
+    .text-center
       - if policy(@shf_document).update?
-        = link_to "#{t('shf_documents.edit_shf_document')}", edit_shf_document_path(@shf_document), class: 'btn btn-default edit-member-page'
+        = link_to "#{t('shf_documents.edit_shf_document')}", edit_shf_document_path(@shf_document), class: 'btn btn-light btn-sm edit-member-page'
 
-      -if policy(@shf_document).index?
-        = link_to "#{t('shf_documents.all_shf_documents')}", shf_documents_path, class: 'btn btn-default all-shf-documents'
+      - if policy(@shf_document).index?
+        = link_to "#{t('shf_documents.all_shf_documents')}", shf_documents_path, class: 'btn btn-light btn-sm all-shf-documents'
 
       - if policy(@shf_document).destroy?
-        = link_to "#{t('delete')}", @shf_document, method: :delete, class:'btn btn-danger delete-shf-document', data: { confirm: "#{t('.delete_confirm', document_title: @shf_document.title)}" }
+        = link_to "#{t('delete')}", @shf_document, method: :delete, class:'btn btn-danger btn-sm delete-shf-document', data: { confirm: "#{t('.delete_confirm', document_title: @shf_document.title)}" }

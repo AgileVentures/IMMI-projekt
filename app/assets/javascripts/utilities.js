@@ -24,5 +24,29 @@ var Utility = {
                                           I18n.t(showStr)));
     }
     return(false);
+  },
+
+  toggle_accordion_label: function () {
+    // Changes the label of a bootstrap accordion element based upon whether
+    // the element is open or collapsed.
+    // The 'id' attribute of the element is the 2nd level i18N lookup key for
+    // the associated label (the first level key is 'accordion_label', and the
+    // 3rd level key is either 'show' or 'hide'.
+    //
+    // Note that this expects the id to have underscores and not hyphens.
+    // This is because I18n.t expects underscores and this function is
+    // building the I18n.t string.
+    var toggleId = $(this).attr('id');
+
+    if ($(this).attr('aria-expanded') === 'true') {
+      // We are in the process of collapsing the accordion
+      var showStr = 'accordion_label.' + toggleId.replace('#','') + '.show';
+      $(this).text(I18n.t(showStr));
+    } else {
+      // We are in the process of opening the accordion
+      var hideStr = 'accordion_label.' + toggleId.replace('#','') + '.hide';
+      $(this).text(I18n.t(hideStr));
+    }
   }
+
 };

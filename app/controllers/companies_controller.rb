@@ -10,7 +10,7 @@ class CompaniesController < ApplicationController
   before_action :authorize_company, only: [:update, :show, :edit, :destroy]
   before_action :set_app_config, only: [:company_h_brand]
   before_action :allow_iframe_request, only: [:company_h_brand]
-  before_action :set_page_meta_tags, only: [:index]
+  before_action :set_page_meta_tags, only: [:index, :show]
   before_action :set_page_meta_robots_none, only: [:edit]
 
   def index
@@ -54,6 +54,8 @@ class CompaniesController < ApplicationController
 
   def show
     setup_events_and_events_pagination
+
+    set_meta_tags_for_company(@company)
 
     show_events_list if request.xhr?
   end
@@ -296,6 +298,19 @@ class CompaniesController < ApplicationController
     end
 
     params
+  end
+
+
+  # set the meta tags for the this specific company
+  def set_meta_tags_for_company(company)
+    co_meta_info = CompanyMetaInfoAdapter.new(company)
+
+    set_meta_tags title: co_meta_info.title,
+                  description: co_meta_info.description,
+                  keywords: co_meta_info.keywords,
+                  og: { title: helpers.full_page_title( page_title: co_meta_info.title),
+                        description: co_meta_info.og[:description] }
+
   end
 
 end

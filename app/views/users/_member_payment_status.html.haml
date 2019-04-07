@@ -1,34 +1,27 @@
-#userMemberStatus
+.row.mt-2#userMemberStatus
   - if defined?(error) && error
     .alert.alert-danger= error
 
-  .row
-    .col-sm-4
-      - is_member = user.member? ? 'Yes' : 'No'
-      = field_or_none("#{t('users.show.member')}", "#{t(is_member)}",
-                      label_class: 'standard-label',
-                      value_class: is_member)
-      = expire_date_label_and_value(user)
+  .col-md
+    - is_member = user.member? ? 'Yes' : 'No'
+    = field_or_none("#{t('users.show.member')}", "#{t(is_member)}",
+                    label_class: 'standard-label',
+                    value_class: is_member)
+  .col-md
+    = expire_date_label_and_value(user)
 
-      - link = pay_member_fee_link(user)
-      - if link
-        = link
-        = fas_tooltip(t('users.show.pay_membership_tooltip'))
+  .col-md
+    - link = pay_member_fee_link(user)
+    - if link
+      = link
+      = fas_tooltip(t('users.show.pay_membership_tooltip'))
 
-    .col-sm-4
-      .geo-ssl-seal
-        = link_to(image_tag('RapidSSL_SEAL-90x50.gif', alt: 'Secured by RapidSSL',
-              title: 'RapidSSL seal'),
-              'https://www.rapidssl.com/about/',
-              target: '_blank', rel: 'nofollow')
+- if current_user.admin?
+  .row.mt-2
+    .col-md-8
+      %pre= payment_notes_label_and_value(user)
 
-
-  - if current_user.admin?
-    -# .row
-    .col-sm-8
-      = payment_notes_label_and_value(user)
-
-    .col-sm-4
+    .col-md-4
       -# NOTE: Capybara cannot find link without 'href' attribute
-      %a.btn.btn-warning.btn-xs(href='#' data-toggle='modal' data-target='#editStatusModal')
+      %a.btn.btn-outline-success.btn-sm(href='#' data-toggle='modal' data-target='#editStatusModal')
         = t('users.user.edit_member_status')

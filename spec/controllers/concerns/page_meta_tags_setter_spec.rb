@@ -13,15 +13,15 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
 
   let(:expected_base_url) { "#{MOCK_BASE_URL}#{MOCK_ASSET_PATH}/" }
 
-  let(:default_title) { 'Hitta H-märkt hundföretag, hundinstruktör' }
-  let(:default_full_title) { 'Hitta H-märkt hundföretag, hundinstruktör | Sveriges Hundföretagare' }
-  let(:default_desc) { 'Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera.' }
-  let(:default_keywords) { 'hund, hundägare, hundinstruktör, hundentreprenör, Sveriges Hundföretagare, svenskt hundföretag, etisk, H-märkt, hundkurs' }
-  let(:default_image_filename) { 'Sveriges_hundforetagare_banner_sajt.jpg' }
+  let(:default_title)  { SiteMetaInfoDefaults.title }
+  let(:default_full_title) { "#{SiteMetaInfoDefaults.title} | #{SiteMetaInfoDefaults.site_name}" }
+  let(:default_desc) { SiteMetaInfoDefaults.description }
+  let(:default_keywords) { SiteMetaInfoDefaults.keywords }
+  let(:default_image_filename) { SiteMetaInfoDefaults.image_filename }
   let(:default_image_url) { "http://test.host/assets/#{default_image_filename}" }
-  let(:default_image_width) { 1245 }
-  let(:default_image_height) { 620 }
-  let(:default_image_type) { 'image/jpeg' }
+  let(:default_image_width) { SiteMetaInfoDefaults.image_width }
+  let(:default_image_height) { SiteMetaInfoDefaults.image_height }
+  let(:default_image_type) { "image/#{SiteMetaInfoDefaults.image_type}" }
 
 
   before(:all) do
@@ -30,6 +30,9 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
     @meta_setter = PageMetaTagsSetterTestController.new
     @meta_setter.set_request! ActionDispatch::TestRequest.create
     @meta_setter.request.path = MOCK_REQ_PATH
+
+    @meta_image_setter = PageMetaImageTagsSetter
+
   end
 
   after(:all) { I18n.locale = @orig_locale }
@@ -49,16 +52,16 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
       end
 
 
-      it 'default title = H-märkt hundföretag, hundinstruktör |  Sveriges Hundföretagare' do
+      it 'default title = SiteMetaInfoDefaults.title |  SiteMetaInfoDefaults.site ' do
         expect(@meta_tags_set['title']).to eq default_title
       end
 
-      it 'default description = Etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera.' do
+      it 'default description = SiteMetaInfoDefaults.description' do
         expect(@meta_tags_set['description']).to eq default_desc
       end
 
-      it "default keywords = 'hund, hundägare, hundinstruktör, hundens entreprenör, Hundbolaget, Sveriges Hundföretagare, svenskt hundföretag, etisk, H-markt, ansvarig, tjänat H-marknaden" do
-        expect(@meta_tags_set['keywords']).to eq 'hund, hundägare, hundinstruktör, hundentreprenör, Sveriges Hundföretagare, svenskt hundföretag, etisk, H-märkt, hundkurs'
+      it "default keywords = SiteMetaInfoDefaults.keywords" do
+        expect(@meta_tags_set['keywords']).to eq SiteMetaInfoDefaults.keywords
       end
 
 
@@ -146,13 +149,21 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
       allow(I18n.config.backend).to receive(:translate)
                                         .with(anything, anything, anything)
                                         .and_return('blorf')
+
+      # Since we expect it to look up everything in the locale file, and we're stubbing
+      # the I18n.translate method so it always returns "blorf",
+      # everything should be = "blorf"
+
+      allow(SiteMetaInfoDefaults).to receive(:facebook_app_id)
+                                          .and_return(12345678909876)
       expected_result = {
-          "site"        => 'Sveriges Hundföretagare',
+          "site"        => 'blorf',
           "title"       => 'blorf',
           "description" => 'blorf',
           "keywords"    => 'blorf',
           "og"          => {
-              "title"       => 'blorf | Sveriges Hundföretagare',
+              "site_name"   => "blorf",
+              "title"       => 'blorf | blorf',
               "description" => 'blorf',
               "url"         => 'http://test.host/test-path',
               "type"        => 'blorf',
@@ -163,6 +174,9 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
                   "type"   => default_image_type,
                   "width"  => default_image_width
               }
+          },
+          "fb" => {
+            "app_id" => 12345678909876
           },
           "twitter"     => {
               "card" => 'blorf'
@@ -179,69 +193,31 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
   end
 
 
-  describe 'set_og_meta_tags (Facebook OpenGraph))' do
+  describe 'set_facebook_meta_tags' do
 
-    describe 'defaults' do
+    it 'sets fb:app_id with the default value' do
+      @meta_setter.set_facebook_meta_tags
+      meta_tags_set = @meta_setter.send(:meta_tags)
 
-      before(:all) do
-        I18n.locale = :sv
-        @meta_setter.set_og_meta_tags
-        @meta_tags_set = @meta_setter.send(:meta_tags)['og']
-      end
-
-      it 'title' do
-        expect(@meta_tags_set['title']).to eq "#{PageMetaTagsSetter::META_TITLE_DEFAULT} | #{PageMetaTagsSetter::META_SITE_NAME}"
-      end
-
-      it 'description' do
-        expect(@meta_tags_set['description']).to eq PageMetaTagsSetter::META_DESC_DEFAULT
-      end
-      it 'type' do
-        expect(@meta_tags_set['type']).to eq PageMetaTagsSetter::META_OG_DEFAULT_TYPE
-      end
+      expect(meta_tags_set['fb']['app_id']).to eq SiteMetaInfoDefaults.facebook_app_id
     end
 
+    it 'can specify the app_id' do
+      @meta_setter.set_facebook_meta_tags(app_id: 987654321)
+      meta_tags_set = @meta_setter.send(:meta_tags)
 
-    describe 'argument values passed in' do
-
-      before(:all) do
-        I18n.locale = :sv
-        @meta_setter.set_og_meta_tags(title:       'page title',
-                                      description: 'page description',
-                                      type:        'the page type',
-                                      base_url:    MOCK_BASE_URL,
-                                      fullpath:    MOCK_REQ_PATH)
-        @meta_tags_set = @meta_setter.send(:meta_tags)['og']
-      end
-
-      it 'title' do
-        expect(@meta_tags_set['title']).to eq 'page title'
-      end
-
-      it 'description' do
-        expect(@meta_tags_set['description']).to eq 'page description'
-      end
-
-      it 'type' do
-        expect(@meta_tags_set['type']).to eq 'the page type'
-      end
-
-      it 'locale' do
-        expect(@meta_tags_set['locale']).to eq 'sv_SE'
-      end
-
+      expect(meta_tags_set['fb']['app_id']).to eq 987654321
     end
 
   end
 
-
   describe 'set_twitter_meta_tags' do
 
-    it 'default: card = summary' do
+    it 'default: card = SiteMetaInfoDefaults.twitter_card_type' do
       @meta_setter.set_twitter_meta_tags
       meta_tags_set = @meta_setter.send(:meta_tags)
 
-      expect(meta_tags_set['twitter']['card']).to eq 'summary'
+      expect(meta_tags_set['twitter']['card']).to eq SiteMetaInfoDefaults.twitter_card_type
     end
 
     it "card = I18n.t('meta.twitter.card')" do
@@ -250,133 +226,6 @@ RSpec.describe PageMetaTagsSetterTestController, type: :controller do
 
       expect(meta_tags_set['twitter']['card']).to eq 'blorf'
     end
-  end
-
-
-  describe 'set_page_meta_images' do
-
-    it 'uses the default meta-image if no locale entry is found' do
-
-      expect(@meta_setter).to receive(:set_page_meta_image_tags)
-                                  .with(PageMetaTagsSetter::META_IMAGE_DEFAULT_FN,
-                                        PageMetaTagsSetter::META_IMAGE_DEFAULT_TYPE,
-                                        width:  PageMetaTagsSetter::META_IMAGE_DEFAULT_WIDTH,
-                                        height: PageMetaTagsSetter::META_IMAGE_DEFAULT_HEIGHT)
-      @meta_setter.set_page_meta_images
-    end
-
-
-    context 'looks up filename from the locale and gets the characteristics' do
-
-      before(:all) do
-        # temporarily add this file to the assets/images path
-        @test_filename         = 'image-' + Time.now.to_i.to_s + '.png'
-        @asset_images_filepath = File.absolute_path(File.join(Rails.root, 'app', 'assets', 'images', @test_filename))
-
-        FileUtils.copy_file(file_fixture('image.png'), @asset_images_filepath)
-      end
-
-      after(:all) do
-        FileUtils.remove_file(@asset_images_filepath)
-      end
-
-
-      it 'looks up filename from the locale and gets the characteristics' do
-        allow(I18n.config.backend).to receive(:exists?)
-                                          .with(:sv, '.meta.image_src')
-                                          .and_return(true)
-        allow(I18n.config.backend).to receive(:translate)
-                                          .with(:sv, 'page_meta_tags_setter_test..meta.image_src', anything)
-                                          .and_return(@test_filename)
-
-
-        expect(@meta_setter).to receive(:set_page_meta_image_tags)
-                                    .with(@test_filename,
-                                          'png',
-                                          width:  80,
-                                          height: 80)
-        @meta_setter.set_page_meta_images
-      end
-
-      it 'sets the OpenGraph info' do
-        allow(I18n.config.backend).to receive(:exists?)
-                                          .with(:sv, '.meta.image_src')
-                                          .and_return(true)
-        allow(I18n.config.backend).to receive(:translate)
-                                          .with(:sv, 'page_meta_tags_setter_test..meta.image_src', anything)
-                                          .and_return(@test_filename)
-
-        @meta_setter.set_page_meta_images
-        @meta_og_tags = @meta_setter.send(:meta_tags).send(:meta_tags)['og']
-
-        puts("@meta_setter.meta_tags = #{@meta_setter.send(:meta_tags).send(:meta_tags)}")
-        puts("@meta_og_tags_set = #{@meta_og_tags.inspect}")
-
-        expect(@meta_og_tags['image']['_']).to eq "#{expected_base_url}#{@test_filename}"
-        expect(@meta_og_tags['image']['type']).to eq 'image/png'
-        expect(@meta_og_tags['image']['width']).to eq 80
-        expect(@meta_og_tags['image']['height']).to eq 80
-      end
-    end
-
-  end
-
-
-  describe 'set_page_meta_image_tags(image_filename, image_type, width: 0, height: 0)' do
-
-    let(:image_fn) { 'image.png' }
-    let(:expected_image_url) { "#{expected_base_url}#{image_fn}" }
-
-
-    it 'uses set_meta_tags to set image_src and og:image, og:image:width, height, type' do
-
-      expect(subject).to receive(:set_meta_tags)
-                             .with({ image_src: expected_image_url,
-                                     og:        {
-                                         image: {
-                                             _:      expected_image_url,
-                                             width:  80,
-                                             height: 80,
-                                             type:   'image/png'
-                                         }
-                                     }
-                                   })
-
-      subject.set_page_meta_image_tags(image_fn, 'png', width: 80, height: 80)
-    end
-
-    it 'default image width = 0 if not specified' do
-      expect(subject).to receive(:set_meta_tags)
-                             .with({ image_src: expected_image_url,
-                                     og:        {
-                                         image: {
-                                             _:      expected_image_url,
-                                             width:  0,
-                                             height: 80,
-                                             type:   'image/png'
-                                         }
-                                     }
-                                   })
-
-      subject.set_page_meta_image_tags(image_fn, 'png', height: 80)
-    end
-
-    it 'default image height = 0 if not specified' do
-      expect(subject).to receive(:set_meta_tags)
-                             .with({ image_src: expected_image_url,
-                                     og:        {
-                                         image: {
-                                             _:      expected_image_url,
-                                             width:  80,
-                                             height: 0,
-                                             type:   'image/png'
-                                         }
-                                     }
-                                   })
-
-      subject.set_page_meta_image_tags(image_fn, 'png', width: 80)
-    end
-
   end
 
 

@@ -33,10 +33,6 @@ Feature: Edit a company page has meta tags nofollow and noindex set
     And the page title should be "Sveriges Hundföretagare"
     And the page head should not include a link tag with rel = "image_src" and href = "http://www.example.com/assets/Sveriges_hundforetagare_banner_sajt.jpg"
 
-    And the page head should include a link tag with hreflang = "x-default" and href = "https://hitta.sverigeshundforetagare.se"
-    And the page head should include a link tag with hreflang = "sv" and href = "https://hitta.sverigeshundforetagare.se"
-    And the page head should include a link tag with hreflang = "en" and href = "https://hitta.sverigeshundforetagare.se/en"
-
     And the page head should include meta "name" "robots" with content = "noindex, nofollow"
 
     And the page head should not include meta "property" "og:title"

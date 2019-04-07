@@ -7,10 +7,10 @@
 .entry-content
   = render 'contents_form'
 
-%br
-  .center
-    = link_to t('cancel'), contents_show_path(@page),
-        class: 'btn btn-default shf-document-view'
+%hr
+.text-center
+  = link_to t('cancel'), contents_show_path(@page),
+      class: 'btn btn-light btn-sm shf-document-view'
 
-    = link_to t('menus.nav.members.member_pages'), member_pages_path,
-        class: 'btn btn-default shf-document-view'
+  = link_to t('menus.nav.members.member_pages'), member_pages_path,
+      class: 'btn btn-light btn-sm shf-document-view'

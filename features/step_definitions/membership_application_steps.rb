@@ -72,9 +72,7 @@ And(/^the following applications exist:$/) do |table|
       # We save without validation - so, confirm that the **only** validation errors
       # would be associated with the missing file-delivery method.
       ma.valid?
-      expect(ma.errors.keys)
-        .to match_array [:file_delivery_method,
-                         :'user.shf_application.file_delivery_method']
+      expect(ma.errors.keys).to match_array [:file_delivery_method]
     end
 
     ma.save(validate: (legacy_app ? false : true))
@@ -100,4 +98,18 @@ When "I select files delivery radio button {capture_string}" do |option|
   # manually make the save button enabled:
   page.evaluate_script("$('.app-submit').prop('disabled', false)")
 
+end
+
+And "I should see {capture_string} files for the {capture_string} listed application" do |count, ordinal|
+  # Use to confirm uploaded files count in ShfApplication index view
+  # If more than one app then make sure the sort order supports the test step.
+  # Examples:
+  #  I should see "0" files for the "first" listed application
+  #  I should see "3" files for the "second" listed application
+
+  index = [0, 1, 2, 3, 4].send(ordinal.lstrip)
+
+  ele = all('#shf_applications_list table tr > td.number_of_files')[index]
+
+  expect(ele.text).to eq count
 end

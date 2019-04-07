@@ -2,24 +2,25 @@
 
   != model_errors_helper(@shf_document)
 
-  = f.label :title
-  = f.text_field :title
+  .form-group
+    = f.label :title
+    = f.text_field :title,  class: 'form-control'
+
+  .form-group
+    = f.label :description
+    = f.text_area :description,  class: 'form-control'
 
 
-  = f.label :description
-  = f.text_area :description
-
-
-
-  = f.label :uploader_id, "#{t('shf_documents.edit.uploaded_by')}"
-  = f.collection_select(:uploader_id,[@shf_document.uploader], :id, :email)
-
+  .form-group
+    = f.label :uploader_id, "#{t('shf_documents.edit.uploaded_by')}"
+    %br/
+    = f.collection_select(:uploader_id,[@shf_document.uploader], :id, :email)
 
 
   %p= t('shf_documents.edit.upload_the_document')
 
-  = f.file_field 'actual_file', multiple: false, name: 'shf_document[actual_file]'
+  = f.file_field 'actual_file', multiple: false, name: 'shf_document[actual_file]', class: 'btn btn-light mb-3'
 
 
   .actions
-    = f.submit t('submit')
+    = f.submit t('submit'), class: 'btn btn-primary mb-2 form-control'

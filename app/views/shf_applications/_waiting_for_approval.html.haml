@@ -6,9 +6,9 @@
 
 
 - if policy(current_user.shf_application).update?
-  = link_to t('menus.nav.users.my_application'), edit_shf_application_path(current_user.shf_application), class: 'btn btn-info'
+  = link_to t('menus.nav.users.my_application'), edit_shf_application_path(current_user.shf_application), class: 'btn btn-light'
 - else
-  = link_to t('menus.nav.users.my_application'), shf_application_path(current_user.shf_application), class: 'btn btn-info'
+  = link_to t('menus.nav.users.my_application'), shf_application_path(current_user.shf_application), class: 'btn btn-light'
 
 %br
 %br

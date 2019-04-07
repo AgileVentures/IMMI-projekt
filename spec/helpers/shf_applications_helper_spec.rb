@@ -310,4 +310,32 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
       expect(collection_en.first).to eq [upload_now.id, upload_now.description_en]
     end
   end
+
+  describe '#file_delivery_method_status' do
+
+    it 'shows "none" (with no date) if no delivery method has been specified' do
+      app = create(:shf_application, :legacy_application)
+      fdm_msg = file_delivery_method_status(app)
+
+      expect(fdm_msg).to match(/^#{I18n.t('shf_applications.show.files_delivery_method')}/)
+      expect(fdm_msg).to match(/#{I18n.t('none')}/)
+      expect(fdm_msg).to_not match(/#{Date.current}/)
+    end
+
+    it 'shows chosen delivery method with date' do
+
+      AdminOnly::FileDeliveryMethod::METHOD_NAMES.values.each do |fdm_name|
+
+        app = create(:shf_application,
+                     file_delivery_method: create("file_delivery_#{fdm_name}".to_sym))
+
+        fdm = app.file_delivery_method
+        fdm_msg = file_delivery_method_status(app)
+
+        expect(fdm_msg).to match(/^#{I18n.t('shf_applications.show.files_delivery_method')}/)
+        expect(fdm_msg).to match(/#{fdm.description_for_locale(I18n.locale)}/)
+        expect(fdm_msg).to match(/#{Date.current}/)
+      end
+    end
+  end
 end

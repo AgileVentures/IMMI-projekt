@@ -665,7 +665,8 @@ CREATE TABLE public.shf_applications (
     custom_reason_text character varying,
     when_approved timestamp without time zone,
     file_delivery_method_id bigint,
-    file_delivery_selection_date date
+    file_delivery_selection_date date,
+    uploaded_files_count integer DEFAULT 0 NOT NULL
 );
 
 
@@ -1466,6 +1467,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20181229015347'),
 ('20190123143128'),
 ('20190123144623'),
-('20190128210825');
+('20190128210825'),
+('20190326120854');
 
 

@@ -91,7 +91,7 @@ module ShfApplicationsHelper
                   subject: t('shf_applications.new.email_files_subject'))
 
       elsif delivery_method.mail?
-        
+
         option_text += '**'
         footnotes += '&nbsp; &nbsp; **' + t('shf_applications.new.where_to_mail_files')
       end
@@ -100,6 +100,22 @@ module ShfApplicationsHelper
     end
 
     [ collection, footnotes.html_safe ]
+  end
+
+  def file_delivery_method_status(application, locale = I18n.locale)
+
+    fdm = application.file_delivery_method
+    fdm_desc = fdm ? fdm.description_for_locale(locale) : t('none')
+
+    status = t('shf_applications.show.files_delivery_method')+ ': ' + fdm_desc
+
+    if fdm
+      status += ' ' +
+        t('shf_applications.show.method_chosen_when',
+          date: application.file_delivery_selection_date)
+    end
+
+    status
   end
 
 end

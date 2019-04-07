@@ -17,7 +17,7 @@
         = expire_date
   %td.delete
     - delete_user = t('users.delete_user', user: "#{user.full_name}")
-    = link_to icon('fas', 'trash'),
+    = link_to icon('fas', 'trash', class: 'delete'),
               user_path(user), method: :delete,
               title: delete_user,
               :data => { :confirm => delete_user + '?' }

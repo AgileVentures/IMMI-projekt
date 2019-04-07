@@ -5,14 +5,6 @@
 
     %ul.dropdown-menu
       - current_user.companies.each do |company|
-
-        %li.dropdown
-          %a.nav-link.dropdown-toggle{ "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown", href: company_path(company.id) }
-            = company.name.present? ? company.name : t('name_missing')
-          %ul.dropdown-menu
-            %li
-              = link_to t('menus.nav.members.manage_company.view_company'),
-                        company_path(company), class: 'nav-link'
-            %li
-              = link_to t('menus.nav.members.manage_company.edit_company'),
-                        edit_company_path(company), class: 'nav-link'
+        %li
+          = link_to company.name.present? ? company.name : t('name_missing'),
+                    company_path(company), class: 'nav-link'

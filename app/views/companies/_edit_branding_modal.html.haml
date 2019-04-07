@@ -26,8 +26,8 @@
               = pf.text_area :notes, class: 'form-control'
 
         .modal-footer
-          = f.submit t('companies.company.submit_button_label'), class: "btn btn-sm btn-primary",
+          = f.submit t('companies.company.submit_button_label'), class: "btn btn-primary form-control",
                      id: 'editBrandingStatusSubmit'
 
-          %button{ type: 'button', class: 'btn btn-sm btn-default', data: { dismiss: 'modal' } }
+          %button{ type: 'button', class: 'btn btn-outline-secondary', data: { dismiss: 'modal' } }
             = t('cancel')

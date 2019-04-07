@@ -1,3 +1,6 @@
+- content_for :head_content do
+  = Adapters::CompanyToSchemaLocalBusiness.new(@company, url: company_url(@company)).as_target.to_ld_json.html_safe
+
 
 %div{ id: "#{unique_css_id(@company)}",
       class: "#{item_view_class(@company, controller.action_name)}" }
@@ -48,7 +51,7 @@
 
       = link_to "#{t('.add_address')}",
                 new_company_address_path(@company),
-                class: 'btn btn-info add-company-address'
+                class: 'btn btn-info btn-sm add-company-address'
 
 
     .row
@@ -65,7 +68,7 @@
             = button_to "#{t('.dinkurs_fetch_events')}",
                         fetch_from_dinkurs_company_path(@company),
                         remote: true,
-                        class: 'dinkurs-fetch-button pull-right',
+                        class: 'btn btn-info btn-sm dinkurs-fetch-button float-right',
                         form_class: 'dinkurs-fetch-events',
                         data: { disable_with: "#{t('.dinkurs_fetching')}" }
 
@@ -73,16 +76,15 @@
                                          items_count: @items_count
 
 
-    .row.center
-      %hr
-      %p
-        - if user_can_edit
-          = link_to "#{t('companies.edit_company')}",
-                    edit_company_path(@company), class: 'btn btn-secondary edit-company'
+    %hr
+    .text-center
+      - if user_can_edit
+        = link_to "#{t('companies.edit_company')}",
+                  edit_company_path(@company), class: 'btn btn-secondary btn-sm edit-company'
 
-        - if current_user.admin?
-          = link_to "#{t('.delete')}", @company, method: :delete,
-                    class:'btn btn-danger delete-company',
-                    data: { confirm: "#{t('.confirm_are_you_sure')}" }
+      - if current_user.admin?
+        = link_to "#{t('.delete')}", @company, method: :delete,
+                  class:'btn btn-danger btn-sm delete-company',
+                  data: { confirm: "#{t('.confirm_are_you_sure')}" }
 
 = render 'edit_branding_modal', company: @company

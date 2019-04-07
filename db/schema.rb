@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_01_28_210825) do
+ActiveRecord::Schema.define(version: 2019_03_26_120854) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -203,6 +203,7 @@ ActiveRecord::Schema.define(version: 2019_01_28_210825) do
     t.datetime "when_approved"
     t.bigint "file_delivery_method_id"
     t.date "file_delivery_selection_date"
+    t.integer "uploaded_files_count", default: 0, null: false
     t.index ["file_delivery_method_id"], name: "index_shf_applications_on_file_delivery_method_id"
     t.index ["member_app_waiting_reasons_id"], name: "index_shf_applications_on_member_app_waiting_reasons_id"
     t.index ["user_id"], name: "index_shf_applications_on_user_id"

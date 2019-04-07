@@ -3,13 +3,14 @@
 
 %header.entry-header
   %h1.entry-title= t('.title', company_name: @company.name)
-  .center
+  .text-center
     - unless assocation_empty?(@all_business_categories)
       = render 'business_categories/as_list',
           categories_names: @company.categories_names
+      %hr
 .entry-content
   = render 'form', class_name: 'edit-company'
-  .center
-    = link_to "#{t('companies.view_company')}", @company
-    \|
-    = link_to "#{t('companies.list_all_companies')}", companies_path
+  %hr
+  .text-center
+    = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'
+    = link_to "#{t('companies.list_all_companies')}", companies_path, class: 'btn btn-sm btn-light'

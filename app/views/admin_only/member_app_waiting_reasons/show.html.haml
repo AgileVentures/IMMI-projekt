@@ -2,20 +2,14 @@
   %h1.entry-title
     = t('.title', name_sv: @member_app_waiting_reason.name_sv, name_en: @member_app_waiting_reason.name_en  )
 
-
-.post-title-divider
-  %span
-
 .entry-content
-
-  = field_or_none t('activerecord.attributes.member_app_waiting_reason.name_sv'), @member_app_waiting_reason.name_sv, tag_options: {class: 'name_sv'}
-
-  = field_or_none t('activerecord.attributes.member_app_waiting_reason.name_en'), @member_app_waiting_reason.name_en, tag_options: {class: 'name_en'}
-
-  = field_or_none t('activerecord.attributes.member_app_waiting_reason.description_sv'), @member_app_waiting_reason.description_sv, tag_options: {class: 'description_sv'}
-
-  = field_or_none t('activerecord.attributes.member_app_waiting_reason.description_en'), @member_app_waiting_reason.description_en, tag_options: {class: 'description_en'}
-
+  .row
+    .col
+      = field_or_none t('activerecord.attributes.member_app_waiting_reason.name_sv'), @member_app_waiting_reason.name_sv, tag_options: {class: 'name_sv'}
+      = field_or_none t('activerecord.attributes.member_app_waiting_reason.description_sv'), @member_app_waiting_reason.description_sv, tag_options: {class: 'description_sv'}
+    .col
+      = field_or_none t('activerecord.attributes.member_app_waiting_reason.name_en'), @member_app_waiting_reason.name_en, tag_options: {class: 'name_en'}
+      = field_or_none t('activerecord.attributes.member_app_waiting_reason.description_en'), @member_app_waiting_reason.description_en, tag_options: {class: 'description_en'}
 
   - if @member_app_waiting_reason.is_custom
     - value_text =  t('yes')
@@ -27,18 +21,19 @@
   = field_or_none (t('activerecord.attributes.member_app_waiting_reason.is_custom')), value_text, tag_options: {class: 'is_custom'}, value_class: value_class, separator: '? '
 
 
-  .row.center.item-nav-buttons#item-nav-buttons
+  %hr
+  .text-center
     - if policy(@member_app_waiting_reason).update?
       = link_to "#{t('admin_only.member_app_waiting_reasons.edit_member_app_waiting_reason')}",
        edit_admin_only_member_app_waiting_reason_path(@member_app_waiting_reason),
-       class: 'btn btn-default edit-member-app-waiting-reason',
+       class: 'btn btn-light btn-sm edit-member-app-waiting-reason',
        id: 'edit-member-app-waiting-reason'
 
     - if policy(@member_app_waiting_reason).index?
       = link_to "#{t('admin_only.member_app_waiting_reasons.all_member_app_waiting_reasons')}",
        admin_only_member_app_waiting_reasons_path,
-        class: 'btn btn-default all-member-app-waiting-reasons',
+        class: 'btn btn-light btn-sm all-member-app-waiting-reasons',
         id: 'all-member-app-waiting-reasons'
 
     - if policy(@member_app_waiting_reason).destroy?
-      = link_to "#{t('delete')}", @member_app_waiting_reason, method: :delete, class:'btn btn-danger delete-member-app-waiting-reason', data: { confirm: "#{t('admin_only.member_app_waiting_reasons.delete_confirm', name_sv: @member_app_waiting_reason.name_sv, name_en: @member_app_waiting_reason.name_en)}" }
+      = link_to "#{t('delete')}", @member_app_waiting_reason, method: :delete, class:'btn btn-sm btn-danger delete-member-app-waiting-reason', data: { confirm: "#{t('admin_only.member_app_waiting_reasons.delete_confirm', name_sv: @member_app_waiting_reason.name_sv, name_en: @member_app_waiting_reason.name_en)}" }

@@ -8,11 +8,11 @@
   = render partial: 'form',
            locals: { address: @address, method: :put,
                      url: company_address_path(@company.id, @address.id) }
-  .center
-    = link_to "#{t('companies.view_company')}", @company
+  %hr
+  .text-center
+    = link_to "#{t('companies.view_company')}", @company, class: 'btn btn-sm btn-light'
     - unless @address.mail
-      \|
       = link_to "#{t('.delete')}", company_address_delete_path(@company, @address),
                 method: :delete,
                 data: { confirm: "#{t('.delete_confirm')}" },
-                class: 'btn btn-xs btn-danger'
+                class: 'btn btn-sm btn-danger'

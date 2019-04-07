@@ -87,6 +87,10 @@ Feature: Applicant uploads a file for their application
     And I should see "picture.png" uploaded for this membership application
     And I should see 3 uploaded files listed
 
+    And I am logged in as "admin@shf.com"
+    And I am on the "membership applications" page
+    And I should see "3" files for the "first" listed application
+
 
   @selenium
   Scenario: Use the upload button multiple times

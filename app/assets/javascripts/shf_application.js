@@ -28,7 +28,7 @@ $(function() {
 
 function enable_submit_button () {
   $('.app-submit').prop('disabled', false);
-  $('.submit-button-explain').addClass('hide');
+  $('.submit-button-explain').hide();
 }
 
 function remove_change_callback_for_radio_buttons (radio_buttons) {

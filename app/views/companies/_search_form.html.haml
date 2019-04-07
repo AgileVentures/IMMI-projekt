@@ -38,5 +38,5 @@
                       { multiple: true, size: 5, style: 'width: 100%;',
                         class: 'form-control search_field',
                         data: {language: "#{@locale}" } }
-    .col-sm
-      = submit_tag "#{t('search')}", class: 'btn btn-primary mt-auto', style: 'width:90%;'
+    .col-sm.d-flex.align-items-baseline
+      = submit_tag "#{t('search')}", class: 'btn btn-block btn-primary mt-auto p-2'

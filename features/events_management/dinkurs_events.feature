@@ -108,7 +108,7 @@ Feature: As a member of a company
     And I should not see t("events.show.name")
     And I am on the edit company page for "5560360793"
     And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
-    And I check the checkbox with id "company_show_dinkurs_events"
+    And I check the bootstrap checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
     And I should see "3" events

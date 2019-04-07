@@ -1,7 +1,7 @@
 !!!
 %html
   %head
-    /= favicon_link_tag 'favicon.ico'
+    = favicon_link_tag 'favicon.ico'
 
     %meta{ content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes', name: 'viewport' }/
     %meta{ content: 'text/html; charset=UTF-8', 'http-equiv' => 'Content-Type' }/
@@ -14,10 +14,9 @@
     -#
       tags that tell search engines where to find pages in other languages
       see (https://support.google.com/webmasters/answer/189077)
-    = tag('link', rel: 'alternate', hreflang: 'x-default', href: I18n.t('shf_medlemssystem_url'))
-    = tag('link', rel: 'alternate', hreflang: 'sv', href: I18n.t('shf_medlemssystem_url'))
-    = tag('link', rel: 'alternate', hreflang: 'en', href: (I18n.t('shf_medlemssystem_url') + '/en') )
-
+    = tag('link', rel: 'alternate', hreflang: 'x-default', href: @hreflang_default_url)
+    = tag('link', rel: 'alternate', hreflang: 'sv', href: @hreflang_sv_url)
+    = tag('link', rel: 'alternate', hreflang: 'en', href: @hreflang_en_url)
 
     = csrf_meta_tags
 
@@ -33,6 +32,7 @@
 
     = yield :javascript_for_view  # javascript markup specific to a view
 
+    = yield :head_content
 
     - if Rails.env.test?
       -#

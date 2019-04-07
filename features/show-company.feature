@@ -1,4 +1,6 @@
-Feature: As a visitor,
+Feature: Show company page - display different info depending on role
+
+  As a visitor,
   So that I can see if a company can provide the services I need,
   Show me the details about a company
   And show the address details consistent with the visibility setting

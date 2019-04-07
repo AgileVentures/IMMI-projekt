@@ -15,7 +15,7 @@
       = render 'application/required_fields'
 
       %p.submit-button-explain.strong.field-instruction= t('.submit_button_explain')
-      = f.submit t('.submit_button_label'), disabled: true, class: 'btn btn-warning mb-2 form-control app-submit'
+      = f.submit t('.submit_button_label'), disabled: true, class: 'btn btn-primarys mb-2 form-control app-submit'
 
 
 = render partial: 'companies/company_create_modal', locals: { company: @new_company }

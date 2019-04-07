@@ -20,7 +20,7 @@ RSpec.describe UserEmailAlert, type: :model do
 
 
   it '.entities_to_check returns all users (User.all)' do
-    expect(described_class.instance.entities_to_check).to eq(all_users)
+    expect(described_class.instance.entities_to_check).to match_array(all_users)
   end
 
   it '.mailer_class is MemberMailer' do

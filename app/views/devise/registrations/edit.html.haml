@@ -6,20 +6,20 @@
     = render partial: 'member_photo', locals: { user: resource, f: f }
     %h3= t('.info_header')
     .row
-      .form-group.col
+      .form-group.col-sm
         = f.label :first_name
         = f.text_field :first_name, placeholder: "#{t('activerecord.attributes.user.first_name')}", class: 'form-control'
-      .form-group.col
+      .form-group.col-sm
         = f.label :last_name
         = f.text_field :last_name, placeholder: "#{t('activerecord.attributes.user.last_name')}", class: 'form-control'
     .row
-      .form-group.col
+      .form-group.col-sm
         = f.label :email
         = f.email_field :email, placeholder: "#{t('activerecord.attributes.user.email')}", class: 'form-control'
         - if devise_mapping.confirmable? && resource.pending_reconfirmation?
           %div
             "#{t('.unconfirmed_email_for', unconfirmed_email: resource.unconfirmed_email )}"
-      .form-group.col
+      .form-group.col-sm
         = f.fields_for :shf_application do |app_form|
           = app_form.label :contact_email
           = app_form.email_field :contact_email, placeholder: "#{t('activerecord.attributes.shf_application.contact_email')}", class: 'form-control'
@@ -28,16 +28,16 @@
     %h3= t('.password_header')
     %small.form-text.text-muted= t('.leave_blank_if_no_change')
     .row
-      .form-group.col
+      .form-group.col-sm
         = f.label :password
         = f.password_field :password, autocomplete: 'off', placeholder: "#{t('.new_password')}", class: 'form-control'
         %small= render 'devise/shared/min_password_length_info'
-      .form-group.col
+      .form-group.col-sm
         = f.label :password_confirmation
         = f.password_field :password_confirmation, autocomplete: 'off', placeholder: "#{t('.confirm_password')}", class: 'form-control'
 
     .row
-      .form-group.col
+      .form-group.col-sm
         = f.label :current_password, "#{t('.current_password')}", class: 'required'
         = f.password_field :current_password, autocomplete: 'off', placeholder: "#{t('.current_password')}", class: 'form-control'
         %small.form-text.text-muted= t('.required_to_save_changes')
@@ -45,14 +45,8 @@
         %p= render 'application/required_fields'
     .row
       .col
-        = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary'
-  .row
-    .col.mt-2
-      %hr
-      %h3.entry-title= t('.unregister')
+        = f.submit "#{t('.submit_button_label')}", class: 'btn btn-primary form-control m-2'
+  %hr
+    .text-center
       %p
-        #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}
-      %hr
-  .row
-    .col
-      = link_to "#{t('.back')}", :back
+        #{button_to t('.delete_my_account'), registration_path(resource_name), class:'btn btn-sm btn-danger',  data: { confirm: t('.confirm_are_you_sure') }, method: :delete}

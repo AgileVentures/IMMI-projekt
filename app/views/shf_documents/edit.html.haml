@@ -1,15 +1,11 @@
 %header.entry-header
   %h1.entry-title= t('.page_title', document_title: @shf_document.title)
 
-.post-title-divider
-  %span
-
-
-.entry-content.wpcf7
+.entry-content
   = render 'form'
 
-%br
-  .center
-    = link_to "#{t('shf_documents.view_shf_document')}", @shf_document, class: 'btn btn-default shf-document-view'
+%hr
+.text-center
+  = link_to "#{t('shf_documents.view_shf_document')}", @shf_document, class: 'btn btn-light btn-sm shf-document-view'
 
-    = link_to "#{t('shf_documents.all_shf_documents')}", shf_documents_path, class: 'btn btn-default shf-document-all'
+  = link_to "#{t('shf_documents.all_shf_documents')}", shf_documents_path, class: 'btn btn-light btn-sm shf-document-all'

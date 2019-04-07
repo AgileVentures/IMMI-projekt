@@ -1,21 +1,20 @@
 - if user.member?
-  .col-sm-4
-    = image_tag(user.member_photo.url(:standard))
-    - if user.member_photo
+  %h3= t('.pic_header')
+  .row
+    .form-group.col-sm
+      = image_tag(user.member_photo.url(:standard))
+      - if user.member_photo
+        .clearfix.m-3
+        = user.member_photo_file_name
       .clearfix
-      = user.member_photo_file_name
-    .clearfix
-    .field
-      = f.file_field :member_photo, accept: 'image/png, image/jpeg'
+      .field
+        = f.file_field :member_photo, accept: 'image/png, image/jpeg', class: 'btn btn-light'
 
-  .col-sm-8
-    #{t('users.update.member_photo.reason')}
-    %br
-    %br
-    #{t('users.update.member_photo.format')}
-    %br
-    %br
-    - if user.member_photo?
-      #{t('users.update.member_photo.replace')}
-    - else
-      #{t('users.update.member_photo.upload')}
+    .form-group.col-sm
+      %p= t('users.update.member_photo.reason')
+      %p= t('users.update.member_photo.format')
+      %p
+      - if user.member_photo?
+        = t('users.update.member_photo.replace')
+      - else
+        = t('users.update.member_photo.upload')

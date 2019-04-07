@@ -58,6 +58,7 @@ Feature: View a SHF Application
     And I am on the "landing" page
     And I click on t("menus.nav.members.my_application")
     Then I should see t("shf_applications.show.membership_number")
+    And I should not see t("shf_applications.show.files_delivery_method")
 
   @user
   Scenario: Listing incoming Applications restricted for Non-admins
@@ -144,6 +145,7 @@ Feature: View a SHF Application
   Scenario: For the admin, the status is translated correctly for the default locale
     Given I am logged in as "admin@shf.se"
     When I am on the "application" page for "new_nurdle@happymutts.se"
+    And I should see t("shf_applications.show.files_delivery_method")
     Then I should see t("activerecord.attributes.shf_application.state/new", locale: sv)
     When I am on the "application" page for "emma_under_review@happymutts.se"
     And I should see t("activerecord.attributes.shf_application.state/under_review")

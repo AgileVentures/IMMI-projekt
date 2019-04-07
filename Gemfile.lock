@@ -53,6 +53,9 @@ GEM
       tzinfo (~> 1.1)
     addressable (2.6.0)
       public_suffix (>= 2.0.2, < 4.0)
+    after_commit_action (1.1.0)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
     airbrussh (1.3.1)
       sshkit (>= 1.6.1, != 1.7.0)
     archive-zip (0.12.0)
@@ -95,6 +98,7 @@ GEM
       autoprefixer-rails (>= 6.0.3)
       popper_js (>= 1.12.9, < 2)
       sass (>= 3.5.2)
+    bootstrap-toggle-rails (2.2.1.0)
     bootstrap-will_paginate (1.0.0)
       will_paginate
     builder (3.2.3)
@@ -148,6 +152,10 @@ GEM
     coercible (1.0.0)
       descendants_tracker (~> 0.0.1)
     concurrent-ruby (1.1.5)
+    counter_culture (2.1.4)
+      activerecord (>= 3.0.0)
+      activesupport (>= 3.0.0)
+      after_commit_action (~> 1.0)
     coveralls (0.8.22)
       json (>= 1.8, < 3)
       simplecov (~> 0.16.1)
@@ -589,6 +597,7 @@ DEPENDENCIES
   binding_of_caller
   bootsnap
   bootstrap (~> 4.1.3)
+  bootstrap-toggle-rails
   bootstrap-will_paginate
   bullet
   capistrano (~> 3.11)
@@ -602,6 +611,7 @@ DEPENDENCIES
   city-state
   ckeditor!
   codeclimate-test-reporter (~> 1.0.0)
+  counter_culture (~> 2.0)
   coveralls (>= 0.8.21)
   cucumber-rails
   cucumber-timecop
@@ -679,4 +689,4 @@ RUBY VERSION
    ruby 2.5.1p57
 
 BUNDLED WITH
-   1.16.6
+   1.17.1

@@ -10,6 +10,9 @@ sv:
       description: "Här hittar du etiska, svenska, H-märkta hundföretag. Du hittar bland annat hundinstruktörer, hundpsykologer, hunddagis, trim med mera."
       keywords: 'hund, hundägare, hundinstruktör, hundentreprenör, Sveriges Hundföretagare, svenskt hundföretag, etisk, H-märkt, hundkurs'
       image_src: "Sveriges_hundforetagare_banner_sajt.jpg"
+
+  dog: hund
+
   home: Hem
   about: Om
   more: Mer
@@ -75,13 +78,15 @@ sv:
   name: &name Namn
   org_nr: &org_nr Org nr.
 
-  toggle:
+  accordion_label:
     company_search_form:
-      hide: Dölj Sökfunktionen
-      show: Visa Sökfunktionen
+      hide: &hide_search Dölj Sökfunktionen
+      show: &show_search Visa Sökfunktionen
+
+  toggle:
     application_search_form:
-      hide: Dölj Sökfunktionen
-      show: Visa Sökfunktionen
+      hide: *hide_search
+      show: *show_search
     set_new_password_form:
       hide: "Dölj 'Byt lösenord' info"
       show: "Ändra användarens lösenord"
@@ -147,6 +152,7 @@ sv:
         email: &email E-post för inloggning
         password: *password
         password_confirmation: &password_confirmation Lösenordsbekräftelse
+        current_password: Nuvarande lösenord
         membership_number: &membership_number Medlemsnummer
         created: &created Skapad
         current_sign_in_at: &user_current_signed_in_time Inloggad
@@ -396,6 +402,8 @@ sv:
       delete: *delete
       confirm_are_you_sure: *are_you_sure_confirm
       ready_for_review_instructions: "När du är redo för att vi ska hantera din ansökan igen, kryssa i rutan nedan. När du trycker på knappen Skicka och kryssrutan är markerad, vet vi att vi måste se över den igen. \nDu kan göra ändringar utan att kryssa i rutan. Du kan om du vill spara en förändring och komma tillbaka och göra fler ändringar innan du skickar in den för granskning."
+      files_delivery_method: Du har valt att leverera filer via
+      method_chosen_when: (vald %{date})
 
     index:
       title: Alla inkomna ansökningar
@@ -405,6 +413,7 @@ sv:
       manage: *manage
       state: *state
       no_search_results: Din sökning gav inget resultat, prova att ta bort något av dina val.
+      files: Filer
 
     information:
       title: Om ansökan och medlemskap
@@ -1170,6 +1179,8 @@ sv:
         new_password: Nytt lösenord
         info_header: Redigera namn och e-post
         password_confirmation: *password_confirmation
+      member_photo:
+        pic_header: Redigera profilbild
 
     sessions:
       new:

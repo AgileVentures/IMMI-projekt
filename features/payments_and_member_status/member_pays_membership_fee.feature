@@ -85,7 +85,7 @@ Feature: As a member
   Scenario:
     Given I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
-    And I should see "1001"  
+    And I should see "1001"
     And I click on t("menus.nav.members.pay_membership")
     Then I should see the GeoTrust SSL certificate Image
   #  And when I click the GeoTrust SSL certificate Image

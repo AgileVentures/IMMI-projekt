@@ -46,6 +46,5 @@ Feature: As a non-swedish speaking potential member
     And I should see t("devise.registrations.edit.current_password")
     And I should see t("devise.registrations.edit.leave_blank_if_no_change")
     And I should see t("devise.registrations.edit.required_to_save_changes")
-    And I should see t("devise.registrations.edit.unregister")
     And I should see button t("devise.registrations.edit.delete_my_account")
     And I should see button t("devise.registrations.edit.submit_button_label")

@@ -1,6 +1,6 @@
 #users_list
   .table-responsive
-    %table.table.table-hover.table-sm.table-striped
+    %table.table.table-hover.table-sm
       %thead
         %tr
           %th= sort_link(q, :padded_membership_number, t('users.users_list.membership_number'), {}, { class: 'users_pagination', remote: true } )

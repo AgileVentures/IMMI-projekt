@@ -1,11 +1,11 @@
 = form_tag({ controller: 'shf_documents', action: 'contents_update', page: @page },
            { method: 'patch' }) do
-
-  = label_tag :title, t('.member_page_title')
-  = text_field_tag :title, @title
-
-  = label_tag :contents, t('.member_page_contents')
-  = cktext_area_tag :contents, @contents
+  .form-group
+    = label_tag :title, t('.member_page_title')
+    = text_field_tag :title, @title, class: 'form-control'
+  .form-group
+    = label_tag :contents, t('.member_page_contents')
+    = cktext_area_tag :contents, @contents, class: 'form-control'
 
   .actions
-    = submit_tag t('submit')
+    = submit_tag t('submit'), class: 'btn btn-primary mb-2 form-control'

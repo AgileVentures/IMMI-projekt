@@ -1,12 +1,12 @@
 %header.entry-header
   %h1.entry-title= t('.title')
 .entry-content
-  .row{ style: 'margin-bottom: 30px;' }
+  .row.mb-4
     .col-6
       = render partial: 'administration_panel' if @current_user.admin?
 
     .col-6
-      %button.btn.btn-success.pull-right{ id: 'toggle_search_form',
+      %button.btn.btn-outline-light.pull-right{ id: 'toggle_search_form',
                                         href: '#application_search_form' }
         #{t('toggle.application_search_form.hide')}
 

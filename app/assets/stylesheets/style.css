@@ -169,6 +169,34 @@ font-weight:400;
 margin-bottom:0;
 }
 
+.hide-toggler {
+border-bottom: 2px dotted #e1e1e1;
+}
+.hide-toggler a:link, .hide-toggler a:active {
+color:#1a1a1a;
+}
+.hide-toggler > a {
+display: block;
+position: relative;
+border-bottom: none;
+}
+.hide-toggler > a:after {
+font-family: "Font Awesome 5 Free";
+font-weight: 900;
+content: "\f078"; /* fa-chevron-down */
+position: absolute;
+right: 0;
+}
+.hide-toggler > a[aria-expanded="true"]:after {
+font-family: "Font Awesome 5 Free";
+font-weight: 900;
+content: "\f077"; /* fa-chevron-up */
+}
+
+.infotext p {
+    margin-bottom: 1rem;
+}
+
 .login {
 margin:auto 1px;
 vertical-align:middle;
@@ -219,45 +247,10 @@ margin:0!important;
 padding:0!important;
 }
 
-.pagination a {
-background-color:#fff;
-border:1px solid #dee2e6;
-color:#003a78;
-display:block;
-line-height:1.25;
-margin-left:-1px;
-padding:.5rem .75rem;
-position:relative;
-}
-
-.pagination li.active a {
-background-color:#003a78;
-border-color:#003a78;
-color:#fff;
-z-index:1;
-}
-
-.pagination li.disabled a {
-background-color:#fff;
-border-color:#dee2e6;
-color:#6c757d;
-cursor:auto;
-pointer-events:none;
-}
-
-.pagination li:not(:disabled):not(.disabled) {
-cursor:pointer;
-}
-
-.pagination ul:first-child a {
-border-bottom-left-radius:.25rem;
-border-top-left-radius:.25rem;
-margin-left:0;
-}
-
-.pagination ul:last-child a {
-border-bottom-right-radius:.25rem;
-border-top-right-radius:.25rem;
+.panel-title {
+    font-size: 1.2rem;
+    font-family:'Open Sans',sans-serif;
+    letter-spacing:normal;
 }
 
 .post-categories {
@@ -287,13 +280,18 @@ bottom:4px;
 position:absolute;
 }
 
+
+.search-form {
+padding-left: 5px;
+padding-right: 5px;
+}
+
 .show.shfapplication #uploaded-files .files-uploaded-list-title,.update.shfapplication #uploaded-files .files-uploaded-list-title,.company .field-label {
 font-weight:700;
 }
 
-.table th,.table td {
+.table th {
 border-top:none;
-padding:.2rem .75rem;
 }
 
 .text-nicelabel {
@@ -354,7 +352,9 @@ opacity:0.5;
 float:left;
 margin-left:20px;
 }
-
+.toggle-handle {
+    background: #fff;
+}
 .upload-button-pre {
 margin-bottom:0;
 }
@@ -372,10 +372,6 @@ border-color:#5692ce;
 a:hover {
 color:#5692ce;
 text-decoration:none;
-}
-
-a>i:before {
-border:none;
 }
 
 body {
@@ -454,11 +450,6 @@ table {
 font-size:.9em;
 }
 
-table a {
-border-bottom:none;
-font-weight:600;
-text-decoration:none;
-}
 
 @media only screen and (max-width: 600px){
     .entry-title {

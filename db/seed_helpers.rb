@@ -133,6 +133,7 @@ module SeedHelper
     ma.state = state
 
     ma.file_delivery_method = get_delivery_method_for_app(state)
+    ma.file_delivery_selection_date = Date.current
 
     # make a full company object (instance) for the membership application
     ma.companies << make_new_company(co_number)

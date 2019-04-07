@@ -1,207 +1,50 @@
-#site-logo {
-    padding-top: 41px;
-    padding-bottom: 1px;
-}
-.site-title {
-    font-family: 'Open Sans', serif;
-    line-height: 75px;
-    font-weight: 400;
-    font-style: normal;
-    color: #222;
-    font-size: 50px;
-}
-.site-description {
-    font-family: 'Open Sans', serif;
-    line-height: 18px;
-    font-weight: 400;
-    font-style: normal;
-    color: #666;
-    font-size: 12px;
-}
-#site-navigation {
-	background-color: #fff;
-}
-.main-navigation .menu a {
-	color: #222;
-}
-.main-navigation .menu a:hover {
-	color: #73a7bd;
-}
-.main-navigation .menu>.menu-item a, #site-navigation .mobile-menu a, #site-navigation .menu>ul>li>a {
-	font-family: 'Open Sans', serif;
-	font-weight: 400;
-	font-style: normal;
-	font-size: 11px;
-}
-#site-navigation .sub-menu, #site-navigation .mobile-menu {
-	background-color: #fff;
-}
-#site-navigation .sub-menu a, #site-navigation .mobile-menu a {
-	color: #222;
-}
-#site-navigation .sub-menu a:hover, #site-navigation .mobile-menu a:hover {
-	color: #73a7bd;
-}
-.main-navigation .menu>.menu-item>.sub-menu>li>a, .main-navigation .menu>.menu-item>.sub-menu>li>.sub-menu>li>a {
-	font-family: 'Open Sans', serif;
-	font-weight: 400;
-	font-style: normal;
-	font-size: 10px;
-}
-#site-navigation .menu-toggle .bar {
-	background-color: #222;
-}
-.social-nav a {
-	color: #888;
-}
-.social-nav a:hover {
-	color: #73a7bd;
-}
-body {
-	font-family: 'Open Sans', serif;
-	line-height: 24px;
-	font-weight: 400;
-	font-style: normal;
-	font-size: 14px;
-}
-h1, h2, h3, h4, h5, h6, .comment-author .fn, .prev-link a, .next-link a, .widget_rss .rsswidget, .widget_rss cite {
-	font-family: 'Open Sans', serif;
-	font-weight: 400;
-	font-style: normal;
+.yes, 
+.Yes,
+.no, 
+.No,
+.maybe,
+.Maybe {
+padding: 3px 8px;
 }
 
-.select-box {
-  min-width: 50px;
-  height: auto;
-  margin-left: 15px;
+.yes, 
+.Yes {
+background-color: #d8efc2;
 }
 
-.entry-title, .entry-title a, .read-more-link a, .cat-links a, .popular-title, .recent-post-title, button, input[type="button"], input[type="reset"], input[type="submit"], .footer-social a, .comment .reply a, .paging-navigation a, #related-posts .related-post-title, #wp-calendar thead th, #wp-calendar caption, #wp-calendar tfoot td, .wordchef-pagination li a, .page-links, .page-links a, .results-title, .archive-title, .featured-posts-container .post-date, .featured-page-title, #comments .comment-author .fn, .featured-post-title a, .featured-post-meta a, .featured-post-date, .edit-link a, .featured-post-category .post-categories a, .featured-read-more a, .post-category .post-categories a, .post-author-date, .widget_recent_entries a {
-	font-family: 'Open Sans', serif;
-	line-height: 27px;
-	font-weight: 400;
-	font-style: normal;
-	font-size: 18px;
-}
-.post-meta a {
-	font-family: 'Open Sans', serif;
-	line-height: 15px;
-	font-weight: 400;
-	font-style: normal;
-	font-size: 10px;
-}
-.type-page .entry-title, .page-title {
-	font-family: 'Open Sans', serif;
-	line-height: 27px;
-	font-weight: 400;
-	font-style: normal;
-	font-size: 18px;
-}
-.widget-title, .comments-title, .related-title {
-	font-family: 'Open Sans', serif;
-	line-height: 16px;
-	font-weight: 400;
-	font-style: normal;
-	font-size: 11px;
-}
-body, #loading-screen {
-	background-color: #f7f7f2;
-}
-body {
-	color: #333;
-}
-.entry-title, .entry-title a, .post-read-more a, .popular-title a, .recent-post-title a, .widget_categories a, .widget_archive a, #related-posts .related-post-title a, #wp-calendar thead th, .wordchef-about-me-name, .results-title:not(.results-text), .archive-title:not(span), .widget_nav_menu a, .widget_pages a, .related-title, .comments-title, .comment-reply-title, #comments .comment-author .fn, .widget_recent_entries a, .read-more-link a {
-	color: #222;
-}
-.widget-title, .widget-title .rsswidget {
-	color: #000;
-}
-a, a:hover {
-	color: #003a78;
-}
-.underlined_link {
-  text-decoration: underline;
-}
-.widget .post-categories a, .widget .post-categories a:hover, .cat-links, .post-social a:hover, .post-comments a:hover .comments-number, .cat-item a:hover, .widget_archive a:hover, .wordchef .popular-title a:hover, .wordchef .recent-post-title a:hover, .recent-comment-excerpt a:hover, .site-info a, .footer-social a:hover, .paging-navigation a:hover, #author-area .author-social-profiles a:hover, #related-posts .related-post-title a:hover, #cancel-comment-reply-link:hover, .toggle-sub-menu:hover, .toggle-sub-menu-active, blockquote p:before, .recent-comment-excerpt a, .read-more-link a:hover, .featured-read-more a:hover, button:hover, input[type="button"]:hover, input[type="reset"]:hover, input[type="submit"]:hover, .widget_recent_comments a, .scroll-to-top a, .post-categories a, .post-categories a:hover, .entry-header a:hover {
-	color: #5692CE;
-}
-.lSSlideOuter .lSPager.lSpg>li:hover a, .lSSlideOuter .lSPager.lSpg>li.active a, #respond .form-submit .submit:hover, input.wpcf7-submit:hover, #wp-calendar caption, .cat-item a:hover+.categories-post-count, .widget_archive a:hover+.archives-post-count, .wordchef-pagination li a:hover, .wordchef-pagination .active a, .tagcloud a:hover, .tags-links a:hover, .comment-reply-link:hover, .page-links>.post-page-nav, .page-links .post-page-nav:hover, #wp-calendar #today, .wordchef-social a:before, .social-share a:before, #author-area .author-social-profiles a:before, button, input[type="button"], input[type="reset"], input[type="submit"], .read-more-link a:before, .read-more-link a:after, .featured-post-panel, .featured a:before, .featured-page-meta, .list-image:before, .featured-posts-prev:after, .featured-posts-next:after, #loading-screen .square-1, #loading-screen .square-2, #loading-screen .square-3, #loading-screen .square-4 {
-	background-color: #5692CE;
-}
-.cat-item a:hover+.categories-post-count, .widget_archive a:hover+.archives-post-count, .page-links>.post-page-nav, .page-links .post-page-nav:hover, button, input[type="button"], input[type="reset"], input[type="submit"], .widget, #site-navigation .sub-menu, .results-title, .archive-title {
-	border-color: #5692CE;
-}
-.site-info {
-	background-color: #7a7966;
-}
-#footer-logo {
-	padding-top: 15px;
-}
-.site-info {
-	font-family: 'Open Sans', serif;
-	text-align: center;
-	line-height: 18px;
-	font-weight: normal;
-	font-style: normal;
-	color: #212121;
-	font-size: 12px;
-}
-.footer-social {
-	background-color: transparent;
-}
-.footer-social a {
-	color: #353535;
+.maybe,
+.Maybe {
+background-color: #ffe7a8;
 }
 
-/* End of WP-settings */
-.menu {
-	background: #fff;
-}
-.site-footer {
-	padding-left: 0;
-	padding-right: 0;
-}
-.center {
-	text-align: center;
-}
-.companies {
-	border-bottom:1px solid #efefef;
-}
-select {
-    height: 49px;
-    font-size: 18px;
-    min-width: 150px;
-    max-width:100%;
-    border-radius:0;
-    border:none !important;
-    background-color:#f4f4f8;
-    font-weight:normal;
-    line-height: 27px !important;
-    color:#888;
-    -webkit-box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    box-sizing:border-box;
-}
-.wpcf7-response-output {
-    margin-bottom: 20px;
+.no,
+.No {
+background-color: #ffdede;
 }
 
-
-.file {
-    margin-top: 0;
+.edit a,
+.delete a {
+  border-bottom: 0;
+}.yes, 
+.Yes,
+.no, 
+.No,
+.maybe,
+.Maybe {
+padding: 3px 8px;
 }
 
-/* style for row (div) using flex model, with contained elements
-* aligned horizontally by center.
-* https://www.w3schools.com/css/css3_flexbox.asp
-*/
-.center-aligned-container {
-  display: flex;
-  align-items: center;
+.yes, 
+.Yes {
+background-color: #d8efc2;
 }
 
-.standard-label {
-  font-weight: bold;
+.maybe,
+.Maybe {
+background-color: #ffe7a8;
 }
 
-
+.no,
+.No {
+background-color: #ffdede;
+}

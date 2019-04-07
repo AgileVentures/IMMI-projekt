@@ -1,37 +1,29 @@
 %header.entry-header
   - user_name = @user.full_name
-  - if @user.admin?
-    %h1.entry-title.is-admin
-      = user_name.empty? ? @user.email : user_name
+  %h1.entry-title.is-admin
+    = user_name.empty? ? @user.email : user_name
+    - if @user.admin?
       %span.small
         (#{t('.is_an_admin')})
-  - else
-    %h1.entry-title
-      = user_name.empty? ? @user.email : user_name
 
-.entry-content
-  .col-sm-6
-    = field_or_none("#{t('.email')}", mail_to(@user.email),
-                    label_class: 'standard-label')
-  .col-sm-4.col-sm-offset-2
-    = field_or_none("#{t('.membership_number')}", @user.membership_number,
-                    label_class: 'standard-label')
-  .clearfix
+.entry-content.container
+  .row
+    .col-md-6
+      = field_or_none("#{t('.email')}", mail_to(@user.email),
+                      label_class: 'standard-label')
+    .col-md-4
+      = field_or_none("#{t('.membership_number')}", @user.membership_number,
+                      label_class: 'standard-label')
 
   = render partial: 'member_payment_status', locals: { user: @user }
 
-  .clearfix
-
-  .col-sm-12
-
-    - unless @user.shf_application
-      = field_or_none("#{t('application')}", t('none'), label_class: 'standard-label')
-    - else
-      -# .col-sm-3{ style: 'margin-left: -15px;' }
-      %span.standard-label #{t('application')}:
-
-      .row
-        %table.table.table-hover
+  .row
+    .col.mt-2
+      - unless @user.shf_application
+        = field_or_none("#{t('application')}", t('none'), label_class: 'standard-label')
+      - else
+        %h3 #{t('application')}:
+        %table.table.table-hover.table-sm.table-md-responsive
           %thead
             %tr
               %th
@@ -56,115 +48,91 @@
                 %td= link_to(app.company_numbers, shf_application_path(app))
                 %td= app.company_names
 
-  .col-sm-12
-
-    Account #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}.
-    %br
-
-    - if current_user.admin?
-
-      - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
-        #{@user.email} #{t('.user_has_never_signed_in')}
-
-      - else
-
-        #{t('.last_login')}:
-        #{most_recent_login_time @user}
-        (#{i18n_time_ago_in_words(most_recent_login_time @user)})
-        %br
-        #{t('.logged_in_count')}:
-        = @user.sign_in_count
-
-      %p
-      - if @user.reset_password_sent_at.blank?
-        = t('.password_never_reset')
-      - else
-        %b #{t('.reset_password_sent_at')}:
-        #{@user.reset_password_sent_at}
-        #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
-
-      %br
-      %br
-
-      %button.btn.alert-danger.admin-set-new-password{ id: 'toggle_admin_set_password_form',
-                   href: '#set_new_password_form',
-                   style: 'text-transform:none;' }
-
-        #{ t('toggle.set_new_password_form.show') }
-
-      .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form',
-                            style: 'display: none;' }
-
-        = render 'password_form'
-
-    %hr
-
-
-  - if @user.member?
+  - if current_user.admin?
     .row
+      .col
+        %pre
+          #{t('.created')} #{i18n_time_ago_in_words(@user.created_at)}.
+        - if @user.last_sign_in_at.blank? && @user.current_sign_in_at.blank?
+          %pre
+            #{@user.email} #{t('.user_has_never_signed_in')}
+        - else
+          %pre
+            #{t('.last_login')}:
+            #{most_recent_login_time @user}
+            (#{i18n_time_ago_in_words(most_recent_login_time @user)})
+          %pre
+            #{t('.logged_in_count')}:
+            = @user.sign_in_count
+        - if @user.reset_password_sent_at.blank?
+          %pre
+            = t('.password_never_reset')
+        - else
+          %pre
+            %b #{t('.reset_password_sent_at')}:
+            #{@user.reset_password_sent_at}
+            #{i18n_time_ago_in_words(@user.reset_password_sent_at)})
+
+    .row
+      .col
+        %button.btn.alert-secondary.admin-set-new-password{ id: 'toggle_admin_set_password_form',
+                     href: '#set_new_password_form',
+                     style: 'text-transform:none;' }
+
+          #{ t('toggle.set_new_password_form.show') }
+
+        .panel.panel-default.admin-set-new-password-form{ id: 'set_new_password_form',
+                              style: 'display: none;' }
+          = render 'password_form'
+    %hr
+  - if @user.member?
+    .row.mt-3
       .col-md-5
         = render partial: 'proof_of_membership',
                  locals: { app_config: @app_configuration, user: @user,
                            context: :user_show }
-
-      .col-md-7
-        %span.standard-label= t('.proof_of_membership')
-        %br
-        %br
-        = t('.proof_of_membership_describe')
-        %br
-        %br
-        = t('.image_how_to_use_html',
+      .col-md-7.infotext
+        %h3= t('.proof_of_membership')
+        %p= t('.proof_of_membership_describe')
+        %p= t('.image_how_to_use_html',
             download_link: link_to(t('.download_image'),
                                    proof_of_membership_path(@user, render_to: :jpg),
-                                   class: 'btn btn-sm btn-outline-info'),
+                                   class: 'btn btn-sm btn-outline-secondary'),
             show_link: link_to(t('.show_image'),
                                  proof_of_membership_path(@user, context: :internal),
-                                 class: 'btn btn-sm btn-outline-info'))
-        %br
-        %br
-        = t('.proof_of_membership_photo_needed')
-        = link_to(t('devise.registrations.edit.title'), edit_user_registration_path,
+                                 class: 'btn btn-sm btn-outline-secondary'))
+        %p
+          = t('.proof_of_membership_photo_needed')
+          = link_to(t('devise.registrations.edit.title'), edit_user_registration_path,
                   class: 'underlined_link')
-        %br
-        %br
-        = t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
+        %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
             'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
             class: 'underlined_link'))
 
     - @user.companies.all.each do |company|
-
       - next unless company.branding_license?
-
-      .col-sm-12
-        %hr
       .row
+        .col-sm-12
+          %hr
         .col-md-5
           = render partial: 'companies/company_h_brand',
                    locals: { app_config: @app_configuration, company: company,
                              context: :user_show, user: @user }
 
-        .col-md-7
-          %span.standard-label= t('.company_h_brand', company: company.name)
-          %br
-          %br
-          = t('.company_h_brand_describe')
-          %br
-          %br
-          = t('.image_how_to_use_html',
+        .col-md-7.infotext
+          %h3= t('.company_h_brand', company: company.name)
+          %p= t('.company_h_brand_describe')
+          %p= t('.image_how_to_use_html',
               download_link: link_to(t('.download_image'),
                                      company_h_brand_path(company,
                                                            render_to: :jpg),
-                                     class: 'btn btn-sm btn-outline-info'),
+                                     class: 'btn btn-sm btn-outline-secondary'),
               show_link: link_to(t('.show_image'),
                                  company_h_brand_path(company,
                                                       context: :internal),
-                                     class: 'btn btn-sm btn-outline-info'))
-          %br
-          %br
-          = t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
+                                     class: 'btn btn-sm btn-outline-secondary'))
+          %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
               'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
               class: 'underlined_link'))
-
 
 = render partial: 'edit_status_modal', locals: { user: @user }

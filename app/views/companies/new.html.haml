@@ -2,5 +2,5 @@
   %h1.entry-title= t('.title')
 .entry-content
   = render 'form', class_name: 'new-company'
-  .center
-    = link_to "#{t('companies.all_companies')}", companies_path
+  .text-center
+    = link_to "#{t('companies.all_companies')}", companies_path, class: 'btn btn-sm btn-light'

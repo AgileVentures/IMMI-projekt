@@ -78,21 +78,9 @@ RSpec.describe 'companies/index' do
           expect(rendered).to match t('my_company', count: 1)
         end
 
-        it 'renders sub-menu title with company name' do
-          text = %r{href='(.*)'>(\s*)#{member.companies.first.name}(\s*)<\/a>}
+        it 'renders view-company link' do
+          text = %r{href="(.*)">(\s*)#{member.companies.first.name}(\s*)<\/a>}
           expect(rendered).to match text
-        end
-
-        it 'renders view-my-company link' do
-          text = t('menus.nav.members.manage_company.view_company')
-          expect(rendered)
-            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{cmpy_id}\">(\s*)#{text}}
-        end
-
-        it 'renders edit-my-company link' do
-          text = t('menus.nav.members.manage_company.edit_company')
-          expect(rendered)
-            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{cmpy_id}\/redigera\">(\s*)#{text}}
         end
       end
 
@@ -120,38 +108,14 @@ RSpec.describe 'companies/index' do
           expect(rendered).to match t('my_company', count: 2)
         end
 
-        it 'renders sub-menu title for each company name' do
-          text = %r{href='\/hundforetag\/#{first_co_id}'>(\s*)#{first_co_name}}
-          expect(rendered).to match text
-        end
-
-        it 'renders view-my-company link - first company' do
-          text = t('menus.nav.members.manage_company.view_company')
+        it 'renders view-company link - first company' do
           expect(rendered)
-            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{first_co_id}\">(\s*)#{text}}
+            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{first_co_id}\">#{first_co_name}}
         end
 
-        it 'renders edit-my-company link - first company' do
-          text = t('menus.nav.members.manage_company.edit_company')
+        it 'renders view-company link - second company' do
           expect(rendered)
-            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{first_co_id}\/redigera\">(\s*)#{text}}
-        end
-
-        it 'renders sub-menu title with second company name' do
-          text = %r{href='\/hundforetag\/#{second_co_id}'>(\s*)#{second_co_name}}
-          expect(rendered).to match text
-        end
-
-        it 'renders view-my-company link - second company' do
-          text = t('menus.nav.members.manage_company.view_company')
-          expect(rendered)
-            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{second_co_id}\">(\s*)#{text}}
-        end
-
-        it 'renders edit-my-company link - second company' do
-          text = t('menus.nav.members.manage_company.edit_company')
-          expect(rendered)
-            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{second_co_id}\/redigera\">(\s*)#{text}}
+            .to match %r{<a class="nav-link" href=\"\/hundforetag\/#{second_co_id}\">(\s*)#{second_co_name}}
         end
       end
     end

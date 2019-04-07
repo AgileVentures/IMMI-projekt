@@ -48,6 +48,7 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to have_db_column :when_approved }
     it { is_expected.to have_db_column :file_delivery_method_id }
     it { is_expected.to have_db_column(:file_delivery_selection_date).with_options(null: true) }
+    it { is_expected.to have_db_column :uploaded_files_count }
   end
 
   describe 'Associations' do
@@ -62,8 +63,6 @@ RSpec.describe ShfApplication, type: :model do
                           .optional}
     it { is_expected.to accept_nested_attributes_for(:uploaded_files)
                           .allow_destroy(true) }
-    it { is_expected.to accept_nested_attributes_for(:user)
-                          .update_only(true).allow_destroy(false) }
 
     # Note that we cannot test the file_delivery_method belongs_to association because it can sometimes be nil
     # and the presence is only required (validated) _on create_
@@ -229,39 +228,6 @@ RSpec.describe ShfApplication, type: :model do
     end
 
   end
-
-
-  describe 'User attributes nesting' do
-
-    let(:user) { create(:user, first_name: 'Firstname', last_name: 'Lastname') }
-    let!(:member_app) { create(:shf_application, user: user,
-                               user_attributes: { first_name: 'New Firstname',
-                                                  last_name: 'New Lastname' }) }
-
-    it 'sets first_name on user' do
-      expect(user.first_name).to eq('New Firstname')
-    end
-
-    it 'sets last_name on user' do
-      expect(user.last_name).to eq('New Lastname')
-    end
-
-    it 'validates the presence of first_name' do
-      expect {
-        user.first_name = ''
-        member_app.save!
-      }.to raise_exception(/#{I18n.t('activerecord.attributes.shf_application.first_name')} #{I18n.t('errors.messages.blank')}/)
-    end
-
-    it 'validates the presence of last_name' do
-      expect {
-        user.last_name = ''
-        member_app.save!
-      }.to raise_exception(/#{I18n.t('activerecord.attributes.shf_application.last_name')} #{I18n.t('errors.messages.blank')}/)
-    end
-
-  end
-
 
   describe 'destroy callbacks' do
     let(:user1) { create(:user) }

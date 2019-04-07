@@ -1,34 +1,34 @@
 #company-events
-
-  %table.table.table-hover.fixed-table-with-border
-    %thead
-      %tr
-        %th.col-width-40pc
-          #{t('events.show.name')}
-        %th.col-width-35pc
-          #{t('events.show.location')}
-        %th.col-width-10pc.text-align-right
-          #{t('events.show.fee')}
-        %th.col-width-15pc.text-align-center
-          #{t('events.show.start_date')}
-      %tr
-    %tbody
-      - if events.any?
-        - events.each do |event|
+  .table-responsive
+    %table.table.table-hover.table-sm
+      %thead
+        %tr
+          %th.col-width-40pc
+            #{t('events.show.name')}
+          %th.col-width-35pc
+            #{t('events.show.location')}
+          %th.col-width-10pc.text-align-right
+            #{t('events.show.fee')}
+          %th.col-width-15pc.text-align-center
+            #{t('events.show.start_date')}
+        %tr
+      %tbody
+        - if events.any?
+          - events.each do |event|
+            %tr.event
+              %td.event-name
+                = link_to event.name, event.sign_up_url, target: '_blank'
+              %td.location
+                = event.location
+              %td.fee.text-align-right
+                = number_to_currency(event.fee, locale: 'sv', format: '%n',
+                                     delimiter: ' ', precision: 0)
+              %td.event-start-date.text-align-center
+                = event.start_date
+        - else
           %tr.event
-            %td.event-name
-              = link_to event.name, event.sign_up_url, target: '_blank'
-            %td.location
-              = event.location
-            %td.fee.text-align-right
-              = number_to_currency(event.fee, locale: 'sv', format: '%n',
-                                   delimiter: ' ', precision: 0)
-            %td.event-start-date.text-align-center
-              = event.start_date
-      - else
-        %tr.event
-          %td.event-name{ colspan: 4 }
-            #{t('events.show.no_events')}
+            %td.event-name{ colspan: 4 }
+              #{t('events.show.no_events')}
 
   = render 'application/paginate_footer', entities: events,
                                           paginate_class: 'events_pagination',

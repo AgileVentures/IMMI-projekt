@@ -26,6 +26,5 @@
             = f.check_box :is_custom
           %label.form-check-label
             = f.label :is_custom, t('activerecord.attributes.member_app_waiting_reason.is_custom') + '?', class: 'is-custom'
-    .row
-      .col
-        = f.submit t('save'), class: 'btn btn-primary float-right'
+
+    = f.submit t('save'), class: 'btn btn-primary form-control'

@@ -7,8 +7,9 @@
                      filter_are_members: @filter_are_members,
                      filter_are_not_members: @filter_are_not_members }
   .row
-    - if @users.empty?
-      %strong
-        = t('.no_search_results')
-    - else
-      = render partial: 'users_list', locals: { q: @q, users: @users, items_count: @items_count }
+    .col
+      - if @users.empty?
+        %strong
+          = t('.no_search_results')
+      - else
+        = render partial: 'users_list', locals: { q: @q, users: @users, items_count: @items_count }

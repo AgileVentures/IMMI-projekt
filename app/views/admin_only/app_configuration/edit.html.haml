@@ -1,7 +1,5 @@
 %header.entry-header
   %h1.entry-title= t('edit') + ' ' + t('.title')
-  .post-title-divider
-  %span
 
 .entry-content
 
@@ -38,9 +36,6 @@
         = render 'image_edit', app_config: @app_configuration,
                                image_title: 'sweden_dog_trainers',
                                f: f
+      = f.submit t('submit'), class: 'btn btn-primary form-control mt-4'
 
-    .col-sm-12.wpcf7
-      = f.submit "#{t('submit')}"
-      %br
-      = link_to "#{t('view')} #{t('.title')}", admin_only_app_configuration_path(@app_configuration), class: 'btn btn-default'
-      = link_to "#{t('back')}", :back, class: 'btn btn-default'
+  = render  'show_action_buttons', app_config: @app_configuration
