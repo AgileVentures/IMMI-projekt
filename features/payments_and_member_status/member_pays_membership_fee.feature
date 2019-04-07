@@ -89,6 +89,6 @@ Feature: As a member
     And I should see "1001"
     And I click on t("menus.nav.members.pay_membership")
     Then I should see xpath "//img[contains(@src,'RapidSSL_SEAL-90x50')]"
-    And when I click the GeoTrust SSL certificate Image
+    And when I click image via xpath "//img[contains(@src,'RapidSSL_SEAL-90x50')]"
     Then I should be on page "https://www.rapidssl.com/about/"
-    And I should see xpath "//img[contains(@src,'RapidSSL_SEAL-90x50')]"
+    And I should see xpath "//img[contains(@src,'rapidssl_ssl_certificate.gif')]"
