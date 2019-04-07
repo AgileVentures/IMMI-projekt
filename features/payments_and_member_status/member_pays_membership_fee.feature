@@ -88,7 +88,8 @@ Feature: As a member
     And I am on the "user details" page for "emma@mutts.com"
     And I should see "1001"
     And I click on t("menus.nav.members.pay_membership")
-    Then I should see the GeoTrust SSL certificate Image
+    Then I should see xpath "//img[contains(@src,'RapidSSL_SEAL-90x50')]"
+  #  Then I should see the GeoTrust SSL certificate Image
   #  And when I click the GeoTrust SSL certificate Image
   #  Then I should be on X page
   #  And I should see
