@@ -82,6 +82,7 @@ Feature: As a member
     And I should see "2017-12-31"
     And I should not see "2018-12-31"
 
+  @geoimg
   Scenario:
     Given I am logged in as "emma@mutts.com"
     And I am on the "user details" page for "emma@mutts.com"
