@@ -15,6 +15,9 @@
     - if link
       = link
       = fas_tooltip(t('users.show.pay_membership_tooltip'))
+    .geo-ssl-seal
+      %a.ssl-seal{ href: "https://www.rapidssl.com/about/", target: '_blank'}
+        = image_tag('RapidSSL_SEAL-90x50.gif')
 
 - if current_user.admin?
   .row.mt-2
