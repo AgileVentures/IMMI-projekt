@@ -91,3 +91,4 @@ Feature: As a member
     Then I should see image with filename "RapidSSL_SEAL-90x50"
     And I click on the image with filename "RapidSSL_SEAL-90x50"
     Then I should be on external page "https://www.rapidssl.com/about/"
+    And I should see image with filename "rapidssl_ssl_certificate.gif"
