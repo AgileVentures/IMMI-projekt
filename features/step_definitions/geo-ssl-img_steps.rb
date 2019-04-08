@@ -20,7 +20,7 @@
 ### below not working
 
 # why is the test below not working when running member_pays_membership_fee.feature:85
-Then "I should{negate} see {capture_string} image" do |negate, file_name|
+Then "I should{negate} see image with filename {capture_string}" do |negate, file_name|
   expect(page).send (negate ? :not_to : :to),  have_xpath("//
   img[contains(@src,'#{file_name}')]")
 end
