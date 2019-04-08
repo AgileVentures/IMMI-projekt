@@ -90,4 +90,4 @@ Feature: As a member
     And I click on t("menus.nav.members.pay_membership")
     Then I should see image with filename "RapidSSL_SEAL-90x50"
     And I click on the image with filename "RapidSSL_SEAL-90x50"
-    Then I should be on page "https://www.rapidssl.com/about/"
+    Then I should be on external page "https://www.rapidssl.com/about/"
