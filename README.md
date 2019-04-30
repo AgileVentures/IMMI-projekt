@@ -115,11 +115,12 @@ private message in Slack, or general message in the project's Slack channel).
 
 ### Step 4: Set up the database
 ```shell
-$ bundle exec rake shf:db_recreate
+$ bundle exec rake shf:db_prep
+$ bundle exec rake db:seed
 ```
-The rake task `shf:db_recreate` creates or recreates the development and test DBs, creates the application
-schema, loads foundation data table (e.g. list of Swedish counties) and then
-runs seed.db to populate the DB with data for development.
+The rake task `shf:db_prep` creates or recreates the development and test DBs, creates the application
+schema, loads foundation data table (e.g. list of Swedish counties).
+Then, run seed.db to populate the DB with data for development.
 
 When this completes, initialize the test DB:
 ```shell
