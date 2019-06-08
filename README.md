@@ -79,11 +79,7 @@ $ git remote add upstream https://github.com/AgileVentures/shf-project
 ```shell
 $ bundle install
 ```
-2. Some of our cucumber tests use Google Chrome as the web browser (with selenium
-  as the webdriver).  For that, you'll need to [download chromedriver](https://sites.google.com/a/chromium.org/chromedriver/downloads)
-  to your local machine.
-
-3. Make sure you have the correct "locale" file present on your local machine -
+2. Make sure you have the correct "locale" file present on your local machine -
   Since our user base primarily works in Swedish, we need to confirm that the
   database will correctly sort (collate) text in that language.
 
