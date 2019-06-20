@@ -57,13 +57,24 @@ RSpec.describe Backup, type: :model do
     def make_faux_app_dirs
       faux_app_dir = Dir.mktmpdir('faux-app-dir')
 
-      app_dirs = ['app', 'bin', 'config', 'db', 'features', 'lib', 'log', 'node_modules', 'public', 'script', 'spec', 'tmp', 'vendor']
+      app_dirs = %w(app bin config db features lib log node_modules public script spec tmp vendor .yardoc)
       app_dirs.each do |app_dir|
         subdir = File.join(faux_app_dir, app_dir)
         Dir.mkdir(subdir)
         File.open(File.join(subdir, 'blorf.txt'), 'w') do |f|
           f.puts 'blorf!'
         end
+      end
+
+      # Create some .yml files in /config
+      File.open(File.join(faux_app_dir, 'config', 'secrets.yml'), 'w') do |f|
+        f.puts 'not a secret'
+      end
+      File.open(File.join(faux_app_dir, 'config', 'db.yml'), 'w') do |f|
+        f.puts 'not a secret'
+      end
+      File.open(File.join(faux_app_dir, '.env'), 'w') do |f|
+        f.puts 'all your env belong to us'
       end
 
       faux_app_dir
@@ -120,6 +131,39 @@ RSpec.describe Backup, type: :model do
     end
 
 
+    let(:backup_condition_all_dirs) do
+      condition_info = { class_name: 'Backup',
+                         timing: :every_day,
+                         config: { days_to_keep: { code_backup: 2,
+                                                   db_backup: 5},
+                                   backup_directory: @backup_dir,
+
+                                   filesets: [
+                                       { name: 'logs',
+                                         days_to_keep: 8,
+                                         files: [File.join(@faux_app_dir, 'log')]
+                                       },
+                                       { name: 'code',
+                                         days_to_keep: 3,
+                                         files: [@faux_app_dir],
+                                         excludes: ['public', 'docs', 'features', 'spec', 'tmp', '.yardoc'].map{|ex_dir| File.join(@faux_app_dir, ex_dir)}
+                                       },
+                                       { name: 'app-public',
+                                         days_to_keep: 3,
+                                         files: [File.join(@faux_app_dir, 'public')]
+                                       },
+                                       { name: 'config env secrets',
+                                         days_to_keep: 32,
+                                         files: [File.join(@faux_app_dir, 'config', '*.yml'),
+                                                 File.join(@faux_app_dir, '.env')]
+                                       }
+                                   ]
+                         } }
+
+      Condition.new(condition_info)
+    end
+
+
     let(:backup_condition) do
       condition_info = { class_name: 'Backup',
                          timing: :every_day,
@@ -158,6 +202,9 @@ RSpec.describe Backup, type: :model do
     let(:expected_fset_misc_files_backup_fname) { /#{File.join(@backup_dir, fileset_misc_files_backup_basefn)}\.#{fn_timestamp}\d\d-\d\d\d\d\d-Z\.gz/ }
     let(:expected_fset_code_backup_base_fname) { File.join(@backup_dir, fileset_code_backup_basefn) }
     let(:expected_fset_code_backup_fname) { /#{File.join(@backup_dir, fileset_code_backup_basefn)}\.#{fn_timestamp}\d\d-\d\d\d\d\d-Z\.gz/ }
+
+
+    # --------------------------------------------------------------------------
 
 
     it 'does the backup - everything works (HAPPY PATH)' do
@@ -199,6 +246,63 @@ RSpec.describe Backup, type: :model do
       expect(timestamped_file_exists?(@backup_dir,
                                       "#{fileset_code_backup_basefn}.#{timestamp}")).to be_truthy
     end
+
+
+    it 'backup with realistic fileset dirs and exclusions' do
+      file_ts_end = "#{fn_timestamp}\\d\\d-\\d\\d\\d\\d\\d-Z\\.gz"
+
+      logs_basefn = 'logs.tar'
+      expected_logs_basefn = File.join(@backup_dir, logs_basefn)
+
+      code_basefn = 'code.tar'
+      expected_code_basefn = File.join(@backup_dir, code_basefn)
+
+      public_basefn = 'app-public.tar'
+      expected_public_basefn = File.join(@backup_dir, public_basefn)
+
+      config_basefn = 'config_env_secrets.tar'
+      expected_config_basefn = File.join(@backup_dir, config_basefn)
+
+
+      allow(described_class).to receive(:upload_file_to_s3)
+
+      expect(described_class).to receive(:delete_excess_backup_files)
+                                     .with("#{expected_logs_basefn}.*", 8)
+      expect(described_class).to receive(:delete_excess_backup_files)
+                                     .with("#{expected_code_basefn}.*", 3)
+      expect(described_class).to receive(:delete_excess_backup_files)
+                                     .with("#{expected_public_basefn}.*", 3)
+      expect(described_class).to receive(:delete_excess_backup_files)
+                                     .with("#{expected_config_basefn}.*", 32)
+      expect(described_class).to receive(:delete_excess_backup_files)
+                                     .with("#{expected_db_backup_base_fn}.*", 5)
+
+      timestamp = hourstamp
+      class_name = backup_condition_all_dirs.class_name
+      klass = class_name.constantize
+      ActivityLogger.open(@logfilename, 'SHF_TASK', 'Conditions') do |log|
+        log.info("#{class_name} ...")
+        klass.condition_response(backup_condition_all_dirs, log)
+      end
+
+      # no errors in the log file
+      logfile_contents = File.read(@logfilename)
+      expect(logfile_contents).not_to match(/error/),
+                                      "expected Logfile not to include 'error' but it does:\n#{logfile_contents}"
+
+      # expect the backup files to be in the backup directory
+      expect(timestamped_file_exists?(@backup_dir,
+                                      "#{db_backup_basefn}.#{timestamp}")).to be_truthy
+      expect(timestamped_file_exists?(@backup_dir,
+                                      "#{logs_basefn}.#{timestamp}")).to be_truthy
+      expect(timestamped_file_exists?(@backup_dir,
+                                      "#{code_basefn}.#{timestamp}")).to be_truthy
+      expect(timestamped_file_exists?(@backup_dir,
+                                      "#{public_basefn}.#{timestamp}")).to be_truthy
+      expect(timestamped_file_exists?(@backup_dir,
+                                      "#{config_basefn}.#{timestamp}")).to be_truthy
+    end
+
 
 
     describe 'errors happen - 1 error should not stop the entire backup' do
