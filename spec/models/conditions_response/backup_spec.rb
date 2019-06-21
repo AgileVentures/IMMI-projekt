@@ -2,6 +2,8 @@ require 'rails_helper'
 
 require 'shared_examples/shared_condition_specs'
 require 'shared_context/activity_logger'
+require 'shared_context/expect_tar_has_entries'
+
 
 # TODO mock logs with a FakeLogger + use 'expect(FakeLogger).to receive(...)' (= faster since no file I/O)
 # TODO DRY Acceptance tests
@@ -47,6 +49,7 @@ RSpec.describe Backup, type: :model do
   describe 'Acceptance tests' do
 
     include_context 'create logger'
+    include_context 'expect tar file has entries'
 
 
     # Make the same directories as a Rails app under a temp dir and create
@@ -91,6 +94,12 @@ RSpec.describe Backup, type: :model do
 
     def hourstamp
       Time.now.strftime '%F-%H'
+    end
+
+
+    def timestamped_file_in_dir(dir, matching_to_hour_name)
+      files_in_dir = Dir.children(dir)
+      files_in_dir.detect { |fname| fname =~ /#{matching_to_hour_name}\d\d-\d\d\d\d\d-Z\.gz/ }
     end
 
 
@@ -249,8 +258,6 @@ RSpec.describe Backup, type: :model do
 
 
     it 'backup with realistic fileset dirs and exclusions' do
-      file_ts_end = "#{fn_timestamp}\\d\\d-\\d\\d\\d\\d\\d-Z\\.gz"
-
       logs_basefn = 'logs.tar'
       expected_logs_basefn = File.join(@backup_dir, logs_basefn)
 
@@ -290,17 +297,46 @@ RSpec.describe Backup, type: :model do
       expect(logfile_contents).not_to match(/error/),
                                       "expected Logfile not to include 'error' but it does:\n#{logfile_contents}"
 
-      # expect the backup files to be in the backup directory
-      expect(timestamped_file_exists?(@backup_dir,
-                                      "#{db_backup_basefn}.#{timestamp}")).to be_truthy
-      expect(timestamped_file_exists?(@backup_dir,
-                                      "#{logs_basefn}.#{timestamp}")).to be_truthy
-      expect(timestamped_file_exists?(@backup_dir,
-                                      "#{code_basefn}.#{timestamp}")).to be_truthy
-      expect(timestamped_file_exists?(@backup_dir,
-                                      "#{public_basefn}.#{timestamp}")).to be_truthy
-      expect(timestamped_file_exists?(@backup_dir,
-                                      "#{config_basefn}.#{timestamp}")).to be_truthy
+      # Expect the db backup file to be in the backup directory
+      # (It's the only backup file that is _not_ a FileSet.)
+      db_backup_ts_fn = "#{db_backup_basefn}.#{timestamp}"
+      expect(timestamped_file_exists?(@backup_dir, db_backup_ts_fn)).to be_truthy
+
+
+      # Expect the FileSet backup files to exist
+      # and to have exactly what we specified in the configuration:
+
+      logs_backup_ts_fn = "#{logs_basefn}.#{timestamp}"
+      actual_log_backup_file = timestamped_file_in_dir(@backup_dir, logs_backup_ts_fn)
+      expected_entries = [ File.join(@faux_app_dir, 'log'), File.join(@faux_app_dir, 'log', 'blorf.txt') ]
+      expect_tar_has_these_entries(File.join(@backup_dir, actual_log_backup_file), expected_entries)
+
+      code_backup_ts_fn = "#{code_basefn}.#{timestamp}"
+      expected_dirs = %w(app bin config db lib log node_modules  script vendor )
+      actual_code_env_secrets_backup_file = timestamped_file_in_dir(@backup_dir, code_backup_ts_fn)
+
+      expected_entries = expected_dirs.map do | dir |
+        [File.join(@faux_app_dir, dir), File.join(@faux_app_dir, dir, 'blorf.txt') ]
+      end
+
+      expected_entries << @faux_app_dir
+      expected_entries << File.join(@faux_app_dir, 'config', 'secrets.yml')
+      expected_entries << File.join(@faux_app_dir, 'config', 'db.yml')
+      expected_entries << File.join(@faux_app_dir, '.env')
+      expected_entries << File.join(@faux_app_dir, 'notes-0.txt')
+      expected_entries << File.join(@faux_app_dir, 'notes-1.txt')
+      expect_tar_has_these_entries(File.join(@backup_dir, actual_code_env_secrets_backup_file), expected_entries.flatten)
+
+      public_backup_ts_fn = "#{public_basefn}.#{timestamp}"
+      actual_app_public_backup_file = timestamped_file_in_dir(@backup_dir, public_backup_ts_fn)
+      expected_entries = [ File.join(@faux_app_dir, 'public'), File.join(@faux_app_dir, 'public', 'blorf.txt') ]
+      expect_tar_has_these_entries(File.join(@backup_dir, actual_app_public_backup_file), expected_entries)
+
+      config_backup_ts_fn = "#{config_basefn}.#{timestamp}"
+      actual_config_env_secrets_backup_file = timestamped_file_in_dir(@backup_dir, config_backup_ts_fn)
+      config_dir = File.join(@faux_app_dir, 'config')
+      expected_entries = [File.join(config_dir, 'db.yml'), File.join(config_dir, 'secrets.yml'), File.join(@faux_app_dir, '.env') ]
+      expect_tar_has_these_entries(File.join(@backup_dir, actual_config_env_secrets_backup_file), expected_entries)
     end
 
 
