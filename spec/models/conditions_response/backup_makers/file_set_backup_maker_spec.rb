@@ -3,6 +3,7 @@ require_relative File.join(Rails.root, 'app/models/conditions_response/backup')
 #require_relative File.join(Rails.root, 'app/models/conditions_response/shf_condition_error_backup_errors.rb')
 
 require 'shared_examples/backup_maker_target_filename_with_default_spec'
+require 'shared_context/expect_tar_has_entries'
 
 
 RSpec.describe ShfBackupMakers::FileSetBackupMaker do
@@ -10,13 +11,15 @@ RSpec.describe ShfBackupMakers::FileSetBackupMaker do
 
   describe 'Unit tests' do
 
+    include_context 'expect tar file has entries'
+
     let(:subject) { described_class.new(name: 'some set of files') }
 
     let(:backup_using_defaults) { described_class.new(name: 'backup using defaults') }
 
 
     it 'default base_filename is "name.tar" where the name has been cleaned up' do
-      new_maker = described_class.new(name:'replace spaces with _ and remove non 0-9 a-zA-Z!&@\#$:!ä(ひらがな) characters')
+      new_maker = described_class.new(name: 'replace spaces with _ and remove non 0-9 a-zA-Z!&@\#$:!ä(ひらがな) characters')
       expect(new_maker.base_filename).to eq 'replace_spaces_with___and_remove_non_0-9_a-zA-Z_characters.tar'
     end
 
@@ -24,12 +27,12 @@ RSpec.describe ShfBackupMakers::FileSetBackupMaker do
     describe 'name' do
 
       it 'must have a name' do
-        expect{  described_class.new(target_filename: 'some_filename',
+        expect { described_class.new(target_filename: 'some_filename',
                                      backup_sources: ['source1.txt']) }.to raise_error(ShfConditionError::BackupFileSetMissingNameError)
       end
 
       it 'name cannot be blank' do
-        expect{  described_class.new(name: '',
+        expect { described_class.new(name: '',
                                      target_filename: 'some_filename',
                                      backup_sources: ['source1.txt']) }.to raise_error(ShfConditionError::BackupFileSetNameCantBeBlankError)
       end
@@ -79,20 +82,12 @@ RSpec.describe ShfBackupMakers::FileSetBackupMaker do
 
         expect(File.exist?(temp_backup_target)).to be_truthy
 
-        # could also use the Gem::Package verify_entry method to verify each tar entry
-        backup_file_list = %x<tar --list --file=#{temp_backup_target}>
-        backup_file_list.gsub!(/\n/, ' ')
-        backup_files = backup_file_list.split(' ')
-
-        # tar will remove leading "/" from source file names, so remove the leading "/"
-        expected = [temp_backup_sourcefn1.gsub(/^\//, ''),
-                    temp_backup_sourcefn2.gsub(/^\//, ''),
-                    temp_backup_in_subdir_fn.gsub(/^\//, ''),
-                    "#{temp_subdir.gsub(/^\//, '')}/",
-                    "#{temp_backup_sourcedir.gsub(/^\//, '')}/",
-                    temp_backup_source2fn1.gsub(/^\//, '')]
-
-        expect(backup_files).to match_array(expected)
+        expect_tar_has_these_entries(temp_backup_target, [temp_backup_sourcefn1,
+                                                          temp_backup_sourcefn2,
+                                                          temp_backup_in_subdir_fn,
+                                                          temp_backup_source2fn1,
+                                                          temp_backup_sourcedir,
+                                                          temp_subdir])
       end
 
 
@@ -163,16 +158,9 @@ RSpec.describe ShfBackupMakers::FileSetBackupMaker do
 
         expect(File.exist?(backup_created)).to be_truthy
 
-        # could also use the Gem::Package verify_entry method to verify each tar entry
-        backup_file_list = %x<tar --list --file=#{backup_created}>
-        backup_file_list.gsub!(/\n/, ' ')
-        backup_files = backup_file_list.split(' ')
+        expect_tar_has_these_entries(backup_created, [File.join(source_dir, 'source-0.txt'),
+                                                      File.join(source_dir, 'source-2.txt')])
 
-        # tar will remove leading "/" from source file names, so remove the leading "/"
-        expected = [File.join(source_dir, 'source-0.txt').gsub(/^\//, ''),
-                    File.join(source_dir, 'source-2.txt').gsub(/^\//, '')]
-
-        expect(backup_files).to match_array(expected)
         File.delete(backup_created)
       end
     end
