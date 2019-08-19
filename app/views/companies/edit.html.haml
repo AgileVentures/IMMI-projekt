@@ -6,7 +6,7 @@
   .text-center
     - unless assocation_empty?(@all_business_categories)
       = render 'business_categories/as_list',
-          categories_names: @company.categories_names
+          categories: @company.business_categories
       %hr
 .entry-content
   = render 'form', class_name: 'edit-company'

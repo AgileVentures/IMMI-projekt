@@ -13,7 +13,7 @@
         - if @company.categories
           .categories
             = render 'business_categories/as_list',
-              categories_names: @company.categories_names
+              categories: @company.business_categories
         - if payment_visible_for_user?(current_user, @company)
           %hr
           = render partial: 'branding_payment_status', locals: { company: @company }
