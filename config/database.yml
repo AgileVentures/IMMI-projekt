@@ -9,10 +9,14 @@ default: &default
 development:
   <<: *default
   database: shf_project_development
+  username: postgres
+  password: databasepassword
 
 test: &test
   <<: *default
   database: shf_project_test
+  username: postgres
+  password: databasepassword
 
 production:
   <<: *default
