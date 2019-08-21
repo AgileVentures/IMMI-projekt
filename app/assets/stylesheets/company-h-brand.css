@@ -1,6 +1,7 @@
 body {
-  font-family: 'Open Sans', sans-serif;
-  margin: 0; }
+  font-family: "Open Sans", sans-serif;
+  margin: 0;
+}
 
 #company-h-brand {
   background-color: #e4e3df;
@@ -14,56 +15,57 @@ body {
   line-height: 20px;
   margin: 0;
   width: 300px;
-  text-align: center; }
+  text-align: center;
+}
 
 .h-brand-logo {
-  padding: 20px 20px 0 20px; }
+  padding: 20px 20px 0 20px;
+}
 
 .current-year {
   display: block;
   font-size: 34px;
   height: 40px;
-  line-height: 40px; }
+  line-height: 40px;
+}
 
 .sweden-dog-trainers {
-  padding: 0 20px 0 20px; }
+  padding: 0 20px 0 20px;
+}
 
 .company-info-separator {
   background-color: #b9b9b5;
-  margin: 10px 5px 10px 5px; }
+  margin: 10px 5px 10px 5px;
+}
 
 .company-info {
   display: block;
   font-weight: normal;
   height: auto;
   margin: 0 10px 10px 10px;
-  text-align: center; }
+  text-align: center;
+}
 
 .company-name {
-  font-weight: bold; }
+  font-weight: bold;
+}
 
-  #company-h-brand {
-    position: relative;
-    display: inline-block;
-    border-bottom: 1px dotted black;
-  }
+#company-h-brand .tooltip-text {
+  min-width: 200px;
+  top: 40px;
+  left: 45%;
+  transform: translate(-50%, 0);
+  padding: 2px;
+  color: #666666;
+  background-color: #eeeeee;
+  border-radius: 5px;
+  position: absolute;
+  z-index: 99999999;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  display: none;
+}
 
-  #company-h-brand .tooltiptext {
-    visibility: hidden;
-    width: 120px;
-    background-color: black;
-    color: #fff;
-    text-align: center;
-    border-radius: 6px;
-    padding: 5px 0;
-
-    /* Position the tooltip */
-    position: absolute;
-    z-index: 1;
-    top: -5px;
-    left: 105%;
-  }
-
-  #company-h-brand:hover .tooltiptext {
-    visibility: visible;
-  }
+#company-h-brand:hover .tooltip-text {
+  display: block;
+}
