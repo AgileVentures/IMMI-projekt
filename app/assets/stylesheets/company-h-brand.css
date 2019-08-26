@@ -50,22 +50,21 @@ body {
   font-weight: bold;
 }
 
-#company-h-brand .tooltip-text {
-  min-width: 200px;
+.custom-menu {
+  background-color: #eeeeee;
+  border-radius: 5px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
+  color: #666666;
+  display: none;
+  font-size: 0.875rem;
+  max-width: 252px;
   top: 40px;
   left: 45%;
   transform: translate(-50%, 0);
   padding: 2px;
-  color: #666666;
-  background-color: #eeeeee;
-  border-radius: 5px;
   position: absolute;
-  z-index: 99999999;
-  box-sizing: border-box;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.5);
-  display: none;
-}
-
-#company-h-brand:hover .tooltip-text {
-  display: block;
+  z-index: 10000;
+  
+  
 }

@@ -766,15 +766,15 @@ en:
       proof_of_membership_describe: This image is your proof of membership in SHF.
       proof_of_membership_photo_needed: 'If you see "Photo Unavailable" then please
                                          upload a photo of yourself here: '
-      image_how_to_use_html: You can download the image (%{download_link}),
-                        take a screenshot, or link to it from your website
-                        (%{show_link}), and use it in social media or print to use in a
-                        physical context, for example, to show a customer.
+      image_how_to_use_html: You can download the image,take a screenshot. 
+                            Link to it from your website and use it in social media.
+                            Or Print to use in a physical context, for example, to show a customer.
       image_use_guidelines_html: Please note that your use of this image is subject to
                                  these %{use_guidelines_link}.
       use_guidelines: guidelines
       download_image: Download Image
-      show_image: Show Image
+      show_image: Copy link of the image
+      custom_context_text: Please use the links on the right for your H-Brand download.
       image_dimensions_html: "The image width is <span id='%{width_id}'></span>
                              pixels and the height is
                              <span id='%{height_id}'></span> pixels."

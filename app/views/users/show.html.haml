@@ -88,13 +88,14 @@
       .col-md-7.infotext
         %h3= t('.proof_of_membership')
         %p= t('.proof_of_membership_describe')
-        %p= t('.image_how_to_use_html',
-            download_link: link_to(t('.download_image'),
+        = link_to(t('.download_image'),
                                    proof_of_membership_path(@user, render_to: :jpg),
-                                   class: 'btn btn-sm btn-outline-secondary'),
-            show_link: link_to(t('.show_image'),
+                                   class: 'btn btn-sm btn-secondary')
+        = link_to(t('.show_image'),
                                  proof_of_membership_path(@user, context: :internal),
-                                 class: 'btn btn-sm btn-outline-secondary'))
+                                 class: 'btn btn-sm btn-secondary')
+        %p= t('.image_how_to_use_html')
+
         %p
           = t('.proof_of_membership_photo_needed')
           = link_to(t('devise.registrations.edit.title'), edit_user_registration_path,
@@ -116,15 +117,15 @@
         .col-md-7.infotext
           %h3= t('.company_h_brand', company: company.name)
           %p= t('.company_h_brand_describe')
-          %p= t('.image_how_to_use_html',
-              download_link: link_to(t('.download_image'),
+          = link_to(t('.download_image'),
                                      company_h_brand_path(company,
                                                            render_to: :jpg),
-                                     class: 'btn btn-sm btn-outline-secondary'),
-              show_link: link_to(t('.show_image'),
+                                     class: 'btn btn-sm btn-secondary')
+          = link_to(t('.show_image'),
                                  company_h_brand_path(company,
                                                       context: :internal),
-                                     class: 'btn btn-sm btn-outline-secondary'))
+                                     class: 'btn btn-sm btn-secondary')
+          %p= t('.image_how_to_use_html')
           %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
               'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
               class: 'underlined_link'))
