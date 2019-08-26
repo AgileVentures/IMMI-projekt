@@ -4,8 +4,8 @@
     = stylesheet_link_tag 'company-h-brand', media: 'all'
   %body
 
-    #company-h-brand{ "onContextMenu" => "return false;" }
-      .tooltip-text Please use the links on the left for your H-Brand download.
+    #company-h-brand.custom-context
+      .custom-menu= t('users.show.custom_context_text')
       - render_to = :html unless local_assigns[:render_to]
 
       - if app_config.h_brand_logo
@@ -47,3 +47,4 @@
             document.getElementById('h-brand-height').textContent = image.offsetHeight;
           }
         };
+    
