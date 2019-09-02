@@ -17,6 +17,7 @@ $(function() {
 
   $(".custom-context").on("contextmenu", e => {
     e.preventDefault();
+    $("div.custom-menu").css({ display: "none" });
     $(`#${e.currentTarget.id} .custom-menu`).css({ display: "block" });
   });
   $(document).bind("click", () => {

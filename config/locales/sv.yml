@@ -773,11 +773,9 @@ sv:
       proof_of_membership_photo_needed: 'Om du saknar profilbild (ser "Photo
                                         Unavailable"), ladda upp en bild av dig
                                         själv (utan hund) här: '
-      image_how_to_use_html: Du kan ladda ner bilden (%{download_link}), ta en
-                             skärmdump eller länka till den från din webbplats
-                             (%{show_link}) och använda den i sociala medier
-                             eller skriva ut för att använda i ett fysiskt
-                             sammanhang, till exempel att visa en kund.
+      image_how_to_use_html: You can download the image, take a screenshot,
+                            link to it from you website and use it in social media,
+                            or print it have and show (ex. show it to a customer/client).
       image_use_guidelines_html: Observera att din användning av denna bild är föremål
                                  för dessa %{use_guidelines_link}.
       use_guidelines: riktlinjer
@@ -789,6 +787,7 @@ sv:
                                 Använd den här länken på en extern webbplats:
                                 </span>"
       show_image: Visa bild
+      custom_context_text: Please use the links on the right for your H-Brand download.
       company_h_brand: Företaget H-märke för %{company}
       company_h_brand_describe: Detta är ditt företags H-märke.
       member_packet: &member_packet medlemspaket

@@ -766,9 +766,9 @@ en:
       proof_of_membership_describe: This image is your proof of membership in SHF.
       proof_of_membership_photo_needed: 'If you see "Photo Unavailable" then please
                                          upload a photo of yourself here: '
-      image_how_to_use_html: You can download the image,take a screenshot. 
-                            Link to it from your website and use it in social media.
-                            Or Print to use in a physical context, for example, to show a customer.
+      image_how_to_use_html: You can download the image, take a screenshot,
+                            link to it from you website and use it in social media,
+                            or print it have and show (ex. show it to a customer/client).
       image_use_guidelines_html: Please note that your use of this image is subject to
                                  these %{use_guidelines_link}.
       use_guidelines: guidelines
