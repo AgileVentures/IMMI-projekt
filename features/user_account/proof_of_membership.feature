@@ -1,5 +1,8 @@
-Feature: As an user I want to be able to view and download my proof-of-membership
-  So that I can use it in multiple ways to confirm my membership with my customers
+Feature: Member gets their customized SHF membership card (proof of membership)
+
+  As a member
+  I need to view, download, and print my customized SHF membership card
+  So that I can show proof of my membership to my customers and potential customers
   And gain the value that comes from being a member of the organization
 
   Background:
@@ -24,10 +27,12 @@ Feature: As an user I want to be able to view and download my proof-of-membershi
       | user_email    | start_date | expire_date | payment_type | status | hips_id |
       | emma@mutts.se | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
+
+    Given I am logged in as "emma@mutts.se"
+
   @time_adjust
   Scenario: Member downloads proof-of-membership image
-    Given I am logged in as "emma@mutts.se"
-    And I am on the "landing" page for "emma@mutts.se"
+    Given I am on the "landing" page for "emma@mutts.se"
     And I should see t("hello", name: 'Emma')
     Then I click on the t("menus.nav.users.your_account") link
     And I should see t("users.show.proof_of_membership")
@@ -35,15 +40,16 @@ Feature: As an user I want to be able to view and download my proof-of-membershi
     And I click on the t("users.show.download_image") link
     Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
 
+  @time_adjust
   Scenario: Member views proof-of-membership image
-    Given I am logged in as "emma@mutts.se"
-    And I am on the "landing" page for "emma@mutts.se"
+    Given I am on the "landing" page for "emma@mutts.se"
     And I should see t("hello", name: 'Emma')
     Then I click on the t("menus.nav.users.your_account") link
     And I should see t("users.show.proof_of_membership")
     And I should see "groom, rehab"
     And I click on the t("users.show.show_image") link
     And I should see t("users.show.use_this_image_link_html")
+
 
   @selenium @time_adjust
   Scenario: Member sees tooltip info about downloading image instead of normal browser context menu

@@ -1,7 +1,5 @@
-# https://cucumber.io/blog/2017/07/26/announcing-cucumber-expressions
 
 CAPTURE_STRING = '((?:t\(".*\)|"[^"]*"))'
-
 ParameterType(
   name: 'capture_string',
   regexp: Regexp.new(CAPTURE_STRING),
