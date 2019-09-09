@@ -1,4 +1,4 @@
-.custom-menu {
+/* .custom-menu {
   background-color: #eeeeee;
   border-radius: 5px;
   box-sizing: border-box;
@@ -13,4 +13,30 @@
   top: 40px;
   transform: translate(-50%, 0);
   z-index: 10000;
+} */
+.custom-menu {
+  list-style-type: none;
+  padding: 0 !important;
+  display: none;
+  z-index:1000;
+  position: absolute;
+  background-color:#fff;
+  border: 1px solid #ddd;
+  overflow: hidden;
+  width: 150px;
+  white-space:nowrap;
+  font-family: sans-serif;
+-webkit-box-shadow: 2px 2px 7px 0px rgba(50, 50, 50, 0.5);
+-moz-box-shadow:    2px 2px 7px 0px rgba(50, 50, 50, 0.5);
+box-shadow:         2px 2px 7px 0px rgba(50, 50, 50, 0.5);
+}
+
+.custom-menu li {
+  padding: 2px 10px;
+}
+
+.custom-menu li:hover {
+  background-color: #013b78;
+  color: #fff;
+  cursor: pointer;
 }

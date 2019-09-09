@@ -6,7 +6,7 @@
   %body
 
     .custom-context#company-h-brand
-      .custom-menu= t('users.show.custom_context_text')
+      -# .custom-menu= t('users.show.custom_context_text')
       - render_to = :html unless local_assigns[:render_to]
 
       - if app_config.h_brand_logo
