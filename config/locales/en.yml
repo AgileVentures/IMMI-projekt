@@ -773,8 +773,9 @@ en:
                                  these %{use_guidelines_link}.
       use_guidelines: guidelines
       download_image: Download Image
-      show_image: Copy link of the image
-      custom_context_text: Please use the links on the right for your H-Brand download.
+      show_image: Show image
+      copy_image_url: Copy image link
+      copied: Copied
       image_dimensions_html: "The image width is <span id='%{width_id}'></span>
                              pixels and the height is
                              <span id='%{height_id}'></span> pixels."

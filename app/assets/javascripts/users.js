@@ -1,6 +1,7 @@
 $(function() {
   "use strict";
   var custom_context_id;
+  var tooltipText;
 
   $("body").on("ajax:success", ".users_pagination", function(e, data) {
     $("#users_list").html(data);
@@ -16,38 +17,47 @@ $(function() {
     $("#editStatusModal").modal("hide");
   });
 
-  // $(".custom-context").on("contextmenu", e => {
-  //   e.preventDefault();
-  //   $("div.custom-menu").css({ display: "none" });
-  //   $(`#${e.currentTarget.id} .custom-menu`).css({ display: "block" });
-  // });
-  // $(document).bind("click", () => {
-  //   $("div.custom-menu").css({ display: "none" });
-  // });
-  $(".custom-context").bind("contextmenu", function(event) {
-    event.preventDefault();
-    custom_context_id = event.currentTarget.id;
+  $(".custom-context").bind("contextmenu", e => {
+    e.preventDefault();
+    custom_context_id = e.currentTarget.id;
     $(".custom-menu").toggle(100).css({
-      top: event.pageY + "px",
-      left: event.pageX + "px"
+      top: e.pageY + "px",
+      left: e.pageX + "px"
     });
   });
 
-  $(document).bind("click", function() {
+  $(document).bind("click", () => {
     $(".custom-menu").hide(100);
   });
 
   $(".custom-menu li").click(function(e) {
-    switch ($(this).attr("data-action")) {
-      case "first":
-        console.log("first");
-        break;
-      case "second":
-        console.log("second");
-        break;
-      case "third":
-        console.log("third");
-        break;
-    }
+    const data = {
+      "company-h-brand": {
+        download: ".download_h_mark",
+        link: ".link_for_h_brand",
+        show: ".preview_h_brand"
+      }
+    };
+    const action = data[custom_context_id][$(this).attr("data-action")];
+    $(action)[0].click();
+  });
+
+  $(".copy-to-clipboard").mouseover(function() {
+    tooltipText = $(this).attr("data-original-title");
+    $(this).attr("data-original-title", "");
+  });
+  $(".copy-to-clipboard").mouseleave(function() {
+    $(this).attr("data-original-title", tooltipText);
+  });
+
+  $(".copy-to-clipboard").click(function(e) {
+    e.preventDefault();
+    var $temp = $("<input>");
+    $("body").append($temp);
+    $temp.val($(this).attr("href")).select();
+    document.execCommand("copy");
+    $temp.remove();
+    $(this).attr("data-original-title", tooltipText);
+    $(this).tooltip("show");
   });
 });

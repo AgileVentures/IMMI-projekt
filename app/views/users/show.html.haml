@@ -120,11 +120,12 @@
           = link_to(t('.download_image'),
                                      company_h_brand_path(company,
                                                            render_to: :jpg),
-                                     class: 'btn btn-sm btn-primary')
+                                     class: 'btn btn-sm btn-primary download_h_mark')
+          = link_to(t('.copy_image_url'), company_h_brand_url(company), class: 'btn btn-sm btn-primary link_for_h_brand copy-to-clipboard', "data-original-title" => t('.copied'))
           = link_to(t('.show_image'),
                                  company_h_brand_path(company,
                                                       context: :internal),
-                                     class: 'btn btn-sm btn-primary')
+                                     class: 'btn btn-sm btn-primary preview_h_brand')
           %p= t('.image_how_to_use_html')
           %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
               'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',

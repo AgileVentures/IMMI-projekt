@@ -2,13 +2,11 @@
   %head
     = stylesheet_link_tag 'https://fonts.googleapis.com/css?family=Open+Sans:400,700'
     = stylesheet_link_tag 'proof-of-membership', media: 'all'
-    = stylesheet_link_tag 'custom-menu', media: 'all'
   %body
 
     - render_to = :html unless local_assigns[:render_to]
 
-    .custom-context#proof-of-membership
-      -# .custom-menu= t('users.show.custom_context_text')
+    #proof-of-membership
       - if app_config.shf_logo
         = image_tag(paperclip_path_str(app_config.shf_logo, :standard, render_to),
                     class: 'shf-logo')

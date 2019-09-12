@@ -17,6 +17,10 @@ Feature: Member gets their customized SHF membership card (proof of membership)
       | groom | grooming dogs from head to tail |
       | rehab | physical rehabilitation         |
 
+    Given the following companies exist:
+      | name       | company_number | email               | region    |
+      | HappyMutts | 5562252998     | woof@happymutts.com | Stockholm |
+
     Given the following applications exist:
       | user_email    | company_number | categories   | state    |
       | emma@mutts.se | 5562252998     | rehab, groom | accepted |
@@ -27,6 +31,9 @@ Feature: Member gets their customized SHF membership card (proof of membership)
       | user_email    | start_date | expire_date | payment_type | status | hips_id |
       | emma@mutts.se | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
+    Given the following payments exist
+      | user_email    | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | emma@mutts.se | 2017-10-1  | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
 
     Given I am logged in as "emma@mutts.se"
 
@@ -54,6 +61,7 @@ Feature: Member gets their customized SHF membership card (proof of membership)
   @selenium @time_adjust
   Scenario: Member sees tooltip info about downloading image instead of normal browser context menu
     Given I am on the "user profile" page for "emma@mutts.se"
-    Then I should not see t("users.show.custom_context_text")
-    When I right click on "#proof-of-membership"
-    Then I should see t("users.show.custom_context_text")
+    When I right click on "#company-h-brand"
+    Then I should see t("users.show.download_image")
+    And I should see t("users.show.show_image")
+    And I should see t("users.show.copy_image_url")

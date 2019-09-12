@@ -788,8 +788,9 @@ sv:
       use_this_image_link_html: "<span style='font-weight: bold'>
                                 Använd den här länken på en extern webbplats:
                                 </span>"
-      show_image: Kopiera bildadress
-      custom_context_text: Var god använd knapparna till höger för att ladda ner ditt H-märke.
+      show_image: Visa bild
+      copy_image_url: Kopiera bildadress
+      copied: Kopieras
       company_h_brand: Företaget H-märke för %{company}
       company_h_brand_describe: Detta är ditt företags H-märke.
       member_packet: &member_packet medlemspaket
