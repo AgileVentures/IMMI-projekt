@@ -790,7 +790,7 @@ sv:
                                 </span>"
       show_image: Visa bild
       copy_image_url: Kopiera bildadress
-      copied: Kopieras
+      copied: Kopierat
       company_h_brand: Företaget H-märke för %{company}
       company_h_brand_describe: Detta är ditt företags H-märke.
       member_packet: &member_packet medlemspaket
