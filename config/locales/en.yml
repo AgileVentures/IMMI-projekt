@@ -767,7 +767,7 @@ en:
       proof_of_membership_photo_needed: 'If you see "Photo Unavailable" then please
                                          upload a photo of yourself here: '
       image_how_to_use_html: You can download the image, take a screenshot,
-                            link to it from you website and use it in social media,
+                            link to it from your website and use it in social media,
                             or print it have and show (ex. show it to a customer/client).
       image_use_guidelines_html: Please note that your use of this image is subject to
                                  these %{use_guidelines_link}.

@@ -17,7 +17,7 @@ $(function() {
     $("#editStatusModal").modal("hide");
   });
 
-  $(".custom-context").bind("contextmenu", e => {
+  $(".custom-context").on("contextmenu", e => {
     e.preventDefault();
     custom_context_id = e.currentTarget.id;
     $(".custom-menu").toggle(100).css({
@@ -26,7 +26,7 @@ $(function() {
     });
   });
 
-  $(document).bind("click", () => {
+  $(document).on("click", () => {
     $(".custom-menu").hide(100);
   });
 
