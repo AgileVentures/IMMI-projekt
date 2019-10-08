@@ -1,3 +1,5 @@
+%head
+  = stylesheet_link_tag 'custom-menu', media: 'all'
 %header.entry-header
   - user_name = @user.full_name
   %h1.entry-title.is-admin
@@ -90,10 +92,11 @@
         %p= t('.proof_of_membership_describe')
         = link_to(t('.download_image'),
                                    proof_of_membership_path(@user, render_to: :jpg),
-                                   class: 'btn btn-sm btn-primary')
+                                   class: 'btn btn-sm btn-primary download_proof_of_membership')
+        = link_to(t('.copy_image_url'), proof_of_membership_url(@user.id), class: 'btn btn-sm btn-primary link_for_proof_of_membership copy-to-clipboard', "data-original-title" => t('.copied'))
         = link_to(t('.show_image'),
                                  proof_of_membership_path(@user, context: :internal),
-                                 class: 'btn btn-sm btn-primary')
+                                 class: 'btn btn-sm btn-primary preview_proof_of_membership')
         %p= t('.image_how_to_use_html')
 
         %p
@@ -132,4 +135,5 @@
               class: 'underlined_link'))
 
 = render partial: 'edit_status_modal', locals: { user: @user }
-= render partial: 'companies/custom_context_menu'
+- if "#proof-of-membership"
+  = render partial: 'companies/custom_context_menu'

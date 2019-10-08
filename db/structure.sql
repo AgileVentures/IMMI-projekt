@@ -9,20 +9,6 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
---
--- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
---
-
-CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
-
-
---
--- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
---
-
-COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
-
-
 SET default_tablespace = '';
 
 SET default_with_oids = false;
@@ -100,7 +86,7 @@ CREATE TABLE public.app_configurations (
     site_meta_image_height integer DEFAULT 0 NOT NULL,
     og_type character varying DEFAULT 'website'::character varying NOT NULL,
     twitter_card_type character varying DEFAULT 'summary'::character varying NOT NULL,
-    facebook_app_id bigint DEFAULT '1292810030791186'::bigint NOT NULL,
+    facebook_app_id bigint DEFAULT 0 NOT NULL,
     site_meta_image_file_name character varying,
     site_meta_image_content_type character varying,
     site_meta_image_file_size integer,
@@ -1565,8 +1551,7 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20190312204251'),
 ('20190326120854'),
 ('20190514172102'),
+('20190601004310'),
 ('20190815215041');
-('20190326120854'),
-('20190601004310');
 
 

@@ -49,3 +49,11 @@ Feature: Member gets their customized SHF membership card (proof of membership)
     And I should see "groom, rehab"
     And I click on the t("users.show.show_image") link
     And I should see t("users.show.use_this_image_link_html")
+
+  @selenium @time_adjust
+  Scenario: Member sees custom context menu instead of normal browser context menu
+    Given I am on the "user profile" page for "emma@mutts.se"
+    When I right click on "#proof-of-membership"
+    Then I should see t("users.show.download_image")
+    And I should see t("users.show.show_image")
+    And I should see t("users.show.copy_image_url")

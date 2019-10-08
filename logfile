@@ -1,0 +1,596 @@
+2019-10-08 11:23:25.351 EAT [19207] LOG:  listening on IPv6 address "::1", port 5432
+2019-10-08 11:23:25.351 EAT [19207] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2019-10-08 11:23:25.351 EAT [19207] FATAL:  could not open lock file "/tmp/.s.PGSQL.5432.lock": Permission denied
+2019-10-08 11:23:25.351 EAT [19207] LOG:  database system is shut down
+2019-10-08 11:25:44.409 EAT [19274] LOG:  listening on IPv6 address "::1", port 5432
+2019-10-08 11:25:44.409 EAT [19274] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2019-10-08 11:25:44.409 EAT [19274] FATAL:  could not open lock file "/tmp/.s.PGSQL.5432.lock": Permission denied
+2019-10-08 11:25:44.409 EAT [19274] LOG:  database system is shut down
+2019-10-08 11:34:41.641 EAT [19611] LOG:  listening on IPv6 address "::1", port 5432
+2019-10-08 11:34:41.642 EAT [19611] LOG:  listening on IPv4 address "127.0.0.1", port 5432
+2019-10-08 11:34:41.643 EAT [19611] LOG:  listening on Unix socket "/tmp/.s.PGSQL.5432"
+2019-10-08 11:34:41.657 EAT [19612] LOG:  database system was shut down at 2019-10-08 11:29:10 EAT
+2019-10-08 11:34:41.662 EAT [19611] LOG:  database system is ready to accept connections
+2019-10-08 11:35:15.221 EAT [19641] FATAL:  role "postgres" does not exist
+2019-10-08 11:35:27.662 EAT [19653] FATAL:  database "lule" does not exist
+2019-10-08 11:35:48.395 EAT [19672] FATAL:  role "postgres" does not exist
+2019-10-08 11:37:11.813 EAT [19722] FATAL:  role "postgres" does not exist
+2019-10-08 11:38:25.927 EAT [19784] FATAL:  database "lule" does not exist
+2019-10-08 11:41:23.293 EAT [19924] FATAL:  database "shf_project_development" does not exist
+2019-10-08 11:48:52.750 EAT [20704] FATAL:  role "postgres" does not exist
+2019-10-08 11:48:52.754 EAT [20705] FATAL:  role "postgres" does not exist
+2019-10-08 11:48:52.758 EAT [20706] FATAL:  role "postgres" does not exist
+2019-10-08 11:48:52.762 EAT [20707] FATAL:  role "postgres" does not exist
+2019-10-08 11:48:57.226 EAT [20708] FATAL:  role "postgres" does not exist
+2019-10-08 11:49:09.528 EAT [20709] FATAL:  role "postgres" does not exist
+2019-10-08 11:49:29.746 EAT [20713] FATAL:  role "postgres" does not exist
+2019-10-08 11:49:41.983 EAT [20714] FATAL:  role "postgres" does not exist
+2019-10-08 11:53:37.807 EAT [20814] FATAL:  role "postgres" does not exist
+2019-10-08 11:54:02.161 EAT [20831] FATAL:  database "lule" does not exist
+2019-10-08 11:54:34.097 EAT [20848] FATAL:  database "lule" does not exist
+2019-10-08 11:56:22.661 EAT [20935] FATAL:  database "lule" does not exist
+2019-10-08 11:56:55.154 EAT [20959] FATAL:  database "lule" does not exist
+2019-10-08 11:59:02.875 EAT [21049] ERROR:  function pg_is_xlog_replay_paused() does not exist at character 165
+2019-10-08 11:59:02.875 EAT [21049] HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+2019-10-08 11:59:02.875 EAT [21049] STATEMENT:  SELECT CASE WHEN usesuper
+	       THEN pg_is_in_recovery()
+	       ELSE FALSE
+	       END as inrecovery,
+	       CASE WHEN usesuper AND pg_is_in_recovery()
+	       THEN pg_is_xlog_replay_paused()
+	       ELSE FALSE
+	       END as isreplaypaused
+	FROM pg_user WHERE usename=current_user
+2019-10-08 11:59:03.208 EAT [21049] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:03.208 EAT [21049] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	ORDER BY pid
+2019-10-08 11:59:08.242 EAT [21049] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:08.242 EAT [21049] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	ORDER BY pid
+2019-10-08 11:59:09.426 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:09.426 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:14.472 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:14.472 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:19.494 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:19.494 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:24.512 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:24.512 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:29.535 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:29.535 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:34.556 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:34.556 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:39.675 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:39.675 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:39.694 EAT [21050] ERROR:  permission denied for table users
+2019-10-08 11:59:39.694 EAT [21050] STATEMENT:  SELECT COUNT(*)::text FROM public.users;
+2019-10-08 11:59:44.700 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:44.700 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:49.720 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:49.720 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:51.822 EAT [21055] ERROR:  permission denied for table users
+2019-10-08 11:59:51.822 EAT [21055] STATEMENT:  SELECT * FROM public.users
+	
+2019-10-08 11:59:54.741 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:54.741 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 11:59:59.763 EAT [21050] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 11:59:59.763 EAT [21050] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:00:45.060 EAT [21115] ERROR:  function pg_is_xlog_replay_paused() does not exist at character 165
+2019-10-08 12:00:45.060 EAT [21115] HINT:  No function matches the given name and argument types. You might need to add explicit type casts.
+2019-10-08 12:00:45.060 EAT [21115] STATEMENT:  SELECT CASE WHEN usesuper
+	       THEN pg_is_in_recovery()
+	       ELSE FALSE
+	       END as inrecovery,
+	       CASE WHEN usesuper AND pg_is_in_recovery()
+	       THEN pg_is_xlog_replay_paused()
+	       ELSE FALSE
+	       END as isreplaypaused
+	FROM pg_user WHERE usename=current_user
+2019-10-08 12:00:49.423 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:00:49.423 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:00:54.493 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:00:54.493 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:00:56.384 EAT [21120] ERROR:  permission denied for table users
+2019-10-08 12:00:56.384 EAT [21120] STATEMENT:  SELECT * FROM public.users
+	
+2019-10-08 12:00:59.512 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:00:59.512 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:04.532 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:04.532 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:09.552 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:09.552 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:14.572 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:14.572 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:19.591 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:19.591 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:24.612 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:24.612 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:29.633 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:29.633 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:34.654 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:34.654 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:39.676 EAT [21116] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:39.676 EAT [21116] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:41.195 EAT [21115] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:41.195 EAT [21115] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	ORDER BY pid
+2019-10-08 12:01:43.031 EAT [21125] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:43.031 EAT [21125] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:48.067 EAT [21125] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:48.067 EAT [21125] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:01:53.089 EAT [21125] ERROR:  column "waiting" does not exist at character 193
+2019-10-08 12:01:53.089 EAT [21125] STATEMENT:  /*pga4dash*/
+	SELECT
+	    pid,
+	    datname,
+	    usename,
+	    application_name,
+	    client_addr,
+	    to_char(backend_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS backend_start,
+	    state,
+	    CASE WHEN waiting THEN 'yes' ELSE 'no' END AS waiting,
+	    query,
+	    to_char(state_change, 'YYYY-MM-DD HH24:MI:SS TZ') AS state_change,
+	    to_char(query_start, 'YYYY-MM-DD HH24:MI:SS TZ') AS query_start
+	FROM
+	    pg_stat_activity
+	WHERE
+	    datname = (SELECT datname FROM pg_database WHERE oid = 16384)ORDER BY pid
+2019-10-08 12:03:20.603 EAT [21150] ERROR:  permission denied for table users
+2019-10-08 12:03:20.603 EAT [21150] STATEMENT:  SELECT * FROM public.users
+	
+2019-10-08 12:04:08.209 EAT [21195] ERROR:  database "shf_project_development" is being accessed by other users
+2019-10-08 12:04:08.209 EAT [21195] DETAIL:  There are 2 other sessions using the database.
+2019-10-08 12:04:08.209 EAT [21195] STATEMENT:  DROP DATABASE IF EXISTS "shf_project_development"
+2019-10-08 12:05:36.629 EAT [21303] ERROR:  permission denied to create database
+2019-10-08 12:05:36.629 EAT [21303] STATEMENT:  CREATE DATABASE "shf_project_development" ENCODING = 'utf8' LC_COLLATE = 'sv_SE.UTF-8' LC_CTYPE = 'sv_SE.UTF-8' TEMPLATE = "template0"
+2019-10-08 12:06:23.078 EAT [21333] FATAL:  database "shf_project_development" does not exist
+2019-10-08 12:13:52.292 EAT [21482] ERROR:  role "new_user" does not exist
+2019-10-08 12:13:52.292 EAT [21482] STATEMENT:  ALTER USER new_user CREATEDB;
+2019-10-08 12:14:13.500 EAT [21482] ERROR:  permission denied
+2019-10-08 12:14:13.500 EAT [21482] STATEMENT:  ALTER USER postgres CREATEDB;
+2019-10-08 12:14:56.466 EAT [21482] ERROR:  database "database_name" does not exist
+2019-10-08 12:14:56.466 EAT [21482] STATEMENT:  GRANT ALL PRIVILEGES ON  DATABASE database_name to postgres;
+2019-10-08 12:15:39.710 EAT [21482] ERROR:  database "shf_project_development" does not exist
+2019-10-08 12:15:39.710 EAT [21482] STATEMENT:  GRANT ALL PRIVILEGES ON DATABASE shf_project_development to postgres;
+2019-10-08 12:16:26.282 EAT [21482] ERROR:  permission denied
+2019-10-08 12:16:26.282 EAT [21482] STATEMENT:  ALTER USER postgres CREATEDB;
+2019-10-08 12:16:34.351 EAT [21482] ERROR:  syntax error at or near "sudo" at character 1
+2019-10-08 12:16:34.351 EAT [21482] STATEMENT:  sudo ALTER USER postgres CREATEDB;
+2019-10-08 12:17:25.272 EAT [21656] ERROR:  role "new_user" does not exist
+2019-10-08 12:17:25.272 EAT [21656] STATEMENT:  ALTER USER new_user CREATEDB;
+2019-10-08 12:17:37.333 EAT [21656] ERROR:  role "posgtres" does not exist
+2019-10-08 12:17:37.333 EAT [21656] STATEMENT:  ALTER USER posgtres CREATEDB;
+2019-10-08 12:17:46.595 EAT [21656] ERROR:  permission denied
+2019-10-08 12:17:46.595 EAT [21656] STATEMENT:  ALTER USER postgres CREATEDB;
+2019-10-08 12:25:14.012 EAT [21929] ERROR:  role "myuser" does not exist
+2019-10-08 12:25:14.012 EAT [21929] STATEMENT:  ALTER USER myuser WITH SUPERUSER;
+2019-10-08 12:25:30.505 EAT [21929] ERROR:  must be superuser to alter superusers
+2019-10-08 12:25:30.505 EAT [21929] STATEMENT:  ALTER USER postgres WITH SUPERUSER;
+2019-10-08 12:26:53.701 EAT [22663] ERROR:  role "myuser" does not exist
+2019-10-08 12:26:53.701 EAT [22663] STATEMENT:  ALTER USER myuser WITH SUPERUSER;

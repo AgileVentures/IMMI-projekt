@@ -36,6 +36,11 @@ $(function() {
         download: ".download_h_mark",
         link: ".link_for_h_brand",
         show: ".preview_h_brand"
+      },
+      "proof-of-membership": {
+        download: ".download_proof_of_membership",
+        link: ".link_for_proof_of_membership",
+        show: ".preview_proof_of_membership"
       }
     };
     const action = data[custom_context_id][$(this).attr("data-action")];

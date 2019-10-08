@@ -59,7 +59,7 @@ Feature: Member gets their customized SHF membership card (proof of membership)
 
 
   @selenium @time_adjust
-  Scenario: Member sees tooltip info about downloading image instead of normal browser context menu
+  Scenario: Member sees custom context menu instead of normal browser context menu
     Given I am on the "user profile" page for "emma@mutts.se"
     When I right click on "#company-h-brand"
     Then I should see t("users.show.download_image")

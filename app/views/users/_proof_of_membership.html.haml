@@ -6,7 +6,7 @@
 
     - render_to = :html unless local_assigns[:render_to]
 
-    #proof-of-membership
+    .custom-context#proof-of-membership
       - if app_config.shf_logo
         = image_tag(paperclip_path_str(app_config.shf_logo, :standard, render_to),
                     class: 'shf-logo')
