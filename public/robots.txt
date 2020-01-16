@@ -25,3 +25,5 @@ Disallow: /
 
 User-agent: VelenPublicWebCrawler
 Disallow: /
+
+Sitemap: https://hitta.sverigeshundforetagare.se/sitemap.xml

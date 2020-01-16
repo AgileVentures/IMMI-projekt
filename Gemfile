@@ -79,6 +79,9 @@ gem 'counter_culture', '~> 2.0'
 gem 'cookies_eu'
 
 gem 'ancestry'
+gem 'sitemap_generator'
+
+gem 'whenever', require: false
 
 group :development, :test do
   gem 'rspec-rails'
