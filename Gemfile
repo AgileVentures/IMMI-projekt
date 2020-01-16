@@ -78,6 +78,9 @@ gem 'counter_culture', '~> 2.0'
 
 gem 'cookies_eu'
 
+gem 'google-api-client'  # Google Analytics REST API
+
+
 group :development, :test do
   gem 'rspec-rails'
   gem 'shoulda-matchers'
