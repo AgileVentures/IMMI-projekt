@@ -34,7 +34,10 @@ function initCenteredMap(centerCoordinates, markers, icon) {
 
     var map = new google.maps.Map(document.getElementById('map'), {
         center: mapCenter,
-        zoom: 13
+        zoom: 13,
+        mapTypeControl: false,
+        streetViewControl: false,
+        controlSize: 26 // Size (in pixels) of map control buttons       
     });
 
     var bounds = new google.maps.LatLngBounds();
