@@ -21,7 +21,7 @@ module Seeders
     SEEDED_CLASS = UserChecklist
 
 
-    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil, _log: nil)
+    def self.create_ordered_entry(yaml_entry, parent_ordered_entry: nil, log: nil)
       self::SEEDED_CLASS.create!(user_id: yaml_entry[:user_id],
                                  name: yaml_entry[:name],
                                  description: yaml_entry[:description],
