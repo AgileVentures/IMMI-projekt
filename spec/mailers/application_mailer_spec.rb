@@ -232,18 +232,19 @@ RSpec.describe ApplicationMailer, type: :mailer do
       log_fname = ApplicationMailer::LOG_FILE
 
       mailgun_error_regexp = /\s+Could not send email via mailgun at/
+      vcr_error_regexp     = /An HTTP request has been made that VCR does not know how to handle/
 
       before_mailgun_errors = num_matches_in_file(log_fname, mailgun_error_regexp)
-
+      before_vcr_errors     = num_matches_in_file(log_fname, vcr_error_regexp)
 
       # this is a mocked post and response that will return an error from the vcr cassette file
       expect{mail_to_send.deliver_now}.to raise_error(Mailgun::CommunicationError)
 
       after_mailgun_errors = num_matches_in_file(log_fname, mailgun_error_regexp)
+      after_vcr_errors     = num_matches_in_file(log_fname, vcr_error_regexp)
+
       expect(after_mailgun_errors - before_mailgun_errors).to eq 1
-
-      expect(num_matches_in_file(log_fname, /An HTTP request has been made that VCR does not know how to handle/)).to eq 0
-
+      expect(after_vcr_errors - before_vcr_errors).to eq 0
     end
 
   end

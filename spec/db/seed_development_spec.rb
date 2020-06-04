@@ -55,7 +55,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
 
   describe 'seeding basic info: users, companies, etc.' do
 
-    describe 'inital state before extra info is added' do
+    describe 'initial state before extra info is added' do
       it_behaves_like 'admin, business categories, kommuns, and regions are seeded', 'development', admin_email, admin_pwd
     end
 
@@ -74,7 +74,9 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
         allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 
         # must stub this way so the rest of ENV is preserved
-        stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY => seed_users }))
+        stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY => seed_users,
+                                              ENV_ADMIN_EMAIL_KEY      => admin_email,
+                                              ENV_ADMIN_PASSWORD_KEY   => admin_pwd }))
 
         allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
 
@@ -154,15 +156,15 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     # We can't know exactly how many addresses are created because some randomness is used
 
     context 'all addresses are created and geocoded' do
-      it_behaves_like 'it calls geocode min max times with csv file',NUM_USERS, 5, 10, EMPTY_CSV_FILENAME
+      it_behaves_like 'it calls geocode min max times with csv file',NUM_USERS, admin_email, admin_pwd, 5, 10, EMPTY_CSV_FILENAME
     end
 
     context 'get all addresses from a CSV file (no geocoding)' do
-      it_behaves_like 'it calls geocode min max times with csv file',NUM_USERS, 0, 0, FAKE_ADDRESSES_CSV_FILENAME
+      it_behaves_like 'it calls geocode min max times with csv file',NUM_USERS, admin_email, admin_pwd, 0, 0, FAKE_ADDRESSES_CSV_FILENAME
     end
 
     context 'not enough addresses are in the CSV file; create the remaining ones needed' do
-      it_behaves_like 'it calls geocode min max times with csv file', 16, 5, 5, FAKE_ADDRESSES_CSV_FILENAME
+      it_behaves_like 'it calls geocode min max times with csv file', 16, admin_email, admin_pwd, 5, 5, FAKE_ADDRESSES_CSV_FILENAME
     end
 
 

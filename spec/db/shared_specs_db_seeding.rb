@@ -150,7 +150,7 @@ end
 #========================================================================================
 
 
-RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_users, geocode_min, geocode_max, csv_filename|
+RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_users, admin_email, admin_pwd, geocode_min, geocode_max, csv_filename|
 
   it "seed #{num_users}, calls Geocode.search at least #{geocode_min} and at most #{geocode_max} times" do
 
@@ -165,8 +165,10 @@ RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_use
 
       allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 
-      stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY => num_users }))
-      stub_const('ENV', ENV.to_hash.merge({ ENV_SEED_FAKE_CSV_FNAME_KEY => csv_filename }))
+      stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY    => num_users,
+                                            ENV_SEED_FAKE_CSV_FNAME_KEY => csv_filename,
+                                            ENV_ADMIN_EMAIL_KEY         => admin_email,
+                                            ENV_ADMIN_PASSWORD_KEY      => admin_pwd }))
 
       if geocode_min == 0
         expect(Geocoder).to receive(:search).never

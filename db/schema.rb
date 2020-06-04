@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_08_194625) do
+ActiveRecord::Schema.define(version: 2020_02_05_213528) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,8 @@ ActiveRecord::Schema.define(version: 2020_01_08_194625) do
     t.float "longitude"
     t.string "visibility", default: "street_address"
     t.boolean "mail", default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
     t.index ["kommun_id"], name: "index_addresses_on_kommun_id"
     t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude"
@@ -69,6 +71,8 @@ ActiveRecord::Schema.define(version: 2020_01_08_194625) do
     t.datetime "site_meta_image_updated_at"
     t.integer "singleton_guard", default: 0, null: false
     t.integer "payment_too_soon_days", default: 60, null: false, comment: "Warn user that they are paying too soon if payment is due more than this many days away."
+    t.bigint "membership_guideline_list_id"
+    t.index ["membership_guideline_list_id"], name: "index_app_configurations_on_membership_guideline_list_id"
     t.index ["singleton_guard"], name: "index_app_configurations_on_singleton_guard", unique: true
   end
 
@@ -173,6 +177,13 @@ ActiveRecord::Schema.define(version: 2020_01_08_194625) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "master_checklist_types", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "master_checklists", force: :cascade do |t|
     t.string "name", null: false, comment: "This is a shortened way to refer to the item."
     t.string "displayed_text", null: false, comment: "This is what users see"
@@ -184,7 +195,9 @@ ActiveRecord::Schema.define(version: 2020_01_08_194625) do
     t.datetime "updated_at", null: false
     t.boolean "is_in_use", default: true, null: false
     t.datetime "is_in_use_changed_at"
+    t.bigint "master_checklist_type_id", null: false
     t.index ["ancestry"], name: "index_master_checklists_on_ancestry"
+    t.index ["master_checklist_type_id"], name: "index_master_checklists_on_master_checklist_type_id"
     t.index ["name"], name: "index_master_checklists_on_name"
   end
 
@@ -325,10 +338,12 @@ ActiveRecord::Schema.define(version: 2020_01_08_194625) do
 
   add_foreign_key "addresses", "kommuns"
   add_foreign_key "addresses", "regions"
+  add_foreign_key "app_configurations", "master_checklists", column: "membership_guideline_list_id"
   add_foreign_key "ckeditor_assets", "companies"
   add_foreign_key "company_applications", "companies"
   add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "events", "companies"
+  add_foreign_key "master_checklists", "master_checklist_types"
   add_foreign_key "payments", "companies"
   add_foreign_key "payments", "users"
   add_foreign_key "shf_applications", "file_delivery_methods"
