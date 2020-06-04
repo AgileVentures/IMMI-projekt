@@ -1,7 +1,7 @@
 require 'rails_helper'
 require 'email_spec/rspec'
 
-require 'shared_examples/shared_condition_specs'
+require 'shared_examples/shared_conditions'
 
 require 'shared_context/activity_logger'
 require 'shared_context/users'

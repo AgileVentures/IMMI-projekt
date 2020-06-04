@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-require File.join( 'shared_examples', 'condition_responder_timing_shared_spec')
+require File.join( 'shared_examples', 'condition_responder_timing_shared')
 require 'shared_context/activity_logger'
 
 

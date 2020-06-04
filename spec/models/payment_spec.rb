@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-require 'shared_examples/scope_updated_in_date_range_spec'
+require 'shared_examples/scope_updated_in_date_range'
 
 
 RSpec.describe Payment, type: :model do

@@ -3,7 +3,7 @@ require 'aasm/rspec'
 
 require 'support/ae_aasm_matchers/ae_aasm_matchers'
 
-require 'shared_examples/scope_updated_in_date_range_spec'
+require 'shared_examples/scope_updated_in_date_range'
 
 
 #================================================================================

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-require 'shared_examples/shared_condition_specs'
+require 'shared_examples/shared_conditions'
 require 'shared_context/activity_logger'
 require 'shared_context/expect_tar_has_entries'
 require 'matchers/matcher_file_set_backup'
