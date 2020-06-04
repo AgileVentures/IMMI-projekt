@@ -133,6 +133,8 @@ RSpec.describe EmailAlert, type: :model do
 
       # actual test:
       Timecop.freeze(dec_1) do
+        subject.timing = timing
+        subject.config = config
         subject.take_action(entity, log)
         log.close
       end
@@ -154,7 +156,9 @@ RSpec.describe EmailAlert, type: :model do
 
       # actual test:
       Timecop.freeze(dec_1) do
-       subject.take_action(entity, log)
+        subject.timing = timing
+        subject.config = config
+        subject.take_action(entity, log)
         log.close
       end # Timecop
 
