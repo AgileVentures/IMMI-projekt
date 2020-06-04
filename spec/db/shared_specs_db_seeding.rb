@@ -78,7 +78,7 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
 
   describe 'sad path: errors are raised' do
 
-    EXPECT_ERR_MSG = "\n-----\nexpect ERROR RESCUED! to happen:"
+    EXPECT_ERR_MSG = "\n-----\nexpect ERROR RESCUED! to happen:" unless defined?(EXPECT_ERR_MSG)
 
     before(:all) do
       RSpec::Mocks.with_temporary_scope do
