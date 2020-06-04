@@ -105,7 +105,7 @@ RSpec.describe Seeders::SimpleClassYamlSeeder do
 
           allow(described_class).to receive(:seeded_class).and_return(faux_ar_class)
 
-          expect { described_class.create_object({ id: 1, name: 'this' }) }.to raise_exception
+          expect { described_class.create_object({ id: 1, name: 'this' }) }.to raise_exception RuntimeError
         end
       end
 
