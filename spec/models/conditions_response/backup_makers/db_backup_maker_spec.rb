@@ -1,7 +1,7 @@
 require 'rails_helper'
 require_relative File.join(Rails.root, 'app/models/conditions_response/backup')
 
-require 'shared_examples/backup_maker_target_filename_with_default_spec'
+require 'shared_examples/backup_maker_target_filename_with_default'
 
 
 RSpec.describe ShfBackupMakers::DBBackupMaker do
@@ -55,7 +55,6 @@ RSpec.describe ShfBackupMakers::DBBackupMaker do
           expect(File.exist?(expected_backup_fname)).to be_truthy
         end
       end
-
 
       it_behaves_like 'it takes a backup target filename, with default =',
                       described_class.new,

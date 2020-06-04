@@ -1,9 +1,6 @@
 require 'rails_helper'
 require_relative File.join(Rails.root, 'app/models/conditions_response/backup')
 
-require 'shared_examples/backup_maker_target_filename_with_default_spec'
-
-
 RSpec.describe ShfBackupMakers::AbstractBackupMaker do
 
   describe 'Unit tests' do

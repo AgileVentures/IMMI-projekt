@@ -2,7 +2,7 @@ require 'rails_helper'
 require_relative File.join(Rails.root, 'app/models/conditions_response/backup')
 #require_relative File.join(Rails.root, 'app/models/conditions_response/shf_condition_error_backup_errors.rb')
 
-require 'shared_examples/backup_maker_target_filename_with_default_spec'
+require 'shared_examples/backup_maker_target_filename_with_default'
 require 'shared_context/expect_tar_has_entries'
 
 
@@ -89,7 +89,6 @@ RSpec.describe ShfBackupMakers::FileSetBackupMaker do
                                                           temp_backup_sourcedir,
                                                           temp_subdir])
       end
-
 
       it_behaves_like 'it takes a backup target filename, with default =',
                       described_class.new(name: 'target files test'),
