@@ -110,6 +110,7 @@ group :development, :test do
 
   gem 'i18n-tasks', '~> 0.9.21'
 
+  gem 'spring-commands-rspec'
 end
 
 group :development do
