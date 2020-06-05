@@ -1241,7 +1241,7 @@ RSpec.describe Backup, type: :model do
         expect(SHFNotifySlack).to receive(:failure_notification).with(anything, text: expected_error_str)
         expect(FakeLogger).to receive(:error).with(expected_error_str)
 
-        described_class.iterate_and_log_notify_errors(@strings, 'error during iteration test', FakeLogger) do |s|
+        described_class.iterate_and_log_notify_errors(@strings, 'error during iteration test', FakeLogger, use_slack_notification: true) do |s|
           raise some_error if s == 'b'
           @result_str << s
         end
