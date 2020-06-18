@@ -29,7 +29,15 @@ end
 
 # Backup files and DB data in production
 
-
+# FIXME: some class methods require a class attribute to be set to work
+#        correctly, @use_slack_notification. The only point where we
+#        can set that attribute is in `::condition_response`, but the other
+#        methods are public and can be called independently, causing them to
+#        behave erratically depending on the last call of
+#        `::condition_response` or lack thereof.
+#        As a stopgag measure I added an extra optional parameter to every
+#        method signature, but we should really consider if those methods
+#        should be private or if we should make this class non-static.
 class Backup < ConditionResponder
 
 

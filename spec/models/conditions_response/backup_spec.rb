@@ -5,7 +5,6 @@ require 'shared_context/activity_logger'
 require 'shared_context/expect_tar_has_entries'
 require 'matchers/matcher_file_set_backup'
 
-
 RSpec.describe Backup, type: :model do
 
   before(:each) do
@@ -903,13 +902,13 @@ RSpec.describe Backup, type: :model do
 
         it 'ShfBackupMakers::DBBackupMaker number to keep is from config if days_to_keep: {db_backup: N} exists' do
           makers = described_class.create_backup_makers({ days_to_keep: { db_backup: 12 } })
-          db_backupmaker = makers.select { |maker_entry| maker_entry[:backup_maker].is_a? ShfBackupMakers::DBBackupMaker }.first
+          db_backupmaker = makers.find { |maker_entry| maker_entry[:backup_maker].is_a? ShfBackupMakers::DBBackupMaker }
           expect(db_backupmaker[:keep_num]).to eq 12
         end
 
         it 'ShfBackupMakers::DBBackupMaker number to keep is 15 (default) if not in config' do
           makers = described_class.create_backup_makers({})
-          db_backupmaker = makers.select { |maker_entry| maker_entry[:backup_maker].is_a? ShfBackupMakers::DBBackupMaker }.first
+          db_backupmaker = makers.find { |maker_entry| maker_entry[:backup_maker].is_a? ShfBackupMakers::DBBackupMaker }
           expect(db_backupmaker[:keep_num]).to eq 15
         end
       end
@@ -1150,7 +1149,7 @@ RSpec.describe Backup, type: :model do
 
             orig_on_false_positives_setting = RSpec::Expectations.configuration.on_potential_false_positives
             RSpec::Expectations.configuration.on_potential_false_positives = :nothing
-            expect { described_class.log_and_notify('original error', FakeLogger) }.not_to raise_error(@logging_error)
+            expect { described_class.log_and_notify('original error', FakeLogger, use_slack_notification: true) }.not_to raise_error(@logging_error)
             RSpec::Expectations.configuration.on_potential_false_positives = orig_on_false_positives_setting
           end
         end
@@ -1168,7 +1167,7 @@ RSpec.describe Backup, type: :model do
           expect(SHFNotifySlack).to receive(:failure_notification)
                                         .with(described_class.name, text: "#{@some_error} #{@more_info}")
 
-          described_class.log_and_notify(@some_error, FakeLogger, @more_info)
+          described_class.log_and_notify(@some_error, FakeLogger, @more_info, use_slack_notification: true)
         end
 
         describe 'if it cannot send a notification' do
@@ -1185,11 +1184,11 @@ RSpec.describe Backup, type: :model do
             expect(FakeLogger).to receive(:error)
                                       .with("Slack error during #{described_class.name}.log_and_notify: #{@slack_error.inspect}")
 
-            expect { described_class.log_and_notify('original error', FakeLogger) }.to raise_error(@slack_error)
+            expect { described_class.log_and_notify('original error', FakeLogger, use_slack_notification: true) }.to raise_error(@slack_error)
           end
 
           it 'will raise the Slack error so the caller can handle it as needed' do
-            expect { described_class.log_and_notify('original error', FakeLogger) }.to raise_error(@slack_error)
+            expect { described_class.log_and_notify('original error', FakeLogger, use_slack_notification: true) }.to raise_error(@slack_error)
           end
         end
       end
@@ -1209,7 +1208,7 @@ RSpec.describe Backup, type: :model do
 
       it 'iterates through each item in the list with the yield' do
 
-        described_class.iterate_and_log_notify_errors(@strings, 'error during iteration test', FakeLogger) do |s|
+        described_class.iterate_and_log_notify_errors(@strings, 'error during iteration test', FakeLogger, use_slack_notification: true) do |s|
           @result_str << s
         end
 
