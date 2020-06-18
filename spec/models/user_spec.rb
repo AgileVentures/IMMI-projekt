@@ -368,6 +368,8 @@ RSpec.describe User, type: :model do
 
 
       before(:all) do
+        DatabaseCleaner.strategy = :transaction
+        DatabaseCleaner.start
         jan_01 = Date.new(2019, 1, 1)
         dec_31_2018 = jan_01 - 1
         jan_02 = jan_01 + 1

@@ -2,6 +2,12 @@ require 'rails_helper'
 
 
 RSpec.describe AdminOnly::MasterChecklistChangePolicy do
+  around(:all) do |example|
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 
   let(:child_one) { create(:master_checklist, name: 'child 1') }
   let(:child_two) { create(:master_checklist, name: 'child 2') }
@@ -26,17 +32,7 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
     list
   end
 
-  # TODO figure out why this cleanup needs to be done explicitly.
-  after(:all) do
-    DatabaseCleaner.clean
-    UserChecklist.delete_all
-    AdminOnly::MasterChecklist.delete_all
-    User.delete_all
-  end
-
-
   describe '.change_with_completed_user_checklists?' do
-
     attribs_can_be_changed = ['is_in_use', 'is_in_use_changed_at', 'notes', 'updated_at']
 
     describe 'these attributes can be changed' do
@@ -57,9 +53,7 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
     end
   end
 
-
   describe '.change_with_uncompleted_user_checklists?' do
-
     it 'false if attribute is something that is displayed to users in user checklists' do
       expect(described_class.change_with_uncompleted_user_checklists?(:displayed_text)).to be_falsey
       expect(described_class.change_with_uncompleted_user_checklists?(:description)).to be_falsey
@@ -69,16 +63,13 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
     end
   end
 
-
   describe '.attributes_displayed_to_users' do
     it 'displayed_text, description, list_position, ancestry' do
       expect(described_class.attributes_displayed_to_users).to match_array([:displayed_text, :description, :list_position, :ancestry])
     end
   end
 
-
   describe 'can_be_destroyed?' do
-
     it 'throws :abort if it cannot be destroyed' do
       master_c = create(:master_checklist)
       allow(described_class).to receive(:can_delete?).and_return(false)
@@ -94,11 +85,8 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
     end
   end
 
-
   describe 'can_delete?' do
-
     context 'children' do
-
       it 'true if there are no children' do
         mc_no_children = create(:master_checklist, :not_in_use)
         expect(described_class.can_delete?(mc_no_children)).to be_truthy
@@ -142,14 +130,11 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
     end
   end
 
-
   describe 'no_more_major_changes?' do
     pending
   end
 
-
   describe 'can_be_changed?' do
-
     it 'always true if there are no associated user checklists' do
       new_master = create(:master_checklist)
       expect(described_class.can_be_changed?(new_master)).to be_truthy
@@ -157,9 +142,7 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
     end
 
     context 'there are associated user checklists' do
-
       context 'there are completed user checklists' do
-
         it 'true if attribute changed is :is_in_use or :is_in_use_changed_at' do
           new_master = create(:master_checklist)
           create(:user_checklist, :completed, master_checklist: new_master)
@@ -185,7 +168,6 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
       end
 
       context 'there are only uncompleted user checklists' do
-
         let(:new_master) do
           master_c = create(:master_checklist)
           create(:user_checklist, master_checklist: master_c)
@@ -208,9 +190,6 @@ RSpec.describe AdminOnly::MasterChecklistChangePolicy do
           end
         end
       end
-
     end
-
   end
-
 end

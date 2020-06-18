@@ -29,22 +29,14 @@ RSpec.describe "module OrderedAncestryEntry" do
     list
   end
 
-  after(:each) {AdminOnly::MasterChecklist.delete_all;  DatabaseCleaner.clean }
-
-  after(:all) do
+  around(:all) do |example|
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.start
+    example.run
     DatabaseCleaner.clean
-    UserChecklist.delete_all
-    AdminOnly::MasterChecklist.delete_all
-    User.delete_all
   end
 
-
   describe 'all_as_array' do
-
-    before(:each) { DatabaseCleaner.clean }
-
-    after(:each) {AdminOnly::MasterChecklist.delete_all;  DatabaseCleaner.clean }
-
     it "calls arrange_as_array with the order [ancestry, list_position]" do
       AdminOnly::MasterChecklist.delete_all
 
@@ -62,16 +54,9 @@ RSpec.describe "module OrderedAncestryEntry" do
 
 
   describe 'arrange_as_array(options = {}, nodes_to_arrange_hash = nil)' do
-
-    before(:each) { DatabaseCleaner.clean }
-
-    after(:all) { DatabaseCleaner.clean }
-
-
     def fail_message(expected_array, actual_array)
       "\nExpected:\n   #{expected_array.pretty_inspect}\nActual:\n   #{actual_array.pretty_inspect}"
     end
-
 
     it 'if no nodes_to_arrange_hash is given, calls arrange to create the hash of nodes' do
       AdminOnly::MasterChecklist.delete_all
@@ -79,7 +64,6 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(class_that_includes).to receive(:arrange).and_call_original
       class_that_includes.arrange_as_array
     end
-
 
     it 'uses the hash of nodes given' do
       AdminOnly::MasterChecklist.delete_all
@@ -154,9 +138,7 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'insert' do
-
     it 'appends to the end if no position given' do
       AdminOnly::MasterChecklist.delete_all
 
@@ -204,9 +186,7 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'delete_from_children' do
-
     it 'does nothing if the entry is not in the list' do
       AdminOnly::MasterChecklist.delete_all
 
@@ -240,9 +220,7 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'delete_child_at (deletes child at the zero-based position)' do
-
     it 'does nothing if no children' do
       AdminOnly::MasterChecklist.delete_all
 
@@ -284,12 +262,9 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(newlist.children.size).to eq 2
       expect(newlist.children.map(&:list_position)).to match_array([0, 1])
     end
-
   end
 
-
   describe 'increment_child_positions' do
-
     it 'empty list' do
       AdminOnly::MasterChecklist.delete_all
 
@@ -300,9 +275,7 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(empty_list.children.map(&:list_position)).to match_array([])
     end
 
-
     context 'not an empty list' do
-
       it 'at the start' do
         AdminOnly::MasterChecklist.delete_all
 
@@ -335,9 +308,7 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'decrement_child_positions' do
-
     it 'empty list' do
       AdminOnly::MasterChecklist.delete_all
 
@@ -347,7 +318,6 @@ RSpec.describe "module OrderedAncestryEntry" do
       empty_list.send(:decrement_child_positions, 0)
       expect(empty_list.children.map(&:list_position)).to match_array([])
     end
-
 
     context 'not an empty list' do
 
@@ -394,12 +364,9 @@ RSpec.describe "module OrderedAncestryEntry" do
       newlist.send(:decrement_child_positions)
       expect(newlist.children.map(&:list_position)).to match_array(original_positions)
     end
-
   end
 
-
   describe 'last_used_list_position' do
-
     it '-1 if the list is empty' do
       AdminOnly::MasterChecklist.delete_all
 
@@ -426,7 +393,6 @@ RSpec.describe "module OrderedAncestryEntry" do
     end
   end
 
-
   describe 'next_list_position' do
     it 'is (maximum list_position of all children) + 1 [list positions may not be contiguous]' do
       AdminOnly::MasterChecklist.delete_all
@@ -444,7 +410,6 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(create(:master_checklist).next_list_position).to eq 0
     end
   end
-
 
   it 'list_entry can hold other list_entries (be nested)' do
     AdminOnly::MasterChecklist.delete_all
@@ -466,9 +431,7 @@ RSpec.describe "module OrderedAncestryEntry" do
     expect(toplist.children.map(&:name)).to match_array(['child entry 0', 'child entry 1', 'child entry 2', 'level2_1_list', 'level2_2_list'])
   end
 
-
   describe 'child_at_position' do
-
     it 'no children returns nil' do
       AdminOnly::MasterChecklist.delete_all
 
@@ -499,9 +462,6 @@ RSpec.describe "module OrderedAncestryEntry" do
 
 
   describe 'allowable_as_parents' do
-
-    after(:all) { DatabaseCleaner.clean }
-
     it 'an emtpy list will just return that same empty list as allowed parents' do
       AdminOnly::MasterChecklist.delete_all
 
@@ -534,9 +494,7 @@ RSpec.describe "module OrderedAncestryEntry" do
       expect(not_saved.allowable_as_parents([toplist])).to eq [toplist]
     end
 
-
     describe 'is sorted' do
-
       it 'default is to sort by list position' do
         AdminOnly::MasterChecklist.delete_all
 
@@ -576,5 +534,4 @@ RSpec.describe "module OrderedAncestryEntry" do
       end
     end
   end
-
 end

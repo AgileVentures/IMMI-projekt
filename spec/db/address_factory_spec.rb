@@ -22,8 +22,6 @@ RSpec.describe SeedHelper::AddressFactory do
 
 
   before(:all) do
-    DatabaseCleaner.start
-
     create_empty_file(SEED_DB_DIR, EMPTY_CSV_FILENAME)
     create_csv_file(SEED_DB_DIR, AF_FAKE_ADDRESSES_CSV_FILENAME, AF_FAKE_ADDRESSES)
   end

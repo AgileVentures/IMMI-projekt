@@ -19,6 +19,7 @@ RSpec.describe 'Production db is seeded with minimal info' do
   describe 'happy path - all is valid' do
 
     before(:all) do
+      DatabaseCleaner.strategy = :transaction
       DatabaseCleaner.start
       RSpec::Mocks.with_temporary_scope do
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))

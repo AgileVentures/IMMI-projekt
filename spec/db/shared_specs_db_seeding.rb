@@ -14,8 +14,6 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
   describe 'happy path - all is correct' do
 
     before(:all) do
-      DatabaseCleaner.start
-
       RSpec::Mocks.with_temporary_scope do
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("#{rails_env}"))
 
@@ -24,7 +22,7 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
         allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
 
         # must stub this way so the rest of ENV is preserved
-        stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => admin_email,
+        stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY    => admin_email,
                                              ENV_ADMIN_PASSWORD_KEY => admin_pwd}) )
 
         allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
@@ -39,9 +37,10 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
     end
 
     after(:all) do
-      DatabaseCleaner.clean
+      # TODO: Simple transaction DB cleanup is not enough here, could be worth
+      #       finding out why.
+      DatabaseCleaner.clean_with :truncation
     end
-
 
     let(:admin_in_db) { User.find_by_email(admin_email) }
 
@@ -96,7 +95,6 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
                                              ENV_ADMIN_PASSWORD_KEY => admin_pwd}) )
 
         allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
-
       end
     end
 
@@ -153,10 +151,7 @@ end
 RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_users, admin_email, admin_pwd, geocode_min, geocode_max, csv_filename|
 
   it "seed #{num_users}, calls Geocode.search at least #{geocode_min} and at most #{geocode_max} times" do
-
-
     RSpec::Mocks.with_temporary_scope do
-
       allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
 
       allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
@@ -184,7 +179,9 @@ RSpec.shared_examples 'it calls geocode min max times with csv file' do |num_use
 
       expect(User.count).to eq num_users
       expect(Address.count).to eq Company.count
-    end
 
+    end
+    # TODO: Simple transaction DB cleanup is not enough here, could be worth
+    #       finding out why.
   end
 end

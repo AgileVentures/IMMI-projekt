@@ -15,15 +15,13 @@ RSpec.describe DinkursFetch, type: :model do
   let(:company_with_dinkurs_id) do
     create(:company, dinkurs_company_id: ENV['DINKURS_COMPANY_TEST_ID'])
   end
+
   let(:company_without_dinkurs_id) { create(:company) }
 
   describe '.condition_response' do
-
-
     it_behaves_like 'it validates timings in .condition_response', [:every_day] do
       let(:tested_condition) { condition }
     end
-
 
     context 'Fetch Dinkurs events', vcr: { cassette_name: 'dinkurs/company_events' } do
 
@@ -34,7 +32,6 @@ RSpec.describe DinkursFetch, type: :model do
       end
 
       it 'Fetches events for companies with dinkurs_id' do
-
         expect{ described_class.condition_response(condition, log) }
           .to change { company_with_dinkurs_id.events.count }.by(3)
       end

@@ -75,12 +75,11 @@ RSpec.configure do |config|
         uncommitted transaction data setup over the spec's database connection.
       MSG
     end
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.clean_with(:truncation)
   end
 
-
   config.before(:each) do
-    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
     create_user_membership_num_seq_if_needed
 
@@ -110,9 +109,7 @@ RSpec.configure do |config|
     end
   end
 
-
   config.append_after(:each) do
     DatabaseCleaner.clean
   end
-
 end

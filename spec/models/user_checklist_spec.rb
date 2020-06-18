@@ -2,6 +2,12 @@ require 'rails_helper'
 
 
 RSpec.describe UserChecklist, type: :model do
+  around(:all) do |example|
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.cleaning do
+      example.run
+    end
+  end
 
   let(:all_complete_list) { create(:user_checklist, :completed, num_completed_children: 3) }
 
@@ -18,17 +24,7 @@ RSpec.describe UserChecklist, type: :model do
     checklist_3done_2unfinished
   }
 
-
-  after(:all) do
-    DatabaseCleaner.clean
-    UserChecklist.delete_all
-    AdminOnly::MasterChecklist.delete_all
-    User.delete_all
-  end
-
-
   describe 'Factory' do
-
     it 'default factory is valid' do
       expect(build(:user_checklist)).to be_valid
     end
@@ -50,17 +46,13 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   describe 'Associations' do
     it { is_expected.to belong_to(:user) }
     it { is_expected.to belong_to(:master_checklist) }
   end
 
-
   describe 'Scopes (including those as class methods)' do
-
     describe '.completed' do
-
       it 'empty if no UserChecklist is completed' do
         create(:user_checklist)
         expect(described_class.completed).to be_empty
@@ -109,7 +101,6 @@ RSpec.describe UserChecklist, type: :model do
     end
 
     describe '.membership_guidelines_for_user' do
-
       let(:membership_guidelines_type_name) { AdminOnly::MasterChecklistType::MEMBER_GUIDELINES_LIST_TYPE }
 
       let(:user1) { create(:user, first_name: 'User1') }
@@ -161,12 +152,9 @@ RSpec.describe UserChecklist, type: :model do
         expect(described_class.membership_guidelines_for_user(user1).last).to eq second_list
       end
     end
-
   end
 
-
   describe 'all_completed?' do
-
     it 'false if self is not completed' do
       expect(build(:user_checklist).all_completed?).to be_falsey
     end
@@ -181,9 +169,7 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   describe 'all_that_are_completed' do
-
     it 'empty list if no items are complete' do
       expect(create(:user_checklist).all_that_are_completed).to be_empty
     end
@@ -202,9 +188,7 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   describe 'all_that_are_uncompleted' do
-
     it 'empty list if all items are completed' do
       all_complete = create(:user_checklist, :completed, num_completed_children: 1)
       expect(all_complete.all_that_are_uncompleted).to be_empty
@@ -227,16 +211,12 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   it 'size = completed items + uncompleted items' do
     expect(three_complete_two_uncomplete_list.all_that_are_completed.size + three_complete_two_uncomplete_list.all_that_are_uncompleted.size).to eq(5)
   end
 
-
   describe 'percent_complete' do
-
     context 'no children' do
-
       it '100 if is completed' do
         expect(create(:user_checklist, :completed).percent_complete).to eq 100
       end
@@ -247,7 +227,6 @@ RSpec.describe UserChecklist, type: :model do
     end
 
     context 'has children' do
-
       it '0 if none are completed' do
         expect(create(:user_checklist, num_children: 3).percent_complete).to eq 0
       end
@@ -260,7 +239,6 @@ RSpec.describe UserChecklist, type: :model do
 
       describe 'sum(leafs  percent complete) / (number of children) (DO NOT COUNT SELF)' do
         # 'leaf' is an item with no children.  It is the furthest/deepest most item in the tree of items.
-
         it 'simple levels' do
           top1 = create(:user_checklist)
           create(:user_checklist, :completed, parent: top1)
@@ -312,9 +290,7 @@ RSpec.describe UserChecklist, type: :model do
           #  = 200 / 4
           #  = 50%
           expect(top5.percent_complete).to eq 50
-
         end
-
 
         it ' based on Membership guidelines checklist' do
           # Example using the Membership Guidelines checklist (as of 2020-01-20)
@@ -391,19 +367,14 @@ RSpec.describe UserChecklist, type: :model do
           sec6.set_complete_including_children
           expect(guidelines_root.percent_complete).to eq 100 # + 17%
         end
-
       end
     end
   end
 
-
   describe 'all_changed_by_completion_toggle' do
-
     describe 'is set to completed if it is not complete' do
       # ---- use this --------
-
       context 'has no descendants' do
-
         it 'is always set to complete' do
           root_no_descendants = create(:user_checklist)
           expect(root_no_descendants.all_completed?).to be_falsey
@@ -431,7 +402,6 @@ RSpec.describe UserChecklist, type: :model do
         end
 
         context 'has ancestors' do
-
           it 'is set to completed' do
             grandchild_no_descendants = create(:user_checklist)
 
@@ -476,9 +446,7 @@ RSpec.describe UserChecklist, type: :model do
       end
 
       context 'has descendants' do
-
         describe 'all descendants are complete' do
-
           it 'is set to completed' do
 
             greatgrandchild_completed = create(:user_checklist, :completed)
@@ -500,7 +468,6 @@ RSpec.describe UserChecklist, type: :model do
           end
 
           context 'has no ancestors' do
-
             it 'is the only item returned in the list of items changed' do
               root_no_descendants = create(:user_checklist)
               expect(root_no_descendants.all_completed?).to be_falsey
@@ -510,7 +477,6 @@ RSpec.describe UserChecklist, type: :model do
           end
 
           context 'has ancestors' do
-
             it 'ancestors are also in the list of items changed' do
               great_grandchild_complete = create(:user_checklist, :completed)
 
@@ -545,12 +511,9 @@ RSpec.describe UserChecklist, type: :model do
               expect(root_parent.reload.date_completed).not_to eq(root_parent_original_date_completed)
             end
           end
-
         end
 
-
         context 'not all descendants are compelete' do
-
           it 'is not set to complete' do
 
             greatgrandchild_not_completed = create(:user_checklist)
@@ -573,7 +536,6 @@ RSpec.describe UserChecklist, type: :model do
           end
 
           context 'has no ancestors' do
-
             it 'is not changed to completed' do
 
               greatgrandchild_not_completed = create(:user_checklist)
@@ -606,7 +568,6 @@ RSpec.describe UserChecklist, type: :model do
           end
 
           context 'has ancestors' do
-
             it 'is not changed to completed' do
               greatgrandchild_not_completed = create(:user_checklist)
               grandchild_completed = create(:user_checklist, :completed)
@@ -636,9 +597,7 @@ RSpec.describe UserChecklist, type: :model do
               expect(child_one_not_completed.all_changed_by_completion_toggle).to be_empty
             end
           end
-
         end
-
       end
 
       it 'default is Time.zone.now' do
@@ -663,17 +622,12 @@ RSpec.describe UserChecklist, type: :model do
         expect(originally_not_complete.all_completed?).to be_truthy
         expect(originally_not_complete.date_completed).to eq completed_time
       end
-
     end
-
 
     describe 'is set to not completed if it was complete' do
       # ---- use this --------
-
       context 'has no descendants' do
-
         context 'has no ancestors' do
-
           it 'is always set to uncomplete' do
             originally_complete = create(:user_checklist, :completed)
             expect(originally_complete.all_completed?).to be_truthy
@@ -689,7 +643,6 @@ RSpec.describe UserChecklist, type: :model do
         end
 
         context 'has ancestors' do
-
           it 'is set to completed' do
             grandchild_no_descendants = create(:user_checklist, :completed)
 
@@ -717,13 +670,10 @@ RSpec.describe UserChecklist, type: :model do
             expect(greatgrandchild_completed.all_changed_by_completion_toggle).to match_array([grandchild_completed, greatgrandchild_completed])
           end
         end
-
       end
 
       context 'has descendants' do
-
         context 'has no ancestors' do
-
           it 'is always set to uncomplete' do
             grandchild_no_descendants = create(:user_checklist, :completed)
 
@@ -751,7 +701,6 @@ RSpec.describe UserChecklist, type: :model do
         end
 
         context 'has ancestors' do
-
           it 'is always set to uncomplete' do
             grandchild_no_descendants = create(:user_checklist, :completed)
 
@@ -791,20 +740,13 @@ RSpec.describe UserChecklist, type: :model do
 
             expect(grandchild_completed.all_changed_by_completion_toggle).to match_array([child_completed, grandchild_completed])
           end
-
         end
-
       end
-
     end
-
   end
 
-
   describe 'set_complete_including_children' do
-
     # Would be good to stub things so these tests don't hit the db so much
-
     it 'sets self to complete' do
       uc = create(:user_checklist)
       uc.set_complete_including_children
@@ -869,11 +811,8 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   describe 'set_uncomplete_including_children' do
-
     # Would be good to stub things so these tests don't hit the db so much
-
     it 'sets self to uncomplete' do
       uc = create(:user_checklist)
       uc.set_uncomplete_including_children
@@ -908,13 +847,10 @@ RSpec.describe UserChecklist, type: :model do
       expect(child1.reload.date_completed).to eq child1_orig_date_completed
       expect(child1_1_1.reload.date_completed).to eq child1_1_1_orig_date_completed
     end
-
   end
-
 
   describe 'set_complete_update_parent' do
     let(:given_date_completed) { Time.parse("2020-10-31") }
-
 
     it 'returns empty list if descendents are not all complete' do
       root = create(:user_checklist)
@@ -924,7 +860,6 @@ RSpec.describe UserChecklist, type: :model do
     end
 
     context 'descendents are all complete' do
-
       it 'updates date_completed to the new date complete' do
         root = create(:user_checklist)
         create(:user_checklist, :completed, parent: root, name: 'child1')
@@ -936,11 +871,9 @@ RSpec.describe UserChecklist, type: :model do
       end
 
       context 'has a parent' do
-
         let(:root) { create(:user_checklist) }
         let(:child1) { create(:user_checklist, :completed, parent: root, name: 'child1') }
         let(:child2) { create(:user_checklist, :completed, parent: root, name: 'child2') }
-
 
         it 'adds the results of parent.set_complete_update_parent to the list of checklists changed' do
           expect(child1.send(:set_complete_update_parent, given_date_completed)).to match_array([root, child1])
@@ -949,9 +882,7 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   describe 'set_uncomplete_update_parent' do
-
     it 'returns empty list if the checklist is already uncomplete' do
       root = create(:user_checklist)
 
@@ -959,7 +890,6 @@ RSpec.describe UserChecklist, type: :model do
     end
 
     context 'is currently completed' do
-
       it 'updates date_completed nil (= uncomplete)' do
         root = create(:user_checklist, :completed)
 
@@ -969,11 +899,9 @@ RSpec.describe UserChecklist, type: :model do
       end
 
       context 'has a parent' do
-
         let(:root) { create(:user_checklist, :completed) }
         let(:child1) { create(:user_checklist, :completed, parent: root, name: 'child1') }
         let(:child2) { create(:user_checklist, :completed, parent: root, name: 'child2') }
-
 
         it 'adds the results of parent.set_uncomplete_update_parent to the list of checklists changed' do
           expect(child1.send(:set_uncomplete_update_parent)).to match_array([root, child1])

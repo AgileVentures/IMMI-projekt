@@ -12,10 +12,12 @@ require File.join(__dir__, 'shared_specs_db_seeding')
 # The AppConfigurationSeeder.seed method works fine in real life.
 
 
-ENV_ADMIN_EMAIL_KEY      = 'SHF_ADMIN_EMAIL' unless defined?(ENV_ADMIN_EMAIL_KEY)
-ENV_ADMIN_PASSWORD_KEY   = 'SHF_ADMIN_PWD' unless defined?(ENV_ADMIN_PASSWORD_KEY)
-ENV_NUM_SEEDED_USERS_KEY = 'SHF_SEED_USERS' unless defined?(ENV_NUM_SEEDED_USERS_KEY)
+ENV_ADMIN_EMAIL_KEY         = 'SHF_ADMIN_EMAIL' unless defined?(ENV_ADMIN_EMAIL_KEY)
+ENV_ADMIN_PASSWORD_KEY      = 'SHF_ADMIN_PWD' unless defined?(ENV_ADMIN_PASSWORD_KEY)
+ENV_NUM_SEEDED_USERS_KEY    = 'SHF_SEED_USERS' unless defined?(ENV_NUM_SEEDED_USERS_KEY)
 ENV_SEED_FAKE_CSV_FNAME_KEY = 'SHF_SEED_FAKE_ADDR_CSV_FILE' unless defined?(ENV_SEED_FAKE_CSV_FNAME_KEY)
+
+SEED_USERS                  = 4
 
 
 RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
@@ -24,6 +26,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
   admin_pwd   = 'insecure-password'
 
   before(:all) do
+    DatabaseCleaner.strategy = :transaction
     DatabaseCleaner.start
     create_user_membership_num_seq_if_needed
 
@@ -52,20 +55,16 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     DatabaseCleaner.clean
   end
 
-
   describe 'seeding basic info: users, companies, etc.' do
 
     describe 'initial state before extra info is added' do
       it_behaves_like 'admin, business categories, kommuns, and regions are seeded', 'development', admin_email, admin_pwd
     end
 
-    # seed with a minimum of 4 users to cover: admin, no application, single application, double application
-    seed_users = 4
+    # seed with a minimum of 4 users to cover: admin, no application, single
+    # application, double application
 
     before(:all) do
-      DatabaseCleaner.start
-      create_user_membership_num_seq_if_needed
-
       RSpec::Mocks.with_temporary_scope do
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
         allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
@@ -74,7 +73,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
         allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 
         # must stub this way so the rest of ENV is preserved
-        stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY => seed_users,
+        stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY => SEED_USERS,
                                               ENV_ADMIN_EMAIL_KEY      => admin_email,
                                               ENV_ADMIN_PASSWORD_KEY   => admin_pwd }))
 
@@ -84,13 +83,8 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
       end
     end
 
-    after(:all) do
-      DatabaseCleaner.clean
-    end
-
-
     it 'users are in the db' do
-      expect(User.all.size).to eq(seed_users)
+      expect(User.all.size).to eq(SEED_USERS)
     end
 
     it 'addresses are in the db' do
@@ -102,7 +96,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     end
 
     it 'memberships applications are in the db' do
-      expect(ShfApplication.all.size).to eq(seed_users - 1)
+      expect(ShfApplication.all.size).to eq(SEED_USERS - 1)
     end
 
   end # describe 'seeding basic info: users, companies, etc.'
@@ -138,13 +132,8 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     end
 
     before(:each) do
-      DatabaseCleaner.start
       create_user_membership_num_seq_if_needed
       allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
-    end
-
-    after(:each) do
-      DatabaseCleaner.clean
     end
 
     after(:all) do
@@ -156,11 +145,11 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     # We can't know exactly how many addresses are created because some randomness is used
 
     context 'all addresses are created and geocoded' do
-      it_behaves_like 'it calls geocode min max times with csv file',NUM_USERS, admin_email, admin_pwd, 5, 10, EMPTY_CSV_FILENAME
+      it_behaves_like 'it calls geocode min max times with csv file', NUM_USERS, admin_email, admin_pwd, 5, 10, EMPTY_CSV_FILENAME
     end
 
     context 'get all addresses from a CSV file (no geocoding)' do
-      it_behaves_like 'it calls geocode min max times with csv file',NUM_USERS, admin_email, admin_pwd, 0, 0, FAKE_ADDRESSES_CSV_FILENAME
+      it_behaves_like 'it calls geocode min max times with csv file', NUM_USERS, admin_email, admin_pwd, 0, 0, FAKE_ADDRESSES_CSV_FILENAME
     end
 
     context 'not enough addresses are in the CSV file; create the remaining ones needed' do
@@ -204,6 +193,4 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     end
 
   end
-
-
 end
