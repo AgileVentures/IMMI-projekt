@@ -29,13 +29,6 @@ RSpec.describe "module OrderedAncestryEntry" do
     list
   end
 
-  around(:all) do |example|
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.start
-    example.run
-    DatabaseCleaner.clean
-  end
-
   describe 'all_as_array' do
     it "calls arrange_as_array with the order [ancestry, list_position]" do
       AdminOnly::MasterChecklist.delete_all

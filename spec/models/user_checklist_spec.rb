@@ -2,13 +2,6 @@ require 'rails_helper'
 
 
 RSpec.describe UserChecklist, type: :model do
-  around(:all) do |example|
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
-
   let(:all_complete_list) { create(:user_checklist, :completed, num_completed_children: 3) }
 
   let(:three_complete_two_uncomplete_list) {

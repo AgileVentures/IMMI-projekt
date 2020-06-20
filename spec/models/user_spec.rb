@@ -3,7 +3,6 @@ require 'email_spec/rspec'
 require 'shared_context/unstub_paperclip_all_run_commands'
 require 'shared_context/users'
 require 'shared_context/named_dates'
-require 'shared_examples/user_payment_dates'
 
 # TODO use the users already defined/created in the shared_context/users
 
@@ -366,202 +365,158 @@ RSpec.describe User, type: :model do
         Timecop.return
       end
 
+      JAN_01 = Date.new(2019, 1, 1)
+      DEC_31_2018 = JAN_01 - 1
+      JAN_02 = JAN_01 + 1
 
-      before(:all) do
-        DatabaseCleaner.strategy = :transaction
-        DatabaseCleaner.start
-        jan_01 = Date.new(2019, 1, 1)
-        dec_31_2018 = jan_01 - 1
-        jan_02 = jan_01 + 1
-        jan_15 = jan_01 + 14
-        jan_31 = jan_01 + 30
+      JUN_01 = JAN_01 + 151
 
-
-        create(:user, first_name: 'Not member 1')
-        create(:user, admin: true, first_name: 'Admin')
-
-        create(:member_with_membership_app, first_name: 'No member fee pays')
-
-        member_only_branding_fees_exp_jan01 = create(:member_with_membership_app, first_name: 'Only Branding fees exp jan01')
-        member_only_branding_fees_exp_dec31 = create(:member_with_membership_app, first_name: 'Only Branding fees exp Dec 31')
-
-        member_exp_dec31_2018 = create(:member_with_membership_app, first_name: 'Exp dec 31 2018 1')
-        member_exp_jan01_1 = create(:member_with_membership_app, first_name: 'Exp jan01 1')
-        member_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Exp jan02 1')
-
-        both_exp_jan01_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan01 1')
-        both_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 1')
-        both_exp_jan02_2 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 2')
-
-        branding_exp_jan15_1 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 1')
-        branding_exp_jan15_2 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 2')
-        branding_exp_jan15_3 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 3')
-        branding_exp_jan15_4 = create(:member_with_membership_app, first_name: 'Brand Exp jan15 4')
-
-
-        member_exp_jan31_1 = create(:member_with_membership_app, first_name: 'Exp jan31 1')
-        member_exp_jan31_2 = create(:member_with_membership_app, first_name: 'Exp jan31 2')
-        member_exp_jan31_3 = create(:member_with_membership_app, first_name: 'Exp jan31 3')
-        member_exp_jan31_4 = create(:member_with_membership_app, first_name: 'Exp jan31 4')
-
-
-        # branding fees paid (only)
-        create(:h_branding_fee_payment, :successful,
-               user: member_only_branding_fees_exp_jan01,
-               expire_date: jan_01)
-
-        create(:h_branding_fee_payment, :successful,
-               user: member_only_branding_fees_exp_dec31,
-               expire_date: dec_31_2018)
-
-        create(:h_branding_fee_payment, :successful,
-               user: branding_exp_jan15_1,
-               expire_date: jan_15)
-
-        create(:h_branding_fee_payment, :successful,
-               user: branding_exp_jan15_2,
-               expire_date: jan_15)
-
-        create(:h_branding_fee_payment, :successful,
-               user: branding_exp_jan15_3,
-               expire_date: jan_15)
-
-        create(:h_branding_fee_payment, :successful,
-               user: branding_exp_jan15_4,
-               expire_date: jan_15)
-
-
-        # TODO can use new :member_with_expiration_date factory
-        # member fee paid only:
-
-        create(:membership_fee_payment, :successful,
-               user: member_exp_dec31_2018,
-               expire_date: dec_31_2018)
-
-        create(:membership_fee_payment, :successful,
-               user: member_exp_jan01_1,
-               expire_date: jan_01)
-
-
-        create(:membership_fee_payment, :successful,
-               user: member_exp_jan02_1,
-               expire_date: jan_02)
-
-
-        create(:membership_fee_payment, :successful,
-               user: member_exp_jan31_1,
-               expire_date: jan_31)
-
-        create(:membership_fee_payment, :successful,
-               user: member_exp_jan31_2,
-               expire_date: jan_31)
-
-        create(:membership_fee_payment, :successful,
-               user: member_exp_jan31_3,
-               expire_date: jan_31)
-
-        create(:membership_fee_payment, :successful,
-               user: member_exp_jan31_4,
-               expire_date: jan_31)
-
-
-        # both branding fee and membership fee paid on Jan 1:
-        create(:membership_fee_payment, :successful,
-               user: both_exp_jan01_1,
-               expire_date: jan_01)
-
-        create(:h_branding_fee_payment, :successful,
-               user: both_exp_jan01_1,
-               expire_date: jan_01)
-
-
-        # both branding fee and membership fee paid on Jan 2:
-        create(:membership_fee_payment, :successful,
-               user: both_exp_jan02_1,
-               expire_date: jan_02)
-
-        create(:h_branding_fee_payment, :successful,
-               user: both_exp_jan02_1,
-               expire_date: jan_02)
-
-        create(:membership_fee_payment, :successful,
-               user: both_exp_jan02_2,
-               expire_date: jan_02)
-
-        create(:h_branding_fee_payment, :successful,
-               user: both_exp_jan02_2,
-               expire_date: jan_02)
-
-
-        # Data to test different payment statuses:
-
-        payment_statuses = Payment::ORDER_PAYMENT_STATUS.values
-
-        # Make 1 of each payment status
-        member_exp_jun_1_all_pay_statuses = create(:member_with_membership_app, first_name: 'Exp Jun 1 all payment statuses')
-        jun_1 = Date.new(2019, 6, 1)
-
-        payment_statuses.each do |payment_status|
-
-          create(:h_branding_fee_payment,
-                 status: payment_status,
-                 user: member_exp_jun_1_all_pay_statuses,
-                 expire_date: jun_1)
-
-          create(:membership_fee_payment,
-                 status: payment_status,
-                 user: member_exp_jun_1_all_pay_statuses,
-                 expire_date: jun_1)
-        end
-
-      end # before(:all)
-
-      after(:all) do
-        DatabaseCleaner.clean
-      end
 
       describe 'membership_expires_in_x_days' do
 
-        it_behaves_like 'it finds the right number of membership expires for date', 0, 2, Date.new(2019, 1, 1)
-        it_behaves_like 'it finds the right number of membership expires for date', -1, 1, Date.new(2018, 12, 31)
-        it_behaves_like 'it finds the right number of membership expires for date', 30, 4, Date.new(2019, 1, 31)
+        it 'x = 1 day, 0 days, -1 days' do
 
-        it 'only gets users that have made membership fee payments (+1 day)' do
-          membership_expires = User.membership_expires_in_x_days(1)
-          expect(membership_expires.count).to eq 3
-          uniq_payment_types = membership_expires.pluck(:payment_type).uniq
-          expect(uniq_payment_types.size).to eq 1
+          # branding fees paid (only)
+          member_only_branding_fees_exp_jan02 = create(:member_with_membership_app, first_name: 'Only Branding fees exp Jan 02')
+          create(:h_branding_fee_payment, :successful,
+                 user: member_only_branding_fees_exp_jan02,
+                 expire_date: JAN_02)
+
+
+          # both branding fee and membership fee paid on Jan 2:
+          both_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 1')
+          create(:membership_fee_payment, :successful,
+                 user: both_exp_jan02_1,
+                 expire_date: JAN_02)
+          create(:h_branding_fee_payment, :successful,
+                 user: both_exp_jan02_1,
+                 expire_date: JAN_02)
+
+          # membership fees paid for a member
+          create(:member_with_expiration_date, expiration_date: DEC_31_2018)
+          create(:member_with_expiration_date, expiration_date: DEC_31_2018)
+          create(:member_with_expiration_date, expiration_date: JAN_01)
+          create(:member_with_expiration_date, expiration_date: JAN_02)
+          create(:member_with_expiration_date, expiration_date: JAN_02)
+
+
+          membership_expires_in_1_day = User.membership_expires_in_x_days(1)
+          expect(membership_expires_in_1_day.count).to eq 3
+          uniq_payment_types = membership_expires_in_1_day.pluck(:payment_type).uniq
+          expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_MEMBER
+
+          membership_expires_today = User.membership_expires_in_x_days(0)
+          expect(membership_expires_today.count).to eq 1
+          uniq_payment_types = membership_expires_today.pluck(:payment_type).uniq
+          expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_MEMBER
+
+          membership_expired_yesterday = User.membership_expires_in_x_days(-1)
+          expect(membership_expired_yesterday.count).to eq 2
+          uniq_payment_types = membership_expired_yesterday.pluck(:payment_type).uniq
           expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_MEMBER
         end
 
-        describe 'only considers successful payments' do
-          it_behaves_like 'it finds the right number of membership expires for date', 151, 1, Date.new(2019, 6, 1)
-        end #  describe 'only considers successful payments'
+        it 'only gets successful membership payments' do
 
+          member_exp_jun_1_all_pay_statuses = create(:member_with_membership_app, first_name: 'Exp Jun 1 all payment statuses')
+
+          # Data to test different payment statuses:
+          payment_statuses = Payment::ORDER_PAYMENT_STATUS.values
+
+          # Make 1 of each payment status
+          payment_statuses.each do |payment_status|
+            create(:h_branding_fee_payment,
+                   status: payment_status,
+                   user: member_exp_jun_1_all_pay_statuses,
+                   expire_date: JUN_01)
+
+            create(:membership_fee_payment,
+                   status: payment_status,
+                   user: member_exp_jun_1_all_pay_statuses,
+                   expire_date: JUN_01)
+          end
+
+
+          expires_today = User.membership_expires_in_x_days(151)
+          expect(expires_today.count).to eq 1
+          expect(expires_today.pluck(:expire_date).uniq.first).to eq(JUN_01)
+          expect(expires_today.pluck(:payment_type).uniq.first).to eq Payment::PAYMENT_TYPE_MEMBER
+        end
       end
 
 
       describe 'company_hbrand_expires_in_x_days' do
 
-        it_behaves_like 'it finds the right number of branding fee expires for date', 0, 2, Date.new(2019, 1, 1)
-        it_behaves_like 'it finds the right number of branding fee expires for date', -1, 1, Date.new(2018, 12, 31)
-        it_behaves_like 'it finds the right number of branding fee expires for date', 14, 4, Date.new(2019, 1, 15)
+        it 'x = 1 day, 0 days, -1 days' do
 
-        it 'only gets users that have made branding fee payments (+1 day)' do
-          branding_expires = User.company_hbrand_expires_in_x_days(1)
-          expect(branding_expires.count).to eq 2
-          uniq_payment_types = branding_expires.pluck(:payment_type).uniq
-          expect(uniq_payment_types.size).to eq 1
-          expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_BRANDING
+          # branding fees paid (only)
+          member_only_branding_fees_exp_jan02 = create(:member_with_membership_app, first_name: 'Only Branding fees exp Jan 02')
+          create(:h_branding_fee_payment, :successful,
+                 user: member_only_branding_fees_exp_jan02,
+                 expire_date: JAN_02)
+
+
+          # both branding fee and membership fee paid on Jan 2:
+          both_exp_jan02_1 = create(:member_with_membership_app, first_name: 'Both fees Exp jan02 1')
+          create(:membership_fee_payment, :successful,
+                 user: both_exp_jan02_1,
+                 expire_date: JAN_02)
+          create(:h_branding_fee_payment, :successful,
+                 user: both_exp_jan02_1,
+                 expire_date: JAN_02)
+
+          # membership fees paid for a member
+          create(:member_with_expiration_date, expiration_date: DEC_31_2018)
+          create(:member_with_expiration_date, expiration_date: DEC_31_2018)
+          create(:member_with_expiration_date, expiration_date: JAN_01)
+          create(:member_with_expiration_date, expiration_date: JAN_02)
+          create(:member_with_expiration_date, expiration_date: JAN_02)
+
+
+          membership_expires_in_1_day = User.membership_expires_in_x_days(1)
+          expect(membership_expires_in_1_day.count).to eq 3
+          uniq_payment_types = membership_expires_in_1_day.pluck(:payment_type).uniq
+          expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_MEMBER
+
+          membership_expires_today = User.membership_expires_in_x_days(0)
+          expect(membership_expires_today.count).to eq 1
+          uniq_payment_types = membership_expires_today.pluck(:payment_type).uniq
+          expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_MEMBER
+
+          membership_expired_yesterday = User.membership_expires_in_x_days(-1)
+          expect(membership_expired_yesterday.count).to eq 2
+          uniq_payment_types = membership_expired_yesterday.pluck(:payment_type).uniq
+          expect(uniq_payment_types.first).to eq Payment::PAYMENT_TYPE_MEMBER
         end
 
-        describe 'only considers successful payments' do
-          it_behaves_like 'it finds the right number of branding fee expires for date', 151, 1, Date.new(2019, 6, 1)
-        end #  describe 'only considers successful payments'
+        it 'only gets successful h-branding fee payments' do
 
+          member_exp_jun_1_all_pay_statuses = create(:member_with_membership_app, first_name: 'Exp Jun 1 all payment statuses')
+
+          # Data to test different payment statuses:
+          payment_statuses = Payment::ORDER_PAYMENT_STATUS.values
+
+          # Make 1 of each payment status
+          payment_statuses.each do |payment_status|
+            create(:h_branding_fee_payment,
+                   status: payment_status,
+                   user: member_exp_jun_1_all_pay_statuses,
+                   expire_date: JUN_01)
+
+            create(:membership_fee_payment,
+                   status: payment_status,
+                   user: member_exp_jun_1_all_pay_statuses,
+                   expire_date: JUN_01)
+          end
+
+
+          brandingfees_expires_in_151d = User.company_hbrand_expires_in_x_days(151)
+          expect(brandingfees_expires_in_151d.count).to eq 1
+          expect(brandingfees_expires_in_151d.pluck(:expire_date).uniq.first).to eq(JUN_01)
+          expect(brandingfees_expires_in_151d.pluck(:payment_type).uniq.first).to eq Payment::PAYMENT_TYPE_BRANDING
+        end
       end
-
-    end #  describe 'expiration dates'
+    end
 
   end # Scopes
 

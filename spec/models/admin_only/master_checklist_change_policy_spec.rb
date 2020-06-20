@@ -2,13 +2,6 @@ require 'rails_helper'
 
 
 RSpec.describe AdminOnly::MasterChecklistChangePolicy do
-  around(:all) do |example|
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.cleaning do
-      example.run
-    end
-  end
-
   let(:child_one) { create(:master_checklist, name: 'child 1') }
   let(:child_two) { create(:master_checklist, name: 'child 2') }
   let(:child_three) { create(:master_checklist, name: 'child 3') }
