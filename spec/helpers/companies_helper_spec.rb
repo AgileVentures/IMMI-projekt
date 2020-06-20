@@ -119,9 +119,6 @@ RSpec.describe CompaniesHelper, type: :helper do
         [ I18n.t('address_visibility.none'), 'none' ] ]
     end
 
-    after(:each) do
-      I18n.locale = I18n.default_locale
-    end
     it 'returns swedish selections array' do
       I18n.locale = 'sv'
       expect(selection_array[0][0]).to eq 'Gata'

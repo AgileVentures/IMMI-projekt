@@ -3,13 +3,6 @@ require 'rails_helper'
 RSpec.describe ShfApplicationsHelper, type: :helper do
 
   describe '#states_selection_list gets the localized version of each state name each time it is requested' do
-
-    around(:each) do |example|
-      orig_locale = I18n.locale
-      example.run
-      I18n.locale = orig_locale
-    end
-
     let(:application) { create(:shf_application) }
 
     it 'returns the list in the default I18n locale' do
@@ -20,7 +13,6 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
     end
 
     it 'correct locale if changed to :en from locale = :sv' do
-
       I18n.locale = :sv
       helper.states_selection_list
 
@@ -172,7 +164,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
 
       last_r = helper.reasons_collection(-999, 'other').last
       expect(last_r.name_sv).to eq 'other'
-      expect(last_r.id).to eq -999
+      expect(last_r.id).to eq(-999)
 
     end
 
@@ -189,12 +181,10 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
     end
 
     it 'locale = en; sets the name_en' do
-      orig_locale = I18n.locale
       I18n.locale = :en
       last_r = helper.reasons_collection(-999, 'other').last
       expect(last_r.name_sv).to be_nil
       expect(last_r.name_en).to eq 'other'
-      I18n.locale = orig_locale
     end
 
   end
@@ -205,7 +195,7 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
 
     it '@other_reason_value if there is something in custom reason text' do
       member_app.custom_reason_text = 'something'
-      expect(helper.selected_reason_value(member_app, -999)).to eq -999
+      expect(helper.selected_reason_value(member_app, -999)).to eq(-999)
     end
 
 
@@ -258,10 +248,6 @@ RSpec.describe ShfApplicationsHelper, type: :helper do
     let(:footnotes_en)  do
       I18n.locale = :en
       file_delivery_radio_buttons_collection.second
-    end
-
-    after(:each) do
-      I18n.locale = I18n.default_locale
     end
 
     let!(:upload_now) { create(:file_delivery_upload_now) }

@@ -9,21 +9,6 @@ RSpec.describe MetaTagsHelper, type: :helper do
 
   let(:default_keywords) { AdminOnly::AppConfiguration.config_to_use.site_meta_keywords }
 
-
-  before(:all) do
-    @orig_locale = I18n.locale
-
-    # @meta_setter = PageMetaTagsSetterTestController.new
-    # @meta_setter.set_request! ActionDispatch::TestRequest.create
-    # @meta_setter.request.path = MOCK_REQ_PATH
-    #
-    # @meta_image_setter = PageMetaImageTagsSetter
-
-  end
-
-  after(:all) { I18n.locale = @orig_locale }
-
-
   describe 'meta_tags_for_url_path returns a Hash with tag info' do
 
     it 'uses info from AdminOnly::AppConfig.config_to_use' do

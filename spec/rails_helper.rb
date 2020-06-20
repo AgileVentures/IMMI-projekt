@@ -111,5 +111,6 @@ RSpec.configure do |config|
 
   config.append_after(:each) do
     DatabaseCleaner.clean
+    I18n.locale = I18n.default_locale
   end
 end

@@ -53,7 +53,7 @@ RSpec.describe OneTimeTasker::FailedTaskAttempt, type: :model do
     it 'save! given was_successful = true shows the error message' do
 
       subject.was_successful = true
-
+      
       escaped_error_message = I18n.t('activerecord.errors.models.failed_task_attempt.attributes.was_successful.invalid', value: true)
       # escape the parentheses in the error message so we can use RegExp
       escaped_error_message.gsub!('(', '\(')

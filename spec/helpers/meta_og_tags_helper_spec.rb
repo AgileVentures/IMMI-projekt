@@ -4,12 +4,9 @@ require 'shared_context/mock_app_configuration'
 
 RSpec.describe MetaOgTagsHelper, type: :helper do
 
-  before(:all) do
-    @orig_locale = I18n.locale
+  before(:each) do
     I18n.locale  = :sv
   end
-
-  after(:all) { I18n.locale = @orig_locale }
 
   it 'defaults to AdminOnly::AppConfig.config_to_use values' do
 

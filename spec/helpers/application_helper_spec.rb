@@ -232,10 +232,6 @@ RSpec.describe ApplicationHelper, type: :helper do
 
     let(:user)    { FactoryBot.create(:user) }
 
-    after(:each) do
-      I18n.locale = I18n.default_locale
-    end
-
     let(:errors_html_sv)  do
       I18n.locale = :sv
       ma = ShfApplication.new
@@ -288,10 +284,6 @@ RSpec.describe ApplicationHelper, type: :helper do
     let(:collection_custom)  do
       I18n.locale = :en
       boolean_radio_buttons_collection(true: 'save', false: 'delete')
-    end
-
-    after(:each) do
-      I18n.locale = I18n.default_locale
     end
 
     it 'returns yes/no text values - swedish' do

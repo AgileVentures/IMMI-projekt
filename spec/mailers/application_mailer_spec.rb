@@ -109,10 +109,6 @@ RSpec.describe ApplicationMailer, type: :mailer do
 
   describe 'greeting is correct for the locale' do
 
-    before(:each) { @orig_local = I18n.locale }
-
-    after(:each) { I18n.locale = @orig_local }
-
     let(:test_user) { create(:user) }
 
     it ':en' do
@@ -211,7 +207,7 @@ RSpec.describe ApplicationMailer, type: :mailer do
           # use an enumerator to read just (num_lines_per_batch) lines at a time
           f.lazy.each_slice(num_lines_per_batch) do |lines|
 
-            num_matched += lines.select { |line| line.match(match_regexp) }.count
+            num_matched += lines.count { |line| line.match(match_regexp) }
 
           end
 
