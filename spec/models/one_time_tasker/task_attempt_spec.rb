@@ -1,14 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe OneTimeTasker::TaskAttempt, type: :model do
-
-
   describe 'Factory' do
     it 'has a valid factory' do
       expect(create(:one_time_tasker_task_attempt)).to be_valid
     end
   end
-
 
   describe 'DB Table' do
     it { is_expected.to have_db_column :id }
@@ -19,25 +16,19 @@ RSpec.describe OneTimeTasker::TaskAttempt, type: :model do
     it { is_expected.to have_db_column :notes }
   end
 
-
   describe 'Validations' do
-
     it { is_expected.to validate_presence_of :task_name }
     it { is_expected.to validate_presence_of :attempted_on }
 
-
     describe 'was_successful must be the right type and we must have an attempted_on time' do
-
       before(:each) do
         subject.task_name = 'blorf'
       end
 
       describe 'was_successful must be a boolean' do
-
         before(:each) do
           subject.attempted_on = Time.zone.now
         end
-
 
         it 'calls the :was_successful_is_boolean method to validate' do
           expect(subject).to receive(:was_successful_is_boolean).and_call_original
@@ -57,7 +48,6 @@ RSpec.describe OneTimeTasker::TaskAttempt, type: :model do
         end
 
         describe 'valid only if it is a TrueClass or FalseClass' do
-
           valid_values = [true, false]
           valid_values.each do | valid_value |
             it "#{valid_value} is valid" do
@@ -66,9 +56,7 @@ RSpec.describe OneTimeTasker::TaskAttempt, type: :model do
             end
           end
         end
-
       end
-
 
       it 'attempted_on is a time (is not nil)' do
         subject.was_successful = true
@@ -84,21 +72,14 @@ RSpec.describe OneTimeTasker::TaskAttempt, type: :model do
     end
   end
 
-
   describe 'scopes' do
-
-    before(:all) do
-
-      OneTimeTasker::TaskAttempt.delete_all
-
-      # create some tasks
+    before(:each) do
       create(:one_time_tasker_task_attempt, :successful_task)
       create(:one_time_tasker_task_attempt, :successful_task)
       create(:one_time_tasker_task_attempt, :successful_task)
       create(:one_time_tasker_task_attempt, :unsuccessful_task)
       create(:one_time_tasker_task_attempt, :unsuccessful_task)
     end
-
 
     it 'successful is all tasks that have been run successfully' do
       expect(described_class.successful.count).to eq 3
@@ -111,6 +92,5 @@ RSpec.describe OneTimeTasker::TaskAttempt, type: :model do
     it 'successful tasks + unsuccessful tasks = total number of tasks (all tasks must be either successful or unsuccessful)' do
       expect(described_class.successful.count + described_class.unsuccessful.count).to eq described_class.count
     end
-
   end
 end

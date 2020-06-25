@@ -11,13 +11,10 @@ require_relative 'shared_context/many_task_files_context'
 
 require_relative 'shared_context/mock_rake_task'
 
-
 RSpec.describe OneTimeTasker::TasksRunner do
-
   let(:subject) { described_class }
 
   let(:logfilepath) { LogfileNamer.name_for(described_class) }
-
 
   before(:each) do
     @task_runner_logfile = LogfileNamer.name_for(described_class)
@@ -32,17 +29,12 @@ RSpec.describe OneTimeTasker::TasksRunner do
     File.delete(evaluated_task_updater_logfn) if File.file?(evaluated_task_updater_logfn)
   end
 
-
   let(:q1_rakefile) { File.join(OneTimeTasker::TasksRunner.tasks_directory, '2019_Q1', 'q1.rake') }
   let(:q2_rakefile) { File.join(OneTimeTasker::TasksRunner.tasks_directory, '2019_q2', 'q2.rake') }
   let(:blorfo_rakefile) { File.join(OneTimeTasker::TasksRunner.tasks_directory, 'blorfo', 'blorfo.rake') }
 
-
   describe 'Unit tests' do
-
-
     describe '.run_onetime_tasks' do
-
       before(:each) do
         @tasks_directory = Dir.mktmpdir('test-onetime_rake_files')
         OneTimeTasker::TasksRunner.tasks_directory = @tasks_directory
@@ -61,9 +53,7 @@ RSpec.describe OneTimeTasker::TasksRunner do
         allow(@ev_rakefile_blorfo).to receive(:tasks_to_run).and_return(@ev_rakefile_blorfo.all_tasks)
       end
 
-
       it 'every task in every file is invoked' do
-
         files_and_tasks = {
             q1_rakefile => @ev_rakefile_q1,
             q2_rakefile => @ev_rakefile_q2,
@@ -90,9 +80,7 @@ RSpec.describe OneTimeTasker::TasksRunner do
         subject.run_onetime_tasks(logging: false)
       end
 
-
       context 'a task fails' do
-
         it 'the error is logged but the error is not raised so other tasks can be invoked' do
           @failed_task_name = 'shf:test:task0_blorf'
 
@@ -124,12 +112,9 @@ RSpec.describe OneTimeTasker::TasksRunner do
           expect(file_contents).to include("[TaskRunner Spec] [Given log is used] [error] Task #{@failed_task_name} did not run successfully: NoMethodError")
           File.delete(logname) if File.exist?(logname)
         end
-
       end
 
-
       describe 'record task attempts' do
-
         before(:each) do
           @task0_name = 'shf:test:task0_blorf'
           @task1_name = 'shf:test:task1_blorf'
@@ -144,9 +129,7 @@ RSpec.describe OneTimeTasker::TasksRunner do
 
         end
 
-
         it 'successful task creates a SuccessfulTaskAttempt' do
-
           allow(Rake.application).to receive(:[]).with(@task1_name).and_return(MockRakeTask)
 
           expect(OneTimeTasker::SuccessfulTaskAttempt).to receive(:create)
@@ -158,7 +141,6 @@ RSpec.describe OneTimeTasker::TasksRunner do
           subject.run_onetime_tasks(logging: false)
         end
 
-
         it 'failed task creates a FailedTaskAttempt' do
 
           allow(Rake.application).to receive(:[]).with(@task1_name).and_raise(NoMethodError)
@@ -169,12 +151,9 @@ RSpec.describe OneTimeTasker::TasksRunner do
                                                                 notes: NoMethodError.to_s)
           subject.run_onetime_tasks(logging: false)
         end
-
       end
 
-
       describe 'rakefile is renamed only if all tasks in it pass' do
-
         it 'all tasks in a rakefile pass, the rakefile is renamed' do
           files_and_tasks = {
               q1_rakefile => @ev_rakefile_q1
@@ -186,7 +165,6 @@ RSpec.describe OneTimeTasker::TasksRunner do
           expect(OneTimeTasker::TasksRunner).to receive(:rename_rakefile).with(q1_rakefile)
           subject.run_onetime_tasks(logging: false)
         end
-
 
         it 'a task fails, the rakefile is not renamed' do
           files_and_tasks = {
@@ -204,12 +182,9 @@ RSpec.describe OneTimeTasker::TasksRunner do
           expect(OneTimeTasker::TasksRunner).not_to receive(:rename_rakefile).with(blorfo_rakefile)
           subject.run_onetime_tasks(logging: false)
         end
-
       end
 
-
       context 'no tasks found' do
-
         it 'no rakefiles loaded, no TaskAttempts created' do
           allow_any_instance_of(OneTimeTasker::TasksFinder).to receive(:files_with_tasks_to_run).and_return({})
 
@@ -219,12 +194,9 @@ RSpec.describe OneTimeTasker::TasksRunner do
           expect(OneTimeTasker::TaskAttempt).not_to receive(:create)
         end
       end
-
     end
 
-
     it '.rename_rakefile appends .successful_rakefile_extension to the filename' do
-
       orig_filename = File.join(subject.tasks_directory, 'blorfo.rake')
       rakefile = File.new(orig_filename, 'w')
       expect(File.exist?(rakefile)).to be_truthy
@@ -237,9 +209,7 @@ RSpec.describe OneTimeTasker::TasksRunner do
       File.delete("#{orig_filename}blorf")
     end
 
-
     describe '.configure' do
-
       it 'sets the tasks directory' do
         described_class.configure do |config|
           config.tasks_directory = 'blorf'
@@ -269,14 +239,11 @@ RSpec.describe OneTimeTasker::TasksRunner do
         end
         expect(described_class.log_activity_tag).to eq 'ACTIVITY TAG'
       end
-
     end
-
 
     it '.default_tasks_directory is Rails.root/lib/tasks/one_time' do
       expect(subject.default_tasks_directory).to eq File.absolute_path(File.join(Rails.root, 'lib', 'tasks', 'one_time'))
     end
-
 
     it '.default_successful_rakefile_extension is .ran' do
       expect(subject.default_successful_rakefile_extension).to eq '.ran'
@@ -286,25 +253,14 @@ RSpec.describe OneTimeTasker::TasksRunner do
       expect(subject.default_log_facility_tag).to eq described_class.name
     end
 
-
     it ".default_log_activity_tag is 'Run onetime tasks'" do
       expect(subject.default_log_activity_tag).to eq 'Run onetime tasks'
     end
-
   end
 
-
   describe 'Acceptance testing' do
-
-
     describe 'many rake files' do
-
       include_context 'many task files'
-
-      before(:all) do
-        OneTimeTasker::TaskAttempt.delete_all
-      end
-
 
       before(:each) do
         # Use this same temp directory for all tests in this example group
@@ -333,7 +289,6 @@ RSpec.describe OneTimeTasker::TasksRunner do
         File.delete(@logfilename) if File.exist?(@logfilename)
       end
 
-
       it 'task attempts recorded' do
         expect(subject).to have_received(:record_successful_task_attempt).with('shf:test:some_task_4', anything)
         expect(subject).to have_received(:record_successful_task_attempt).with('shf:test:some_task_1', anything)
@@ -349,9 +304,7 @@ RSpec.describe OneTimeTasker::TasksRunner do
       end
     end
 
-
     describe 'many rake files - run again after first run' do
-
       include_context 'many task files'
 
       before(:each) do
@@ -410,9 +363,6 @@ RSpec.describe OneTimeTasker::TasksRunner do
       it 'no successful rakefiles renamed' do
         expect(subject).not_to have_received(:rename_rakefile)
       end
-
     end
-
   end
-
 end

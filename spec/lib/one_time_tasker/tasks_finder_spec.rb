@@ -20,7 +20,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
 
   include_context 'simple rake task files maker'
 
-
   let(:logfilepath) { LogfileNamer.name_for(described_class) }
 
   Q1_DIR = '2019_Q1' unless defined?(Q1_DIR)
@@ -29,7 +28,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
   BLORF2_DIR = 'blorf2' unless defined?(BLORF2_DIR)
 
   RAKEFILENAME = 'test.rake' unless defined?(RAKEFILENAME)
-
 
   before(:each) do
     @logfile_for_subject = LogfileNamer.name_for(described_class)
@@ -52,9 +50,7 @@ RSpec.describe OneTimeTasker::TasksFinder do
 
 
   describe 'Unit tests' do
-
     describe 'initialize' do
-
       it 'sets a log if one is given' do
         given_log = double('TaggedLogger')
 
@@ -65,7 +61,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
         expect(new_tasks_finder.log).to eq given_log
       end
 
-
       it 'creates a tasks_updater to use' do
         expect(OneTimeTasker::TasksFinder).to receive(:new).and_call_original
 
@@ -74,9 +69,7 @@ RSpec.describe OneTimeTasker::TasksFinder do
       end
     end
 
-
     describe '.files_with_tasks_to_run' do
-
       it 'resets all tasks known to the finder' do
         allow(subject).to receive(:set_or_create_log)
         allow(subject).to receive(:set_and_log_duplicate_tasks)
@@ -86,7 +79,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
         expect(subject).to receive(:clear_all_tasks_and_rakefiles)
         subject.files_with_tasks_to_run
       end
-
 
       it 'sets the tasks already run' do
         allow(subject).to receive(:clear_all_tasks_and_rakefiles)
@@ -109,7 +101,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
       end
 
       it 'returns a Hash: key = rakefile name, value = EvaluatedRakeFile' do
-
         # Create 1 .rake file in the directory
         make_simple_rakefiles_under_subdir(subject.tasks_directory, '.', 1)
 
@@ -118,13 +109,9 @@ RSpec.describe OneTimeTasker::TasksFinder do
         expect(result.values.first).to be_a OneTimeTasker::EvaluatedRakeFile
       end
 
-
       describe 'logs an error if one is raised and there is a log file' do
-
         context 'there is a log file' do
-
           it 'error is written to the log file' do
-
             logname = LogfileNamer.name_for('tasks_finder_spec_writes_error')
             File.delete(logname) if File.exist?(logname)
             task_finder_spec_log = ActivityLogger.open(logname, 'task_finder_spec', 'error raised is logged', true)
@@ -145,21 +132,16 @@ RSpec.describe OneTimeTasker::TasksFinder do
             end
           end
         end
-
       end
-
     end
 
-
     describe '.rakefiles_with_tasks_to_run' do
-
       it 'empty if there are no tasks to run' do
         allow(subject).to receive(:all_tasks).and_return([])
         allow(subject).to receive(:all_rakefiles).and_return([])
 
         expect(subject.rakefiles_with_tasks_to_run).to be_empty
       end
-
 
       it 'includes only rakefiles with tasks to be run' do
 
@@ -238,12 +220,9 @@ RSpec.describe OneTimeTasker::TasksFinder do
         expect(actual_rakefiles_with_tasks).to be_a Hash
         expect(actual_rakefiles_with_tasks.values.first).to be_a OneTimeTasker::EvaluatedRakeFile
       end
-
     end
 
-
     describe '.clear_all_tasks_and_rakefiles' do
-
       before(:each) do
         # Create 1 .rake file in the directory
         make_simple_rakefiles_under_subdir(subject.tasks_directory, '.', 1)
@@ -261,14 +240,10 @@ RSpec.describe OneTimeTasker::TasksFinder do
         subject.clear_all_tasks_and_rakefiles
         expect(subject.all_tasks).to be_empty
       end
-
     end
 
-
     describe '.add_rakefile_and_tasks' do
-
       describe 'we already have an EvaluatedRakeFile for this rake file name' do
-
         before(:each) do
           # Create 1 .rake file in the directory
           make_simple_rakefiles_under_subdir(subject.tasks_directory, '.', 1)
@@ -284,7 +259,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
           @existing_rakefile_name = File.join(@base_dir, 'test0.rake')
           @existing_task_name = 'shf:test:task0'
         end
-
 
         it 'does not add a brand new EvaluatedRakefile to our list of rakefiles' do
           new_task_names = %w(task1)
@@ -302,11 +276,9 @@ RSpec.describe OneTimeTasker::TasksFinder do
 
           expect(actual_ev_rakefile.all_tasks.map(&:name)).to match_array([@existing_task_name] + new_task_names)
         end
-
       end
 
       describe 'we do not have an EvaluatedRakefile for this rake file name' do
-
         it 'adds a new EvaluatedRakefile to our list of rakefiles' do
           expect(subject.all_rakefiles).to be_empty
           expect(subject.all_tasks).to be_empty
@@ -321,14 +293,10 @@ RSpec.describe OneTimeTasker::TasksFinder do
           expect(actual_ev_rakefile.filename).to eq new_rakefile_name
           expect(actual_ev_rakefile.all_tasks.map(&:name)).to match_array(new_task_names)
         end
-
       end
-
     end
 
-
     describe '.onetime_rake_files' do
-
       it 'empty if the onetime path does not exist' do
         subject.tasks_directory = BLORF_DIR
         expect(subject.onetime_rake_files).to be_empty
@@ -371,12 +339,9 @@ RSpec.describe OneTimeTasker::TasksFinder do
 
         expect(subject.onetime_rake_files).to be_empty
       end
-
     end
 
-
     describe '.get_tasks_from_rakefiles' do
-
       it 'an empty list if no rakefiles' do
         expect(Dir.children(subject.tasks_directory)).to be_empty
         expect(subject.get_tasks_from_rakefiles).to be_empty
@@ -394,7 +359,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
         expect(subject.get_tasks_from_rakefiles).to be_empty
       end
 
-
       it 'returns all tasks' do
 
         # Create 1 .rake file in the directory
@@ -405,7 +369,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
 
         expect(rakefile_tasks).to match_array subject.all_tasks
       end
-
 
       it 'it adds an EvalutedRakeFile for each new rakefile read in' do
 
@@ -419,9 +382,7 @@ RSpec.describe OneTimeTasker::TasksFinder do
         expect(subject.all_rakefiles.size).to eq 1
       end
 
-
       describe 'tasks in many .rake files' do
-
         include_context 'many task files'
 
         before(:each) { make_many_task_files(subject.tasks_directory) }
@@ -452,16 +413,12 @@ RSpec.describe OneTimeTasker::TasksFinder do
       end
     end
 
-
     describe '.set_and_log_tasks_already_ran' do
-
       it 'returns an empty list and logs nothing if list is empty' do
         expect(subject.set_and_log_tasks_already_ran([])).to be_empty
       end
 
-
       describe 'list of tasks to check is not empty' do
-
         before(:each) do
           # previously run successful tasks:
           allow(subject).to receive(:successful_task_attempts)
@@ -487,9 +444,7 @@ RSpec.describe OneTimeTasker::TasksFinder do
           allow(@successful_attempt).to receive(:attempted_on).and_return(@successful_time)
         end
 
-
         describe 'no successful task attempt found for a task' do
-
           before(:each) { allow(subject).to receive(:find_successful_attempt_for_task).and_return(nil) }
 
 
@@ -500,14 +455,10 @@ RSpec.describe OneTimeTasker::TasksFinder do
 
             subject.set_and_log_tasks_already_ran(@tasks_to_check)
           end
-
         end
 
-
         describe 'found a successful task attempt for a task' do
-
           before(:each) { allow(subject).to receive(:find_successful_attempt_for_task).and_return(@successful_attempt) }
-
 
           it 'finds the first successful task attempt for each task' do
             expect(subject).to receive(:find_successful_attempt_for_task).with(@ev_task0)
@@ -524,7 +475,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
 
             subject.set_and_log_tasks_already_ran(@tasks_to_check)
           end
-
         end
 
         it 'returns the previously run tasks, may include duplicates' do
@@ -543,23 +493,17 @@ RSpec.describe OneTimeTasker::TasksFinder do
 
           expect(subject.set_and_log_tasks_already_ran(tasks_to_check).map { |t| [t.name, t.filename] }).to match_array(expected_tasks.map { |t| [t.name, t.filename] })
         end
-
       end
-
     end
 
-
     describe '.set_and_log_duplicate_tasks' do
-
       @tasks_directory = Dir.mktmpdir('test-onetime_rake_files')
 
       before(:each) do
         subject.tasks_directory = @tasks_directory
       end
 
-
       describe 'no duplicates' do
-
         before(:each) do
           @ev_task1 = OneTimeTasker::EvaluatedRakeTask.new('task1', @q1_rakefile)
           @ev_task2 = OneTimeTasker::EvaluatedRakeTask.new('task2', @q2_rakefile)
@@ -579,9 +523,7 @@ RSpec.describe OneTimeTasker::TasksFinder do
         end
       end
 
-
       describe 'one taskname is duplicated 3 times' do
-
         duplicated_task_name = 'shf:test:task0'
 
         before(:each) do
@@ -598,14 +540,12 @@ RSpec.describe OneTimeTasker::TasksFinder do
         end
 
         it 'tells the tasks manager to set and log each of the duplicates' do
-
           @duplicated_tasks.each do |duplicated_task|
             expect(subject.tasks_updater).to receive(:set_and_log_task_as_duplicate).with(duplicated_task, @duplicated_tasks)
           end
 
           subject.set_and_log_duplicate_tasks(@all_ev_tasks)
         end
-
 
         it 'duplicate tasks are correct' do
           expected_dup_tasks = [@ev_dup1_task, @ev_dup2_task, @ev_dup3_task]
@@ -614,14 +554,10 @@ RSpec.describe OneTimeTasker::TasksFinder do
           expect(actual_dup_tasks.map(&:name)).to match_array(expected_dup_tasks.map(&:name))
           expect(actual_dup_tasks.map { |dup| [dup.name, dup.filename] }.flatten).to match_array(expected_dup_tasks.map { |dup| [dup.name, dup.filename] }.flatten)
         end
-
       end
 
-
       describe 'multiple tasknames are duplicated' do
-
         it 'duplicated tasks are correct' do
-
           duplicated_task_name0 = 'shf:test:dup0'
           duplicated_task_name1 = 'shf:test:dup1'
           duplicated_task_name2 = 'shf:test:dup2'
@@ -657,9 +593,7 @@ RSpec.describe OneTimeTasker::TasksFinder do
           expect(actual_dup_tasks.map { |dup| [dup.name, dup.filename] }.flatten).to match_array(expected_dup_tasks.map { |dup| [dup.name, dup.filename] }.flatten)
         end
       end
-
     end
-
 
     # noinspection RubyQuotedStringsInspection
     it "default_tasks_directory is File.join(Rails.root, 'lib', 'tasks', 'one_time')" do
@@ -667,29 +601,20 @@ RSpec.describe OneTimeTasker::TasksFinder do
       expect(new_finder.tasks_directory).to eq File.join(Rails.root, 'lib', 'tasks', 'one_time')
     end
 
-
     it 'default_log_facility_tag is OneTimeTasker::TasksFinder (the class name)' do
       expect(subject.default_log_facility_tag).to eq described_class.name
     end
-
-
-
   end
 
-
   describe 'Acceptance tests' do
-
     describe 'Many task files - has duplicates and tasks already run' do
-
       include_context 'many task files'
 
       LogfileNamer.name_for(described_class)
 
-
       let(:base_dir) { subject.tasks_directory }
 
       before(:all) do
-
         # Use this same temp directory for all tests in this example group
         # instead of creating a new one for every test.  (IOW, override how
         # it's done in the before(:each) block for this entire RSpec.)
@@ -698,13 +623,11 @@ RSpec.describe OneTimeTasker::TasksFinder do
         #   described_class.tasks_directory = @all_tests_base_dir
 
         make_many_task_files(@all_tests_base_dir)
-
-        create_5_successful_task_attempts(@all_tests_base_dir)
-
       end
 
-
       before(:each) do
+        create_5_successful_task_attempts(@all_tests_base_dir)
+
         subject.tasks_directory = @all_tests_base_dir
 
         # Override the before(:each) block for the whole RSpec so that we can
@@ -712,7 +635,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
         @tasks_directory = @all_tests_base_dir
         subject.tasks_directory = @tasks_directory
       end
-
 
       let(:expected_already_ran_log_entries) {
         [
@@ -745,7 +667,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
           scoped_task(SOMETASK5) => [File.absolute_path(File.join(subject.tasks_directory, Q1_DIR)),
                                      File.absolute_path(File.join(subject.tasks_directory, BLORF2_DIR))] }
       }
-
 
       let(:expected_tasks_list) {
         expected_tasks = all_evaluated_tasks_in_files(subject.tasks_directory)
