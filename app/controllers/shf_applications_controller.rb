@@ -121,8 +121,6 @@ class ShfApplicationsController < ApplicationController
 
     if all_valid && @shf_application.save
 
-      send_new_app_emails(@shf_application)
-
       if process_upload_files_without_error?(params)
 
         unless set_flash_messages_for_missing_application_files?(@shf_application,
@@ -140,6 +138,7 @@ class ShfApplicationsController < ApplicationController
         render :edit
       end
 
+      send_new_app_emails(@shf_application)
     else
       create_or_update_error(t('.error'), companies_and_numbers, numbers_str, :new)
     end
