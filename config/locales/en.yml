@@ -1792,9 +1792,9 @@ en:
         required_to_save_changes: (required to save changes)
         leave_blank_if_no_change: "leave blank if there's no change"
         submit_button_label: *update
-        delete_my_account: Delete my account
+        delete_my_account: Delete your account
         unregister: Unregister
-        confirm_are_you_sure: Are you sure your want to DELETE your account?
+        confirm_are_you_sure: Are you sure you want to DELETE your account?
         back: *back
         success: Your account has been updated successfully
         password_header: Change password
