@@ -1796,7 +1796,7 @@ sv:
         current_password: Nuvarande lösenord
         required_to_save_changes: (behövs för att spara ändringar)
         submit_button_label: *update
-        delete_my_account: Ta bort mitt konto
+        delete_your_account: Radera ditt konto
         unregister: Avregistrera dig
         confirm_are_you_sure: Är du säker på att du vill radera ditt konto?
         back: *back

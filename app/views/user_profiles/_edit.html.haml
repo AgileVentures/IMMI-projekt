@@ -84,4 +84,4 @@
     %hr
       .text-center
         %p
-          #{button_to t('delete_my_account', scope: i18n_scope), registration_path('user'), class:'btn btn-sm btn-danger',  data: { confirm: t('confirm_are_you_sure', scope: i18n_scope) }, method: :delete}
+          #{button_to t('delete_your_account', scope: i18n_scope), registration_path('user'), class:'btn btn-sm btn-danger',  data: { confirm: t('confirm_are_you_sure', scope: i18n_scope) }, method: :delete}
