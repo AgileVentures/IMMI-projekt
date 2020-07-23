@@ -412,6 +412,9 @@ sv:
     progress_bar:
       complete: *complete
 
+  about_info:
+    title: Om denna webbplats
+    version: version
 
   address_visibility:
     street_address: *street

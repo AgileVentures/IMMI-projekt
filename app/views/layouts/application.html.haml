@@ -74,3 +74,5 @@
       = yield
 
       = render 'cookies_eu/consent_banner', link: 'https://sverigeshundforetagare.se/cookies/', target: '_blank'
+
+      = render 'admin_only/about_modal' if current_user.admin?

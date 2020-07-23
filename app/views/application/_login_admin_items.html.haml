@@ -1,0 +1,18 @@
+-# Admin only menu items for the login menu
+- nav_link_class = 'nav-link'
+- if current_user.admin?
+  %li
+    = link_to t('menus.nav.admin.app_configuration'), admin_only_app_configuration_path, class: nav_link_class
+  %li
+    = link_to t('menus.nav.admin.master_checklists'), admin_only_master_checklists_path, class: nav_link_class
+
+  %li
+    = link_to t('menus.nav.admin.dashboard'), admin_only_dashboard_path, class: nav_link_class
+
+  %li
+    = link_to t('about') + '...', '#', class: nav_link_class, data: { toggle: 'modal', target: '#about-info-modal' }
+
+
+  - unless @user.nil?
+    %li
+      = link_to t('admin_only.user_profile.edit.become_this_user'), admin_only_become_user_path(@user), class: nav_link_class
