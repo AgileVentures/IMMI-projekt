@@ -482,6 +482,7 @@ sv:
       enter_company_number: Ange ditt företagsnummer (eller skapa ett nytt
                              företag om det inte finns i systemet)
       contact_email: *contact_email
+      new_company_number: Nytt företagsnummer
 
       can_be_same_email: Kan vara samma som du loggar in med, men behöver inte vara det.
       application_dog_category: &application_dog_category "Ansöker som:"

@@ -12,6 +12,10 @@ When "I click on{optional_string} {capture_string}{optional_string}" do |ordinal
 
   index = ordinal ? [0, 1, 2, 3, 4].send(ordinal.lstrip) : 0
 
+  if Capybara.current_driver == (:selenium || :selenium_browser)
+    page.execute_script("$('.modal').removeClass('fade');")
+  end
+
   case type
     when 'link'
       all(:link, element)[index].click

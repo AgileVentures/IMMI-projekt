@@ -127,7 +127,7 @@ Feature: Edit SHF Application
     And I should see t("shf_applications.uploads.no_files")
 
 
-  @selenium @skip_ci_test
+  @selenium
   Scenario: Create 2nd company, file delivery via email, user sees success and deliver-files reminder
     Given I am logged in as "emma@random.com"
     Given I am on the "edit application" page

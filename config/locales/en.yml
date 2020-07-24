@@ -477,6 +477,7 @@ en:
       enter_company_number: Enter your company number (or create a new company
                              if not yet in the system)
       contact_email: *contact_email
+      new_company_number: New company number
 
       can_be_same_email: Can be the same that you logged in with, but need not be.
       application_dog_category: &application_dog_category "Services You Provide"
