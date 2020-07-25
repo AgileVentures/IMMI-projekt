@@ -29,7 +29,7 @@ Feature: Admin edits user profile
     And I should see "member@shf.com"
     Then I click the icon with CSS class "edit" for the row with "member@shf.com"
     And I should see t("devise.registrations.edit.edit_profile_for_title", user: 'mary member')
-    And I should not see t("devise.registrations.edit.delete_my_account")
+    And I should not see t("devise.registrations.edit.delete_your_account")
     And I should see t("admin_only.user_profile.edit.delete_this_user", user: "mary member")
 
 
