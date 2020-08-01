@@ -45,8 +45,8 @@ Feature: New Applicant gets an email acknowledging their application
 
     Then "emma@happymutts.com" should receive an email
     And I open the email
-    And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
-    And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
+    And I should see ""Sveriges Hundföretagare" <from@example.org>" in the email "from" header
+    And I should see ""Sveriges Hundföretagare" <reply@example.org>" in the email "reply-to" header
     And I should see t("mailers.shf_application_mailer.acknowledge_received.subject") in the email subject
     And I should see t("mailers.shf_application_mailer.acknowledge_received.message_text") in the email body
 
@@ -84,7 +84,7 @@ Feature: New Applicant gets an email acknowledging their application
     And "emma@happymutts.com" should receive an email
 
     When I open the email
-    And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
+    And I should see ""Sveriges Hundföretagare" <from@example.org>" in the email "from" header
     And I should see t("shf_applications.uploads.no_files") in the email body
     And I should not see t("shf_applications.uploads.files_uploaded") in the email body
 
@@ -106,7 +106,7 @@ Feature: New Applicant gets an email acknowledging their application
     And "emma@happymutts.com" should receive an email
 
     When I open the email
-    Then I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
+    Then I should see ""Sveriges Hundföretagare" <from@example.org>" in the email "from" header
     And I should see t("shf_applications.uploads.files_uploaded") in the email body
     And I should not see t("shf_applications.uploads.no_files") in the email body
     And I should see "diploma.pdf" in the email body

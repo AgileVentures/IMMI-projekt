@@ -1,7 +1,5 @@
 require 'rails_helper'
-
-# rails_helper is needed because TasksFinder uses LogfileNamer
-# (LogfileNamer uses Rails.env)
+# rails_helper is needed because this uses TaskAttempts, which are ActiveRecords
 
 
 lib_dir = File.join(__dir__, '..', '..', '..', 'lib',)
@@ -15,12 +13,11 @@ require_relative 'shared_context/simple_rake_task_files_maker'
 require_relative 'shared_context/mock_rake_task'
 
 
-
 RSpec.describe OneTimeTasker::TasksFinder do
 
   include_context 'simple rake task files maker'
 
-  let(:logfilepath) { LogfileNamer.name_for(described_class) }
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   Q1_DIR = '2019_Q1' unless defined?(Q1_DIR)
   Q2_DIR = '2019_Q2' unless defined?(Q2_DIR)
@@ -30,10 +27,11 @@ RSpec.describe OneTimeTasker::TasksFinder do
   RAKEFILENAME = 'test.rake' unless defined?(RAKEFILENAME)
 
   before(:each) do
-    @logfile_for_subject = LogfileNamer.name_for(described_class)
-    File.delete(@logfile_for_subject) if File.file?(@logfile_for_subject)
-    evaluated_task_updater_logfn = LogfileNamer.name_for(OneTimeTasker::EvaluatedTasksStateUpdater)
-    File.delete(evaluated_task_updater_logfn) if File.file?(evaluated_task_updater_logfn)
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+
     @tasks_directory = Dir.mktmpdir('test-onetime_rake_files')
     subject.tasks_directory = @tasks_directory
 
@@ -42,23 +40,15 @@ RSpec.describe OneTimeTasker::TasksFinder do
     @blorf_rakefile = File.absolute_path(File.join(@tasks_directory, BLORF_DIR, RAKEFILENAME))
   end
 
-  after(:each) do
-    File.delete(@logfile_for_subject) if File.file?(@logfile_for_subject)
-    evaluated_task_updater_logfn = LogfileNamer.name_for(OneTimeTasker::EvaluatedTasksStateUpdater)
-    File.delete(evaluated_task_updater_logfn) if File.file?(evaluated_task_updater_logfn)
-  end
-
 
   describe 'Unit tests' do
     describe 'initialize' do
       it 'sets a log if one is given' do
-        given_log = double('TaggedLogger')
-
         expect(OneTimeTasker::TasksFinder).to receive(:new)
-                                                  .with(given_log).and_call_original
+                                                  .with(mock_log).and_call_original
 
-        new_tasks_finder = OneTimeTasker::TasksFinder.new(given_log)
-        expect(new_tasks_finder.log).to eq given_log
+        new_tasks_finder = OneTimeTasker::TasksFinder.new(mock_log)
+        expect(new_tasks_finder.log).to eq mock_log
       end
 
       it 'creates a tasks_updater to use' do
@@ -112,24 +102,16 @@ RSpec.describe OneTimeTasker::TasksFinder do
       describe 'logs an error if one is raised and there is a log file' do
         context 'there is a log file' do
           it 'error is written to the log file' do
-            logname = LogfileNamer.name_for('tasks_finder_spec_writes_error')
-            File.delete(logname) if File.exist?(logname)
-            task_finder_spec_log = ActivityLogger.open(logname, 'task_finder_spec', 'error raised is logged', true)
-            task_finder_with_log = described_class.new(task_finder_spec_log, logging: true)
+
+            task_finder_with_log = described_class.new(mock_log, logging: true)
             task_finder_with_log.tasks_directory = @tasks_directory
 
             # stub methods:
             allow(task_finder_with_log).to receive(:set_and_log_duplicate_tasks).and_raise(NoMethodError)
             allow(task_finder_with_log).to receive(:set_and_log_tasks_already_ran)
 
+            expect(mock_log).to receive(:error).with('Error during OneTimeTasker::TasksFinder  files_with_tasks_to_run!  NoMethodError')
             expect { task_finder_with_log.files_with_tasks_to_run }.to raise_error(NoMethodError)
-            task_finder_spec_log.close
-
-            if File.exist?(logname)
-              log_contents = File.read(logname)
-              expect(log_contents).to match(/\[error\] Error during #{described_class}(\s+)files_with_tasks_to_run\!(\s+)NoMethodError/)
-              File.delete(logname)
-            end
           end
         end
       end
@@ -609,8 +591,6 @@ RSpec.describe OneTimeTasker::TasksFinder do
   describe 'Acceptance tests' do
     describe 'Many task files - has duplicates and tasks already run' do
       include_context 'many task files'
-
-      LogfileNamer.name_for(described_class)
 
       let(:base_dir) { subject.tasks_directory }
 

@@ -1,28 +1,21 @@
 require 'rails_helper'
 
-require 'shared_examples/shared_conditions'
-require 'shared_context/activity_logger'
 require 'shared_context/expect_tar_has_entries'
 require 'matchers/matcher_file_set_backup'
 
 RSpec.describe Backup, type: :model do
 
-  before(:each) do
-    @logfilename = LogfileNamer.name_for(Condition)
-    File.delete(@logfilename) if File.exist?(@logfilename)
+  let(:mock_log) { instance_double("ActivityLogger") }
 
+  before(:each) do
     # stub actually sending Slack notifications
     allow(SHFNotifySlack).to receive(:notification)
   end
 
-  after(:each) do
-    File.delete(@logfilename) if File.exist?(@logfilename)
-  end
 
 
   describe 'Acceptance tests' do
 
-    include_context 'create logger'
     include_context 'expect tar file has entries'
 
 
@@ -122,6 +115,11 @@ RSpec.describe Backup, type: :model do
                                                                         .and_return(@notes_sources)
       # destination for the backup files
       @backup_dir = Dir.mktmpdir('backup-dir')
+
+      allow(ActivityLogger).to receive(:new).and_return(mock_log)
+      allow(mock_log).to receive(:info)
+      allow(mock_log).to receive(:record)
+      allow(mock_log).to receive(:close)
     end
 
 
@@ -216,15 +214,13 @@ RSpec.describe Backup, type: :model do
       expect(described_class).to receive(:delete_excess_backup_files)
                                      .with("#{expected_fset_code_backup_base_fname}.*", 3)
 
+
+      expect(mock_log).not_to receive(:error)
+
       # Run the backup
       timestamp = hourstamp
       run_backup_condition(backup_condition)
 
-
-      # no errors in the log file
-      logfile_contents = File.read(@logfilename)
-      expect(logfile_contents).not_to match(/error/),
-                                      "expected Logfile not to include 'error' but it does:\n#{logfile_contents}"
 
       # expect the backup files to be in the backup directory
       expect(timestamped_file_exists?(@backup_dir,
@@ -258,15 +254,17 @@ RSpec.describe Backup, type: :model do
       expect(SHFNotifySlack).not_to receive(:new)
       expect(SHFNotifySlack).not_to receive(:notification)
 
+      allow(ActivityLogger).to receive(:new).and_return(mock_log)
+      allow(mock_log).to receive(:info)
+      allow(mock_log).to receive(:record)
+      allow(mock_log).to receive(:close)
+
+      expect(mock_log).not_to receive(:error)
+
       # Run the backup
       timestamp = hourstamp
       run_backup_condition(backup_condition)
 
-
-      # no errors in the log file
-      logfile_contents = File.read(@logfilename)
-      expect(logfile_contents).not_to match(/error/),
-                                      "expected Logfile not to include 'error' but it does:\n#{logfile_contents}"
 
       # expect the backup files to be in the backup directory
       expect(timestamped_file_exists?(@backup_dir,
@@ -305,15 +303,17 @@ RSpec.describe Backup, type: :model do
       expect(described_class).to receive(:delete_excess_backup_files)
                                      .with("#{expected_db_backup_base_fn}.*", 5)
 
+      allow(ActivityLogger).to receive(:new).and_return(mock_log)
+      allow(mock_log).to receive(:info)
+      allow(mock_log).to receive(:record)
+      allow(mock_log).to receive(:close)
+
+      expect(mock_log).not_to receive(:error)
+
       # Run the backup
       timestamp = hourstamp
       run_backup_condition(backup_condition_all_dirs)
 
-
-      # no errors in the log file
-      logfile_contents = File.read(@logfilename)
-      expect(logfile_contents).not_to match(/error/),
-                                      "expected Logfile not to include 'error' but it does:\n#{logfile_contents}"
 
       # Expect the db backup file to be in the backup directory
       # (It's the only backup file that is _not_ a FileSet.)
@@ -374,12 +374,12 @@ RSpec.describe Backup, type: :model do
         expect(SHFNotifySlack).to receive(:failure_notification)
                                       .with('Backup', text: expected_error_text)
 
+        # An error will be logged
+        expect(mock_log).to receive(:error).with(expected_error_text)
+
         # Run the backup
         timestamp = hourstamp
         run_backup_condition(backup_condition)
-
-        # There will be errors in the log file
-        expect(File.read(@logfilename)).to match(expected_error_text)
 
         # expect only the successful backup files to be in the backup directory
         expect(timestamped_file_exists?(@backup_dir,
@@ -414,13 +414,13 @@ RSpec.describe Backup, type: :model do
         expect(SHFNotifySlack).to receive(:failure_notification).with(anything, text: expected_error_text)
 
 
+        # An error will be logged
+        expect(mock_log).to receive(:error).with(expected_error_text)
+
         # Run the backup
         timestamp = hourstamp
         run_backup_condition(backup_condition)
 
-
-        # There will be errors in the log file
-        expect(File.read(@logfilename)).to match(expected_error_text)
 
         # expect the backup files to be in the backup directory
         expect(timestamped_file_exists?(@backup_dir,
@@ -454,12 +454,16 @@ RSpec.describe Backup, type: :model do
         # Slack notification should be sent
         expect(SHFNotifySlack).to receive(:failure_notification).with(anything, text: expected_error_text)
 
+        # An error will be logged
+        expect(mock_log).to receive(:error).with(expected_error_text)
+
+
         # Run the backup
         timestamp = hourstamp
         run_backup_condition(backup_condition)
 
         # The error was recorded in the log
-        expect(File.read(@logfilename)).to match(expected_error_text)
+        # expect(File.read(@logfilename)).to match(expected_error_text)
 
         # expect the backup files to be in the backup directory
         expect(timestamped_file_exists?(@backup_dir,
@@ -695,15 +699,6 @@ RSpec.describe Backup, type: :model do
 
     describe '.condition_response' do
 
-      class FakeLogger
-        def self.record(*args)
-        end
-
-
-        def self.error(*args)
-        end
-      end
-
       let(:backup_config) { { class_name: 'Backup',
                               timing: Backup::TIMING_EVERY_DAY,
                               days_to_keep: { code_backup: 4,
@@ -743,6 +738,11 @@ RSpec.describe Backup, type: :model do
         allow(described_class).to receive(:upload_file_to_s3)
         allow(described_class).to receive(:get_backup_files_pattern).and_call_original
         allow(described_class).to receive(:delete_excess_backup_files)
+
+        allow(ActivityLogger).to receive(:new).and_return(mock_log)
+        allow(mock_log).to receive(:info)
+        allow(mock_log).to receive(:record)
+        allow(mock_log).to receive(:close)
       end
 
       let(:expected_num_makers) { @created_backup_makers.size }
@@ -765,7 +765,7 @@ RSpec.describe Backup, type: :model do
             expect(described_class).to receive(:validate_timing).and_call_original
 
             # will log twice: once by ConditionResponder class, once by the Backup class. not ideal
-            expect(FakeLogger).to receive(:error).with(err_str)
+            expect(mock_log).to receive(:error).with(err_str)
 
             expect(SHFNotifySlack).to receive(:failure_notification)
                                           .with(described_class.name, text: err_str)
@@ -773,7 +773,7 @@ RSpec.describe Backup, type: :model do
             orig_on_false_positives_setting = RSpec::Expectations.configuration.on_potential_false_positives
             RSpec::Expectations.configuration.on_potential_false_positives = :nothing
 
-            expect { described_class.condition_response(backup_condition, FakeLogger) }
+            expect { described_class.condition_response(backup_condition, mock_log) }
                 .not_to raise_exception TimingNotValidError, err_str
 
             RSpec::Expectations.configuration.on_potential_false_positives = orig_on_false_positives_setting
@@ -784,13 +784,13 @@ RSpec.describe Backup, type: :model do
 
       it 'gets the backup_dir from the configuration' do
         expect(described_class).to receive(:backup_dir).with(backup_config).and_call_original
-        described_class.condition_response(backup_condition, FakeLogger)
+        described_class.condition_response(backup_condition, mock_log)
       end
 
       it 'creates backup makers given a configuration' do
         expect(described_class).to receive(:create_backup_makers)
                                        .with(backup_config).and_call_original
-        described_class.condition_response(backup_condition, FakeLogger)
+        described_class.condition_response(backup_condition, mock_log)
       end
 
       describe 'with each backup maker, it:' do
@@ -803,22 +803,22 @@ RSpec.describe Backup, type: :model do
           expect(described_class).to receive(:backup_target_fn)
                                          .with('BACKUP_DIR', 'files.tar')
 
-          described_class.condition_response(backup_condition, FakeLogger)
+          described_class.condition_response(backup_condition, mock_log)
         end
 
         it "logs a message that it is 'Backing up to: <the backup file>.<YYYY-mm-dd-HHMM-SSLLL-Z>.gz'" do
-          allow(FakeLogger).to receive(:record).with('info', /Moving (.*)/)
-          allow(FakeLogger).to receive(:record).with('info', /Pruning (.*)/)
+          allow(mock_log).to receive(:record).with('info', /Moving (.*)/)
+          allow(mock_log).to receive(:record).with('info', /Pruning (.*)/)
 
           time_to_mins_str = Time.now.strftime '%F-%H%M'
 
           # we created 2 DB backup makers
-          expect(FakeLogger).to receive(:record).twice
+          expect(mock_log).to receive(:record).twice
                                     .with('info', /Backing up to: BACKUP_DIR\/db_backup\.sql\.#{time_to_mins_str}-(.*)-Z\.gz/)
-          expect(FakeLogger).to receive(:record)
+          expect(mock_log).to receive(:record)
                                     .with('info', /Backing up to: BACKUP_DIR\/files\.tar\.#{time_to_mins_str}-(.*)-Z\.gz/)
 
-          described_class.condition_response(backup_condition, FakeLogger)
+          described_class.condition_response(backup_condition, mock_log)
         end
 
         it 'sends the backup method to each backup maker, which returns the name of the backup file created' do
@@ -826,42 +826,42 @@ RSpec.describe Backup, type: :model do
           expect(@db_backup_maker2).to receive(:backup)
           expect(@files_backup_maker).to receive(:backup)
 
-          described_class.condition_response(backup_condition, FakeLogger)
+          described_class.condition_response(backup_condition, mock_log)
 
         end
       end
 
       it "logs a message that it is 'Moving backup files to AWS S3'" do
-        allow(FakeLogger).to receive(:record).with('info', /Backing up to: (.*)/)
-        allow(FakeLogger).to receive(:record).with('info', /Pruning (.*)/)
+        allow(mock_log).to receive(:record).with('info', /Backing up to: (.*)/)
+        allow(mock_log).to receive(:record).with('info', /Pruning (.*)/)
 
-        expect(FakeLogger).to receive(:record).with('info', /Moving (.*)/)
-        described_class.condition_response(backup_condition, FakeLogger)
+        expect(mock_log).to receive(:record).with('info', /Moving (.*)/)
+        described_class.condition_response(backup_condition, mock_log)
       end
 
       it 'calls S3 credentials once' do
         expect(described_class).to receive(:get_s3_objects)
                                        .with(today).exactly(1).times
 
-        described_class.condition_response(condition, FakeLogger)
+        described_class.condition_response(condition, mock_log)
       end
 
       it 'calls upload to S3 once for each Backup maker ' do
         # if no files are in the config, there are only 2 backup makers
         expect(described_class).to receive(:upload_file_to_s3).exactly(expected_num_makers).times
 
-        described_class.condition_response(condition, FakeLogger)
+        described_class.condition_response(condition, mock_log)
       end
 
 
       describe 'finally it prunes older backups on local storage' do
 
         it "logs a message that it is 'Pruning older backups on local storage'" do
-          allow(FakeLogger).to receive(:record).with('info', /Backing up to: (.*)/)
-          allow(FakeLogger).to receive(:record).with('info', /Moving (.*)/)
+          allow(mock_log).to receive(:record).with('info', /Backing up to: (.*)/)
+          allow(mock_log).to receive(:record).with('info', /Moving (.*)/)
 
-          expect(FakeLogger).to receive(:record).with('info', /Pruning (.*)/)
-          described_class.condition_response(backup_condition, FakeLogger)
+          expect(mock_log).to receive(:record).with('info', /Pruning (.*)/)
+          described_class.condition_response(backup_condition, mock_log)
         end
 
 
@@ -875,7 +875,7 @@ RSpec.describe Backup, type: :model do
             expect(described_class).to receive(:get_backup_files_pattern)
                                            .with('BACKUP_DIR', 'files.tar')
 
-            described_class.condition_response(backup_condition, FakeLogger)
+            described_class.condition_response(backup_condition, mock_log)
           end
 
           it 'deletes excess backup files that were created by this backup_maker, keeping the number given in the configuration' do
@@ -886,7 +886,7 @@ RSpec.describe Backup, type: :model do
             expect(described_class).to receive(:delete_excess_backup_files)
                                            .with('BACKUP_DIR/files.tar.*', 99)
 
-            described_class.condition_response(backup_condition, FakeLogger)
+            described_class.condition_response(backup_condition, mock_log)
           end
 
         end
@@ -1127,15 +1127,15 @@ RSpec.describe Backup, type: :model do
         end
 
         it 'the error message followed the additional info is sent to the log' do
-          expect(FakeLogger).to receive(:error).with("#{@some_error} #{@more_info}")
-          described_class.log_and_notify(@some_error, FakeLogger, @more_info)
+          expect(mock_log).to receive(:error).with("#{@some_error} #{@more_info}")
+          described_class.log_and_notify(@some_error, mock_log, @more_info)
         end
 
         describe 'if it cannot write to the log' do
 
           before(:each) do
             @logging_error = IOError
-            allow(FakeLogger).to receive(:error)
+            allow(mock_log).to receive(:error)
                                      .and_raise(@logging_error)
           end
 
@@ -1149,7 +1149,7 @@ RSpec.describe Backup, type: :model do
 
             orig_on_false_positives_setting = RSpec::Expectations.configuration.on_potential_false_positives
             RSpec::Expectations.configuration.on_potential_false_positives = :nothing
-            expect { described_class.log_and_notify('original error', FakeLogger, use_slack_notification: true) }.not_to raise_error(@logging_error)
+            expect { described_class.log_and_notify('original error', mock_log, use_slack_notification: true) }.not_to raise_error(@logging_error)
             RSpec::Expectations.configuration.on_potential_false_positives = orig_on_false_positives_setting
           end
         end
@@ -1160,14 +1160,14 @@ RSpec.describe Backup, type: :model do
       describe 'sends a Slack failure notification' do
 
         before(:each) do
-          allow(FakeLogger).to receive(:error)
+          allow(mock_log).to receive(:error)
         end
 
         it 'text is the error followed by the additional info' do
           expect(SHFNotifySlack).to receive(:failure_notification)
                                         .with(described_class.name, text: "#{@some_error} #{@more_info}")
 
-          described_class.log_and_notify(@some_error, FakeLogger, @more_info, use_slack_notification: true)
+          described_class.log_and_notify(@some_error, mock_log, @more_info, use_slack_notification: true)
         end
 
         describe 'if it cannot send a notification' do
@@ -1179,16 +1179,16 @@ RSpec.describe Backup, type: :model do
           end
 
           it 'will also write the Slack notification error to the log' do
-            expect(FakeLogger).to receive(:error)
+            expect(mock_log).to receive(:error)
                                       .with('original error')
-            expect(FakeLogger).to receive(:error)
+            expect(mock_log).to receive(:error)
                                       .with("Slack error during #{described_class.name}.log_and_notify: #{@slack_error.inspect}")
 
-            expect { described_class.log_and_notify('original error', FakeLogger, use_slack_notification: true) }.to raise_error(@slack_error)
+            expect { described_class.log_and_notify('original error', mock_log, use_slack_notification: true) }.to raise_error(@slack_error)
           end
 
           it 'will raise the Slack error so the caller can handle it as needed' do
-            expect { described_class.log_and_notify('original error', FakeLogger, use_slack_notification: true) }.to raise_error(@slack_error)
+            expect { described_class.log_and_notify('original error', mock_log, use_slack_notification: true) }.to raise_error(@slack_error)
           end
         end
       end
@@ -1208,7 +1208,7 @@ RSpec.describe Backup, type: :model do
 
       it 'iterates through each item in the list with the yield' do
 
-        described_class.iterate_and_log_notify_errors(@strings, 'error during iteration test', FakeLogger, use_slack_notification: true) do |s|
+        described_class.iterate_and_log_notify_errors(@strings, 'error during iteration test', mock_log, use_slack_notification: true) do |s|
           @result_str << s
         end
 
@@ -1219,10 +1219,10 @@ RSpec.describe Backup, type: :model do
       it 'Slack error is raised so caller can do whatever is needed; iteration stops' do
 
         # We do not log the Slack error; caller can do that if appropriate
-        expect(FakeLogger).not_to receive(:error)
+        expect(mock_log).not_to receive(:error)
 
         expect {
-          described_class.iterate_and_log_notify_errors(@strings, 'during iteration test', FakeLogger) do |s|
+          described_class.iterate_and_log_notify_errors(@strings, 'during iteration test', mock_log) do |s|
             raise Slack::Notifier::APIError if s == 'b'
             @result_str << s
           end }.to raise_error(Slack::Notifier::APIError)
@@ -1238,9 +1238,9 @@ RSpec.describe Backup, type: :model do
         expected_error_str = "#{some_error} error during iteration test. Current item: \"b\""
 
         expect(SHFNotifySlack).to receive(:failure_notification).with(anything, text: expected_error_str)
-        expect(FakeLogger).to receive(:error).with(expected_error_str)
+        expect(mock_log).to receive(:error).with(expected_error_str)
 
-        described_class.iterate_and_log_notify_errors(@strings, 'error during iteration test', FakeLogger, use_slack_notification: true) do |s|
+        described_class.iterate_and_log_notify_errors(@strings, 'error during iteration test', mock_log, use_slack_notification: true) do |s|
           raise some_error if s == 'b'
           @result_str << s
         end

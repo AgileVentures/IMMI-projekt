@@ -1,16 +1,14 @@
 require 'rails_helper'
 require 'email_spec/rspec'
 require 'timecop'
-require 'shared_context/activity_logger'
-require 'shared_context/stub_email_rendering'
 
+require 'shared_context/stub_email_rendering'
 
 # Note that the described class is _not_ an ActiveRecord, so the database is not
 # automatically cleaned between examples.
 
 RSpec.describe CompanyEmailAlert do
 
-  include_context 'create logger'
 
   # define subject this way since this is a Singleton
   let(:subject) { described_class.instance }
@@ -81,15 +79,22 @@ RSpec.describe CompanyEmailAlert do
 
     include_context 'stub email rendering'
 
-
-    before(:each) do
-      subject.create_alert_logger(log)
-    end
+    let(:mock_log) { instance_double("ActivityLogger") }
 
     around(:each) do |example|
       Timecop.freeze(jan1)
       example.run
       Timecop.return
+    end
+
+
+    before(:each) do
+      allow(ActivityLogger).to receive(:new).and_return(mock_log)
+      allow(mock_log).to receive(:info)
+      allow(mock_log).to receive(:record)
+      allow(mock_log).to receive(:close)
+
+      subject.create_alert_logger(mock_log)
     end
 
 
@@ -105,13 +110,14 @@ RSpec.describe CompanyEmailAlert do
             .exactly(c2_2_members.current_members.size).times
             .and_call_original
 
+        expect(mock_log).to receive(:info).with("CompanyEmailAlert email sent to user id: #{member1_c2_exp_jun6.id} email: #{member1_c2_exp_jun6.email} company id: #{c2_2_members.id} name: #{c2_2_members.name}.")
+        expect(mock_log).to receive(:info).with("CompanyEmailAlert email sent to user id: #{member2_c2_exp_jun1.id} email: #{member2_c2_exp_jun1.email} company id: #{c2_2_members.id} name: #{c2_2_members.name}.")
+
         c2_2_members.current_members.each do | c2_2_member |
-          subject.send_email(c2_2_members, c2_2_member, log)
+          subject.send_email(c2_2_members, c2_2_member, mock_log)
         end
 
         expect(ActionMailer::Base.deliveries.size).to eq(c2_2_members.current_members.size)
-        expect(File.read(logfilepath)).to include("[info] CompanyEmailAlert email sent to user id: #{member1_c2_exp_jun6.id} email: #{member1_c2_exp_jun6.email} company id: #{c2_2_members.id} name: #{c2_2_members.name}.")
-        expect(File.read(logfilepath)).to include("[info] CompanyEmailAlert email sent to user id: #{member2_c2_exp_jun1.id} email: #{member2_c2_exp_jun1.email} company id: #{c2_2_members.id} name: #{c2_2_members.name}.")
       end
     end
 
@@ -127,13 +133,15 @@ RSpec.describe CompanyEmailAlert do
                                                     .exactly(c2_2_members.current_members.size).times
                                                     .and_return(Net::ProtocolError)
 
+        # These errors will be logged:
+        expect(mock_log).to receive(:error).with(/CompanyEmailAlert email ATTEMPT FAILED to user id: #{member1_c2_exp_jun6.id} email: #{member1_c2_exp_jun6.email} company id: #{c2_2_members.id} name: #{c2_2_members.name}\. undefined method `deliver_now' for Net::ProtocolError:Class Also see (.*)/)
+        expect(mock_log).to receive(:error).with(/CompanyEmailAlert email ATTEMPT FAILED to user id: #{member2_c2_exp_jun1.id} email: #{member2_c2_exp_jun1.email} company id: #{c2_2_members.id} name: #{c2_2_members.name}\./)
+
         c2_2_members.current_members.each do | member |
-          subject.send_email(c2_2_members, member, log)
+          subject.send_email(c2_2_members, member, mock_log)
         end
 
         expect(ActionMailer::Base.deliveries.size).to eq 0
-        expect(File.read(logfilepath)).to include("[error] CompanyEmailAlert email ATTEMPT FAILED to user id: #{member1_c2_exp_jun6.id} email: #{member1_c2_exp_jun6.email} company id: #{c2_2_members.id} name: #{c2_2_members.name}. undefined method `deliver_now' for Net::ProtocolError:Class Also see for possible info")
-        expect(File.read(logfilepath)).to include("[error] CompanyEmailAlert email ATTEMPT FAILED to user id: #{member2_c2_exp_jun1.id} email: #{member2_c2_exp_jun1.email} company id: #{c2_2_members.id} name: #{c2_2_members.name}.")
       end
     end
   end

@@ -65,7 +65,7 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     And I should see t("payments.success.success")
-    And "medlem@sverigeshundforetagare.se" should receive an email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
+    And "membership@example.org" should receive an email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
 
 
   Scenario: Already a member. Then H-Branding license payment is made, putting the New company into "good standing" and email is sent then.
@@ -78,7 +78,7 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     And I complete the branding payment for "NewCompany"
     Then I should see t("payments.success.success")
     And company number "2120000142" is paid through "2021-01-04"
-    And "medlem@sverigeshundforetagare.se" should receive an email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
+    And "membership@example.org" should receive an email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
 
 
   Scenario: Membership is granted, but company is not in good standing. No email sent.
@@ -90,7 +90,7 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     And I should see t("payments.success.success")
-    Then "medlem@sverigeshundforetagare.se" should receive no email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
+    Then "membership@example.org" should receive no email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
 
 
     # Company H-Branding fees are paid through 2022-11-30.
@@ -127,4 +127,4 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     And I complete the membership payment
     Then I should see t("payments.success.success")
 
-    And "medlem@sverigeshundforetagare.se" should receive no email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
+    And "membership@example.org" should receive no email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")

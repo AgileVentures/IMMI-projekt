@@ -13,7 +13,7 @@ class MembershipStatusCheck < ConditionResponder
       status_updater.revoke_user_membership(user)
 
       unless user.reload.member
-        log.record('info', "User #{user.id} (#{user.email}) membership revoked.")
+        log.info("User #{user.id} (#{user.email}) membership revoked.")
       end
 
     end

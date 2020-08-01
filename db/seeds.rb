@@ -21,7 +21,7 @@ SEEDING_LOG_FACILITY = 'db:seed' unless defined?(SEEDING_LOG_FACILITY)
 
 ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Init') do |log|
   unless ENV.has_key?('SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START')
-    ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START'] = UserChecklistManager.missing_membership_guidelines_reqd_start_date
+    ENV['SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START'] = UserChecklistManager.missing_membership_guidelines_reqd_start_date.to_s
 
     log.warn("****************************************************************************")
     log.warn("Using default for SHF_MEMBERSHIP_GUIDELINES_CHECKLIST_REQD_START: #{UserChecklistManager.missing_membership_guidelines_reqd_start_date}")

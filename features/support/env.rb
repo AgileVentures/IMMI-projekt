@@ -101,6 +101,13 @@ Before do
   # shush the ActivityLogger: Don't have it show every message to STDOUT.
   allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
 
+  # Mock the ActivityLogger
+  mock_log = instance_double("ActivityLogger")
+  allow(ActivityLogger).to receive(:new).and_return(mock_log)
+  allow(mock_log).to receive(:info)
+  allow(mock_log).to receive(:record)
+  allow(mock_log).to receive(:close)
+
   mock_the_app_configuration
 end
 

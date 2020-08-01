@@ -10,64 +10,49 @@ end
 RSpec.describe LogCreator do
 
   let(:subject) { TestLogCreator }
-  let(:created_logfilename) { ::LogfileNamer.name_for(subject) }
+
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   before(:each) do
-    logfilename = LogfileNamer.name_for(subject)
-    File.delete(logfilename) if File.exist?(logfilename)
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
   end
 
-  after(:each) do
-    logfilename = LogfileNamer.name_for(subject)
-    File.delete(logfilename) if File.exist?(logfilename)
-  end
 
   describe '.set_or_create_log' do
 
     context 'the given log is not nil' do
 
-      # This is probably some kind of Log in real life. This is sufficient for unit testing
-      given_log = 'blorf'
-
-      before(:each) do
-        expect(subject).not_to receive(:make_log)
-        subject.set_or_create_log(given_log)
-      end
-
       context 'logging == true' do
 
-        it 'uses the given log' do
+        it 'uses the given log (does not make one)' do
+          given_log = instance_double("ActivityLogger")
+          expect(subject).not_to receive(:make_log)
+
+          subject.set_or_create_log(given_log)
           expect(subject.log).to eq given_log
         end
 
-        # TODO shared test:
-        it 'writes to the given log' do
-
-          logfile_name = LogfileNamer.name_for('tasks_runner_spec')
-          File.delete(logfile_name) if File.exist?(logfile_name)
-
-          given_log = ActivityLogger.open(logfile_name,
-                                          'TaskRunner Spec',
-                                          'Given log is used')
-          subject.set_or_create_log(given_log)
-          given_log.close
-
-          file_contents = File.exist?(logfile_name) ? File.read(logfile_name) : 'log file for task_runner_spec does not exist'
-          expect(file_contents).to include('[TaskRunner Spec] [Given log is used] [info] Started at')
-          File.delete(logfile_name) if File.exist?(logfile_name)
-        end
-
         it 'this_created_the_log is false' do
+          subject.set_or_create_log(mock_log)
           expect(subject.this_created_the_log).to be_falsey
         end
       end
 
       context 'logging == false' do
-        it 'uses the given log' do
+
+        it 'uses the given log (does not make one)' do
+          given_log = instance_double("ActivityLogger")
+          expect(subject).not_to receive(:make_log)
+
+          subject.set_or_create_log(given_log, logging: false)
           expect(subject.log).to eq given_log
         end
 
         it 'this_created_the_log is false' do
+          subject.set_or_create_log(mock_log, logging: false)
           expect(subject.this_created_the_log).to be_falsey
         end
       end
@@ -80,8 +65,8 @@ RSpec.describe LogCreator do
 
         it 'creates an ActivityLogger' do
           expect(subject).to receive(:make_log).and_call_original
+          expect(ActivityLogger).to receive(:new)
           subject.set_or_create_log
-          expect(subject.log).to be_a(ActivityLogger)
         end
 
         it 'this_created_the_log is true' do
@@ -94,24 +79,9 @@ RSpec.describe LogCreator do
           subject.set_or_create_log
         end
 
-
-        it 'a log is created if none is given' do
-          # ensure none exists so that we verify what we want to verify
-          expect(File.exist?(created_logfilename)).to be_falsey
-
+        it 'opens the created log' do
+          expect(ActivityLogger).to receive(:open)
           subject.set_or_create_log
-          expect(File.exist?(created_logfilename)).to be_truthy
-        end
-
-        it 'writes to the created log' do
-
-          subject.set_or_create_log
-          created_log = subject.log
-          created_log.close
-
-          file_contents = File.exist?(created_logfilename) ? File.read(created_logfilename) : 'log file for task_runner_spec does not exist'
-          expect(file_contents).to include('[info] Started at')
-          File.delete(created_logfilename) if File.exist?(created_logfilename)
         end
 
         describe 'ActivityLogger facility tag' do
@@ -123,7 +93,7 @@ RSpec.describe LogCreator do
 
           it 'can be passed in and set' do
             expect(ActivityLogger).to receive(:open).with(anything, 'custom facility tag', anything)
-            subject.set_or_create_log(nil, log_facility_tag: 'custom facility tag')
+            subject.set_or_create_log(log_facility_tag: 'custom facility tag')
           end
         end
 
@@ -136,7 +106,7 @@ RSpec.describe LogCreator do
 
           it 'can be passed in and set' do
             expect(ActivityLogger).to receive(:open).with(anything, anything, 'custom activity tag')
-            subject.set_or_create_log(nil, log_activity_tag: 'custom activity tag')
+            subject.set_or_create_log(log_activity_tag: 'custom activity tag')
           end
 
         end
@@ -156,12 +126,8 @@ RSpec.describe LogCreator do
         end
 
         it 'logging: false = nothing is written to a log' do
-          # ensure none exists so that we verify what we want to verify
-          expect(File.exist?(LogfileNamer.name_for(subject))).to be_falsey
-
           expect(ActivityLogger).not_to receive(:open).with(LogfileNamer.name_for(subject), anything, anything)
           subject.set_or_create_log(logging: false)
-          expect(File.exist?(LogfileNamer.name_for(subject))).to be_falsey
         end
 
       end
@@ -173,7 +139,6 @@ RSpec.describe LogCreator do
   describe '.close_log_if_this_created_it' do
 
     let(:no_logger_log) { LogCreator::NoLogger }
-
 
     context 'log is not nil' do
       context 'this created the log' do

@@ -2,12 +2,11 @@ require 'rails_helper'
 require 'email_spec/rspec'
 
 require 'shared_examples/shared_conditions'
-require 'shared_context/activity_logger'
 
 
 RSpec.describe DinkursFetch, type: :model do
 
-  include_context 'create logger'
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   let(:condition) { build(:condition, timing: Backup::TIMING_EVERY_DAY) }
   let(:today) { Time.now.strftime '%Y-%m-%d' }
@@ -32,27 +31,26 @@ RSpec.describe DinkursFetch, type: :model do
       end
 
       it 'Fetches events for companies with dinkurs_id' do
-        expect{ described_class.condition_response(condition, log) }
+        allow(mock_log).to receive(:record)
+
+        expect{ described_class.condition_response(condition, mock_log) }
           .to change { company_with_dinkurs_id.events.count }.by(3)
       end
 
       it 'Writes to log file with events count' do
         company_with_dinkurs_id
 
-        described_class.condition_response(condition, log)
+        expect(mock_log).to receive(:record).with('info', "Company #{company_with_dinkurs_id.id}: 3 events.")
 
-        expect(File.read(logfilepath))
-          .to include "Company #{company_with_dinkurs_id.id}: " +
-                      "#{company_with_dinkurs_id.events.count} events."
+        described_class.condition_response(condition, mock_log)
       end
 
       it 'Does not write to log file for company without dinkurs_id' do
         company_without_dinkurs_id
 
-        described_class.condition_response(condition, log)
+        expect(mock_log).not_to receive(:record)
 
-        expect(File.read(logfilepath))
-          .not_to include "Company #{company_without_dinkurs_id.id}: "
+        described_class.condition_response(condition, mock_log)
       end
 
     end

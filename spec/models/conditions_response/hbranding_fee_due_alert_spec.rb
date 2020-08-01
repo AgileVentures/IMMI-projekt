@@ -1,16 +1,17 @@
 require 'rails_helper'
 require 'email_spec/rspec'
-require 'shared_context/activity_logger'
+
 require 'shared_context/stub_email_rendering'
 require 'shared_context/named_dates'
 
 
 RSpec.describe HBrandingFeeDueAlert do
 
-  include_context 'create logger'
   include_context 'named dates'
 
   subject  { described_class.instance }
+
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   let(:user) { create(:user, email: FFaker::InternetSE.disposable_email) }
 
@@ -21,6 +22,12 @@ RSpec.describe HBrandingFeeDueAlert do
   let(:timing) { HBrandingFeeDueAlert::TIMING_AFTER }
   let(:condition) { create(:condition, timing, config) }
 
+  before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+  end
 
 
   # All examples assume today is 1 December, 2018
@@ -388,7 +395,7 @@ RSpec.describe HBrandingFeeDueAlert do
 
 
     before(:each) do
-      subject.create_alert_logger(log)
+      subject.create_alert_logger(mock_log)
     end
 
 
@@ -399,15 +406,18 @@ RSpec.describe HBrandingFeeDueAlert do
 
       expect(paid_member_co.current_members.size).to eq 2
 
+      expect(mock_log).to receive(:info).with("HBrandingFeeDueAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
+      expect(mock_log).to receive(:info).with("HBrandingFeeDueAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
+
       Timecop.freeze(jan_1) do
         paid_member_co.current_members.each do | member |
-          subject.send_email(paid_member_co, member, log)
+          subject.send_email(paid_member_co, member, mock_log)
         end
       end
 
       expect(ActionMailer::Base.deliveries.size).to eq 2
-      expect(File.read(logfilepath)).to include("[info] HBrandingFeeDueAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
-      expect(File.read(logfilepath)).to include("[info] HBrandingFeeDueAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
+      # expect(File.read(logfilepath)).to include("[info] HBrandingFeeDueAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
+      # expect(File.read(logfilepath)).to include("[info] HBrandingFeeDueAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
     end
 
   end

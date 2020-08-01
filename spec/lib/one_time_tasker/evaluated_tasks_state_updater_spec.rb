@@ -15,12 +15,7 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
 
   include_context 'simple rake task files maker'
 
-  EV_TASKS_MANAGER_LOGS_DIR = File.join(__dir__, '..', '..', '..', 'log') unless defined?(EV_TASKS_MANAGER_LOGS_DIR)
-  @logfile_for_subject_base = File.join(EV_TASKS_MANAGER_LOGS_DIR, 'EvaluatedTasksStateUpdater')
-  @logfile_for_subject = "#{@logfile_for_subject_base}.log"
-
-  let(:logfilepath) { @logfile_for_subject }
-
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   Q1_DIR = '2019_Q1' unless defined?(Q1_DIR)
   Q2_DIR = '2019_Q2' unless defined?(Q2_DIR)
@@ -31,24 +26,15 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
 
 
   before(:each) do
-    @logfile_for_subject_base = File.join(EV_TASKS_MANAGER_LOGS_DIR, 'EvaluatedTasksStateUpdater')
-    @logfile_for_subject = "#{@logfile_for_subject_base}.log"
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
 
-    # @logfile_for_subject = LogfileNamer.name_for(described_class)
-    #  @logfile_for_subject = File.join(LOGS_DIR, 'EvaluatedTasksStateUpdater.log')
-
-    File.delete(@logfile_for_subject) if File.file?(@logfile_for_subject)
-    #
     @tasks_directory = Dir.mktmpdir('test-onetime_rake_files')
-    # subject.tasks_directory = @tasks_directory
-    #
     @q1_rakefile = File.absolute_path(File.join(@tasks_directory, Q1_DIR, RAKEFILENAME))
     @q2_rakefile = File.absolute_path(File.join(@tasks_directory, Q2_DIR, RAKEFILENAME))
     @blorf_rakefile = File.absolute_path(File.join(@tasks_directory, BLORF_DIR, RAKEFILENAME))
-  end
-
-  after(:each) do
-    File.delete(@logfile_for_subject) if File.file?(@logfile_for_subject)
   end
 
 
@@ -57,13 +43,11 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
     describe 'initialize' do
 
       it 'sets a log if one is given' do
-        given_log = double('TaggedLogger')
-
         expect(OneTimeTasker::EvaluatedTasksStateUpdater).to receive(:new)
-                                                                 .with(given_log).and_call_original
+                                                                 .with(mock_log).and_call_original
 
-        new_tasks_state_updater = OneTimeTasker::EvaluatedTasksStateUpdater.new(given_log)
-        expect(new_tasks_state_updater.log).to eq given_log
+        new_tasks_state_updater = OneTimeTasker::EvaluatedTasksStateUpdater.new(mock_log)
+        expect(new_tasks_state_updater.log).to eq mock_log
       end
     end
 
@@ -84,6 +68,7 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
       end
 
       it 'sets this as a duplicate for others' do
+        expect(mock_log).to receive(:error).with(/Duplicate task name!/)
         expect(@other_task).to receive(:add_duplicate).with(@given_task.filename)
         subject.set_and_log_task_as_duplicate(@given_task, @tasks_with_same_name)
       end
@@ -113,6 +98,7 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
       end
 
       it 'adds info about when it was previously successfully run' do
+        expect(mock_log).to receive(:error).with(/Task Already Ran/)
         expect(@given_task).to receive(:add_previous_run).with('successful source', @successful_time)
         subject.set_and_log_task_as_already_ran(@given_task, @successful_attempt)
       end
@@ -128,12 +114,8 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
 
     describe '.log_already_ran' do
 
-      it 'writes to the logfile with the task_already_ran_log_entry message' do
-        logname = @logfile_for_subject #LogfileNamer.name_for(described_class)
-        File.delete(logname) if File.exist?(logname)
-
-        task_finder_spec_log = ActivityLogger.open(logname, 'task_finder_spec', '.set_and_log_tasks_already_ran', false)
-        allow(subject).to receive(:log).and_return(task_finder_spec_log)
+      it 'writes a task_already_ran_log_entry message to the log' do
+        allow(subject).to receive(:log).and_return(mock_log)
 
         given_task = instance_double('OneTimeTasker::EvaluatedRakeTask')
         allow(given_task).to receive(:filename).and_return('source_filename1')
@@ -147,12 +129,8 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
 
         expect(subject).to receive(:task_already_ran_log_entry).and_call_original
 
+        expect(mock_log).to receive(:error).with(/Task Already Ran\: Task named 'already_ran\:task_name' in the file source_filename1\: Task has already been successfully run on (.*) from source\: successful source/)
         subject.log_already_ran(given_task, @successful_attempt)
-        task_finder_spec_log.close
-
-        expect(File.exist?(logname)).to be_truthy
-        @log_contents = File.read(logname)
-        expect(@log_contents).to match(/\[error\] Task Already Ran\: Task named 'already_ran\:task_name' in the file source_filename1\: Task has already been successfully run on (.*) from source\: successful source/)
       end
 
     end
@@ -161,12 +139,7 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
     describe '.log_as_duplicate' do
 
       it 'writes to the logfile with the duplicate_task_log_entry message' do
-
-        logname = @logfile_for_subject
-        File.delete(logname) if File.exist?(logname)
-
-        task_finder_spec_log = ActivityLogger.open(logname, 'task_finder_spec', '.set_and_log_tasks_already_ran', false)
-        allow(subject).to receive(:log).and_return(task_finder_spec_log)
+        allow(subject).to receive(:log).and_return(mock_log)
 
         given_task = instance_double('OneTimeTasker::EvaluatedRakeTask')
         allow(given_task).to receive(:filename).and_return('source_filename1')
@@ -174,12 +147,9 @@ RSpec.describe OneTimeTasker::EvaluatedTasksStateUpdater do
 
         expect(subject).to receive(:duplicate_task_log_entry).and_call_original
 
-        subject.log_as_duplicate(given_task)
-        task_finder_spec_log.close
+        expect(mock_log).to receive(:error).with(/Duplicate task name\! Task named 'dup\:task_name' in the file source_filename1\: This task is a duplicate: more than 1 task to be run has this task name\. This task cannot be run\./)
 
-        expect(File.exist?(logname)).to be_truthy
-        @log_contents = File.read(logname)
-        expect(@log_contents).to match(/\[error\] Duplicate task name\! Task named 'dup\:task_name' in the file source_filename1\: This task is a duplicate: more than 1 task to be run has this task name\. This task cannot be run\./)
+        subject.log_as_duplicate(given_task)
       end
     end
 

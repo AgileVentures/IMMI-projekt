@@ -2,12 +2,10 @@ require 'rails_helper'
 require 'email_spec/rspec'
 require 'timecop'
 
-require 'shared_context/activity_logger'
-
 
 RSpec.describe AdminEmailAlert, type: :model do
 
-  include_context 'create logger'
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   # define subject for this Singleton class
   let(:subject) { described_class.instance }
@@ -59,7 +57,7 @@ RSpec.describe AdminEmailAlert, type: :model do
       # expectation
       expect(subject).to receive(:take_action).exactly(all_users.size).times
 
-      subject.process_entities( all_users, log)
+      subject.process_entities( all_users, mock_log)
     end
 
     it 'does not send email if the entities list is empty' do
@@ -69,7 +67,7 @@ RSpec.describe AdminEmailAlert, type: :model do
       # expectation
       expect(subject).not_to receive(:take_action)
 
-      subject.process_entities([], log)
+      subject.process_entities([], mock_log)
     end
 
     describe 'sends email with the entities_list iff entities list is not empty AND send_alert_this_day? is true' do
@@ -84,7 +82,7 @@ RSpec.describe AdminEmailAlert, type: :model do
         # expectation
         expect(subject).to receive(:send_email).exactly(all_admins.size).times
 
-        subject.process_entities(all_users, log)
+        subject.process_entities(all_users, mock_log)
       end
 
       it 'send_alert_this_day? is false' do
@@ -97,7 +95,7 @@ RSpec.describe AdminEmailAlert, type: :model do
         # expectation
         expect(subject).not_to receive(:send_email)
 
-        subject.process_entities(all_users, log)
+        subject.process_entities(all_users, mock_log)
 
       end
 
@@ -129,7 +127,7 @@ RSpec.describe AdminEmailAlert, type: :model do
 
       expect(subject).to receive(:entities_list).and_call_original
 
-      subject.take_action(u1, log)
+      subject.take_action(u1, mock_log)
 
     end
 
@@ -139,7 +137,7 @@ RSpec.describe AdminEmailAlert, type: :model do
 
       expect(subject).not_to receive(:entities_list)
 
-      subject.take_action(u1, log)
+      subject.take_action(u1, mock_log)
     end
   end
 

@@ -1,13 +1,11 @@
 require 'rails_helper'
 
 require File.join( 'shared_examples', 'condition_responder_timing_shared')
-require 'shared_context/activity_logger'
 
 
 RSpec.describe ConditionResponder, type: :model do
 
-  include_context 'create logger'
-
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   describe '.condition_response' do
 
@@ -17,7 +15,7 @@ RSpec.describe ConditionResponder, type: :model do
                                       timing:     'before',
                                       config:     { days: [60, 30, 14, 2] })
 
-      expect { described_class.condition_response(condition, log) }.to raise_exception NoMethodError
+      expect { described_class.condition_response(condition, mock_log) }.to raise_exception NoMethodError
     end
 
   end
@@ -293,15 +291,15 @@ RSpec.describe ConditionResponder, type: :model do
     let(:timing) { ConditionResponder.get_timing(condition) }
 
     it 'does not raise exception if received timing == expected' do
-      expect(described_class).to receive(:validate_timing).with(:every_day, [:every_day], log)
+      expect(described_class).to receive(:validate_timing).with(:every_day, [:every_day], mock_log)
 
-      expect { ConditionResponder.confirm_correct_timing(:every_day, :every_day, log) }
+      expect { ConditionResponder.confirm_correct_timing(:every_day, :every_day, mock_log) }
         .not_to raise_error
     end
 
     it 'raises exception if received timing != expected' do
-      expect(described_class).to receive(:validate_timing).with(:not_a_valid_timing, [:every_day], log)
-      ConditionResponder.confirm_correct_timing(:not_a_valid_timing, :every_day, log)
+      expect(described_class).to receive(:validate_timing).with(:not_a_valid_timing, [:every_day], mock_log)
+      ConditionResponder.confirm_correct_timing(:not_a_valid_timing, :every_day, mock_log)
     end
 
   end
@@ -315,31 +313,37 @@ RSpec.describe ConditionResponder, type: :model do
 
 
     it 'does not raise exception if timing IS in list of expected timings' do
-      expect { described_class.validate_timing(:valid_timing, [:valid_timing, :another_valid_timing], log) }
+      expect { described_class.validate_timing(:valid_timing, [:valid_timing, :another_valid_timing], mock_log) }
           .not_to raise_error
     end
 
     it 'raises TimingNotValidConditionResponderError and writes to log if timing is not in list of expected timings' do
-      expect { described_class.validate_timing(:not_a_valid_timing, [:valid_timing, :another_valid_timing], log) }
-          .to raise_error TimingNotValidError, "Received timing :not_a_valid_timing which is not in list of expected timings: [:valid_timing, :another_valid_timing]"
+      err_str = "Received timing :not_a_valid_timing which is not in list of expected timings: [:valid_timing, :another_valid_timing]"
+      expect(mock_log).to receive(:record).with('error', err_str)
+      expect { described_class.validate_timing(:not_a_valid_timing, [:valid_timing, :another_valid_timing], mock_log) }
+          .to raise_error TimingNotValidError, err_str
     end
 
     it 'raises ExpectedTimingsCannotBeEmptyError and writes to log if list of expected timings is empty' do
-      expect { described_class.validate_timing(:not_a_valid_timing, [], log) }
-          .to raise_error ExpectedTimingsCannotBeEmptyError, "List of expected timings cannot be empty"
+      err_str = "List of expected timings cannot be empty"
+      expect(mock_log).to receive(:record).with('error', err_str)
+      expect { described_class.validate_timing(:not_a_valid_timing, [], mock_log) }
+          .to raise_error ExpectedTimingsCannotBeEmptyError, err_str
     end
 
 
     describe 'valid timings can be a single Timing (it will convert to an Array)' do
 
       it 'does not raise exception if timing is the expected single Timing' do
-        expect { described_class.validate_timing(:valid_timing, :valid_timing, log) }
+        expect { described_class.validate_timing(:valid_timing, :valid_timing, mock_log) }
             .not_to raise_error
       end
 
       it 'raises TimingNotValidConditionResponderError and writes to log if timing is NOT the expected single Timing' do
-        expect { described_class.validate_timing(:not_a_valid_timing, :valid_timing, log) }
-            .to raise_error TimingNotValidError, invalid_timing_error_msg(:not_a_valid_timing, [:valid_timing])
+        err_str = invalid_timing_error_msg(:not_a_valid_timing, [:valid_timing])
+        expect(mock_log).to receive(:record).with('error', err_str)
+        expect { described_class.validate_timing(:not_a_valid_timing, :valid_timing, mock_log) }
+            .to raise_error TimingNotValidError, err_str
       end
 
     end

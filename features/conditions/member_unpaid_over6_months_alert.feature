@@ -58,7 +58,7 @@ Feature: Membership address get emails when a member has been unpaid for > 6 mon
     Given there is a condition with class_name "MemberUnpaidOver6MonthsAlert" and timing "every_day"
     And the date is set to <today>
     And the process_condition task sends "condition_response" to the "MemberUnpaidOver6MonthsAlert" class
-    Then "medlem@sverigeshundforetagare.se" should receive <emails_sent> email
+    Then "membership@example.org" should receive <emails_sent> email
     And "admin_1@shf.se" should receive no email
     And "admin_2@shf.se" should receive no email
     And "exp_may_31_01@mutts.se" should receive no email
@@ -84,7 +84,7 @@ Feature: Membership address get emails when a member has been unpaid for > 6 mon
     And the condition has the days of the month set to [1, 15]
     And the date is set to <today>
     And the process_condition task sends "condition_response" to the "MemberUnpaidOver6MonthsAlert" class
-    Then "medlem@sverigeshundforetagare.se" should receive <emails_sent> email
+    Then "membership@example.org" should receive <emails_sent> email
     And "admin_1@shf.se" should receive no email
     And "admin_2@shf.se" should receive no email
     And "exp_may_31_01@mutts.se" should receive no email

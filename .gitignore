@@ -36,7 +36,6 @@ config/initializers/beta_test.rb
 .DS_Store
 .env
 .env.development
-.env.test
 
 # swaks is used to test sending SMTP email via CLI
 swaks

@@ -40,7 +40,7 @@ module LogCreator
   # else just return the given log
   #
   # If we created the log, set @this_created_the_log to true
-  # so that, for example, we can explictly close it.
+  # so that, for example, we can explicitly close it.
   #
   def set_or_create_log(given_log = nil, logging: true,
                         log_facility_tag: '',

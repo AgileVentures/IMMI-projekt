@@ -24,8 +24,16 @@ end
 
 RSpec.describe ApplicationMailer, type: :mailer do
 
-
   TEST_TEMPLATE = 'empty_template'
+
+  let(:mock_log) { instance_double("ActivityLogger") }
+
+  before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+  end
 
 
   describe '#mailgun_client' do
@@ -179,10 +187,8 @@ RSpec.describe ApplicationMailer, type: :mailer do
 
     # do not actually hit the net; mock the responses from the vcr file instead
     before(:each) do
-
       @orig_delivery_method = ApplicationMailer.delivery_method
       ApplicationMailer.delivery_method = :mailgun
-
       WebMock.disable_net_connect!(allow_localhost: true)
     end
 
@@ -192,55 +198,14 @@ RSpec.describe ApplicationMailer, type: :mailer do
     end
 
 
-    # return the number of matches in the file.
-    # Don't read the entire file into memory;
-    # read it only (num_lines_per_batch) lines at a time
-    def num_matches_in_file(fname, match_regexp)
-
-      num_lines_per_batch = 5000
-
-      num_matched = 0
-
-      if File.exist? fname
-        File.open(fname, "r") do |f|
-
-          # use an enumerator to read just (num_lines_per_batch) lines at a time
-          f.lazy.each_slice(num_lines_per_batch) do |lines|
-
-            num_matched += lines.count { |line| line.match(match_regexp) }
-
-          end
-
-        end
-      else
-        num_matched = 0
-      end
-
-      num_matched
-    end
-
-
-    it 'will write to the Mailgun log file if there was a problem sending info to Mailgun' do
-
+    it 'writes to the log file if there was a problem sending info to Mailgun' do
       test_user = create(:user)
       mail_to_send = ApplicationMailer.test_email(test_user)
 
-      log_fname = ApplicationMailer::LOG_FILE
-
-      mailgun_error_regexp = /\s+Could not send email via mailgun at/
-      vcr_error_regexp     = /An HTTP request has been made that VCR does not know how to handle/
-
-      before_mailgun_errors = num_matches_in_file(log_fname, mailgun_error_regexp)
-      before_vcr_errors     = num_matches_in_file(log_fname, vcr_error_regexp)
+      expect(mock_log).to receive(:error).with(/Could not send email via mailgun at/)
 
       # this is a mocked post and response that will return an error from the vcr cassette file
       expect{mail_to_send.deliver_now}.to raise_error(Mailgun::CommunicationError)
-
-      after_mailgun_errors = num_matches_in_file(log_fname, mailgun_error_regexp)
-      after_vcr_errors     = num_matches_in_file(log_fname, vcr_error_regexp)
-
-      expect(after_mailgun_errors - before_mailgun_errors).to eq 1
-      expect(after_vcr_errors - before_vcr_errors).to eq 0
     end
 
   end

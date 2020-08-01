@@ -138,6 +138,7 @@ Feature: Edit SHF Application
     And I fill in "company-number-in-modal" with "2286411992"
     And I fill in t("companies.show.email") with "info@craft.se"
     And I click on t("companies.create.create_submit")
+    # FIXME do we still need to wait this long? does waiting for AJAX to complete work reliably here instead?
     And I wait 4 seconds
     And I wait for all ajax requests to complete
 

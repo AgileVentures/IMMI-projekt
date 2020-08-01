@@ -37,7 +37,7 @@ sv:
   save: &save Spara
   back: &back Tillbaks
   search: &search Sök
-  close: Stänga
+  close: Stäng
   lastupdated: &last_updated Senast uppdaterad
 
   next: &next Nästa

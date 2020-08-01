@@ -6,6 +6,15 @@ RSpec.describe MembershipStatusUpdater, type: :model do
 
   let(:subject) { MembershipStatusUpdater.instance }
 
+  let(:mock_log) { instance_double("ActivityLogger") }
+  before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+  end
+
+
   let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
   let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
 
@@ -99,9 +108,6 @@ RSpec.describe MembershipStatusUpdater, type: :model do
       Timecop.return
     end
 
-    it 'does nothing if not a member and does not meet membership criteria' do
-
-    end
 
     describe 'sending emails' do
 

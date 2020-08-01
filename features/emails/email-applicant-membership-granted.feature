@@ -54,8 +54,8 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     And I should see t("mailers.member_mailer.membership_granted.subject") in the email subject
     And I should see t("mailers.member_mailer.membership_granted.message_text.welcome") in the email body
     And I should see t("mailers.member_mailer.membership_granted.message_text.youre_active") in the email body
-    And I should see ""Sveriges Hundföretagare" <info@sverigeshundforetagare.se>" in the email "from" header
-    And I should see ""Sveriges Hundföretagare" <medlem@sverigeshundforetagare.se>" in the email "reply-to" header
+    And I should see ""Sveriges Hundföretagare" <from@example.org>" in the email "from" header
+    And I should see ""Sveriges Hundföretagare" <reply@example.org>" in the email "reply-to" header
     And I should not see "http://localhost:3000/hundforetag/1/redigera" in the email body
     And I should see "http://localhost:3000/hundforetag/1" in the email body
     When I follow "http://localhost:3000/hundforetag/1" in the email

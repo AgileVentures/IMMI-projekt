@@ -3,6 +3,14 @@ require 'rails_helper'
 
 RSpec.describe Payment, type: :model do
 
+  let(:mock_log) { instance_double("ActivityLogger") }
+  before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+  end
+
   let(:success) { Payment::ORDER_PAYMENT_STATUS['successful'] }
   let(:created) { Payment::ORDER_PAYMENT_STATUS[nil] }
 

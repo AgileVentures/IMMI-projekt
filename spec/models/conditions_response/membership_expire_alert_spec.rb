@@ -1,17 +1,17 @@
 require 'rails_helper'
 require 'email_spec/rspec'
-require 'shared_context/activity_logger'
+
 require 'shared_context/stub_email_rendering'
 require 'shared_context/named_dates'
 
 
 RSpec.describe MembershipExpireAlert do
 
-  include_context 'create logger'
   include_context 'named dates'
 
   subject  { described_class.instance }
 
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   let(:user) { create(:user, email: FFaker::InternetSE.disposable_email) }
 
@@ -42,6 +42,13 @@ RSpec.describe MembershipExpireAlert do
   let(:config) { { days: [1, 7, 14, 30] } }
 
   let(:timing) { MembershipExpireAlert::TIMING_BEFORE }
+
+  before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+  end
 
 
   # All examples assume today is 1 December, 2018 by default
@@ -162,8 +169,8 @@ RSpec.describe MembershipExpireAlert do
 
     describe 'emails sent to all members and logged' do
 
-      let(:paid_exp_dec30_logmsg)     { "\\[info\\] MembershipExpireAlert email sent to id: #{paid_exp_dec30.id} email: #{paid_exp_dec30.email}." }
-      let(:paid_expires_dec2_logmsg)  { "\\[info\\] MembershipExpireAlert email sent to id: #{paid_expires_dec2.id} email: #{paid_expires_dec2.email}." }
+      let(:paid_exp_dec30_logmsg)     { "MembershipExpireAlert email sent to id: #{paid_exp_dec30.id} email: #{paid_exp_dec30.email}." }
+      let(:paid_expires_dec2_logmsg)  { "MembershipExpireAlert email sent to id: #{paid_expires_dec2.id} email: #{paid_expires_dec2.email}." }
 
 
       it 'nov 25: sends out 1 email' do
@@ -177,12 +184,11 @@ RSpec.describe MembershipExpireAlert do
           MembershipStatusUpdater.instance.user_updated(paid_exp_dec30)
           MembershipStatusUpdater.instance.user_updated(paid_expires_dec2)
 
-          described_class.instance.condition_response(condition, log)
-          expect(ActionMailer::Base.deliveries.size).to eq 1
+          expect(mock_log).to receive(:info).with(/#{paid_expires_dec2_logmsg}/)
+          expect(mock_log).not_to receive(:info).with(/#{paid_exp_dec30}/)
 
-          logfile_contents = File.read(logfilepath)
-          expect(logfile_contents).to match(/\[info\] Started at #{nov_25_ts.to_s}(\s*)(.*)#{paid_expires_dec2_logmsg}/)
-          expect(logfile_contents).not_to match(/#{paid_exp_dec30}/)
+          described_class.instance.condition_response(condition, mock_log)
+          expect(ActionMailer::Base.deliveries.size).to eq 1
         end
       end
 
@@ -197,11 +203,10 @@ RSpec.describe MembershipExpireAlert do
           MembershipStatusUpdater.instance.user_updated(paid_exp_dec30)
           MembershipStatusUpdater.instance.user_updated(paid_expires_dec2)
 
-          described_class.instance.condition_response(condition, log)
-          expect(ActionMailer::Base.deliveries.size).to eq 0
+          expect(mock_log).not_to receive(:info)
 
-          logfile_contents = File.read(logfilepath)
-          expect(logfile_contents).not_to match(/#{paid_exp_dec30_logmsg}(\s*)(.*)#{paid_expires_dec2_logmsg}/)
+          described_class.instance.condition_response(condition, mock_log)
+          expect(ActionMailer::Base.deliveries.size).to eq 0
         end
       end
 
@@ -216,12 +221,11 @@ RSpec.describe MembershipExpireAlert do
           MembershipStatusUpdater.instance.user_updated(paid_exp_dec30)
           MembershipStatusUpdater.instance.user_updated(paid_expires_dec2)
 
-          described_class.instance.condition_response(condition, log)
-          expect(ActionMailer::Base.deliveries.size).to eq 2
+          expect(mock_log).to receive(:info).with(/#{paid_exp_dec30_logmsg}/)
+          expect(mock_log).to receive(:info).with(/#{paid_expires_dec2_logmsg}/)
 
-          logfile_contents = File.read(logfilepath)
-          expect(logfile_contents).to match(/\[info\] Started at #{dec_1_ts.to_s}(\s*)(.*)#{paid_exp_dec30_logmsg}/m)
-          expect(logfile_contents).to match(/\[info\] Started at #{dec_1_ts.to_s}(\s*)(.*)#{paid_expires_dec2_logmsg}/m)
+          described_class.instance.condition_response(condition, mock_log)
+          expect(ActionMailer::Base.deliveries.size).to eq 2
         end
       end
 
@@ -236,12 +240,11 @@ RSpec.describe MembershipExpireAlert do
           MembershipStatusUpdater.instance.user_updated(paid_exp_dec30)
           MembershipStatusUpdater.instance.user_updated(paid_expires_dec2)
 
-          described_class.instance.condition_response(condition, log)
-          expect(ActionMailer::Base.deliveries.size).to eq 1
+          expect(mock_log).to receive(:info).with(/#{paid_exp_dec30_logmsg}/)
+          expect(mock_log).not_to receive(:info).with(/#{paid_expires_dec2_logmsg}/)
 
-          logfile_contents = File.read(logfilepath)
-          expect(logfile_contents).to match(/\[info\] Started at #{dec_30_ts.to_s}(\s*)(.*)#{paid_exp_dec30_logmsg}/)
-          expect(logfile_contents).not_to match(/#{paid_expires_dec2_logmsg}/)
+          described_class.instance.condition_response(condition, mock_log)
+          expect(ActionMailer::Base.deliveries.size).to eq 1
         end
       end
 
