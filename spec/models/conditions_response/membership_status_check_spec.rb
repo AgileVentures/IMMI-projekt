@@ -3,16 +3,22 @@ require 'email_spec/rspec'
 
 require 'shared_examples/shared_conditions'
 
-require 'shared_context/activity_logger'
 require 'shared_context/users'
 
 RSpec.describe MembershipStatusCheck, type: :model do
 
-  include_context 'create logger'
   include_context 'create users'
 
   let(:condition) { build(:condition, timing: Backup::TIMING_EVERY_DAY) }
   let(:today) { Time.now.strftime '%Y-%m-%d' }
+
+  let(:mock_log) { instance_double("ActivityLogger") }
+  before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+  end
 
 
   describe '.condition_response' do
@@ -21,30 +27,37 @@ RSpec.describe MembershipStatusCheck, type: :model do
       let(:tested_condition) { condition }
     end
 
+    it 'calls the status_updater for each user to revoke the membership if needed' do
+      mock_status_updater = instance_double("MembershipStatusUpdater")
+      allow(mock_status_updater).to receive(:payment_made)
+      allow(MembershipStatusUpdater).to receive(:instance).and_return(mock_status_updater)
 
-    context 'revoke membership if requirements met' do
+      # instantiate these (from the shared-context/users file)
+      user
+      member_paid_up
+      member_expired
 
-      before(:each) do
+      expect(mock_status_updater).to receive(:revoke_user_membership).with(member_expired)
+      expect(mock_status_updater).to receive(:revoke_user_membership).with(member_paid_up)
+
+      described_class.condition_response(condition, mock_log)
+    end
+
+    it 'Log each revoked membership, but not for non-revoked' do
+      status_updater = instance_double("MembershipStatusUpdater")
+      allow(status_updater).to receive(:revoke_user_membership)
+
+      # instantiate these (from the shared-context/users file)
         user
         member_paid_up
         member_expired
-      end
 
-      it 'Writes to log file for each revoked membership' do
-        described_class.condition_response(condition, log)
+      expect(mock_log).to receive(:info).with("User #{member_expired.id} (#{member_expired.email}) membership revoked.")
+      expect(mock_log).not_to receive(:info).with(/User #{user.id}/)
+      expect(mock_log).not_to receive(:info).with(/User #{member_paid_up.id}/)
 
-        msg = "User #{member_expired.id} (#{member_expired.email}) membership revoked."
-
-        expect(File.read(logfilepath)).to include msg
-      end
-
-      it 'Does not write to log file for non-revoked members' do
-        described_class.condition_response(condition, log)
-
-        expect(File.read(logfilepath)).not_to include "User #{user.id}"
-        expect(File.read(logfilepath)).not_to include "User #{member_paid_up.id}"
+      described_class.condition_response(condition, mock_log)
       end
 
     end
   end
-end

@@ -1,11 +1,10 @@
 # Shared specification examples for Conditions
 
-require 'shared_context/activity_logger'
-
 
 RSpec.shared_examples 'it validates timings in .condition_response' do | valid_timing_list |
 
-  include_context 'create logger'
+  let(:mock_log) { instance_double("ActivityLogger") }
+
 
   expected_list = valid_timing_list.is_a?(Enumerable) ? valid_timing_list : [valid_timing_list]
 
@@ -20,10 +19,10 @@ RSpec.shared_examples 'it validates timings in .condition_response' do | valid_t
 
       expect(described_class).to receive(:validate_timing).and_call_original
 
-      expect { described_class.condition_response(tested_condition, log) }
-          .to raise_exception TimingNotValidError, err_str
+      expect(mock_log).to receive(:record).with("error", err_str)
 
-      expect(File.read(logfilepath)).to include err_str
+      expect { described_class.condition_response(tested_condition, mock_log) }
+          .to raise_exception TimingNotValidError, err_str
     end
 
   end

@@ -41,7 +41,7 @@ class AlertLogger
 
   def log_failure(*log_args, error: '')
     info_str = alert_str_from_callback(@failure_method, *log_args)
-    log.error("#{msg_start} email ATTEMPT FAILED #{info_str}. #{error} Also see for possible info #{ApplicationMailer::LOG_FILE} ")
+    log.error("#{msg_start} email ATTEMPT FAILED #{info_str}. #{error} Also see for possible info #{ApplicationMailer.logfile_name} ")
   end
 
 

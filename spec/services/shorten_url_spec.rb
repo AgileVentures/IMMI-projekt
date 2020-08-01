@@ -2,7 +2,14 @@ require 'rails_helper'
 
 describe ShortenUrl do
 
-  let(:log_file) { LogfileNamer.name_for(ShortenUrl) }
+  let(:mock_log) { instance_double("ActivityLogger") }
+  before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+  end
+
 
   describe '.short' do
     it 'creates shortened link' do
@@ -13,14 +20,14 @@ describe ShortenUrl do
     end
     it 'if the service raises an error, returns nil and writes to the log' do
       VCR.use_cassette('shorten_url/error') do
-        expect(ActivityLogger).to receive(:open).and_call_original
+
+        expect(mock_log).to receive(:error).with("Exception: HTTParty::Error")
+        expect(mock_log).to receive(:error).with("Attempted URL: /")
+        expect(mock_log).to receive(:error).with("Response body: ERROR")
+        expect(mock_log).to receive(:error).with("HTTP code: 200")
+
         shortened_url = ShortenUrl.short '/'
         expect(shortened_url).to eq nil
-
-        expect(File.read(log_file))
-          .to include "[TINYURL_API] [shortening url] [error] Exception: HTTParty::Error\n" +
-                      "[TINYURL_API] [shortening url] [error] Attempted URL: /\n" +
-                      '[TINYURL_API] [shortening url] [error] Response body: ERROR'
       end
     end
   end

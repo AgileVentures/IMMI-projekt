@@ -29,10 +29,17 @@ end
 
 RSpec.describe ShfApplication, type: :model do
 
+  let(:mock_log) { instance_double("ActivityLogger") }
+
   before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+
     # stub this so we don't have to create the MasterChecklist for the Member Guidelines checklist
     # if a ShfApplication is accepted.
-    # allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
+    allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
   end
 
 

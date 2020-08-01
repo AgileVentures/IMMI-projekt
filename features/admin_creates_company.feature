@@ -153,6 +153,7 @@ Feature: As an admin
     And I select "Västerbotten" in select list t("activerecord.attributes.address.region")
     And I select "Bromölla" in select list t("activerecord.attributes.address.kommun")
     Then I click on t("submit")
+    # FIXME do we still need to wait this long? does waiting for AJAX to complete work reliably here instead?
     And I wait 10 seconds
     And I should see "Algovik"
     And I should see "Bromölla"

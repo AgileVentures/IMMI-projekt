@@ -13,6 +13,7 @@ RSpec.describe 'selective loading of external assets on specific pages' do
     end
 
     it 'is loaded on payments/create' do
+      allow(view).to receive(:current_user) { Visitor.new }
       assign(:payment, member_payment)
       assign(:hips_id, '12345')
 
@@ -46,6 +47,7 @@ RSpec.describe 'selective loading of external assets on specific pages' do
     let(:company)  { create(:company) }
 
     it 'is loaded on companies/edit' do
+      allow(view).to receive(:current_user) { Visitor.new }
       assign(:company, company)
 
       stub_template 'business_categories/_as_list' => ''
@@ -56,9 +58,10 @@ RSpec.describe 'selective loading of external assets on specific pages' do
     end
 
     it 'is loaded on shf_documents/contents_edit' do
+      allow(view).to receive(:current_user) { Visitor.new }
       assign(:page, document.actual_file_file_name)
       assign(:title, document.title)
-      assign(:contents, 'This if the document contents')
+      assign(:contents, 'This is the document contents')
 
       stub_template 'shf_documents/_contents_form' => ''
       render template: 'shf_documents/contents_edit', layout: 'layouts/application'

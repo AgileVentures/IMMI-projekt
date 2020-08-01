@@ -25,8 +25,6 @@ Feature: Seed business categories
   @db_seeding
   Scenario: only 11 business categories are ever created, even if it's seeded multiple times
     Given There are no "BusinessCategories" records in the db
-    And the system is seeded with initial data
-    And the system is seeded with initial data
     When the system is seeded with initial data
     And I am on the "business categories" page
     Then I should see 11 business_category rows

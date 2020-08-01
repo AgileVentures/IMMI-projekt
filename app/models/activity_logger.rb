@@ -18,12 +18,12 @@ class ActivityLogger
   #
   # The format of the logged messages are:
   #
-  # [facility] [activity] [severity] <message>
+  # [facility] [activity] [severity] [timestamp] <message>
   # Example log contents:
-  # [SHF_TASK] [Load Kommuns] [info] Started at 2017-05-20 17:25:39 -0400
-  # [SHF_TASK] [Load Kommuns] [info] 290 Kommuns created.
-  # [SHF_TASK] [Load Kommuns] [info] Finished at 2017-05-20 17:25:39 -0400.
-  # [SHF_TASK] [Load Kommuns] [info] Duration: 0.67 seconds.
+  # [SHF_TASK] [Load Kommuns] [info] [2020-07-27 17:06:54.628 +00:00] Started at 2020-07-27 17:06:54.628 +00:00.
+  # [SHF_TASK] [Load Kommuns] [info] [2020-07-27 17:07:01.803 +00:00] 290 Kommuns created.
+  # [SHF_TASK] [Load Kommuns] [info] [2020-07-27 17:07:01.823 +00:00] Finished at 2020-07-27 17:07:01.823 +00:00.
+  # [SHF_TASK] [Load Kommuns] [info] [2020-07-27 17:07:01.893 +00:00] Duration: 6.175 seconds.
   #
   # Here, the facility is an SHF task, the activity is loading Kommuns
   # into the DB, and the messages are all of INFO severity.
@@ -39,10 +39,15 @@ class ActivityLogger
   #    -- the log file will be closed automatically if opened with a block, OR
   #    -- call log.close
   #
-  # NOTE: this requires ActiveSupport.  It can only be run with Rails
+  # NOTE: this requires ActiveSupport::Logger and ActiveSupport::  It can only be run with Rails
+  #
+  # -----------------------------------------------------------------------------------
 
 
-  # allow others to turn show on and off
+  TIMESTAMP_FORMAT = "%F %T.%L %:z"
+
+
+  # allow others to turn show on and off (e.g. for testing)
   attr_accessor :show
 
 
@@ -134,7 +139,7 @@ class ActivityLogger
     raise InvalidLogSeverityLevel  unless
       ActiveSupport::Logger::Severity.constants.include?(log_level.upcase.to_sym)
 
-    @log.tagged(@facility, @activity, log_level) do
+    @log.tagged(@facility, @activity, log_level, timestamp_now) do
       @log.send(log_level, message)
     end
 
@@ -222,6 +227,11 @@ class ActivityLogger
     end
 
     is_verified
+  end
+
+
+  def timestamp_now
+    Time.zone.now.strftime(TIMESTAMP_FORMAT)
   end
 
 end # class ActivityLogger

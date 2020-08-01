@@ -1,13 +1,12 @@
 require 'rails_helper'
 require 'email_spec/rspec'
-require 'shared_context/activity_logger'
+
 require 'shared_context/stub_email_rendering'
 
 
 RSpec.describe CompanyInfoIncompleteAlert do
 
-  include_context 'create logger'
-
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   subject  { described_class.instance }
 
@@ -218,7 +217,7 @@ RSpec.describe CompanyInfoIncompleteAlert do
 
 
     before(:each) do
-      subject.create_alert_logger(log)
+      subject.create_alert_logger(mock_log)
     end
 
 
@@ -261,14 +260,15 @@ RSpec.describe CompanyInfoIncompleteAlert do
         # memberships should be current as of dec 31 2018
         expect(incomplete_co.current_members.size).to eq 2
 
+        expect(mock_log).to receive(:info).with("CompanyInfoIncompleteAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{incomplete_co.id} name: #{incomplete_co.name}.")
+        expect(mock_log).to receive(:info).with("CompanyInfoIncompleteAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{incomplete_co.id} name: #{incomplete_co.name}.")
+
         incomplete_co.current_members.each do | member |
-          subject.send_email(incomplete_co, member, log)
+          subject.send_email(incomplete_co, member, mock_log)
         end
       end
 
       expect(ActionMailer::Base.deliveries.size).to eq 2
-      expect(File.read(logfilepath)).to include("[info] CompanyInfoIncompleteAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{incomplete_co.id} name: #{incomplete_co.name}.")
-      expect(File.read(logfilepath)).to include("[info] CompanyInfoIncompleteAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{incomplete_co.id} name: #{incomplete_co.name}.")
     end
 
   end

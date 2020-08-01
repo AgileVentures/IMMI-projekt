@@ -1,22 +1,21 @@
 require 'rails_helper'
 require 'email_spec/rspec'
-require 'shared_context/activity_logger'
+
 require 'shared_context/stub_email_rendering'
 require 'shared_context/named_dates'
 
 
 RSpec.describe HBrandingFeeWillExpireAlert do
 
-  include_context 'create logger'
   include_context 'named dates'
 
   subject  { described_class.instance }
 
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   let(:user) { create(:user, email: FFaker::InternetSE.disposable_email) }
 
   let(:company) { create(:company) }
-
 
   let(:config) { { days: [1, 7, 15, 30] } }
   let(:timing) { HBrandingFeeWillExpireAlert::TIMING_BEFORE }
@@ -198,7 +197,7 @@ RSpec.describe HBrandingFeeWillExpireAlert do
 
 
     before(:each) do
-      subject.create_alert_logger(log)
+      subject.create_alert_logger(mock_log)
     end
 
 
@@ -232,15 +231,16 @@ RSpec.describe HBrandingFeeWillExpireAlert do
 
       expect(paid_member_co.current_members.size).to eq 2
 
+      expect(mock_log).to receive(:info).with("HBrandingFeeWillExpireAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
+      expect(mock_log).to receive(:info).with("HBrandingFeeWillExpireAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
+
       Timecop.freeze(jan_1) do
         paid_member_co.current_members.each do | member |
-          subject.send_email(paid_member_co, member, log)
+          subject.send_email(paid_member_co, member, mock_log)
         end
       end
 
       expect(ActionMailer::Base.deliveries.size).to eq 2
-      expect(File.read(logfilepath)).to include("[info] HBrandingFeeWillExpireAlert email sent to user id: #{paid_member1.id} email: #{paid_member1.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
-      expect(File.read(logfilepath)).to include("[info] HBrandingFeeWillExpireAlert email sent to user id: #{paid_member2.id} email: #{paid_member2.email} company id: #{paid_member_co.id} name: #{paid_member_co.name}.")
     end
 
   end

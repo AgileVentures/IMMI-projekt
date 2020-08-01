@@ -1,6 +1,22 @@
 @import 'shf-custom-colors';
 
-// TODO - what is the purpose/scope of this stylesheet?  should these be put into their respective model stylesheets? or if it's general, into custom ?
+// TODO Some of these should these be put into their respective model stylesheets or if it's general, into custom ?
+
+
+#about-info-modal {
+
+  .modal-footer {
+    justify-content: center;
+  }
+
+  .modal-body {
+    font-size: smaller;
+  }
+
+  .version {
+    font-weight: bold;
+  }
+}
 
 #admin-change-status-buttons input {
   margin-left: 1em;
@@ -466,6 +482,23 @@ body {
   font-weight: 400;
   line-height: 1.8;
   margin: 0;
+}
+
+footer {
+  font-size: smaller;
+
+  a {
+    border-bottom: 0;
+  }
+
+  .social {
+    display: inline-flex;
+
+    i {
+      padding-right: 0.5rem;
+    }
+
+  }
 }
 
 h1 {

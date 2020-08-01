@@ -25,13 +25,10 @@ class ApplicationMailer < ActionMailer::Base
   #
 
 
-
-  LOG_FILE = File.join(Rails.configuration.paths['log'].absolute_current, "#{Rails.env}_#{self.name}.log")
   LOG_FACILITY = 'ApplicationMailer'
 
 
   attr_accessor :recipient_email, :greeting_name, :action_name
-
 
   include MailgunConfig
 
@@ -67,9 +64,9 @@ class ApplicationMailer < ActionMailer::Base
 
   rescue  => mailgun_error
 
-    ActivityLogger.open(LOG_FILE, LOG_FACILITY, 'Mailgun::CommunicationError', false) do |log|
+    ActivityLogger.open(logfile_name, LOG_FACILITY, 'Mailgun::CommunicationError', false) do |log|
 
-      log.record('error', "Could not send email via mailgun at #{Time.zone.now}  Error received from Mailgun: #{mailgun_error}")
+      log.error( "Could not send email via mailgun at #{Time.zone.now}  Error received from Mailgun: #{mailgun_error}")
 
     end
 
@@ -77,6 +74,9 @@ class ApplicationMailer < ActionMailer::Base
 
   end
 
+  def self.logfile_name
+    LogfileNamer.name_for(self.class.name)
+  end
 
   def test_email(user)
     @action_name = __method__.to_s

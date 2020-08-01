@@ -12,14 +12,12 @@ namespace :shf do
     # 8 days is the default because: if there is a problem (e.g. coping to AWS)
     #  and we don't spot it for a week
     #  (perhaps we didn't have a weekly meeting on a Thursday), the backup files still exist on the production server.
-    DEFAULT_DAYS_TO_KEEP = 8
+    DEFAULT_DAYS_TO_KEEP = 4
 
     # Code also exists on GitHub and in a the version control system (git). [In fact, those
     #   are the authoritative/canonical source. ] So we don't need to keep very many days of backups.
     DAYS_TO_KEEP_CODE = 3
 
-    # TODO: how many days should we keep the public files on the production server?  what if copying to AWS has a problem?
-    #   = DEFAULT_DAYS_TO_KEEP  (e.g. 8 days so we have time to notice and fix if something goes wrong)
     DAYS_TO_KEEP_PUBLIC_FILES = DEFAULT_DAYS_TO_KEEP
 
 

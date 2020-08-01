@@ -37,7 +37,7 @@ sv:
   save: &save Spara
   back: &back Tillbaks
   search: &search Sök
-  close: Stänga
+  close: Stäng
   lastupdated: &last_updated Senast uppdaterad
 
   next: &next Nästa
@@ -412,6 +412,9 @@ sv:
     progress_bar:
       complete: *complete
 
+  about_info:
+    title: Om denna webbplats
+    version: version
 
   address_visibility:
     street_address: *street

@@ -1,4 +1,6 @@
-Feature: As a member of a company
+Feature: Get events for a company from Dinkurs
+
+  As a member of a company
   I need to be able to have my Dinkurs events show on my company page
   Which can occur by my entering a dinkurs ID (that identifies my company at Dinkurs)
   Or by fetching Dinkurs events on-demand
@@ -36,6 +38,8 @@ Feature: As a member of a company
       | user_email       | company_number | state    |
       | member@mutts.com | 5560360793     | accepted |
 
+
+
   @time_adjust @dinkurs_fetch
   Scenario: Member adds Dinkurs ID, checks as visible and visitor sees events in company page
     Given the date is set to "2017-10-01"
@@ -43,7 +47,7 @@ Feature: As a member of a company
     And I am on the "my first company" page for "member@mutts.com"
     And I should not see t("events.show.name")
     And I am on the edit company page for "5560360793"
-    And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
+    And I fill in t("companies.show.dinkurs_key") with "fake-dinkurs-company-id"
     And I check the checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
@@ -64,7 +68,7 @@ Feature: As a member of a company
     And I am on the "my first company" page for "member@mutts.com"
     And I should not see t("events.show.name")
     And I am on the edit company page for "5560360793"
-    And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
+    And I fill in t("companies.show.dinkurs_key") with "fake-dinkurs-company-id"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
     Then I am logged out
@@ -82,7 +86,7 @@ Feature: As a member of a company
     And I am on the "my first company" page for "member@mutts.com"
     And I should not see t("events.show.name")
     And I am on the edit company page for "5560360793"
-    And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
+    And I fill in t("companies.show.dinkurs_key") with "fake-dinkurs-company-id"
     And I click on t("submit")
     And I should not see t("events.show.no_events")
     And I should see t("events.show_not")
@@ -111,6 +115,7 @@ Feature: As a member of a company
     And I click on t("submit")
     Then I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_chars")
 
+
   @time_adjust @selenium @dinkurs_fetch
   Scenario: Member fetches Dinkurs events
     Given the date is set to "2017-10-01"
@@ -118,7 +123,7 @@ Feature: As a member of a company
     And I am on the "my first company" page for "member@mutts.com"
     And I should not see t("events.show.name")
     And I am on the edit company page for "5560360793"
-    And I fill in t("companies.show.dinkurs_key") with "ENV['DINKURS_COMPANY_TEST_ID']"
+    And I fill in t("companies.show.dinkurs_key") with "fake-dinkurs-company-id"
     And I check the bootstrap checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
     And I should not see t("events.show.no_events")

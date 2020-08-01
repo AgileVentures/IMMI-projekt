@@ -13,6 +13,9 @@ require "action_view/railtie"
 require "sprockets/railtie"
 # require "rails/test_unit/railtie"
 
+# Application Version
+require_relative File.join('..', 'lib', 'app_version')
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
@@ -41,7 +44,7 @@ module SHFProject
 
     I18n.available_locales = ['en', 'sv']
 
-
+    config.version = AppVersion.get_version
 
     ###
     #

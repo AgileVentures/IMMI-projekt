@@ -4,6 +4,16 @@ RSpec.describe AbstractUpdater, type: :model do
 
   let(:subject) { AbstractUpdater.instance }
 
+  let(:mock_log) { instance_double("ActivityLogger") }
+
+  before(:each) do
+    allow(ActivityLogger).to receive(:new).and_return(mock_log)
+    allow(mock_log).to receive(:info)
+    allow(mock_log).to receive(:record)
+    allow(mock_log).to receive(:close)
+  end
+
+
   describe 'check_requirements_and_act' do
 
     it 'logs activity' do

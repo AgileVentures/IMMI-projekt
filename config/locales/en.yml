@@ -413,6 +413,9 @@ en:
     progress_bar:
       complete: *complete
 
+  about_info:
+    title: About this website
+    version: version
 
   address_visibility:
     street_address: *street

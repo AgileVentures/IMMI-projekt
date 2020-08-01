@@ -1,0 +1,26 @@
+-# This is a Bootstrap 4 modal.
+-# @url https://getbootstrap.com/docs/4.2/components/modal/
+-#
+.modal.fade#about-info-modal{ tabindex:'-1', role:'dialog', aria: { labelledby: 'about-info-modal-title', hidden: 'true' } }
+
+  .modal-dialog.modal-sm{ role:'document' }
+    .modal-content
+      .about-info
+
+        .modal-header
+          %h4.modal-title#about-info-modal-title= t('about_info.title')
+
+        .modal-body
+          .main-site
+            -# TODO %p (something  about the main website?)
+          .shf-membership-section
+            -# TODO  %p Something about the search for companies and membership section?
+            %p
+              = succeed ':' do
+                %span.version= t('about_info.version')
+
+              %span.revision= Rails.application.config.version
+
+        .modal-footer
+          %button.btn-primary.btn-sm{ data: { dismiss:'modal' } }
+            = t('close')

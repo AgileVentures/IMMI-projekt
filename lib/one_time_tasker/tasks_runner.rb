@@ -80,7 +80,7 @@ module OneTimeTasker
       task_files_and_names = tasks_finder.files_with_tasks_to_run
 
       task_files_and_names.each do |_rakefile, ev_rakefile|
-        invoke_tasks_in_rakefile(ev_rakefile)
+        invoke_tasks_in_rakefile(ev_rakefile, log)
       end
 
       close_log_if_this_created_it(log)
@@ -125,7 +125,7 @@ module OneTimeTasker
     # Change the rake filename so it cannot accidentally be run
     # If there is an error raised, write it to the log file
     # but do NOT raise it so processing can continue (other tasks can be invoked).
-    def self.rename_rakefile(rakefile_fn)
+    def self.rename_rakefile(rakefile_fn, log)
 
       rakefile_abs = File.absolute_path(rakefile_fn)
       new_filename = new_rakefilename(rakefile_fn)
@@ -215,14 +215,14 @@ module OneTimeTasker
     # Invoke the tasks in an Evaluated rake file.  If _all_ of the tasks
     # invoked pass and these are all of the tasks in the rake file,
     # rename the rake file.
-    def self.invoke_tasks_in_rakefile(ev_rakefile)
+    def self.invoke_tasks_in_rakefile(ev_rakefile, log)
       num_passed = 0
       rakefilename = ev_rakefile.filename
       ev_rakefile.tasks_to_run.each do |ev_task|
         num_passed += 1 if task_invoked_successfully?(ev_task.name, rakefilename)
       end
 
-      rename_rakefile(rakefilename) if num_passed == ev_rakefile.total_number_of_tasks
+      rename_rakefile(rakefilename, log) if num_passed == ev_rakefile.total_number_of_tasks
     end
 
   end

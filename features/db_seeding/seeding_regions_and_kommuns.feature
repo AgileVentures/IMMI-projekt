@@ -14,8 +14,6 @@ Feature: Seed Regions and Kommuns
   @db_seeding
   Scenario: only 23 regions are ever created, even if it's seeded multiple times
     Given There are no "Regions" records in the db
-    And the system is seeded with initial data
-    And the system is seeded with initial data
     When the system is seeded with initial data
     Then 23 "Regions" records should be created
 
@@ -28,7 +26,5 @@ Feature: Seed Regions and Kommuns
   @db_seeding
   Scenario: only 290 kommuns are ever created, even if it's seeded multiple times
     Given There are no "Kommuns" records in the db
-    And the system is seeded with initial data
-    And the system is seeded with initial data
     When the system is seeded with initial data
     Then 290 "Kommuns" records should be created

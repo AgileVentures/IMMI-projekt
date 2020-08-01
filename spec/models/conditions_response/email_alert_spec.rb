@@ -2,13 +2,12 @@ require 'rails_helper'
 require 'email_spec/rspec'
 require 'timecop'
 
-require 'shared_context/activity_logger'
 require 'shared_context/stub_email_rendering'
 
 
 RSpec.describe EmailAlert, type: :model do
 
-  include_context 'create logger'
+  let(:mock_log) { instance_double("ActivityLogger") }
 
   # set subject appropriately since it's a Singleton
   let(:subject) { described_class.instance }
@@ -39,15 +38,14 @@ RSpec.describe EmailAlert, type: :model do
                                     .and_return(true)
 
       allow(subject).to receive(:send_email)
-                                    .with(anything, log)
+                                    .with(anything, mock_log)
 
       # expected results:
       expect(described_class).to receive(:get_config)
 
       # actual test:
       Timecop.freeze(dec_1) do
-       subject.condition_response(condition, log)
-        log.close
+       subject.condition_response(condition, mock_log)
       end
     end
 
@@ -60,15 +58,14 @@ RSpec.describe EmailAlert, type: :model do
                                     .and_return(true)
 
       allow(subject).to receive(:send_email)
-                                     .with(anything, log)
+                                     .with(anything, mock_log)
 
       # expected results:
       expect(described_class).to receive(:get_timing)
 
       # actual test:
       Timecop.freeze(dec_1) do
-       subject.condition_response(condition, log)
-        log.close
+       subject.condition_response(condition, mock_log)
       end
     end
 
@@ -85,8 +82,7 @@ RSpec.describe EmailAlert, type: :model do
 
       # actual test:
       Timecop.freeze(dec_1) do
-       subject.condition_response(condition, log)
-        log.close
+       subject.condition_response(condition, mock_log)
       end
 
     end
@@ -105,8 +101,7 @@ RSpec.describe EmailAlert, type: :model do
 
       # actual test:
       Timecop.freeze(dec_1) do
-        subject.process_entities(users, log)
-        log.close
+        subject.process_entities(users, mock_log)
       end
     end
   end
@@ -128,15 +123,14 @@ RSpec.describe EmailAlert, type: :model do
                                               .with(timing, config, anything)
                                               .once
       expect(subject).to receive(:send_email)
-                                              .with(anything, log)
+                                              .with(anything, mock_log)
                                               .once
 
       # actual test:
       Timecop.freeze(dec_1) do
         subject.timing = timing
         subject.config = config
-        subject.take_action(entity, log)
-        log.close
+        subject.take_action(entity, mock_log)
       end
     end
 
@@ -158,8 +152,7 @@ RSpec.describe EmailAlert, type: :model do
       Timecop.freeze(dec_1) do
         subject.timing = timing
         subject.config = config
-        subject.take_action(entity, log)
-        log.close
+        subject.take_action(entity, mock_log)
       end # Timecop
 
     end # it 'does nothing when send_alert_this_day? is false for a user'
@@ -234,7 +227,7 @@ RSpec.describe EmailAlert, type: :model do
       expect(subject).to receive(:log_mail_response)
 
       Timecop.freeze(dec_1)
-      subject.send_email(entity, log)
+      subject.send_email(entity, mock_log)
       Timecop.return
 
       email = ActionMailer::Base.deliveries.last
@@ -243,7 +236,7 @@ RSpec.describe EmailAlert, type: :model do
 
 
     it 'does not send email if an error is raised or mail has errors' do
-      subject.create_alert_logger(log)
+      subject.create_alert_logger(mock_log)
 
       expect(MemberMailer.fake_mailer_method(user)).to be_truthy
 
@@ -263,8 +256,10 @@ RSpec.describe EmailAlert, type: :model do
       # expected results:
       expect(MemberMailer).to receive(:test_email).with(entity)
                                   .and_call_original
+      expect(mock_log).to receive(:error).with(/EmailAlert email ATTEMPT FAILED failed with entity\. Net::ProtocolError Also see for possible info/)
+
       Timecop.freeze(dec_1)
-      subject.send_email(entity, log)
+      subject.send_email(entity, mock_log)
       Timecop.return
 
       expect(ActionMailer::Base.deliveries.size).to eq 0
@@ -340,14 +335,14 @@ RSpec.describe EmailAlert, type: :model do
 
       it 'sends log_success to the alert logger' do
 
-        subject.create_alert_logger(log)
+        subject.create_alert_logger(mock_log)
 
         mail_response_dbl = double("Mail::Message")
         allow(mail_response_dbl).to receive(:errors).and_return([])
 
         expect_any_instance_of(AlertLogger).to receive(:log_success)
 
-        subject.log_mail_response(log, mail_response_dbl, entity)
+        subject.log_mail_response(mock_log, mail_response_dbl, entity)
 
       end
     end
@@ -373,14 +368,14 @@ RSpec.describe EmailAlert, type: :model do
 
 
       it 'sends log_failure' do
-        subject.create_alert_logger(log)
+        subject.create_alert_logger(mock_log)
 
         mail_response_dbl = double("Mail::Message")
         allow(mail_response_dbl).to receive(:errors).and_return([3])
 
         expect_any_instance_of(AlertLogger).to receive(:log_failure)
 
-        subject.log_mail_response(log, mail_response_dbl, entity)
+        subject.log_mail_response(mock_log, mail_response_dbl, entity)
       end
 
     end
