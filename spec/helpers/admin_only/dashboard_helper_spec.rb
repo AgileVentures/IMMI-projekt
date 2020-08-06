@@ -220,7 +220,7 @@ RSpec.describe AdminOnly::DashboardHelper, type: :helper do
           expect(helper.styled_item_then_text('css-class',
                                               'leading item',
                                               'some text',
-                                              spacer: '--')).to match /<span class=\"css-class\">leading item<\/span>(.)+some text/
+                                              spacer: '--')).to match(/<span class=\"css-class\">leading item<\/span>(.)+some text/)
 
         end
 

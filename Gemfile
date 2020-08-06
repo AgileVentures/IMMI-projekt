@@ -114,6 +114,13 @@ group :development, :test do
   gem 'spring-commands-rspec'
 end
 
+group :development, :test do
+  gem 'rubocop',             require: false
+  gem 'rubocop-rails',       require: false
+  gem 'rubocop-rspec',       require: false
+  gem 'rubocop-performance', require: false
+end
+
 group :development do
   gem 'web-console'
   gem 'spring'
@@ -130,7 +137,6 @@ group :development do
   gem 'rb-readline'
 
   gem 'rubycritic'   # code quality analysis tools and reports
-  gem 'rubocop', require: false
   gem 'rack-mini-profiler', require: false
 end
 
@@ -148,7 +154,6 @@ group :test do
   gem 'vcr'      # to record and 'playback' (mock) http requests
 
   gem 'timecop'
-  gem 'rubocop-rspec'
 
   gem "show_me_the_cookies"
 end
