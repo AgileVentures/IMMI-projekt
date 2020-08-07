@@ -677,10 +677,10 @@ DEPENDENCIES
   rb-readline
   routing-filter
   rspec-rails
-  rubocop
-  rubocop-performance
-  rubocop-rails
-  rubocop-rspec
+  rubocop (= 0.75.0)
+  rubocop-performance (= 1.6.1)
+  rubocop-rails (= 2.5.2)
+  rubocop-rspec (= 1.35.0)
   rubycritic
   rubyzip (>= 1.2.1)
   sanitize

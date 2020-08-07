@@ -4,6 +4,9 @@ ruby:
 haml:
   config_file: .haml-lint.yml
 
+rubocop:
+  version: 0.75.0
+
 eslint:
   enabled: true
   config_file: .eslintrc

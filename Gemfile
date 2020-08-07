@@ -89,6 +89,11 @@ gem 'whenever', require: false
 gem 'by_star'
 
 group :development, :test do
+  gem 'rubocop',             '=0.75.0', require: false
+  gem 'rubocop-rails',       '=2.5.2',  require: false
+  gem 'rubocop-rspec',       '=1.35.0', require: false
+  gem 'rubocop-performance', '=1.6.1', require: false
+
   gem 'rspec-rails'
   gem 'shoulda-matchers'
   gem 'pundit-matchers'
@@ -112,13 +117,6 @@ group :development, :test do
   gem 'i18n-tasks', '~> 0.9.21'
 
   gem 'spring-commands-rspec'
-end
-
-group :development, :test do
-  gem 'rubocop',             require: false
-  gem 'rubocop-rails',       require: false
-  gem 'rubocop-rspec',       require: false
-  gem 'rubocop-performance', require: false
 end
 
 group :development do
