@@ -1,14 +1,11 @@
-ruby:
-  config_file: .rubocop.yml
-
-haml:
-  config_file: .haml-lint.yml
-
 rubocop:
   version: 0.75.0
+  config_file: .rubocop.yml
 
 eslint:
   enabled: true
   config_file: .eslintrc
   ignore_file: .eslintignore
   
+haml:
+  config_file: .haml-lint.yml
