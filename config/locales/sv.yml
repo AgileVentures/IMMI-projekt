@@ -1893,7 +1893,7 @@ sv:
       users:
         my_application: *my_application
         apply_for_membership: Ansök om medlemsskap
-        your_account: Mitt konto
+        your_account: Kontoen din
 
       members:
         shf_companies: SHF-företag
