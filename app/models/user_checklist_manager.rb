@@ -30,7 +30,7 @@ class UserChecklistManager
   #
   def self.completed_membership_guidelines_if_reqd?(user)
     guidelines_required = must_complete_membership_guidelines_checklist?(user)
-    return true if !guidelines_required
+    return true unless guidelines_required
     return true if guidelines_required && completed_membership_guidelines_checklist?(user)
     false
   end

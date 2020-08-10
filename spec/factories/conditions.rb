@@ -23,8 +23,14 @@ FactoryBot.define do
     timing { :every_day }
   end
 
+  trait :day_of_week do
+    timing { :day_of_week }
+    config { {day_of_week: [1]} }
+  end
+
   trait :monthly do
     timing { :on_month_day }
+    config { {days: [2, 16]} }
   end
 
 end

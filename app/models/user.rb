@@ -1,3 +1,11 @@
+# @class User
+#
+# @responsibilty  A user that can log in.  Knows membership _payment_ status,
+#  application status.
+#
+# FIXME only the class RequirementsForMembership should respond to questions
+#   about whether a user is current member. (Ex: RequirementsForMembership.requirements_met?({ user: approved_and_paid }) )
+#
 class User < ApplicationRecord
   include PaymentUtility
 
@@ -67,6 +75,8 @@ class User < ApplicationRecord
                                                               .references(:payments) }
 
 
+  # FIXME - this does not address UserChecklists (e.g. if the ethical guidelines have been agreed to)
+  #   should change the name of the scope
   scope :current_members, -> { User.joins(:payments).where("payments.status = '#{Payment::SUCCESSFUL}' AND payments.payment_type = ? AND  payments.expire_date > ?", Payment::PAYMENT_TYPE_MEMBER, Date.current).joins(:shf_application).where(shf_applications: {state: 'accepted'}) }
 
 
@@ -96,6 +106,8 @@ class User < ApplicationRecord
 
 
   # TODO this should not be the responsibility of the User class.
+  # FIXME - this is ONLY about the payments, not the membership status as a whole.
+  #   so the name should be changed.  ex: membership_payments_current?  or membership_payment_term....
   def membership_current?
     # TODO can use term_expired?(THIS_PAYMENT_TYPE)
     !!membership_expire_date&.future?  # using '!!' will turn a nil into false
@@ -103,6 +115,8 @@ class User < ApplicationRecord
 
 
   # TODO this should not be the responsibility of the User class.
+  # FIXME - this is ONLY about the payments, not the membership status as a whole.
+  #   so the name should be changed.  ex: membership_payments_current_as_of?
   def membership_current_as_of?(this_date)
     return false if this_date.nil?
 
@@ -241,6 +255,11 @@ class User < ApplicationRecord
   # @return [Lambda] - the block (lambda) to use to sort shf_applications by the when_approved date
   def sort_apps_by_when_approved
     SORT_BY_MOST_RECENT_APPROVED_DATE
+  end
+
+
+  def membership_guidelines_checklist_done?
+    RequirementsForMembership.membership_guidelines_checklist_done?(self)
   end
 
 

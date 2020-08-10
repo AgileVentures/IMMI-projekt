@@ -1756,6 +1756,16 @@ RSpec.describe User, type: :model do
   end
 
 
+  describe 'membership_guidelines_checklist_done?' do
+
+    it 'asks the Requirement for Membership [the one place to implement that]' do
+      expect(RequirementsForMembership).to receive(:membership_guidelines_checklist_done?)
+                                               .with(subject)
+      subject.membership_guidelines_checklist_done?
+    end
+  end
+
+
   describe '#membership_packet_sent?' do
 
     it 'true if there is a date' do

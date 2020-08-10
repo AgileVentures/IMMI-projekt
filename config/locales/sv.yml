@@ -1683,6 +1683,13 @@ sv:
 
           must_be_logged_in: *must_be_logged_in_as_admin
 
+      members_need_packets:
+        subject: Medlemmar som behöver välkomnas
+        message_text:
+          message_intro: "Dessa medlemmar behöver välkomnas samt få medlemspaket:"
+          membership start date: medlem sedan
+        error_sending: "FEL! Det blev ett fel när 'Members need packets' mailet skulle skickas"
+
 
     shf_application_mailer:
       will_see_app_button: "När du har loggat in visas en knapp som tar dig till din ansökan, och sedan kan du ladda upp dina filer."

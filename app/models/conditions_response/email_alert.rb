@@ -2,6 +2,8 @@
 #
 # Responsibility: loops through a list of entities, checking each one
 #       to see if an email needs to be sent
+#   AND (smell!) to send and log the email alert.
+#     TODO refactor this into smaller, single responsibility classes
 #
 #  * knows how to loop through all <items> and check to see if an alert
 #     needs to be sent

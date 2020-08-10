@@ -8,7 +8,7 @@ FactoryBot.define do
         org_number = OrgNummersGenerator.generate_one
 
         # stop if number not already used
-        break if ! Company.find_by_company_number(org_number)
+        break if ! Company.find_by_company_number(org_number) # FIXME this forces interaction with the db. = s.l.o.w.
       end
 
       org_number

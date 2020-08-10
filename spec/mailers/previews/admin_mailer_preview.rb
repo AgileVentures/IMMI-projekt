@@ -110,4 +110,16 @@ class AdminMailerPreview < ActionMailer::Preview
     AdminMailer.new_membership_granted_co_hbrand_paid(new_member)
   end
 
+
+
+
+  def members_need_packets
+    admin = User.find_by(admin: true)
+
+    members_needing_packets = User.where(member: true, date_membership_packet_sent: nil).limit(3)
+
+    AdminMailer.members_need_packets(admin, members_needing_packets)
+  end
+
+
 end

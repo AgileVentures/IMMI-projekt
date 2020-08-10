@@ -1,0 +1,41 @@
+- provide :signoff do
+  = render 'application_mailer/signoff'
+
+- i18nscope = 'mailers.admin_mailer.members_need_packets.message_text'
+
+= render layout: 'layouts/mail_to_admin' do
+
+  .members-need-packets
+    %p= t('message_intro', scope: i18nscope)
+
+
+    %ul.members-needing-packets
+      - @members_needing_packets.each do | member |
+        .member-needing-packet
+          %li
+            %span.full-name= member.full_name + ': '
+            %span.email= member.email
+            %span.membership-start-date= '  (' + t('membership start date', scope: i18nscope) +' ' +  member.membership_start_date.to_s + ')'
+          %ul.member-details
+            %li.categories= label_and_value(t('categories', scope: i18nscope),  member.shf_application.business_categories.map(&:full_ancestry_name).join(', '))
+
+            .member-company-details
+            %li
+              Companies:
+              %ul.companies
+                - member.companies.each do | co |
+                  .company
+                    %li.company-name-website
+                      %span.company-name= co.name
+                      %span.company-website= link_to(co.website, co.website)
+                    %ul.company-details
+                      - unless co.facebook_url.blank?
+                        %li.company-facebook-url= link_to(co.facebook_url, co.facebook_url)
+                      - unless co.instagram_url.blank?
+                        %li.company-instagram-url= link_to(co.instagram_url, co.instagram_url)
+                      - unless co.youtube_url.blank?
+                        %li.company-youtube-url= link_to(co.youtube_url, co.youtube_url)
+
+                    = tag.div do
+                      = html_postal_format_entire_address(co, person_name: member.full_name)
+

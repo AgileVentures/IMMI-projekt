@@ -3,6 +3,7 @@ require File.expand_path('../../config/environment', __FILE__)
 abort('The Rails environment is running in production mode!') if Rails.env.production?
 require 'spec_helper'
 require 'rspec/rails'
+require 'active_support/testing/time_helpers'
 require 'pundit/matchers'
 require 'paperclip/matchers'
 
@@ -32,6 +33,8 @@ RSpec.configure do |config|
   config.include Paperclip::Shoulda::Matchers
 
   config.include_context 'stub Paperclip methods'
+
+  config.include ActiveSupport::Testing::TimeHelpers
 
   #
   # Rspec.configuration settings

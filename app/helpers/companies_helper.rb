@@ -54,9 +54,32 @@ module CompaniesHelper
   # Creates an array which contains an array of [text, value]
   #  for each company address_visibility level (for selection in form)
   def address_visibility_array
-    Address::ADDRESS_VISIBILITY.map do |visibility_level|
+    Address.address_visibility_levels.map do |visibility_level|
       [ I18n.t("address_visibility.#{visibility_level}"), visibility_level ]
     end
+  end
+
+
+  def html_postal_format_entire_address(co, person_name: nil)
+    lines = postal_format_entire_address(co, person_name: person_name)
+    tag.div class: 'postal-address' do
+      lines.map{|line| concat tag.p line}.join(' ')
+    end
+  end
+
+
+  # Return the entire address in the postal mailing format for Sweden
+  # Ignore address visibility settings (TODO: is this what we want? should this method be authorized)
+  def postal_format_entire_address(co, person_name: nil)
+    first_lines = person_name.nil? ? [co.name] : [co.name, person_name.to_s]
+
+    address_lines = []
+    # address_items = co.main_address.address_array(Address.max_visibility)
+    address = co.main_address
+    address_lines << address.street_address
+    address_lines << "#{address.post_code} #{address.city}"
+
+    first_lines + address_lines
   end
 
 

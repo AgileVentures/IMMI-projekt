@@ -1679,6 +1679,14 @@ en:
 
           must_be_logged_in: *must_be_logged_in_as_admin
 
+      members_need_packets:
+        subject: Members need packets sent
+        message_text:
+          message_intro: "These members need membership packets sent to them:"
+          membership start date: membership start
+        error_sending:  "ERROR! There was a problem sending the 'Members need packets' alert email"
+
+
 
     shf_application_mailer:
       will_see_app_button:  "After you log in, you will see a button that will take you to your application where you can upload your files."

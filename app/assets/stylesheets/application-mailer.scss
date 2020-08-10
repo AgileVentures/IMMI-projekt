@@ -214,6 +214,13 @@
               }
             }
 
+            .postal-address {
+              p {
+                margin-bottom: 0;
+                margin-top: 0;
+              }
+            }
+
             p {
               color: $mailer-dark-gray;
               font-family: 'Open Sans', 'HelveticaNeue', Helvetica, Arial, sans-serif;
@@ -421,6 +428,31 @@
   }
 
   // end .mailchimp
+
+  .members-need-packets {
+
+    .member-needing-packet {
+      .email,
+      .full-name {
+        font-weight: bold;
+      }
+
+      .membership-start-date {
+        font-size: smaller;
+      }
+
+      .company-name-website {
+        .company-name {
+          font-weight: bold;
+        }
+
+      }
+
+      .postal-address {
+        margin-bottom: 1rem;
+      }
+    }
+  }
 
   .member_application_received {
 

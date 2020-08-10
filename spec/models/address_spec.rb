@@ -3,11 +3,10 @@ require 'rails_helper'
 require_relative 'address_shared_examples'
 
 
-
 RSpec.describe Address, type: :model do
 
   let(:new_region) { create(:region, name: 'New Region') }
-  let(:new_kommun) { create(:kommun, name: 'New Kommun')}
+  let(:new_kommun) { create(:kommun, name: 'New Kommun') }
 
   let(:co_has_region) { create(:company, name: 'Has Region', company_number: '4268582063', city: 'HasRegionBorg') }
   let(:co_missing_region) { create(:company, name: 'Missing Region', company_number: '6112107039', city: 'NoRegionBorg') }
@@ -51,7 +50,7 @@ RSpec.describe Address, type: :model do
     it { is_expected.to validate_presence_of :country }
     it { is_expected.to validate_presence_of :addressable }
     it { is_expected.to validate_inclusion_of(:visibility)
-                            .in_array(Address::ADDRESS_VISIBILITY) }
+                            .in_array(described_class.address_visibility_levels) }
 
     it 'validates only one mailing address' do
       visible_addr.mail = true
@@ -73,24 +72,24 @@ RSpec.describe Address, type: :model do
 
       let(:address_no_lat_long) do
         create(:address,
-              street_address: 'Matarengivägen 24',
-              post_code:      '957 31',
-              city:           'Övertorneå',
-              kommun:         overtornea_kommun,
-              region:         norbotten_region,
-              addressable:    a_company,
-              mail:           false)
+               street_address: 'Matarengivägen 24',
+               post_code: '957 31',
+               city: 'Övertorneå',
+               kommun: overtornea_kommun,
+               region: norbotten_region,
+               addressable: a_company,
+               mail: false)
       end
 
       let(:address_with_lat_long) do
         addr = create(:address,
-               street_address: 'Matarengivägen 24',
-               post_code:      '957 31',
-               city:           'Övertorneå',
-               kommun:         overtornea_kommun,
-               region:         norbotten_region,
-               addressable:    a_company,
-               mail:           false)
+                      street_address: 'Matarengivägen 24',
+                      post_code: '957 31',
+                      city: 'Övertorneå',
+                      kommun: overtornea_kommun,
+                      region: norbotten_region,
+                      addressable: a_company,
+                      mail: false)
         addr.latitude = 59.3251172
         addr.longitude = 18.0710935
         addr
@@ -108,12 +107,12 @@ RSpec.describe Address, type: :model do
 
             new_address = build(:address,
                                 street_address: 'Matarengivägen 24',
-                                post_code:      '957 31',
-                                city:           'Övertorneå',
-                                kommun:         overtornea_kommun,
-                                region:         norbotten_region,
-                                addressable:    a_company,
-                                mail:           false)
+                                post_code: '957 31',
+                                city: 'Övertorneå',
+                                kommun: overtornea_kommun,
+                                region: norbotten_region,
+                                addressable: a_company,
+                                mail: false)
 
             expect(new_address).to receive(:geocode_best_possible).and_call_original.exactly(1).times
             expect(Geocoder).to receive(:search).and_call_original.at_least(1).times
@@ -230,14 +229,14 @@ RSpec.describe Address, type: :model do
           RSpec::Mocks.with_temporary_scope do
             allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('production'))
 
-              new_address = build(:address,
-                                 street_address: 'Matarengivägen 24',
-                                 post_code:      '957 31',
-                                 city:           'Övertorneå',
-                                 kommun:         overtornea_kommun,
-                                 region:         norbotten_region,
-                                 addressable:    a_company,
-                                 mail:           false)
+            new_address = build(:address,
+                                street_address: 'Matarengivägen 24',
+                                post_code: '957 31',
+                                city: 'Övertorneå',
+                                kommun: overtornea_kommun,
+                                region: norbotten_region,
+                                addressable: a_company,
+                                mail: false)
 
             new_address.latitude = 59.3251172
             new_address.longitude = 18.0710935
@@ -381,13 +380,13 @@ RSpec.describe Address, type: :model do
     describe 'has_region' do
 
       it 'only returns addresses that have a region' do
-        has_region_scope = Address.has_region
+        has_region_scope = described_class.has_region
 
         expect(has_region_scope).to match_array(has_regions), "expected #{has_regions.pretty_inspect} },\n\n but got #{has_region_scope.pretty_inspect} }"
       end
 
       it 'does not return any addresses that do not have a region' do
-        has_region_scope = Address.has_region
+        has_region_scope = described_class.has_region
         expect(has_region_scope & lacking_regions).to match_array([])
       end
 
@@ -397,12 +396,12 @@ RSpec.describe Address, type: :model do
     describe 'lacking_region' do
 
       it 'only returns addresses that do not have a region' do
-        lacking_region_scope = Address.lacking_region
+        lacking_region_scope = described_class.lacking_region
         expect(lacking_region_scope).to match_array(lacking_regions)
       end
 
       it 'does not return any addresses that do have a region' do
-        lacking_region_scope = Address.lacking_region
+        lacking_region_scope = described_class.lacking_region
         expect(lacking_region_scope & has_regions).to match_array([])
       end
 
@@ -422,7 +421,7 @@ RSpec.describe Address, type: :model do
     describe '.company_address' do
 
       it 'addresses that belong to a company' do
-        expect(Address.company_address.count).to eq 2
+        expect(described_class.company_address.count).to eq 2
       end
 
     end
@@ -430,20 +429,31 @@ RSpec.describe Address, type: :model do
   end
 
 
-  describe '#entire_address' do
-    it 'returns all data if visibility == street_address' do
-      visible_addr.visibility = 'street_address'
-      addr_str                = visible_addr.entire_address
-      confirm_full_address_str(addr_str, visible_addr)
+  describe '#entire_address ' do
+
+    let(:addr) { build(:address) }
+    it 'calls address_array to get the array of address elements' do
+      expect(addr).to receive(:address_array).and_call_original
+      addr.entire_address
     end
+
+    it 'joins the address array elements with ", "' do
+      allow(addr).to receive(:address_array)
+                         .and_return(['one', 'two', 'three'])
+      expect(addr.entire_address).to eq 'one, two, three'
+    end
+
+    it 'returns all data if full_visibility: true' do
+      addr.visibility = described_class.no_visibility
+      expect(addr).to receive(:address_array)
+                          .with(described_class.max_visibility)
+                          .and_return(['would be all address elements'])
+      addr.entire_address(full_visibility: true)
+    end
+
     it 'returns empty string if visibility == none' do
-      visible_addr.visibility = 'none'
-      expect(visible_addr.entire_address).to be_empty
-    end
-    it 'returns all data if visibility == none but full_visibility specified' do
-      visible_addr.visibility = 'none'
-      addr_str                = visible_addr.entire_address(full_visibility: true)
-      confirm_full_address_str(addr_str, visible_addr)
+      addr.visibility = described_class.no_visibility
+      expect(addr.entire_address).to be_empty
     end
   end
 
@@ -470,41 +480,15 @@ RSpec.describe Address, type: :model do
       expect(Geocoder.config[:always_raise]).to eq(:all)
     end
 
-    context '#address_array' do
-      let(:company) { FactoryBot.create(:company) }
-      let(:address) { FactoryBot.create(:address, addressable: company) }
-      let(:address_pattern) do
-        [address.street_address, address.post_code,
-         address.city, address.kommun.name, 'Sverige']
-      end
-
-      it 'returns array consistent with address visibility' do
-
-        (0..Address::ADDRESS_VISIBILITY.length - 1).each do |idx|
-
-          address.visibility = Address::ADDRESS_VISIBILITY[idx]
-          address.save
-
-          address_fields = address.address_array
-
-          case address.visibility
-            when 'none'
-              expect(address_fields).to be_empty
-            else
-              expect(address_fields).to match_array address_pattern[idx, 5]
-          end
-        end
-      end
-    end # context '#address_array'
 
     context 'geocode from address' do
       let(:addr) do
-        addr             = build(:address,
-                                 street_address: expected_streetaddress,
-                                 post_code:      expected_postcode,
-                                 city:           expected_city,
-                                 kommun:         expected_kommun,
-                                 country:        'Sweden')
+        addr = build(:address,
+                     street_address: expected_streetaddress,
+                     post_code: expected_postcode,
+                     city: expected_city,
+                     kommun: expected_kommun,
+                     country: 'Sweden')
         addr.addressable = create(:company, num_addresses: 0)
         addr.save
         addr
@@ -545,9 +529,9 @@ RSpec.describe Address, type: :model do
       end
 
       it 'changed city' do
-        addr.city           = 'Plingshult'
+        addr.city = 'Plingshult'
         addr.street_address = ''
-        addr.post_code      = ''
+        addr.post_code = ''
         addr.validate
 
         expect(addr.latitude).not_to eq(orig_lat)
@@ -560,7 +544,7 @@ RSpec.describe Address, type: :model do
       end
 
       it 'changed region' do
-        new_region  = create(:region, name: 'New Region', code: 'NR')
+        new_region = create(:region, name: 'New Region', code: 'NR')
         addr.region = new_region
         addr.validate
 
@@ -589,7 +573,7 @@ RSpec.describe Address, type: :model do
       it 'if all info is nil, will at least return lat/long of Sweden' do
 
         addr.assign_attributes(street_address: nil, city: nil,
-                               post_code:      nil, kommun: nil, country: nil)
+                               post_code: nil, kommun: nil, country: nil)
 
         addr.validate
 
@@ -602,11 +586,11 @@ RSpec.describe Address, type: :model do
 
     describe '#geocode_best_possible' do
       let(:address) do
-        addr             = build(:address,
-                                 street_address: 'Matarengivägen 24',
-                                 post_code:      '957 31',
-                                 city:           'Övertorneå',
-                                 kommun:         create(:kommun, name: 'Norrbotten'))
+        addr = build(:address,
+                     street_address: 'Matarengivägen 24',
+                     post_code: '957 31',
+                     city: 'Övertorneå',
+                     kommun: create(:kommun, name: 'Norrbotten'))
         addr.addressable = create(:company, num_addresses: 0)
         addr.save
         addr
@@ -641,7 +625,7 @@ RSpec.describe Address, type: :model do
 
       it 'invalid city, post_code, street_address' do
         address.assign_attributes(street_address: 'blorf', post_code: 'x',
-                                  city:           'y')
+                                  city: 'y')
         address.validate
 
         expect(address.latitude.round(2)).to eq(66.8309.round(2)),
@@ -652,8 +636,8 @@ RSpec.describe Address, type: :model do
 
       it 'invalid city, post_code, street_address, kommun' do
         address.assign_attributes(street_address: 'blorf',
-                                  post_code:      'x', city: 'y',
-                                  kommun:         create(:kommun, name: 'nonesuch'))
+                                  post_code: 'x', city: 'y',
+                                  kommun: create(:kommun, name: 'nonesuch'))
         address.validate
 
         expect(address.latitude.round(2)).to eq(60.12816100000001.round(2)),
@@ -664,7 +648,7 @@ RSpec.describe Address, type: :model do
 
       it 'no address info should = Sverige' do
         address.assign_attributes(street_address: nil, city: nil,
-                                  post_code:      nil, kommun: nil, country: nil)
+                                  post_code: nil, kommun: nil, country: nil)
         address.validate
 
         expect(address.latitude.round(2)).to eq(60.128161.round(2)),
@@ -684,32 +668,32 @@ RSpec.describe Address, type: :model do
         overtornea_kommun = create(:kommun, name: 'Övertorneå')
 
         # These are real addresses in  Övertorneå Municipality in Norrbotten County:
-          valid_address1 = build(:address,
-                         street_address: 'Matarengivägen 24',
-                         post_code:      '957 31',
-                         city:           'Övertorneå',
-                         kommun:         overtornea_kommun,
-                         region:         norbotten_region,
-                         addressable:    a_company,
-                         mail:           false)
-          valid_address1.save
+        valid_address1 = build(:address,
+                               street_address: 'Matarengivägen 24',
+                               post_code: '957 31',
+                               city: 'Övertorneå',
+                               kommun: overtornea_kommun,
+                               region: norbotten_region,
+                               addressable: a_company,
+                               mail: false)
+        valid_address1.save
 
-          valid_address2 = create(:address,
-                         street_address: 'Skolvägen 12',
-                         post_code:      '957 31',
-                         city:           'Övertorneå',
-                         kommun:         overtornea_kommun,
-                         region:         norbotten_region,
-                         addressable:    a_company)
-          valid_address2.save
+        valid_address2 = create(:address,
+                                street_address: 'Skolvägen 12',
+                                post_code: '957 31',
+                                city: 'Övertorneå',
+                                kommun: overtornea_kommun,
+                                region: norbotten_region,
+                                addressable: a_company)
+        valid_address2.save
 
 
-        need_geocoding   = Address.not_geocoded
+        need_geocoding = described_class.not_geocoded
         needed_geocoding = need_geocoding.count
 
-        Address.geocode_all_needed
+        described_class.geocode_all_needed
 
-        after_run_need_geocoding = Address.not_geocoded.count
+        after_run_need_geocoding = described_class.not_geocoded.count
 
         expect(needed_geocoding).to eq 0
         expect(after_run_need_geocoding).to eq 0
@@ -752,11 +736,11 @@ RSpec.describe Address, type: :model do
             it 'a new address should NOT geocode' do
               new_address = build(:address,
                                   street_address: 'Matarengivägen 30',
-                                  post_code:      '957 31',
-                                  city:           'Övertorneå',
-                                  kommun:         overtornea_kommun,
-                                  region:         norbotten_region,
-                                  addressable:    a_company)
+                                  post_code: '957 31',
+                                  city: 'Övertorneå',
+                                  kommun: overtornea_kommun,
+                                  region: norbotten_region,
+                                  addressable: a_company)
 
               expect(Geocoder).to receive(:search).at_least(1).times
               new_address.save
@@ -767,11 +751,11 @@ RSpec.describe Address, type: :model do
               let(:valid_saved_addr) do
                 addr2 = create(:address,
                                street_address: 'Skolvägen 12',
-                               post_code:      '957 31',
-                               city:           'Övertorneå',
-                               kommun:         overtornea_kommun,
-                               region:         norbotten_region,
-                               addressable:    a_company)
+                               post_code: '957 31',
+                               city: 'Övertorneå',
+                               kommun: overtornea_kommun,
+                               region: norbotten_region,
+                               addressable: a_company)
                 addr2.save
                 addr2
               end
@@ -855,13 +839,13 @@ RSpec.describe Address, type: :model do
 
             context 'is a new record' do
               it 'geocodes' do
-                new_address          = build(:address,
-                                             street_address: 'Matarengivägen 30',
-                                             post_code:      '957 31',
-                                             city:           'Övertorneå',
-                                             kommun:         overtornea_kommun,
-                                             region:         norbotten_region,
-                                             addressable:    a_company)
+                new_address = build(:address,
+                                    street_address: 'Matarengivägen 30',
+                                    post_code: '957 31',
+                                    city: 'Övertorneå',
+                                    kommun: overtornea_kommun,
+                                    region: norbotten_region,
+                                    addressable: a_company)
                 new_address.latitude = nil
 
                 expect(Geocoder).to receive(:search).at_least(1).times
@@ -874,11 +858,11 @@ RSpec.describe Address, type: :model do
               let(:addr_no_longitude) do
                 addr = create(:address,
                               street_address: 'Skolvägen 12',
-                              post_code:      '957 31',
-                              city:           'Övertorneå',
-                              kommun:         overtornea_kommun,
-                              region:         norbotten_region,
-                              addressable:    a_company)
+                              post_code: '957 31',
+                              city: 'Övertorneå',
+                              kommun: overtornea_kommun,
+                              region: norbotten_region,
+                              addressable: a_company)
                 addr.save
                 addr.longitude = nil
                 addr
@@ -887,7 +871,7 @@ RSpec.describe Address, type: :model do
               context 'geocodes if geo attribute was changed' do
 
                 it 'street address' do
-                  addr_no_longitude.longitude      = nil
+                  addr_no_longitude.longitude = nil
                   addr_no_longitude.street_address = 'new street'
                   expect(Geocoder).to receive(:search).at_least(1).times
                   addr_no_longitude.validate
@@ -902,28 +886,28 @@ RSpec.describe Address, type: :model do
 
                 it 'city' do
                   addr_no_longitude.longitude = nil
-                  addr_no_longitude.city      = 'new city'
+                  addr_no_longitude.city = 'new city'
                   expect(Geocoder).to receive(:search).at_least(1).times
                   addr_no_longitude.validate
                 end
 
                 it 'kommun' do
                   addr_no_longitude.longitude = nil
-                  addr_no_longitude.kommun    = create(:kommun, name: 'New Kommun')
+                  addr_no_longitude.kommun = create(:kommun, name: 'New Kommun')
                   expect(Geocoder).to receive(:search).at_least(1).times
                   addr_no_longitude.validate
                 end
 
                 it 'region' do
                   addr_no_longitude.longitude = nil
-                  addr_no_longitude.region    = create(:region, name: 'New Region')
+                  addr_no_longitude.region = create(:region, name: 'New Region')
                   expect(Geocoder).to receive(:search).at_least(1).times
                   addr_no_longitude.validate
                 end
 
                 it 'country' do
                   addr_no_longitude.longitude = nil
-                  addr_no_longitude.country   = 'new country'
+                  addr_no_longitude.country = 'new country'
                   expect(Geocoder).to receive(:search).at_least(1).times
                   addr_no_longitude.validate
                 end
@@ -952,11 +936,11 @@ RSpec.describe Address, type: :model do
             it 'a new address always geocodes' do
               new_address = build(:address,
                                   street_address: 'Matarengivägen 30',
-                                  post_code:      '957 31',
-                                  city:           'Övertorneå',
-                                  kommun:         overtornea_kommun,
-                                  region:         norbotten_region,
-                                  addressable:    a_company)
+                                  post_code: '957 31',
+                                  city: 'Övertorneå',
+                                  kommun: overtornea_kommun,
+                                  region: norbotten_region,
+                                  addressable: a_company)
 
               expect(Geocoder).to receive(:search).at_least(1).times
               new_address.save
@@ -967,11 +951,11 @@ RSpec.describe Address, type: :model do
               let(:valid_saved_addr) do
                 addr2 = create(:address,
                                street_address: 'Skolvägen 12',
-                               post_code:      '957 31',
-                               city:           'Övertorneå',
-                               kommun:         overtornea_kommun,
-                               region:         norbotten_region,
-                               addressable:    a_company)
+                               post_code: '957 31',
+                               city: 'Övertorneå',
+                               kommun: overtornea_kommun,
+                               region: norbotten_region,
+                               addressable: a_company)
                 addr2.save
                 addr2
               end
@@ -1042,11 +1026,11 @@ RSpec.describe Address, type: :model do
 
               new_address = build(:address,
                                   street_address: 'Matarengivägen 30',
-                                  post_code:      '957 31',
-                                  city:           'Övertorneå',
-                                  kommun:         overtornea_kommun,
-                                  region:         norbotten_region,
-                                  addressable:    a_company)
+                                  post_code: '957 31',
+                                  city: 'Övertorneå',
+                                  kommun: overtornea_kommun,
+                                  region: norbotten_region,
+                                  addressable: a_company)
 
               expect(Rails.env).to eq 'production'
               expect(Geocoder).to receive(:search).at_least(1).times
@@ -1060,11 +1044,11 @@ RSpec.describe Address, type: :model do
           let(:valid_saved_addr) do
             addr2 = create(:address,
                            street_address: 'Skolvägen 12',
-                           post_code:      '957 31',
-                           city:           'Övertorneå',
-                           kommun:         overtornea_kommun,
-                           region:         norbotten_region,
-                           addressable:    a_company)
+                           post_code: '957 31',
+                           city: 'Övertorneå',
+                           kommun: overtornea_kommun,
+                           region: norbotten_region,
+                           addressable: a_company)
             addr2.save
             addr2
           end
@@ -1152,13 +1136,74 @@ RSpec.describe Address, type: :model do
 
   end # describe 'geocoding'
 
+
+  context '#address_array' do
+
+    let(:address) { build(:address) }
+
+    let(:address_pattern) do
+      [address.street_address, address.post_code,
+       address.city, address.kommun.name, 'Sverige']
+    end
+
+
+    describe 'uses the visibility level of the address' do
+
+      # length of the list of all address visibility items/settings
+      viz_items_len = described_class.address_visibility_levels.size
+
+      # go thru all possible address visibility items (settings)
+      (0..described_class.address_visibility_levels.length - 1).each do |visibility_level|
+        viz_level = described_class.address_visibility_levels[visibility_level]
+
+        it "#{viz_level}" do
+          address.visibility = viz_level
+          address_fields = address.address_array
+
+          case address.visibility
+            when 'none'
+              expect(address_fields).to be_empty
+            else
+              # address_pattern[ start_index, length]
+              expect(address_fields).to match_array address_pattern[visibility_level, viz_items_len]
+          end
+        end
+
+      end
+
+      describe 'specify the visibility level to use' do
+        # go thru all possible address visibility items (settings)
+        (0..described_class.address_visibility_levels.length - 1).each do |visibility_level|
+
+          viz_level = described_class.address_visibility_levels[visibility_level]
+
+          it "#{viz_level}" do
+            address.visibility = described_class.max_visibility
+            address_fields = address.address_array(viz_level)
+
+            case viz_level
+              when described_class.no_visibility
+                expect(address_fields).to be_empty
+              else
+                # address_pattern[ start_index, length]
+                expect(address_fields).to match_array address_pattern[visibility_level, viz_items_len]
+            end
+          end
+        end
+      end
+
+    end
+
+  end
+
+
   def confirm_full_address_str(addr_str, addr)
     kommun = Kommun.find(addr.kommun_id)
-    expect(addr_str.include?(addr.street_address)).to be true
-    expect(addr_str.include?(addr.post_code)).to be true
-    expect(addr_str.include?(addr.city)).to be true
-    expect(addr_str.include?(kommun.name)).to be true
-    expect(addr_str.include?(addr.country)).to be true
+    expect(addr_str.include?(addr.street_address)).to be_truthy
+    expect(addr_str.include?(addr.post_code)).to be_truthy
+    expect(addr_str.include?(addr.city)).to be_truthy
+    expect(addr_str.include?(kommun.name)).to be_truthy
+    expect(addr_str.include?(addr.country)).to be_truthy
   end
 
 end

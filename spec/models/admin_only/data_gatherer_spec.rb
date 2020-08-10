@@ -17,7 +17,7 @@ require 'rails_helper'
 #        Being so complete does make this RSpec take time to run.
 #
 
-RSpec.describe 'AdminOnly::DataGatherer' do
+RSpec.describe AdminOnly::DataGatherer do
 
   include DataCreationHelper
 
@@ -347,9 +347,9 @@ RSpec.describe 'AdminOnly::DataGatherer' do
         recent_payments = subject.recent_payments
 
         expect(recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count)
-          .to eq num_payments_this_month
+            .to eq num_payments_this_month
         expect(recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym].count)
-          .to eq num_payments_this_month
+            .to eq num_payments_this_month
       end
 
 
@@ -358,9 +358,9 @@ RSpec.describe 'AdminOnly::DataGatherer' do
         recent_payments = subject.recent_payments
 
         expect(recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym].count)
-          .to eq num_payments_this_month
+            .to eq num_payments_this_month
         expect(recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym].count)
-          .to eq num_payments_this_month
+            .to eq num_payments_this_month
 
         subject.timeframe = 120 # 4 months ago
 
@@ -649,7 +649,7 @@ RSpec.describe 'AdminOnly::DataGatherer' do
         actual_payments = subject.send(:get_recent_financial_info, start_date, end_date)
 
         actual_payments.each do |each_type_k, each_type_v|
-          member_payments = updated_after_start_date.payments.select{ |p| p.payment_type == each_type_k.to_s } +
+          member_payments = updated_after_start_date.payments.select { |p| p.payment_type == each_type_k.to_s } +
               updated_on_end_date.payments.select { |p| p.payment_type == each_type_k.to_s }
           expect(each_type_v).to match_array(member_payments)
         end

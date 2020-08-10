@@ -1,23 +1,23 @@
 module AdminOnly
 
-#--------------------------
-#
-# @class DataGatherer
-#
-# @desc Responsibility: Gather information from the data for summary and analysis
-#          Answer basic questions like "how many..."  ... over some timeframe... etc
-#
+  #--------------------------
+  #
+  # @class DataGatherer
+  #
+  # @desc Responsibility: Gather information from the data for summary and analysis
+  #          Answer basic questions like "how many..."  ... over some timeframe... etc
+  #
 #          A simple PORO that gathers information from the data
-#          and stores any constants required to do so.
-#         (Perhaps one day the constants will become configuration options.)
-#
-#
-# @author Ashley Engelund (ashley@ashleycaroline.com  weedySeaDragon @ github)
-# @date   1/1/18
-#
-# @file data_gatherer.rb
-#
-#--------------------------
+  #          and stores any constants required to do so.
+  #         (Perhaps one day the constants will become configuration options.)
+  #
+  #
+  # @author Ashley Engelund (ashley@ashleycaroline.com  weedySeaDragon @ github)
+  # @date   1/1/18
+  #
+  # @file data_gatherer.rb
+  #
+  #--------------------------
 
   class DataGatherer
 
@@ -63,7 +63,7 @@ module AdminOnly
     # update recent data: fetch from the db and update all the relate instance variables
     #  default is the past DEFAULT_NUM_PAST_DAYS days
     #
-    def get_recent_data(timeframe_start = (Time.zone.now - DEFAULT_NUM_PAST_DAYS.days), timeframe_end =  Time.zone.now)
+    def get_recent_data(timeframe_start = (Time.zone.now - DEFAULT_NUM_PAST_DAYS.days), timeframe_end = Time.zone.now)
 
       get_recent_shf_apps(timeframe_start, timeframe_end)
       get_recent_financial_info(timeframe_start, timeframe_end)
@@ -75,6 +75,7 @@ module AdminOnly
       @timeframe ||= DEFAULT_NUM_PAST_DAYS
     end
 
+
     # can only set the timeframe to a value that is in our days_ago_list
     # if val is not in days_ago_list, raise_exception ''
     def timeframe=(val)
@@ -84,6 +85,7 @@ module AdminOnly
       refresh_data
 
     end
+
 
     def days_ago_list
       TIMEFRAMES
@@ -156,7 +158,7 @@ module AdminOnly
         end
       end
 
-      @recent_shf_apps   # return this to make testing easier
+      @recent_shf_apps # return this to make testing easier
     end
 
 
@@ -165,7 +167,7 @@ module AdminOnly
       recent_payments[Payment::PAYMENT_TYPE_MEMBER.to_sym] = Payment.member_fee.updated_in_date_range(start_date, end_date) # Payment.member_fee.where(status: 'betald', updated_at: start_date..end_date)
       recent_payments[Payment::PAYMENT_TYPE_BRANDING.to_sym] = Payment.branding_fee.updated_in_date_range(start_date, end_date) # where(status: 'betald', updated_at: start_date..end_date)
 
-      recent_payments  # return this to make testing easier
+      recent_payments # return this to make testing easier
     end
 
 
@@ -180,9 +182,9 @@ module AdminOnly
 
       most_recent_payment = user.payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
 
-      most_recent_payment.nil? || RequirementsForMembershipLapsed.requirements_met?({user: user})
+      most_recent_payment.nil? || RequirementsForMembershipLapsed.requirements_met?({ user: user })
     end
 
-  end # DataGatherer
+  end
 
-end # module AdminOnly
+end

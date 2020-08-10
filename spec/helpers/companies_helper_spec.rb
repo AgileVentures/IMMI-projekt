@@ -138,6 +138,85 @@ RSpec.describe CompaniesHelper, type: :helper do
     end
   end
 
+  describe 'html_postal_format_entire_address' do
+    let(:co) do
+      co = build(:company, num_addresses: 1,
+                 region: build(:region),
+                 company_number: '000000000')
+      co.addresses.first.mail = true
+      co
+    end
+
+    it 'gets the lines to use from postal_format_entire_address' do
+      expect(helper).to receive(:postal_format_entire_address)
+                            .with(co, person_name: 'Some name')
+                            .and_call_original
+      helper.html_postal_format_entire_address(co, person_name: 'Some name')
+    end
+  end
+
+
+  describe 'postal_format_entire_address' do
+
+    let(:co) do
+      co = build(:company, num_addresses: 1,
+                 region: build(:region),
+                 company_number: '000000000')
+      co.addresses.first.mail = true
+      co
+    end
+
+    let(:result) { helper.postal_format_entire_address(co) }
+    let(:result_with_person_name) { helper.postal_format_entire_address(co, person_name: 'Person Name Is Here') }
+
+    # Use the first address found that has been set as the mailing address
+    before(:each) do
+      allow(co).to receive(:main_address)
+                       .and_return(co.addresses.find{|addr| addr.mail })
+    end
+
+    it 'uses the main_address' do
+      expect(co).to receive(:main_address)
+      helper.postal_format_entire_address(co)
+    end
+
+    it 'always includes the entire address, no matter the address visibility level' do
+      address = co.addresses.first
+      address.visibility = Address.no_visibility
+      formatted_address = helper.postal_format_entire_address(co)
+      formatted_address_lines = formatted_address.split("\n")
+      expect(formatted_address_lines.select{|line| line.blank?}).to be_empty
+    end
+
+    it 'first is the company name' do
+      expect(result.first).to eq('SomeCompany')
+      expect(result_with_person_name.first).to eq('SomeCompany')
+    end
+
+    context 'person name is given' do
+      it '2nd line is person name' do
+        expect(result_with_person_name[1]).to eq('Person Name Is Here')
+      end
+    end
+
+    context 'no person name given' do
+      it 'no person name after the company name' do
+        expect(result[1]).not_to eq('Person Name Is Here')
+      end
+    end
+
+    it '"street address" is next to last line' do
+      expect(result[result.size - 2]).to eq('Hundforetagarevägen 1')
+      expect(result_with_person_name[result_with_person_name.size - 2]).to eq('Hundforetagarevägen 1')
+    end
+
+    it '"postcode city" is last line' do
+      expect(result.last).to eq('310 40 Harplinge')
+      expect(result_with_person_name.last).to eq('310 40 Harplinge')
+    end
+
+  end
+
   describe '#company_number_selection_field' do
     4.times do |n|
       let!("cmpy_#{n+1}".to_sym) { create(:company) }

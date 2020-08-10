@@ -47,4 +47,15 @@ class AdminMailer < ApplicationMailer
     mail to: recipient_email, subject: t('new_membership_granted_co_hbrand_paid.subject', scope: I18N_SCOPE)
   end
 
+
+  helper CompaniesHelper
+
+  def members_need_packets(admin, members_needing_packets)
+
+    set_mail_info __method__, admin
+    @members_needing_packets = members_needing_packets
+
+    mail to: recipient_email, subject: t('members_need_packets.subject', scope: I18N_SCOPE)
+  end
+
 end

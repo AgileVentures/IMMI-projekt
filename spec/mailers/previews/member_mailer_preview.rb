@@ -121,7 +121,7 @@ class MemberMailerPreview < ActionMailer::Preview
   end
 
 
-  private
+private
 
 
   # create a unique email address based on the Time right now

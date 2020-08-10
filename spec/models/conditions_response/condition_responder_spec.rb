@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-require File.join( 'shared_examples', 'condition_responder_timing_shared')
+require File.join('shared_examples', 'condition_responder_timing_shared')
 
 
 RSpec.describe ConditionResponder, type: :model do
@@ -11,9 +11,9 @@ RSpec.describe ConditionResponder, type: :model do
 
     it 'raises NoMethodError (must be defined by subclasses)' do
 
-      condition    = Condition.create(class_name: 'MembershipExpireAlert',
-                                      timing:     'before',
-                                      config:     { days: [60, 30, 14, 2] })
+      condition = Condition.create(class_name: 'MembershipExpireAlert',
+                                   timing: 'before',
+                                   config: { days: [60, 30, 14, 2] })
 
       expect { described_class.condition_response(condition, mock_log) }.to raise_exception NoMethodError
     end
@@ -62,19 +62,18 @@ RSpec.describe ConditionResponder, type: :model do
 
     context 'condition is not nil' do
       it 'returns the timing from the condition if condition is not nil' do
-        expect(ConditionResponder.get_config(create(:condition, config: {mertz: 732} ))).to eq({mertz: 732})
+        expect(ConditionResponder.get_config(create(:condition, config: { mertz: 732 }))).to eq({ mertz: 732 })
       end
     end
 
   end
 
 
-
   describe '.days_a_date_is_away_from(a_date, timing, some_date)' do
 
     let(:nov_30) { Date.new(2018, 11, 30) }
-    let(:dec_1)  { Date.new(2018, 12,  1) }
-    let(:dec_2)  { Date.new(2018, 12,  2) }
+    let(:dec_1) { Date.new(2018, 12, 1) }
+    let(:dec_2) { Date.new(2018, 12, 2) }
 
     around(:each) do |example|
       Timecop.freeze(dec_1)
@@ -144,8 +143,8 @@ RSpec.describe ConditionResponder, type: :model do
   describe '.days_today_is_away_from(timing, some_date)' do
 
     let(:nov_30) { Date.new(2018, 11, 30) }
-    let(:dec_1)  { Date.new(2018, 12,  1) }
-    let(:dec_2)  { Date.new(2018, 12,  2) }
+    let(:dec_1) { Date.new(2018, 12, 1) }
+    let(:dec_2) { Date.new(2018, 12, 2) }
 
     around(:each) do |example|
       Timecop.freeze(dec_1)
@@ -177,7 +176,7 @@ RSpec.describe ConditionResponder, type: :model do
       let(:timing_after) { described_class.timing_after }
 
       it 'today is 1 day after the date = ConditionResponder.days_1st_date_is_from_2nd(Date.current, dec_2, timing_after)' do
-        expect(ConditionResponder.days_today_is_away_from(dec_2, timing_after)).to eq  ConditionResponder.days_1st_date_is_from_2nd(Date.current, dec_2, timing_after)
+        expect(ConditionResponder.days_today_is_away_from(dec_2, timing_after)).to eq ConditionResponder.days_1st_date_is_from_2nd(Date.current, dec_2, timing_after)
       end
 
       it 'date is on today = ConditionResponder.days_1st_date_is_from_2nd(Date.current, dec_1, timing_after)' do
@@ -233,6 +232,12 @@ RSpec.describe ConditionResponder, type: :model do
       it_behaves_like 'timing method is true if timing matches, else false', :timing_is_every_day?, described_class.timing_every_day
     end
 
+
+    describe '.timing_is_day_of_week?' do
+      it_behaves_like 'timing method is true if timing matches, else false', :timing_is_day_of_week?, described_class.timing_day_of_week
+    end
+
+
     describe '.timing_is_day_of_month?' do
       it_behaves_like 'timing method is true if timing matches, else false', :timing_is_day_of_month?, described_class.timing_day_of_month
     end
@@ -240,24 +245,91 @@ RSpec.describe ConditionResponder, type: :model do
 
 
   describe '.timing_matches_today?' do
-
-    let(:condition) { build(:condition) }
-    let(:timing) { ConditionResponder.get_timing(condition) }
+    let(:timing) { described_class.timing_on }
 
     it 'true if timing is every day' do
-      config = {}
-      expect(ConditionResponder.timing_matches_today?(described_class.timing_every_day, config)).to be_truthy
+      allow(described_class).to receive(:timing_is_every_day?)
+                                    .and_return(true)
+      expect(described_class.timing_matches_today?(timing, config)).to be_truthy
     end
 
-    it 'true if today is timing day of month? and this is that day of the month' do
-      condition.timing = described_class.timing_day_of_month
-      config = {days: [Date.current.day]}
-      expect(ConditionResponder.timing_matches_today?(described_class.timing_day_of_month, config)).to be_truthy
+    it 'true if today is timing day of month?' do
+      allow(described_class).to receive(:today_is_timing_day_of_month?)
+                                    .and_return(true)
+      expect(described_class.timing_matches_today?(timing, config)).to be_truthy
+    end
+
+    it 'true if today_is_timing_day_of_week?' do
+      allow(described_class).to receive(:today_is_timing_day_of_week?)
+                                    .and_return(true)
+      expect(described_class.timing_matches_today?(timing, config)).to be_truthy
     end
 
     it 'false otherwise' do
-      condition.timing = described_class.default_timing
-      expect(ConditionResponder.timing_matches_today?(timing, config)).to be_falsey
+      allow(described_class).to receive(:timing_is_every_day?)
+                                    .and_return(false)
+      allow(described_class).to receive(:today_is_timing_day_of_week?)
+                                    .and_return(false)
+      allow(described_class).to receive(:today_is_timing_day_of_month?)
+                                    .and_return(false)
+      expect(described_class.timing_matches_today?(timing, config)).to be_falsey
+    end
+  end
+
+
+  describe '.today_is_timing_day_of_week?' do
+
+
+    let(:condition) { build(:condition, :day_of_week) }
+    let(:timing) { described_class.get_timing(condition) }
+
+    let(:valid_day_of_week_config) { {days_of_week: [2, 5]}}
+
+    it 'timing_is_day_of_week? must be true' do
+      config = { days_of_week: [0, 1, 2, 3, 4, 5, 6] }
+
+      expect(described_class.today_is_timing_day_of_week?(timing, config)).to be_truthy
+
+      not_weekly_timing = described_class.timing_every_day
+      expect(described_class.today_is_timing_day_of_week?(not_weekly_timing, config)).to be_falsey
+    end
+
+    it 'config must include :days_of_week' do
+      # a Tuesday (weekday #2)
+      travel_to(Date.new(2020, 8, 4)) do
+        expect(described_class.today_is_timing_day_of_week?(timing, {})).to be_falsey
+        expect(described_class.today_is_timing_day_of_week?(timing, { blorf: :flurb})).to be_falsey
+        expect(described_class.today_is_timing_day_of_week?(timing, {days_of_week: [2, 5]})).to be_truthy
+      end
+    end
+
+    describe "config[:days_of_week] must include the weekday number for today" do
+
+      it 'false unless config[:days_of_week] is a collection' do
+        config = {days_of_week: 'flurb'}
+        expect(described_class.today_is_timing_day_of_week?(timing, config)).to be_falsey
+      end
+
+      it 'false if config[:days_of_week] is empty' do
+        config = {days_of_week: []}
+        expect(described_class.today_is_timing_day_of_week?(timing, config)).to be_falsey
+      end
+
+      it 'true if it includes the weekday number for today' do
+        config = {days_of_week: [2, 5]}
+        # a Sunday (weekday #0)
+        travel_to(Date.new(2020, 8, 2)) do
+          expect(described_class.today_is_timing_day_of_week?(timing, config)).to be_falsey
+        end
+        # a Tuesday (weekday #2)
+        travel_to(Date.new(2020, 8, 4)) do
+          expect(described_class.today_is_timing_day_of_week?(timing, config)).to be_truthy
+        end
+        # a Friday (weekday #5)
+        travel_to(Date.new(2020, 8, 7)) do
+          expect(described_class.today_is_timing_day_of_week?(timing, config)).to be_truthy
+        end
+      end
     end
   end
 
@@ -268,7 +340,7 @@ RSpec.describe ConditionResponder, type: :model do
     let(:timing) { described_class.get_timing(condition) }
 
     it "true if the timing is 'day of month' and config[:days] includes today's day of the month" do
-      config = {days: [Date.current.day]}
+      config = { days: [Date.current.day] }
       expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be_truthy
     end
 
@@ -278,7 +350,7 @@ RSpec.describe ConditionResponder, type: :model do
     end
 
     it "false if config[:days] does not include today's date" do
-      config = {days: [Date.current.day - 1,  Date.current.day + 1]}
+      config = { days: [Date.current.day - 1, Date.current.day + 1] }
       expect(ConditionResponder.today_is_timing_day_of_month?(timing, config)).to be_falsey
     end
 
@@ -294,7 +366,7 @@ RSpec.describe ConditionResponder, type: :model do
       expect(described_class).to receive(:validate_timing).with(:every_day, [:every_day], mock_log)
 
       expect { ConditionResponder.confirm_correct_timing(:every_day, :every_day, mock_log) }
-        .not_to raise_error
+          .not_to raise_error
     end
 
     it 'raises exception if received timing != expected' do

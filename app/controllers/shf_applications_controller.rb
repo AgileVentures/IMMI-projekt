@@ -21,7 +21,7 @@ class ShfApplicationsController < ApplicationController
     end
     @new_company = Company.new # object for company_create_modal
     @shf_application = ShfApplication.new(user: current_user)
-    @all_business_categories = BusinessCategory.all
+    @all_business_categories = BusinessCategory.all.roots.order(:name)
     @uploaded_file = @shf_application.uploaded_files.build
   end
 
@@ -437,7 +437,7 @@ class ShfApplicationsController < ApplicationController
 
   def load_update_objects(numbers_str)
     @company_numbers = numbers_str
-    @all_business_categories = BusinessCategory.all
+    @all_business_categories = BusinessCategory.all.roots.order(:name)
     @new_company = Company.new   # In case user wants to create a new company
   end
 

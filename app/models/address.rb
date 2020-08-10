@@ -23,7 +23,10 @@ class Address < ApplicationRecord
                           conditions: -> { where(mail: true) },
                           if: proc { :mail }
 
-  ADDRESS_VISIBILITY = %w(street_address post_code city kommun none)
+  NO_VISIBILITY = 'none'
+  MAX_VISIBILITY = 'street_address'
+  ADDRESS_VISIBILITY = [MAX_VISIBILITY, 'post_code', 'city', 'kommun', NO_VISIBILITY]
+  VISIBILITY_ITEMS = ADDRESS_VISIBILITY - [NO_VISIBILITY]
 
   validates :visibility, inclusion: ADDRESS_VISIBILITY
 
@@ -31,11 +34,11 @@ class Address < ApplicationRecord
 
   scope :lacking_region, -> { where('region_id IS NULL') }
 
-  scope :visible, -> { where.not(visibility: 'none') }
+  scope :visible, -> { where.not(visibility: NO_VISIBILITY) }
 
   scope :mail_address, -> { where(mail: true) }
 
-  scope :company_address, -> { where(addressable_type: 'Company')}
+  scope :company_address, -> { where(addressable_type: 'Company') }
 
   geocoded_by :entire_address
 
@@ -49,6 +52,10 @@ class Address < ApplicationRecord
                           (obj.changed_attribute_names_to_save &
                             GEO_FIELDS).any?
                    }
+
+
+  # ---------------------------------------------------------------------------
+
 
   # geocode all of the addresses that need it
   #
@@ -72,44 +79,74 @@ class Address < ApplicationRecord
   end
 
 
-  def address_array
-    # This should only be called for an address associated with a company
+  def self.address_visibility_levels
+    ADDRESS_VISIBILITY
+  end
 
-    # Returns an array of address field values (strings) that starts with the
-    # attribute associated with the  visibility level set for this address.
 
-    address_pattern = %w(street_address post_code city kommun) # FIXME make this a constant
+  def self.max_visibility
+    MAX_VISIBILITY
+  end
 
-    pattern_length = address_pattern.length
 
-    start_index = address_pattern.find_index do |field|
-      field == visibility
-    end
+  def self.no_visibility
+    NO_VISIBILITY
+  end
 
+
+  def self.visibility_items
+    VISIBILITY_ITEMS
+  end
+
+  # ----------------------------------------------------------------------------
+
+
+  # TODO This should only be called for an address associated with a company
+  #
+  # @param [String] visibility_limit - the 'level' visibility to use
+  #   default is the visibility set for this address
+  #
+  # @return [Array[String]] - an array of address field values (strings)
+  #   that starts with the
+  #   attribute associated with the visibility_limit set for this address.
+  def address_array(visibility_limit = visibility)
+    return [] if visibility_limit == self.class.no_visibility
+
+    start_index = self.class.visibility_items.index { |viz_item| viz_item == visibility_limit }
     return [] unless start_index
 
+    viz_items_length = self.class.visibility_items.length
+
+    # Create the array with the actual values of the address.
+    #  Add in the kommun name if there is one for the address.
     if kommun
       ary = [street_address, post_code, city, kommun.name,
-             sverige_if_nil][start_index..pattern_length]
+             sverige_if_nil][start_index..viz_items_length]
     else
       ary = [street_address, post_code, city,
-             sverige_if_nil][start_index..(pattern_length-1)]
+             sverige_if_nil][start_index..(viz_items_length - 1)]
     end
     ary.delete_if { |f| f.blank? }
   end
 
 
+  ADDR_JOINER = ', '
+
+  # @return [String] - the address elements, joined by ADDR_JOINER.
+  #   Only include the visible address elements unless full_visibility == true
   def entire_address(full_visibility: false)
-    return address_array.compact.join(', ') if (!full_visibility ||
-                                                visibility == 'street_address')
+    address_arr = full_visibility ? address_array(self.class.max_visibility) : address_array
+    address_arr.join(ADDR_JOINER)
+  end
 
-    saved_visibility = visibility
-    self.visibility = 'street_address'
 
-    addr_str = address_array.compact.join(', ')
-    self.visibility = saved_visibility
+  def visibility_none?
+    visibility == self.class.no_visibility
+  end
 
-    addr_str
+
+  def visibility_max?
+    visibility == self.class.max_visibility
   end
 
 
@@ -147,6 +184,7 @@ class Address < ApplicationRecord
 
   end
 
+
   # TODO: Make this a private method after a one-time rake task - which updates
   #       non-conforming city names in addresses - has been run.
   def format_city_name
@@ -172,6 +210,7 @@ class Address < ApplicationRecord
       (!latitude.nil? && !longitude.nil?)  &&
       (self.new_record? || !((self.changed & GEO_FIELDS).any?) )
   end
+
 
   def sverige_if_nil
     country = 'Sverige' if country.nil?

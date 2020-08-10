@@ -1,7 +1,6 @@
 #!/usr/bin/ruby
 
 
-
 class ConditionResponderError < StandardError
 end
 
@@ -26,8 +25,10 @@ end
 # the overall design.
 #
 # TODO: ? rename to ConditionHandler - because it _handles_ conditions, it
-# doesn't respond _to_ them or _with_ them (it doesn't send a Condition to anything.
-#  It queries them and does it's own thing)
+#   doesn't respond _to_ them or _with_ them (it doesn't send a Condition to anything.
+#   It queries them and does it's own thing)
+#
+# TODO: refactor into single responsibilities.  (ex: Timing class, etc.)
 #
 # @date   2018-12-13
 #
@@ -38,13 +39,15 @@ class ConditionResponder
 
   Timing = Symbol
 
-  TIMING_BEFORE    = :before
-  TIMING_AFTER     = :after
-  TIMING_ON        = :on
+  TIMING_BEFORE = :before
+  TIMING_AFTER = :after
+  TIMING_ON = :on
   TIMING_EVERY_DAY = :every_day
+  TIMING_DAY_OF_WEEK = :day_of_week
   TIMING_DAY_OF_MONTH = :day_of_month
 
-  ALL_TIMINGS = [TIMING_BEFORE, TIMING_AFTER, TIMING_ON, TIMING_EVERY_DAY, TIMING_DAY_OF_MONTH]
+  ALL_TIMINGS = [TIMING_BEFORE, TIMING_AFTER, TIMING_ON, TIMING_EVERY_DAY,
+                 TIMING_DAY_OF_WEEK, TIMING_DAY_OF_MONTH]
 
 
   DEFAULT_TIMING = TIMING_ON
@@ -139,6 +142,11 @@ class ConditionResponder
   end
 
 
+  def self.timing_is_day_of_week?(timing)
+    timing == TIMING_DAY_OF_WEEK
+  end
+
+
   def self.timing_is_day_of_month?(timing)
     timing == TIMING_DAY_OF_MONTH
   end
@@ -147,7 +155,21 @@ class ConditionResponder
   # True if the timing is every day
   # OR if it is set to a day of the month and today is that day
   def self.timing_matches_today?(timing, config)
-    timing_is_every_day?(timing) || today_is_timing_day_of_month?(timing, config)
+    timing_is_every_day?(timing) ||
+        today_is_timing_day_of_week?(timing, config) ||
+        today_is_timing_day_of_month?(timing, config)
+  end
+
+
+  # True if the timing is for a day of the week
+  # AND today is the day of the week _integer_ specified in the config
+  #  Note: the day of the week is defined in the Date class  wday method.
+  #    Sunday is 0.  This way we don't have to deal with translation to/from languages.
+  #
+  def self.today_is_timing_day_of_week?(timing, config)
+    self.timing_is_day_of_week?(timing) &&
+        TimingDayOfWeek.config_valid?(config) &&
+        TimingDayOfWeek.true_this_date?(config)
   end
 
 
@@ -221,8 +243,80 @@ class ConditionResponder
   end
 
 
+  def self.timing_day_of_week
+    TIMING_DAY_OF_WEEK
+  end
+
+
   def self.timing_day_of_month
     TIMING_DAY_OF_MONTH
   end
 
-end # ConditionResponder
+
+  # ----------------------------------------------------------------------------
+  # Begin to refactor into separate classes:
+
+  # Responsibility: see if the given timing is valid and which one it matches
+  class TimingMatcher
+    # TODO
+  end
+
+
+  class Timing
+
+    # each subclass must defind this
+    def self.config_key
+      nil
+    end
+
+
+    def self.config_valid?(config)
+      config.fetch(config_key, false) && !config[config_key].nil? &&
+          config_key_value_valid?(config[config_key])
+    end
+
+
+    # Each subclass should redefine this to check if the value is correct in form and/or value
+    def self.config_key_value_valid?(_config_value)
+      false
+    end
+
+
+    # @return [Boolean] - true iff the config is valid the value at the config key is
+    #   is true for the given date
+    def self.true_this_date?(config = {}, this_date = Time.zone.now)
+      config_valid?(config) && config_value_true_this_date?(config[config_key], this_date)
+    end
+
+
+    # @return [Boolean] - is this timing with this value true for the given date? (default = Time.zone.now)
+    #  subclasses should redefine this
+    def self.config_value_true_this_date?(_config_value, _this_date = Time.zone.now)
+      false
+    end
+  end
+
+
+  # This is an example of how other Timing subclasses can be defined:
+  #  need the key to use in a configuration
+  #  need to be able to validate the value at the configuration[config_key]
+  #  need to respond if the date is true for the given configuration value
+
+  class TimingDayOfWeek < Timing
+
+    def self.config_key
+      :days_of_week
+    end
+
+
+    def self.config_key_value_valid?(days_of_week_value)
+      days_of_week_value.is_a?(Enumerable)
+    end
+
+
+    def self.config_value_true_this_date?(value = {}, this_date = Time.zone.now)
+      value.include?(this_date.wday)
+    end
+  end
+
+end
