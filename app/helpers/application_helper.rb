@@ -7,6 +7,7 @@ module ApplicationHelper
   CSS_CLASS_NO = 'no' unless defined?(CSS_CLASS_NO)
   CSS_CLASS_MAYBE = 'maybe' unless defined?(CSS_CLASS_MAYBE)
   CSS_ADMIN_CLASS = 'is-admin' unless defined?(CSS_ADMIN_CLASS)
+  CSS_PAGE_TITLE_CLASS = 'entry-title'
 
 
   include MetaTagsHelper
@@ -318,4 +319,13 @@ module ApplicationHelper
     CSS_CLASS_MAYBE
   end
 
+  # public method for accessing the CSS class for the main title of a page
+  def page_title_css_class
+    CSS_PAGE_TITLE_CLASS
+  end
+
+  # public method to render the main title of a page
+  def page_title(title, user)
+    tag.h1 title, class: with_admin_css_class_if_needed(user, [page_title_css_class])
+  end
 end
