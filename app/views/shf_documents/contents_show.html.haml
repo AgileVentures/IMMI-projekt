@@ -1,8 +1,7 @@
 .shf-document.show#shf-document
 
   %header.entry-header
-    %h1.entry-title
-      = @title
+    = content_title(@title, user: current_user)
   .entry-content
     - if policy(ShfDocument).contents_update?
       = link_to "#{t('.edit_member_page')}",

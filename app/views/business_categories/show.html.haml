@@ -1,7 +1,5 @@
 %header.entry-header
-  %h1.entry-title
-    = t('.title')
-    = @business_category.name
+  = content_title(t('.title') + @business_category.name, user: current_user)
 .entry-content
   - unless @business_category.description.nil?
     %p

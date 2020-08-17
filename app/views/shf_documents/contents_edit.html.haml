@@ -2,7 +2,7 @@
   = javascript_include_tag Ckeditor.cdn_url
 
 %header.entry-header
-  %h1.entry-title= t('.page_title', document_title: @page)
+  = content_title(t('.page_title', document_title: @page), user: current_user)
 
 .entry-content
   = render 'contents_form'

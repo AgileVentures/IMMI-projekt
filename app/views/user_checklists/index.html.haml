@@ -13,7 +13,7 @@
 
 
 %header.entry-header
-  %h1{ class: with_admin_css_class_if_needed(@current_user, ['entry-title']) }=  t('.title', name: @user.full_name)
+  = content_title(t('.title', name: @user.full_name), user: @current_user)
 
 .entry-content
   #user-checklists

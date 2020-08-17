@@ -501,20 +501,28 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
-  describe '#page_title' do
+  describe '#content_title' do
     let(:user) { build_stubbed(:user) }
     let(:title) { 'Title!' }
 
     it 'renders the page title' do
-      expect(page_title(title, user)).to include(title)
+      expect(content_title(title)).to include(title)
     end
 
-    it 'uses the appropriate css class for non-admins' do
-      expect(page_title(title, user)).to include(page_title_css_class)
+    it 'uses the appropriate default css class' do
+      expect(content_title(title, user: user)).to include(content_title_css_class)
     end
 
-    it 'also uses the appropriate css class for non-admins' do
-      expect(page_title(title, build_stubbed(:admin))).to include(page_title_css_class, admin_css_class)
+    it 'also uses the appropriate css class if an admin user is specified' do
+      expect(content_title(title, user: build_stubbed(:admin))).to include(content_title_css_class, admin_css_class)
+    end
+
+    it 'allows to add extra class names' do
+      expect(content_title(title, classes: ['custom-class'])).to include(content_title_css_class, 'custom-class')
+    end
+
+    it 'allows to set the title element id' do
+      expect(content_title(title, id: 'ID')).to include('id="ID"')
     end
   end
 end

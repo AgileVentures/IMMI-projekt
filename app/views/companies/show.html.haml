@@ -6,7 +6,7 @@
       class: "#{item_view_class(@company, controller.action_name)}" }
 
   %header.entry-header
-    %h1.entry-title= @company.name
+    = content_title(@company.name, user: current_user)
   .entry-content.container
     .row
       .col

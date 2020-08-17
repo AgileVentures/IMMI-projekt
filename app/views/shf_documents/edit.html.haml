@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= t('.page_title', document_title: @shf_document.title)
+  = content_title(t('.page_title', document_title: @shf_document.title))
 
 .entry-content
   = render 'form'

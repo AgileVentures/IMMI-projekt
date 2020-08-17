@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= @admin_only_master_checklist_type.name
+  = content_title(@admin_only_master_checklist_type.name, user: current_user)
 
 .entry-content.container-fluid
 

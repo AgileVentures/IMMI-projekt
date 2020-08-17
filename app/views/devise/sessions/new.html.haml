@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= t('.title')
+  = content_title(t('.title'), user: current_user)
 .entry-content
   = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     .form-group

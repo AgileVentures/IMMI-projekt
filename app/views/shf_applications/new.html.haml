@@ -1,7 +1,7 @@
 %div{ :id => "#{@shf_application.class.name.downcase}", class: "new-item #{@shf_application.class.name.downcase}" }
 
   %header.entry-header
-    %h1.entry-title= t('.title')
+    = content_title(t('.title'), user: current_user)
   .entry-content
     .instructions= t('shf_applications.new.instructions_html')
 

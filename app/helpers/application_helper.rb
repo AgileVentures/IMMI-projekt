@@ -7,7 +7,7 @@ module ApplicationHelper
   CSS_CLASS_NO = 'no' unless defined?(CSS_CLASS_NO)
   CSS_CLASS_MAYBE = 'maybe' unless defined?(CSS_CLASS_MAYBE)
   CSS_ADMIN_CLASS = 'is-admin' unless defined?(CSS_ADMIN_CLASS)
-  CSS_PAGE_TITLE_CLASS = 'entry-title'
+  CSS_CONTENT_TITLE_CLASS = 'entry-title'
 
 
   include MetaTagsHelper
@@ -148,7 +148,6 @@ module ApplicationHelper
   # current UTC time in seconds, which will be of little use for CSS styling, but
   # there are no pretty alternatives.
   def unique_css_id(active_record_item)
-
     unique_id = if active_record_item.respond_to?(:id) && active_record_item.id
                   active_record_item.id.to_s
                 else
@@ -293,7 +292,7 @@ module ApplicationHelper
   # @param current_classes [Array[String]] - list of CSS classes
   # @return [Array] - a list of the current_classes with the admin class appended if needed
   def with_admin_css_class_if_needed(user, current_classes = [])
-    user.admin? ? (current_classes << admin_css_class) : current_classes
+    user&.admin? ? (current_classes << admin_css_class) : current_classes
   end
 
 
@@ -320,12 +319,14 @@ module ApplicationHelper
   end
 
   # public method for accessing the CSS class for the main title of a page
-  def page_title_css_class
-    CSS_PAGE_TITLE_CLASS
+  def content_title_css_class
+    CSS_CONTENT_TITLE_CLASS
   end
 
   # public method to render the main title of a page
-  def page_title(title, user)
-    tag.h1 title, class: with_admin_css_class_if_needed(user, [page_title_css_class])
+  def content_title(title, user: nil, id: nil, classes: [])
+    tag.h1 title,
+           class: classes + with_admin_css_class_if_needed(user, [content_title_css_class]),
+           id: id
   end
 end
