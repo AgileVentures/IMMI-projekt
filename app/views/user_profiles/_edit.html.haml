@@ -12,7 +12,7 @@
   - title_t_key = (editor_is_current_user ? 'my_profile_title' : 'edit_profile_for_title')
   - title_html_safe = h(t(title_t_key, scope: i18n_scope, user: user.full_name))
   - if admin_is_editing_another_profile
-    - title_html_safe = title_html_safe + ' ' + link_to(user_account_icon, @user, class: ['shf-icon', 'edit-user-account-icon'], title: h(t('.edit_user_account', name: user.full_name)))
+    - title_html_safe = title_html_safe + ' ' + link_to(user_account_icon, user, class: ['shf-icon', 'edit-user-account-icon'], title: h(t('.edit_user_account', name: user.full_name)))
   = content_title(title_html_safe.html_safe, user: current_user)
 
 .entry-content.container
