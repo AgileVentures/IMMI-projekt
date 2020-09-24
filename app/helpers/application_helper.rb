@@ -1,7 +1,6 @@
 require 'meta_image_tags_helper'
 
 module ApplicationHelper
-
   # TODO refactor these and methods to access them into a small module that can be used (e.g. also in the PaymentsHelper)
   CSS_CLASS_YES = 'yes' unless defined?(CSS_CLASS_YES)
   CSS_CLASS_NO = 'no' unless defined?(CSS_CLASS_NO)
@@ -9,11 +8,11 @@ module ApplicationHelper
   CSS_ADMIN_CLASS = 'is-admin' unless defined?(CSS_ADMIN_CLASS)
   CSS_CONTENT_TITLE_CLASS = 'entry-title'
 
-
   include MetaTagsHelper
   include MetaImageTagsHelper
   include ShfIconsHelper
 
+  include ERB::Util # Required to test helpers that use h()
 
   # TODO standardize this method name:  should it end in '_css_class' to make it clear it is not related to Ruby classes?
   def flash_class(level)
@@ -328,5 +327,23 @@ module ApplicationHelper
     tag.h1 title,
            class: classes + with_admin_css_class_if_needed(user, [content_title_css_class]),
            id: id
+  end
+
+  def user_name_for_display(user)
+    user_name = user&.full_name
+    user_name = user&.email if user_name.blank?
+    h(user_name)
+  end
+
+  def show_if_user_is_admin(user, text_if_they_are_admin)
+    user.admin? ? tag.span("#{text_if_they_are_admin}", class: 'small') : ''
+  end
+
+  def edit_account_link(user, url: admin_only_edit_user_account_path(user), text: user_account_icon, title: '', show_if: true)
+    show_if ? link_to(text, url, class: ['shf-icon', 'edit-user-account-icon'], title: title) : ''
+  end
+
+  def edit_profile_link(user, url: admin_only_user_profile_edit_path(user), text: user_profile_icon, title: '', show_if: true)
+    show_if ? link_to(text, url, class: ['shf-icon', 'edit-user-profile-icon'], title: title) : ''
   end
 end

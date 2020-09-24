@@ -9,14 +9,13 @@
 - admin_is_editing_another_profile = current_user.admin? && !editor_is_current_user
 
 %header.entry-header
-  - title_t_key = (editor_is_current_user ? 'my_profile_title' : 'edit_profile_for_title')
-  - title_html_safe = h(t(title_t_key, scope: i18n_scope, user: user.full_name))
-  - if admin_is_editing_another_profile
-    - title_html_safe = title_html_safe + ' ' + link_to(user_account_icon, user, class: ['shf-icon', 'edit-user-account-icon'], title: h(t('.edit_user_account', name: user.full_name)))
-  = content_title(title_html_safe.html_safe, user: current_user)
+  - username          = user_name_for_display(user)
+  - base_title        = t(editor_is_current_user ? 'my_profile_title' : 'edit_profile_for_title', scope: i18n_scope, user: username)
+  - edit_account_icon = edit_account_link(user, title: t('.edit_user_account', name: username), show_if: admin_is_editing_another_profile)
+  - title             = h(base_title) + ' ' + edit_account_icon
+  = content_title(title, user: current_user)
 
 .entry-content.container
-
   = form_for(user, as: :user, url: form_submit_url, html: { method: :put }) do |f|
     != model_errors_helper(user)
     = render partial: 'devise/shared/member_photo', locals: { user: user, f: f }
