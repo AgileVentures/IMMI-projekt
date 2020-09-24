@@ -3,16 +3,18 @@
 =#  current_user - the User viewing this (might be an admin, for example)
 -#  form_submit_url - the url used by the form when it is submitted
 
-- i18n_scope = 'devise.registrations.edit'
-- editor_is_current_user = user == current_user
-- admin_is_editing_their_profile = current_user.admin? && editor_is_current_user
-- admin_is_editing_another_profile = current_user.admin? && !editor_is_current_user
+:ruby
+  i18n_scope = 'devise.registrations.edit'
+  editor_is_current_user = user == current_user
+  admin_is_editing_their_profile = current_user.admin? && editor_is_current_user
+  admin_is_editing_another_profile = current_user.admin? && !editor_is_current_user
 
 %header.entry-header
-  - username          = user_name_for_display(user)
-  - base_title        = t(editor_is_current_user ? 'my_profile_title' : 'edit_profile_for_title', scope: i18n_scope, user: username)
-  - edit_account_icon = edit_account_link(user, title: t('.edit_user_account', name: username), show_if: admin_is_editing_another_profile)
-  - title             = h(base_title) + ' ' + edit_account_icon
+  :ruby
+    username          = user_name_for_display(user)
+    base_title        = t(editor_is_current_user ? 'my_profile_title' : 'edit_profile_for_title', scope: i18n_scope, user: username)
+    edit_account_icon = edit_account_link(user, title: t('.edit_user_account', name: username), show_if: admin_is_editing_another_profile)
+    title             = h(base_title) + ' ' + edit_account_icon
   = content_title(title, user: current_user)
 
 .entry-content.container

@@ -2,10 +2,11 @@
   = stylesheet_link_tag 'image-actions-custom-menu', media: 'all'
 
 %header.entry-header
-  - username          = user_name_for_display(@user)
-  - admin_user_text   = show_if_user_is_admin(@user, t('.is_an_admin'))
-  - edit_profile_icon = edit_profile_link(@user, title: t('.edit_user_profile', name: username))
-  - title             = username + ' ' + ' ' + admin_user_text + ' ' + edit_profile_icon
+  :ruby
+    username          = user_name_for_display(@user)
+    admin_user_text   = show_if_user_is_admin(@user, t('.is_an_admin'))
+    edit_profile_icon = edit_profile_link(@user, title: t('.edit_user_profile', name: username))
+    title             = username + ' ' + ' ' + admin_user_text + ' ' + edit_profile_icon
   = content_title(title, user: current_user)
 
 .entry-content.container
