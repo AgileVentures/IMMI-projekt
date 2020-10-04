@@ -1,5 +1,10 @@
 Feature: Create a new membership application
 
+  2020-09-10:  Note that 2 scenarios have been removed from this feature file
+    and put into 'problem-scenarios-create_membership_application.feature'.
+    They have been causing intermittent failures during CI Semaphore tests.
+    See the note in that file for more info.
+
   As a user
   In order to get a membership with SHF (which makes my business more valuable )
   I need to be able to submit a Membership Application
@@ -31,10 +36,6 @@ Feature: Create a new membership application
       | Groomer      |
       | Psychologist |
       | Trainer      |
-
-    And the following sub category exist
-      | subcategory_name    | subcategory_description         |
-      | overall grooming    | full service grooming           |
 
     And the application file upload options exist
     And the Membership Ethical Guidelines Master Checklist exists
@@ -180,38 +181,6 @@ Feature: Create a new membership application
     When I am on the "show my application" page for "applicant_1@random.com"
     And I should see "5560360793, 2120000142"
 
-  @selenium @skip_ci_test
-  Scenario: User creates App with two companies, creates one company, corrects error in company number
-    Given I am on the "user instructions" page
-    And I click on first t("menus.nav.users.apply_for_membership") link
-    And I fill in the translated form with data:
-      | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 556036-07                            | 031-1234567                       | info@craft.se                      |
-    And I select "Groomer" Category
-
-    # Create new company in modal
-    And I click on t("companies.new.title")
-
-    And I fill in "company-number-in-modal" with "2286411992"
-    And I fill in t("companies.show.email") with "info@craft.se"
-
-    And I click on t("companies.create.create_submit")
-    # FIXME do we still need to wait this long? does waiting for AJAX to complete work reliably here instead?
-    And I wait 4 seconds
-    And I wait for all ajax requests to complete
-
-    And I select files delivery radio button "upload_later"
-
-    And I click on t("shf_applications.new.submit_button_label")
-    And I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
-    Then I fill in t("shf_applications.show.company_number") with "556036-0793, 2286411992"
-    And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user account" page for "applicant_1@random.com"
-
-    And I should see t("shf_applications.create.success_with_app_files_missing")
-
-    When I am on the "show my application" page for "applicant_1@random.com"
-    And I should see "5560360793, 2286411992"
 
   @selenium
   Scenario: A user can submit a new Membership Application with multiple categories
@@ -231,57 +200,6 @@ Feature: Create a new membership application
     And I should see t("shf_applications.create.success_with_app_files_missing")
 
 
-  @selenium
-  Scenario: A user can submit a new Membership Application without sub categories
-    Given I am on the "user instructions" page
-    And I click on first t("menus.nav.users.apply_for_membership") link
-    And I fill in the translated form with data:
-      | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 5560360793                           | 031-1234567                       | info@craft.se
-
-    And I should not see "overall grooming" Category
-    And I select "Groomer" Category
-
-    And I select files delivery radio button "files_uploaded"
-
-    And I click on t("shf_applications.new.submit_button_label")
-    Then I should be on the "user account" page for "applicant_1@random.com"
-
-    And I should see t("shf_applications.create.success_with_app_files_missing")
-
-  @selenium @skip_ci_test
-  Scenario: A user cannot submit a new Membership Application with no category [SAD PATH]
-    Given I am on the "user instructions" page
-    And I click on first t("menus.nav.users.apply_for_membership") link
-    And I fill in the translated form with data:
-      | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 031-1234567                       | info@craft.se                      |
-
-    # Create new company in modal
-    And I click on t("companies.new.title")
-
-    And I fill in "company-number-in-modal" with "2286411992"
-    And I fill in t("companies.show.email") with "info@craft.se"
-
-    And I click on t("companies.create.create_submit")
-    # FIXME do we still need to wait this long? does waiting for AJAX to complete work reliably here instead?
-    And I wait 4 seconds
-    And I wait for all ajax requests to complete
-
-    And I should see t("shf_applications.new.file_delivery_selection")
-
-    And I select files delivery radio button "files_uploaded"
-
-    And I click on t("shf_applications.new.submit_button_label")
-
-    Then I should see error t("activerecord.attributes.shf_application.business_categories") t("errors.messages.blank")
-
-    Then I select "Groomer" Category
-    And I click on t("shf_applications.new.submit_button_label")
-
-    And I should see t("shf_applications.create.success_with_app_files_missing")
-
-
   Scenario: Applicant cannot see membership number when submitting
     Given I am on the "landing" page
     And I click on t("menus.nav.users.apply_for_membership")
@@ -295,57 +213,6 @@ Feature: Create a new membership application
     And the field t("shf_applications.new.contact_email") should have a required field indicator
     And the field t("shf_applications.new.phone_number") should not have a required field indicator
     And I should see t("is_required_field")
-
-  @selenium @skip_ci_test
-  Scenario: Two users can submit a new Membership Application (with empty membershipnumbers)
-    Given I am on the "user instructions" page
-    And I click on first t("menus.nav.users.apply_for_membership") link
-    And I fill in the translated form with data:
-      | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 031-1234567                       | applicant_1@random.com             |
-    And I select "Groomer" Category
-
-    # Create new company in modal
-    And I click on t("companies.new.title")
-
-    And I fill in "company-number-in-modal" with "5562252998"
-    And I fill in t("companies.show.email") with "info@craft.se"
-
-    And I click on t("companies.create.create_submit")
-    # FIXME do we still need to wait this long? does waiting for AJAX to complete work reliably here instead?
-    And I wait 4 seconds
-    And I wait for all ajax requests to complete
-
-    And I should see t("shf_applications.new.file_delivery_selection")
-
-    And I select files delivery radio button "upload_later"
-
-    And I click on t("shf_applications.new.submit_button_label")
-
-    And I should see t("shf_applications.create.success_with_app_files_missing")
-
-    Given I am logged in as "applicant_2@random.com"
-    Given I am on the "user instructions" page
-    And I click on first t("menus.nav.users.apply_for_membership") link
-    And I fill in the translated form with data:
-      | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
-      | 2120000142                           | 031-1234567                       | applicant_2@random.com             |
-    And I select "Groomer" Category
-
-    # Create new company in modal
-    And I click on t("companies.new.title")
-
-    And I fill in "company-number-in-modal" with "6112107039"
-    And I fill in t("companies.show.email") with "info@craft.se"
-
-    And I click on t("companies.create.create_submit")
-    # FIXME do we still need to wait this long? does waiting for AJAX to complete work reliably here instead?
-    And I wait 4 seconds
-    And I wait for all ajax requests to complete
-
-    And I select files delivery radio button "upload_later"
-
-    And I click on t("shf_applications.new.submit_button_label")
 
 
   @selenium
@@ -395,7 +262,7 @@ Feature: Create a new membership application
 
 
 
-  @selenium @skip_ci_test
+  @selenium
   Scenario Outline: Apply for membership - when things go wrong with company create [SAD PATH]
     Given I am on the "new application" page
     And I fill in the translated form with data:
@@ -405,10 +272,11 @@ Feature: Create a new membership application
     And I select files delivery radio button "files_uploaded"
 
     # Create new company in modal
+    Then I want to create a new company
     And I click on t("companies.new.title")
     And I fill in the translated form with data:
-      | companies.show.company_number | companies.show.email |
-      | <c_number>                    | <c_email>            |
+      | companies.company_create_modal.company_number | companies.show.email |
+      | <c_number>                                    | <c_email>            |
 
     And I click on t("companies.create.create_submit")
 
