@@ -330,8 +330,10 @@ module ApplicationHelper
   end
 
   def user_name_for_display(user)
-    user_name = user&.full_name
-    user_name = user&.email if user_name.blank?
+    return '' unless user
+
+    user_name = user.full_name
+    user_name = user.email if user_name.blank?
     h(user_name)
   end
 
