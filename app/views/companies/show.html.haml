@@ -42,9 +42,9 @@
         = field_or_none t('.website'), link_to(@company.website, sanitize(full_uri(@company)), target: '_blank'), tag_options: {class: 'website'}
 
         .social-media
-          = icon_link(@company.facebook_url, 'facebook', 'Facebook URL', @company.facebook_url)
-          = icon_link(@company.instagram_url, 'instagram', 'Instagram URL', @company.instagram_url)
-          = icon_link(@company.youtube_url, 'youtube-square', 'Facebook URL', @company.youtube_url)
+          = icon_link(@company.facebook_url, 'facebook', 'Link to Facebook', 'Link to Facebook page')
+          = icon_link(@company.instagram_url, 'instagram', 'Link to Instagram', 'Link to Instagram page')
+          = icon_link(@company.youtube_url, 'youtube-square', 'Link to YouTube', 'Link to YouTube page')
 
 
       .col-md-7
