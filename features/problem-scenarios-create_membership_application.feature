@@ -56,7 +56,6 @@ Feature: Create a new membership application [CI PROBLEM SCENARIOS]
 
     And I am logged in as "applicant_1@random.com"
 
-
   # ------------------------------------------------------------
 
 
