@@ -267,6 +267,12 @@ en:
         facebook_url: Facebook page URL
         instagram_url: Instagram URL
         youtube_url: Youtube channel
+        facebook_url_title: Link to Facebook page
+        facebook_url_alt: Link to Facebook
+        instagram_url_title: Link to Instagram page
+        instagram_url_alt: Link to Instagram
+        youtube_url_title: Link to YouTube page
+        youtube_url_alt: Link to YouTube
         org_nr: *org_nr
         dinkurs_key: &dinkurs_company_key Dinkurs Company key
         dinkurs_company_id: Dinkurs company key
