@@ -1,0 +1,26 @@
+-# this partial expects these locals:
+  uploaded_file - the UploadFile to act on
+
+  These are optional:
+    can_edit [Boolean] - whether or not the uploaded_file can be editted
+    can_delete [Boolean] - whether or not the uploaded_file can be deleted
+
+- can_edit_file = local_assigns.fetch(:can_edit, false)
+- can_delete_file = local_assigns.fetch(:can_delete, false)
+
+%hr
+.text-center
+  .row
+    .col.mt-3.center
+      = link_to "#{t('edit')} #{t('.show_title', file_name: uploaded_file.actual_file_file_name)}",
+       edit_user_uploaded_file_path(current_user, uploaded_file), class:'btn btn-light btn-sm' if can_edit_file
+
+      = link_to("#{t('.delete', file_name: uploaded_file.actual_file_file_name)}",
+              user_uploaded_file_path(current_user, uploaded_file), method: :delete,
+              data: { confirm: t('confirm_are_you_sure') },
+              class: 'btn btn-danger btn-sm action-delete') if can_delete_file
+
+  .row
+    .col.mt-3.center
+      = link_to (current_user.admin? ? t('.admin_index_title') : t('.index_title')),
+     user_uploaded_files_path(current_user), class:'btn btn-light btn-sm'

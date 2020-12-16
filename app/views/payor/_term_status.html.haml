@@ -61,7 +61,17 @@
           .payment-status-hint= payment_due_hint(entity)
 
     - if current_user.admin?
-      = render partial: 'payor/admin_note_and_edit_status_row',
-       locals: { entity: entity,
-       target_id: admin_edit_target_id,
-       button_text: admin_edit_status_text }
+      .admin-only
+        .row
+          = render partial: 'payor/admin_note_and_edit_status_row',
+           locals: { entity: entity,
+           target_id: admin_edit_target_id,
+           button_text: admin_edit_status_text }
+
+
+        .row
+          .col.mt-2
+            %h4.section-title= t('.admin_user_payments_title')
+        .row
+          .col
+            = render 'payments/payments_list', {payments: entity.payments}

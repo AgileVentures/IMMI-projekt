@@ -1,7 +1,7 @@
 .shf-document.new#shf-document-new
 
   %header.entry-header
-    %h1.entry-title= t('.page_title')
+    = content_title(t('.page_title'), user: current_user)
 
   .entry-content
 

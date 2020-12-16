@@ -4,7 +4,7 @@
 
 - classes_str = local_assigns[:classes].blank? ? '' : local_assigns[:classes]
 
-- if policy(shf_app).update? && shf_app.applicant_can_edit?
+- if policy(shf_app).update?
   = link_to t('menus.nav.users.my_application'), edit_shf_application_path(shf_app), class: classes_str
 - else
   = link_to t('menus.nav.users.my_application'), shf_application_path(shf_app), class: classes_str

@@ -15,10 +15,11 @@ Feature: As an admin
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email                      | admin | member |
-      | applicant_1@happymutts.com |       | true   |
-      | applicant_3@happymutts.com |       |        |
-      | admin@shf.se               | true  |        |
+      | email                      | admin | member | agreed_to_membership_guidelines |
+      | applicant_1@happymutts.com |       | true   | true                            |
+      | member_1@happymutts.com    |       | true   | true                            |
+      | applicant_3@happymutts.com |       |        | true                            |
+      | admin@shf.se               | true  |        |                                 |
 
     Given the following regions exist:
       | name         |
@@ -38,15 +39,18 @@ Feature: As an admin
 
     Given the following payments exist
       | user_email                 | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | member_1@happymutts.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
+      | member_1@happymutts.com    | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
       | applicant_1@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
       | applicant_3@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
 
     And the following business categories exist
-      | name         |
-      | Groomer      |
+      | name    |
+      | Groomer |
 
     And the following applications exist:
       | user_email                 | company_number | state    | categories |
+      | member_1@happymutts.com    | 5560360793     | accepted | Groomer    |
       | applicant_1@happymutts.com | 5560360793     | accepted | Groomer    |
       | applicant_3@happymutts.com | 2120000142     | accepted | Groomer    |
 
@@ -115,7 +119,7 @@ Feature: As an admin
     And I click on t("submit")
     Then I should see t("companies.create.success_with_dinkurs_problem")
     And I should see "Happy Mutts"
-    And I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid")
+    And I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_key")
 
   Scenario Outline: Admin creates company - when things go wrong
     Given I am logged in as "admin@shf.se"
@@ -128,10 +132,10 @@ Feature: As an admin
     And I should see t("companies.create.error")
 
     Scenarios:
-      | name        | org_number | phone      | email                | website                   | error                                                        |
-      | Happy Mutts | 00         | 0706898525 | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10)                 |
-      | Happy Mutts | 5562252998 |            | kickiimmi.nu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
-      | Happy Mutts | 5562252998 |            | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                 |
+      | name        | org_number | phone      | email                | website                   | error                                                                   |
+      | Happy Mutts | 00         | 0706898525 | kicki@gladajyckar.se | http://www.gladajyckar.se | t("errors.messages.wrong_length", count: 10)                            |
+      | Happy Mutts | 5562252998 |            | kickiimmi.nu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                            |
+      | Happy Mutts | 5562252998 |            | kicki@imminu         | http://www.gladajyckar.se | t("errors.messages.invalid")                                            |
       | Happy Mutts | 5560360793 | 0706898525 | kicki@imminu.se      | http://www.gladajyckar.se | t("activerecord.errors.models.company.attributes.company_number.taken") |
 
   @time_adjust
@@ -146,23 +150,24 @@ Feature: As an admin
     Then I should see t("companies.update.success")
     And I should see "kicki@gladajyckar.se"
     And the "http://www.snarkybarkbark.se" should go to "http://www.snarkybarkbark.se"
-    Then I click on t("companies.show.add_address")
+
+    When I click on t("companies.show.add_address")
     And I fill in the translated form with data:
       | activerecord.attributes.address.street | activerecord.attributes.address.post_code | activerecord.attributes.address.city |
       | 1 Algovik                              | 919 32                                    | Åsele                                |
     And I select "Västerbotten" in select list t("activerecord.attributes.address.region")
     And I select "Bromölla" in select list t("activerecord.attributes.address.kommun")
-    Then I click on t("submit")
+    And I click on t("submit")
     # FIXME do we still need to wait this long? does waiting for AJAX to complete work reliably here instead?
-    And I wait 10 seconds
-    And I should see "Algovik"
+    And I wait 8 seconds
+    Then I should see "Algovik"
     And I should see "Bromölla"
     And I should see t("address_visibility.street_address")
 
-    And I am Logged out
+    When I am Logged out
     And I am on the "landing" page
     And I click on "No More Snarky Barky"
-    And I should see "1 Algovik"
+    Then I should see "1 Algovik"
     And I should see "Bromölla"
     And I should see "919 32"
     And I should not see t("address_visibility.street_address")

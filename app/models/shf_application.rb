@@ -9,10 +9,9 @@ class ShfApplication < ApplicationRecord
   include AASM
   include UpdatedAtRange
 
-
-  before_destroy :before_destroy_checks
-
   after_initialize :add_observers
+  after_update :clear_image_caches
+  before_destroy :before_destroy_checks
 
   belongs_to :user
 
@@ -49,8 +48,15 @@ class ShfApplication < ApplicationRecord
 
   CAN_EDIT_STATES = [:new, :waiting_for_applicant]
 
+  # The application can be changed if it is in one of these states:
+  EDITABLE_STATES_FOR_APPLICATION = Set[:new, :initial, :ready_for_review, :waiting_for_applicant].freeze
+
   # these are the SHF application states where it might be waiting for uploaded files:
   STATES_WAITING_FOR_FILES = %w(new under_review waiting_for_applicant)
+
+  def self.edittable_states
+    EDITABLE_STATES_FOR_APPLICATION
+  end
 
   aasm :column => 'state' do
 
@@ -114,8 +120,15 @@ class ShfApplication < ApplicationRecord
     not_decided.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id))
   end
 
+  # ===========================================================================================
 
-  # --------------------------------------------------------------------------
+  def clear_image_caches
+    user.clear_proof_of_membership_jpg_cache
+
+    companies.each do |company|
+      company.clear_h_brand_jpg_cache
+    end
+  end
 
 
   def business_subcategories(business_category)
@@ -182,16 +195,18 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  # @return [boolean] - is the application in a state where the applicant can edit it?
-  def applicant_can_edit?
-    CAN_EDIT_STATES.include? state.to_sym
-  end
-
-
   def upload_files_will_be_delivered_later?
     file_delivery_method&.email? || file_delivery_method&.mail?
   end
 
+  def edittable_states
+    self.class.edittable_states
+  end
+
+  # @return [Boolean] - uploaded files can be editted or deleted if the application is not
+  def can_edit_delete_uploads?
+    edittable_states.include?(state.to_sym)
+  end
 
   def accept_application
     begin
@@ -220,8 +235,7 @@ class ShfApplication < ApplicationRecord
     user.update(membership_number: nil)
 
     update(when_approved: nil)
-    destroy_uploaded_files
-
+    destroy_uploaded_files # FIXME why destroy these?  Don't they need to be kept in case the applicant wants to talk about them?
   end
 
 

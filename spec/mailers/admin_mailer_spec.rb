@@ -55,18 +55,17 @@ RSpec.describe AdminMailer, type: :mailer do
 
       it '1 file uploaded' do
         fn1 = File.join(UPLOAD_FIXTURES_DIR, 'diploma.pdf')
-        new_app.uploaded_files.create(actual_file: File.open(fn1, 'r'))
-
+        new_app.uploaded_files << create(:uploaded_file_for_application, actual_file: File.open(fn1, 'r'), shf_application: new_app)
         expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.other') + ': 1')
       end
 
       it '3 files uploaded' do
         fn1 = File.join(UPLOAD_FIXTURES_DIR, 'diploma.pdf')
-        new_app.uploaded_files.create(actual_file: File.open(fn1, 'r'))
+        new_app.uploaded_files << create(:uploaded_file_for_application, actual_file: File.open(fn1, 'r'), shf_application: new_app)
         fn2 = File.join(UPLOAD_FIXTURES_DIR, 'image.jpg')
-        new_app.uploaded_files.create(actual_file: File.open(fn2, 'r'))
+        new_app.uploaded_files  << create(:uploaded_file_for_application, actual_file: File.open(fn2, 'r'), shf_application: new_app)
         fn3 = File.join(UPLOAD_FIXTURES_DIR, 'image.gif')
-        new_app.uploaded_files.create(actual_file: File.open(fn3, 'r'))
+        new_app.uploaded_files << create(:uploaded_file_for_application, actual_file: File.open(fn3, 'r'), shf_application: new_app)
 
         expect(email_sent).to have_body_text(I18n.t('activerecord.attributes.shf_application.uploaded_files.other') + ': 3')
       end

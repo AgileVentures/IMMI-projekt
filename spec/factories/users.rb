@@ -46,13 +46,22 @@ FactoryBot.define do
 
     factory :user_with_membership_app do
 
+      transient do
+        company_number { nil }
+      end
+
       after(:build) do |user, evaluator|
-        create_list(:shf_application, 1, user: user, contact_email: evaluator.email) # FIXME this should not be a list. Fix tests that use this
+        # FIXME this should not be a list. Fix tests that use this
+        create_list(:shf_application, 1,
+                    user: user,
+                    contact_email: evaluator.email,
+                    company_number: evaluator.company_number)
       end
     end
 
     factory :member_with_membership_app do
 
+      # FIXME this attribute no long means anything.
       member { true }
 
       transient do
@@ -70,6 +79,7 @@ FactoryBot.define do
         UserChecklistManager.membership_guidelines_list_for(member).set_complete_including_children
       end
     end
+
 
 
     # create a payment for the member with the given expiration date

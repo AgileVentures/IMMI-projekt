@@ -1,9 +1,5 @@
 %header.entry-header
-  - unless current_user.admin?
-    %h1.entry-title= t('.title')
-  - if current_user.admin?
-    %h1.entry-title= t('.admin_title')
-
+  = content_title(current_user.admin? ? t('.admin_title') : t('.title'), user: current_user)
 .entry-content
   .row
     .col-lg-4#companies_map

@@ -1,7 +1,7 @@
 -# FIXME - don't load all of the tabs at once!  make each tab a (routed) page and only load it when requested
 - i18n_scope = 'admin_only.dashboard'
 %header.entry-header
-  %h1.entry-title= t('title', scope: i18n_scope)
+  = content_title(t('title', scope: i18n_scope), user: current_user)
 .post-title-divider
   %span
 

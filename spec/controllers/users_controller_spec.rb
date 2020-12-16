@@ -120,5 +120,27 @@ RSpec.describe UsersController, type: :controller do
 
   end
 
+  context '#proof_of_membership' do
+    let(:app_config) { create(:app_configuration) }
+    let(:member) { create(:member_with_membership_app) }
+
+    it "returns JPG for params[:render_to] == 'jpg' request" do
+      get :proof_of_membership, params: { id: member.id, render_to: 'jpg' }
+      expect(response.content_type).to eq 'image/jpg'
+    end
+
+    it "returns JPG for params[:format] == 'jpg' request" do
+      get :proof_of_membership, params: { id: member.id, format: 'jpg' }
+      expect(response.content_type).to eq 'image/jpg'
+    end
+
+    it 'returns HTML otherwise' do
+      get :proof_of_membership, params: { id: member.id }
+      expect(response.content_type).to eq 'text/html'
+    end
+  end
+
+
+
 
 end

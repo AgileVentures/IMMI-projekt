@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= t('.title')
+  = content_title(t('.title'), user: current_user)
 .entry-content
   = render partial: 'search_form',
            locals: { search_params: @q,

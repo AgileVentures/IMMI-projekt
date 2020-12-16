@@ -23,6 +23,11 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
       | new-member@no-h-brand.se    |       |
       | admin@shf.com               | true  |
 
+    And the following users have agreed to the Membership Ethical Guidelines:
+      | email                       |
+      | lars-member@lars.se         |
+      | new-member@good-standing.se |
+      | new-member@no-h-brand.se    |
 
     And the following business categories exist
       | name    |
@@ -46,15 +51,14 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
       | new-member@good-standing.se | 5562252998     | Groomer    | accepted |
       | new-member@no-h-brand.se    | 6613265393     | Groomer    | accepted |
 
-
-    Given the following payments exist
-      | user_email          | start_date | expire_date | payment_type | status | hips_id |
-      | lars-member@lars.se | 2020-01-01 | 2020-12-31  | member_fee   | betald | none    |
-
-
+    And the date is set to "2020-01-01"
     Given the following payments exist
       | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | lars-member@lars.se | 2020-01-01 | 2020-12-31  | member_fee   | betald | none    |                |
       | lars-member@lars.se | 2020-01-01 | 2020-12-31  | branding_fee | betald | none    | 5562252998     |
+
+
+  # ===========================================================================================
 
 
   Scenario: New Member granted membership and associated with company already in good standing. Email is sent when membership is granted.
@@ -100,8 +104,7 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
   Scenario: Not a first-time member when membership granted. No email sent.
     Given the date is set to "2020-12-01"
     And I am logged in as "lars-member@lars.se"
-
-    And I am the page for company number "2120000142"
+    When I am the page for company number "2120000142"
     Then I should see "NewCompany"
     And I should see t("payors.due")
     When I click on t("menus.nav.company.pay_branding_fee")
@@ -109,19 +112,19 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     Then I should see t("payments.success.success")
     And company number "2120000142" is paid through "2021-11-30"
 
-    And I am the page for company number "5562252998"
+    When I am the page for company number "5562252998"
+    And the date is set to "2020-12-01"
     Then I should see "AlreadyInGoodStanding"
     And I should see t("payors.due")
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "AlreadyInGoodStanding"
     Then I should see t("payments.success.success")
     And company number "5562252998" is paid through "2021-12-31"
-
     And I am logged out
 
     Given the date is set to "2021-01-05"
     And a clear email queue
-    And I am logged in as "lars-member@lars.se"
+    When I am logged in as "lars-member@lars.se"
     And I am on the "user account" page for "lars-member@lars.se"
     When I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment

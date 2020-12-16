@@ -1,4 +1,4 @@
-Feature: Admin can see all SHF applications so they can be managed
+Feature: SHF Application access (who can/cannot see them)
 
   As an Admin
   So that I can manage and keep track of all SHF membership applications

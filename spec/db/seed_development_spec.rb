@@ -47,6 +47,8 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
       # must stub this way so the rest of ENV is preserved
       stub_const('ENV', ENV.to_hash.merge({ ENV_ADMIN_EMAIL_KEY    => admin_email,
                                             ENV_ADMIN_PASSWORD_KEY => admin_pwd }))
+
+      allow(SeedHelper::UsersFactory ).to receive(:seed_predefined_users).and_return(true)
       SHFProject::Application.load_tasks
     end
   end
@@ -54,6 +56,11 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
   after(:all) do
     DatabaseCleaner.clean
   end
+
+  before(:each) do
+    allow(SeedHelper::UsersFactory).to receive(:seed_predefined_users).and_return([])
+  end
+
 
   describe 'seeding basic info: users, companies, etc.' do
 
@@ -78,6 +85,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
                                               ENV_ADMIN_PASSWORD_KEY   => admin_pwd }))
 
         allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
+        allow(SeedHelper::UsersFactory ).to receive(:seed_predefined_users).and_return(true)
 
         SHFProject::Application.load_seed
       end

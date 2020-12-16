@@ -1,6 +1,5 @@
 %header.entry-header
-  %h1.entry-title
-    = t('.title', name_sv: @member_app_waiting_reason.name_sv, name_en: @member_app_waiting_reason.name_en  )
+  = content_title(t('.title', name_sv: @member_app_waiting_reason.name_sv, name_en: @member_app_waiting_reason.name_en), user: current_user)
 
 .entry-content
   .row

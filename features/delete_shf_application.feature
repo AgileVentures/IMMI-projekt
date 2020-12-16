@@ -1,11 +1,9 @@
-Feature: As an admin
-  In order to keep business categories correct and helpful to visitors and members
-  I need to be able to delete any that aren't needed or valid
+Feature: Admin can delete membership appications
 
-  PT:
+  As an Admin
+  So that I can get rid of old, accidental, or spam/bot membership applications
+  I need to be able to delete shf membership applications
 
-  When a membership application is deleted, if it is the only application
-  associated with a company, then delete the company too.
 
   Background:
     Given the Membership Ethical Guidelines Master Checklist exists
@@ -78,25 +76,28 @@ Feature: As an admin
     And I should not see "Emma"
 
 
-  Scenario: Admin deletes a membership application; company should still exist (has another application assoc.)
-    Given I am logged in as "admin@shf.se"
-    And I am on the "application" page for "hans@bowsers.com"
-    And I click on t("shf_applications.show.delete")
-    Then I should see t("shf_applications.application_deleted")
-    And I should not see "Hans"
-    And I am on the "all companies" page
-    And I should see "2120000142"
+  Rule:  When a membership application is deleted, if it is the only application
+     associated with a company, then delete the company too.
 
-  @time_adjust
-  Scenario: Admin deletes the only membership application associated with a company. Company is deleted
-    Given the date is set to "2017-10-01"
-    Given I am logged in as "admin@shf.se"
-    And I am on the "all companies" page
-    Then I should see "3" companies
-    And I should see "WOOF"
-    And I am on the "application" page for "wils@woof.com"
-    And I click on t("shf_applications.show.delete")
-    Then I should see t("shf_applications.application_deleted")
-    And I should not see "Wils"
-    When I am on the "all companies" page
-    Then I should see "2" companies
+    Scenario: Admin deletes a membership application; company should still exist (has another application assoc.)
+      Given I am logged in as "admin@shf.se"
+      And I am on the "application" page for "hans@bowsers.com"
+      And I click on t("shf_applications.show.delete")
+      Then I should see t("shf_applications.application_deleted")
+      And I should not see "Hans"
+      And I am on the "all companies" page
+      And I should see "2120000142"
+
+    @time_adjust
+    Scenario: Admin deletes the only membership application associated with a company. Company is deleted
+      Given the date is set to "2017-10-01"
+      Given I am logged in as "admin@shf.se"
+      And I am on the "all companies" page
+      Then I should see "3" companies
+      And I should see "WOOF"
+      And I am on the "application" page for "wils@woof.com"
+      And I click on t("shf_applications.show.delete")
+      Then I should see t("shf_applications.application_deleted")
+      And I should not see "Wils"
+      When I am on the "all companies" page
+      Then I should see "2" companies

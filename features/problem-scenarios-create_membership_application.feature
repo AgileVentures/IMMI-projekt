@@ -1,4 +1,4 @@
-Feature: Create a new membership application
+Feature: Create a new membership application [CI PROBLEM SCENARIOS]
 
   2020-09-10:
   These scenarios have problems: they often fail on  (CI) Semaphore.
@@ -30,11 +30,11 @@ Feature: Create a new membership application
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
-      | email                  | admin | member | first_name | last_name |
-      | applicant_1@random.com |       |        | Kicki      | Andersson |
-      | applicant_2@random.com |       |        |            |           |
-      | member@random.com      |       | true   | Lars       | IsaMember |
-      | admin@shf.se           | yes   |        |            |           |
+      | email                  | admin | member | first_name | last_name | agreed_to_membership_guidelines |
+      | applicant_1@random.com |       |        | Kicki      | Andersson | true                            |
+      | applicant_2@random.com |       |        |            |           | true                            |
+      | member@random.com      |       | true   | Lars       | IsaMember | true                            |
+      | admin@shf.se           | yes   |        |            |           |                                 |
 
     And the following business categories exist
       | name         |
@@ -55,7 +55,6 @@ Feature: Create a new membership application
       | member@random.com | 5560360793     | accepted | Groomer    |
 
     And I am logged in as "applicant_1@random.com"
-
 
   # ------------------------------------------------------------
 

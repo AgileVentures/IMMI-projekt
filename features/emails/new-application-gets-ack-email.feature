@@ -100,7 +100,7 @@ Feature: New Applicant gets an email acknowledging their application
     And I select "Groomer" Category
 
     And I select files delivery radio button "upload_now"
-    And I choose files named "picture.jpg, diploma.pdf" to upload
+    And I choose files named "picture.jpg, diploma.pdf" to upload for the application
     And I click on t("shf_applications.new.submit_button_label")
     Then I should see t("shf_applications.create.success", email_address: 'emma@happymutts.com')
     And "emma@happymutts.com" should receive an email

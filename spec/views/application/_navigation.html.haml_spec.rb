@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'companies/index' do
+RSpec.describe 'Navigation menus' do
 
   let(:member)  { FactoryBot.create(:member_with_membership_app) }
 
@@ -21,7 +21,10 @@ RSpec.describe 'companies/index' do
   # https://stackoverflow.com/questions/41762057/
   # rails-view-specs-referenced-partials-of-inherited-controllers-arent-found/
   # 41762292#41762292
-  before(:each) { view.lookup_context.prefixes << 'application' }
+  before(:each) do
+    view.lookup_context.prefixes << 'nav-menus'
+    view.lookup_context.prefixes << 'application'
+  end
 
   describe 'member' do
 
@@ -39,7 +42,7 @@ RSpec.describe 'companies/index' do
       assign(:search_params, Company.ransack(nil))
       assign(:companies, Company.ransack(nil).result.page(params[:page]).per_page(10))
 
-      render 'application/navigation'
+      render 'nav-menus/navigation'
     end
 
     it 'renders link to main site' do
@@ -89,7 +92,7 @@ RSpec.describe 'companies/index' do
         before(:each) do
           member.shf_application.companies << cmpy2
           member.reload
-          render 'application/navigation'
+          render 'nav-menus/navigation'
         end
 
         # The order the companies are fetched and stored is inderterminate (can vary with each test run)
@@ -151,7 +154,7 @@ RSpec.describe 'companies/index' do
       assign(:search_params, Company.ransack(nil))
       assign(:companies, Company.ransack(nil).result.page(params[:page]).per_page(10))
 
-      render 'application/navigation'
+      render 'nav-menus/navigation'
     end
 
     it 'renders link to main site' do
@@ -193,7 +196,7 @@ RSpec.describe 'companies/index' do
       allow(view).to receive(:current_user) { admin }
       allow(view).to receive(:user_signed_in?) { true }
 
-      render 'application/navigation'
+      render 'nav-menus/navigation'
     end
 
     context 'member pages' do
@@ -298,7 +301,7 @@ RSpec.describe 'companies/index' do
     before(:each) do
       allow(view).to receive(:current_user) { Visitor.new }
 
-      render 'application/navigation'
+      render 'nav-menus/navigation'
     end
 
     it 'renders link to main site' do

@@ -19,7 +19,7 @@ class MembersNeedPacketsAlert < AdminEmailAlert
   end
 
 
-  def mailer_args(admin)
+  def mailer_args(_admin)
     [items_list]
   end
 

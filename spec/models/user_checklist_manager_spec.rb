@@ -180,7 +180,7 @@ RSpec.describe UserChecklistManager do
           after(:each) { travel_back }
 
 
-          it 'true if members expiration < today (would not be a current member!)' do
+          it 'true if members expiration < two_days_before_req_duration_end (would not be a current member!)' do
             user = build(:member_with_membership_app)
             user.payments << create(:expired_membership_fee_payment) # expired yesterday
             user.save!
@@ -189,7 +189,7 @@ RSpec.describe UserChecklistManager do
             expect(described_class.must_complete_membership_guidelines_checklist?(user)).to be_truthy
           end
 
-          it 'true if member expiration date = today (would not be a current member!)' do
+          it 'true if member expiration date = two_days_before_req_duration_end (would not be a current member!)' do
             user = build(:member_with_membership_app)
             user.payments << create(:expired_membership_fee_payment, expire_date: Time.zone.now) # expired yesterday
             user.save!
@@ -198,7 +198,7 @@ RSpec.describe UserChecklistManager do
             expect(described_class.must_complete_membership_guidelines_checklist?(user)).to be_truthy
           end
 
-          it 'false if member expiration date > today' do
+          it 'false if member expiration date > two_days_before_req_duration_end' do
             user = build(:member_with_membership_app)
             user.payments << create(:expired_membership_fee_payment, expire_date: (Time.zone.now + 1.day))
             user.save!

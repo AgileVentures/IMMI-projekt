@@ -1,10 +1,10 @@
 %header.entry-header
-  %h1.entry-title= t('.title', name_sv: @member_app_waiting_reason.name_sv, name_en: @member_app_waiting_reason.name_en  )
+  = content_title(t('.title', name_sv: @member_app_waiting_reason.name_sv, name_en: @member_app_waiting_reason.name_en), user: current_user)
 
 .entry-content
   = render 'form'
   %hr.mt-5
   .text-center
     = link_to t('admin_only.member_app_waiting_reasons.all_member_app_waiting_reasons'), admin_only_member_app_waiting_reasons_path,
-        class: 'btn btn-light btn-sm all-member-app-waiting-reasons',
+      class: 'btn btn-light btn-sm all-member-app-waiting-reasons',
         id: 'all-member-app-waiting-reasons'

@@ -10,17 +10,6 @@ Before('@selenium_browser') do
  Capybara.current_driver = :selenium_browser
 end
 
-Before('@dinkurs_fetch or @dinkurs_invalid_key') do
-  VCR.configure do |c|
-    c.hook_into :webmock
-    c.cassette_library_dir     = 'features/vcr_cassettes'
-    c.allow_http_connections_when_no_cassette = true
-    c.ignore_localhost = true
-    c.default_cassette_options = { allow_playback_repeats: true }
-    c.ignore_hosts('chromedriver.storage.googleapis.com')
-  end
-end
-
 After('@selenium or @selenium_browser') do
   ajax_active = !page.evaluate_script('window.jQuery ? jQuery.active : 0').zero?
   Capybara.reset_sessions!

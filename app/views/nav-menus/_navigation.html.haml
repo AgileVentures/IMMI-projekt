@@ -10,8 +10,8 @@
         %ul.navbar-nav.ml-auto#menu-menu-3
           %li
             = link_to t('menus.nav.shf_main_site'), https_shf_main_site_home_url, class: 'nav-link'
-          = render 'navigation_member_pages'
-          = render 'navigation_admin'
+          = render 'nav-menus/member_pages'
+          = render 'nav-menus/admin'
       - else
         %ul.navbar-nav.ml-auto#menu-menu-2
           %li
@@ -20,20 +20,20 @@
             = link_to t('menus.nav.members.shf_companies'), root_path, class: 'nav-link'
 
           - if current_user.member?
-            = render 'navigation_member_pages'
-            = render 'navigation_member_companies'
-            = render 'navigation_edit_my_application', shf_app: current_user.shf_application
+            = render 'nav-menus/member_pages'
+            = render 'nav-menus/member_companies'
+            = render 'nav-menus/edit_my_application', shf_app: current_user.shf_application
 
           - else
             -# User is not a member nor admin
             - if current_user.has_shf_application?
-              = render 'navigation_edit_my_application', shf_app: current_user.shf_application
+              = render 'nav-menus/edit_my_application', shf_app: current_user.shf_application
             - else
               %li
                 = link_to t('menus.nav.users.apply_for_membership'), new_shf_application_path, class: 'nav-link'
 
     - else
       -# Visitor navigation
-      = render 'navigation_visitor'
+      = render 'nav-menus/visitor'
 
-    = render 'login_nav'
+    = render 'nav-menus/login_nav'

@@ -170,6 +170,10 @@ sv:
         one: Task Attempt
         other: Task Attempts
 
+      uploaded_file:
+        one: &uploaded_file_one Uppladdad fil
+        other: &uploaded_file_other Uppladdade filer
+
       master_checklist:
         one: Master Checklist Item
         other: Master Checklist Items
@@ -180,6 +184,11 @@ sv:
 
 
     attributes:
+
+      uploaded_file:
+        filename: &filename Filnamn
+        file_size: &file_size Filstorlek
+        description: &description  Beskrivning
 
       user:
         first_name: &first_name Förnamn
@@ -200,9 +209,9 @@ sv:
         date_member_packet_sent: &date_member_packet_sent Paket skickat
 
       payment:
-        payment_type: Betalningstyp
-        status: Status
-        start_date: Startdatum
+        payment_type: &payment_type Betalningstyp
+        status: &payment_status Status
+        start_date: &start_date Startdatum
         expire_date: &expire_date Utgångsdatum
         notes: &notes Anteckningar
         created: *created
@@ -216,8 +225,8 @@ sv:
         state: &state Status
         phone_number: Telefonnummer
         uploaded_files:
-          one: Uppladdad fil
-          other: Uppladdade filer
+          one: *uploaded_file_one
+          other: *uploaded_file_other
         state/new: &status_new Ny
         state/under_review: &status_under_review Behandlas
         state/waiting_for_applicant: &status_waiting_for_applicant Avvaktar sökande
@@ -264,7 +273,7 @@ sv:
 
       business_category:
         name: &business_category_name  Namn
-        description: &description  Beskrivning
+        description: *description
         subcategory: &subcategory Underkategori
         subcategories: Underkategorier
 
@@ -273,7 +282,7 @@ sv:
         description: *description
         uploader: &uploader Uppladdad av
         actual_file_content_type: Uppladdad filtyp
-        actual_file: Uppladdad fil
+        actual_file: *uploaded_file_one
 
 
       member_app_waiting_reason:
@@ -331,16 +340,19 @@ sv:
         uploaded_file:
           attributes:
             actual_file_file_size:
-              file_too_large: &file_too_large 'Filen är för stor för att laddas upp.'
+              file_too_large: &file_size_too_large 'Filen är för stor för att laddas upp.'
             actual_file:
-              file_too_large: 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
+              file_too_large: &file_too_large 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
+            actual_file_file_content_type:
+              invalid_type: &file_content_type_forbidden Tyvärr kan du inte ladda upp denna filtypen.
 
         company:
           attributes:
             company_number:
               taken: Detta företag (org nr) finns redan i systemet.
             dinkurs_company_id:
-              invalid: erkänns inte som en företagsnyckel av Dinkurs
+              invalid_key: erkänns inte som en företagsnyckel av Dinkurs
+              invalid_format: Dinkurs informationen är ogiltig (formatet är dåligt eller okänt).
               invalid_chars: innehåller ogiltiga tecken (tecken som Å, Ä, Ö är inte tillåtna)
             company_has_active_memberships: "Företaget har aktiva (godkända) medlemskap."
 
@@ -365,9 +377,9 @@ sv:
         shf_document:
           attributes:
             actual_file_file_size:
-              file_too_large: *file_too_large
+              file_too_large: *file_size_too_large
             actual_file:
-              file_too_large: 'Filen måste vara mindre än %{max}. (Filen är %{value} byte.)'
+              file_too_large: *file_too_large
 
         shf_application:
           attributes:
@@ -441,10 +453,16 @@ sv:
     no_pay_answer: 'Nej.'
     admin_cant_edit: "Medlemsstatus kan inte uppdateras. (Kanske har inga betalningar gjorts.)"
 
+
+  payor:
+    term_status:
+      admin_user_payments_title: *payments
+
+
   payment:
     payment_type:
-      member_fee: Medlemsavgift
-      branding_fee: H-märkesavgift
+      member_fee: &member_fee Medlemsavgift
+      branding_fee: &branding_fee H-märkesavgift
     status:
       paid: &paid Betald
       never_paid: &never_paid Aldrig betald
@@ -467,7 +485,63 @@ sv:
       longitude_blank: "Longitude cannot be blank."
 
 
+  # ----------------------------------------
   # Automatisk och manuell sökning för views:
+
+  uploaded_files:
+
+    index:
+      title: &uploaded_files_index_title All of your uploaded files
+      admin_title: &uploaded_files_admin_index_title All uploaded files
+      cannot_edit_or_delete_reason: You cannot edit or delete a file if it is part of an application being reviewed, approved, or rejected.
+
+    show:
+      title: &uploaded_file_show_title "Uppladdad fil: %{file_name}"
+      description: *description
+
+    new:
+      title: Upload a file
+      description: *description
+      submit: *submit
+      index_title: *uploaded_files_index_title
+      upload_allowed_file_types: &upload_allowed_types 'Tillåtna filtyper:'
+      upload_button_title: "Välj en fil ..."
+
+    create:
+      success: "%{file_name} was uploaded successfully."
+      error: There was a problem saving the file.
+      invalid_upload_type: *file_content_type_forbidden
+
+    edit:
+      title: "Edit the uploaded file: %{file_name}"
+      description: *description
+      info: "You can only edit the description.  If you want to change the name or file uploaded, you'll need to delete this and upload a file."
+      submit: *submit
+      index_title: *uploaded_files_index_title
+
+    update:
+      success: "%{file_name} was updated."
+      error: One or more problems prevented the uploaded file from being updated.
+
+    destroy:
+      success: "Uploaded file %{file_name} was successfully deleted."
+      error: "There was a problem deleting %{file_name}.  It was not deleted."
+
+    uploaded_files_list:
+      owner: Ägare
+      file_name: *filename
+      description: *description
+      file_size: *file_size
+      updated_at: *last_updated
+      associated_with_application: *application
+
+    show_action_buttons:
+      show_title: *uploaded_file_show_title
+      index_title: *uploaded_files_index_title
+      admin_index_title: *uploaded_files_admin_index_title
+      delete: "Radera %{file_name}"
+
+
   shf_applications:
     new:
       title: Ansök om medlemskap
@@ -488,12 +562,12 @@ sv:
       application_dog_category: &application_dog_category "Ansöker som:"
       clue_selected_categories: &clue_selected_categories "Blå fält = valda. Relevant medlemskategori behöver fyllas i för att vi ska kunna hantera din ansökan."
 
-      upload_files_section: &app_upload_files_section Underlag för att styrka min ansökan
+      upload_files_section:  Underlag för att styrka min ansökan
       upload_files_instructions: 'Dokumenten är mycket viktiga för att vi ska kunna bedöma din ansökan. Vi använder dem för att verifiera dina kunskaper och utbildningar. Detta säkerställer att vår medlemsstandard är fortsatt hög, vilket i förlängningen innebär att allmänheten vet att Sveriges hundföretagare är professionella och att lita på.'
       upload_files: 'Ladda upp filer från datorn (VIKTIGT)'
-      upload_allowed_file_types: 'Tillåtna filtyper:'
+      upload_allowed_file_types: *upload_allowed_types
       upload_more_files: Du kan ladda upp fler filer genom att redigera din ansökan efter att du skickat in den.
-      upload_button: Välj dina filer...
+      upload_button: "Välj dina filer..."
       will_be_uploaded: 'Dessa filer kommer att laddas upp när du skickar in din ansökan:'
       upload_multiple_files: ctrl-tangenten (Windows) eller command/cmd på (Mac) för att välja flera.
       submit_button_label: *submit
@@ -692,10 +766,10 @@ sv:
     uploads:
       no_files: Inga filer är uppladdade för denna ansökan.
       files_uploaded: 'Uppladdade filer för denna ansökan:'
-      filename: &filename Filnamn
+      filename: *filename
       file_was_uploaded: &file_was_uploaded 'Filen laddades upp: %{filename}'
       confirm_delete: &upload_confirm_delete 'Är du säker på att du vill radera %{filename}?'
-      invalid_upload_type: &invalid_upload_type Tyvärr kan du inte ladda upp denna filtypen.
+      invalid_upload_type: *file_content_type_forbidden
       file_too_large: &file_too_large_5MB Filen måste vara mindre än 5 MB
       please_upload_again: Var god ladda upp dina filer igen.
       will_review_after_received: &review_after_recevied_files "Vi kommer att handlägga din ansökan när vi har fått alla filer."
@@ -711,7 +785,7 @@ sv:
     filename: *filename
     file_was_uploaded: *file_was_uploaded
     confirm_delete: *upload_confirm_delete
-    invalid_upload_type: *invalid_upload_type
+    invalid_upload_type: *file_content_type_forbidden
     file_too_large: *file_too_large_5MB
 
 
@@ -1004,7 +1078,9 @@ sv:
       use_guidelines: &use_guidelines riktlinjer
       download_image: &download_image Ladda ner bild
       image_dimensions_html: "Bildbredden är <span id = '%{width_id}'></span>pixlar och höjden är<span id = '%{height_id}'></span> pixlar."
-      use_this_image_link_html: "<span style='font-weight: bold'>Använd den här länken på en extern webbplats:</span>"
+      use_this_image_link_html: "<span style='font-weight: bold'>
+                                Använd den här länken på en extern webbplats
+                                (returnerar en JPG-bild):</span>"
 
       image_how_to_use_html: &image_how_to_use_html "Du kan ladda ner bilden, ta en
                              skärmdump eller länka till den från din webbplats
@@ -1091,6 +1167,16 @@ sv:
 
     error:
       error: Det uppstod ett fel vid hantering av din betalning
+
+    payments_list:
+      payment_date: Payment date
+      status: *payment_status
+      type: *payment_type
+      start_date: *start_date
+      end_date: *expire_date
+      notes: *notes
+      hips_id: HIPS id
+
 
   user_checklists:
     all_list_items: &user_checklists_all_items Tillbaka till medlemsåtagandet
@@ -1186,7 +1272,7 @@ sv:
     all_shf_documents: Alla uppladdade dokument
     all_shf_minutes: Alla uppladdade dokument
 
-    invalid_upload_type: *invalid_upload_type
+    invalid_upload_type: *file_content_type_forbidden
     file_too_large: *file_too_large_5MB
 
     contents_access_error: 'Det uppstod ett fel att komma åt filen: %{message}'
@@ -1909,6 +1995,7 @@ sv:
         my_application: *my_application
         apply_for_membership: Ansök om medlemsskap
         your_account: Ditt konto
+        uploaded_files:  Ditt uppladdade filer
 
       members:
         shf_companies: SHF-företag
@@ -1932,6 +2019,7 @@ sv:
         master_checklists: Master Checklists
         dashboard: Dashboard
         design_guide: Design Guide
+        all_uploaded_files: All Uploaded Files
 
         categories:
           submenu_title: Kategorier

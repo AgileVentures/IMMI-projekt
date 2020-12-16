@@ -2,27 +2,35 @@ source 'https://rubygems.org'
 ruby '2.6.6'
 
 gem 'dotenv-rails'
-gem 'rails', '5.2.4.4'
+gem 'rails', '~> 5.2'
 gem 'bootsnap', require: false
-gem 'pg', '~> 0.18'
-gem 'puma', '~> 3.0'
-gem 'sass-rails', '~> 5.0'
+
+gem 'pg', '~> 1.2'
+gem 'puma', '~> 5.0'
+gem 'sass-rails'
+
 gem 'uglifier', '>= 1.3.0'
 gem 'jquery-rails'
 gem 'turbolinks', '~> 5'
 gem 'jbuilder', '~> 2.5'
-gem 'bcrypt', '~> 3.1.7'
+
+gem 'bcrypt', '~> 3.1'
+
+# Updating to sprockets 4 needs to be done carefully to ensure that
+#   assets are served correctly in PRODUCTION
+gem 'sprockets', '< 4.0'
+
 gem 'haml-rails'
-gem 'high_voltage', '~> 3.0.0'
+gem 'high_voltage', '~> 3.0'
 gem 'orgnummer'
 gem 'popper_js', '~> 1.14.3'
-gem 'bootstrap', '~> 4.1.3'
-gem 'font-awesome-sass', '~> 5.5.0'
+gem 'bootstrap', '~> 4'
+gem 'font-awesome-sass', '~> 5.5'  # , '~> 5.5.0'
 gem 'bootstrap-toggle-rails'
 
 gem 'devise'
 gem 'pundit'
-gem "paperclip", "~> 6.0.0"
+gem "paperclip"
 
 gem 'routing-filter'   # for handling locale filters around routes
 
@@ -37,7 +45,7 @@ gem 'bootstrap-will_paginate'
 gem 'ckeditor', '~> 4.2', '>= 4.2.4'
 # ^^ https://github.com/galetahub/ckeditor/issues/718
 
-gem 'aasm', '~> 4.11.1'  # state machine ()acts as state machine)
+gem 'aasm'    # state machine
 
 gem 'ffaker'  # Fake data for DB seeding
 
@@ -66,7 +74,8 @@ gem 'wkhtmltoimage-binary'
 gem 'chartkick'
 gem 'groupdate'
 
-gem 'mini_racer', platforms: :ruby
+gem 'mini_racer','~> 0.2.1', platforms: :ruby
+gem 'libv8', '< 8.0'
 
 gem 'hashie'  # powerful methods for searching nested Hashes (ex: params) and more
 
@@ -87,6 +96,7 @@ gem 'whenever', require: false
 
 # Query ActiveRecord by time (ex:  Payment.by_year(2019), Payment.between_times(Time.zone.now - 3.hours, Time.zone.now)) # all posts in last 3 hours
 gem 'by_star'
+
 
 group :development, :test do
   gem 'rubocop',             '=0.75.0', require: false
@@ -124,11 +134,11 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
   gem 'erb2haml'
-  gem 'capistrano', '~> 3.11'
-  gem 'capistrano-bundler', '~> 1.6'
-  gem 'capistrano-rails', '~> 1.4'
-  gem 'capistrano-rbenv', '~> 2.0'
-  gem 'capistrano-ssh-doctor', '~> 1.0'
+  gem 'capistrano'#, '~> 3.11'
+  gem 'capistrano-bundler' #, '~> 1.6'
+  gem 'capistrano-rails' #, '~> 1.4'
+  gem 'capistrano-rbenv' #, '~> 2.0'
+  gem 'capistrano-ssh-doctor' #, '~> 1.0'
   gem 'capistrano-env-config'
   gem 'railroady'
   gem 'bullet'
@@ -142,13 +152,13 @@ group :development do
 end
 
 group :test do
-  gem 'codeclimate-test-reporter', '~> 1.0.0'
+  gem 'codeclimate-test-reporter' #, '~> 1.0.0'
   # ^^ https://docs.codeclimate.com/docs/test-coverage-ruby
-  gem 'simplecov', '>= 0.13.0'
+  gem 'simplecov' #, '>= 0.13.0'
   gem 'email_spec'
   gem 'selenium-webdriver'
 
-  gem 'webdrivers', '~> 3.0'
+  gem 'webdrivers' #, '~> 3.0'
 
   gem 'webmock'  # to mock web (HTTP) interactions.  Required by the vcr gem
   gem 'vcr'      # to record and 'playback' (mock) http requests

@@ -1,0 +1,13 @@
+= form_for uploaded_file do |f|
+  != model_errors_helper(uploaded_file)
+
+  .form-group
+    = f.label :name, t('activerecord.attributes.uploaded_file.filename') , class: 'required'
+    = f.text_field :name, class: 'form-control'
+  .form-group
+    = f.label :description, t('activerecord.attributes.uploaded_file.description')
+    = f.text_field :description, class: 'form-control'
+
+  .form-group
+    = f.submit t('save'), class: 'btn btn-primary mb-2 form-control'
+

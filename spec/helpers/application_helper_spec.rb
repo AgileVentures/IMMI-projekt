@@ -501,4 +501,71 @@ RSpec.describe ApplicationHelper, type: :helper do
     end
   end
 
+  describe '#content_title' do
+    let(:user) { build_stubbed(:user) }
+    let(:title) { 'Title!' }
+
+    it 'renders the page title' do
+      expect(content_title(title)).to include(title)
+    end
+
+    it 'uses the appropriate default css class' do
+      expect(content_title(title, user: user)).to include(content_title_css_class)
+    end
+
+    it 'also uses the appropriate css class if an admin user is specified' do
+      expect(content_title(title, user: build_stubbed(:admin))).to include(content_title_css_class, admin_css_class)
+    end
+
+    it 'allows to add extra class names' do
+      expect(content_title(title, classes: ['custom-class'])).to include(content_title_css_class, 'custom-class')
+    end
+
+    it 'allows to set the title element id' do
+      expect(content_title(title, id: 'ID')).to include('id="ID"')
+    end
+  end
+
+  describe '#user_name_for_display' do
+    include ERB::Util # Required by the helper to work in RSpec context
+    it 'returns an empty string if the user is nil' do
+      expect(user_name_for_display(nil)).to eq ''
+    end
+
+    it 'returns the user name and surname if either or both are present' do
+      expect(user_name_for_display(user)).to include(user.first_name, user.last_name)
+    end
+
+    it 'returns the user email if the user has no first or last name' do
+      user = build_stubbed(:user, first_name: nil, last_name: nil, email: 'a@b.c')
+      expect(user_name_for_display(user)).to eq 'a@b.c'
+    end
+  end
+
+  describe '#show_if_user_is_admin' do
+    it 'renders a text informing that the user is an admin if they are' do
+      admin = build_stubbed(:admin)
+      expect(show_if_user_is_admin(admin, 'admin!')).to include('admin!')
+    end
+
+    it 'it returns an empty string for non-admin users' do
+      expect(show_if_user_is_admin(user, 'admin!')).to be_blank
+    end
+  end
+
+  describe '#edit_profile_link' do
+    it 'renders links to see and edit a user profile' do
+      expect(edit_profile_link(user, text: '---', title: '---')).to include('edit', 'profile')
+    end
+  end
+
+  describe '#edit_account_link' do
+    it 'renders links to see and edit a user profile' do
+      expect(edit_account_link(user, text: '---', title: '---')).to include('edit', 'account')
+    end
+
+    it 'accepts an option to only render on a condition' do
+      expect(edit_account_link(user, text: '---', title: '---', show_if: false)).to eq ''
+    end
+  end
 end

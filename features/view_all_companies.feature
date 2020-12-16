@@ -1,7 +1,7 @@
-Feature: Visitor sees all companies
+Feature: View all companies: who can see which companies [CI PROBLEM SCENARIOS]
 
-  2020-09-10:  Pagination scenarios have been moved to
-  problem-scenarios-pagination-view_all_companies.feature. These have been causing
+  2020-09-10:  Pagination scenarios have been moved to here
+  (problem-scenarios-pagination-view_all_companies.feature). These have been causing
   intermittent failures in CI Semaphore tests.  See the note in that file for
   more info.
 
@@ -63,52 +63,53 @@ Feature: Visitor sees all companies
       | Company01 | 5560360793     | cmpy1@mail.com  | Stockholm    | Alingsås |
 
 
-
-
     And the following company addresses exist:
       | company_name | region     | kommun  | city    |
       | Company02    | Norrbotten | Alvesta | Årsta   |
       | Company02    | Uppsala    | Aneby   | Kolbäck |
 
     And the following users exist:
-      | email         | admin | member |
-      | u1@mutts.com  |       | true   |
-      | u2@mutts.com  |       | true   |
-      | u3@mutts.com  |       | true   |
-      | u4@mutts.com  |       | true   |
-      | u5@mutts.com  |       | true   |
-      | u6@mutts.com  |       | true   |
-      | u7@mutts.com  |       | true   |
-      | u8@mutts.com  |       | true   |
-      | u9@mutts.com  |       | true   |
-      | u10@mutts.com |       | true   |
-      | u11@mutts.com |       | true   |
-      | u12@mutts.com |       | true   |
-      | u13@mutts.com |       | true   |
-      | u14@mutts.com |       | true   |
-      | u15@mutts.com |       | true   |
-      | u16@mutts.com |       | true   |
-      | u17@mutts.com |       | true   |
-      | u18@mutts.com |       | true   |
-      | u19@mutts.com |       | true   |
-      | u20@mutts.com |       | true   |
-      | u21@mutts.com |       | true   |
-      | u22@mutts.com |       | true   |
-      | u23@mutts.com |       | true   |
-      | u24@mutts.com |       | true   |
-      | u25@mutts.com |       | true   |
-      | u26@mutts.com |       | true   |
-      | u27@mutts.com |       | true   |
-      | u29@mutts.com |       | true   |
-      | b@mutts.com   |       | false  |
-      | admin@shf.se  | true  |        |
+      | email         | admin | member | agreed_to_membership_guidelines |
+      | u1@mutts.com  |       | true   | true                            |
+      | u2@mutts.com  |       | true   | true                            |
+      | u3@mutts.com  |       | true   | true                            |
+      | u4@mutts.com  |       | true   | true                            |
+      | u5@mutts.com  |       | true   | true                            |
+      | u6@mutts.com  |       | true   | true                            |
+      | u7@mutts.com  |       | true   | true                            |
+      | u8@mutts.com  |       | true   | true                            |
+      | u9@mutts.com  |       | true   | true                            |
+      | u10@mutts.com |       | true   | true                            |
+      | u11@mutts.com |       | true   | true                            |
+      | u12@mutts.com |       | true   | true                            |
+      | u13@mutts.com |       | true   | true                            |
+      | u14@mutts.com |       | true   | true                            |
+      | u15@mutts.com |       | true   | true                            |
+      | u16@mutts.com |       | true   | true                            |
+      | u17@mutts.com |       | true   | true                            |
+      | u18@mutts.com |       | true   | true                            |
+      | u19@mutts.com |       | true   | true                            |
+      | u20@mutts.com |       | true   | true                            |
+      | u21@mutts.com |       | true   | true                            |
+      | u22@mutts.com |       | true   | true                            |
+      | u23@mutts.com |       | true   | true                            |
+      | u24@mutts.com |       | true   | true                            |
+      | u25@mutts.com |       | true   | true                            |
+      | u26@mutts.com |       | true   | true                            |
+      | u27@mutts.com |       | true   | true                            |
+      | u29@mutts.com |       | true   | true                            |
+      | b@mutts.com   |       | false  | true                            |
+      | admin@shf.se  | true  |        |                                 |
+
 
     And the following payments exist
       | user_email    | start_date | expire_date | payment_type | status | hips_id | company_name |
       | u1@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company01    |
-      | u1@mutts.com  | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |              |
+      | u1@mutts.com  | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    | Company01    |
       | u2@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company02    |
+      | u2@mutts.com  | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    | Company02    |
       | u3@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company03    |
+      | u3@mutts.com  | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    | Company03    |
       | u4@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company04    |
       | u5@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company05    |
       | u6@mutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | Company06    |
@@ -168,13 +169,21 @@ Feature: Visitor sees all companies
       | u29@mutts.com | Company29    | accepted | Groomer    |
 
   @selenium @time_adjust
-  Scenario: Visitor sees all companies
+  Scenario: Visitor sees all companies that have a current branding license, current members, complete information; does not see company number
     Given the date is set to "2017-10-01"
-    Given I am Logged out
-    And I am on the "landing" page
-    Then I should see "Company02" in the list of companies
+    And I am Logged out
+    When I am on the "landing" page
+    Then I should see "Company01" in the list of companies
+    And I should see "Company02" in the list of companies
+    And I should see "Company03" in the list of companies
+    And I should not see "Company04" in the list of companies
+    And I should not see "Company05" in the list of companies
+    And I should not see "Company06" in the list of companies
+    And I should not see "Company07" in the list of companies
+    And I should not see "Company08" in the list of companies
+    And I should not see "Company09" in the list of companies
+    And I should not see "Company10" in the list of companies
     And I should not see "2120000142" in the list of companies
-    And I should see "Company01" in the list of companies
     And I should not see "5560360793" in the list of companies
     And I should not see t("companies.new_company")
 
@@ -196,7 +205,7 @@ Feature: Visitor sees all companies
     And I wait for all ajax requests to complete
 
   @time_adjust
-  Scenario: User sees all the companies
+  Scenario: User sees all the companies that have current branding license, current members, and complete information; does not see Company number
     Given the date is set to "2017-10-01"
     Given I am logged in as "u1@mutts.com"
     And I am on the "landing" page
@@ -228,23 +237,9 @@ Feature: Visitor sees all companies
     And I should not see "Verksamhetslän"
     And I should not see "Kategori"
 
-  @selenium @time_adjust
-  Scenario: Companies lacking branding payment or members not shown
-    Given the date is set to "2017-10-01"
-    Given I am Logged out
-    And I am on the "landing" page
-    And I hide the companies search form
-    And "items_count" should have "10" selected
-    Then I select "All" in select list "items_count"
-    And I should see "27" companies
-    And I should see "Company10" in the list of companies
-    And I should see "Company27" in the list of companies
-    And I should not see "Company28" in the list of companies
-    And I should not see "Company29" in the list of companies
-
 
   @selenium @time_adjust
-  Scenario: Admin can see all companies even if lacking branding payment or members
+  Scenario: Admin can see all companies even if lacking branding payment or members or complete information
     Given the date is set to "2017-10-01"
     And I am logged in as "admin@shf.se"
     And I am on the "all companies" page

@@ -1,10 +1,10 @@
 
 .app-section
-  - unless association_empty?(@all_business_categories)
+  - unless association_empty?(all_business_categories)
     %h2= t('shf_applications.new.application_dog_category')
     %p= t('shf_applications.new.clue_selected_categories')
     .checkbox.col-xs-offset-1
-      = f.collection_check_boxes :business_category_ids, @all_business_categories, :id, :name do |b|
+      = f.collection_check_boxes :business_category_ids, all_business_categories, :id, :name do |b|
         = b.check_box(class: 'text-nicelabel', position_class: 'text_checkbox') + b.label
 
 .app-section#supporting-files

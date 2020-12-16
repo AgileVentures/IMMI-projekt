@@ -10,15 +10,11 @@ Feature: Member edits a company attribute
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email               | admin | member |
-      | emma@happymutts.com |       | true   |
-      | member@random.com   |       | true   |
-      | user@random.com     |       |        |
-      | admin@shf.se        | true  | false  |
-
-    Given the following payments exist
-      | user_email          | start_date | expire_date | payment_type | status | hips_id |
-      | emma@happymutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+      | email               | admin | member | agreed_to_membership_guidelines |
+      | emma@happymutts.com |       | true   | true                            |
+      | member@random.com   |       | true   | true                            |
+      | user@random.com     |       |        | true                            |
+      | admin@shf.se        | true  | false  |                                 |
 
     Given the following regions exist:
       | name         |
@@ -44,8 +40,10 @@ Feature: Member edits a company attribute
     And the following payments exist
       | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
       | emma@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
+      | emma@happymutts.com | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
 
-  @selenium @time_adjust
+
+  @selenium @time_adjust @focus
   Scenario: Member goes to company page after membership approval, specifies mail address
     Given the date is set to "2017-10-01"
     Given I am logged in as "emma@happymutts.com"
@@ -87,7 +85,6 @@ Feature: Member edits a company attribute
     Then I should see the radio button with label "Acksjö Gräsbacken 1, 441 94, Alingsås, Alingsås, Sverige" checked
     And I should see the radio button with label "Hundforetagarevägen 1, 310 40, Harplinge, Ale, Sverige" unchecked
     And I should see the radio button with label "Ålstensgatan 4, 123 45, Bromma, Alingsås, Sverige" unchecked
-
 
     When I click the first address for company "Happy Mutts"
     And I select t("address_visibility.none") in select list t("companies.address_visibility")

@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
 
   include RobotsMetaTagShowActionOnly
+  include SetAppConfiguration
   include PaginationUtility
   include ImagesUtility
 
@@ -17,10 +18,26 @@ class UsersController < ApplicationController
   end
 
   def proof_of_membership
-    image_html = image_html('proof_of_membership', @app_configuration, @user)
-    if params[:render_to] == 'jpg'
-      download_image('proof_of_membership', 260, image_html)
+    # params[:render_to] is present for a request that will respond with
+    #   a JPG image for download.  The request expects an HTML response.
+    # params[:format] is present with a request that will respond with
+    #   a JPG image to be rendered inline in the client. (request URL has
+    #   suffix ".jpg", and expects a JPG image in response)
+    # Otherwise, the request expects HTML.
+
+    if params[:render_to] == 'jpg' || params[:format] == 'jpg'
+      image = @user.proof_of_membership_jpg
+
+      unless image
+        image = create_image('proof_of_membership', 260, @app_configuration, @user)
+        @user.proof_of_membership_jpg = image
+      end
+
+      download_image('proof_of_membership', image)
+
     else
+      image_html = image_html('proof_of_membership', @app_configuration, @user,
+                              context: params[:context]&.to_sym)
       show_image(image_html)
     end
   end

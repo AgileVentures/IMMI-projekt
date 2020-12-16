@@ -54,11 +54,14 @@ WebMock.disable_net_connect!(allow_localhost: true, allow: webdriver_download_si
 
 
 VCR.configure do |c|
+  c.default_cassette_options = { record: :none, record_on_error: false}
   c.hook_into :webmock
-  c.cassette_library_dir     = 'features/vcr_cassettes'
+  c.filter_sensitive_data('<company_key>') { ENV['DINKURS_COMPANY_TEST_ID'] }
+  c.cassette_library_dir = 'features/vcr_cassettes'
   c.allow_http_connections_when_no_cassette = true
   c.ignore_localhost = true
   c.default_cassette_options = { allow_playback_repeats: true }
+  c.ignore_hosts('chromedriver.storage.googleapis.com')
   webdriver_download_sites.each do | webdriver_download_site |
     c.ignore_hosts(webdriver_download_site)
   end
@@ -114,8 +117,10 @@ end
 After { Warden.test_reset! }
 
 #
-# 'Global' methods available to all steps
+# 'Global' constants and methods available to all steps
 #
+
+UPLOADED_FILES_DIR = 'spec/fixtures/uploaded_files'.freeze
 
 def path_with_locale(visit_path)
   "/#{I18n.locale}#{visit_path}"
@@ -123,6 +128,18 @@ end
 
 def i18n_content(content, locale=I18n.locale)
   I18n.t(content, locale)
+end
+
+
+# If the file doesn't exist in the UPLOADED_FILES_DIR, raise an error
+def file_fixture_exists?(filename, step = '')
+  return true if File.exist?(Rails.root.join(UPLOADED_FILES_DIR, filename))
+
+  raise "ERROR in step: '#{step}'\n" +
+          "  The file #{filename}\n" +
+          "  must exist in #{UPLOADED_FILES_DIR}\n" +
+          "  but it doesn't. Either correct the file name to a file that does exist in that directory\n" +
+          "  or create a file and put it in that directory.\n"
 end
 
 

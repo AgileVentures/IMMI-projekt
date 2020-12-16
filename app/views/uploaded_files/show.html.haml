@@ -1,0 +1,16 @@
+%header.entry-header
+  = content_title(t('.title', file_name: @uploaded_file.actual_file_file_name), user: current_user)
+
+  .entry-content
+  .uploaded-file
+    .row
+      .col
+        = render partial: 'uploaded_file_and_name', locals: {uploaded_file: @uploaded_file}
+
+    .row
+      .col.description
+        = field_or_none(t('.description'), @uploaded_file.description)
+
+  = render 'show_action_buttons', uploaded_file: @uploaded_file,
+     can_edit: policy(@uploaded_file).edit?,
+     can_delete: policy(@uploaded_file).destroy?

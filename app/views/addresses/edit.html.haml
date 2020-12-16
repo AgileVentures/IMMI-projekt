@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= t('.title', company_name: @company.name)
+  = content_title(t('.title', company_name: @company.name), user: current_user)
 
 .entry-content
   = render partial: 'form',

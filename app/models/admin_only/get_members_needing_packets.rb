@@ -17,9 +17,7 @@ module AdminOnly
   #
   #--------------------------
   #
-
   class GetMembersNeedingPackets
-
 
     # This is an ugly series of queries to get the result.
     # But it is not run often.
@@ -29,8 +27,8 @@ module AdminOnly
     #   AND have not had a membership packet sent to them
     #
     def self.members_with_no_membership_packet
-      current_licensed_cos_w_members = Company.branding_licensed.with_members
-      members = current_licensed_cos_w_members.map { |co| co.current_members }.flatten
+      current_licensed_cos_w_members = Company.current_with_current_members
+      members = current_licensed_cos_w_members.map { |co| co.current_members }.flatten.uniq
       need_welcome_packet = members.select { |m| m.date_membership_packet_sent.nil? }
       need_welcome_packet.sort_by(&:membership_start_date)
     end

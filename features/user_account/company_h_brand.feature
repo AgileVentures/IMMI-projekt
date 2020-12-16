@@ -46,7 +46,7 @@ Feature: Member gets their customized SHF membership card (proof of membership)
     And I should see t("users.show_member_images_row_cols.proof_of_membership")
     And I should see "groom, rehab"
     And I click on the t("users.show_member_images_row_cols.download_image") link
-    Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
+    Then I should get a downloaded image with the filename "proof_of_membership.jpg"
 
   @time_adjust
   Scenario: Member views proof-of-membership image

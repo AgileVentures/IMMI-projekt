@@ -1,4 +1,4 @@
-Feature: View a SHF Application
+Feature: Show (view) SHF Applications
 
   As a User or Member,
   I need to be able to see my membership application

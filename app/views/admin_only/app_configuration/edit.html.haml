@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= t('edit') + ' ' + t('.title')
+  = content_title(t('edit') + ' ' + t('.title'), user: current_user)
 
 .entry-content
 

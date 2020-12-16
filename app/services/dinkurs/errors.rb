@@ -1,6 +1,7 @@
 module Dinkurs
   module Errors
-    class InvalidKey < StandardError
-    end
+    class DinkursError < StandardError; end
+    class InvalidKey < DinkursError; end
+    class InvalidFormat < DinkursError; end
   end
 end

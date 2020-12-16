@@ -1,7 +1,7 @@
 %div{ :id => "#{@shf_application.class.name.downcase}", class: "new-item #{@shf_application.class.name.downcase}" }
 
   %header.entry-header
-    %h1.entry-title= t('.title')
+    = content_title(t('.title'), user: current_user)
   .entry-content
     .instructions= t('shf_applications.new.instructions_html')
 
@@ -10,7 +10,8 @@
       != model_errors_helper(@shf_application)
 
       = render partial: 'shf_application_fields',
-               locals: { f: f, company_numbers: @company_numbers }
+               locals: { f: f, company_numbers: @company_numbers,
+               all_business_categories: @all_business_categories }
 
       = render 'application/required_fields'
 

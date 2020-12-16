@@ -10,7 +10,8 @@
   - else
     %h4.files-uploaded-list-title= t('shf_applications.uploads.files_uploaded')
 
-    - show_delete = true if show_delete.nil?
+    - show_delete = true if !defined?(show_delete) || show_delete.nil?
+
     %table
       %thead
         %tr

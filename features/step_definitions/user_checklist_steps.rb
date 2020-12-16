@@ -135,24 +135,6 @@ And(/^the following user checklists exist:$/) do |table|
 end
 
 
-And("the following users have agreed to the Membership Ethical Guidelines:") do |table|
-  table.hashes.each do |item|
-    user_email = item.delete('email') || ''
-    user = User.find_by(email: user_email)
-    begin
-      user_guidelines = if (found_guidelines = UserChecklistManager.membership_guidelines_list_for(user))
-                          found_guidelines
-                        else
-                          AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user) unless UserChecklistManager.membership_guidelines_list_for(user)
-                        end
-      user_guidelines.set_complete_including_children
-
-    rescue => e
-      raise e, "Could not create the Member Guidelines UserChecklist or set it to completed for user #{user}\n #{e.inspect} "
-    end
-  end
-end
-
 
 And("the start date for the Membership Ethical Guidelines is {date}") do | req_start_date |
   allow(UserChecklistManager).to receive(:membership_guidelines_reqd_start_date).and_return(req_start_date)

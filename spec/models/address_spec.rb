@@ -366,48 +366,29 @@ RSpec.describe Address, type: :model do
   end
 
 
-  describe 'scopes' do
-    let!(:has_regions) { [addr_has_region] }
-    let!(:lacking_regions) { [no_region] }
+  describe 'Scopes' do
 
-    describe 'visible' do
+    describe '.visible' do
       it 'only returns addresses that are visible' do
         expect(co_has_region.addresses.visible).
             to contain_exactly(addr_has_region, visible_addr)
       end
     end
 
-    describe 'has_region' do
-
+    describe '.has_region' do
       it 'only returns addresses that have a region' do
-        has_region_scope = described_class.has_region
-
-        expect(has_region_scope).to match_array(has_regions), "expected #{has_regions.pretty_inspect} },\n\n but got #{has_region_scope.pretty_inspect} }"
+        expect(described_class.has_region).to match_array([addr_has_region])
       end
-
-      it 'does not return any addresses that do not have a region' do
-        has_region_scope = described_class.has_region
-        expect(has_region_scope & lacking_regions).to match_array([])
-      end
-
     end
 
 
-    describe 'lacking_region' do
-
+    describe '.lacking_region' do
       it 'only returns addresses that do not have a region' do
-        lacking_region_scope = described_class.lacking_region
-        expect(lacking_region_scope).to match_array(lacking_regions)
+        expect(described_class.lacking_region).to match_array([no_region])
       end
-
-      it 'does not return any addresses that do have a region' do
-        lacking_region_scope = described_class.lacking_region
-        expect(lacking_region_scope & has_regions).to match_array([])
-      end
-
     end
 
-    describe 'mail_address' do
+    describe '.mail_address' do
       it 'returns mail address if present' do
         mail_addr = create(:address, mail: true, addressable: co_has_region)
         expect(co_has_region.addresses.mail_address[0]).to eq mail_addr
@@ -419,11 +400,11 @@ RSpec.describe Address, type: :model do
     end
 
     describe '.company_address' do
-
       it 'addresses that belong to a company' do
-        expect(described_class.company_address.count).to eq 2
+        create(:company, num_addresses: 1)
+        create(:company, num_addresses: 2)
+        expect(described_class.company_address.count).to eq 3
       end
-
     end
 
   end

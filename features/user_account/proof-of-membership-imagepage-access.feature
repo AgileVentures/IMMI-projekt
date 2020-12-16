@@ -64,7 +64,7 @@ Feature: Who can see a member's Proof of Membership image html page, or download
   Scenario: A member can download another member's proof of membership jpg
     Given I am logged in as "member-emma@mutts.se"
     When I am on the "proof of membership jpg download" page for "member-lars@mutts.se"
-    Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
+    Then I should get a downloaded image with the filename "proof_of_membership.jpg"
 
   Scenario: A visitor can see a member's proof of membership html page
     Given I am logged out
@@ -77,4 +77,4 @@ Feature: Who can see a member's Proof of Membership image html page, or download
   Scenario: A visitor can download a member's proof of membership jpg
     Given I am logged out
     When I am on the "proof of membership jpg download" page for "member-lars@mutts.se"
-    Then I should get a downloaded image with the filename "proof_of_membership.jpeg"
+    Then I should get a downloaded image with the filename "proof_of_membership.jpg"

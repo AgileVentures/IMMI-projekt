@@ -374,7 +374,7 @@ namespace :shf do
 
   end
 
-end
+  end
 
 
 def filename_from_args(args, log)
@@ -403,6 +403,25 @@ task :orgnum, [:how_many] => :environment do |_task_name, args|
   puts "\n"
 end
 
+
+  namespace :seed do
+    # This task is needed until we upgrade to Rails 6, which has the db:seed:replant task
+    desc 'Delete all SHF data (excluding Rails internal tables) via TRUNCATE statement. Helpful for reseeding'
+    task replant: :environment do
+      if database_exists?
+        rails_internal_tables = %w(ar_internal_metadata schema_migrations)
+
+        connection = ActiveRecord::Base.connection
+
+        tablenames = connection.tables - rails_internal_tables
+        connection.disable_referential_integrity do
+          tablenames.each { |table_name| connection.exec_query "TRUNCATE TABLE \"#{table_name}\" CASCADE" }
+        end
+
+      end
+
+    end
+  end
 
 # -------------------------------------------------
 

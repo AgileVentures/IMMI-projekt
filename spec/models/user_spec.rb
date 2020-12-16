@@ -4,7 +4,7 @@ require 'shared_context/unstub_paperclip_all_run_commands'
 require 'shared_context/users'
 require 'shared_context/named_dates'
 
-# TODO use the users already defined/created in the shared_context/users
+# TODO use the users already defined/created in the shared_context/users?
 
 # ================================================================================
 
@@ -102,11 +102,11 @@ RSpec.describe User, type: :model do
 
   describe 'Factory' do
     it 'has valid factories' do
-      expect(create(:user)).to be_valid
-      expect(create(:user_without_first_and_lastname)).to be_valid
-      expect(create(:user_with_membership_app)).to be_valid
-      expect(create(:user_with_membership_app)).to be_valid
-      expect(create(:member_with_membership_app)).to be_valid
+      expect(build(:user)).to be_valid
+      expect(build(:user_without_first_and_lastname)).to be_valid
+      expect(build(:user_with_membership_app)).to be_valid
+      expect(build(:user_with_membership_app)).to be_valid
+      expect(build(:member_with_membership_app)).to be_valid
     end
   end
 
@@ -163,6 +163,7 @@ RSpec.describe User, type: :model do
   end
 
   describe 'Associations' do
+    it { is_expected.to have_many :uploaded_files }
     it { is_expected.to have_one(:shf_application).dependent(:destroy) }
     it { is_expected.to have_many(:payments).dependent(:nullify) }
     it { is_expected.to accept_nested_attributes_for(:payments) }
@@ -182,7 +183,7 @@ RSpec.describe User, type: :model do
 
 
   describe 'User' do
-    subject { create(:user, admin: false) }
+    subject { build(:user, admin: false) }
 
     it { is_expected.not_to be_admin }
     it { is_expected.not_to be_member }
@@ -386,15 +387,6 @@ RSpec.describe User, type: :model do
         described_class.current_members
       end
 
-      it 'membership payment was made after the membership guidelines were a requirement' do
-        expect(described_class).to receive(:paid_on_or_after_guidelines_reqd).and_call_original
-        described_class.current_members
-      end
-
-      it 'must have agreed to all of the current membership guidelines (if required)' do
-        expect(described_class).to receive(:agreed_to_membership_guidelines).and_call_original
-        described_class.current_members
-      end
     end
 
 
@@ -562,6 +554,81 @@ RSpec.describe User, type: :model do
 
 
   end # Scopes
+
+
+  context 'proof-of-membership JPG cache management' do
+    let(:user2) { create(:user) }
+
+    before(:each) { Rails.cache.clear(user.cache_key('pom')) }
+
+    it { expect(user.cache_key('pom')).to eq "user_#{user.id}_cache_pom" }
+
+    describe '#proof_of_membership_jpg' do
+      it 'returns nil if no cached image' do
+        expect(user.proof_of_membership_jpg).to be_nil
+      end
+
+      it 'returns cached image if present' do
+        Rails.cache.write(user.cache_key('pom'), file_fixture('image.png'))
+        expect(user.proof_of_membership_jpg).to_not be_nil
+        expect(user.proof_of_membership_jpg).to eq file_fixture('image.png')
+      end
+    end
+
+    describe '#proof_of_membership_jpg=' do
+      it 'caches image' do
+        expect(user.proof_of_membership_jpg).to be_nil
+        user.proof_of_membership_jpg = file_fixture('image.png')
+        expect(user.proof_of_membership_jpg).to_not be_nil
+        expect(user.proof_of_membership_jpg).to eq file_fixture('image.png')
+      end
+    end
+
+    describe '#clear_proof_of_membership_jpg_cache' do
+      it 'clears cache' do
+        user.proof_of_membership_jpg = file_fixture('image.png')
+        expect(user.proof_of_membership_jpg).to_not be_nil
+        user.clear_proof_of_membership_jpg_cache
+        expect(user.proof_of_membership_jpg).to be_nil
+      end
+    end
+
+    describe '.clear_all_proof_of_membership_jpg_caches' do
+      it 'clears image cache for all users' do
+        user.proof_of_membership_jpg = file_fixture('image.png')
+        user2.proof_of_membership_jpg = file_fixture('image.png')
+        expect(user.proof_of_membership_jpg).to_not be_nil
+        expect(user2.proof_of_membership_jpg).to_not be_nil
+        User.clear_all_proof_of_membership_jpg_caches
+        expect(user.proof_of_membership_jpg).to be_nil
+        expect(user2.proof_of_membership_jpg).to be_nil
+      end
+    end
+
+    describe 'after_update :clear_proof_of_membership_jpg_cache' do
+      it 'is called if member_photo_file_name changes' do
+        expect(user).to receive(:clear_proof_of_membership_jpg_cache).once
+        user.update_attributes(member_photo_file_name: 'new_file_name.jpg')
+      end
+      it 'is called if first_name changes' do
+        expect(user).to receive(:clear_proof_of_membership_jpg_cache).once
+        user.update_attributes(first_name: 'fred')
+      end
+      it 'is called if last_name changes' do
+        expect(user).to receive(:clear_proof_of_membership_jpg_cache).once
+        user.update_attributes(last_name: 'flintstone')
+      end
+      it 'is called if membership_number changes' do
+        expect(user).to receive(:clear_proof_of_membership_jpg_cache).once
+        user.update_attributes(membership_number: 1000)
+      end
+      it 'is not called if other attribute changes' do
+        expect(user).not_to receive(:clear_proof_of_membership_jpg_cache)
+        user.update_attributes(email: 'new@mail.com',
+                                  date_membership_packet_sent: Date.current)
+      end
+    end
+  end
 
 
   describe '#has_shf_application?' do
@@ -829,10 +896,6 @@ RSpec.describe User, type: :model do
         member.shf_application.companies << other_co2
 
         expect(member.has_approved_app_for_company?(given_co)).to be_falsey
-      end
-
-      it 'false if company not in most recent approved app' do
-        skip 'this test will be needed if/when a user has more than 1 application'
       end
 
       it 'true if company in most recent approved app' do
@@ -1775,20 +1838,19 @@ RSpec.describe User, type: :model do
   describe '#get_short_proof_of_membership_url' do
     context 'there is already a shortened url in the table' do
       it 'returns shortened url' do
-        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
-        expect(with_short_proof_of_membership_url.get_short_proof_of_membership_url(url)).to eq('http://www.tinyurl.com/proofofmembership')
+        expect(with_short_proof_of_membership_url.get_short_proof_of_membership_url('any_url')).to eq('http://www.tinyurl.com/proofofmembership')
       end
     end
 
     context 'there is no shortened url in the table and ShortenUrl.short is called' do
       it 'saves the result if the result is not nil and returns shortened url' do
-        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
-        allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/proofofmembership2')
+        url = 'http://localhost:3000/anvandare/1/proof_of_membership'
+        allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/short_url')
         expect(user.get_short_proof_of_membership_url(url)).to eq(ShortenUrl.short(url))
         expect(user.short_proof_of_membership_url).to eq(ShortenUrl.short(url))
       end
       it 'does not save anything if the result is nil and returns unshortened url' do
-        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
+        url = 'http://localhost:3000/anvandare/1/proof_of_membership'
         allow(ShortenUrl).to receive(:short).with(url).and_return(nil)
         expect(user.get_short_proof_of_membership_url(url)).to eq(url)
         expect(user.short_proof_of_membership_url).to eq(nil)

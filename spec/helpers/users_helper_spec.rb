@@ -77,9 +77,15 @@ RSpec.describe UsersHelper, type: :helper do
     end
   end
 
+  describe '#proof_of_membership_jpg_url' do
+    it 'returns user POM GET url with ".jpg" appended' do
+      expect(proof_of_membership_jpg_url(user)).to eq proof_of_membership_url(user) + '.jpg'
+    end
+  end
+
   describe '#short_proof_of_membership_url' do
-    it 'returns value returned by User#get_short_proof_of_membership_url using generated url' do
-      url = proof_of_membership_url(user.id)
+    it 'calls #proof_of_membership_jpg_url and returns value returned by #get_short_proof_of_membership_url' do
+      url = proof_of_membership_jpg_url(user.id)
       allow(user).to receive(:get_short_proof_of_membership_url).with(url).and_return(url)
       expect(short_proof_of_membership_url(user)).to eq(url)
     end

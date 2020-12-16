@@ -242,9 +242,15 @@ RSpec.describe CompaniesHelper, type: :helper do
     end
   end
 
+  describe '#company_h_brand_jpg_url' do
+    it 'returns company h-brand url with ".jpg" appended' do
+      expect(company_h_brand_jpg_url(company)).to eq company_h_brand_url(company) + '.jpg'
+    end
+  end
+
   describe '#short_h_brand_url' do
-    it 'returns value returned by Company#get_short_h_brand_url using generated url' do
-      url = company_h_brand_url(company)
+    it 'calls #company_h_brand_jpg_url and returns value returned by #get_short_h_brand_url' do
+      url = company_h_brand_jpg_url(company)
       allow(company).to receive(:get_short_h_brand_url).with(url).and_return(url)
       expect(short_h_brand_url(company)).to eq(url)
     end

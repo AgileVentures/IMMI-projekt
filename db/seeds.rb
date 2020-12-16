@@ -120,9 +120,18 @@ begin
 
   if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
+    # -----------------------------------------
+    # Master and User checklists
+
+    Seeders::MasterChecklistTypesSeeder.seed
+    Seeders::MasterChecklistsSeeder.seed
+
+    # -----------------------------------------
     users = {}
 
     ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Users') do |log|
+
+      SeedHelper::UsersFactory.seed_predefined_users
 
       number_of_users = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
       log.info("Creating #{number_of_users} additional users. (This number can be set with ENV['SHF_SEED_USERS'])...")
@@ -138,12 +147,6 @@ begin
 
       log.info("Users now in the db: #{User.count}")
     end
-
-    # -----------------------------------------
-    # Master and User checklists
-
-    Seeders::MasterChecklistTypesSeeder.seed
-    Seeders::MasterChecklistsSeeder.seed
 
     # -----------------------------------------
 

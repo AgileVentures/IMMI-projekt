@@ -22,7 +22,7 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
 
   describe 'Factory' do
     it 'has a valid factory' do
-      expect(create(:app_configuration)).to be_valid
+      expect(app_configuration).to be_valid
     end
   end
 
@@ -136,6 +136,68 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
       new_config.membership_guideline_list = create(:master_checklist, name: 'Membership guidelines master')
 
       expect{new_config.save!}.to raise_error(ActiveRecord::RecordNotUnique)
+    end
+  end
+
+
+  context 'User proof_of_membership (POM) JPG and Company h-brand JPG cache management' do
+    let(:company) { create(:company) }
+    let(:company2) { create(:company) }
+    let(:user) { create(:user) }
+    let(:user2) { create(:user) }
+
+    describe 'after_save :clear_image_caches' do
+
+      before(:each) do
+        company.h_brand_jpg = file_fixture('image.png')
+        user.proof_of_membership_jpg = file_fixture('image.png')
+      end
+
+      it 'clears both sets of caches if shf_logo_file_name changed' do
+        expect(app_configuration).to receive(:clear_image_caches)
+                                      .once.and_call_original
+        expect(app_configuration).to receive(:clear_proof_of_membership_image_caches)
+                                      .once.and_call_original
+        expect(app_configuration).to receive(:clear_h_brand_image_caches)
+                                      .once.and_call_original
+        expect(user.proof_of_membership_jpg).to_not be_nil
+        expect(company.h_brand_jpg).to_not be_nil
+
+        app_configuration.update_attributes(shf_logo_file_name: 'new_logo.jpg')
+
+        expect(user.proof_of_membership_jpg).to be_nil
+        expect(company.h_brand_jpg).to be_nil
+      end
+      it 'clears proof-of-membership caches - only - if chair_signature_file_name changed' do
+        expect(app_configuration).to receive(:clear_image_caches)
+                                      .once.and_call_original
+        expect(app_configuration).to receive(:clear_proof_of_membership_image_caches)
+                                      .once.and_call_original
+        expect(app_configuration).not_to receive(:clear_h_brand_image_caches)
+
+        expect(user.proof_of_membership_jpg).to_not be_nil
+        expect(company.h_brand_jpg).to_not be_nil
+
+        app_configuration.update_attributes(chair_signature_file_name: 'new_signature.jpg')
+
+        expect(user.proof_of_membership_jpg).to be_nil
+        expect(company.h_brand_jpg).not_to be_nil
+      end
+      it 'clears h-brand caches - only - if sweden_dog_trainers_file_name changed' do
+        expect(app_configuration).to receive(:clear_image_caches)
+                                      .once.and_call_original
+        expect(app_configuration).not_to receive(:clear_proof_of_membership_image_caches)
+        expect(app_configuration).to receive(:clear_h_brand_image_caches)
+                                      .once.and_call_original
+
+        expect(user.proof_of_membership_jpg).to_not be_nil
+        expect(company.h_brand_jpg).to_not be_nil
+
+        app_configuration.update_attributes(sweden_dog_trainers_file_name: 'new_trainers.jpg')
+
+        expect(user.proof_of_membership_jpg).not_to be_nil
+        expect(company.h_brand_jpg).to be_nil
+      end
     end
   end
 

@@ -53,32 +53,71 @@ class Company < ApplicationRecord
 
   THIS_PAYMENT_TYPE = Payment::PAYMENT_TYPE_BRANDING
 
+  scope :has_name, -> { where.not(name:nil).where.not(name: '') }
+  scope :blank_name, -> { where(name: '').or(Company.where(name: nil)) }
 
+  scope :has_address, -> { joins(:addresses).where(id: [Address.pluck(:addressable_id)]).distinct }
+  scope :lacking_address, -> { where.not(id: [Address.pluck(:addressable_id)]).distinct }
+
+  # This excludes Companies that have no addresses:
+  scope :addresses_have_region, -> { joins(:addresses).where(id: Address.has_region.pluck(:addressable_id)).distinct }
+
+  # This includes Companies that have no addresses:
+  scope :no_address_or_lacks_region, -> { where.not(id: Address.company_address.has_region.pluck(:addressable_id)) }
 
   def self.next_branding_payment_dates(company_id)
     next_payment_dates(company_id, THIS_PAYMENT_TYPE)
   end
 
+  after_update :clear_h_brand_jpg_cache,
+               if: Proc.new { saved_change_to_name? }
 
-  # Note: If the rules/definition for a 'complete' company change, this scope
-  # must be changed in addition to the code in RequirementsForCoInfoComplete
-  #
-  # All addresses for a company are complete AND the name is not blank
-  # must qualify name with 'companies' because there are other tables that use 'name' and if
-  # this scope is combined with a clause for a different table that also uses 'name',
-  # SQL won't know which table to get 'name' from
-  #  name could be NULL or it could be an empty string
-  # FIXME a company must have an address!  (cannot be nil)
-  def self.complete
-    where.not('companies.name' => '',
-              id: Address.lacking_region.pluck(:addressable_id))
+  def cache_key(type)
+   "company_#{id}_cache_#{type}"
   end
 
+  def h_brand_jpg
+   Rails.cache.read(cache_key('h_brand'))
+  end
+
+  def h_brand_jpg=(image)
+   Rails.cache.write(cache_key('h_brand'), image)
+  end
+
+  def clear_h_brand_jpg_cache
+   Rails.cache.delete(cache_key('h_brand'))
+  end
+
+  def self.clear_all_h_brand_jpg_caches
+    all.each do |company|
+      company.clear_h_brand_jpg_cache
+    end
+  end
+
+  # Note: If the rules/definition for a 'complete' company changes, this scope
+  # must be changed in addition to the code in RequirementsForCoInfoComplete
+  #
+  # A company has a name (not nil, not an empty string)
+  #  AND
+  # A company has an address
+  #  AND
+  #   that address has a region
+  def self.complete
+    has_name.addresses_have_region
+  end
+  singleton_class.alias_method :complete_information, :complete
+
+
+  def self.not_complete
+    blank_name.or(self.no_address_or_lacks_region)
+  end
+  singleton_class.alias_method :not_complete_information, :not_complete
 
   def self.branding_licensed
     # All companies (distinct) with at least one unexpired branding payment
     joins(:payments).merge(Payment.branding_fee.completed.unexpired).distinct
   end
+  singleton_class.alias_method :branding_license_current, :branding_licensed
 
 
   def self.address_visible
@@ -87,17 +126,18 @@ class Company < ApplicationRecord
     joins(:addresses).where.not('addresses.visibility = ?', 'none').distinct
   end
 
+
   def self.with_members
-    joins(:shf_applications)
-        .where('shf_applications.state = ?', :accepted)
-        .joins(:users).where('users.member = ?', true).distinct
+    where(id: CompanyApplication.where(shf_application: [ShfApplication.where(user: User.current_members)]).pluck(:company_id))
   end
 
-
+  # Criteria limiting visibility of companies to non-admin users
   def self.searchable
-    # Criteria limiting visibility of companies to non-admin users
     complete.with_members.branding_licensed
   end
+
+  singleton_class.alias_method :current_with_current_members, :searchable
+  singleton_class.alias_method :in_good_standing, :searchable
 
 
   # all companies at these addresses (array of Address)
@@ -115,11 +155,13 @@ class Company < ApplicationRecord
   def searchable?
     branding_license? && !current_members.empty?
   end
+  alias_method :current_with_current_members, :searchable?
+
 
   def complete?
     RequirementsForCoInfoComplete.requirements_met? company: self
   end
-
+  alias_method :complete_information?, :complete?
 
   def missing_region?
     addresses.map(&:region).include?(nil)
@@ -133,16 +175,21 @@ class Company < ApplicationRecord
   end
 
 
-  def validate_key_and_fetch_dinkurs_events(on_update: true)
+  def valid_key_and_fetch_dinkurs_events?(on_update: true)
     return true if on_update and !will_save_change_to_attribute?('dinkurs_company_id')
+
+    result = false
     fetch_dinkurs_events
-    true
+    return true
   rescue Dinkurs::Errors::InvalidKey
-    errors.add(:dinkurs_company_id, :invalid)
-    return false
+    errors.add(:dinkurs_company_id, :invalid_key)
+    return result
+  rescue Dinkurs::Errors::InvalidFormat
+    errors.add(:dinkurs_company_id, :invalid_format)
+    return result
   rescue URI::InvalidURIError
     errors.add(:dinkurs_company_id, :invalid_chars)
-    return false
+    return result
   end
 
 
@@ -219,6 +266,7 @@ class Company < ApplicationRecord
     # TODO can use term_expired?(THIS_PAYMENT_TYPE)
     branding_expire_date&.future? == true # == true prevents this from ever returning nil
   end
+  alias_method :branding_license_current?, :branding_license?
 
 
   # This is used to calculate when an H-Branding fee is due if there has not been any H-Branding fee paid yet

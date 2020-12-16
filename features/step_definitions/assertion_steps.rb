@@ -339,11 +339,16 @@ Then "I should{negate} see an icon with CSS class {capture_string} that is linke
   expect(page).send (negate ? :not_to : :to), have_xpath("//a[contains(@href, '#{linked_url}')]/i[contains(@class, '#{icon_css_class}')]")
 end
 
-Then "I should see the icon with CSS class {capture_string} for the row with {capture_string}" do |icon_css_class, row_text|
+Then "I should{negate} see the icon with CSS class {capture_string} for the row with {capture_string}" do |negate, icon_css_class, row_text|
+  row_xpath = "//tr[contains(.,'#{row_text}')]"
+  expect(page).to have_xpath(row_xpath)
   icon_xpath = "//i[contains(@class, '#{icon_css_class}')]"
-  expect(page).to have_xpath(icon_xpath)
-  icon = page.find(:xpath, icon_xpath)
-  tr = icon.find(:xpath, './ancestor::tr') # get the ancestor tr of the td
-  expect(tr).to have_text(row_text)
+  expect(page).send (negate ? :not_to : :to), have_xpath("#{row_xpath}#{icon_xpath}")
+end
 
+Then "I should{negate} see link {capture_string} on the row with {capture_string}" do | negate, link_text, row_text|
+  row_xpath = "//tr[contains(.,'#{row_text}')]"
+  expect(page).to have_xpath(row_xpath)
+  link_xpath = "//a[contains(.,'#{link_text}')]"
+  expect(page).send (negate ? :not_to : :to), have_xpath("#{row_xpath}#{link_xpath}")
 end

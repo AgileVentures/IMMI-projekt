@@ -248,8 +248,37 @@ RSpec.describe Payment, type: :model do
                                            ])
       end
     end
+  end
 
 
+  context 'User proof_of_membership (POM) JPG cache management' do
+
+    describe 'after_update :clear_proof_of_membership_image_cache' do
+
+      before(:each) do
+        member_pymt1.user.proof_of_membership_jpg = file_fixture('image.png')
+      end
+
+      it "calls clear_proof_of_membership_image_cache if expire_date has changed" do
+        expect(member_pymt1).to receive(:clear_proof_of_membership_image_cache)
+                                  .once.and_call_original
+        expect(member_pymt1.user).to receive(:clear_proof_of_membership_jpg_cache)
+                                  .once.and_call_original
+        expect(member_pymt1.user.proof_of_membership_jpg).to_not be_nil
+
+        member_pymt1.update_attributes(expire_date: member_pymt1.expire_date + 1.day)
+
+        expect(member_pymt1.user.proof_of_membership_jpg).to be_nil
+      end
+      it "does NOT call clear_proof_of_membership_image_cache if other attributes have changed" do
+        expect(member_pymt1).not_to receive(:clear_proof_of_membership_image_cache)
+        expect(member_pymt1.user.proof_of_membership_jpg).to_not be_nil
+
+        member_pymt1.update_attributes(payment_type: Payment::PAYMENT_TYPE_BRANDING)
+
+        expect(member_pymt1.user.proof_of_membership_jpg).to_not be_nil
+      end
+    end
   end
 
   describe '.order_to_payment_status' do

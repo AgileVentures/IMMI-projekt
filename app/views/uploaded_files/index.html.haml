@@ -1,0 +1,18 @@
+- title = (current_user.admin? ? t('.admin_title') : t('.title') )
+
+%header.entry-header
+  = content_title(title, user: current_user)
+
+.entry-content
+  %p.note= t('.cannot_edit_or_delete_reason')
+  #uploaded-files-list
+    = render partial: 'uploaded_files_list', locals: {uploaded_files: @uploaded_files,
+     search_params: @search_params}
+
+  %p.note= t('.cannot_edit_or_delete_reason')
+
+  %hr
+    .text-center
+      = link_to t('uploaded_files.new.title'),
+                new_user_uploaded_file_path,
+                class: 'btn btn-sm btn-light new-category-button'

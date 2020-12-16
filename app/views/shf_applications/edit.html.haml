@@ -1,7 +1,7 @@
 %div{ :id => "#{unique_css_id(@shf_application)}", class: "#{item_view_class(@shf_application, controller.action_name)}" }
 
   %header.entry-header
-    %h1.entry-title= t('.title')
+    = content_title(t('.title'), user: current_user)
   .entry-content
     .instructions= t('shf_applications.new.instructions_html')
 
@@ -13,7 +13,8 @@
 
       = render partial: 'shf_application_fields',
                locals: { f: f, user: @shf_application.user,
-                         company_numbers:  @company_numbers }
+                         company_numbers:  @company_numbers,
+                         all_business_categories: @all_business_categories }
 
       = render 'application/required_fields'
 

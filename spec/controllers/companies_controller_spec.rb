@@ -15,6 +15,26 @@ RSpec.describe CompaniesController, type: :controller do
   let(:full_page_title) {  'site title | site name' }
 
 
+  context '#company_h_brand' do
+    let(:app_config) { create(:app_configuration) }
+    let(:company) { create(:company) }
+
+    it "returns JPG for params[:render_to] == 'jpg' request" do
+      get :company_h_brand, params: { id: company.id, render_to: 'jpg' }
+      expect(response.content_type).to eq 'image/jpg'
+    end
+
+    it "returns JPG for params[:format] == 'jpg' request" do
+      get :company_h_brand, params: { id: company.id, format: 'jpg' }
+      expect(response.content_type).to eq 'image/jpg'
+    end
+
+    it 'returns HTML otherwise' do
+      get :company_h_brand, params: { id: company.id }
+      expect(response.content_type).to eq 'text/html'
+    end
+  end
+
   describe '#index will fix_FB_changed_params' do
 
     it "does not change URL if there are no query ('q') parameters" do
@@ -71,9 +91,14 @@ RSpec.describe CompaniesController, type: :controller do
 
   describe '#index' do
 
-    let(:region_stockholm) { create(:region, name: 'Stockholm', code: 'AB') }
+    before(:each) do
+      # FIXME: Why is this necessary?
+      DatabaseCleaner.clean_with(:truncation)
+    end
 
-    let(:stockholm_hundforum) do
+    let!(:region_stockholm) { create(:region, name: 'Stockholm', code: 'AB') }
+
+    let!(:stockholm_hundforum) do
       co = create(:company, name: 'Stockholms Hundforum',
                   street_address: 'Celsiusgatan 6',
                   post_code:      '112 30',
@@ -83,7 +108,7 @@ RSpec.describe CompaniesController, type: :controller do
       co
     end
 
-    let(:stockholm_hundelska) do
+    let!(:stockholm_hundelska) do
       co = create(:company, name: 'Hundelska',
                   street_address: 'Rehnsgatan 15',
                   post_code:      '113 57',
@@ -93,7 +118,7 @@ RSpec.describe CompaniesController, type: :controller do
       co
     end
 
-    let(:arsta_hundenshus) do
+    let!(:arsta_hundenshus) do
       co = create(:company, name: 'Hundens Hus',
                   street_address: 'Svärdlångsvägen 11 C',
                   post_code:      '120 60',
@@ -103,7 +128,7 @@ RSpec.describe CompaniesController, type: :controller do
       co
     end
 
-    let(:kista_hundkurs) do
+    let!(:kista_hundkurs) do
       co = create(:company, name: 'HundKurs',
                   street_address: 'AKALLALÄNKEN 10',
                   region:         region_stockholm,
@@ -120,16 +145,16 @@ RSpec.describe CompaniesController, type: :controller do
 
 
     def create_member_with_co(company)
-      member                           = create(:member_with_membership_app)
+      member = create(:member_with_expiration_date, expiration_date: Date.current + 6.months)
       member.shf_application.companies = [company]
-      create(:payment,
-             :successful,
+      create(:h_branding_fee_payment,
              user:         member,
              company:      company,
              payment_type: Payment::PAYMENT_TYPE_BRANDING
       )
       member
     end
+
 
 
     it 'params without :near or :within_coords returns all visible companies' do
@@ -149,7 +174,8 @@ RSpec.describe CompaniesController, type: :controller do
     end
 
 
-    context 'search for locations near coordinates' do
+    # FIXME: what is this really testing?  if the scopes are correct,
+    describe 'search for locations near coordinates' do
 
       it "near: {latitude: '59.3251172, longitude: 18.0710935}" do
         member_hundforum.save
@@ -159,6 +185,8 @@ RSpec.describe CompaniesController, type: :controller do
 
         near_coords_params = { "utf8" => "✓", near: { latitude:  '59.3251172',
                                                       longitude: '18.0710935' } }
+
+        expect(@controller).to receive(:get_addresses_near).and_call_original
 
         get :index, params: near_coords_params
 
@@ -189,7 +217,7 @@ RSpec.describe CompaniesController, type: :controller do
     end
 
 
-    context 'search for locations :near' do
+    describe 'search for locations :near' do
 
       it "near: {name: 'Stockholm'}" do
         member_hundforum.save
@@ -234,9 +262,7 @@ RSpec.describe CompaniesController, type: :controller do
         response.body
       end
 
-
       render_views
-
 
       it 'page title is from the AppConfiguration' do
         expect(AdminOnly::AppConfiguration.config_to_use).to receive(:site_meta_title)

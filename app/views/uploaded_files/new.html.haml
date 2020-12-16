@@ -1,0 +1,35 @@
+%header.entry-header
+  = content_title(t('.title'), user: current_user)
+
+.entry-content
+  = form_for [:user, @uploaded_file] do |f|
+    != model_errors_helper(@uploaded_file)
+
+    .form-group
+      .custom-file
+        = f.file_field :actual_file,
+         id: 'upload-button',
+         class: 'form-control-file custom-file-input',
+         accept: @allowed_file_types_list
+        = f.label :actual_file, t('.upload_button_title'), class: 'custom-file-label d-inline text-truncate'
+
+    .form-group
+      = f.label :description, t('.description')
+      = f.text_field :description, class: 'form-control'
+
+    .form-group
+      = f.submit t('save'), class: 'btn btn-primary mb-2 form-control'
+
+  %hr
+  .text-center
+    = link_to t('.index_title'),
+     user_uploaded_files_path(current_user), class:'btn btn-light btn-sm'
+
+
+:javascript
+  // When a file has been selected, replace "Choose File" label to name of selected file,
+  // Assumes you're using Bootstrap custom file select
+  $('body').on('change', '.custom-file-input', function() {
+    var fileName = $(this).val().split('\\').pop();
+    $(this).next('.custom-file-label').addClass("selected").html(fileName);
+  });

@@ -2,7 +2,7 @@
   = javascript_include_tag Ckeditor.cdn_url
 
 %header.entry-header
-  %h1.entry-title= t('.title', company_name: @company.name)
+  = content_title(t('.title', company_name: @company.name), user: current_user)
   .text-center
     - unless association_empty?(@all_business_categories)
       = render 'business_categories/as_list',

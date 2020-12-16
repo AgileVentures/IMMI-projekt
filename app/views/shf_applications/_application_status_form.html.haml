@@ -1,20 +1,17 @@
 - if @shf_application.waiting_for_applicant?
   = render 'reason_waiting'
 
-
-
-#admin-change-status-buttons
+.admin-change-status-buttons#admin-change-status-buttons
   %p.header
     = "#{t('shf_applications.show.change_status')}:"
 
-
   .row
-    = button_to t('shf_applications.start_review_btn'), start_review_shf_application_path(@shf_application), {class: 'btn btn-sm start-review', disabled: !(@shf_application.may_start_review?)}
+    = button_to t('shf_applications.start_review_btn'), start_review_shf_application_path(@shf_application), {class: admin_status_btn_css('start-review'), disabled: !(@shf_application.may_start_review?)}
 
-    = button_to t('shf_applications.accept_btn'), accept_shf_application_path(@shf_application), {class: 'btn btn-sm accept', disabled: !(@shf_application.may_accept?)}
+    = button_to t('shf_applications.accept_btn'), accept_shf_application_path(@shf_application), {class: admin_status_btn_css('accept'), disabled: !(@shf_application.may_accept?)}
 
-    = button_to t('shf_applications.reject_btn'), reject_shf_application_path(@shf_application), {class: 'btn btn-sm reject', disabled: !(@shf_application.may_reject?)}
+    = button_to t('shf_applications.reject_btn'), reject_shf_application_path(@shf_application), {class: admin_status_btn_css('reject'), disabled: !(@shf_application.may_reject?)}
 
-    = button_to t('shf_applications.ask_applicant_for_info_btn'), need_info_shf_application_path(@shf_application), {class: 'btn btn-sm need-info', disabled: !(@shf_application.may_ask_applicant_for_info?)}
+    = button_to t('shf_applications.ask_applicant_for_info_btn'), need_info_shf_application_path(@shf_application), {class: admin_status_btn_css('need-info'), disabled: !(@shf_application.may_ask_applicant_for_info?)}
 
-    = button_to t('shf_applications.cancel_waiting_for_applicant_btn'), cancel_need_info_shf_application_path(@shf_application), {class: 'btn btn-sm cancel-need-info', disabled: !(@shf_application.may_cancel_waiting_for_applicant?)}
+    = button_to t('shf_applications.cancel_waiting_for_applicant_btn'), cancel_need_info_shf_application_path(@shf_application), {class: admin_status_btn_css('cancel-need-info'), disabled: !(@shf_application.may_cancel_waiting_for_applicant?)}

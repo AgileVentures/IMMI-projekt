@@ -1,4 +1,6 @@
-Feature: As any type of visitor
+Feature: Category page: list all companies in the category
+
+  As any type of visitor
   In order to easily find a company of a certain category
   I should be able to see the companies of that category listed
   PT: https://www.pivotaltracker.com/story/show/135684057
@@ -7,11 +9,11 @@ Feature: As any type of visitor
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email               | admin | member |
-      | emma@happymutts.com |       | true   |
-      | ernt@mutts.com      |       | true   |
-      | anna@sadmutts.com   |       | true   |
-      | admin@shf.se        | true  |        |
+      | email               | admin | member | agreed_to_membership_guidelines |
+      | emma@happymutts.com |       | true   | true                            |
+      | ernt@mutts.com      |       | true   | true                            |
+      | anna@sadmutts.com   |       | true   | true                            |
+      | admin@shf.se        | true  |        |                                 |
 
     Given the following regions exist:
       | name         |
@@ -21,11 +23,11 @@ Feature: As any type of visitor
       | Uppsala      |
 
     And the following kommuns exist:
-      | name      |
-      | Alingsås  |
-      | Bromölla  |
-      | Laxå      |
-      | Dalarna   |
+      | name     |
+      | Alingsås |
+      | Bromölla |
+      | Laxå     |
+      | Dalarna  |
 
     And the following companies exist:
       | name                 | company_number | email               | region       | kommun   |
@@ -47,15 +49,18 @@ Feature: As any type of visitor
       | anna@sadmutts.com   | 2120000142     | Sadness    | accepted |
 
     And the following payments exist
-      | user_email           | start_date | expire_date | payment_type | status | hips_id | company_number |
-      | emma@happymutts.com  | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
-      | ernt@mutts.com       | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5569467466     |
-      | anna@sadmutts.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
-      | anna@sadmutts.com    | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
+      | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
+      | emma@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
+      | emma@happymutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
+      | ernt@mutts.com      | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5569467466     |
+      | ernt@mutts.com      | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
+      | anna@sadmutts.com   | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+      | anna@sadmutts.com   | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |                |
 
     And the following company addresses exist:
-      | company_name         | region     | kommun    |
-      | No More Snarky Barky | Uppsala    | Dalarna   |
+      | company_name         | region  | kommun  |
+      | No More Snarky Barky | Uppsala | Dalarna |
+
 
     Given the date is set to "2017-10-01"
 

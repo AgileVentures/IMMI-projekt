@@ -175,13 +175,13 @@ module AdminOnly
 
     # @return [ActiveRecord::Relation] - all descendants that have is_in_use set to true
     def descendants_in_use
-      self.ancestry_base_class.where(child_conditions).where(is_in_use: true)
+      descendants.where(is_in_use: true)
     end
 
 
     # @return [ActiveRecord::Relation] - all descendants that have is_in_use set to false
     def descendants_not_in_use
-      self.ancestry_base_class.where(child_conditions).where(is_in_use: false)
+      descendants.where(is_in_use: false)
     end
 
 

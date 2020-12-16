@@ -2,7 +2,7 @@
 -  no_more_changes_class = @master_checklist.no_more_major_changes? ? 'no-more-major-changes' : ''
 
 %header.entry-header
-  %h1.entry-title{ class: @master_checklist.is_in_use ? '' : 'not-in-use' }= @master_checklist.name
+  = content_title(@master_checklist.name, user: current_user, classes: @master_checklist.is_in_use ? [] : ['not-in-use'])
 
 .entry-content.container{ class: "#{ no_more_changes_class }" }
   .master-checklist-item

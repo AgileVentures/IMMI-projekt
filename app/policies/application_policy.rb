@@ -35,10 +35,15 @@ class ApplicationPolicy
     user.admin?
   end
 
+
+  def owner?
+    (record.respond_to?(:user) && record.user == user)
+  end
+
   private
 
   def admin_or_owner?
-    user.admin? || ( record.respond_to?(:user) &&  record.user == user )
+    user.admin? || owner?
   end
 
   def not_a_visitor
@@ -46,5 +51,22 @@ class ApplicationPolicy
   end
 
   alias_method :not_a_visitor?, :not_a_visitor
+
+  class Scope
+    attr_reader :user, :scope
+
+    def initialize(user, scope)
+      @user = user
+      @scope = scope
+    end
+
+    def resolve
+      if user.admin?
+        scope.all
+      else
+        scope.instance_methods.include?(:user) ? scope.where(user: user) : scope.none
+      end
+    end
+  end
 
 end

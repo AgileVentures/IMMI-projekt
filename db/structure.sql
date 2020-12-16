@@ -9,9 +9,23 @@ SET xmloption = content;
 SET client_min_messages = warning;
 SET row_security = off;
 
+--
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: -
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: -
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
 SET default_tablespace = '';
 
-SET default_table_access_method = heap;
+SET default_with_oids = false;
 
 --
 -- Name: addresses; Type: TABLE; Schema: public; Owner: -
@@ -65,19 +79,19 @@ CREATE TABLE public.app_configurations (
     updated_at timestamp without time zone NOT NULL,
     chair_signature_file_name character varying,
     chair_signature_content_type character varying,
-    chair_signature_file_size integer,
+    chair_signature_file_size bigint,
     chair_signature_updated_at timestamp without time zone,
     shf_logo_file_name character varying,
     shf_logo_content_type character varying,
-    shf_logo_file_size integer,
+    shf_logo_file_size bigint,
     shf_logo_updated_at timestamp without time zone,
     h_brand_logo_file_name character varying,
     h_brand_logo_content_type character varying,
-    h_brand_logo_file_size integer,
+    h_brand_logo_file_size bigint,
     h_brand_logo_updated_at timestamp without time zone,
     sweden_dog_trainers_file_name character varying,
     sweden_dog_trainers_content_type character varying,
-    sweden_dog_trainers_file_size integer,
+    sweden_dog_trainers_file_size bigint,
     sweden_dog_trainers_updated_at timestamp without time zone,
     email_admin_new_app_received_enabled boolean DEFAULT true,
     site_name character varying DEFAULT 'Sveriges Hundföretagare'::character varying NOT NULL,
@@ -91,7 +105,7 @@ CREATE TABLE public.app_configurations (
     facebook_app_id bigint DEFAULT 0 NOT NULL,
     site_meta_image_file_name character varying,
     site_meta_image_content_type character varying,
-    site_meta_image_file_size integer,
+    site_meta_image_file_size bigint,
     site_meta_image_updated_at timestamp without time zone,
     singleton_guard integer DEFAULT 0 NOT NULL,
     payment_too_soon_days integer DEFAULT 60 NOT NULL,
@@ -866,7 +880,7 @@ CREATE TABLE public.shf_documents (
     updated_at timestamp without time zone NOT NULL,
     actual_file_file_name character varying,
     actual_file_content_type character varying,
-    actual_file_file_size integer,
+    actual_file_file_size bigint,
     actual_file_updated_at timestamp without time zone
 );
 
@@ -900,9 +914,11 @@ CREATE TABLE public.uploaded_files (
     updated_at timestamp without time zone NOT NULL,
     actual_file_file_name character varying,
     actual_file_content_type character varying,
-    actual_file_file_size integer,
+    actual_file_file_size bigint,
     actual_file_updated_at timestamp without time zone,
-    shf_application_id bigint
+    shf_application_id bigint,
+    user_id bigint,
+    description character varying
 );
 
 
@@ -994,7 +1010,7 @@ CREATE TABLE public.users (
     member boolean DEFAULT false,
     member_photo_file_name character varying,
     member_photo_content_type character varying,
-    member_photo_file_size integer,
+    member_photo_file_size bigint,
     member_photo_updated_at timestamp without time zone,
     short_proof_of_membership_url character varying,
     date_membership_packet_sent timestamp without time zone
@@ -1585,6 +1601,13 @@ CREATE INDEX index_uploaded_files_on_shf_application_id ON public.uploaded_files
 
 
 --
+-- Name: index_uploaded_files_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_uploaded_files_on_user_id ON public.uploaded_files USING btree (user_id);
+
+
+--
 -- Name: index_user_checklists_on_ancestry; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1747,6 +1770,14 @@ ALTER TABLE ONLY public.user_checklists
 
 
 --
+-- Name: uploaded_files fk_rails_ece9dfb06e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.uploaded_files
+    ADD CONSTRAINT fk_rails_ece9dfb06e FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
 -- Name: master_checklists fk_rails_eeb183e3fb; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -1853,6 +1884,8 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200119054308'),
 ('20200122200839'),
 ('20200122215813'),
-('20200205213528');
+('20200205213528'),
+('20201203180001'),
+('20201203181536');
 
 

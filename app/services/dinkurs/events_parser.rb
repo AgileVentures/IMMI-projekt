@@ -2,6 +2,8 @@
 
 module Dinkurs
   class EventsParser
+    include Dinkurs::Errors
+
     def initialize(dinkurs_events, company_id)
       @dinkurs_events = dinkurs_events
       @company_id = company_id
@@ -28,6 +30,9 @@ module Dinkurs
         description: event.dig('event_infotext', '__content__'),
         sign_up_url: event.dig('event_url_key', '__content__'),
         company_id: company_id }
+
+    rescue
+      raise Dinkurs::Errors::InvalidFormat, "Could not get event info from: #{event.inspect}"
     end
   end
 end

@@ -1,5 +1,4 @@
 %header.entry-header
-  %h1.entry-title= t('.title', category_name: @business_category.name)
+  = content_title(t('.title', category_name: @business_category.name), user: current_user)
 .entry-content
   = render 'form'
-  

@@ -3,7 +3,7 @@
 - no_more_changes_class = @master_checklist.no_more_major_changes? ? 'no-more-major-changes' : ''
 
 %header.entry-header
-  %h1.entry-title#h1{ class: "#{ not_in_use_class }" }= @master_checklist.name
+  = content_title(@master_checklist.name, user: current_user, id: 'h1', classes: [ '#{not_in_use_class}' ])
   - if @master_checklist.root?
     .entry-content
       .row.mt-2
@@ -52,12 +52,14 @@
     %hr
 
 
-    -# Only the children in use are shown
+    -# Only the descendants in use are shown
     - if @master_checklist.children?
       %h5.children-title.label= t('.child_items') + ':'
       = arranged_tree_as_list(@master_checklist.descendants_in_use.arrange,
-       { sort_by: [:list_position], list_type: :ol,
-        ul_class: ['child-entries'], li_class: ['child-entry'] }) do | child_entry |
+                              { sort_by: [:list_position],
+                                list_type: :ol,
+                                ul_class: ['child-entries'],
+                                li_class: ['child-entry'] }) do | child_entry |
         = link_to  child_entry.name,
                    admin_only_master_checklist_path(child_entry),
                    class: list_entry_css_classes(child_entry)

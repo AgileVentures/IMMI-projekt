@@ -12,10 +12,10 @@ Feature: Get events for a company from Dinkurs
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email            | admin | member |
-      | member@mutts.com |       | true   |
-      | visitor@mail.com |       |        |
-      | admin@shf.se     | true  |        |
+      | email            | admin | member |agreed_to_membership_guidelines |
+      | member@mutts.com |       | true   | true                           |
+      | visitor@mail.com |       |        |                                |
+      | admin@shf.se     | true  |        |                                |
 
     And the following regions exist:
       | name         |
@@ -104,7 +104,7 @@ Feature: Get events for a company from Dinkurs
     And I am on the edit company page for "5560360793"
     And I fill in t("companies.show.dinkurs_key") with "wrongkey"
     And I click on t("submit")
-    Then I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid")
+    Then I should see t("activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_key")
 
   @time_adjust @dinkurs_invalid_key
   Scenario: Member edits company, enters Dinkurs ID with invalid chars, sees validation error

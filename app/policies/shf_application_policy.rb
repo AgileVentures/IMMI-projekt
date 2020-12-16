@@ -1,8 +1,5 @@
 class ShfApplicationPolicy < ApplicationPolicy
 
-  EDITABLE_STATES_FOR_APPLICATION = Set[:new, :initial, :ready_for_review, :under_review, :waiting_for_applicant].freeze
-
-
   def permitted_attributes
     allowed_changeable_attribs_for_current_user
   end
@@ -63,8 +60,7 @@ class ShfApplicationPolicy < ApplicationPolicy
 
   def update?
     return true if user.admin?
-
-    user == record.user && EDITABLE_STATES_FOR_APPLICATION.include?(record.state.to_sym)
+    user == record.user && record.edittable_states.include?(record.state.to_sym)
   end
 
   def remove_attachment?
@@ -124,6 +120,7 @@ class ShfApplicationPolicy < ApplicationPolicy
                                     :actual_file_file_size,
                                     :actual_file_content_type,
                                     :actual_file_updated_at,
+                                    :description,
                                     :_destroy]
     ]
   end
@@ -143,7 +140,7 @@ class ShfApplicationPolicy < ApplicationPolicy
     if user.admin?
       all_attributes
     elsif owner?
-      application_is_approved_or_rejected? ? [] : owner_attributes
+      application_is_approved_or_rejected_or_under_review? ? [] : owner_attributes
     elsif user_has_other_application?
       []
     elsif not_a_visitor
@@ -154,17 +151,12 @@ class ShfApplicationPolicy < ApplicationPolicy
   end
 
 
-  def application_is_approved_or_rejected?
-    [:accepted, :rejected].include?(record.state.to_sym)
+  def application_is_approved_or_rejected_or_under_review?
+    [:accepted, :rejected, :under_review].include?(record.state.to_sym)
   end
 
   def user_has_other_application?
     user.shf_application && user.shf_application != record
-  end
-
-
-  def owner?
-    record.respond_to?(:user) && record.user == user
   end
 
 end

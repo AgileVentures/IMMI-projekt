@@ -154,6 +154,9 @@ Rails.application.routes.draw do
         get 'progress', to: 'user_checklists#show_progress'
       end
 
+      # UploadedFile as a nested resource under User, with page '/filer' in the URI
+      resources :uploaded_files, path: 'filer'
+
     end
 
     # UserChecklists

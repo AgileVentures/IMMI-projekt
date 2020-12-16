@@ -22,6 +22,7 @@ VCR.configure do |c|
   c.cassette_library_dir = 'spec/vcr_cassettes'
   c.hook_into :webmock
   c.configure_rspec_metadata!
+  c.default_cassette_options = { record: :none, record_on_error: false}
   c.filter_sensitive_data('<company_key>') { ENV['DINKURS_COMPANY_TEST_ID'] }
 end
 

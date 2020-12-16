@@ -30,6 +30,7 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
         allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
         allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
         allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
+        allow(SeedHelper::UsersFactory ).to receive(:seed_predefined_users).and_return(true)
 
         SHFProject::Application.load_tasks
         SHFProject::Application.load_seed

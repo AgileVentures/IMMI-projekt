@@ -272,16 +272,16 @@ describe ShfApplicationPolicy do
               expect(described_class.new(self.send(current_user), app_being_checked)).to permit_action :information
             end
 
-            describe 'permits changes (:edit, :update) when application is not approved or rejected' do
+            describe 'permits changes (:edit, :update) when application is not under review, approved or rejected' do
 
               it 'application is new' do
                 expect(described_class.new(self.send(current_user), app_being_checked)).to permit_edit_and_update_actions
               end
 
-              it 'application is under_review' do
-                app_being_checked.start_review
-                expect(described_class.new(self.send(current_user), app_being_checked)).to permit_edit_and_update_actions
-              end
+              # it 'application is under_review' do
+              #   app_being_checked.start_review
+              #   expect(described_class.new(self.send(current_user), app_being_checked)).to forbid_edit_and_update_actions
+              # end
 
               it 'application is waiting_for_applicant' do
                 app_being_checked.start_review
@@ -298,8 +298,12 @@ describe ShfApplicationPolicy do
 
             end
 
-            it 'forbids edit and update for an approved application' do
+            it 'forbids edit and update for an application under review' do
+              app_being_checked.start_review
+              expect(described_class.new(self.send(current_user), app_being_checked)).to forbid_edit_and_update_actions
+            end
 
+            it 'forbids edit and update for an approved application' do
               app_being_checked.start_review
               app_being_checked.accept
               expect(described_class.new(self.send(current_user), app_being_checked)).to forbid_edit_and_update_actions

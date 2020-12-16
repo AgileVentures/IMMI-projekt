@@ -2,7 +2,7 @@
 .shf-document.show#shf-document
 
   %header.entry-header
-    %h1.entry-title= @shf_document.title
+    = content_title(@shf_document.title, user: current_user)
 
   .entry-content
 

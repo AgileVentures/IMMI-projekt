@@ -1,4 +1,4 @@
-Feature: Order of the list of companies by date last updated
+Feature: Companies are listed in order of date last updated
 
   So that companies other than the first ones added get to be seen at the top of the list of all companies
   Because people usually don't scroll down to see other companies
@@ -9,7 +9,7 @@ Feature: Order of the list of companies by date last updated
 
 
   Background:
-    Given the date is set to "2020-02-01"
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following regions exist:
       | name      |
@@ -25,7 +25,8 @@ Feature: Order of the list of companies by date last updated
 
       # These companies are all in good standing:
       # their H-mark branding fee doesn't expire until 2020-07-07
-      # and the background statement above sets 'today' to "2020-02-01".
+      # and the background statement above sets 'today' to "2020-02-01"
+      # and they have current members.
       # This creates payments and any other data needed.
       # (In the future, if data other than the branding license fee is required to put
       # the company 'in good standing,'  we may want to rename this column.)
@@ -48,7 +49,6 @@ Feature: Order of the list of companies by date last updated
       | Company14 | 8356502446     | cmpy14@mail.com | Stockholm | Stockholm | 2019-12-29 |
       | Company15 | 8394317054     | cmpy15@mail.com | Stockholm | Stockholm | 2019-12-31 |
 
-    Given the Membership Ethical Guidelines Master Checklist exists
 
     # These users are all members in good standing:
     # their memberships do not expire until 2020-07-07.
@@ -62,44 +62,56 @@ Feature: Order of the list of companies by date last updated
     #  payments here in the Background section, the combination of the data is UNKNOWN.
     #
     And the following users exist:
-      | email         | admin | member | updated_at |
-      | u1@mutts.com  |       | true   | 2019-12-01 |
-      | u2@mutts.com  |       | true   | 2019-12-01 |
-      | u3@mutts.com  |       | true   | 2019-12-01 |
-      | u4@mutts.com  |       | true   | 2019-12-01 |
-      | u5@mutts.com  |       | true   | 2019-12-01 |
-      | u6@mutts.com  |       | true   | 2019-12-01 |
-      | u7@mutts.com  |       | true   | 2019-12-01 |
-      | u8@mutts.com  |       | true   | 2019-12-01 |
-      | u9@mutts.com  |       | true   | 2019-12-01 |
-      | u10@mutts.com |       | true   | 2019-12-01 |
-      | u11@mutts.com |       | true   | 2019-12-01 |
-      | u12@mutts.com |       | true   | 2019-12-01 |
-      | u13@mutts.com |       | true   | 2019-12-01 |
-      | u14@mutts.com |       | true   | 2019-12-01 |
-      | u15@mutts.com |       | true   | 2019-12-01 |
-      | admin@shf.se  | true  |        | 2019-12-01 |
+      | email         | admin | member | updated_at | agreed_to_membership_guidelines |
+      | u1@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u2@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u3@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u4@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u5@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u6@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u7@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u8@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u9@mutts.com  |       | true   | 2019-12-01 | true                            |
+      | u10@mutts.com |       | true   | 2019-12-01 | true                            |
+      | u11@mutts.com |       | true   | 2019-12-01 | true                            |
+      | u12@mutts.com |       | true   | 2019-12-01 | true                            |
+      | u13@mutts.com |       | true   | 2019-12-01 | true                            |
+      | u14@mutts.com |       | true   | 2019-12-01 | true                            |
+      | u15@mutts.com |       | true   | 2019-12-01 | true                            |
+      | admin@shf.se  | true  |        | 2019-12-01 | true                            |
 
     And the following payments exist
       | user_email    | start_date | expire_date | payment_type | status | hips_id | company_name |
-      | u1@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
-      | u11@mutts.com | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u1@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company01    |
+      | u1@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u2@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company02    |
+      | u2@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u3@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company03    |
+      | u3@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u4@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company04    |
+      | u4@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u5@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company05    |
+      | u5@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u6@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company06    |
+      | u6@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u7@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company07    |
+      | u7@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u8@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company08    |
+      | u8@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u9@mutts.com  | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company09    |
+      | u9@mutts.com  | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u10@mutts.com | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company10    |
+      | u10@mutts.com | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u11@mutts.com | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company11    |
+      | u11@mutts.com | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u12@mutts.com | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company12    |
+      | u12@mutts.com | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u13@mutts.com | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company13    |
+      | u13@mutts.com | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u14@mutts.com | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company14    |
+      | u14@mutts.com | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
       | u15@mutts.com | 2019-07-08 | 2020-07-07  | branding_fee | betald | none    | Company15    |
-
+      | u15@mutts.com | 2019-07-08 | 2020-07-07  | member_fee   | betald | none    |              |
 
     And the following applications exist:
       | user_email    | company_name | state    | categories |
@@ -120,11 +132,15 @@ Feature: Order of the list of companies by date last updated
       | u15@mutts.com | Company15    | accepted | Groomer    |
 
 
+    # Note: For some reason, this statement to set the date must come _last._
+    Given the date is set to "2020-02-01"
+
+
   Scenario: Visitor sees companies ordered by date last updated
     Given I am logged out
-    And I am on the home page
+    When I am on the home page
     And I hide the companies search form
-    And "items_count" should have "10" selected
+    Then "items_count" should have "10" selected
     And I should see "10" companies
     And I should see "Company15" in the list of companies
     And I should see "Company15" before "Company10" in the list of companies
@@ -152,7 +168,7 @@ Feature: Order of the list of companies by date last updated
 
   Scenario: When a company is updated (attribute) it should appear at the top of the list
     Given I am logged out
-    And I am on the home page
+    When I am on the home page
     And I hide the companies search form
     And "items_count" should have "10" selected
     And I should see "10" companies
@@ -168,12 +184,12 @@ Feature: Order of the list of companies by date last updated
     And I should see "Company07" before "Company03" in the list of companies
 
     # member edits company attribute:
-    And I am logged in as "u11@mutts.com"
+    When I am logged in as "u11@mutts.com"
     And I am on the edit company page for "2965790286"
     And I fill in the translated form with data:
       | companies.telephone_number |
       | 12345                      |
-    When I click on t("submit")
+    And I click on t("submit")
     Then I should see t("companies.update.success")
 
     # Recently updated company should be at the top of the list:
@@ -191,9 +207,9 @@ Feature: Order of the list of companies by date last updated
 
   Scenario: Change the company description using the rich text editor
     Given I am logged out
-    And I am on the home page
+    When I am on the home page
     And I hide the companies search form
-    And "items_count" should have "10" selected
+    Then "items_count" should have "10" selected
     And I should see "10" companies
         # original order before updates
     And I should see "Company15" before "Company10" in the list of companies
@@ -207,12 +223,12 @@ Feature: Order of the list of companies by date last updated
     And I should see "Company07" before "Company03" in the list of companies
 
     # member edits the description in the formatted text editor (ck_editor)
-    And I am logged in as "u11@mutts.com"
+    When I am logged in as "u11@mutts.com"
     And I am on the edit company page for "2965790286"
     And I fill in the translated form with data:
       | companies.description |
       | Hello there!          |
-    When I click on t("submit")
+    And I click on t("submit")
     Then I should see t("companies.update.success")
 
     # Recently updated company should be at the top of the list:
@@ -230,9 +246,9 @@ Feature: Order of the list of companies by date last updated
 
   Scenario: Add address to a company DOES NOT YET CHANGE SORT ORDER (info associated with a company; not an attribute)
     Given I am logged out
-    And I am on the home page
+    When I am on the home page
     And I hide the companies search form
-    And "items_count" should have "10" selected
+    Then "items_count" should have "10" selected
     And I should see "10" companies
         # original order before updates
     And I should see "Company15" before "Company10" in the list of companies
@@ -246,9 +262,9 @@ Feature: Order of the list of companies by date last updated
     And I should see "Company07" before "Company03" in the list of companies
 
     # member edits info associated with a company (not an attribute):
-    And I am logged in as "u11@mutts.com"
+    When I am logged in as "u11@mutts.com"
     And I am the page for company number "2965790286"
-    Then I click on t("companies.show.add_address")
+    And I click on t("companies.show.add_address")
     And I fill in the translated form with data:
       | activerecord.attributes.address.street | activerecord.attributes.address.post_code | activerecord.attributes.address.city |
       | Ålstensgatan 4                         | 123 45                                    | Bromma                               |

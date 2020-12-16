@@ -1,0 +1,39 @@
+#uploaded-files
+  .table-responsive
+    %table.table.table-hover.table-sm
+      %thead
+        %tr
+          - if current_user.admin?
+            %th.owner= sort_link(@search_params, :user_full_name,
+                t('.owner'), {}, { class: 'applications_pagination', remote: true })
+          %th.file_name= sort_link(@search_params, :actual_file_file_name,
+                t('.file_name'), {},{ class: 'applications_pagination', remote: true })
+          %th.description= sort_link(@search_params, :description,
+                t('.description'), {}, { class: 'applications_pagination', remote: true })
+          %th.application= t('.associated_with_application')
+          %th.file-size= sort_link(@search_params, :actual_file_file_size,
+                "#{t('.file_size')} kb", {}, { class: 'applications_pagination', remote: true })
+          %th.updated-at= sort_link(@search_params, :actual_file_updated_at,
+                "#{t('.updated_at')} (UTC)", {}, { class: 'applications_pagination', remote: true })
+          %th.view= t('view')
+          %th.edit= t('edit')
+          %th.delete= t('delete')
+
+      %tbody.uploaded-files
+        - @uploaded_files.each do |uploaded_file|
+          %tr.uploaded_file
+            - if current_user.admin?
+              %td.owner= link_to uploaded_file.user.full_name, uploaded_file.user
+            %td.file_name= link_to uploaded_file.actual_file_file_name, user_uploaded_file_path(current_user, uploaded_file)
+            %td.description= uploaded_file.description
+            %td.application= link_to(app_state_and_date(uploaded_file.shf_application), uploaded_file.shf_application) if uploaded_file.shf_application
+            %td.file-size= (uploaded_file.actual_file_file_size / 1024.0).round(1)
+            %td.updated-at= uploaded_file.updated_at.strftime("%Y-%m-%d %H:%M:%S")
+            %td.view= link_to external_link_icon, uploaded_file.actual_file.url, target: "_blank", id: "uploaded-file-link-#{uploaded_file.id}", class: "uploaded-file-link"
+            %td.edit= link_to edit_icon, edit_user_uploaded_file_path(current_user, uploaded_file) if policy(uploaded_file).edit?
+
+            %td.delete{ class: "delete-uploaded-file-#{uploaded_file.id}" }
+              = link_to(destroy_icon(html_options: { class: 'text-danger' }),
+                user_uploaded_file_path(current_user, uploaded_file), method: :delete,
+                data: { confirm: t('confirm_are_you_sure') },
+                class: 'action-delete') if policy(uploaded_file).destroy?

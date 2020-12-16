@@ -99,24 +99,24 @@ Feature:  Member home (account) page
 
 
   # FIXME no "subcategories-for-categor-1" is found
-#  @selenium @time_adjust
-#  Scenario: Member can add subcategories to a category
-#    Given I am logged in as "emma-member@example.com"
-#    When I am on the "user account" page for "emma-member@example.com"
-#    And I should see t("activerecord.models.business_category.other")
-#    Then I click the first icon with CSS class "fa-edit"
-#    And I select "light trim" in select list "subcategories-for-category-1"
-#    And I select "custom cut" in select list "subcategories-for-category-1"
-#    And I click on first t("save") button
-#    And I should see "light trim"
-#    And I should see "custom cut"
-#    Then I click the first icon with CSS class "fa-edit"
-#    And I should see "light trim"
-#    And I should see "custom cut"
-#    And I unselect "light trim" in select list "subcategories-for-category-1"
-#    And I click on first t("save") button
-#    Then I should see "custom cut"
-#    And I should not see "light trim"
+  @selenium @time_adjust
+  Scenario: Member can add subcategories to a category
+    Given I am logged in as "emma-member@example.com"
+    When I am on the "user account" page for "emma-member@example.com"
+    And I should see t("activerecord.models.business_category.other")
+    Then I click the first icon with CSS class "fa-edit"
+    And I select "light trim" in select list "subcategories-for-category-1"
+    And I select "custom cut" in select list "subcategories-for-category-1"
+    And I click on first t("save") button
+    And I should see "light trim"
+    And I should see "custom cut"
+    Then I click the first icon with CSS class "fa-edit"
+    And I should see "light trim"
+    And I should see "custom cut"
+    And I unselect "light trim" in select list "subcategories-for-category-1"
+    And I click on first t("save") button
+    Then I should see "custom cut"
+    And I should not see "light trim"
 
 
   # Proof of Membership and Company H-Branding Information: see separate features

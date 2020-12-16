@@ -1,3 +1,20 @@
+# Steps for creating and working with users
+
+def user_agrees_to_membership_guidelines(user)
+  begin
+    user_guidelines = if (found_guidelines = UserChecklistManager.membership_guidelines_list_for(user))
+                        found_guidelines
+                      else
+                        AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user) unless UserChecklistManager.membership_guidelines_list_for(user)
+                      end
+    user_guidelines.set_complete_including_children
+
+  rescue => e
+    raise e, "Could not create the Member Guidelines UserChecklist or set it to completed for user #{user}\n #{e.inspect} "
+  end
+end
+
+
 # This should match any of the following
 #  the following users exist
 #  the following users exist:
@@ -18,17 +35,32 @@ Given(/^the following users exist(?:[:])?$/) do |table|
     user.delete('first_name') if user['first_name'].blank?
     user['sign_in_count'] = 0 if user['sign_in_count'].blank?
 
+    user_agreed_to_membership_guidelines = user['agreed_to_membership_guidelines'].blank? ? false : user['agreed_to_membership_guidelines']
+    user.delete('agreed_to_membership_guidelines') # this is not an attribute of User so we need to remove it
+
     new_user = (is_legacy == 'true' ? FactoryBot.create(:user_without_first_and_lastname, user) : FactoryBot.create(:user, user))
 
     AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(new_user)
-    # new_user
+    user_agrees_to_membership_guidelines(new_user) if user_agreed_to_membership_guidelines
+    new_user
   end
 end
+
+
+And("the following users have agreed to the Membership Ethical Guidelines:") do |table|
+  table.hashes.each do |item|
+    user_email = item.delete('email') || ''
+    user = User.find_by(email: user_email)
+    user_agrees_to_membership_guidelines(user)
+  end
+end
+
 
 Given(/^I am logged in as "([^"]*)"$/) do |email|
   @user = User.find_by(email: email)
   login_as @user, scope: :user
 end
+
 
 Given(/^I am [L|l]ogged out$/) do
   logout

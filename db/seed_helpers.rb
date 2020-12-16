@@ -29,6 +29,10 @@ module SeedHelper
   class SeedAdminENVError < StandardError
   end
 
+  attr_writer :regions, :kommuns, :business_categories, :address_factory
+
+  # ===========================================================================================
+
 
   # Initialize the instance vars
   #
@@ -247,7 +251,7 @@ module SeedHelper
       co.phone_number =   FFaker::PhoneNumberSE.phone_number
       co.website =        FFaker::InternetSE.http_url
 
-      @address_factory.make_n_save_a_new_address(co)
+      address_factory.make_n_save_a_new_address(co)
       co
     end
 
@@ -291,5 +295,8 @@ module SeedHelper
     @business_categories ||= BusinessCategory.all.to_a
   end
 
+  def address_factory
+    @address_factory ||= AddressFactory.new(regions, kommuns)
+  end
 
 end # module SeedHelper

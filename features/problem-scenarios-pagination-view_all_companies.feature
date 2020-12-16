@@ -74,37 +74,37 @@ Feature: Visitor sees all companies
       | Company02    | Uppsala    | Aneby   | Kolbäck |
 
     And the following users exist:
-      | email         | admin | member |
-      | u1@mutts.com  |       | true   |
-      | u2@mutts.com  |       | true   |
-      | u3@mutts.com  |       | true   |
-      | u4@mutts.com  |       | true   |
-      | u5@mutts.com  |       | true   |
-      | u6@mutts.com  |       | true   |
-      | u7@mutts.com  |       | true   |
-      | u8@mutts.com  |       | true   |
-      | u9@mutts.com  |       | true   |
-      | u10@mutts.com |       | true   |
-      | u11@mutts.com |       | true   |
-      | u12@mutts.com |       | true   |
-      | u13@mutts.com |       | true   |
-      | u14@mutts.com |       | true   |
-      | u15@mutts.com |       | true   |
-      | u16@mutts.com |       | true   |
-      | u17@mutts.com |       | true   |
-      | u18@mutts.com |       | true   |
-      | u19@mutts.com |       | true   |
-      | u20@mutts.com |       | true   |
-      | u21@mutts.com |       | true   |
-      | u22@mutts.com |       | true   |
-      | u23@mutts.com |       | true   |
-      | u24@mutts.com |       | true   |
-      | u25@mutts.com |       | true   |
-      | u26@mutts.com |       | true   |
-      | u27@mutts.com |       | true   |
-      | u29@mutts.com |       | true   |
-      | b@mutts.com   |       | false  |
-      | admin@shf.se  | true  |        |
+      | email         | admin | member | agreed_to_membership_guidelines |
+      | u1@mutts.com  |       | true   | true                            |
+      | u2@mutts.com  |       | true   | true                            |
+      | u3@mutts.com  |       | true   | true                            |
+      | u4@mutts.com  |       | true   | true                            |
+      | u5@mutts.com  |       | true   | true                            |
+      | u6@mutts.com  |       | true   | true                            |
+      | u7@mutts.com  |       | true   | true                            |
+      | u8@mutts.com  |       | true   | true                            |
+      | u9@mutts.com  |       | true   | true                            |
+      | u10@mutts.com |       | true   | true                            |
+      | u11@mutts.com |       | true   | true                            |
+      | u12@mutts.com |       | true   | true                            |
+      | u13@mutts.com |       | true   | true                            |
+      | u14@mutts.com |       | true   | true                            |
+      | u15@mutts.com |       | true   | true                            |
+      | u16@mutts.com |       | true   | true                            |
+      | u17@mutts.com |       | true   | true                            |
+      | u18@mutts.com |       | true   | true                            |
+      | u19@mutts.com |       | true   | true                            |
+      | u20@mutts.com |       | true   | true                            |
+      | u21@mutts.com |       | true   | true                            |
+      | u22@mutts.com |       | true   | true                            |
+      | u23@mutts.com |       | true   | true                            |
+      | u24@mutts.com |       | true   | true                            |
+      | u25@mutts.com |       | true   | true                            |
+      | u26@mutts.com |       | true   | true                            |
+      | u27@mutts.com |       | true   | true                            |
+      | u29@mutts.com |       | true   | true                            |
+      | b@mutts.com   |       | false  | true                            |
+      | admin@shf.se  | true  |        |                                 |
 
     And the following payments exist
       | user_email    | start_date | expire_date | payment_type | status | hips_id | company_name |

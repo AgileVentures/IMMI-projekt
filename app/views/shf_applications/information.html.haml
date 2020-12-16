@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= t('.title')
+  = content_title(t('.title'), user: current_user)
   .post-title-divider
     %span
 .entry-content

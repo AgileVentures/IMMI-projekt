@@ -97,8 +97,12 @@ module CompaniesHelper
                      class: 'form-control'
   end
 
+  def company_h_brand_jpg_url(company)
+    company_h_brand_url(company) + '.jpg'
+  end
+
   def short_h_brand_url(company)
-    url = company_h_brand_url(company)
+    url = company_h_brand_jpg_url(company)
     company.get_short_h_brand_url(url)
   end
 end

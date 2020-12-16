@@ -1,5 +1,5 @@
 %header.entry-header
-  %h1.entry-title= t('.member_pages')
+  = content_title(t('.member_pages'), user: current_user)
 
 .entry-content
   = render partial: 'documents_list', locals: { ul_class: '', li_class: '' }

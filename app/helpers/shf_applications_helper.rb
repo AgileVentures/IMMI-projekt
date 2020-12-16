@@ -1,7 +1,27 @@
 module ShfApplicationsHelper
 
-  def can_edit_state?
+  def can_change_state?
     policy(@shf_application).permitted_attributes_for_edit.include? :state
+  end
+
+  # @return [String] approved status with the date approved
+  def app_state_and_date(shf_app)
+    return '' unless shf_app
+
+    displayed_date = shf_app.accepted? ? shf_app.when_approved : shf_app.updated_at
+    "#{shf_app_state_translated(shf_app)} - #{displayed_date.strftime('%F')}"
+  end
+
+
+  def shf_app_state_translated(shf_app)
+    # Cannot use '.human_state' because it calls '.display_name',
+    # which is cached/memoized.
+    # If the locale is changed, then the .display_name is no longer accurate because it
+    #  is now the translation for the previous locale.
+    # Hence we have to call this every time.
+    #  (Another way might be to set up an observer on changing the locale.)
+    shf_app_aasm = shf_app.aasm
+    shf_app_aasm.state_object_for_name(shf_app_aasm.current_state).localized_name
   end
 
   def business_categories_str(application)
@@ -79,6 +99,12 @@ module ShfApplicationsHelper
     end
   end
 
+  # @return [String] - standarize the classes used for the Admin (review) status buttons
+  def admin_status_btn_css(other_css_str = '')
+    "btn btn-sm btn-outline-primary #{other_css_str}"
+  end
+
+  # --------------------------------------------------------------------------------------------
 
   private
 

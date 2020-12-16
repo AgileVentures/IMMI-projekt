@@ -12,6 +12,8 @@ RSpec.describe Company, type: :model, focus: true do
   let(:mock_log) { instance_double("ActivityLogger") }
 
   before(:each) do
+    DatabaseCleaner.clean_with(:truncation)  # FIXME: why is this needed? should be set in rails_helper
+
     allow(ActivityLogger).to receive(:new).and_return(mock_log)
     allow(mock_log).to receive(:info)
     allow(mock_log).to receive(:record)
@@ -22,14 +24,6 @@ RSpec.describe Company, type: :model, focus: true do
     allow(AdminOnly::UserChecklistFactory).to receive(:create_member_guidelines_checklist_for).and_return(true)
   end
 
-  let(:complete_companies) { [complete_co1] }
-
-  let(:incomplete_companies) do
-    incomplete_cos = []
-    incomplete_cos << co_no_name
-    incomplete_cos << co_nil_region
-    incomplete_cos
-  end
 
   let(:user) { create(:user) }
 
@@ -149,6 +143,429 @@ RSpec.describe Company, type: :model, focus: true do
     it { is_expected.to have_many(:events).dependent(:destroy) }
   end
 
+
+  describe 'Scopes' do
+    let(:user1) { create(:user) }
+    let(:user2) { create(:user) }
+    let(:user3) { create(:user) }
+
+    let(:app_co1_user1) do
+      app           = create(:shf_application, user: user1)
+      app.companies = [complete_co1]
+      app
+    end
+    let(:app_co1_user2) do
+      app           = create(:shf_application, user: user2)
+      app.companies = [complete_co1]
+      app
+    end
+
+    let!(:no_name_1_address) { create(:company, name: '') }
+    let!(:nil_name_1_address) { create(:company, name: nil) }
+
+    let!(:co_with_1_address) { create(:company, name: 'Has 1 Address', num_addresses: 1) }
+    let!(:co_with_2_addresses)  { create(:company, name: 'Has 2 Addresses', num_addresses: 2) }
+    let!(:co_no_address) { create(:company, name: 'No Address', num_addresses: 0) }
+
+    let!(:co_with_address_no_region) do
+      co = create(:company, name: 'Has Address, nil region', num_addresses: 1)
+      co.addresses.first.update(region: nil)
+      co
+    end
+
+    let!(:co_with_2_addresses_1_no_region) do
+      co = create(:company, name: 'Has 2 Addresses, 1 with nil region', num_addresses: 2)
+      co.addresses.first.update(region: nil)
+      co
+    end
+
+    let!(:co_with_2_addresses_all_no_region) do
+      co = create(:company, name: 'Has 2 Addresses, all with nil region', num_addresses: 2)
+      co.addresses.first.update(region: nil)
+      co.addresses.last.update(region: nil)
+      co
+    end
+
+
+    describe '.has_name' do
+      it 'only companies with a name that is not an empty string' do
+        expect(described_class.has_name).to match_array([co_with_1_address,
+                                                              co_with_2_addresses,
+                                                              co_no_address,
+                                                              co_with_address_no_region,
+                                                              co_with_2_addresses_1_no_region,
+                                                              co_with_2_addresses_all_no_region])
+      end
+    end
+
+
+    describe '.blank_name' do
+      it 'companies with a name that is an empty string OR name is nil' do
+        expect(described_class.blank_name).to match_array([no_name_1_address,
+                                                                nil_name_1_address])
+      end
+    end
+
+
+    describe '.has_address' do
+      it 'only Companies that have at least 1 address' do
+        expect(described_class.has_address).to match_array([no_name_1_address,
+                                                                 nil_name_1_address,
+                                                                 co_with_1_address,
+                                                                 co_with_2_addresses,
+                                                                 co_with_address_no_region,
+                                                                 co_with_2_addresses_1_no_region,
+                                                                 co_with_2_addresses_all_no_region
+                                                                ])
+      end
+    end
+
+
+    describe '.lacking_address' do
+      it 'Companies with no addresses' do
+        expect(described_class.lacking_address).to match_array([co_no_address])
+      end
+    end
+
+
+    describe '.addresses_have_region' do
+      it 'Companies with at least 1 address where the address region is not nil' do
+        expect(described_class.addresses_have_region).to match_array([no_name_1_address,
+                                       nil_name_1_address,
+                                       co_with_1_address,
+                                       co_with_2_addresses,
+                                       co_with_2_addresses_1_no_region])
+      end
+    end
+
+
+    describe '.no_address_or_lacks_region' do
+      it 'Companies with no address OR all addresses are missing the region' do
+        expect(described_class.no_address_or_lacks_region).to match_array([co_no_address,
+                                                                                co_with_address_no_region,
+                                                                                co_with_2_addresses_all_no_region])
+      end
+    end
+
+
+    describe '.categories (all categories for users with accepted applications)' do
+
+      it 'returns 3 employees, 3 non-accepted applicants, each with 1 unique category' do
+        m1.business_categories = [cat1]
+        m2.business_categories = [cat2]
+        m3.business_categories = [cat3]
+        m4.business_categories = [cat4]
+        m5.business_categories = [cat5]
+        m6.business_categories = [cat6]
+
+        expect(company_emp_cats.business_categories.count).to eq 3
+        expect(company_emp_cats.business_categories.map(&:name))
+          .to contain_exactly('cat1', 'cat2', 'cat3')
+      end
+
+      it 'returns 3 employees, each with the same category' do
+        m1.business_categories = [cat1]
+        m2.business_categories = [cat1]
+        m3.business_categories = [cat1]
+
+        expect(company_emp_cats.business_categories.distinct.count).to eq 1
+        expect(company_emp_cats.business_categories.count).to eq 3
+        expect(company_emp_cats.business_categories.distinct.map(&:name))
+          .to contain_exactly('cat1')
+      end
+    end
+
+
+    describe '.complete' do
+
+      it 'calls .has_name' do
+        expect(described_class).to receive(:has_name).and_call_original
+        described_class.complete
+      end
+
+      it 'calls .addresses_have_region' do
+        expect(described_class).to receive(:addresses_have_region)
+        described_class.complete
+      end
+
+      it 'is all Companies .has_name AND all Companies .addresses_have_region' do
+        expect(described_class.complete).to match_array(Company.has_name & Company.addresses_have_region)
+      end
+    end
+
+
+    describe '.not_complete' do
+
+      it 'calls .blank_name' do
+        expect(described_class).to receive(:blank_name).and_call_original
+        described_class.not_complete
+      end
+
+      it 'calls .no_address_or_lacks_region' do
+        expect(described_class).to receive(:no_address_or_lacks_region).and_call_original
+        described_class.not_complete
+      end
+
+      it 'is all Companies .blank_name OR all Companies .no_address_or_lacks_region' do
+        expect(described_class.not_complete).to match_array(Company.blank_name.to_a +
+                                                            Company.no_address_or_lacks_region.to_a)
+      end
+    end
+
+
+    describe '.address_visible' do
+
+      it 'only returns companies that have one or more visible addresses' do
+        co_no_viz_addresses
+        expect(Company.address_visible).
+          to match_array([no_name_1_address,
+                              nil_name_1_address,
+                              co_with_1_address,
+                              co_with_2_addresses,
+                              co_with_address_no_region,
+                              co_with_2_addresses_1_no_region,
+                              co_with_2_addresses_all_no_region])
+      end
+    end
+
+    describe '.with_members' do
+
+      it 'calls User.current_members to get all current members (members in good standing)' do
+        expect(User).to receive(:current_members).and_return([])
+
+        described_class.with_members
+      end
+
+      it 'returns no companies if no members' do
+        FactoryBot.create(:user_with_membership_app)
+        FactoryBot.create(:user_with_membership_app)
+
+        allow(User).to receive(:current_members).and_return([])
+        expect(Company.with_members).to be_empty
+      end
+
+      context 'has members in good standing (current)' do
+
+        it 'returns all companies that have members that are in good standing (current)', focus: true do
+          member1 = FactoryBot.create(:user_with_membership_app)
+          co1 = member1.shf_application.companies.first
+
+          member2 = FactoryBot.create(:user_with_membership_app)
+          co2 = member2.shf_application.companies.first
+
+          expect(User).to receive(:current_members).and_return([member1, member2])
+
+          expect(Company.with_members).to match_array([co1, co2])
+        end
+
+        it 'returns a company only once even if multiple current members' do
+          member1 = FactoryBot.create(:user_with_membership_app)
+          co1 = member1.shf_application.companies.first
+          member2 = FactoryBot.create(:user_with_membership_app,
+                                      company_number: co1.company_number)
+          allow(User).to receive(:current_members).and_return([member1, member2])
+
+          expect(Company.with_members).to contain_exactly(co1)
+        end
+      end
+    end
+
+
+    describe '.branding_licensed' do
+
+      it 'returns all currently-licensed companies' do
+        payment1_co1.update(expire_date: Time.zone.today - 1.day)
+        payment2.update(expire_date: Time.zone.today - 1.day)
+        expect(Company.branding_licensed).to be_empty
+
+        payment1_co1.update(expire_date: Time.zone.today)
+        expect(Company.branding_licensed).to contain_exactly(complete_co1)
+
+        payment2.update(expire_date: Time.zone.today)
+        expect(Company.branding_licensed).to contain_exactly(complete_co1)
+      end
+    end
+
+
+    describe '.searchable' do
+
+      it 'calls .complete' do
+        expect(described_class).to receive(:complete).and_call_original
+        described_class.searchable
+      end
+
+      it 'calls .with_members' do
+        allow(described_class).to receive(:complete).and_call_original
+        expect(described_class).to receive(:with_members).and_call_original
+        described_class.searchable
+      end
+
+      it 'calls .branding_licensed' do
+        allow(described_class).to receive(:complete).and_call_original
+        allow(described_class).to receive(:with_members).and_call_original
+        expect(described_class).to receive(:branding_licensed).and_call_original
+        described_class.searchable
+      end
+
+      it 'returns no companies if no companies exist' do
+        expect(Company.searchable).to be_empty
+      end
+
+      context 'company information is complete' do
+
+        context 'branding license payment is current (is paid up)' do
+
+          let(:co1_current) do
+            create(:h_branding_fee_payment, company: complete_co1)
+            complete_co1
+          end
+
+          it 'has members in good standing (current members)'do
+            co1_user = co1_current.shf_applications.first.user
+            allow(User).to receive(:current_members).and_return([co1_user])
+
+            expect(described_class.searchable).to contain_exactly(co1_current)
+          end
+
+          it 'has no members in good standing (no current members)' do
+            complete_and_paid_co_user = co1_current.shf_applications.first.user
+            allow(complete_and_paid_co_user).to receive(:membership_current?).and_return(false)
+
+            expect(described_class.searchable).to be_empty
+          end
+        end
+
+      end
+    end
+
+
+    describe '.at_addresses(addresses)' do
+
+      let(:kista_co) do
+        create(:company,
+               name:           'Stockholm Co',
+               street_address: 'Rehnsgatan 15',
+               post_code:      '113 57',
+               city:           'Stockholm')
+      end
+
+      let(:stockholm_co) do
+        create(:company,
+               name:           'Kista Co',
+               street_address: 'AKALLALÄNKEN 10',
+               post_code:      '164 74',
+               city:           'Kista')
+      end
+
+
+
+      it 'returns all companies at these addresses' do
+        kista_co
+        stockholm_co
+
+        kista_address = Address.find_by_city('Kista')
+        expect(Company.at_addresses([kista_address]).map(&:name)).to match_array(['Kista Co'])
+      end
+
+      it 'no companies if addresses is empty' do
+        kista_co
+        stockholm_co
+
+        expect(Company.at_addresses([]).size).to eq 0
+      end
+
+    end # end context '.at_addresses(addresses)' do
+
+
+    describe '.with_dinkurs_id' do
+
+      it 'returns nil if no companies with non-empty dinkurs_company_id' do
+        company_3_addrs
+        expect(Company.with_dinkurs_id).to be_empty
+      end
+
+      it 'returns companies with dinkurs_company_id' do
+        complete_co1
+        complete_co2
+        co_no_viz_addresses
+        company_3_addrs.update_attribute(:dinkurs_company_id, ENV['DINKURS_COMPANY_TEST_ID'])
+        expect(Company.with_dinkurs_id).not_to be_empty
+        expect(Company.with_dinkurs_id).to contain_exactly(company_3_addrs)
+      end
+
+    end
+
+  end
+
+
+  context 'h-brand JPG cache management' do
+    let(:company) { create(:company) }
+    let(:company2) { create(:company) }
+
+    before(:each) { Rails.cache.clear(company.cache_key('h_brand')) }
+
+    it { expect(company.cache_key('h_brand')).to eq "company_#{company.id}_cache_h_brand" }
+
+    describe '#h_brand_jpg' do
+      it 'returns nil if no cached image' do
+        expect(company.h_brand_jpg).to be_nil
+      end
+
+      it 'returns cached image if present' do
+        Rails.cache.write(company.cache_key('h_brand'), file_fixture('image.png'))
+        expect(company.h_brand_jpg).to_not be_nil
+        expect(company.h_brand_jpg).to eq file_fixture('image.png')
+      end
+    end
+
+    describe '#h_brand_jpg=' do
+      it 'caches image' do
+        expect(company.h_brand_jpg).to be_nil
+        company.h_brand_jpg = file_fixture('image.png')
+        expect(company.h_brand_jpg).to_not be_nil
+        expect(company.h_brand_jpg).to eq file_fixture('image.png')
+      end
+    end
+
+    describe '#clear_h_brand_jpg_cache' do
+      it 'clears cache' do
+        company.h_brand_jpg = file_fixture('image.png')
+        expect(company.h_brand_jpg).to_not be_nil
+        company.clear_h_brand_jpg_cache
+        expect(company.h_brand_jpg).to be_nil
+      end
+    end
+
+    describe '.clear_all_h_brand_jpg_caches' do
+      it 'clears image cache for all companies' do
+        company.h_brand_jpg = file_fixture('image.png')
+        company2.h_brand_jpg = file_fixture('image.png')
+        expect(company.h_brand_jpg).to_not be_nil
+        expect(company2.h_brand_jpg).to_not be_nil
+        Company.clear_all_h_brand_jpg_caches
+        expect(company.h_brand_jpg).to be_nil
+        expect(company2.h_brand_jpg).to be_nil
+      end
+    end
+
+    describe 'after_update :clear_h_brand_jpg_cache' do
+
+      it 'is called if name changes' do
+        expect(company).to receive(:clear_h_brand_jpg_cache).once
+        company.update_attributes(name: 'new_company_name')
+      end
+
+      it 'is not called if other attribute changes' do
+        expect(company).not_to receive(:clear_h_brand_jpg_cache)
+        company.update_attributes(phone_number: '1234',
+                                  email: 'this_company@mail.com',
+                                  website: 'nonesuch')
+      end
+    end
+  end
+
+
+
   describe 'destroy or nullify associated records when a Company is destroyed' do
 
     let(:user1) { create(:user) }
@@ -243,9 +660,9 @@ RSpec.describe Company, type: :model, focus: true do
   describe 'events update management' do
 
     around(:each) do |example|
-      Timecop.freeze(Time.zone.local(2018, 6, 1))
-      example.run
-      Timecop.return
+      travel_to(Time.zone.local(2018, 6, 1)) do
+        example.run
+      end
     end
 
     it '#events_start_date returns starting date for stored events' do
@@ -282,24 +699,38 @@ RSpec.describe Company, type: :model, focus: true do
       end
     end
 
-    context '#validate_key_and_fetch_dinkurs_events', :vcr do
-      it 'returns true if dinkurs key is unchanged' do
-        expect(company_3_addrs.validate_key_and_fetch_dinkurs_events).to eq true
+    context '#valid_key_and_fetch_dinkurs_events?', :vcr do
+      it 'returns true if dinkurs key is unchanged and never fetches events' do
+        expect(Dinkurs::EventsCreator).not_to receive(:new)
+        expect(company_3_addrs.valid_key_and_fetch_dinkurs_events?).to eq true
       end
 
       it 'returns true if events are fetched' do
         company_3_addrs.dinkurs_company_id = ENV['DINKURS_COMPANY_TEST_ID']
-        expect(company_3_addrs.validate_key_and_fetch_dinkurs_events).to eq true
+        allow_any_instance_of(Dinkurs::EventsCreator).to receive(:call).and_return({})
+        expect(company_3_addrs.valid_key_and_fetch_dinkurs_events?).to eq true
       end
 
       it 'adds model error and returns false if invalid dinkurs key' do
         company_3_addrs.dinkurs_company_id = 'xyz'
-        err                        = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid')
+        err = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_key')
 
-        result = company_3_addrs.validate_key_and_fetch_dinkurs_events
+        allow_any_instance_of(Dinkurs::EventsCreator).to receive(:call).and_raise(Dinkurs::Errors::InvalidKey)
+        result = company_3_addrs.valid_key_and_fetch_dinkurs_events?
 
         expect(result).to eq false
         expect(company_3_addrs.errors.full_messages.first).to match(/#{err}/)
+      end
+
+      it 'adds model error and returns false if invalid dinkurs format' do
+        company_3_addrs.dinkurs_company_id = 'xyz'
+        err = I18n.t('activerecord.errors.models.company.attributes.dinkurs_company_id.invalid_format')
+
+        allow_any_instance_of(Dinkurs::EventsCreator).to receive(:call).and_raise(Dinkurs::Errors::InvalidFormat)
+        result = company_3_addrs.valid_key_and_fetch_dinkurs_events?
+
+        expect(result).to eq false
+        expect(company_3_addrs.errors.full_messages.first).to include(err)
       end
     end
   end
@@ -328,7 +759,7 @@ RSpec.describe Company, type: :model, focus: true do
              expire_date:    payment_date_2017 + 365)
 
 
-      Timecop.freeze(Date.new(2019, 1, 1)) do
+      travel_to(Date.new(2019, 1, 1)) do
         expect(mem1_co.current_members).to be_empty
       end
     end
@@ -352,7 +783,7 @@ RSpec.describe Company, type: :model, focus: true do
              start_date:     Date.new(2018, 12, 1),
              expire_date:    Date.new(2018, 12, 1) + 365)
 
-      Timecop.freeze(Date.new(2019, 1, 1)) do
+      travel_to(Date.new(2019, 1, 1)) do
         expect(mem1_co.current_members).to match_array([mem1_exp])
       end
     end
@@ -492,9 +923,9 @@ RSpec.describe Company, type: :model, focus: true do
     describe '.self.next_branding_payment_dates' do
 
       around(:each) do |example|
-        Timecop.freeze(payment_date_2018)
-        example.run
-        Timecop.return
+        travel_to(payment_date_2018) do
+          example.run
+        end
       end
 
       it "returns today's date for first payment start date" do
@@ -522,16 +953,20 @@ RSpec.describe Company, type: :model, focus: true do
 
         it 'returns actual payment date for start date' do
           payment1_co1
-          Timecop.freeze(payment_date_2020)
-          expect(Company.next_branding_payment_dates(complete_co1.id)[0])
+          travel_back # travel back from the travel_to around each example
+          travel_to(payment_date_2020) do
+            expect(Company.next_branding_payment_dates(complete_co1.id)[0])
               .to eq payment_date_2020
+          end
         end
 
         it 'returns payment date + 1 year for expire date' do
           payment1_co1
-          Timecop.freeze(payment_date_2020)
-          expect(Company.next_branding_payment_dates(complete_co1.id)[1])
+          travel_back # travel back from the travel_to around each example
+          travel_to(payment_date_2020) do
+            expect(Company.next_branding_payment_dates(complete_co1.id)[1])
               .to eq payment_date_2020 + 1.year - 1.day
+          end
         end
       end
 
@@ -594,238 +1029,6 @@ RSpec.describe Company, type: :model, focus: true do
     end
   end
 
-  describe 'scopes' do
-
-    let(:cmpy2) do
-      create(:company, company_number: '5562252998',
-             street_address:           'Rehnsgatan 15',
-             post_code:                '113 57',
-             city:                     'Stockholm')
-    end
-
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
-    let(:user3) { create(:user) }
-
-    let(:app_co1_user1) do
-      app           = create(:shf_application, user: user1)
-      app.companies = [complete_co1]
-      app
-    end
-    let(:app_co1_user2) do
-      app           = create(:shf_application, user: user2)
-      app.companies = [complete_co1]
-      app
-    end
-    let(:app_co2_user3) do
-      app           = create(:shf_application, user: user3)
-      app.companies = [cmpy2]
-      app
-    end
-
-    let(:complete_scope) { Company.complete }
-
-    context '.categories (all categories for users with accepted applications)' do
-
-      it 'returns 3 employees, 3 non-accepted applicants, each with 1 unique category' do
-        m1.business_categories = [cat1]
-        m2.business_categories = [cat2]
-        m3.business_categories = [cat3]
-        m4.business_categories = [cat4]
-        m5.business_categories = [cat5]
-        m6.business_categories = [cat6]
-
-        expect(company_emp_cats.business_categories.count).to eq 3
-        expect(company_emp_cats.business_categories.map(&:name))
-            .to contain_exactly('cat1', 'cat2', 'cat3')
-      end
-
-      it 'returns 3 employees, each with the same category' do
-        m1.business_categories = [cat1]
-        m2.business_categories = [cat1]
-        m3.business_categories = [cat1]
-
-        expect(company_emp_cats.business_categories.distinct.count).to eq 1
-        expect(company_emp_cats.business_categories.count).to eq 3
-        expect(company_emp_cats.business_categories.distinct.map(&:name))
-            .to contain_exactly('cat1')
-      end
-    end
-
-
-    context '.complete' do
-
-      before(:each) do
-        complete_companies
-        incomplete_companies
-      end
-
-      it 'only returns companies that are complete' do
-        expect(complete_scope).to match_array(complete_companies)
-      end
-
-      it 'does not return any incomplete companies' do
-        expect(complete_scope & incomplete_companies).to match_array([])
-      end
-
-    end
-
-    context '.address_visible' do
-
-      it 'only returns companies that have one or more visible addresses' do
-        complete_co2
-        co_no_viz_addresses
-        expect(Company.address_visible).
-            to contain_exactly(co_no_name, co_nil_region, complete_co1, complete_co2)
-      end
-    end
-
-    context '.with_members' do
-
-      before(:each) do
-        app_co1_user1; app_co1_user2; app_co2_user3 # This creates the applications, users, and companies
-      end
-
-      it 'returns no companies if no members' do
-        expect(Company.with_members).to be_empty
-      end
-
-      it 'returns all companies with members' do
-        app_co1_user1.start_review
-        app_co1_user1.accept!
-        user1.update(member: true)
-
-        expect(Company.with_members).to contain_exactly(complete_co1)
-
-        app_co2_user3.start_review
-        app_co2_user3.accept!
-        user3.update(member: true)
-
-        expect(Company.with_members).to contain_exactly(complete_co1, cmpy2)
-      end
-
-      it 'returns company only once even if multiple members' do
-        app_co1_user1.start_review
-        app_co1_user1.accept!
-        user1.update(member: true)
-
-        app_co1_user2.start_review; app_co1_user2.accept!
-        user2.update(member: true)
-
-        expect(Company.with_members).to contain_exactly(complete_co1)
-      end
-    end
-
-    context '.branding_licensed' do
-
-      it 'returns all currently-licensed companies' do
-        payment1_co1.update(expire_date: Time.zone.today - 1.day)
-        payment2.update(expire_date: Time.zone.today - 1.day)
-        expect(Company.branding_licensed).to be_empty
-
-        payment1_co1.update(expire_date: Time.zone.today)
-        expect(Company.branding_licensed).to contain_exactly(complete_co1)
-
-        payment2.update(expire_date: Time.zone.today)
-        expect(Company.branding_licensed).to contain_exactly(complete_co1)
-      end
-    end
-
-    context '.searchable' do
-
-      it 'returns no companies if no companies exist' do
-        expect(Company.searchable).to be_empty
-      end
-
-      it 'returns all companies that are complete, have member(s) and paid-up' do
-        app_co1_user1.start_review
-        app_co1_user1.accept!
-        user1.update(member: true)
-        payment1_co1
-        expect(Company.searchable).to contain_exactly(complete_co1)
-      end
-
-      it 'returns no companies if none have members' do
-        app_co1_user1.start_review
-        app_co1_user1.accept!
-        payment1_co1
-        expect(Company.searchable).to be_empty
-      end
-
-      it 'returns no companies if none are paid-up' do
-        app_co1_user1.start_review
-        app_co1_user1.accept!
-        user1.update(member: true)
-        expect(Company.searchable).to be_empty
-      end
-
-      it 'returns no companies if none have members' do
-        app_co1_user1.start_review
-        app_co1_user1.accept!
-        payment1_co1
-        expect(Company.searchable).to be_empty
-      end
-
-    end
-
-
-    context '.at_addresses(addresses)' do
-
-        let(:kista_co) do
-            create(:company,
-                 name:           'Stockholm Co',
-                 street_address: 'Rehnsgatan 15',
-                 post_code:      '113 57',
-                 city:           'Stockholm')
-        end
-
-        let(:stockholm_co) do
-          create(:company,
-                 name:           'Kista Co',
-                 street_address: 'AKALLALÄNKEN 10',
-                 post_code:      '164 74',
-                 city:           'Kista')
-        end
-
-
-
-      it 'returns all companies at these addresses' do
-        kista_co
-        stockholm_co
-
-        kista_address = Address.find_by_city('Kista')
-        expect(Company.at_addresses([kista_address]).map(&:name)).to match_array(['Kista Co'])
-      end
-
-      it 'no companies if addresses is empty' do
-        kista_co
-        stockholm_co
-
-        expect(Company.at_addresses([]).size).to eq 0
-      end
-
-    end # end context '.at_addresses(addresses)' do
-
-    context '.with_dinkurs_id' do
-
-      it 'returns nil if no companies with non-empty dinkurs_company_id' do
-        company_3_addrs
-        expect(Company.with_dinkurs_id).to be_empty
-      end
-
-      it 'returns companies with dinkurs_company_id' do
-        complete_co1
-        complete_co2
-        co_no_viz_addresses
-        company_3_addrs.update_attribute(:dinkurs_company_id, ENV['DINKURS_COMPANY_TEST_ID'])
-        expect(Company.with_dinkurs_id).not_to be_empty
-        expect(Company.with_dinkurs_id).to contain_exactly(company_3_addrs)
-      end
-
-    end
-
-  end #scopes
-
   context '.categories_names' do
 
     let(:cat1_subcat1) { cat1.children.create(name: 'cat1_subcat1') }
@@ -881,13 +1084,13 @@ RSpec.describe Company, type: :model, focus: true do
     end
     context 'there is no shortened url in the table and ShortenUrl.short is called' do
       it 'saves the result if the result is not nil and returns shortened url' do
-        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
-        allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/hbrand2')
+        url = 'http://localhost:3000/anvandare/1/company_h_brand'
+        allow(ShortenUrl).to receive(:short).with(url).and_return('http://tinyurl.com/short_url')
         expect(complete_co1.get_short_h_brand_url(url)).to eq(ShortenUrl.short(url))
         expect(complete_co1.short_h_brand_url).to eq(ShortenUrl.short(url))
       end
       it 'does not save anything if the result is nil and returns unshortened url' do
-        url = 'http://localhost:3000/anvandare/0/company_h_brand?company_id=1'
+        url = 'http://localhost:3000/anvandare/1/company_h_brand'
         allow(ShortenUrl).to receive(:short).with(url).and_return(nil)
         expect(complete_co1.get_short_h_brand_url(url)).to eq(url)
         expect(complete_co1.short_h_brand_url).to eq(nil)
@@ -928,7 +1131,7 @@ RSpec.describe Company, type: :model, focus: true do
           end
 
           it 'is false (never nil)' do
-            Timecop.freeze(2019, 1, 1) do
+            travel_to(Date.new(2019, 1, 1)) do
               payment_2017_10_1
               expect(past_payments_co.payments.size).to eq 1
               expect(past_payments_co.branding_license?).not_to be_nil
@@ -962,7 +1165,7 @@ RSpec.describe Company, type: :model, focus: true do
         end
 
         it 'is true' do
-          Timecop.freeze( pretend_today ) do
+          travel_to( pretend_today ) do
             payment_2018_1_3
             expect(successful_payments_co.payments.size).to eq 1
             expect(successful_payments_co.branding_license?).to be_truthy
@@ -989,7 +1192,7 @@ RSpec.describe Company, type: :model, focus: true do
           end
 
           it "payment status #{payment_status}: is false (never nil)" do
-            Timecop.freeze( pretend_today ) do
+            travel_to( pretend_today ) do
               payment_2018_1_3
               expect(not_successful_payments_co.payments.size).to eq 1
               expect(not_successful_payments_co.branding_license?).not_to be_nil
@@ -1056,7 +1259,7 @@ RSpec.describe Company, type: :model, focus: true do
       member_dec_5_start_time = Time.utc(member_dec_5_start.year, member_dec_5_start.month, member_dec_5_start.day)
 
 
-      Timecop.freeze( day_before_member_dec_3_expiry_time ) do
+      travel_to( day_before_member_dec_3_expiry_time ) do
 
         # update membership status based on today's date
         MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
@@ -1067,7 +1270,7 @@ RSpec.describe Company, type: :model, focus: true do
       end
 
 
-      Timecop.freeze( member_dec_3_expiry_time) do
+      travel_to( member_dec_3_expiry_time) do
         # update membership status based on today's date
         MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
         MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)

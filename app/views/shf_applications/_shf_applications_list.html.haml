@@ -29,7 +29,7 @@
           %td.name= link_to "#{shf_application.user.last_name + ', ' + shf_application.user.first_name}", user_path(shf_application.user)
           - company = shf_application.companies&.first
           %td.company_number= company == nil ? '' : link_to(company.company_number, company_path(company))
-          %td.state=  shf_application.aasm.human_state
+          %td.state=  shf_app_state_translated(shf_application)
 
           %td.number_of_files
             - if shf_application.uploaded_files_count > 0

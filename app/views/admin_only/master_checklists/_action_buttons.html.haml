@@ -20,8 +20,9 @@
             = link_to t('.edit_list_item'),
                       edit_admin_only_master_checklist_path(master_checklist), class: 'btn btn-primary btn-sm edit-master-checklist-item'
 
+        -# TODO: mark no longer used clone (Mark as no longer used And create a clone); that's why the button is disabled
         - if master_checklist.is_in_use
-          = link_to t('.mark_no_longer_used_clone'), '#', class: 'btn btn-sm btn-primary'
+          = link_to t('.mark_no_longer_used_clone'), '#', class: 'btn btn-sm btn-primary disabled'
 
         = render partial: 'delete_button_if_applicable', locals: { master_checklist: master_checklist }
 

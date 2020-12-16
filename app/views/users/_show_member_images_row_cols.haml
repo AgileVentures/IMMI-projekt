@@ -23,7 +23,7 @@
         = link_to(t('.download_image'),
                                    proof_of_membership_path(user, render_to: :jpg),
                                    class: 'btn btn-sm btn-primary download_proof_of_membership')
-        = link_to(t('.copy_image_url'), proof_of_membership_url(user.id), class: 'btn btn-sm btn-primary link_for_proof_of_membership copy-to-clipboard', "data-original-title" => t('.copied'))
+        = link_to(t('.copy_image_url'), proof_of_membership_jpg_url(user), class: 'btn btn-sm btn-primary link_for_proof_of_membership copy-to-clipboard', "data-original-title" => t('.copied'))
         = link_to(t('.show_image'),
                                  proof_of_membership_path(user, context: :internal),
                                  class: 'btn btn-sm btn-primary preview_proof_of_membership')
@@ -54,7 +54,7 @@
                                      company_h_brand_path(company,
                                                          render_to: :jpg),
                                    class: 'btn btn-sm btn-primary download_h_mark')
-          = link_to(t('.copy_image_url'), company_h_brand_url(company), class: 'btn btn-sm btn-primary link_for_h_brand copy-to-clipboard', "data-original-title" => t('.copied'))
+          = link_to(t('.copy_image_url'), company_h_brand_jpg_url(company), class: 'btn btn-sm btn-primary link_for_h_brand copy-to-clipboard', "data-original-title" => t('.copied'))
           = link_to(t('.show_image'),
                                  company_h_brand_path(company,
                                                       context: :internal),
@@ -63,4 +63,3 @@
           %p= t('.image_use_guidelines_html', use_guidelines_link: link_to(t('.use_guidelines'),
               'https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket',
               class: 'underlined_link'))
-

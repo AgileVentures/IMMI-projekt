@@ -21,7 +21,7 @@ class ShfApplicationsController < ApplicationController
     end
     @new_company = Company.new # object for company_create_modal
     @shf_application = ShfApplication.new(user: current_user)
-    @all_business_categories = BusinessCategory.all
+    @all_business_categories = BusinessCategory.all.roots.order(:name)
     @uploaded_file = @shf_application.uploaded_files.build
   end
 
@@ -359,7 +359,10 @@ class ShfApplicationsController < ApplicationController
 
       uploaded_files['actual_files']&.each do |uploaded_file|
 
-        @uploaded_file = @shf_application.uploaded_files.create(actual_file: uploaded_file)
+        # An admin might be uploading a file for a users's application.
+        # The uploaded file should belong_to the user, not the admin.
+        @uploaded_file = @shf_application.uploaded_files.create(actual_file: uploaded_file,
+                                                                user: @shf_application.user)
 
         if @uploaded_file.valid?
           helpers.flash_message(:notice, t('shf_applications.uploads.file_was_uploaded',
@@ -437,7 +440,7 @@ class ShfApplicationsController < ApplicationController
 
   def load_update_objects(numbers_str)
     @company_numbers = numbers_str
-    @all_business_categories = BusinessCategory.all
+    @all_business_categories = BusinessCategory.all.roots.order(:name)
     @new_company = Company.new   # In case user wants to create a new company
   end
 

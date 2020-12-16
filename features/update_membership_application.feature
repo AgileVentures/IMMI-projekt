@@ -10,7 +10,6 @@ Feature: SHF Application status is changed
   Hide the search form so that we don't also get the list of applications found in the total counts
 
 
-
   Background:
     Given the Membership Ethical Guidelines Master Checklist exists
 
@@ -40,13 +39,13 @@ Feature: SHF Application status is changed
 
 
     And the following applications exist:
-      | user_email                             | company_number | categories   | state                 |
-      | emma_under_review@happymutts.se        | 5562252998     | rehab        | under_review          |
-      | hans_under_review@happymutts.se        | 5562252998     | dog grooming | under_review          |
-      | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab        | waiting_for_applicant |
-      | lars_rejected@snarkybark.se            | 0000000000     | rehab        | rejected              |
-      | nils_member@bowwowwow.se               | 0000000000     | dog crooning | accepted              |
-      | new_nurdle@happymutts.se               | 5562252998     | dog grooming | new                   |
+      | user_email                             | company_number | categories   | state                 | uploaded file names   |
+      | emma_under_review@happymutts.se        | 5562252998     | rehab        | under_review          | diploma.pdf,image.png |
+      | hans_under_review@happymutts.se        | 5562252998     | dog grooming | under_review          |                       |
+      | anna_waiting_for_info@nosnarkybarky.se | 5560360793     | rehab        | waiting_for_applicant |                       |
+      | lars_rejected@snarkybark.se            | 0000000000     | rehab        | rejected              |                       |
+      | nils_member@bowwowwow.se               | 0000000000     | dog crooning | accepted              |                       |
+      | new_nurdle@happymutts.se               | 5562252998     | dog grooming | new                   |                       |
 
     And the Membership Ethical Guidelines Master Checklist exists
 
@@ -164,32 +163,20 @@ Feature: SHF Application status is changed
     And  I should see t("shf_applications.accepted") 1 time in the list of applications
 
   @admin @user @selenium
-  Scenario: Admin rejects an application that had uploaded files (under_review to rejected)
-    Given  I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
-    And I am on the "edit my application" page
-    And I choose a file named "diploma.pdf" to upload
-    And I select files delivery radio button "upload_now"
-    And I click on t("shf_applications.edit.submit_button_label")
-    And I am Logged out
-    And I am logged in as "admin@shf.se"
-    And I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
-    And I should see "rehab"
-    Then I click on t("shf_applications.ask_applicant_for_info_btn")
-    And  I am logged in as "anna_waiting_for_info@nosnarkybarky.se"
-    And I am on the "edit my application" page
-    And I choose a file named "image.png" to upload
-    And I select files delivery radio button "upload_now"
-    And I click on t("shf_applications.edit.submit_button_label")
-    And I am Logged out
-    And I am logged in as "admin@shf.se"
-    And I am on the "application" page for "anna_waiting_for_info@nosnarkybarky.se"
+  Scenario: Admin rejects an application that had uploaded files; files are delted (under_review to rejected)
+    Given I am logged in as "admin@shf.se"
+    When I am on the "application" page for "emma_under_review@happymutts.se"
+    Then I should see 2 uploaded files listed
+    And I should see "diploma.pdf"
+    And I should see "image.png"
+
     When I click on t("shf_applications.reject_btn")
     Then I should see t("shf_applications.reject.success")
     And I should see status line with status t("shf_applications.rejected")
     And I should see 0 uploaded files listed
     And I should not see "diploma.pdf"
     And I should not see "image.png"
-    And I should see "rehab"
+
 
   # From waiting for applicant to...
   @member @selenium

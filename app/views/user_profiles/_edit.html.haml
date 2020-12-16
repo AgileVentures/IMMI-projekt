@@ -3,24 +3,23 @@
 =#  current_user - the User viewing this (might be an admin, for example)
 -#  form_submit_url - the url used by the form when it is submitted
 
-- i18n_scope = 'devise.registrations.edit'
-- editor_is_current_user = user == current_user
-- admin_is_editting_their_profile = current_user.admin? && editor_is_current_user
-- admin_is_editting_another_profile = current_user.admin? && !editor_is_current_user
+:ruby
+  i18n_scope = 'devise.registrations.edit'
+  editor_is_current_user = user == current_user
+  admin_is_editing_their_profile = current_user.admin? && editor_is_current_user
+  admin_is_editing_another_profile = current_user.admin? && !editor_is_current_user
 
 %header.entry-header
-  - title_t_key = (editor_is_current_user ? 'my_profile_title' : 'edit_profile_for_title')
-  - title = t(title_t_key, scope: i18n_scope, user: user.full_name)
-  %h1.entry-title{ class: with_admin_css_class_if_needed(current_user, ['entry-title']) }
-    = title
-    - if admin_is_editting_another_profile
-      = link_to user_account_icon, @user, class: ['shf-icon', 'edit-user-account-icon'], title: t('.edit_user_account', name: user.full_name)
+  :ruby
+    username          = user_name_for_display(user)
+    base_title        = t(editor_is_current_user ? 'my_profile_title' : 'edit_profile_for_title', scope: i18n_scope, user: username)
+    edit_account_icon = edit_account_link(user, title: t('.edit_user_account', name: username), show_if: admin_is_editing_another_profile)
+    title             = h(base_title) + ' ' + edit_account_icon
+  = content_title(title, user: current_user)
 
 .entry-content.container
-
   = form_for(user, as: :user, url: form_submit_url, html: { method: :put }) do |f|
     != model_errors_helper(user)
-
     = render partial: 'devise/shared/member_photo', locals: { user: user, f: f }
 
     %h3= t('info_header', scope: i18n_scope )
@@ -44,7 +43,7 @@
           = app_form.label :contact_email
           = app_form.email_field :contact_email, placeholder: "#{t('activerecord.attributes.shf_application.contact_email')}", class: 'form-control'
 
-    - if admin_is_editting_another_profile
+    - if admin_is_editing_another_profile
       .row
         .form-group.col-sm
           = f.label :membership_number

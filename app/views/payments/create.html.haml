@@ -2,10 +2,8 @@
   = javascript_include_tag HIPS_JS_CDN
 
 %header.entry-header
-  %h1.entry-title
-    - payment_type = t("payment.payment_type.#{@payment.payment_type}")
-    = t('.title', payment_type: payment_type, user_name: @payment.user.full_name)
-
+  - payment_type = t("payment.payment_type.#{@payment.payment_type}")
+  = content_title(t('.title', payment_type: payment_type, user_name: @payment.user.full_name))
   .post-title-divider
     %span
 

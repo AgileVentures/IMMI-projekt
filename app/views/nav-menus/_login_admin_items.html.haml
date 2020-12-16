@@ -2,12 +2,17 @@
 - nav_link_class = 'nav-link'
 - if current_user.admin?
   %li
+    = link_to t('menus.nav.admin.all_uploaded_files'), user_uploaded_files_path(current_user), class: 'nav-link'
+  %li
     = link_to t('menus.nav.admin.app_configuration'), admin_only_app_configuration_path, class: nav_link_class
   %li
     = link_to t('menus.nav.admin.master_checklists'), admin_only_master_checklists_path, class: nav_link_class
 
   %li
     = link_to t('menus.nav.admin.dashboard'), admin_only_dashboard_path, class: nav_link_class
+
+  %li
+    = link_to t('menus.nav.admin.design_guide'), admin_only_designguide_path, class: nav_link_class
 
   %li
     = link_to t('about') + '...', '#', class: nav_link_class, data: { toggle: 'modal', target: '#about-info-modal' }

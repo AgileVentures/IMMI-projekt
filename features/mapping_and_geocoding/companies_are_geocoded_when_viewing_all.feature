@@ -1,4 +1,5 @@
 Feature: All companies are geocoded before being shown on the view all companies page
+
   As a visitor,
   so all companies are mapped when I look at the list of them,
   geocode any companies that aren't yet geocoded before everything is displayed,
@@ -24,11 +25,11 @@ Feature: All companies are geocoded before being shown on the view all companies
     Given the Membership Ethical Guidelines Master Checklist exists
 
     And the following users exist:
-      | email               | admin | member |
-      | emma@happymutts.com |       | true   |
-      | a@happymutts.com    |       | true   |
-      | me@notvisible.com   |       | true   |
-      | admin@shf.se        | true  |        |
+      | email               | admin | member | agreed_to_membership_guidelines |
+      | emma@happymutts.com |       | true   | true                            |
+      | a@happymutts.com    |       | true   | true                            |
+      | me@notvisible.com   |       | true   | true                            |
+      | admin@shf.se        | true  |        |                                 |
 
     And the following business categories exist
       | name         |
@@ -44,9 +45,11 @@ Feature: All companies are geocoded before being shown on the view all companies
     And the following payments exist
       | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
       | emma@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5560360793     |
+      | emma@happymutts.com | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
       | a@happymutts.com    | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
+      | a@happymutts.com    | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
       | me@notvisible.com   | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5569467466     |
-
+      | me@notvisible.com   | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
 
   @time_adjust
   Scenario: A company that isn't geocoded is geocoded before all are viewed

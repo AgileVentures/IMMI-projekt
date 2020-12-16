@@ -121,7 +121,7 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
 
   describe '.all_as_array_nested_by_name' do
     it "calls all_as_array with order: ['name']" do
-      expect(described_class).to receive(:all_as_array).with(order: %w(  name))
+      expect(described_class).to receive(:all_as_array).with(order: %w(name))
       described_class.all_as_array_nested_by_name
     end
   end
@@ -129,29 +129,55 @@ RSpec.describe AdminOnly::MasterChecklist, type: :model do
 
   describe 'descendants_not_in_use' do
 
-    it 'all children with is_in_use = false' do
-      mc_parent = create(:master_checklist)
-      child1_not_in_use = create(:master_checklist, name: 'not in use', parent: mc_parent, is_in_use: false)
-      create(:master_checklist, name: 'in use 1', parent: mc_parent, is_in_use: true)
-      create(:master_checklist, name: 'in use 2', parent: mc_parent, is_in_use: true)
+    it 'all descendants where is_in_use = false' do
+      mc_root = create(:master_checklist)
+      child1_not_in_use = create(:master_checklist,
+                                 name: 'not in use',
+                                 parent: mc_root,
+                                 is_in_use: false)
+      mc_inuse1 = create(:master_checklist, name: 'in use 1', parent: mc_root, is_in_use: true)
+      desc_inuse1_not_used = create(:master_checklist,
+                                    name: 'desc of in use 1, not in use',
+                                    parent: mc_inuse1,
+                                    is_in_use: false)
+      create(:master_checklist, name: 'in use 2', parent: mc_root, is_in_use: true)
 
-      children_found = mc_parent.descendants_not_in_use
-      expect(children_found.to_a).to match_array([child1_not_in_use])
+      expect(mc_root.descendants_not_in_use).to match_array([child1_not_in_use, desc_inuse1_not_used])
     end
   end
 
 
-  describe '.descendants_in_use' do
+  describe 'descendants_in_use' do
 
-    it 'all descendants with is_in_use = true' do
-      mc_parent = create(:master_checklist)
-      create(:master_checklist, name: 'not in use', parent: mc_parent, is_in_use: false)
-      child2_in_use = create(:master_checklist, name: 'child2_in_use', parent: mc_parent, is_in_use: true)
-      child3_in_use = create(:master_checklist, name: 'child3_in_use', parent: mc_parent, is_in_use: true)
-      child3_1_in_use = create(:master_checklist, name: 'child3_1_in_use', parent: mc_parent, is_in_use: true)
+    it 'all descendants where is_in_use = true' do
+      mc_root = create(:master_checklist)
+      child1_is_in_use = create(:master_checklist,
+                                 name: 'child1 in use',
+                                 parent: mc_root,
+                                 is_in_use: true)
+      child2_is_in_use = create(:master_checklist,
+                                name: 'child2 in use',
+                                parent: mc_root,
+                                is_in_use: true)
 
-      children_found = mc_parent.descendants_in_use
-      expect(children_found.to_a).to match_array([child2_in_use, child3_in_use, child3_1_in_use])
+      mc_in_use1 = create(:master_checklist, name: 'mc_in_use1', parent: mc_root, is_in_use: true)
+      create(:master_checklist,
+              name: 'desc of in use 1, not in use',
+              parent: mc_in_use1,
+              is_in_use: false)
+      create(:master_checklist, name: 'not in use', parent: mc_root, is_in_use: false)
+      mc_in_use2 = create(:master_checklist, name: 'mc_in_use2', parent: mc_root, is_in_use: true)
+      child1_in_use2 = create(:master_checklist, name: 'child1_in_use2',
+                              parent: mc_in_use2, is_in_use: true)
+      create(:master_checklist, name: 'child2_in_use2_not_in_use',
+                                         parent: mc_in_use2,
+                                         is_in_use: false)
+
+      expect(mc_root.descendants_in_use).to match_array([child1_is_in_use,
+                                                         child2_is_in_use,
+                                                         mc_in_use1,
+                                                         mc_in_use2,
+                                                         child1_in_use2])
     end
   end
 

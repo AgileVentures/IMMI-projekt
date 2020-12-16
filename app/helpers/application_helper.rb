@@ -1,18 +1,18 @@
 require 'meta_image_tags_helper'
 
 module ApplicationHelper
-
   # TODO refactor these and methods to access them into a small module that can be used (e.g. also in the PaymentsHelper)
   CSS_CLASS_YES = 'yes' unless defined?(CSS_CLASS_YES)
   CSS_CLASS_NO = 'no' unless defined?(CSS_CLASS_NO)
   CSS_CLASS_MAYBE = 'maybe' unless defined?(CSS_CLASS_MAYBE)
   CSS_ADMIN_CLASS = 'is-admin' unless defined?(CSS_ADMIN_CLASS)
-
+  CSS_CONTENT_TITLE_CLASS = 'entry-title'
 
   include MetaTagsHelper
   include MetaImageTagsHelper
   include ShfIconsHelper
 
+  include ERB::Util # Required to test helpers that use h()
 
   # TODO standardize this method name:  should it end in '_css_class' to make it clear it is not related to Ruby classes?
   def flash_class(level)
@@ -149,7 +149,6 @@ module ApplicationHelper
   # current UTC time in seconds, which will be of little use for CSS styling, but
   # there are no pretty alternatives.
   def unique_css_id(active_record_item)
-
     unique_id = if active_record_item.respond_to?(:id) && active_record_item.id
                   active_record_item.id.to_s
                 else
@@ -294,7 +293,7 @@ module ApplicationHelper
   # @param current_classes [Array[String]] - list of CSS classes
   # @return [Array] - a list of the current_classes with the admin class appended if needed
   def with_admin_css_class_if_needed(user, current_classes = [])
-    user.admin? ? (current_classes << admin_css_class) : current_classes
+    user&.admin? ? (current_classes << admin_css_class) : current_classes
   end
 
 
@@ -320,4 +319,35 @@ module ApplicationHelper
     CSS_CLASS_MAYBE
   end
 
+  # public method for accessing the CSS class for the main title of a page
+  def content_title_css_class
+    CSS_CONTENT_TITLE_CLASS
+  end
+
+  # public method to render the main title of a page
+  def content_title(title, user: nil, id: nil, classes: [])
+    tag.h1 title,
+           class: classes + with_admin_css_class_if_needed(user, [content_title_css_class]),
+           id: id
+  end
+
+  def user_name_for_display(user)
+    return '' unless user
+
+    user_name = user.full_name
+    user_name = user.email if user_name.blank?
+    h(user_name)
+  end
+
+  def show_if_user_is_admin(user, text_if_they_are_admin)
+    user.admin? ? tag.span("#{text_if_they_are_admin}", class: 'small') : ''
+  end
+
+  def edit_account_link(user, url: admin_only_edit_user_account_path(user), text: user_account_icon, title: '', show_if: true)
+    show_if ? link_to(text, url, class: ['shf-icon', 'edit-user-account-icon'], title: title) : ''
+  end
+
+  def edit_profile_link(user, url: admin_only_user_profile_edit_path(user), text: user_profile_icon, title: '', show_if: true)
+    show_if ? link_to(text, url, class: ['shf-icon', 'edit-user-profile-icon'], title: title) : ''
+  end
 end

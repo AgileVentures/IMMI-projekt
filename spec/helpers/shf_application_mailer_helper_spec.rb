@@ -88,11 +88,11 @@ RSpec.describe ShfApplicationMailerHelper, type: :helper do
                                                   company_number: '2548397971',
                                                   num_categories: 2)
       fn1 = file_fixture('diploma.pdf')
-      shf_app.uploaded_files.create(actual_file: File.open(fn1, 'r'))
+      shf_app.uploaded_files << create(:uploaded_file_for_application, actual_file: File.open(fn1, 'r'), shf_application: shf_app)
       fn2 = file_fixture('image.jpg')
-      shf_app.uploaded_files.create(actual_file: File.open(fn2, 'r'))
+      shf_app.uploaded_files << create(:uploaded_file_for_application, actual_file:  File.open(fn2, 'r'), shf_application: shf_app)
       fn3 = file_fixture('image.gif')
-      shf_app.uploaded_files.create(actual_file: File.open(fn3, 'r'))
+      shf_app.uploaded_files << create(:uploaded_file_for_application, actual_file:  File.open(fn3, 'r'), shf_application: shf_app)
 
       shf_app
       }

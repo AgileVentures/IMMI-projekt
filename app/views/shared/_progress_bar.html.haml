@@ -4,4 +4,5 @@
 - is_complete_class = percent_complete == 100 ? 'is-complete' : ''
 .progress#progress
   .progress-bar#progress-bar{ role: 'progressbar', style: "width: #{ percent_complete }%", class: is_complete_class, 'aria-valuenow':"#{ percent_complete }", 'aria-valuemin': '0', 'aria-valuemax': '100' }
-    %span.percent-text= "#{ percent_complete }% #{ t('.progress_complete') }"
+    .percent-text= "#{ percent_complete }% #{ t('.progress_complete') }"
+

@@ -26,6 +26,7 @@
                                   subject: t('.subcategories_for',
                                              category_name: business_category.name))
         = link_to(question_icon, 'javascript:;',
+                  tabindex: 0,
                   data: { toggle: 'popover',
                           trigger: 'focus',
                           html: true,

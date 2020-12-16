@@ -73,6 +73,10 @@ FactoryBot.define do
         company = FactoryBot.create(:company)
       end
       shf_app.companies << company if company
+
+      if shf_app.accepted? && shf_app.when_approved.nil?
+        shf_app.when_approved = Date.today
+      end
     end
 
   end

@@ -53,7 +53,7 @@ Feature: Admins, Members, and Users edit their own User Profile
     And I fill in t("devise.registrations.edit.confirm_password") with "NewPassword"
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label") button
-    Then I should see t("devise.registrations.edit.success")
+    Then I should see t("devise.registrations.updated")
 
 
   # -----------------------------------------------
@@ -145,7 +145,7 @@ Feature: Admins, Members, and Users edit their own User Profile
     When I fill in t("activerecord.attributes.user.last_name") with "andersson (changed)"
     And I fill in t("devise.registrations.edit.current_password") with "password"
     And I click on t("devise.registrations.edit.submit_button_label")
-    Then I should see t("devise.registrations.edit.success")
+    Then I should see t("devise.registrations.updated")
 
     When I am on the "edit my user profile" page
     Then the t("activerecord.attributes.user.first_name") field should be set to "emma (changed)"

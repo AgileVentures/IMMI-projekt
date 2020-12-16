@@ -27,11 +27,11 @@ Feature: Edit SHF Application
     And the application file upload options exist
 
     And the following applications exist:
-      | user_email        | company_number         | state                 | categories |
-      | emma@random.com   | 5560360793             | waiting_for_applicant | Groomer    |
-      | hans@random.com   | 2120000142, 5560360793 | new                   | Groomer    |
-      | nils@random.com   | 2120000142             | accepted              | Groomer    |
-      | bob@barkybobs.com | 5560360793             | rejected              | Groomer    |
+      | user_email        | company_number         | state                 | categories | uploaded file names    |
+      | emma@random.com   | 5560360793             | waiting_for_applicant | Groomer    |                        |
+      | hans@random.com   | 2120000142, 5560360793 | new                   | Groomer    | image.jpg, diploma.pdf |
+      | nils@random.com   | 2120000142             | accepted              | Groomer    |                        |
+      | bob@barkybobs.com | 5560360793             | rejected              | Groomer    |                        |
 
   @selenium
   Scenario: Applicant makes mistake when editing their own application (no files uploaded) [SAD PATH]
@@ -54,7 +54,7 @@ Feature: Edit SHF Application
     And I am on the "user instructions" page
     And I click on first t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
-    And I choose a file named "diploma.pdf" to upload
+    And I choose a file named "diploma.pdf" to upload for the application
     And I fill in t("shf_applications.show.contact_email") with ""
     And I unselect "Groomer" Category
     And I click on t("shf_applications.edit.submit_button_label")
@@ -87,7 +87,7 @@ Feature: Edit SHF Application
     Then I should be on "Edit My Application" page
 
     And I select files delivery radio button "upload_now"
-    And I choose a file named "diploma.pdf" to upload
+    And I choose a file named "diploma.pdf" to upload for the application
 
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should be on the "show my application" page for "emma@random.com"
@@ -97,33 +97,14 @@ Feature: Edit SHF Application
 
   @selenium
   Scenario: User deletes uploaded files
-    Given I am logged in as "emma@random.com"
-    And I am on the "user instructions" page
-    And I click on first t("menus.nav.users.my_application") link
-    Then I should be on "Edit My Application" page
-
-    And I select files delivery radio button "upload_now"
-    And I choose files named "diploma.pdf, image.jpg" to upload
-
-    And I click on t("shf_applications.edit.submit_button_label")
-    Then I should be on the "show my application" page for "emma@random.com"
-
-    And I should see t("shf_applications.update.success")
-    And I should not see t("shf_applications.update.success_with_app_files_missing")
-
-    And I click on first t("menus.nav.users.my_application") link
-    Then I should be on "Edit My Application" page
-
-    And I delete the second uploaded file
-    And I should not see "image.jpg"
-
-    And I should be on "Edit My Application" page
-
+    Given I am logged in as "hans@random.com"
+    When I am on the "Edit My Application" page
+    And I click on the delete icon for "image.jpg"
+    Then I should not see "image.jpg"
     And I should see "diploma.pdf"
 
-    And I delete the first uploaded file
-    And I should not see "diploma.pdf"
-
+    When I delete the first uploaded file
+    Then I should not see "diploma.pdf"
     And I should see t("shf_applications.uploads.no_files")
 
 
@@ -159,23 +140,23 @@ Feature: Edit SHF Application
   Scenario: User edit app with two companies, corrects an error in company number
     Given I am logged in as "hans@random.com"
     And I am on the "user instructions" page
-    And I click on first t("menus.nav.users.my_application") link
+    When I click on first t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
     And the t("shf_applications.show.company_number") field should be set to "5560360793, 2120000142"
 
-    And I fill in the translated form with data:
+    When I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
       | 556036-07, 2120000142                | 031-1234567                       | info@craft.se                      |
 
     And I click on t("shf_applications.edit.submit_button_label")
-    And I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
-    Then I fill in t("shf_applications.show.company_number") with "556036-0793, 2120000142"
+    Then I should see t("activerecord.errors.models.shf_application.attributes.companies.not_found", value: '55603607')
+
+    When I fill in t("shf_applications.show.company_number") with "556036-0793, 2120000142"
     And I click on t("shf_applications.edit.submit_button_label")
     Then I should be on the "show my application" page for "hans@random.com"
-
-    And I should see t("shf_applications.update.success_with_app_files_missing")
-
+    And I should see t("shf_applications.update.success")
     And I should see "5560360793, 2120000142"
+
 
   Scenario: Applicant can not edit applications not created by them
     Given I am logged in as "emma@random.com"
@@ -233,3 +214,22 @@ Feature: Edit SHF Application
     And I should not see t("show_in_swedish") image
     And I should not see t("show_in_english") image
     And I should see t("cannot_change_language") image
+
+  @selenium
+  Scenario: Cannot see subcategories
+    Given I am logged in as "admin@shf.se"
+    And I am on the "business categories" page
+    And I click the icon with CSS class "add-entity-button" for the row with "Groomer"
+    And I should see t("business_categories.index.add_subcategory")
+    When I fill in the translated form with data:
+      | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
+      | overall grooming                               | full service grooming                                 |
+
+    When I click on t("save")
+    Then I should see "overall grooming"
+    Then I am Logged out
+    Given I am logged in as "emma@random.com"
+    Given I am on the "user instructions" page
+    And I click on t("menus.nav.users.my_application") link
+    Then I should be on "Edit My Application" page
+    And I should not see "overall grooming"

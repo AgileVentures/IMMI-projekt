@@ -1,0 +1,23 @@
+%header.entry-header
+  = content_title(t('.title', file_name: @uploaded_file.actual_file_file_name), user: current_user)
+
+.entry-content
+  %p.note= t('.info')
+
+  = form_for [:user, @uploaded_file], html: { multipart: true }  do |f|
+    != model_errors_helper(@uploaded_file)
+
+    .row.uploaded-file
+      .col
+        = render partial: 'uploaded_file_and_name', locals: {uploaded_file: @uploaded_file}
+    .form-group
+      = f.label :description, t('.description')
+      = f.text_field :description, class: 'form-control'
+
+    .form-group
+      = f.submit t('save'), class: 'btn btn-primary mb-2 form-control'
+
+  %hr
+  .text-center
+    = link_to t('.index_title'),
+     user_uploaded_files_path(current_user), class:'btn btn-light btn-sm'

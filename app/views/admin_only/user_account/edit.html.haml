@@ -2,18 +2,14 @@
   = stylesheet_link_tag 'image-actions-custom-menu', media: 'all'
 
 %header.entry-header
-  - user_name = @user.full_name
-
-  %h1{ class: with_admin_css_class_if_needed(@current_user, ['entry-title']) }
-    = user_name.empty? ? @user.email : user_name
-    - if @user.admin?
-      %span.small
-        (#{ t('.is_an_admin') })
-    = link_to user_profile_icon, admin_only_user_profile_edit_path(@user), class: ['shf-icon', 'edit-profile-icon'], title: t('.edit_user_profile', name: user_name)
-
+  :ruby
+    username          = user_name_for_display(@user)
+    admin_user_text   = show_if_user_is_admin(@user, t('.is_an_admin'))
+    edit_profile_icon = edit_profile_link(@user, title: t('.edit_user_profile', name: username))
+    title             = username + ' ' + ' ' + admin_user_text + ' ' + edit_profile_icon
+  = content_title(title, user: current_user)
 
 .entry-content.container
-
   = form_for(@user, as: :user, url: admin_only_user_account_path(@user) ) do |f|
 
     != model_errors_helper(@user)

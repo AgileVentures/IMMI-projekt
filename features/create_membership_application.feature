@@ -30,7 +30,7 @@ Feature: Create a new membership application
       | applicant_2@random.com |       |        |            |           |
       | member@random.com      |       | true   | Lars       | IsaMember |
       | admin@shf.se           | yes   |        |            |           |
-
+      | mandalorian@random.com | false |        | Din        | Djarin    |
     And the following business categories exist
       | name         |
       | Groomer      |
@@ -84,7 +84,7 @@ Feature: Create a new membership application
 
     And I select "Groomer" Category
 
-    And I choose a file named "diploma.pdf" to upload
+    And I choose a file named "diploma.pdf" to upload for the application
 
     And I select files delivery radio button "upload_now"
 
@@ -181,7 +181,6 @@ Feature: Create a new membership application
     When I am on the "show my application" page for "applicant_1@random.com"
     And I should see "5560360793, 2120000142"
 
-
   @selenium
   Scenario: A user can submit a new Membership Application with multiple categories
     Given I am on the "user instructions" page
@@ -245,7 +244,7 @@ Feature: Create a new membership application
       | shf_applications.new.contact_email | shf_applications.new.phone_number |
       | <c_email>                          | <phone>                           |
 
-    And I choose a file named "diploma.pdf" to upload
+    And I choose a file named "diploma.pdf" to upload for the application
 
     And I select files delivery radio button "files_uploaded"
 
@@ -335,3 +334,22 @@ Feature: Create a new membership application
     Given I am logged in as "admin@shf.se"
     And I am on the "new application" page
     Then I should see a message telling me I am not allowed to see that page
+
+  @selenium
+  Scenario: Cannot see subcategories
+    Given I am logged in as "admin@shf.se"
+    And I am on the "business categories" page
+    And I click the icon with CSS class "add-entity-button" for the row with "Groomer"
+    And I should see t("business_categories.index.add_subcategory")
+    When I fill in the translated form with data:
+      | activerecord.attributes.business_category.name | activerecord.attributes.business_category.description |
+      | overall grooming                               | full service grooming                                    |
+
+    When I click on t("save")
+    Then I should see "overall grooming"
+    Then I am Logged out
+    Given I am logged in as "mandalorian@random.com"
+    Given I am on the "user instructions" page
+    And I click on t("menus.nav.users.apply_for_membership") link
+    Then I should be on the "new application" page
+    And I should not see "overall grooming"

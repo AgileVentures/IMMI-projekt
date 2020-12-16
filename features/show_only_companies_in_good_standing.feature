@@ -1,6 +1,15 @@
-Feature: So that I do not get frustrated by trying to find out more
-  about a company that does not have complete information,
-  Only show companies with complete information for non admin users
+Feature: Visitors see only companies in good standing with complete information
+
+  As a visitor I only want to see companies that are in good standing with SHF
+  so that I do not work with any companies or members of those companies
+    that have not met all of the requirements for being a member,
+    including paying their fees,
+
+  And I only want to see companies with all of the information needed
+    so that I can contact them,
+
+  Visitors should only see companies in good standing with complete information.
+
 
   Background:
     Given the Membership Ethical Guidelines Master Checklist exists
@@ -33,15 +42,15 @@ Feature: So that I do not get frustrated by trying to find out more
       | NoMember     | 9697222900     | hello@nomember.se      | Stockholm             | Alingsås |
 
     And the following users exist:
-      | email                        | admin | member |
-      | emmagroomer@happymutts.com   |       | true   |
-      | annatrainer@bowsers.com      |       | true   |
-      | ole@noOldRegion.se           |       | true   |
-      | maja@onlyNoRegion.se         |       | true   |
-      | kikki@noName.se              |       | true   |
-      | lars@nopayment.se            |       | true   |
-      | larsTrainer@noRegionOrOld.se |       | true   |
-      | admin@shf.se                 | true  | false  |
+      | email                        | admin | member | agreed_to_membership_guidelines |
+      | emmagroomer@happymutts.com   |       | true   | true                            |
+      | annatrainer@bowsers.com      |       | true   | true                            |
+      | ole@noOldRegion.se           |       | true   | true                            |
+      | maja@onlyNoRegion.se         |       | true   | true                            |
+      | kikki@noName.se              |       | true   | true                            |
+      | lars@nopayment.se            |       | true   | true                            |
+      | larsTrainer@noRegionOrOld.se |       | true   | true                            |
+      | admin@shf.se                 | true  | false  |                                 |
 
     And the following applications exist:
       | user_email                 | company_number | categories       | state    |

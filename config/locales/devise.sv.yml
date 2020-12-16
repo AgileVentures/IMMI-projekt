@@ -52,7 +52,7 @@ sv:
       signed_up_but_locked: "Ett nytt konto har skapats. Men vi kunde tyvärr inte logga in dig eftersom ditt konto inte är låst."
       signed_up_but_unconfirmed: "En bekräftelse har skickats till din epost. Klicka på länken i meddelandet för att aktivera ditt konto."
       update_needs_confirmation: "Ditt konto har uppdaterats, men vi behöver bekräfta din epostadress. En bekräftelse har skickats till din nya epostadress."
-      updated: "Ditt konto har uppdaterats."
+      updated: "Ditt profil har uppdaterats."
     sessions:
       signed_in: "Du är inloggad."
       signed_out: "Du är utloggad."

@@ -44,11 +44,12 @@ end
 
 When /^I confirm popup$/ do
 
-  if Capybara.current_driver == :poltergeist
+  driver = Capybara.current_driver
+  if driver == :poltergeist
     using_wait_time 3 do
       page.driver.accept_modal(:confirm)
     end
-  elsif Capybara.current_driver == (:selenium || :selenium_browser)
+  elsif (driver == :selenium) || (driver == :selenium_browser)
     page.driver.browser.switch_to.alert.accept
   else
     raise 'step not configured for current browser driver'
@@ -80,11 +81,13 @@ end
 When(/^I fill in the( translated)? form with data:$/) do |translated, table|
   data = table.hashes.first
   data.each do |label, value|
-    if translated
-      fill_in i18n_content("#{label}"), with: value
-    else
-      fill_in label, with: value
-    end
+    # If the machine is fast, the timing of entering text might be off:
+    #   the field might not be ready to accept text, or
+    #   the placement of the cursor might be off.
+    #  Clicking in the field may help with the timing.
+    location_label = translated ? i18n_content("#{label}") : label
+    find(:fillable_field, location_label).click
+    fill_in location_label, with: value
   end
 end
 

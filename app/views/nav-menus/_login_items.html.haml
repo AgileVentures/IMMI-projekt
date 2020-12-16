@@ -7,8 +7,9 @@
         = link_to t('devise.registrations.edit.title'), edit_user_registration_path, class: 'nav-link'
       %li
         = link_to t('menus.nav.users.your_account'), user_path(current_user), class: 'nav-link'
+        = link_to t('menus.nav.users.uploaded_files'), user_uploaded_files_path(current_user), class: 'nav-link' unless current_user.admin?
 
-      = render partial: 'login_admin_items'
+      = render 'nav-menus/login_admin_items'
 
       %li
         = link_to t('devise.sessions.destroy.log_out'),

@@ -36,9 +36,6 @@ module AdminOnly
     # This ensures that only one AppSettings row is created
     validates_inclusion_of :singleton_guard, in: [0]
 
-
-    after_save :update_site_meta_image_info
-
     has_attached_file :chair_signature,
                       url: :url_for_images,
                       default_url: 'chair_signature.png',
@@ -112,6 +109,29 @@ module AdminOnly
       end
       alias_method :config_to_use, :instance
 
+    end
+
+    after_save :update_site_meta_image_info
+
+    after_update :clear_image_caches
+
+    def clear_image_caches
+      if saved_change_to_shf_logo_file_name?
+        clear_proof_of_membership_image_caches
+        clear_h_brand_image_caches
+      elsif saved_change_to_chair_signature_file_name?
+        clear_proof_of_membership_image_caches
+      elsif saved_change_to_sweden_dog_trainers_file_name?
+        clear_h_brand_image_caches
+      end
+    end
+
+    def clear_proof_of_membership_image_caches
+      User.clear_all_proof_of_membership_jpg_caches
+    end
+
+    def clear_h_brand_image_caches
+      Company.clear_all_h_brand_jpg_caches
     end
 
 

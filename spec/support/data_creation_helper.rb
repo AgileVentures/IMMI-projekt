@@ -52,7 +52,7 @@ module DataCreationHelper
 
   # add an uploaded file to the SHF application
   def add_uploaded_file(shf_app)
-    shf_app.uploaded_files.create(actual_file: File.open(UPLOAD_PNG_FILE))
+    shf_app.uploaded_files << create(:uploaded_file, actual_file: File.open(UPLOAD_PNG_FILE))
   end
 
 

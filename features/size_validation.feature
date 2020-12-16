@@ -20,7 +20,7 @@ Feature: Applicant uploads too large a file for their application
 
     And the following applications exist:
       | user_email         | company_number | state        |
-      | emma@happymutts.se | 5562252998     | under_review |
+      | emma@happymutts.se | 5562252998     | new |
 
     And the following companies exist:
       | name                 | company_number | email                  | region     |
@@ -37,7 +37,7 @@ Feature: Applicant uploads too large a file for their application
     And I select "Groomer" Category
     And I select files delivery radio button "files_uploaded"
 
-    And I choose a file named "diploma_huge.pdf" to upload
+    And I choose a file named "diploma_huge.pdf" to upload for the application
     When I click on t("shf_applications.new.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should not see t("shf_applications.create.success")
@@ -53,11 +53,11 @@ Feature: Applicant uploads too large a file for their application
     And I select "Groomer" Category
     And I select files delivery radio button "files_uploaded"
 
-    And I choose a file named "diploma_huge.pdf" to upload
+    And I choose a file named "diploma_huge.pdf" to upload for the application
     When I click on t("shf_applications.new.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
 
-    Then I choose a file named "diploma.pdf" to upload
+    Then I choose a file named "diploma.pdf" to upload for the application
     And I select files delivery radio button "files_uploaded"
     When I click on t("shf_applications.edit.submit_button_label")
     And I should see t("shf_applications.update.success")
@@ -71,7 +71,7 @@ Feature: Applicant uploads too large a file for their application
       | 5560360793                     | 031-1234567                  | applicant_2@random.com        |
     And I select "Groomer" Category
     And I select files delivery radio button "upload_now"
-    And I choose a file named "upload-just-under-limit.pdf" to upload
+    And I choose a file named "upload-just-under-limit.pdf" to upload for the application
     When I click on t("shf_applications.new.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should see t("shf_applications.create.success", email_address: applicant_2@random.com)
@@ -80,7 +80,7 @@ Feature: Applicant uploads too large a file for their application
   Scenario: Existing application - Uploads a file that is too large
     Given I am logged in as "emma@happymutts.se"
     And I am on the "edit my application" page
-    And I choose a file named "diploma_huge.pdf" to upload
+    And I choose a file named "diploma_huge.pdf" to upload for the application
     And I select files delivery radio button "upload_now"
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
@@ -90,13 +90,13 @@ Feature: Applicant uploads too large a file for their application
   Scenario: Existing application - Uploads a file that is too large then uploads ok file
     Given I am logged in as "emma@happymutts.se"
     And I am on the "edit my application" page
-    And I choose a file named "diploma_huge.pdf" to upload
+    And I choose a file named "diploma_huge.pdf" to upload for the application
     And I select files delivery radio button "upload_now"
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
     And I should not see t("shf_applications.update.success")
 
-    Then I choose a file named "diploma.pdf" to upload
+    Then I choose a file named "diploma.pdf" to upload for the application
     When I click on t("shf_applications.edit.submit_button_label")
 
     And I should see t("shf_applications.update.success")
@@ -105,7 +105,7 @@ Feature: Applicant uploads too large a file for their application
   Scenario: Existing application - Uploads a file just under the size limit
     Given I am logged in as "emma@happymutts.se"
     And I am on the "edit my application" page
-    And I choose a file named "upload-just-under-limit.pdf" to upload
+    And I choose a file named "upload-just-under-limit.pdf" to upload for the application
     And I select files delivery radio button "upload_now"
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large")
@@ -116,7 +116,7 @@ Feature: Applicant uploads too large a file for their application
     Given I am logged in as "emma@happymutts.se"
     And I set the locale to "en"
     And I am on the "edit my application" page
-    And I choose a file named "diploma_huge.pdf" to upload
+    And I choose a file named "diploma_huge.pdf" to upload for the application
     And I select files delivery radio button "upload_now"
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
@@ -128,7 +128,7 @@ Feature: Applicant uploads too large a file for their application
     Given I am logged in as "emma@happymutts.se"
     And I set the locale to "sv"
     And I am on the "edit my application" page
-    And I choose a file named "diploma_huge.pdf" to upload
+    And I choose a file named "diploma_huge.pdf" to upload for the application
     And I select files delivery radio button "upload_now"
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
@@ -138,13 +138,13 @@ Feature: Applicant uploads too large a file for their application
     Given I am logged in as "emma@happymutts.se"
     And I set the locale to "sv"
     And I am on the "edit my application" page
-    And I choose a file named "diploma_huge.pdf" to upload
+    And I choose a file named "diploma_huge.pdf" to upload for the application
     And I select files delivery radio button "upload_now"
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)
     And I set the locale to "en"
     And I am on the "edit my application" page
-    And I choose a file named "diploma_huge.pdf" to upload
+    And I choose a file named "diploma_huge.pdf" to upload for the application
     And I select files delivery radio button "upload_now"
     When I click on t("shf_applications.edit.submit_button_label")
     Then I should not see t("activerecord.errors.models.uploaded_file.attributes.actual_file_file_size.file_too_large", locale: :sv)

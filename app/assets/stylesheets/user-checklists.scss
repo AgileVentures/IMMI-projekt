@@ -68,18 +68,22 @@ $guideline-list-left-padding: 2rem;
     height: 2rem;
     margin-bottom: .5rem;
     margin-top: .5rem;
+    overflow: visible;
 
     .percent-text {
       color: $body-text;
       font-size: 1rem;
+      text-align: left;
     }
 
     .progress-bar {
       background-color: lighten($blue-element-color, 30%);
+      overflow: visible;
     }
 
     .progress-bar.is-complete {
       background-color: $is-complete-color;
+      overflow: visible;
     }
 
   }

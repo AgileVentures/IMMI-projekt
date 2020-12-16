@@ -1,0 +1,12 @@
+- uploaded_file = local_assigns[:uploaded_file]
+
+= link_to uploaded_file.actual_file.url, target: "_blank" do
+  - if uploaded_file&.image?
+    .image= image_tag(uploaded_file.actual_file.url)
+  - else
+    %icon= icon('far',uploaded_file&.icon, { class: 'file-icon', alt: uploaded_file&.actual_file_file_name })
+
+  .clearfix
+  .file-name
+    = uploaded_file.actual_file_file_name
+    = external_link_icon(html_options: {class: 'external-link'})
