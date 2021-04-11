@@ -262,6 +262,12 @@ sv:
         facebook_url: Facebook
         instagram_url: Instagram
         youtube_url: Youtube
+        facebook_url_title: Länk till Facebook-sidan
+        facebook_url_alt: Länk till Facebook
+        instagram_url_title: Länk till Instagram-sidan
+        instagram_url_alt: Länk till Instagram
+        youtube_url_title: Länk till YouTube-sidan
+        youtube_url_alt: Länk till YouTube
         org_nr: *org_nr
         post_code: *post_code
         city: *city

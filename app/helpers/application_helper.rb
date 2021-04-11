@@ -82,11 +82,13 @@ module ApplicationHelper
   # @param icon [String] - the name of the FontAwesome icon, without any leading 'fa-'.  Ex: 'facebook', or 'youtube-square'
   # @return [String] - the HTML link to the icon, with the CSS classes 'fab' and 'fa-2x' applied and target '_blank'
   #
-  def icon_link(url, icon)
+  def icon_link(url, icon, alt='', title='')
+    title = alt if title.blank?
+    alt = title if alt.blank?
     if url.blank? || icon.nil?
       nil
     else
-      link_to icon('fab', icon, {class: 'fa-2x'}), url, target: '_blank'
+      link_to icon('fab', icon, {class: 'fa-2x'}), url, {target: '_blank', alt: alt, title: title} 
     end
   end
 
