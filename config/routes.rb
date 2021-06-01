@@ -22,7 +22,11 @@ Rails.application.routes.draw do
         get 'payments', to: 'dashboard#payments'
 
         resources :master_checklist_types
-        resources :memberships
+
+        # Update membership status for all users
+        get 'anvandare/update-membership-status-all', to: 'user_account#update_membership_status_all',
+            as: :update_membership_status_all
+
       end
 
 

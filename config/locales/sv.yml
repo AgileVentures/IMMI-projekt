@@ -1607,6 +1607,16 @@ sv:
         success: Användarens information uppdaterad.
         error: Ett problem hindrade användarinformationen från att uppdateras.
 
+      update_membership_status_all_modal:
+        title: "Confirm: Update membership status for all"
+        body: Do you really want to update the membership status for all users?  This will take a few minutes. Note that no emails will be sent.
+        confirm_do_updates: Yes, update all
+
+      update_membership_status_all:
+        reason_update_happened: Admin Ran Update All M.Statuses
+        success: Membership status for all members was updated. You can check the MembershipStatusUpdater log for the results.
+        error: There was a problem updating membership status for all users.  Please review the logs for details.
+
 
     master_checklists:
       new_item: &new_master_list_item New Master List Item
@@ -2133,6 +2143,7 @@ sv:
         dashboard: Dashboard
         design_guide: Design Guide
         all_uploaded_files: All Uploaded Files
+        update_all_membership_status:  Update Membership Status...
 
         categories:
           submenu_title: Kategorier

@@ -96,8 +96,19 @@ class MembershipStatusUpdater
     update_membership_status(user, user, logmsg_user_updated, send_email: send_email)
   end
 
+
   # end of Notifications received from observed classes
   # -----------------------------------------------------------------------------------
+
+  def check_grant_renew_and_status(given_user, notifier = nil, reason_update_happened = nil,
+                                   send_email: send_email_default)
+
+    check_grant_membership_or_renew(given_user, notifier, reason_update_happened,
+                                    send_email: send_email)
+
+    update_membership_status(given_user, notifier, reason_update_happened,
+                             send_email: send_email)
+  end
 
 
   def check_grant_membership_or_renew(given_user, notifier = nil, reason_update_happened = nil,
@@ -106,7 +117,7 @@ class MembershipStatusUpdater
 
     log_and_check("#{__method__}", given_user, [notifier], notifier, reason_update_happened) do |user, _other_args, log|
       # next_membership_start_date =  user.membership_expire_date.nil? ? today : user.membership_expire_date + 1.day
-      if  user.membership_expire_date.nil? || user.membership_expire_date < today
+      if user.membership_expire_date.nil? || user.membership_expire_date < today
         next_membership_start_date = today
       else
         next_membership_start_date = user.membership_expire_date + 1
@@ -190,9 +201,11 @@ class MembershipStatusUpdater
     LOGMSG_PAYMENT_MADE
   end
 
+
   def logmsg_checklist_completed
     LOGMSG_CHECKLIST_COMPLETED
   end
+
 
   # -----------------------------------------------------------------------------------------------
 
