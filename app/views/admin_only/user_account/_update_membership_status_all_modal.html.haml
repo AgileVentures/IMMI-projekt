@@ -1,0 +1,22 @@
+-# This is a Bootstrap 4 modal.
+-# @url https://getbootstrap.com/docs/4.2/components/modal/
+-#
+.modal.fade#update-membership-status-all-modal{ tabindex:'-1', role:'dialog', aria: { labelledby: 'update-membership-status-all-modal-title', hidden: 'true' } }
+
+  .modal-dialog.modal-dialog-centered.modal-sm{ role:'document' }
+    .modal-content
+      .update-membership-status-all
+
+        .modal-header
+          %h4.modal-title#update-membership-status-all-modal-title= t('.title')
+
+        .modal-body
+          %p= t('.body')
+
+        .modal-footer
+          %button.btn-secondary.btn-sm#dismiss{ data: { dismiss:'modal' } }
+            = t('close')
+
+          = link_to t('.confirm_do_updates'),
+                admin_only_update_membership_status_all_path,
+                class: 'button btn-primary btn-sm'

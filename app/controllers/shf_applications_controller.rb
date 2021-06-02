@@ -3,7 +3,7 @@ class ShfApplicationsController < ApplicationController
   include RobotsMetaTagAllActions
   include PaginationUtility
 
-  before_action :get_shf_application, except: [:information, :index, :new, :create]
+  before_action :get_shf_application, except: [:index, :new, :create]
   before_action :authorize_shf_application, except: [:get_edit_row_business_category,
                                                      :get_display_row_business_category,
                                                      :business_subcategories]
@@ -207,11 +207,6 @@ class ShfApplicationsController < ApplicationController
     end
 
     head :ok
-
-  end
-
-
-  def information
 
   end
 

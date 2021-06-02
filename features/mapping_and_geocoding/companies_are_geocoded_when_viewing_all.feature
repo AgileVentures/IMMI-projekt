@@ -12,9 +12,9 @@ Feature: All companies are geocoded before being shown on the view all companies
       | Västerbotten |
 
     Given the following kommuns exist:
-      | name      |
-      | Alingsås  |
-      | Bromölla  |
+      | name     |
+      | Alingsås |
+      | Bromölla |
 
     Given the following companies exist:
       | name                 | company_number | email                  | region       | kommun   | visibility     |
@@ -25,16 +25,16 @@ Feature: All companies are geocoded before being shown on the view all companies
     Given the Membership Ethical Guidelines Master Checklist exists
 
     And the following users exist:
-      | email               | admin | member | agreed_to_membership_guidelines |
-      | emma@happymutts.com |       | true   | true                            |
-      | a@happymutts.com    |       | true   | true                            |
-      | me@notvisible.com   |       | true   | true                            |
-      | admin@shf.se        | true  |        |                                 |
+      | email               | admin | membership_status | member | agreed_to_membership_guidelines |
+      | emma@happymutts.com |       | current_member    | true   | true                            |
+      | a@happymutts.com    |       | current_member    | true   | true                            |
+      | me@notvisible.com   |       | current_member    | true   | true                            |
+      | admin@shf.se        | true  |                   |        |                                 |
 
     And the following business categories exist
-      | name         |
-      | Groomer      |
-      | Trainer      |
+      | name    |
+      | Groomer |
+      | Trainer |
 
     And the following applications exist:
       | user_email          | company_number | categories | state    |
@@ -50,6 +50,15 @@ Feature: All companies are geocoded before being shown on the view all companies
       | a@happymutts.com    | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
       | me@notvisible.com   | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5569467466     |
       | me@notvisible.com   | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
+
+    And the following memberships exist:
+      | email               | first_day  | last_day   |
+      | emma@happymutts.com | 2017-01-01 | 2017-12-31 |
+      | a@happymutts.com    | 2017-01-01 | 2017-12-31 |
+      | me@notvisible.com   | 2017-01-01 | 2017-12-31 |
+
+
+    # -----------------------------------------------------------------------------------------------
 
   @time_adjust
   Scenario: A company that isn't geocoded is geocoded before all are viewed

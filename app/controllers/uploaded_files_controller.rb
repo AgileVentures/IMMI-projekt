@@ -18,6 +18,12 @@ class UploadedFilesController < ApplicationController
 
   def new
     @allowed_file_types_list = allowed_file_types.values.join(',')
+
+    # Memoize (save info) if this request came from the User account page so that we can return to it
+    # after saving the new UploadedFfile
+    if params.include?(:from_acct_pg)
+      @request_from_acct_pg = true
+    end
     @uploaded_file = UploadedFile.new
     @uploaded_file.user = current_user
   end
@@ -30,11 +36,17 @@ class UploadedFilesController < ApplicationController
     @uploaded_file.user = current_user
     @uploaded_file.actual_file = uploaded_file_params['actual_file']
 
+    if params.fetch('_from_user_acct_page', '').blank?
+      success_redirect_to_path = user_uploaded_files_path(current_user)
+    else
+      success_redirect_to_path = user_path(current_user)
+    end
+
     respond_to do |format|
       if @uploaded_file.save
-        format.html { redirect_to user_uploaded_file_path(current_user, @uploaded_file),
+        format.html { redirect_to success_redirect_to_path,
                                   notice: t('.success', file_name: @uploaded_file.actual_file_file_name) }
-        format.json { render :show, status: :created, location: user_uploaded_file_path(current_user, @uploaded_file) }
+        format.json { render :show, status: :created, location: success_redirect_to_path }
       else
         format.html { render :new }
         format.json { render json: @uploaded_file.errors, status: :unprocessable_entity }
@@ -99,6 +111,7 @@ class UploadedFilesController < ApplicationController
     if @uploaded_file
       authorize(@uploaded_file)
     else
+      # TODO can Pundit policy scoping take care of this?
       for_user = current_user
       if params.include?(:user_id)
         for_user = User.find_by(id: params[:user_id]) if User.exists?(id: params[:user_id])

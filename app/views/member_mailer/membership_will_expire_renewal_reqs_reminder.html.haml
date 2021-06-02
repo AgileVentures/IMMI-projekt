@@ -1,0 +1,19 @@
+- provide :signoff do
+  = render 'application_mailer/signoff'
+
+- message_scope = 'mailers.member_mailer.membership_will_expire_renewal_reqs_reminder.message_text'
+
+= render layout: 'layouts/mail_from_membership' do
+  %p.membership-will-expire
+    = t('expire_alert_html', scope: message_scope)
+    %span.date-warning= "#{@expire_date}."
+
+  %p
+    = t('renewal_reqs', scope: message_scope)
+
+  %p.login-instructions= t('mailers.member_mailer.login_to_fix')
+  = render 'mailers_shared/login_here_with_email', email: @recipient_email
+
+  = render 'mailers_shared/how_to_pay_membership', user: @member
+  = render 'how_to_upload_files', login_menu_title: nav_menu_login_title(@member),
+                                  uploaded_files_menu_item: t('menus.nav.users.uploaded_files')

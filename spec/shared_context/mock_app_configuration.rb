@@ -123,8 +123,16 @@ class MockAppConfig
     60
   end
 
-  def self.membership_expired_grace_period
-    90
+  def self.membership_expired_grace_period_duration
+    'P90D'
+  end
+
+  def self.membership_term_duration
+    'P1Y'
+  end
+
+  def self.membership_expiring_soon_days
+    42
   end
 
   # ----------------------------------------------------

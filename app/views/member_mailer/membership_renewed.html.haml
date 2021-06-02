@@ -1,0 +1,56 @@
+- provide :signoff do
+  = render 'application_mailer/signoff'
+
+- message_scope = 'mailers.member_mailer.membership_renewed.message_text'
+
+= render layout: 'layouts/mail_from_membership' do
+  %p.awesome
+    = t('awesome', scope: message_scope)
+  %p.renewed-last-day
+    = t('renewed_last_day', scope: message_scope)
+    %span.date-warning= "#{@membership_last_day}."
+
+  %p.companies-you-belong-to
+    = t('companies_you_belong_to', scope: message_scope)
+
+
+  %div{ style: "margin-left: 10pt; margin-bottom: 14pt;" }
+    - table_style = 'border: 1pt solid lightblue;'
+    - cell_padding = 'padding: 4px;'
+    - tbody_style = 'vertical-align: top;'
+    %table.table.table-sm.companies{ style: "#{table_style}" }
+      %thead
+        %tr.row.header
+          %th.col.company-name{ style: "#{cell_padding}" }= t('activerecord.attributes.company.name')
+          %th.col.company-number{ style: "#{cell_padding}" }= t('activerecord.attributes.company.company_number')
+          %th.col.hmarkt-last-day{ style: "#{cell_padding}" }= t('activerecord.attributes.membership.last_day')
+          %th.col.hmarkt-warning{ style: "#{cell_padding}" }
+      %tbody{ style: "#{tbody_style}" }
+        - @companies.each do | co |
+          - is_incomplete_style = ''
+          - expired_style = ''
+          - warnings = []
+          - unless co.information_complete?
+            - is_incomplete_style = 'background-color: lightpink;'
+            - warnings << t('company-incomplete', scope: message_scope)
+          - if co.payment_term_expired?
+            - expired_style = 'color: red; font-weight: bold;'
+            - warnings << t('company-license-expired', scope: message_scope)
+
+          %tr.company.row{ style: "#{is_incomplete_style}" }
+            %td.col.company-name{ style: "#{cell_padding}" }= co.name
+            %td.col.company-number{ style: "#{cell_padding}" }= co.company_number
+            %td.col.hmarkt-last-day{ style: "#{cell_padding} #{expired_style}" }= co.branding_expire_date
+            %td.col.hmarkt-warning{ style: "#{cell_padding} font-style: italic;" }
+              = "#{warnings.join(',<br>')}".html_safe
+
+
+  %p.login-instructions= t('mailers.member_mailer.login_to_fix')
+  = render 'mailers_shared/login_here_with_email', email: @recipient_email
+
+  = render 'how_to_pay_hmarkt', email: @recipient_email,  company: nil
+
+  = render 'how_to_edit_companies.html.haml', email: @recipient_email
+
+  %p.thanks
+    = t('thanks', scope: message_scope)

@@ -1,4 +1,4 @@
-Given(/^the following payments exist$/) do |table|
+Given(/^the following payments exist(?:[:])?$/) do |table|
   table.hashes.each do |payment|
     user_email = payment.delete('user_email')
     company_name = payment.delete('company_name')
@@ -17,6 +17,7 @@ Given(/^the following payments exist$/) do |table|
   end
 end
 
+
 And(/^I complete the membership payment$/) do
   # Emulate webhook payment-update and direct to "success" action
 
@@ -32,6 +33,7 @@ And(/^I complete the membership payment$/) do
                               status: Payment.order_to_payment_status('successful'),
                               start_date: start_date, expire_date: expire_date)
 
+  # The membership status is updated because a payment was made
   visit payment_success_path(user_id: @user.id, id: payment.id)
 end
 
@@ -43,8 +45,8 @@ And(/^I complete the branding payment for "([^"]*)"$/) do |company_name|
 
   start_date, expire_date = Company.next_branding_payment_dates(company.id)
 
-  payment = FactoryBot.create(:payment, user: @user, company: company,
-                              payment_type: 'branding_fee',
+  payment = FactoryBot.create(:h_branding_fee_payment,
+                              user: @user, company: company,
                               status: Payment.order_to_payment_status('successful'),
                               start_date: start_date, expire_date: expire_date)
 
@@ -62,7 +64,7 @@ And(/^I incur an error in payment processing$/) do
   unless payment
     user_id = @user.id
     start_date, expire_date = User.next_membership_payment_dates(user_id)
-    payment = Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
+    payment = Payment.create(payment_type: Payment.membership_payment_type,
                               user_id: user_id,
                               company_id: nil,
                               status: Payment.order_to_payment_status(nil),
@@ -80,7 +82,7 @@ And(/^I incur an error in branding payment processing for "([^"]*)"$/) do |compa
   unless payment
     user_id = @user.id
     start_date, expire_date = Company.next_branding_payment_dates(company.id)
-    payment = Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
+    payment = Payment.create(payment_type: Payment.branding_license_payment_type,
                              user_id: user_id,
                              company_id: company.id,
                              status: Payment.order_to_payment_status(nil),

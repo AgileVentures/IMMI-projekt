@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_05_213528) do
+ActiveRecord::Schema.define(version: 2021_04_04_015347) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -41,19 +41,19 @@ ActiveRecord::Schema.define(version: 2020_02_05_213528) do
     t.datetime "updated_at", null: false
     t.string "chair_signature_file_name"
     t.string "chair_signature_content_type"
-    t.integer "chair_signature_file_size"
+    t.bigint "chair_signature_file_size"
     t.datetime "chair_signature_updated_at"
     t.string "shf_logo_file_name"
     t.string "shf_logo_content_type"
-    t.integer "shf_logo_file_size"
+    t.bigint "shf_logo_file_size"
     t.datetime "shf_logo_updated_at"
     t.string "h_brand_logo_file_name"
     t.string "h_brand_logo_content_type"
-    t.integer "h_brand_logo_file_size"
+    t.bigint "h_brand_logo_file_size"
     t.datetime "h_brand_logo_updated_at"
     t.string "sweden_dog_trainers_file_name"
     t.string "sweden_dog_trainers_content_type"
-    t.integer "sweden_dog_trainers_file_size"
+    t.bigint "sweden_dog_trainers_file_size"
     t.datetime "sweden_dog_trainers_updated_at"
     t.boolean "email_admin_new_app_received_enabled", default: true
     t.string "site_name", default: "Sveriges Hundföretagare", null: false
@@ -64,16 +64,34 @@ ActiveRecord::Schema.define(version: 2020_02_05_213528) do
     t.integer "site_meta_image_height", default: 0, null: false
     t.string "og_type", default: "website", null: false
     t.string "twitter_card_type", default: "summary", null: false
-    t.bigint "facebook_app_id", default: 0, null: false
+    t.bigint "facebook_app_id", default: 1292810030791186, null: false
     t.string "site_meta_image_file_name"
     t.string "site_meta_image_content_type"
-    t.integer "site_meta_image_file_size"
+    t.bigint "site_meta_image_file_size"
     t.datetime "site_meta_image_updated_at"
     t.integer "singleton_guard", default: 0, null: false
     t.integer "payment_too_soon_days", default: 60, null: false, comment: "Warn user that they are paying too soon if payment is due more than this many days away."
     t.bigint "membership_guideline_list_id"
+    t.string "membership_expired_grace_period_duration", default: "P2Y", null: false, comment: "Duration of time after membership expiration that a member can pay without penalty. ISO 8601 Duration string format. Must be used so we can handle leap years."
+    t.string "membership_term_duration", default: "P1Y", null: false, comment: "ISO 8601 Duration string format. Must be used so we can handle leap years. default = 1 year"
+    t.integer "membership_expiring_soon_days", default: 60, null: false, comment: "Number of days to start saying a membership is expiring soon"
     t.index ["membership_guideline_list_id"], name: "index_app_configurations_on_membership_guideline_list_id"
     t.index ["singleton_guard"], name: "index_app_configurations_on_singleton_guard", unique: true
+  end
+
+  create_table "archived_memberships", force: :cascade do |t|
+    t.string "member_number"
+    t.date "first_day", null: false
+    t.date "last_day", null: false
+    t.text "notes"
+    t.text "belonged_to_first_name", null: false, comment: "The first name of the user this belonged to"
+    t.text "belonged_to_last_name", null: false, comment: "The last name of the user this belonged to"
+    t.text "belonged_to_email", null: false, comment: "The email for the user this belonged to"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["belonged_to_last_name"], name: "index_archived_memberships_on_belonged_to_last_name"
+    t.index ["first_day"], name: "index_archived_memberships_on_first_day"
+    t.index ["last_day"], name: "index_archived_memberships_on_last_day"
   end
 
   create_table "business_categories", force: :cascade do |t|
@@ -218,6 +236,19 @@ ActiveRecord::Schema.define(version: 2020_02_05_213528) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "memberships", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "member_number"
+    t.date "first_day", null: false
+    t.date "last_day", null: false
+    t.text "notes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["first_day"], name: "index_memberships_on_first_day"
+    t.index ["last_day"], name: "index_memberships_on_last_day"
+    t.index ["user_id"], name: "index_memberships_on_user_id"
+  end
+
   create_table "one_time_tasker_task_attempts", force: :cascade do |t|
     t.string "task_name", null: false
     t.string "task_source"
@@ -276,7 +307,7 @@ ActiveRecord::Schema.define(version: 2020_02_05_213528) do
     t.datetime "updated_at", null: false
     t.string "actual_file_file_name"
     t.string "actual_file_content_type"
-    t.integer "actual_file_file_size"
+    t.bigint "actual_file_file_size"
     t.datetime "actual_file_updated_at"
     t.index ["uploader_id"], name: "index_shf_documents_on_uploader_id"
   end
@@ -286,10 +317,13 @@ ActiveRecord::Schema.define(version: 2020_02_05_213528) do
     t.datetime "updated_at", null: false
     t.string "actual_file_file_name"
     t.string "actual_file_content_type"
-    t.integer "actual_file_file_size"
+    t.bigint "actual_file_file_size"
     t.datetime "actual_file_updated_at"
     t.bigint "shf_application_id"
+    t.bigint "user_id"
+    t.string "description"
     t.index ["shf_application_id"], name: "index_uploaded_files_on_shf_application_id"
+    t.index ["user_id"], name: "index_uploaded_files_on_user_id"
   end
 
   create_table "user_checklists", force: :cascade do |t|
@@ -327,12 +361,14 @@ ActiveRecord::Schema.define(version: 2020_02_05_213528) do
     t.boolean "member", default: false
     t.string "member_photo_file_name"
     t.string "member_photo_content_type"
-    t.integer "member_photo_file_size"
+    t.bigint "member_photo_file_size"
     t.datetime "member_photo_updated_at"
     t.string "short_proof_of_membership_url"
     t.datetime "date_membership_packet_sent", comment: "When the user was sent a membership welcome packet"
+    t.string "membership_status"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["membership_number"], name: "index_users_on_membership_number", unique: true
+    t.index ["membership_status"], name: "index_users_on_membership_status"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
@@ -344,6 +380,7 @@ ActiveRecord::Schema.define(version: 2020_02_05_213528) do
   add_foreign_key "company_applications", "shf_applications"
   add_foreign_key "events", "companies"
   add_foreign_key "master_checklists", "master_checklist_types"
+  add_foreign_key "memberships", "users"
   add_foreign_key "payments", "companies"
   add_foreign_key "payments", "users"
   add_foreign_key "shf_applications", "file_delivery_methods"
@@ -351,6 +388,7 @@ ActiveRecord::Schema.define(version: 2020_02_05_213528) do
   add_foreign_key "shf_applications", "users"
   add_foreign_key "shf_documents", "users", column: "uploader_id"
   add_foreign_key "uploaded_files", "shf_applications"
+  add_foreign_key "uploaded_files", "users"
   add_foreign_key "user_checklists", "master_checklists"
   add_foreign_key "user_checklists", "users"
 end

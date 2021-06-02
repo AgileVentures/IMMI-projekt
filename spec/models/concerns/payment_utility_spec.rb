@@ -5,7 +5,10 @@ require 'shared_context/companies'
 # We use the User class to test most instance methods since it includes the PaymentUtility class
 # Note that most specs/test also actually check the Company class since it also includes the PaymentUtility class.
 
-RSpec.describe User, type: :model do
+RSpec.describe 'PaymentUtility', type: :model do
+
+  # use the User class to test the behavior of PaymentUtility since it is a concern
+  let(:described_class) { User }
 
   let(:membership_fee) { Payment::PAYMENT_TYPE_MEMBER }
   let(:branding_license_fee) { Payment::PAYMENT_TYPE_BRANDING }
@@ -25,7 +28,7 @@ RSpec.describe User, type: :model do
   end
 
 
-  describe '#most_recent_payment' do
+  describe 'most_recent_payment' do
 
     it 'if no payments, returns nil' do
       expect(user_no_payments.most_recent_payment(membership_fee)).to be_nil
@@ -42,7 +45,23 @@ RSpec.describe User, type: :model do
   end
 
 
-  describe '#payment_start_date' do
+  describe 'latest_expiring_payment' do
+    it 'returns nil if there are no payments' do
+      expect(build(:user).latest_expiring_payment).to be_nil
+    end
+
+    context 'has payments' do
+      it 'is the payment with the expiration farthest in the future' do
+        member = create(:member_with_expiration_date, expiration_date: Date.new(2018, 6, 24))
+        p2020 = create(:membership_fee_payment, expire_date: Date.new(2020, 6,24), user: member)
+        create(:membership_fee_payment, expire_date: Date.new(2019, 6,24), user: member)
+        expect(member.latest_expiring_payment).to eq p2020
+      end
+    end
+  end
+
+
+  describe 'payment_start_date' do
 
     it 'is nil if no payments' do
       expect(user_no_payments.payment_start_date(membership_fee)).to be_nil
@@ -58,7 +77,7 @@ RSpec.describe User, type: :model do
   end
 
 
-  describe '#payment_expire_date' do
+  describe 'payment_expire_date' do
 
     it 'is nil if no payments' do
       expect(user_no_payments.payment_expire_date(membership_fee)).to be_nil
@@ -74,7 +93,7 @@ RSpec.describe User, type: :model do
   end
 
 
-  describe '#payment_notes' do
+  describe 'payment_notes' do
 
     it 'is nil if no payments' do
       expect(user_no_payments.payment_notes(membership_fee)).to be_nil
@@ -90,41 +109,42 @@ RSpec.describe User, type: :model do
   end
 
 
-  describe '#term_expired?' do
+  describe 'payment_term_expired?' do
 
     it 'false if no payments have been made (there was never any term if no payments were made, so there was nothing to expire)' do
-      expect(user_no_payments.term_expired?(membership_fee)).to be_falsey
-      expect(user_no_payments.term_expired?).to be_falsey
-      expect(user_no_payments.term_expired?(branding_license_fee)).to be_falsey
+      expect(user_no_payments.payment_term_expired?(membership_fee)).to be_falsey
+      expect(user_no_payments.payment_term_expired?).to be_falsey
+      expect(user_no_payments.payment_term_expired?(branding_license_fee)).to be_falsey
     end
 
     it 'true if today is after the latest expire time (expire time < today)' do
-      expect(user_paid_lastyear_nov_29.term_expired?(membership_fee)).to be_truthy
-      expect(user_paid_lastyear_nov_29.term_expired?).to be_truthy
+      expect(user_paid_lastyear_nov_29.payment_term_expired?(membership_fee)).to be_truthy
+      expect(user_paid_lastyear_nov_29.payment_term_expired?).to be_truthy
       u_co = user_paid_lastyear_nov_29.companies.first
-      expect(u_co.term_expired?(branding_license_fee)).to be_truthy
-      expect(u_co.term_expired?).to be_truthy
+      expect(u_co.payment_term_expired?(branding_license_fee)).to be_truthy
+      expect(u_co.payment_term_expired?).to be_truthy
     end
 
     it 'true if today = latest expire time' do
-      expect(user_paid_only_lastyear_dec_2.term_expired?(membership_fee)).to be_truthy
-      expect(user_paid_only_lastyear_dec_2.term_expired?).to be_truthy
+      expect(user_paid_only_lastyear_dec_2.payment_term_expired?(membership_fee)).to be_truthy
+      expect(user_paid_only_lastyear_dec_2.payment_term_expired?).to be_truthy
       u_co = user_paid_only_lastyear_dec_2.companies.first
-      expect(u_co.term_expired?(branding_license_fee)).to be_truthy
-      expect(u_co.term_expired?).to be_truthy
+      expect(u_co.payment_term_expired?(branding_license_fee)).to be_truthy
+      expect(u_co.payment_term_expired?).to be_truthy
     end
 
     it 'false if today is before (<) latest expire time' do
-      expect(user_membership_expires_EOD_feb1.term_expired?(membership_fee)).to be_falsey
-      expect(user_membership_expires_EOD_feb1.term_expired?).to be_falsey
+      expect(user_membership_expires_EOD_feb1.payment_term_expired?(membership_fee)).to be_falsey
+      expect(user_membership_expires_EOD_feb1.payment_term_expired?).to be_falsey
       u_co = user_membership_expires_EOD_feb1.companies.first
-      expect(u_co.term_expired?(branding_license_fee)).to be_falsey
-      expect(u_co.term_expired?).to be_falsey
+      expect(u_co.payment_term_expired?(branding_license_fee)).to be_falsey
+      expect(u_co.payment_term_expired?).to be_falsey
     end
+
   end
 
 
-  describe '#should_pay_now?' do
+  describe 'should_pay_now?' do
     # today = dec_1 per the Timecop.freeze in the around(:each) block for this whole RSpec
 
     it 'always true if no payments have been made (no matter the dates, cutoff, etc.)' do
@@ -132,7 +152,7 @@ RSpec.describe User, type: :model do
       expect(build(:company).should_pay_now?).to be_truthy
     end
 
-    it 'always true of the term has expired' do
+    it 'always true if the term has expired' do
       expect(user_paid_lastyear_nov_29.should_pay_now?).to be_truthy
       u_co = user_paid_lastyear_nov_29.companies.first
       expect(u_co.should_pay_now?).to be_truthy
@@ -200,7 +220,7 @@ RSpec.describe User, type: :model do
 
 
   # TODO There should be a more sensible way to do this test in relation to should_pay_now?
-  describe '#too_early_to_pay? is the opposite of should_pay_now?' do
+  describe 'too_early_to_pay? is the opposite of should_pay_now?' do
     # today = dec_1 per the Timecop.freeze in the around(:each) block for this whole RSpec
     # today = dec 1
     # today + 60 days = jan 30
@@ -245,7 +265,7 @@ RSpec.describe User, type: :model do
 
   describe 'payment_due_status' do
 
-    it ':past_due if term_expired?' do
+    it ':past_due if payment_term_expired?' do
       expect(member_expired.payment_due_status).to eq :past_due
       expect(user_paid_only_lastyear_dec_2.payment_due_status(payment_type: membership_fee)).to eq :past_due
       expect(user_paid_only_lastyear_dec_2.payment_due_status).to eq :past_due
@@ -286,26 +306,8 @@ RSpec.describe User, type: :model do
     end
 
     it 'false if no successful payments' do
-      u_failed_payments_only = create(:member_with_membership_app)
-      u_co = u_failed_payments_only.shf_application.companies.first
-
-      # failed on nov 29.  Note that :expired means that it was not successful on HIPS (nothing to do with payment term status)
-      Timecop.freeze(nov_29) do
-        create(:membership_fee_payment,
-               :expired,
-               user:        u_failed_payments_only,
-               company:     u_co,
-               start_date:  nov_29,
-               expire_date: User.expire_date_for_start_date(nov_29),
-               notes:       'nov_29 failed (expired) membership')
-        create(:h_branding_fee_payment,
-               :expired,
-               user:        u_failed_payments_only,
-               company:     u_co,
-               start_date:  nov_29,
-               expire_date: Company.expire_date_for_start_date(nov_29),
-               notes:       'nov_29 failed (expired) branding')
-      end
+      u_failed_payments_only = create(:member, first_day: nov_29)
+      u_failed_payments_only.payments.member_fee.first.update(status: Payment::EXPIRED)
 
       expect(u_failed_payments_only.admin_can_edit_status?).to be_falsey
     end
@@ -362,8 +364,8 @@ RSpec.describe User, type: :model do
           end
 
           it 'occurs in the future' do
-            expect(User.next_payment_dates(user_pays_every_nov30.id, membership_fee)).to eq [nextyear_nov_30, Date.new(THIS_YEAR + 2, 11, 29)]
-            expect(User.next_payment_dates(user_pays_every_nov30.id, branding_license_fee)).to eq [nextyear_nov_30, Date.new(THIS_YEAR + 2, 11, 29)]
+            expect(User.next_payment_dates(user_pays_every_nov30.id, membership_fee)).to eq [nextyear_nov_30.to_date, Date.new(THIS_YEAR + 2, 11, 29)]
+            expect(User.next_payment_dates(user_pays_every_nov30.id, branding_license_fee)).to eq [nextyear_nov_30.to_date, Date.new(THIS_YEAR + 2, 11, 29)]
           end
         end
 

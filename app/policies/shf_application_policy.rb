@@ -72,6 +72,8 @@ class ShfApplicationPolicy < ApplicationPolicy
   end
 
 
+  # FIXME do we need this policy check?
+  #   If we delete all of the ShfApplicationsController .information stuff, this should be deleted too.
   def information?
     not_a_visitor
   end

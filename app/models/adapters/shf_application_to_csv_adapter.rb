@@ -102,7 +102,7 @@ module Adapters
 
 
     def paid_membership_or_link(shf_app)
-      paid_or_payment_link(shf_app.user.membership_current?, user_path(shf_app.user))
+      paid_or_payment_link(shf_app.user.payments_current?, user_path(shf_app.user))
     end
 
 

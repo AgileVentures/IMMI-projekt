@@ -58,61 +58,31 @@ RSpec.describe RequirementsForMemberUnpaidMoreThanXMonths, type: :model do
 
   describe '.requirements_met?' do
 
-    context 'false: not met' do
-
-      it 'no approved application' do
-        app  = create(:shf_application)
-        user = app.user
-        expect(subject.requirements_met?({ user: user, num_months: 5 })).to be_falsey
-      end
-
-      it 'has an approved application but has not paid the membership fee' do
-        user_with_approved_app = create(:user_with_membership_app)
-        shf_app                = user_with_approved_app.shf_application
-        shf_app.start_review
-        shf_app.accept!
-        expect(subject.requirements_met?({ user: user_with_approved_app, num_months: 5 })).to be_falsey
-      end
-
-      it 'membership payment made but not yet expired' do
-        create(:membership_fee_payment,
-                         :successful,
-                         user:        member,
-                         start_date:  feb1_2018,
-                         expire_date: User.expire_date_for_start_date(feb1_2018))
-
-        Timecop.freeze(jun1_2018) do
-          expect(subject.requirements_met?({ user: member, num_months: 5 })).to be_falsey
-        end
-      end
-
-      it 'membership expired but not num_months ago' do
-        expected_num_months = 5
-
-        expired_num_months_plus1 = Time.zone.now.months_ago(expected_num_months + 1).to_date
-
-        create(:membership_fee_payment,
-               :successful,
-               user:        member,
-               start_date:  (expired_num_months_plus1 - 364),
-               expire_date: expired_num_months_plus1)
-
-        Timecop.freeze(jun1_2018) do
-          expect(subject.requirements_met?({ user: member, num_months: expected_num_months })).to be_falsey
-        end
-      end
-
+    it 'false if it does not meet the RequirementsForMembershipLapsed' do
+      expect(RequirementsForMembershipLapsed).to receive(:requirements_met?).and_return(false)
+      expect(subject.requirements_met?({ user: create(:user), num_months: 5 })).to be_falsey
     end
 
+    context 'meets the RequirementsForMembershipLapsed' do
+      before(:each) { expect(RequirementsForMembershipLapsed).to receive(:requirements_met?).and_return(true) }
 
-    context 'true: expired num_months ago' do
-
-      it 'has an approved application AND membership fee paid AND membership term has expired' do
-
-        member_payment_exp_over_5_months_ago
-        expect(subject.requirements_met?({ user: member, num_months: 5 })).to be_truthy
+      it 'true if today is more than num months from the last day of the membership' do
+        former_member = create(:member, membership_status: :former_member, member: false,
+               last_day: Date.current - 5.months - 1.day)
+        expect(subject.requirements_met?({ user: former_member, num_months: 5 })).to be_truthy
       end
 
+      it 'false if today == num months from the last day of the membership' do
+        former_member = create(:member, membership_status: :former_member, member: false,
+                               last_day: Date.current - 5.months)
+        expect(subject.requirements_met?({ user: former_member, num_months: 5 })).to be_falsey
+      end
+
+      it 'false if today is less than the num months from the last day of the membership' do
+        former_member = create(:member, membership_status: :former_member, member: false,
+                               last_day: Date.current - 5.months + 1.day)
+        expect(subject.requirements_met?({ user: former_member, num_months: 5 })).to be_falsey
+      end
     end
 
   end

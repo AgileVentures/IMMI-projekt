@@ -61,7 +61,9 @@
             = render 'current_items_to_note', apps_without_uploads: @data_gatherer.apps_without_uploads,
             apps_approved_member_fee_not_paid: @data_gatherer.apps_approved_member_fee_not_paid,
              companies_branding_not_paid: @data_gatherer.companies_branding_not_paid,
-             companies_info_not_completed: @data_gatherer.companies_info_not_completed
+             companies_info_not_completed: @data_gatherer.companies_info_not_completed,
+             current_members: @data_gatherer.current_members,
+             current_companies: @data_gatherer.current_companies
 
         .tab-pane.fade#n2{ role: "tabpanel", 'aria-labelledby': "tab-activity" }
           -# smell:  passing so many vars to a view -> should encapsulate in a class

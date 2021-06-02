@@ -182,13 +182,13 @@
                 font-weight: bold;
               }
 
-              .user-name,
-              .user-email {
+              .user-email,
+              .user-name, {
                 margin-left: 30px;
               }
 
-              .number-files-uploaded,
               .company-number,
+              .number-files-uploaded,
               .phone-number {
                 margin-left: 60px;
               }
@@ -428,6 +428,23 @@
   }
 
   // end .mailchimp
+
+  .table-sm {
+    font-size: smaller;
+    text-align: left;
+
+    tbody,
+    td,
+    thead,
+    tr {
+      border: inherit;
+    }
+
+    thead {
+      font-weight: bold;
+    }
+
+  }
 
   .members-need-packets {
 

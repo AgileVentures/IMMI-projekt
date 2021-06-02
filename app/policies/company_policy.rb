@@ -27,7 +27,7 @@ class CompanyPolicy < ApplicationPolicy
   end
 
   def update?
-    user.admin? || is_in_company?(record)
+    user.admin? || (is_in_company?(record) && user.current_member?)
   end
 
   def edit_payment?

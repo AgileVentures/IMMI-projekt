@@ -23,7 +23,7 @@
         %span.member-name
           = user.full_name
         %br
-        - if user.membership_current?
+        - if user.membership_current? # FIXME should this just display if it's not blank?
           = succeed ':' do
             = t('.member_number')
 

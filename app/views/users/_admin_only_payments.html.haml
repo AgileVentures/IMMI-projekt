@@ -1,0 +1,8 @@
+- if current_user.admin?
+  .admin-only
+    .row
+      .col.mt-2
+        %h4.section-title= t('payor.term_status.admin_user_payments_title')
+    .row
+      .col
+        = render 'payments/payments_list', {payments: entity.payments}

@@ -2,13 +2,15 @@
 -#   entity - the entity (e.g. user, company) that is the subject of this partial and controller action
 -#   button_text - text for the button that opens the modal
 -#   target_id - id string, including the '#', for the data-target   ex: #editUserStatusModal
-
+- entity = local_assigns[:entity]
+- button_text = local_assigns.fetch(:button_text, '')
+- target_id = local_assigns[:target_id]
 .admin-only
 
   .row.mt-2
-    .col.d-flex.pt-2
+    .col.d-flex.pt-2.membership-notes
       .flex.pr-3
-        = payment_notes_label_and_value(entity)
+        = membership_notes_label_and_value(entity.current_membership&.notes)
 
 .row.mt-2
   .col.d-flex.pt-2.pr-3

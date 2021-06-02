@@ -11,13 +11,13 @@ Feature: Admin edits a user account
     Given the date is set to "2020-11-01"
 
     Given the following users exist
-      | email                               | password       | admin | member | first_name | last_name | membership_number |
-      | admin@shf.se                        | admin_password | true  | false  | emma       | admin     |                   |
-      | member@shf.com                      | password       | false | true   | mary       | member    | 9                 |
-      | applicant@example.com               | password       | false | false  | Alf        | Applicant |                   |
-      | applicant-with-old-pays@example.com | password       | false | false  | OldPays    | Applicant |                   |
-      | user@example.com                    | password       | false | false  | Ursa       | User      |                   |
-      | user-with-old-pays@example.com      | password       | false | false  | OldPays    | User      |                   |
+      | email                               | password       | admin | membership_status |member | first_name | last_name | membership_number |
+      | admin@shf.se                        | admin_password | true  |                   |false  | emma       | admin     |                   |
+      | member@shf.com                      | password       | false | current_member    |true   | mary       | member    | 9                 |
+      | applicant@example.com               | password       | false |                   |false  | Alf        | Applicant |                   |
+      | applicant-with-old-pays@example.com | password       | false |                   |false  | OldPays    | Applicant |                   |
+      | user@example.com                    | password       | false |                   |false  | Ursa       | User      |                   |
+      | user-with-old-pays@example.com      | password       | false |                   | false  | OldPays    | User      |                   |
 
 
     Given the following business categories exist
@@ -37,8 +37,13 @@ Feature: Admin edits a user account
       | user-with-old-pays@example.com      | 2018-10-31 | 2019-10-30  | member_fee   | betald | none    |
       | member@shf.com                      | 2020-09-01 | 2021-08-30  | member_fee   | betald | none    |
 
+    And the following memberships exist:
+      | email | first_day | last_day |
+      |member@shf.com | 2020-09-01 | 2021-08-30 |
+
     Given I am logged in as "admin@shf.se"
 
+    # ---------------------------------------------------------------------------------------------
 
   @selenium
   Scenario: Admin edits membership number

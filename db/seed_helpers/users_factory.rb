@@ -26,7 +26,7 @@ module SeedHelper
     NEWUSER_LNAME = 'NewUser'
     APPLICANT_LNAME = 'Applicant'
     MEMBER_LNAME = 'Member'
-    LAPSEDMEMBER_LNAME = 'LapsedMember'
+    GRACEPERIODMEMBER_LNAME = 'InGracePeriodMember'
     FORMERMEMBER_LNAME = 'FormerMember'
 
     DUMMY_EMAIL_DOMAIN = 'example.com'
@@ -37,7 +37,7 @@ module SeedHelper
       make_predefined_new_registered_users
       make_predefined_applicants
       make_predefined_current_members
-      make_predefined_lapsed_members
+      make_predefined_in_grace_period_members
       make_predefined_former_members
     end
 
@@ -72,35 +72,56 @@ module SeedHelper
       # make_member_paid_through(Date.current + earliest_renew_days - 1, firstname: "PaidThrough-#{earliest_str}_minus_1_day")
 
       make_member_paid_through(Date.current + 6.months, firstname: 'PaidThrough-6-months')
-      make_member_paid_through(Date.current + 2.years, firstname: 'PaidThrough-2-years')
+      make_member_paid_through(Date.current + 2.years - 1.day, firstname: 'PaidThrough-2-years',
+                               term_first_day: Date.current)
     end
 
-    # Lapsed members are those members that
-    def self.make_predefined_lapsed_members
-
-    end
-
-    # Members with payments overdue are those whose last payment date has past
-    #   AND are in the 'grace period' of when they can pay.
+    # Members with payments overdue are those who are in the 'grace period'.
     # They may or may not have completed all of the requirements for renewing membership for the
     # membership term. Ex: If the requirement for renewing membership includes "must upload at least
     # 1 file" they may or may not have done that.  The requirements for renewing membership are
     # separate from payments.
-    def self.make_predefined_members_payment_overdue
-
+    def self.make_predefined_in_grace_period_members
+      oldest_last_day = Date.current - MembershipsManager.grace_period + 1.day
+      make_member_paid_through(oldest_last_day, lastname: GRACEPERIODMEMBER_LNAME,
+                               firstname: 'GracePeriod-plus-1day')
+      make_member_paid_through(oldest_last_day + 1.month, lastname: GRACEPERIODMEMBER_LNAME,
+                               firstname: 'GracePeriod-plus-1month')
+      make_member_paid_through(Date.today - 1.day, lastname: GRACEPERIODMEMBER_LNAME,
+                               firstname: 'Expired Yesterday')
     end
+
 
     # Former members are those whose last payment date has past AND they are past the 'grace period'
     #   as well.
     def self.make_predefined_former_members
-
+      most_recent_last_day = Date.current - MembershipsManager.grace_period
+      make_member_paid_through(most_recent_last_day,
+                               lastname: FORMERMEMBER_LNAME, firstname: 'Today-minus-GracePeriod')
+      make_member_paid_through(most_recent_last_day - 1.day,
+                               lastname: FORMERMEMBER_LNAME, firstname: 'GracePeriod-minus-1day')
     end
 
-    def self.make_member_paid_through(last_payment_expiry, lastname: MEMBER_LNAME, number: 1, firstname: 'PaidThrough')
+
+    def self.make_member_paid_through(term_last_day, lastname: MEMBER_LNAME, number: 1,
+                                      firstname: 'PaidThrough',
+                                      term_first_day: nil)
       make_predefined_with(lastname: lastname, number: number, firstname: firstname) do |member|
-        payment_ends_tomorrow = make_n_save_app(member, MA_ACCEPTED_STATE)
-        membership_payment = payment_ends_tomorrow.most_recent_membership_payment
-        membership_payment.update(expire_date: last_payment_expiry, start_date: User.start_date_for_expire_date(last_payment_expiry))
+        term_first_day = term_first_day.nil? ? Membership.first_day_from_last(term_last_day) : term_first_day
+
+        # Create the Ethical Guidelines checklist and complete it. (make_n_save_app may or may not set them to complete)
+        guidelines_list = UserChecklistManager.find_or_create_membership_guidelines_list_for(member)
+        guidelines_list.set_complete_including_children(term_first_day)
+
+        make_n_save_app(member, MA_ACCEPTED_STATE) # Make app, payments, start membership
+        member.reload
+        membership_payment = member.most_recent_membership_payment
+        membership_payment.update(expire_date: term_last_day, start_date: term_first_day)
+        hmarkt_payment = member.companies.first.most_recent_branding_payment
+        hmarkt_payment.update(expire_date: term_last_day, start_date: term_first_day)
+        member.most_recent_membership&.update(first_day: term_first_day, last_day: term_last_day) if member.current_membership
+        member.reload
+        MembershipStatusUpdater.instance.update_membership_status(member, send_email: false)
       end
     end
 
@@ -130,7 +151,7 @@ module SeedHelper
     end
 
     def self.email_from_firstname(firstname)
-      "#{firstname.downcase}@#{DUMMY_EMAIL_DOMAIN}"
+      "#{firstname.gsub(/(\s)+/, '-').downcase}@#{DUMMY_EMAIL_DOMAIN}"
     end
   end
 

@@ -94,6 +94,7 @@ RSpec.configure do |config|
     # Using the  MockAppConfig saves time because it means we don't ever call Paperclip.
     # Calling and using Paperclip is very slow.
     allow(AdminOnly::AppConfiguration).to receive(:config_to_use).and_return(MockAppConfig)
+    allow(AdminOnly::AppConfiguration).to receive(:instance).and_return(MockAppConfig)
   end
 
   config.before(:each, :js => true) do

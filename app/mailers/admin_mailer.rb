@@ -37,7 +37,7 @@ class AdminMailer < ApplicationMailer
     recipient_is_membership_chair
 
     @new_member = new_member
-    @complete_branded_cos =  new_member.companies.select{|co| co.branding_license? && co.information_complete? }
+    @complete_branded_cos =  new_member.companies.select(&:in_good_standing?)
     @category_names = new_member.shf_application.business_categories.map(&:name).join(', ')
 
     mail to: recipient_email, subject: t('new_membership_granted_co_hbrand_paid.subject', scope: I18N_SCOPE)

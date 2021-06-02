@@ -7,27 +7,37 @@ require_relative './previews/member_mailer_preview'
 
 # Ensure that the mail can be created
 #  and the subject, recipient, and greeting are correct
-#
+
 RSpec.describe MemberMailer, type: :mailer do
 
   include EmailSpec::Helpers
   include EmailSpec::Matchers
 
   let!(:test_user) { create(:user, email: 'user@example.com') }
+  let!(:test_member) { create(:member, email: 'member@example.com') }
 
+  let(:company) do
+    co = test_member.companies.first
+    # TODO when Company uses Membership, then change this to (from using payments)
+    payment = create(:h_branding_fee_payment, user: test_member, company: co,
+           expire_date: Date.current + 1.day )
+    test_member.payments << payment
+    co
+  end
 
-  describe '#membership_granted' do
+  # before(:each) { allow(company).to receive(:branding_expire_date).and_return(Date.current + 1.day) }
+
+  describe 'membership_granted' do
 
     MEM_GRANTED_SCOPE = 'mailers.member_mailer.membership_granted'
 
-
-    let(:accepted_app) { create(:shf_application, :accepted, user: test_user) }
-    let(:email_sent) { MemberMailer.membership_granted(accepted_app.user) }
+    # let(:accepted_app) { create(:shf_application, :accepted, user: test_user) }
+    let(:email_sent) { MemberMailer.membership_granted(test_member) }
 
 
     it_behaves_like 'a successfully created email',
                     I18n.t('subject', scope: MEM_GRANTED_SCOPE),
-                    'user@example.com',
+                    'member@example.com',
                     'Firstname Lastname' do
       let(:email_created) { email_sent }
     end
@@ -64,24 +74,14 @@ RSpec.describe MemberMailer, type: :mailer do
   end
 
 
-  describe '#membership_expiration_reminder' do
+  describe 'membership_expiration_reminder' do
 
     MEMBERSHIP_EXP_SCOPE = 'mailers.member_mailer.membership_will_expire'
-
-    let(:member) { create(:member_with_membership_app, user: test_user) }
-    let(:member) do
-      test_user.member = true
-      test_user.payments << create(:payment, :successful,
-                                   expire_date: Time.zone.today + 1.month)
-      test_user.save!
-      test_user
-    end
-
-    let(:email_sent) { MemberMailer.membership_expiration_reminder(member) }
+    let(:email_sent) { MemberMailer.membership_expiration_reminder(test_member) }
 
     it_behaves_like 'a successfully created email',
                     I18n.t('subject', scope: MEMBERSHIP_EXP_SCOPE),
-                    'user@example.com',
+                    'member@example.com',
                     'Firstname Lastname' do
       let(:email_created) { email_sent }
     end
@@ -89,18 +89,16 @@ RSpec.describe MemberMailer, type: :mailer do
     it 'tells you when your membership expires' do
       expect(email_sent).to have_body_text(I18n.t('message_text.expire_alert_html',
                                                   scope:       MEMBERSHIP_EXP_SCOPE,
-                                                  expire_date: member.membership_expire_date))
+                                                  expire_date: test_member.membership_expire_date))
     end
 
-
-    it 'tells how to extend membership' do
-      expect(email_sent).to have_body_text(I18n.t('message_text.extend_membership',
-                                                  scope: MEMBERSHIP_EXP_SCOPE))
+    it_behaves_like 'it shows what is required to renew the membership' do
+      let(:email_created) { email_sent }
     end
 
     it_behaves_like 'it shows how to login and the page to pay the membership fee' do
       let(:email_created) { email_sent }
-      let(:user) { member }
+      let(:user) { test_member }
     end
 
     it_behaves_like 'from address is correct' do
@@ -110,37 +108,19 @@ RSpec.describe MemberMailer, type: :mailer do
     it_behaves_like 'reply-to address is correct' do
       let(:email_created) { email_sent }
     end
-
   end
 
 
-  describe '#h_branding_fee_past_due' do
+  describe 'h_branding_fee_past_due' do
 
     HBRANDING_PAST_DUE_SCOPE = 'mailers.member_mailer.h_branding_fee_past_due'
-
-    let(:jan1) { Date.new(2019, 1, 1) }
-
-    let(:company) { create(:company) }
-
-    let(:member1_exp_jan1) do
-      app = create(:shf_application, :accepted, company_number: company.company_number)
-      m   = app.user
-      m.email = 'only_member@example.com'
-      m.payments << create(:payment, :successful,
-                           expire_date: jan1)
-      m.save!
-      m
-    end
-
     let(:email_sent) do
-      # create the company and members
-      member1_exp_jan1
-      MemberMailer.h_branding_fee_past_due(company, member1_exp_jan1)
+      MemberMailer.h_branding_fee_past_due(company, test_member)
     end
 
     it_behaves_like 'a successfully created email',
                     I18n.t('subject', scope: HBRANDING_PAST_DUE_SCOPE),
-                    'only_member@example.com',
+                    'member@example.com',
                     'Firstname Lastname' do
       let(:email_created) { email_sent }
     end
@@ -162,28 +142,17 @@ RSpec.describe MemberMailer, type: :mailer do
     it_behaves_like 'reply-to address is correct' do
       let(:email_created) { email_sent }
     end
+  end
 
-  end #describe '#h_branding_fee_past_due
 
-
-  describe '#membership_lapsed' do
+  describe 'membership_lapsed' do
 
     MEMBERSHIP_LAPSED_SCOPE = 'mailers.member_mailer.membership_lapsed'
-
-    let(:member) { create(:member_with_membership_app, user: test_user) }
-    let(:member) do
-      test_user.member = true
-      test_user.payments << create(:payment, :successful,
-                                   expire_date: Time.zone.today - 1.month)
-      test_user.save!
-      test_user
-    end
-
-    let(:email_sent) { MemberMailer.membership_lapsed(member) }
+    let(:email_sent) { MemberMailer.membership_lapsed(test_member) }
 
     it_behaves_like 'a successfully created email',
                     I18n.t('subject', scope: MEMBERSHIP_LAPSED_SCOPE),
-                    'user@example.com',
+                    'member@example.com',
                     'Firstname Lastname' do
       let(:email_created) { email_sent }
     end
@@ -191,17 +160,17 @@ RSpec.describe MemberMailer, type: :mailer do
     it 'tells you when your membership expired' do
       expect(email_sent).to have_body_text(I18n.t('message_text.expire_alert_html',
                                                   scope:       MEMBERSHIP_LAPSED_SCOPE,
-                                                  expire_date: member.membership_expire_date))
+                                                  expire_date: test_member.membership_expire_date))
     end
 
-    it 'tells how to renew membership' do
-      expect(email_sent).to have_body_text(I18n.t('message_text.renew_membership',
-                                                  scope: MEMBERSHIP_LAPSED_SCOPE))
+    it_behaves_like 'it shows what is required to renew the membership' do
+      let(:email_created) { email_sent }
     end
+
 
     it_behaves_like 'it shows how to login and the page to pay the membership fee' do
       let(:email_created) { email_sent }
-      let(:user) { member }
+      let(:user) { test_member }
     end
 
     it_behaves_like 'from address is correct' do
@@ -211,65 +180,30 @@ RSpec.describe MemberMailer, type: :mailer do
     it_behaves_like 'reply-to address is correct' do
       let(:email_created) { email_sent }
     end
-
   end
 
 
-  describe '#company_info_incomplete' do
+  describe 'company_info_incomplete' do
 
     CO_INFO_INCOMPLETE_SCOPE = 'mailers.member_mailer.co_info_incomplete'
-
-    let(:jan1) { Date.new(2019, 1, 1) }
-
     let(:co_no_name_no_region) do
-      co = create(:company)
+      co = test_member.shf_application.companies.first
       co.name = ''
       co.addresses.first.update(region: nil)
       co
     end
 
-    let(:member_noname_noregion) do
-      app = create(:shf_application, :accepted, company_number: co_no_name_no_region.company_number)
-      m   = app.user
-      m.email = 'only_member@example.com'
-      m.payments << create(:payment, :successful,
-                           expire_date: jan1)
-      m.save!
-      m
-    end
-
-    let(:display_for_blank_name) do
-      I18n.t('mailers.member_mailer.co_info_incomplete.message_text.company_needs_name', co_number: co_no_name_no_region.company_number)
-    end
-
-    let(:email_sent_co_noname_noregion) do
-      # create the company and members
-      member_noname_noregion
-      MemberMailer.company_info_incomplete(co_no_name_no_region, member_noname_noregion)
-    end
+    let(:display_for_blank_name) { I18n.t('mailers.member_mailer.co_info_incomplete.message_text.company_needs_name', co_number: co_no_name_no_region.company_number) }
+    let(:email_sent_co_noname_noregion) { MemberMailer.company_info_incomplete(co_no_name_no_region, test_member) }
 
     let(:complete_co) { create(:company) }
-
-    let(:member_complete_co) do
-      app = create(:shf_application, :accepted, company_number: complete_co.company_number)
-      m   = app.user
-      m.email = 'member_complete_co@example.com'
-      m.payments << create(:payment, :successful,
-                           expire_date: jan1)
-      m.save!
-      m
-    end
-
-    let(:email_sent_complete_co) do
-      # create the company and members
-      member_complete_co
-      MemberMailer.company_info_incomplete(complete_co, member_complete_co)
-    end
+    let(:member_complete_co) { create(:member, company_number: complete_co.company_number) }
+    let(:email_sent_complete_co) { MemberMailer.company_info_incomplete(complete_co, member_complete_co) }
 
 
     it_behaves_like 'a successfully created email',
                     I18n.t('subject', scope: CO_INFO_INCOMPLETE_SCOPE),
-                    'only_member@example.com',
+                    'member@example.com',
                     'Firstname Lastname' do
       let(:email_created) { email_sent_co_noname_noregion }
     end
@@ -290,7 +224,6 @@ RSpec.describe MemberMailer, type: :mailer do
       end
 
       it 'does not list the company name if it is not blank' do
-
         expect(email_sent_complete_co).not_to have_body_text(I18n.t('message_text.co_name_missing',
                                                     scope: CO_INFO_INCOMPLETE_SCOPE))
       end
@@ -303,7 +236,6 @@ RSpec.describe MemberMailer, type: :mailer do
       it 'does not list the region if it is not nil' do
         expect(email_sent_complete_co).not_to have_body_text(I18n.t('message_text.co_region_missing',
                                                     scope: CO_INFO_INCOMPLETE_SCOPE))
-
       end
     end
 
@@ -328,7 +260,7 @@ RSpec.describe MemberMailer, type: :mailer do
   end
 
 
-  describe '#app_no_uploaded_files' do
+  describe 'app_no_uploaded_files' do
 
     NO_UPLOADED_FILES_SCOPE = 'mailers.member_mailer.app_no_uploaded_files'
 
@@ -358,34 +290,15 @@ RSpec.describe MemberMailer, type: :mailer do
   end
 
 
-  describe '#hbranding_fee_will_expire' do
+  describe 'hbranding_fee_will_expire' do
 
     HBRAND_FEE_WILLEXPIRE_SCOPE = 'mailers.member_mailer.h_branding_fee_will_expire'
-
-    let(:jan1_2020) { Date.new(2020, 1, 1) }
-
-    let(:company) { create(:company) }
-
-    let(:member1_exp_jan1) do
-      app = create(:shf_application, :accepted, company_number: company.company_number)
-      m   = app.user
-      m.email = 'only_member@example.com'
-      m.payments << create(:payment, :successful,
-                           expire_date: jan1_2020)
-      m.save!
-      m
-    end
-
-    let(:email_sent) do
-      # create the company and members
-      member1_exp_jan1
-      MemberMailer.h_branding_fee_will_expire(company, member1_exp_jan1)
-    end
+    let(:email_sent) { MemberMailer.h_branding_fee_will_expire(company, test_member) }
 
 
     it_behaves_like 'a successfully created email',
                     I18n.t('subject', scope: HBRAND_FEE_WILLEXPIRE_SCOPE),
-                    'only_member@example.com',
+                    'member@example.com',
                     'Firstname Lastname' do
       let(:email_created) { email_sent }
     end
@@ -407,24 +320,17 @@ RSpec.describe MemberMailer, type: :mailer do
     it_behaves_like 'reply-to address is correct' do
       let(:email_created) { email_sent }
     end
-
   end
 
 
-  describe '#first_membership_fee_owed' do
-
-    let(:approved_user) do
-      shf_app = create(:shf_application, :accepted)
-      u = shf_app.user
-      u.email = 'approved-user@example.com'
-      u
-    end
+  describe 'first_membership_fee_owed' do
 
     FIRST_MEMBERSHIP_OWED_SCOPE = 'mailers.member_mailer.first_membership_fee_owed'
-
+    let(:approved_user) { create(:user_with_membership_app, application_status: :accepted,
+                                 email: 'approved-user@example.com')}
     let(:email_sent) { MemberMailer.first_membership_fee_owed(approved_user) }
 
-    # .mailers.member_mailer.first_membership_fee_owed.subject
+
     it_behaves_like 'a successfully created email',
                     I18n.t('subject', scope: FIRST_MEMBERSHIP_OWED_SCOPE),
                     'approved-user@example.com',
@@ -447,6 +353,103 @@ RSpec.describe MemberMailer, type: :mailer do
 
     it 'tells you to pay the membership fee' do
       expect(email_sent).to have_body_text(I18n.t('message_text', scope: FIRST_MEMBERSHIP_OWED_SCOPE))
+    end
+  end
+
+
+  describe 'membership_renewed' do
+
+    MEMBERSHIP_RENEWED_SCOPE = 'mailers.member_mailer.membership_renewed'
+
+    let!(:incomplete_co) do
+      incomplete_company = create(:company, name: 'Incomplete')
+      incomplete_company.name = ''
+      test_member.shf_application.companies << incomplete_company
+      incomplete_company
+    end
+
+    let!(:expired_co) do
+      expired = create(:company, name: 'Expired')
+      # TODO when Company uses Membership, then change this to (from using payments)
+      create(:h_branding_fee_payment, user: test_member, company: expired,
+             expire_date: Date.current - 1.day )
+      test_member.shf_application.companies << expired
+      expired
+    end
+
+    let(:email_sent) { MemberMailer.membership_renewed(test_member) }
+
+
+    it_behaves_like 'a successfully created email',
+                    I18n.t('subject', scope: MEMBERSHIP_RENEWED_SCOPE),
+                    'member@example.com',
+                    'Firstname Lastname' do
+      let(:email_created) { email_sent }
+    end
+
+    it_behaves_like 'from address is correct' do
+      let(:mail_address) { email_sent.header['from'] }
+    end
+
+    it_behaves_like 'reply-to address is correct' do
+      let(:email_created) { email_sent }
+    end
+
+    it 'it is awesome that you renewed' do
+      expect(email_sent).to have_body_text(I18n.t('message_text.awesome', scope: MEMBERSHIP_RENEWED_SCOPE))
+    end
+
+    it 'shows the last day of the membership' do
+      expect(email_sent).to have_body_text(I18n.t('message_text.renewed_last_day', scope: MEMBERSHIP_RENEWED_SCOPE))
+    end
+
+
+    describe 'lists all companies the member belongs to' do
+
+      it 'companies you belong to:' do
+        expect(email_sent).to have_body_text(I18n.t('message_text.companies_you_belong_to', scope: MEMBERSHIP_RENEWED_SCOPE))
+      end
+
+      it 'warns about 1 incomplete company' do
+        expect(email_sent).to  have_body_text(I18n.t('.message_text.company-incomplete', scope: MEMBERSHIP_RENEWED_SCOPE))
+      end
+
+      it 'warns about 1 expired company' do
+        expect(email_sent).to  have_body_text(I18n.t('.message_text.company-license-expired', scope: MEMBERSHIP_RENEWED_SCOPE))
+      end
+
+      describe 'shows for each company:' do
+
+        # Assumes that renewal_company is defined in a let statement, etc.
+        shared_examples 'it shows name, number, expiration for the company' do | co_description |
+
+          it("name for #{co_description}") { expect(email_sent).to have_body_text(renewal_company.name) }
+
+          it("company number for #{co_description}") { expect(email_sent).to have_body_text(renewal_company.company_number) }
+
+          it("h-markt license last day for #{co_description}") { expect(email_sent).to have_body_text(renewal_company.branding_expire_date.to_s) }
+        end
+
+
+        it_behaves_like 'it shows name, number, expiration for the company', 'Co. in good standing'  do
+          let(:renewal_company) { company }
+        end
+        it_behaves_like 'it shows name, number, expiration for the company', 'Incomplete company' do
+          let(:renewal_company) { incomplete_co }
+        end
+        it_behaves_like 'it shows name, number, expiration for the company', 'Expired H-Markt lic.' do
+          let(:renewal_company) { expired_co }
+        end
+      end
+    end
+
+    it_behaves_like 'it shows how to login and the page to pay the H-markt fee' do
+      let(:email_created) { email_sent }
+    end
+
+
+    it 'thanks for being a member for another year' do
+      expect(email_sent).to have_body_text(I18n.t('message_text.thanks', scope: MEMBERSHIP_RENEWED_SCOPE))
     end
   end
 

@@ -10,11 +10,11 @@ Feature: Member edits a company attribute
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email               | admin | member | agreed_to_membership_guidelines |
-      | emma@happymutts.com |       | true   | true                            |
-      | member@random.com   |       | true   | true                            |
-      | user@random.com     |       |        | true                            |
-      | admin@shf.se        | true  | false  |                                 |
+      | email               | admin | membership_status |member | agreed_to_membership_guidelines |
+      | emma@happymutts.com |       | current_member    |true   | true                            |
+      | member@random.com   |       | current_member    |true   | true                            |
+      | user@random.com     |       | not_a_member      |       | true                            |
+      | admin@shf.se        | true  |                   | false |                                 |
 
     Given the following regions exist:
       | name         |
@@ -28,6 +28,7 @@ Feature: Member edits a company attribute
     And the following companies exist:
       | name                 | company_number | email                  |
       | Woof Woof            | 5560360793     | emma@happymutts.com    |
+      | No More Snarky Barky | 6613265393     | hello@voof.se          |
 
     And the following business categories exist
       | name         |
@@ -36,11 +37,22 @@ Feature: Member edits a company attribute
     And the following applications exist:
       | user_email          | company_number | categories | state    |
       | emma@happymutts.com | 5562252998     | Awesome    | accepted |
+      | member@random.com   | 6613265393     | Awesome    | accepted |
 
     And the following payments exist
       | user_email          | start_date | expire_date | payment_type | status | hips_id | company_number |
       | emma@happymutts.com | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 5562252998     |
       | emma@happymutts.com | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
+      | member@random.com   | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6613265393     |
+      | member@random.com   | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
+
+
+    And the following memberships exist:
+      | email                | first_day  | last_day   |
+      | emma@happymutts.com  | 2017-01-1  | 2017-12-31 |
+      | member@random.com    | 2017-01-1  | 2017-12-31 |
+
+  # -----------------------------------------------------------------------------------------------
 
 
   @selenium @time_adjust @focus
@@ -118,14 +130,15 @@ Feature: Member edits a company attribute
   @time_adjust
   Scenario: Another tries to edit your company page (gets rerouted)
     Given the date is set to "2017-10-01"
-    Given I am logged in as "emma@happymutts.com"
-    And I am on the "edit my company" page
+    And I am logged in as "emma@happymutts.com"
+    When I am on the "edit my company" page
     And I fill in the translated form with data:
       | companies.company_name | companies.show.company_number | companies.show.email | companies.website_include_http |
       | Happy Mutts            | 5562252998                    | kicki@gladajyckar.se | http://www.gladajyckar.se      |
     And I click on t("submit")
     And I am Logged out
-    And I am logged in as "member@random.com"
+
+    When I am logged in as "member@random.com"
     And I am on the "edit my company" page for "emma@happymutts.com"
     Then I should be on the "landing" page
     And I should see t("errors.not_permitted")

@@ -14,20 +14,20 @@ Feature: Link categories to categories show for an Admin
       | Västerbotten |
 
     Given the following kommuns exist:
-      | name      |
-      | Alingsås  |
-      | Bromölla  |
+      | name     |
+      | Alingsås |
+      | Bromölla |
 
     Given the following companies exist:
-      | name     | company_number | email          | region       | kommun   | city      | visibility     |
-      | Groomer1 | 5560360793     | cmpy1@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
-      | kingGroomer | 2120000142     | cmpy2@mail.com | Västerbotten | Bromölla | Harplinge | street_address |
-      | GroomerNext | 6613265393     | cmpy3@mail.com | Stockholm    | Alingsås | Harplinge | post_code      |
-      | Company4 | 6222279082     | cmpy4@mail.com | Stockholm    | Alingsås | Harplinge | city           |
-      | Company5 | 8025085252     | cmpy5@mail.com | Stockholm    | Alingsås | Harplinge | kommun         |
+      | name          | company_number | email          | region       | kommun   | city      | visibility     |
+      | Groomer1      | 5560360793     | cmpy1@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
+      | kingGroomer   | 2120000142     | cmpy2@mail.com | Västerbotten | Bromölla | Harplinge | street_address |
+      | GroomerNext   | 6613265393     | cmpy3@mail.com | Stockholm    | Alingsås | Harplinge | post_code      |
+      | Company4      | 6222279082     | cmpy4@mail.com | Stockholm    | Alingsås | Harplinge | city           |
+      | Company5      | 8025085252     | cmpy5@mail.com | Stockholm    | Alingsås | Harplinge | kommun         |
       | PsycGroomerCo | 6914762726     | cmpy6@mail.com | Stockholm    | Alingsås | Harplinge | none           |
-      | Company7 | 7661057765     | cmpy7@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
-      | stockholmCo | 7736362901     | cmpy8@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
+      | Company7      | 7661057765     | cmpy7@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
+      | stockholmCo   | 7736362901     | cmpy8@mail.com | Stockholm    | Alingsås | Harplinge | street_address |
 
     And the following users exist:
       | email           | admin | member |

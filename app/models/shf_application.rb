@@ -47,7 +47,6 @@ class ShfApplication < ApplicationRecord
 
   accepts_nested_attributes_for :uploaded_files, allow_destroy: true
 
-  scope :not_decided, -> { where.not(state: [:accepted, :rejected]) }
 
   CAN_EDIT_STATES = [:new, :waiting_for_applicant]
 
@@ -57,13 +56,43 @@ class ShfApplication < ApplicationRecord
   # these are the SHF application states where it might be waiting for uploaded files:
   STATES_WAITING_FOR_FILES = %w(new under_review waiting_for_applicant)
 
-  def self.edittable_states
-    EDITABLE_STATES_FOR_APPLICATION
+
+
+  scope :not_decided, -> { where.not(state: [:accepted, :rejected]) }
+
+
+  # Have to guard against the condition where there are no uploaded files in the system
+  def self.decided_with_no_uploaded_files
+    return not_decided if UploadedFile.count == 0
+
+    # must compact to get rid of uploaded files not associated with any application
+    not_decided.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id).compact)
   end
 
-  aasm :column => 'state' do
 
-    state :new, :initial => true
+  # encapsulate how to get a list of all states as symbols
+  def self.all_states
+    aasm.states.map(&:name)
+  end
+
+
+  # TODO don't need this. AASM provides a scope for each defined state
+  def self.in_state(app_state)
+    where(state: app_state)
+  end
+
+
+  def self.total_in_state(app_state)
+    where(state: app_state).count
+  end
+
+
+  # ---------------------
+  # AASM (State machine)
+
+  aasm column: 'state' do
+
+    state :new, initial: true
     state :under_review
     state :waiting_for_applicant
     state :ready_for_review
@@ -102,28 +131,15 @@ class ShfApplication < ApplicationRecord
 
   end
 
-  # encapsulate how to get a list of all states as symbols
-  def self.all_states
-    aasm.states.map(&:name)
-  end
+  # ---------------------
 
 
-  def self.in_state(app_state)
-    where(state: app_state)
-  end
-
-  def self.total_in_state(app_state)
-    where(state: app_state).count
-  end
-
-  # Have to guard against the condition where there are no uploaded files in the system
-  def self.no_uploaded_files
-    return not_decided if UploadedFile.count == 0
-
-    not_decided.where('id NOT IN (?)', UploadedFile.pluck(:shf_application_id))
+  def self.edittable_states
+    EDITABLE_STATES_FOR_APPLICATION
   end
 
   # ===========================================================================================
+
 
   def clear_image_caches
     user.clear_proof_of_membership_jpg_cache
@@ -165,7 +181,7 @@ class ShfApplication < ApplicationRecord
   end
 
 
-  # these are only used by the submisssion form and are not saved to the db
+  # these are only used by the submission form and are not saved to the db
   def marked_ready_for_review
     @marked_ready_for_review ||= (ready_for_review? ? 1 : 0)
   end
@@ -176,8 +192,9 @@ class ShfApplication < ApplicationRecord
   end
 
 
+  # FIXME where is this used?
   def not_a_member?
-    !user.member?
+    user.not_a_member? # TODO should delegate
   end
 
   def company_numbers
@@ -188,6 +205,7 @@ class ShfApplication < ApplicationRecord
     companies.order(:id).map(&:name).join(', ')
   end
 
+  # TODO change this to work with a specific company, not the last one
   def company_branding_fee_paid?
     companies.last&.branding_license?
   end
@@ -286,7 +304,5 @@ class ShfApplication < ApplicationRecord
     changed(true)
     notify_observers(self)
   end
-
-
 
 end

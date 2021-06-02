@@ -1,17 +1,19 @@
-Feature: As an admin
+Feature: Admin can view all users and delete them. Visitors, applicants, members cannot.
+
+  As an admin
   In order to understand and manage our user base
-  I need to be able to view and make changes to user records
+  I need to be able to view and make changes to all users.
 
   Background:
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
-      | email               | admin | member | first_name | last_name  |
-      | emma@happymutts.com |       |        | Emma       | Happymutts |
-      | anna@sadmutts.com   |       | true   | Anna       | Sadmutts   |
-      | ernt@mutts.com      |       |        | Ernt       | Mutts      |
-      | admin@shf.se        | true  |        | | |
-      | david@dogs.com      |       |        | David      | Dogs       |
+      | email               | admin | membership_status | member | first_name | last_name  |
+      | emma@happymutts.com |       |                   |        | Emma       | Happymutts |
+      | anna@sadmutts.com   |       | current_member    | true   | Anna       | Sadmutts   |
+      | ernt@mutts.com      |       |                   |        | Ernt       | Mutts      |
+      | admin@shf.se        | true  |                   |        |            |            |
+      | david@dogs.com      |       |                   |        | David      | Dogs       |
 
     Given the following payments exist
       | user_email        | start_date | expire_date | payment_type | status | hips_id |
@@ -28,6 +30,16 @@ Feature: As an admin
       | emma@happymutts.com | 5562252998     | Trainer      | accepted |
       | anna@sadmutts.com   | 2120000142     | Psychologist | accepted |
       | ernt@mutts.com      | 2120000142     | Psychologist | new      |
+
+    And the following memberships exist:
+      | email             | first_day | last_day   |
+      | anna@sadmutts.com | 2017-10-1 | 2017-12-31 |
+
+    And the following users have agreed to the Membership Ethical Guidelines:
+     | email |
+     | anna@sadmutts.com |
+
+  # ------------------------------------------------------------------------------------------------
 
   Scenario: Admin can view all users
     Given I am logged in as "admin@shf.se"
@@ -73,7 +85,7 @@ Feature: As an admin
     And I should see "0" for class "sign-in-count" in the row for user "anna@sadmutts.com"
     And I should see "" for class "applications-open" in the row for user "anna@sadmutts.com"
     And I should see t("yes") for class "is-member" in the row for user "anna@sadmutts.com"
-    And I should see "2017-12-31" for class "expire_date" in the row for user "anna@sadmutts.com"
+    And I should see "2017-12-31" for class "expire-date" in the row for user "anna@sadmutts.com"
 
   Scenario: Member cannot view all users
     Given I am logged in as "anna@sadmutts.com"

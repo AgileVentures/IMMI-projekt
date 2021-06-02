@@ -1,4 +1,6 @@
-%tr
+- expire_date = user.membership_expire_date
+%tr.user
+  - expire_date_css_class = expire_date_css_class(user.membership_status_incl_informational)
   %td.membership_number= user.membership_number
   %td.email{ id: "user-#{user.id}" }= link_to user.email, user, title: t('.edit_user_account', name: user.full_name)
   %td.created-at
@@ -7,14 +9,12 @@
   %td.applications-open= user_has_open_application(user)
   %td.member-packet=  member_packet_sent_checkbox(user)
   %td.is-member
-    - if user.member?
-      %span.yes= t('.yes')
-    - else
-      %span.maybe= t('.no')
-  %td.expire_date
-    - expire_date = user.most_recent_membership_payment&.expire_date
+    %span{ class: ['membership-status', expire_date_css_class] }
+      = user.member ? t('yes') : t('no')
+
+  %td.expire-date
     - if expire_date
-      %span{ class: expires_soon_hint_css_class(expire_date) }
+      %span{ class: ['expire-date-background', expire_date_css_class] }
         = expire_date
   %td.edit
     = link_to icon('fas', 'edit'), admin_only_user_profile_edit_path(user), title: t('.edit_user_profile', name: user.full_name)

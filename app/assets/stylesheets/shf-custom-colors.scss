@@ -130,7 +130,6 @@ $not-working-color: #f00;
 // -----------------------------------------------------
 // colors used in maps.scss:
 
-$border-color: #fff;
 $gray-shadow: #b1b1b1;
 
 
@@ -184,7 +183,10 @@ $shf-docs-table-striped-background: #fafafa;
 // colors used in users.scss:
 
 $is-admin-color: #f00;
+$in-grace-period-color: rgba(87, 148, 210, 0.24);
+$past-member-color: #eee;
 
+$legend-border-color: $lightgray;
 
 // -----------------------------------------------------
 // colors used in app-configuration.scss:

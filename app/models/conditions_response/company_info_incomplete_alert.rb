@@ -9,7 +9,8 @@ class CompanyInfoIncompleteAlert < CompanyEmailAlert
   #
   # then send the alert if today is in the configuration list of days
   #
-  # Start sending alerts based on the earliest date that a current member in the company paid their memberhip fee
+  # Start sending alerts based on the earliest date that a current member
+  # in the company started the Company membership
   #
   def send_alert_this_day?(timing, config, company)
 

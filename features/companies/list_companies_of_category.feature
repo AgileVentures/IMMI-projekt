@@ -9,11 +9,11 @@ Feature: Category page: list all companies in the category
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email               | admin | member | agreed_to_membership_guidelines |
-      | emma@happymutts.com |       | true   | true                            |
-      | ernt@mutts.com      |       | true   | true                            |
-      | anna@sadmutts.com   |       | true   | true                            |
-      | admin@shf.se        | true  |        |                                 |
+      | email               | admin | membership_status | member | agreed_to_membership_guidelines |
+      | emma@happymutts.com |       | current_member    | true   | true                            |
+      | ernt@mutts.com      |       | current_member    | true   | true                            |
+      | anna@sadmutts.com   |       | current_member    | true   | true                            |
+      | admin@shf.se        | true  |                   |        |                                 |
 
     Given the following regions exist:
       | name         |
@@ -61,8 +61,16 @@ Feature: Category page: list all companies in the category
       | company_name         | region  | kommun  |
       | No More Snarky Barky | Uppsala | Dalarna |
 
+    And the following memberships exist:
+      | email               | first_day  | last_day   |
+      | emma@happymutts.com | 2017-01-01 | 2017-12-31 |
+      | ernt@mutts.com      | 2017-01-01 | 2017-12-31 |
+      | anna@sadmutts.com   | 2017-01-01 | 2017-12-31 |
+
+
 
     Given the date is set to "2017-10-01"
+ # -----------------------------------------------------------------------------------------------
 
   @time_adjust
   Scenario: Categories list multiple businesses

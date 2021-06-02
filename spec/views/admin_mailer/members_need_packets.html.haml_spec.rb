@@ -5,15 +5,15 @@ RSpec.describe 'admin_mailer/members_need_packets.html.haml', type: :view do
   describe 'for each member that needs a packet, it shows:' do
 
     let(:member_paid_up1) do
-      user = build(:member_with_membership_app, first_name: 'member', last_name: 'paid_up 1')
+      user = create(:member_with_membership_app, first_name: 'member', last_name: 'paid_up 1')
       user.payments << build(:membership_fee_payment)
       user
     end
 
     let(:member_2cos) do
-      user = build(:member_with_membership_app, first_name: 'member', last_name: '2 companies')
+      user = create(:member_with_membership_app, first_name: 'member', last_name: '2 companies')
       user.payments << build(:membership_fee_payment)
-      co2 = build(:company, name: 'Second company', website: 'www.secondcompany.com')
+      co2 = create(:company, name: 'Second company', website: 'www.secondcompany.com')
       user.shf_application.companies << co2
       user
     end

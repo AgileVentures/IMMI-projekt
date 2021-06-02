@@ -1,0 +1,10 @@
+-# This partial is for a 'How To...' section in an email. This allows for consistent styling and is DRY.
+-# The partial expects these locals:
+-#   title - title of this How To section
+-#   steps_as_li_html - the html to render the steps, each step should be a <li> ... </li> element
+- title_style = 'font-weight:bold; margin-bottom: 0;'
+- steps_list_style = 'margin-top: 0;'
+%p.title{ style: "#{title_style}" }= title
+
+%ol{ style: "#{steps_list_style}"}
+  = steps_li_html

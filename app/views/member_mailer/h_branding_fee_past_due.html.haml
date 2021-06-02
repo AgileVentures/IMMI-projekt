@@ -7,5 +7,8 @@
 
   %p.fee-is-unpaid= t('fee_is_unpaid', scope: message_scope )
 
+  %p.login-instructions= t('mailers.member_mailer.login_to_fix')
+  = render 'mailers_shared/login_here_with_email', email: @recipient_email
+
   = render 'how_to_pay_hmarkt', email: @recipient_email, company: @company
 

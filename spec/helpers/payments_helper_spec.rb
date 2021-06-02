@@ -27,11 +27,12 @@ RSpec.describe PaymentsHelper, type: :helper do
 
     context 'user' do
 
+      let(:member) { create(:member, expiration_date: Date.current + 1.month + 2.days) }
+
       # which CSS class is tested by the payment_due_now_hint_css_class spec below
       it 'returns the expiration date with the css class set' do
-        user_payment.update(expire_date: Time.zone.today + 1.month + 2.days)
-        response = /class="([^"]*)".*#{user_payment.expire_date}/
-        expect(helper.expire_date_label_and_value(user)).to match response
+        response = /class="([^"]*)".*#{member.membership_expire_date}/
+        expect(helper.expire_date_label_and_value(member)).to match response
       end
 
       # it 'returns date with style "yes" if expire_date more than a month away' do
@@ -53,9 +54,8 @@ RSpec.describe PaymentsHelper, type: :helper do
       # end
 
       it 'returns tooltip explaining expiration date' do
-        user_payment.update(expire_date: Time.zone.today)
         response = /#{t('users.show.membership_expire_date_tooltip')}/
-        expect(helper.expire_date_label_and_value(user)).to match response
+        expect(helper.expire_date_label_and_value(member)).to match response
       end
 
       it 'no expire date will show Paid through: None' do
@@ -70,8 +70,8 @@ RSpec.describe PaymentsHelper, type: :helper do
       # which CSS class is tested by the payment_due_now_hint_css_class spec below
       it 'returns the expiration date with the css class set' do
         brand_payment.update(expire_date: Time.zone.today + 1.month + 2.days)
-        response = /class="([^"]*)".*#{user_payment.expire_date}/
-        expect(helper.expire_date_label_and_value(user)).to match response
+        response = /class="([^"]*)".*#{brand_payment.expire_date}/
+        expect(helper.expire_date_label_and_value(brand_payment.company)).to match response
       end
 
       # it 'returns date with style "yes" if expire_date more than a month away' do
@@ -103,6 +103,25 @@ RSpec.describe PaymentsHelper, type: :helper do
         response = /.*#{t('companies.show.term_paid_through')}.*#{t('none_t')}/
         expect(helper.expire_date_label_and_value(co_no_payments)).to match response
       end
+    end
+  end
+
+  describe 'entity_name' do
+
+    it 'full name if entity is a User' do
+      u = build(:user, first_name:'First', last_name: 'Last')
+      expect(helper.entity_name(u)).to eq('First Last')
+    end
+
+    it 'name if the entity is a Company' do
+      co = build(:company, name: 'Some Company')
+      expect(helper.entity_name(co)).to eq('Some Company')
+    end
+
+    it "t('name_missing') if entity is nil or not a User and not a Company" do
+      else_result = I18n.t('name_missing')
+      expect(helper.entity_name(nil)).to eq(else_result)
+      expect(helper.entity_name('this string')).to eq(else_result)
     end
   end
 
@@ -152,16 +171,17 @@ RSpec.describe PaymentsHelper, type: :helper do
 
   describe 'payment_notes_label_and_value' do
 
-    it 'returns label and "none" if no notes' do
-      response = /#{t('activerecord.attributes.payment.notes')}.*#{t('none_plur')}/
-      expect(payment_notes_label_and_value(user)).to match response
+    it "displays t('none_plur)' if there is no text to display" do
+      expect(helper).to receive(:field_or_none)
+                          .with(anything, I18n.t('none_plur'), anything)
+      helper.payment_notes_label_and_value
     end
 
-    it 'returns label and value if notes' do
-      notes = 'here are some notes for this payment'
-      user_payment.update(notes: notes)
-      response = /#{t('activerecord.attributes.payment.notes')}.*#{notes}/
-      expect(payment_notes_label_and_value(user)).to match response
+    it 'returns the HTML for payment notes label and display string (=field value)' do
+      note_text = 'This is the payment note.'
+      expect(helper).to receive(:field_or_none)
+                          .with(anything, note_text, tag: :div)
+      helper.payment_notes_label_and_value(note_text)
     end
   end
 

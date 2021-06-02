@@ -1,0 +1,18 @@
+%p#notice= notice
+
+%p
+  %b Member number:
+  = @membership.member_number
+%p
+  %b Belongs to:
+  = @membership.belongs_to
+%p
+  %b First day:
+  = @membership.first_day
+%p
+  %b Last day:
+  = @membership.last_day
+
+= link_to 'Edit', edit_membership_path(@membership)
+\|
+= link_to 'Back', memberships_path

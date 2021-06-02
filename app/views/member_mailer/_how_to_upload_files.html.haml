@@ -1,0 +1,11 @@
+:ruby
+  # This partial shows the text explaining how to upload files, and
+  # the link to log in (with a reminder about the email to use).
+  #
+  # The partial expects these locals:
+  #   login_menu_title - the title of the login menu for the user (usually the first name)
+  #   uploaded_files_menu_item - the menu item text for the uploaded files page in the login menu
+  #
+= render 'mailers_shared/how_to_instruction', title: t('mailers.how_to_upload_files'),
+  steps_li_html: render('how_to_upload_files_steps', login_menu_title: login_menu_title,
+                                                     uploaded_files_menu_item: uploaded_files_menu_item)

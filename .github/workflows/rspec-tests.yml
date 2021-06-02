@@ -58,7 +58,7 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgres:
-        image: dashleyengelund/postgres-sv-se:postgres9-6-sv_se
+        image: ashleyengelund/postgres-sv-se:postgres9-6-sv_se
         env:
           POSTGRES_USER: shf_project
           POSTGRES_DB: shf_project_test
@@ -95,10 +95,13 @@ jobs:
       - name: Setup test database
         env:
           RAILS_ENV: test
+          POSTGRES_PASSWORD: password
           PGHOST: localhost
-          PGUSER: shf_project
+
         run: |
-          bin/rails db:setup
+          bundle exec bin/rails db:create db:migrate
+          bundle exec bin/rails db:schema:dump
+          bundle exec bin/rails db:test:prepare
 
       - name: Run tests
         run: bin/rspec

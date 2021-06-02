@@ -66,8 +66,8 @@
     .form-row
       .col-sm-12.membership-expired-grace-period
         .form-inline
-          = f.label :membership_expired_grace_period, "#{t('.membership_expired_grace_period')}:", class: 'control-label field-label'
-          = f.number_field :membership_expired_grace_period, class: 'form-control membership-expired-grace-period', min: 0
+          = f.label :membership_expired_grace_period_duration, "#{t('.membership_expired_grace_period')}:", class: 'control-label field-label'
+          = f.number_field :membership_expired_grace_period_duration, class: 'form-control membership-expired-grace-period', min: 0
 
     %hr
     .row

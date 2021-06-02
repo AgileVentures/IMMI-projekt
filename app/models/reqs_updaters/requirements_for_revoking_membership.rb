@@ -27,8 +27,12 @@ class RequirementsForRevokingMembership < AbstractRequirements
   end
 
 
+  # Can only revoke membership if the user is a member (else there is nothing to revoke)
+  #  AND the user (a member) is not a member in good standing.
   def self.requirements_met?(args)
-    args[:user].member? && !args[:user].membership_current?
+    user = args[:user]
+    date = args[:date]
+    user.member? && !user.member_in_good_standing?(date)
   end
 
-end # RequirementsForRevokingMembership
+end

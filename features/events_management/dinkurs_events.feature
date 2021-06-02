@@ -12,10 +12,10 @@ Feature: Get events for a company from Dinkurs
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email            | admin | member |agreed_to_membership_guidelines |
-      | member@mutts.com |       | true   | true                           |
-      | visitor@mail.com |       |        |                                |
-      | admin@shf.se     | true  |        |                                |
+      | email            | admin | membership_status |member |agreed_to_membership_guidelines |
+      | member@mutts.com |       | current_member    |true   | true                           |
+      | visitor@mail.com |       |                   |        |                                |
+      | admin@shf.se     | true  |                   |      |                                |
 
     And the following regions exist:
       | name         |
@@ -38,7 +38,11 @@ Feature: Get events for a company from Dinkurs
       | user_email       | company_number | state    |
       | member@mutts.com | 5560360793     | accepted |
 
+    And the following memberships exist:
+      | email | first_day | last_day |
+      | member@mutts.com | 2017-01-01 | 2017-12-31 |
 
+    # ---------------------------------------------------------------------------------------------
 
   @time_adjust @dinkurs_fetch
   Scenario: Member adds Dinkurs ID, checks as visible and visitor sees events in company page

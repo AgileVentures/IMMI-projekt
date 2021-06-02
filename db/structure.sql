@@ -110,7 +110,9 @@ CREATE TABLE public.app_configurations (
     singleton_guard integer DEFAULT 0 NOT NULL,
     payment_too_soon_days integer DEFAULT 60 NOT NULL,
     membership_guideline_list_id bigint,
-    membership_expired_grace_period integer DEFAULT 90 NOT NULL
+    membership_expired_grace_period_duration character varying DEFAULT 'P2Y'::character varying NOT NULL,
+    membership_term_duration character varying DEFAULT 'P1Y'::character varying NOT NULL,
+    membership_expiring_soon_days integer DEFAULT 60 NOT NULL
 );
 
 
@@ -122,10 +124,24 @@ COMMENT ON COLUMN public.app_configurations.payment_too_soon_days IS 'Warn user 
 
 
 --
--- Name: COLUMN app_configurations.membership_expired_grace_period; Type: COMMENT; Schema: public; Owner: -
+-- Name: COLUMN app_configurations.membership_expired_grace_period_duration; Type: COMMENT; Schema: public; Owner: -
 --
 
-COMMENT ON COLUMN public.app_configurations.membership_expired_grace_period IS 'Number of days after membership expiration that a member can pay without penalty';
+COMMENT ON COLUMN public.app_configurations.membership_expired_grace_period_duration IS 'Duration of time after membership expiration that a member can pay without penalty. ISO 8601 Duration string format. Must be used so we can handle leap years.';
+
+
+--
+-- Name: COLUMN app_configurations.membership_term_duration; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.app_configurations.membership_term_duration IS 'ISO 8601 Duration string format. Must be used so we can handle leap years. default = 1 year';
+
+
+--
+-- Name: COLUMN app_configurations.membership_expiring_soon_days; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.app_configurations.membership_expiring_soon_days IS 'Number of days to start saying a membership is expiring soon';
 
 
 --
@@ -157,6 +173,64 @@ CREATE TABLE public.ar_internal_metadata (
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
+
+
+--
+-- Name: archived_memberships; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.archived_memberships (
+    id bigint NOT NULL,
+    member_number character varying,
+    first_day date NOT NULL,
+    last_day date NOT NULL,
+    notes text,
+    belonged_to_first_name text NOT NULL,
+    belonged_to_last_name text NOT NULL,
+    belonged_to_email text NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: COLUMN archived_memberships.belonged_to_first_name; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.archived_memberships.belonged_to_first_name IS 'The first name of the user this belonged to';
+
+
+--
+-- Name: COLUMN archived_memberships.belonged_to_last_name; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.archived_memberships.belonged_to_last_name IS 'The last name of the user this belonged to';
+
+
+--
+-- Name: COLUMN archived_memberships.belonged_to_email; Type: COMMENT; Schema: public; Owner: -
+--
+
+COMMENT ON COLUMN public.archived_memberships.belonged_to_email IS 'The email for the user this belonged to';
+
+
+--
+-- Name: archived_memberships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.archived_memberships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: archived_memberships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.archived_memberships_id_seq OWNED BY public.archived_memberships.id;
 
 
 --
@@ -722,6 +796,41 @@ CREATE SEQUENCE public.membership_number_seq
 
 
 --
+-- Name: memberships; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.memberships (
+    id bigint NOT NULL,
+    user_id bigint,
+    member_number character varying,
+    first_day date NOT NULL,
+    last_day date NOT NULL,
+    notes text,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+--
+-- Name: memberships_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE public.memberships_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: memberships_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE public.memberships_id_seq OWNED BY public.memberships.id;
+
+
+--
 -- Name: one_time_tasker_task_attempts; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -1021,7 +1130,8 @@ CREATE TABLE public.users (
     member_photo_file_size bigint,
     member_photo_updated_at timestamp without time zone,
     short_proof_of_membership_url character varying,
-    date_membership_packet_sent timestamp without time zone
+    date_membership_packet_sent timestamp without time zone,
+    membership_status character varying
 );
 
 
@@ -1063,6 +1173,13 @@ ALTER TABLE ONLY public.addresses ALTER COLUMN id SET DEFAULT nextval('public.ad
 --
 
 ALTER TABLE ONLY public.app_configurations ALTER COLUMN id SET DEFAULT nextval('public.app_configurations_id_seq'::regclass);
+
+
+--
+-- Name: archived_memberships id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.archived_memberships ALTER COLUMN id SET DEFAULT nextval('public.archived_memberships_id_seq'::regclass);
 
 
 --
@@ -1157,6 +1274,13 @@ ALTER TABLE ONLY public.member_pages ALTER COLUMN id SET DEFAULT nextval('public
 
 
 --
+-- Name: memberships id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.memberships ALTER COLUMN id SET DEFAULT nextval('public.memberships_id_seq'::regclass);
+
+
+--
 -- Name: one_time_tasker_task_attempts id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -1234,6 +1358,14 @@ ALTER TABLE ONLY public.app_configurations
 
 ALTER TABLE ONLY public.ar_internal_metadata
     ADD CONSTRAINT ar_internal_metadata_pkey PRIMARY KEY (key);
+
+
+--
+-- Name: archived_memberships archived_memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.archived_memberships
+    ADD CONSTRAINT archived_memberships_pkey PRIMARY KEY (id);
 
 
 --
@@ -1338,6 +1470,14 @@ ALTER TABLE ONLY public.member_app_waiting_reasons
 
 ALTER TABLE ONLY public.member_pages
     ADD CONSTRAINT member_pages_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: memberships memberships_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.memberships
+    ADD CONSTRAINT memberships_pkey PRIMARY KEY (id);
 
 
 --
@@ -1455,6 +1595,27 @@ CREATE UNIQUE INDEX index_app_configurations_on_singleton_guard ON public.app_co
 
 
 --
+-- Name: index_archived_memberships_on_belonged_to_last_name; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_archived_memberships_on_belonged_to_last_name ON public.archived_memberships USING btree (belonged_to_last_name);
+
+
+--
+-- Name: index_archived_memberships_on_first_day; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_archived_memberships_on_first_day ON public.archived_memberships USING btree (first_day);
+
+
+--
+-- Name: index_archived_memberships_on_last_day; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_archived_memberships_on_last_day ON public.archived_memberships USING btree (last_day);
+
+
+--
 -- Name: index_business_categories_on_ancestry; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1543,6 +1704,27 @@ CREATE INDEX index_master_checklists_on_master_checklist_type_id ON public.maste
 --
 
 CREATE INDEX index_master_checklists_on_name ON public.master_checklists USING btree (name);
+
+
+--
+-- Name: index_memberships_on_first_day; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_memberships_on_first_day ON public.memberships USING btree (first_day);
+
+
+--
+-- Name: index_memberships_on_last_day; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_memberships_on_last_day ON public.memberships USING btree (last_day);
+
+
+--
+-- Name: index_memberships_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_memberships_on_user_id ON public.memberships USING btree (user_id);
 
 
 --
@@ -1651,6 +1833,13 @@ CREATE UNIQUE INDEX index_users_on_membership_number ON public.users USING btree
 
 
 --
+-- Name: index_users_on_membership_status; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_membership_status ON public.users USING btree (membership_status);
+
+
+--
 -- Name: index_users_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -1727,6 +1916,14 @@ ALTER TABLE ONLY public.addresses
 
 ALTER TABLE ONLY public.events
     ADD CONSTRAINT fk_rails_88786fdf2d FOREIGN KEY (company_id) REFERENCES public.companies(id);
+
+
+--
+-- Name: memberships fk_rails_99326fb65d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.memberships
+    ADD CONSTRAINT fk_rails_99326fb65d FOREIGN KEY (user_id) REFERENCES public.users(id);
 
 
 --
@@ -1895,6 +2092,12 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20200205213528'),
 ('20201203180001'),
 ('20201203181536'),
-('20201214212325');
+('20201214212325'),
+('20210217002200'),
+('20210217002300'),
+('20210217032402'),
+('20210217045905'),
+('20210220032402'),
+('20210404015347');
 
 

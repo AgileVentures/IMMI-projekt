@@ -101,9 +101,10 @@ RSpec.describe ShfApplication, type: :model do
     end
   end
 
-  context 'scopes' do
 
-    context 'not_decided and accepted' do
+  context 'Scopes' do
+
+    describe 'not_decided and accepted' do
       let!(:accepted_app1) { create(:shf_application, :accepted) }
       let!(:accepted_app2) { create(:shf_application, :accepted) }
       let!(:rejected_app1) { create(:shf_application, :rejected) }
@@ -124,103 +125,132 @@ RSpec.describe ShfApplication, type: :model do
 
     end
 
-    describe 'no uploaded files: all not_decided applications that have no uploaded files' do
 
-      let!(:application_owner1) { create(:user, email: 'user_1@random.com') }
-      let!(:application_owner2) { create(:user, email: 'user_2@random.com') }
-      let!(:application_owner3) { create(:user, email: 'user_3@random.com') }
+    context 'no uploaded files in the system' do
 
-      let!(:shf_not_decided_app_no_uploads_1) do
-        create(:shf_application, user: application_owner2,
-                                 contact_email: application_owner2.email)
-      end
+      describe 'decided_with_no_uploaded_files = apps that have not yet been decided AND have no uploaded files' do
 
-      let!(:shf_not_decided_app_no_uploads_2) do
-        create(:shf_application, user: application_owner3,
-                                 contact_email: application_owner3.email)
-      end
+        let!(:new_app_1) do
+          create(:shf_application, user: create(:user, email: 'new-applicant-1@random.com'),
+                 contact_email: "new-0-uploads--applicant-2@random.com")
+        end
 
-      let!(:shf_rejected_app_uploads_1) do
-        user = create(:user, email: 'user_7@random.com')
-        create(:shf_application, :rejected, user: user)
-      end
+        let!(:new_app_2) do
+          create(:shf_application, user: create(:user, email: 'new-applicant-2@random.com'),
+                 contact_email: "new-0-uploads--applicant-2@random.com")
+        end
 
-      let!(:shf_rejected_app_uploads_2) do
-        user = create(:user, email: 'user_8@random.com')
-        create(:shf_application, :rejected, user: user)
-      end
+        let!(:waiting_app) do
+          create(:shf_application, state: :waiting_for_applicant, user: create(:user, email: 'waiting_for-applicant@random.com'),
+                 contact_email: "new-0-uploads--applicant-2@random.com")
+        end
 
-      let!(:shf_rejected_app_uploads_3) do
-        user = create(:user, email: 'user_9@random.com')
-        create(:shf_application, :rejected, user: user)
-      end
+        let!(:ready_for_review_app) do
+          create(:shf_application, state: :ready_for_review, user: create(:user, email: 'ready_for_review-applicant@random.com'),
+                 contact_email: "new-0-uploads--applicant-2@random.com")
+        end
 
-      let!(:shf_rejected_app_uploads_4) do
-        user = create(:user, email: 'user_10@random.com')
-        create(:shf_application, :rejected, user: user)
-      end
-
-
-      context 'no uploaded files in the system [caused a problem with the original scope]' do
+        let!(:rejected_app) do
+          create(:shf_application, :rejected, user: create(:user, email: 'rejected-applicant-7@random.com'),
+                 contact_email: "rejected-0-uploads--rejected-applicant-7@random.com")
+        end
 
         it 'returns 2 apps when there are 2 not_decided apps without uploads, 4 rejected apps without uploads' do
-
-          expect(described_class.no_uploaded_files).to contain_exactly(shf_not_decided_app_no_uploads_1,
-                                                                       shf_not_decided_app_no_uploads_2)
+          expect(described_class.decided_with_no_uploaded_files).to contain_exactly(new_app_1,
+                                                                                    new_app_2,
+                                                                                    waiting_app,
+                                                                                    ready_for_review_app)
         end
       end
-
-      context 'there are uploaded files in the system' do
-
-        let!(:shf_not_decided_app_uploads_1) do
-          shf_app = create(:shf_application, user: application_owner1,
-                           contact_email: application_owner1.email)
-          shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
-        end
-
-        let!(:shf_approved_app_uploads_1) do
-          member = create(:member_with_membership_app, email: 'user_4@random.com')
-          shf_app = member.shf_application
-          shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
-          shf_app
-        end
-
-        let!(:shf_approved_app_uploads_2) do
-          member = create(:member_with_membership_app, email: 'user_5@random.com')
-          shf_app = member.shf_application
-          shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
-          shf_app
-        end
-
-        let!(:shf_approved_app_uploads_3) do
-          member = create(:member_with_membership_app, email: 'user_6@random.com')
-          shf_app = member.shf_application
-          shf_app.uploaded_files << create(:uploaded_file, :png, shf_application: shf_app)
-          shf_app
-        end
+    end
 
 
-        describe '1 not_decided apps with uploads, 2 not_decided apps without, 3 approved apps with uploads, 4 rejected apps without uploads ' do
+    context 'there are uploaded files in the system' do
 
-          it 'not_decided count = 3' do
-            expect(described_class.not_decided.count).to eq 3
-          end
+      let!(:new_0_uploads) do
+        user =  create(:user, email: 'applicant-1@random.com')
+        create(:shf_application, user: user,
+               contact_email: "new-0-uploads--#{user.email}")
+      end
 
-          it 'no_uploaded_files count = 2' do
-            expect(described_class.no_uploaded_files.count).to eq 2
-            expect(described_class.no_uploaded_files).to contain_exactly(shf_not_decided_app_no_uploads_1, shf_not_decided_app_no_uploads_2)
-          end
+      let!(:waiting_0_uploads) do
+        user = create(:user, email: 'applicant-2@random.com')
+        create(:shf_application, state: :waiting_for_applicant, user: user,
+               contact_email: "waiting-0-uploads--#{user.email}")
+      end
 
+      let!(:new_1_upload) do
+        user = create(:user, email: 'applicant-3@random.com')
+        shf_app = create(:shf_application, user: user,
+                         contact_email: "new-1--#{user.email}")
+        shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
+        shf_app
+      end
+
+      let!(:rejected_0_uploads) do
+        user = create(:user, email: 'rejected-applicant-1@random.com')
+        create(:shf_application, :rejected, user: user,
+               contact_email: "rejected-0-uploads--#{user.email}")
+      end
+
+      let!(:rejected_1_uploads) do
+        user = create(:user, email: 'rejected-applicant-2@random.com')
+        shf_app = create(:shf_application, :rejected, user: user,
+               contact_email: "rejected-0-uploads--#{user.email}")
+        shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
+      end
+
+      let!(:accepted_0_uploads_a) do
+        member = create(:member, email: 'accepted_no-upload-1@random.com')
+        shf_app = member.shf_application
+        shf_app.contact_email = "accepted-0--#{member.email}"
+        shf_app
+      end
+
+      let!(:accepted_0_uploads_b) do
+        member = create(:member, email: 'accepted_no-upload-2@random.com')
+        shf_app = member.shf_application
+        shf_app.contact_email = "accepted-0--#{member.email}"
+        shf_app
+      end
+
+      let!(:accepted_1_upload_a) do
+        member = create(:member, email: 'accepted_1-upload@random.com')
+        shf_app = member.shf_application
+        shf_app.contact_email = "accepted-1--#{member.email}"
+        shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
+        shf_app
+      end
+
+      let!(:accepted_1_upload_b) do
+        member = create(:member, email: 'accepted_2-upload@random.com')
+        shf_app = member.shf_application
+        shf_app.contact_email = "accepted-1--#{member.email}"
+        shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
+        shf_app
+      end
+
+      let!(:accepted_1_upload_c) do
+        member = create(:member, email: 'accepted_3-upload@random.com')
+        shf_app = member.shf_application
+        shf_app.contact_email = "accepted-1--#{member.email}"
+        shf_app.uploaded_files << create(:uploaded_file, :jpg, shf_application: shf_app)
+        shf_app
+      end
+
+
+      describe '2 not_decided apps with ZERO uploads, 1 new app with uploads, 4 decided apps with uploads, 3 decided apps with no uploads' do
+
+        it 'decided_with_no_uploaded_files count = 2' do
+          result = described_class.decided_with_no_uploaded_files
+          expect(result.count).to eq 2
+          expect(result).to contain_exactly(new_0_uploads, waiting_0_uploads)
         end
 
       end
-
     end
 
   end
-
-
-
 
 
   context 'User proof_of_membership (POM) JPG and Company h-brand JPG cache management' do
@@ -264,7 +294,7 @@ RSpec.describe ShfApplication, type: :model do
   describe "Uploaded Files" do
 
     let(:application_owner) { create(:user, email: 'user_1@random.com') }
-    let(:application_owner2) { create(:user, email: 'user_2@random.com') }
+    let(:applicant_2) { create(:user, email: 'user_2@random.com') }
 
     it 'uploading a file increases the number of uploaded files by 1' do
       app = create(:shf_application, user: application_owner)
@@ -325,38 +355,45 @@ RSpec.describe ShfApplication, type: :model do
   end
 
 
-  describe 'test factories' do
+  describe 'Factories' do
 
-    it '1 category with default category name' do
-      member_app = create(:shf_application, num_categories: 1)
-      expect(member_app.business_categories.count).to eq(1)
-      expect(member_app.business_categories.first.name)
-          .to eq("Business Category"),
-              "The first category name should have been 'Business Category'" \
-        "but instead was '#{member_app.business_categories.first.name}'"
+    it 'has valid factories' do
+      expect(build(:shf_application)).to be_valid
     end
 
-    it '2 categories with sequence names' do
-      member_app = create(:shf_application, num_categories: 2)
-      expect(member_app.business_categories.count).to eq(2), "The number of categories should have been 2 but instead was #{member_app.business_categories.count}"
-      expect(member_app.business_categories.first.name).to eq("Business Category 1"), "The first category name should have been 'Business Category 1' but instead was '#{member_app.business_categories.first.name}'"
-      expect(member_app.business_categories.last.name).to eq("Business Category 2"), "The last category name should have been 'Business Category 2' but instead was '#{member_app.business_categories.first.name}'"
-    end
+    describe 'categories' do
 
-    it '1 category with the name "Special"' do
-      member_app = create(:shf_application, num_categories: 1,
-                          category_name: "Special")
-      expect(member_app.business_categories.count).to eq(1)
-      expect(member_app.business_categories.first.name).to eq("Special"), "The first category name should have been 'Special' but instead was '#{member_app.business_categories.first.name}'"
-    end
+      it '1 category with default category name' do
+        member_app = create(:shf_application, num_categories: 1)
+        expect(member_app.business_categories.count).to eq(1)
+        expect(member_app.business_categories.first.name)
+            .to eq("Business Category"),
+                "The first category name should have been 'Business Category'" \
+          "but instead was '#{member_app.business_categories.first.name}'"
+      end
 
-    it '3 categories with the name "Special 1, Special 2, Special 3"' do
-      member_app = create(:shf_application, category_name: "Special", num_categories: 3)
-      expect(member_app.business_categories.count).to eq(3)
-      expect(member_app.business_categories.first.name).to eq("Special 1"), "The first category name should have been 'Special 1' but instead was '#{member_app.business_categories.first.name}'"
-      expect(member_app.business_categories.last.name).to eq("Special 3"), "The first category name should have been 'Special 3' but instead was '#{member_app.business_categories.last.name}'"
-    end
+      it '2 categories with sequence names' do
+        member_app = create(:shf_application, num_categories: 2)
+        expect(member_app.business_categories.count).to eq(2), "The number of categories should have been 2 but instead was #{member_app.business_categories.count}"
+        expect(member_app.business_categories.first.name).to eq("Business Category 1"), "The first category name should have been 'Business Category 1' but instead was '#{member_app.business_categories.first.name}'"
+        expect(member_app.business_categories.last.name).to eq("Business Category 2"), "The last category name should have been 'Business Category 2' but instead was '#{member_app.business_categories.first.name}'"
+      end
 
+      it '1 category with the name "Special"' do
+        member_app = create(:shf_application, num_categories: 1,
+                            category_name: "Special")
+        expect(member_app.business_categories.count).to eq(1)
+        expect(member_app.business_categories.first.name).to eq("Special"), "The first category name should have been 'Special' but instead was '#{member_app.business_categories.first.name}'"
+      end
+
+      it '3 categories with the name "Special 1, Special 2, Special 3"' do
+        member_app = create(:shf_application, category_name: "Special", num_categories: 3)
+        expect(member_app.business_categories.count).to eq(3)
+        expect(member_app.business_categories.first.name).to eq("Special 1"), "The first category name should have been 'Special 1' but instead was '#{member_app.business_categories.first.name}'"
+        expect(member_app.business_categories.last.name).to eq("Special 3"), "The first category name should have been 'Special 3' but instead was '#{member_app.business_categories.last.name}'"
+      end
+
+    end
 
   end
 
@@ -578,7 +615,27 @@ RSpec.describe ShfApplication, type: :model do
 
   end
 
-  describe '#company_numbers and #company_names' do
+
+  describe 'marked_ready_for_review' do
+    pending
+  end
+
+
+  describe 'marked_ready_for_review=' do
+    pending
+  end
+
+
+  describe 'not_a_member?' do
+    it 'true only if the user is not_a_member' do
+      not_member_app = build(:shf_application)
+      expect(not_member_app.not_a_member?).to be_truthy
+    end
+  end
+
+
+
+  describe 'company_numbers and company_names' do
     let(:cmpy1) { create(:company, name: 'Company One') }
     let(:cmpy2) { create(:company, name: 'Company Two') }
     let(:app) do

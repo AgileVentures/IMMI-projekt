@@ -30,9 +30,10 @@ class RequirementsForHBrandingFeeWillExpire < AbstractRequirements
   # The _prerequisites_ are met for for an H-Branding fee to expire in the future
   # if there are current members in the company
   #  AND the branding_license IS current
+  # FIXME: this means the company is in good standing (or the company is a current_member)
   def self.requirements_met?(args)
     company = args[:company]
-    !company.current_members.empty? && company.branding_license?
+    company.current_members.any? && company.branding_license?
   end
 
 end

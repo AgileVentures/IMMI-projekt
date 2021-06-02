@@ -36,7 +36,7 @@ Feature: Edit SHF Application
   @selenium
   Scenario: Applicant makes mistake when editing their own application (no files uploaded) [SAD PATH]
     Given I am logged in as "emma@random.com"
-    Given I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
     And I fill in t("shf_applications.show.contact_email") with ""
@@ -51,7 +51,7 @@ Feature: Edit SHF Application
   @selenium
   Scenario: Applicant makes mistake when uploading a file and editing their own application [SAD PATH]
     Given I am logged in as "emma@random.com"
-    And I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on first t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
     And I choose a file named "diploma.pdf" to upload for the application
@@ -64,7 +64,7 @@ Feature: Edit SHF Application
   @selenium
   Scenario: Add 2nd company, no files uploaded, user sees success and deliver-files prompt
     Given I am logged in as "emma@random.com"
-    And I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on first t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
     Then I fill in t("shf_applications.show.company_number") with "5560360793, 212000-0142"
@@ -82,7 +82,7 @@ Feature: Edit SHF Application
   @selenium
   Scenario: Files uploaded, user sees success and does not see deliver-files prompt
     Given I am logged in as "emma@random.com"
-    And I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on first t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
 
@@ -139,7 +139,7 @@ Feature: Edit SHF Application
   @selenium
   Scenario: User edit app with two companies, corrects an error in company number
     Given I am logged in as "hans@random.com"
-    And I am on the "user instructions" page
+    And I am on the "user account" page
     When I click on first t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
     And the t("shf_applications.show.company_number") field should be set to "5560360793, 2120000142"
@@ -205,7 +205,7 @@ Feature: Edit SHF Application
   @selenium
   Scenario: Cannot change locale if there are errors in the application
     Given I am logged in as "emma@random.com"
-    And I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on first t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
     And I fill in t("shf_applications.show.contact_email") with ""
@@ -229,7 +229,7 @@ Feature: Edit SHF Application
     Then I should see "overall grooming"
     Then I am Logged out
     Given I am logged in as "emma@random.com"
-    Given I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on t("menus.nav.users.my_application") link
     Then I should be on "Edit My Application" page
     And I should not see "overall grooming"

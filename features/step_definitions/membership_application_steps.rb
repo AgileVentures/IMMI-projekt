@@ -45,40 +45,40 @@ And(/^the following applications exist:$/) do |table|
 
     legacy_app = hash[IS_LEGACY] == 'true' ? true : false
 
-    # 'ma' = Member Application
-    if (member_application = user.shf_application)
+    # 'membership_app' = Member ShfApplication
+    if (membership_app = user.shf_application)
       user.shf_application.companies << companies
 
     else
       num_categories = hash[:categories] ? 0 : 1
 
-      ma_attributes = attributes.merge(user: user,
+      membership_app_attributes = attributes.merge(user: user,
                                        contact_email: contact_email,
                                        create_company: false,
                                        num_categories: num_categories)
 
       if legacy_app
-        member_application = FactoryBot.build(:shf_application, :legacy_application, ma_attributes)
+        membership_app = FactoryBot.build(:shf_application, :legacy_application, membership_app_attributes)
       else
-        member_application = FactoryBot.build(:shf_application, ma_attributes)
+        membership_app = FactoryBot.build(:shf_application, membership_app_attributes)
       end
 
-      member_application.companies = companies
+      membership_app.companies = companies
     end
 
     if hash[CATEGORIES]
       categories = []
       for category_name in hash[CATEGORIES].split(/\s*,\s*/)
-        categories << BusinessCategory.find_by_name(category_name) unless member_application.business_categories.where(name: category_name).exists?
+        categories << BusinessCategory.find_by_name(category_name) unless membership_app.business_categories.where(name: category_name).exists?
       end
-      member_application.business_categories << categories
+      membership_app.business_categories << categories
     end
 
     if hash[UPLOADED_FILES]
       uploaded_files = []
 
       for uploaded_file_name in hash[UPLOADED_FILES].split(/\s*,\s*/)
-        unless member_application.uploaded_files.where(user: user.id, actual_file_file_name: uploaded_file_name).exists?
+        unless membership_app.uploaded_files.where(user: user.id, actual_file_file_name: uploaded_file_name).exists?
           file_already_uploaded = UploadedFile.find_by(user: user, actual_file_file_name: uploaded_file_name)
           if file_already_uploaded
             uploaded_file = file_already_uploaded
@@ -87,7 +87,7 @@ And(/^the following applications exist:$/) do |table|
             if file_fixture_exists?(uploaded_file_name, 'the following applications exist')
               File.open(Rails.root.join(UPLOADED_FILES_DIR, uploaded_file_name), 'r') do |f|
                 uploaded_file = UploadedFile.create!(user: user,
-                                                     shf_application: member_application,
+                                                     shf_application: membership_app,
                                                      actual_file: f,
                                                      actual_file_file_name: uploaded_file_name)
               end
@@ -96,17 +96,17 @@ And(/^the following applications exist:$/) do |table|
           uploaded_files << uploaded_file
         end
       end
-      member_application.uploaded_files << uploaded_files
+      membership_app.uploaded_files << uploaded_files
     end
 
     if legacy_app
       # We save without validation - so, confirm that the **only** validation errors
       # would be associated with the missing file-delivery method.
-      member_application.valid?
-      expect(member_application.errors.keys).to match_array [:file_delivery_method]
+      membership_app.valid?
+      expect(membership_app.errors.keys).to match_array [:file_delivery_method]
     end
 
-    member_application.save!(validate: (legacy_app ? false : true))
+    membership_app.save!(validate: (legacy_app ? false : true))
   end
 end
 

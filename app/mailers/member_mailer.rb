@@ -8,18 +8,35 @@ class MemberMailer < ApplicationMailer
     set_mail_info __method__, member
     @member = member
     mail to: recipient_email, subject: t('mailers.member_mailer.membership_granted.subject')
+  end
 
+
+  def membership_renewed(member)
+    set_mail_info __method__, member
+    @member = member
+    @company = member.companies.first
+    @membership_last_day = member.membership_last_day
+    @companies = member.companies
+
+    mail to: recipient_email, subject: t('mailers.member_mailer.membership_renewed.subject')
   end
 
 
   def membership_expiration_reminder(member)
-
     set_mail_info __method__, member
     @member      = member
     @expire_date = member.membership_expire_date
     mail to:      @recipient_email,
          subject: t('mailers.member_mailer.membership_will_expire.subject')
 
+  end
+
+  def membership_will_expire_renewal_reqs_reminder(member)
+    set_mail_info __method__, member
+    @member      = member
+    @expire_date = member.membership_expire_date
+    mail to:      @recipient_email,
+         subject: t('mailers.member_mailer.membership_will_expire_renewal_reqs_reminder.subject')
   end
 
 

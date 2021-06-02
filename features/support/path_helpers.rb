@@ -30,11 +30,6 @@ module PathHelpers
       when 'landing', 'home'
         path = root_path
 
-      # Instruction pages
-      when 'user instructions'
-        path = information_path
-      when 'member instructions'
-        path = information_path
 
       # User Profile: this is the devise registrations page
       when 'edit registration for a user', 'edit user profile', 'edit my user profile'
@@ -100,7 +95,7 @@ module PathHelpers
 
       when 'upload a new file'
         u = user.nil? ? Visitor.new : user
-        path = new_user_uploaded_file_path(u)
+        path = user_new_uploaded_file_path(u)
 
 
       # ==================================================

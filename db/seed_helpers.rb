@@ -164,12 +164,13 @@ module SeedHelper
 
       start_date, expire_date = User.next_membership_payment_dates(user.id)
 
-      user.payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
-                                      user_id:      user.id,
-                                      hips_id:      'none',
-                                      status:       Payment::SUCCESSFUL,
-                                      start_date:   start_date,
-                                      expire_date:  expire_date)
+      membership_payment = Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
+                                          user_id:      user.id,
+                                          hips_id:      'none',
+                                          status:       Payment::SUCCESSFUL,
+                                          start_date:   start_date,
+                                          expire_date:  expire_date)
+      user.payments << membership_payment
 
       start_date, expire_date = Company.next_branding_payment_dates(ma.companies[0].id)
 
@@ -177,8 +178,11 @@ module SeedHelper
       guidelines_list = UserChecklistManager.find_or_create_membership_guidelines_list_for(user)
       guidelines_list.set_complete_including_children(start_date) if FFaker::Random.rand(100) < 86
 
-      MembershipStatusUpdater.instance.check_requirements_and_act({ user: user, send_email: false })
-      #user.update_action(send_email: false)
+      # Do not send email
+      unless user.admin?
+        MembershipStatusUpdater.instance.payment_made(membership_payment, send_email: false)
+        MembershipStatusUpdater.instance.update_membership_status(user, send_email: false)
+      end
 
       ma.companies[0].payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
                                                  user_id:      user.id,

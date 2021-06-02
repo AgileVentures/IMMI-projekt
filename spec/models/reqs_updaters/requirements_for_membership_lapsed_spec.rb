@@ -23,7 +23,7 @@ RSpec.describe RequirementsForMembershipLapsed, type: :model do
 
   let(:user) { create(:user) }
 
-  let(:member) { create(:member_with_membership_app) }
+  let(:member) { create(:member) }
 
   let(:member_with_expired_payment) do
     start_date = Time.zone.today - 1.year - 1.month
@@ -53,42 +53,37 @@ RSpec.describe RequirementsForMembershipLapsed, type: :model do
 
   describe '.requirements_met?' do
 
-    context 'false: not met' do
-
-      it 'no approved application' do
-        app  = create(:shf_application)
-        user = app.user
-        expect(subject.requirements_met?({ user: user })).to be_falsey
-      end
-
-      it 'has an approved application but has not paid the membership fee' do
-        user_with_approved_app = create(:user_with_membership_app)
-        shf_app                = user_with_approved_app.shf_application
-        shf_app.start_review
-        shf_app.accept!
-        expect(subject.requirements_met?({ user: user_with_approved_app })).to be_falsey
-      end
-
-      it 'membership payment made but not yet expired' do
-        create(:membership_fee_payment,
-                         :successful,
-                         user:        member,
-                         start_date:  feb1_2018,
-                         expire_date: User.expire_date_for_start_date(feb1_2018))
-
-        Timecop.freeze(jun1_2018) do
-          expect(subject.requirements_met?({ user: member })).to be_falsey
-        end
-      end
-
+    it 'true if in the grace period' do
+      grace_period_member = create(:member, last_day: Date.current - 5.days,
+                                   membership_status: :in_grace_period,
+                                   member: false,)
+      expect(subject.requirements_met?(user: grace_period_member)).to be_truthy
     end
 
 
-    context 'true: has lapsed' do
+    it 'true if a former member' do
+      former_member = create(:member, last_day: Date.current - 500.days,
+                                   membership_status: :former_member,
+                                   member: false,)
+      expect(subject.requirements_met?(user: former_member)).to be_truthy
+    end
 
-      it 'has an approved application AND membership fee paid AND membership term has expired' do
-        member_with_expired_payment
-        expect(subject.requirements_met?({ user: member })).to be_truthy
+
+    describe 'false for any other membership status' do
+
+      it 'current member' do
+        expect(subject.requirements_met?(user: create(:member))).to be_falsey
+      end
+
+      it 'not a member' do
+        expect(subject.requirements_met?(user: create(:user))).to be_falsey
+      end
+
+      other_membership_statuses = User.membership_statuses - [:current_member, :not_a_member, :in_grace_period, :former_member]
+      other_membership_statuses.each do |other_status|
+        it "#{other_status} is false" do
+          expect(subject.requirements_met?(user: create(:user, membership_status: other_status))).to be_falsey
+        end
       end
 
     end

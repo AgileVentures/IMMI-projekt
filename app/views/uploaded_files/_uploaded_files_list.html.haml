@@ -4,23 +4,23 @@
       %thead
         %tr
           - if current_user.admin?
-            %th.owner= sort_link(@search_params, :user_full_name,
+            %th.owner= sort_link(search_params, :user_full_name,
                 t('.owner'), {}, { class: 'applications_pagination', remote: true })
-          %th.file_name= sort_link(@search_params, :actual_file_file_name,
+          %th.file_name= sort_link(search_params, :actual_file_file_name,
                 t('.file_name'), {},{ class: 'applications_pagination', remote: true })
-          %th.description= sort_link(@search_params, :description,
+          %th.description= sort_link(search_params, :description,
                 t('.description'), {}, { class: 'applications_pagination', remote: true })
           %th.application= t('.associated_with_application')
-          %th.file-size= sort_link(@search_params, :actual_file_file_size,
+          %th.file-size= sort_link(search_params, :actual_file_file_size,
                 "#{t('.file_size')} kb", {}, { class: 'applications_pagination', remote: true })
-          %th.updated-at= sort_link(@search_params, :actual_file_updated_at,
+          %th.updated-at= sort_link(search_params, :actual_file_updated_at,
                 "#{t('.updated_at')} (UTC)", {}, { class: 'applications_pagination', remote: true })
           %th.view= t('view')
           %th.edit= t('edit')
           %th.delete= t('delete')
 
       %tbody.uploaded-files
-        - @uploaded_files.each do |uploaded_file|
+        - uploaded_files.each do |uploaded_file|
           %tr.uploaded_file
             - if current_user.admin?
               %td.owner= link_to uploaded_file.user.full_name, uploaded_file.user

@@ -23,6 +23,8 @@ module AdminOnly
     # But it is not run often.
     # (Could definitely look into optimizing this _if_ it becomes a performance issue.)
     #
+    #  FIXME use the User.current_member aasm scope
+    #
     # @return [ActiveRecordRelation] - all members that belong to a Company in good standing (license fee is current)
     #   AND have not had a membership packet sent to them
     #

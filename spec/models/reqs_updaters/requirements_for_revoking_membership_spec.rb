@@ -1,10 +1,6 @@
 require 'rails_helper'
 
-require 'shared_context/users'
-
 RSpec.describe RequirementsForRevokingMembership, type: :model do
-
-  include_context 'create users'
 
   let(:subject) { RequirementsForRevokingMembership }
 
@@ -26,18 +22,35 @@ RSpec.describe RequirementsForRevokingMembership, type: :model do
 
 
   describe '.requirements_met?' do
+    let(:yesterday) { Date.current - 1.day }
 
-    it 'user.member? == true and payment NOT expired' do
-      expect(subject.requirements_met?({user: member_paid_up})).to be_falsey
+    context 'user.member? is true' do
+      let(:member) { build(:user) }
+      before(:each) { allow(member).to receive(:member?).and_return(true) }
+
+      it 'false if member is in good standing (cannot revoke if the member is in good standing)' do
+        allow(member).to receive(:member_in_good_standing?).and_return(true)
+
+        expect(subject.requirements_met?({user: member})).to be_falsey
+      end
+
+      it 'true if not a member in good standing (should revoke if not in good standing)' do
+        allow(member).to receive(:member_in_good_standing?).and_return(false)
+
+        expect(subject.requirements_met?({user: member})).to be_truthy
+      end
+
+      it 'uses the given date if there is one' do
+        expect(member).to receive(:member_in_good_standing?).with(yesterday)
+        subject.requirements_met?({user: member, date: yesterday})
+      end
     end
 
-    it 'user.member? == false' do
-      expect(subject.requirements_met?({user: user})).to be_falsey
-    end
 
-    it 'user.member == true but payment has expired' do
-      expect(subject.requirements_met?({user: member_expired})).to be_truthy
+    it 'false if user.member? == false (must be a member in order to revoke membership)' do
+      not_a_member = build(:user)
+      allow(not_a_member).to receive(:member?).and_return(false)
+      expect(subject.requirements_met?({user: not_a_member})).to be_falsey
     end
-
   end
 end

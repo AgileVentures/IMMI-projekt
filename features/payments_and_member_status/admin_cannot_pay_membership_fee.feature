@@ -1,4 +1,4 @@
-Feature: Admin pays a membership fee for a member
+Feature: Admin cannot pay a membership fee for a member
 
   As an admin
   So that users and members pay the organization directly
@@ -13,9 +13,9 @@ Feature: Admin pays a membership fee for a member
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email          | admin | member | membership_number |
-      | emma@mutts.com |       | true   | 1001              |
-      | admin@shf.se   | true  |        |                   |
+      | email          | admin | membership_status |member | membership_number |
+      | emma@mutts.com |       | current_member    |true   | 1001              |
+      | admin@shf.se   | true  |                   |       |                   |
 
     Given the following companies exist:
       | name       | company_number | email               | region    |
@@ -29,6 +29,9 @@ Feature: Admin pays a membership fee for a member
       | user_email     | start_date | expire_date | payment_type | status | hips_id |
       | emma@mutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
 
+    And the following memberships exist:
+      | email                   | first_day  | last_day   |
+      | emma@mutts.com | 2017-01-1  | 2017-12-31 |
 
   @time_adjust
   Scenario: Admin cannot see the payment button for the member

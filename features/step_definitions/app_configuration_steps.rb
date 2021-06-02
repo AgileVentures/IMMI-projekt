@@ -30,7 +30,7 @@
 #
 And(/^the App Configuration is not mocked and is seeded$/) do
 
-  require_relative File.join(Rails.root, 'db/seed_helpers/app_configuration_seeder')
+  require_relative File.join(Rails.root, 'db/seeders/app_configuration_seeder')
 
   # Do not stub the AppConfiguration
   allow(AdminOnly::AppConfiguration).to receive(:config_to_use).and_call_original
@@ -38,7 +38,7 @@ And(/^the App Configuration is not mocked and is seeded$/) do
   # ensure we will seed a new configuration (One is not created if one already exists.)
   AdminOnly::AppConfiguration.delete_all
 
-  SeedHelper::AppConfigurationSeeder.seed
+  Seeders::AppConfigurationSeeder.seed
 end
 
 
@@ -61,5 +61,8 @@ end
 And("I should see the number of days that it is too early to pay is {digits}") do |num_days_too_soon|
   too_soon_info = "#{I18n.t('admin_only.app_configuration.show.payment_too_soon_days')}: #{num_days_too_soon}"
   step "I should see \"#{too_soon_info}\""
+end
 
+And("the grace period is {digits} days") do |grace_period_days|
+  AdminOnly::AppConfiguration.config_to_use.update_attribute(:membership_expired_grace_period_duration, "P#{grace_period_days}D")
 end

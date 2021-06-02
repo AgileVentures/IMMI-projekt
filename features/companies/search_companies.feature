@@ -3,7 +3,7 @@ Feature: Sort and search Companies
   As a visitor to the site
   In order to find companies that I might want to work with
   I need to be able to sort the list to find companies,
-    AND (smell that this needs to be broken into separate features!)
+  AND (smell that this needs to be broken into separate features!)
   I need to be able to search for available companies by various criteria
 
   Background:
@@ -11,13 +11,13 @@ Feature: Sort and search Companies
     Given the App Configuration is not mocked and is seeded
 
     Given the following users exist:
-      | email               | admin | member | agreed_to_membership_guidelines |
-      | fred@barkyboys.com  |       | true   | true                            |
-      | john@happymutts.com |       | true   | true                            |
-      | anna@dogsrus.com    |       | true   | true                            |
-      | emma@weluvdogs.com  |       | true   | true                            |
-      | lars@nopayment.se   |       | true   | true                            |
-      | admin@shf.se        | true  |        |                                 |
+      | email               | admin | membership_status | member | agreed_to_membership_guidelines |
+      | fred@barkyboys.com  |       | current_member    | true   | true                            |
+      | john@happymutts.com |       | current_member    | true   | true                            |
+      | anna@dogsrus.com    |       | current_member    | true   | true                            |
+      | emma@weluvdogs.com  |       | current_member    | true   | true                            |
+      | lars@nopayment.se   |       |                   |        | true                            |
+      | admin@shf.se        | true  |                   |        |                                 |
 
     And the following business categories exist
       | name         | subcategories                    |
@@ -50,7 +50,7 @@ Feature: Sort and search Companies
       | We Luv Dogs | 5569467466     | alpha@weluvdogs.com | Sweden       | Laxå      | city4          |
       | NoPayment   | 8028973322     | hello@nopayment.se  | Stockholm    | Alingsås  | city5          |
       | NoMember    | 9697222900     | hello@nomember.se   | Stockholm    | Alingsås  | city6          |
-      | New Company | 8248600598     | newco@newco.com     | Stockholm    | Alingsås  | ' space city ' |
+      | New Co.     | 8248600598     | newco@newco.com     | Stockholm    | Alingsås  | ' space city ' |
 
 
     And the following applications exist:
@@ -76,10 +76,16 @@ Feature: Sort and search Companies
       | emma@weluvdogs.com  | 2017-01-01 | 2017-12-31  | member_fee   | betald | none    |                |
 
 
+    And the following memberships exist:
+      | email               | first_day  | last_day   |
+      | fred@barkyboys.com  | 2017-01-01 | 2017-12-31 |
+      | john@happymutts.com | 2017-01-01 | 2017-12-31 |
+      | anna@dogsrus.com    | 2017-01-01 | 2017-12-31 |
+      | emma@weluvdogs.com  | 2017-01-01 | 2017-12-31 |
+
     Given the date is set to "2017-10-01"
 
   # -------------------------------------------------------------------------------------
-
 
   @selenium @time_adjust
   Scenario: Visitor sees all current companies, can sort by region, name, kommun
@@ -324,7 +330,7 @@ Feature: Sort and search Companies
     And I am on the "landing" page
     When I select "Space city" in select list t("activerecord.attributes.company.city")
     And I click on t("search")
-    Then I should see "New Company"
+    Then I should see "New Co."
     And I should not see "HappyMutts" in the list of companies
     And I should not see "We Luv Dogs" in the list of companies
     And I should not see "Dogs R Us" in the list of companies

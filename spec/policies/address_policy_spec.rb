@@ -4,8 +4,16 @@ include PoliciesHelper
 RSpec.describe AddressPolicy do
 
   let(:user_1) { create(:user, email: 'user_1@random.com') }
-  let(:member) { create(:member_with_membership_app, email: 'member@random.com') }
-  let(:member_wo_cmpy) { create(:user, member: true) }
+  let(:member) do
+    memb = create(:member_with_membership_app, email: 'member@random.com')
+    allow(memb).to receive(:member_in_good_standing?).and_return(true)
+    memb
+  end
+  let(:member_wo_cmpy) do
+    memb = create(:user, member: true)
+    allow(memb).to receive(:member_in_good_standing?).and_return(true)
+    memb
+  end
   let(:admin)  { create(:user, email: 'admin@sfh.com', admin: true) }
   let(:visitor) { build(:visitor) }
   let(:company) { create(:company) }

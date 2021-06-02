@@ -133,10 +133,6 @@ describe ShfApplicationPolicy do
     describe 'For visitors (not logged in)' do
       subject { described_class.new(visitor, application) }
 
-      it 'forbids :information' do
-        is_expected.to forbid_action :information
-      end
-
       it 'forbids :index' do
         is_expected.to forbid_action :index
       end
@@ -152,7 +148,7 @@ describe ShfApplicationPolicy do
     end
 
 
-    describe 'Member or User not the owner can only create a new one and view information' do
+    describe 'Member or User not the owner can only create a new one' do
 
       describe "For User (without an application)" do
 
@@ -176,10 +172,6 @@ describe ShfApplicationPolicy do
 
         it 'forbids all other CRUD actions (that are not :new or :create)' do
           expect(described_class.new(self.send(current_user), application)).to forbid_actions(SHFAPP_CRUD_ACTIONS - [:new, :create])
-        end
-
-        it 'permits :information' do
-          expect(described_class.new(self.send(current_user), application)).to permit_action :information
         end
 
         it 'forbids :index' do
@@ -214,10 +206,6 @@ describe ShfApplicationPolicy do
 
         it 'forbids all other CRUD actions (that are not :new or :create)' do
           expect(described_class.new(self.send(current_user), application)).to forbid_actions(SHFAPP_CRUD_ACTIONS - [:new, :create])
-        end
-
-        it 'permits :information' do
-          expect(described_class.new(self.send(current_user), application)).to permit_action :information
         end
 
         it 'forbids :index' do
@@ -266,10 +254,6 @@ describe ShfApplicationPolicy do
 
             it 'forbids index' do
               expect(described_class.new(self.send(current_user), app_being_checked)).to forbid_action :index
-            end
-
-            it 'permits :information' do
-              expect(described_class.new(self.send(current_user), app_being_checked)).to permit_action :information
             end
 
             describe 'permits changes (:edit, :update) when application is not under review, approved or rejected' do
@@ -367,10 +351,6 @@ describe ShfApplicationPolicy do
         is_expected.to forbid_action :index
       end
 
-      it 'permits :information' do
-        is_expected.to permit_action :information
-      end
-
       it 'forbids all application state change actions' do
         is_expected.to forbid_actions APP_STATE_CHANGE_ACTIONS
       end
@@ -399,10 +379,6 @@ describe ShfApplicationPolicy do
 
       it 'permits index' do
         is_expected.to permit_action :index
-      end
-
-      it 'permits information' do
-        is_expected.to permit_action :information
       end
 
       describe 'permits all application state change actions' do

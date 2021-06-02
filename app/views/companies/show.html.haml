@@ -45,8 +45,7 @@
         - if payment_visible_for_user?(current_user, @company)
           %hr
             .branding-license
-              -# FIXME I18n
-              %h3.section-title H-markt License
+              %h3.section-title= t('.hbrand_fee')
               .section
                 = render partial: 'branding_term_status', locals: { company: @company }
           %hr

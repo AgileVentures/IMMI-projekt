@@ -1,6 +1,5 @@
 -# This partial shows the text explaining how to pay the membership fee,
--# the link to log in (with a reminder about the email to use), and a link
--# to the company that needs the H-markt paid (that's the page where it's paid).
+-# and the link to log in (with a reminder about the email to use).
 -#
 -# The partial expects these locals:
 -#   user - the user (User object) this will be sent to. This is used for the email and for
@@ -9,10 +8,7 @@
 %p.how-to-pay{ style: 'font-weight: bold;' }= t('mailers.how_to_pay_membership')
 
 %ol
-  %li.step-1.login
-    = "Log in."
-    = render 'mailers_shared/login_here_with_email', email: user.email
-  %li.step-2.pay-membership
+  %li.step-1.pay-membership
     = I18n.t('mailers.pay_membership_step')
     %br
     = I18n.t('mailers.here_is_acct_page')

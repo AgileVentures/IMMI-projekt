@@ -20,6 +20,8 @@
       .col-md-7.infotext
         %h3= t('.proof_of_membership')
         %p= t('.proof_of_membership_describe')
+        %p= t('.using_membership_logo')
+        %p= t('.put_membership_logo_on_site')
         = link_to(t('.download_image'),
                                    proof_of_membership_path(user,
                                                             format: :jpg,
@@ -52,6 +54,7 @@
         .col-md-7.infotext
           %h3= t('.company_h_brand', company: company.name)
           %p= t('.company_h_brand_describe')
+          %p= t('.using_h_mark')
           = link_to(t('.download_image'),
                                      company_h_brand_path(company,
                                                           format: :jpg,

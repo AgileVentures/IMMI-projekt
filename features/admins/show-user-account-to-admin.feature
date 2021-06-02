@@ -11,17 +11,17 @@ Feature: Admin sees additional user details that only they can see
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email                           | admin | membership_number | member |
-      | emma-new-app@bowsers.com        |       |                   |        |
-      | lars-member@happymutts.com      |       | 101               | true   |
-      | hannah-member@happymutts.com    |       | 102               | true   |
-      | rejected@happymutts.com         |       |                   |        |
-      | user-never-logged-in@example.se |       |                   |        |
-      | user-anna@personal.se           |       |                   |        |
-      | user-sam@personal.se            |       |                   |        |
-      | admin@shf.se                    | true  |                   |        |
-      | yesterday_admin@shf.se          | true  |                   |        |
-      | lazy_admin@shf.se               | true  |                   |        |
+      | email                           | admin | membership_status |membership_number | member |
+      | emma-new-app@bowsers.com        |       | not_a_member      |                  |        |
+      | lars-member@happymutts.com      |       | current_member    |101               | true   |
+      | hannah-member@happymutts.com    |       | current_member    |102               | true   |
+      | rejected@happymutts.com         |       | not_a_member      |                  |        |
+      | user-never-logged-in@example.se |       | not_a_member      |                  |        |
+      | user-anna@personal.se           |       | not_a_member      |                  |        |
+      | user-sam@personal.se            |       | not_a_member      |                  |        |
+      | admin@shf.se                    | true  | not_a_member      |                  |        |
+      | yesterday_admin@shf.se          | true  | not_a_member      |                  |        |
+      | lazy_admin@shf.se               | true  | not_a_member      |                  |        |
 
 
     And the following regions exist:
@@ -46,15 +46,22 @@ Feature: Admin sees additional user details that only they can see
     And the following payments exist
       | user_email                   | start_date | expire_date | payment_type | status | hips_id | notes                              |
       | hannah-member@happymutts.com | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    | This is the membership status note |
+      | lars-member@happymutts.com   | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    | This is the membership status note |
 
 
     And the following membership packets have been sent:
       | user_email                 | date_sent  |
       | lars-member@happymutts.com | 2019-03-01 |
 
+    And the following memberships exist:
+      | email                        | first_day  | last_day   |
+      | lars-member@happymutts.com   | 2017-01-1  | 2017-12-31 |
+      | hannah-member@happymutts.com | 2017-01-1  | 2017-12-31 |
+
 
     And I am logged in as "admin@shf.se"
 
+  # -----------------------------------------------------------------------------------------------
 
   # ====================
   # Admin sees User Info

@@ -33,13 +33,13 @@ Feature: Only show companies with incomplete info to admins and users or members
 
 
     And the following users exist:
-      | email                            | admin | member |
-      | member-1@addr-all-visible-1.com  |       | true   |
-      | member@company-2.com             |       | true   |
-      | applicant-6@addr-not-visible.com |       | false  |
-      | member-company6@example.com      |       | true   |
-      | member-2@addr-all-visible-1.com  |       | true   |
-      | admin@shf.se                     | true  | false  |
+      | email                            | admin | membership_status | member |
+      | member-1@addr-all-visible-1.com  |       | current_member    | true   |
+      | member@company-2.com             |       | current_member    | true   |
+      | applicant-6@addr-not-visible.com |       |                   | false  |
+      | member-company6@example.com      |       | current_member    | true   |
+      | member-2@addr-all-visible-1.com  |       | current_member    | true   |
+      | admin@shf.se                     | true  |                   | false  |
 
 
     And the following business categories exist
@@ -48,10 +48,10 @@ Feature: Only show companies with incomplete info to admins and users or members
 
 
     And the following applications exist:
-      | user_email                      | company_number | categories          | state    |
-      | member-1@addr-all-visible-1.com | 5560360793     | Groomer | accepted |
-      | member@company-2.com            | 2120000142     | Groomer             | accepted |
-      | member-company6@example.com     | 6914762726     | Groomer             | accepted |
+      | user_email                      | company_number | categories | state    |
+      | member-1@addr-all-visible-1.com | 5560360793     | Groomer    | accepted |
+      | member@company-2.com            | 2120000142     | Groomer    | accepted |
+      | member-company6@example.com     | 6914762726     | Groomer    | accepted |
 
     And the following payments exist
       | user_email                      | start_date | expire_date | payment_type | status | hips_id | company_number |
@@ -63,7 +63,15 @@ Feature: Only show companies with incomplete info to admins and users or members
       | member@company-2.com            | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 2120000142     |
       | member-company6@example.com     | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 6914762726     |
 
-    # -----------------------------------
+    And the following memberships exist:
+      | email                           | first_day  | last_day   |
+      | member-1@addr-all-visible-1.com | 2019-01-01 | 2019-12-31 |
+      | member@company-2.com            | 2019-10-1  | 2019-12-31 |
+      | member-company6@example.com     | 2019-10-1  | 2019-12-31 |
+      | member-2@addr-all-visible-1.com | 2019-01-01 | 2019-12-31 |
+
+   # --------------------------------------------------------------------------------------------
+
   Scenario: Visitor cannot see a company with incomplete info; gets a 404 error.
     Given I am Logged out
     When I am the page for company number "5560360793"

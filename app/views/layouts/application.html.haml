@@ -75,4 +75,6 @@
 
       = render 'cookies_eu/consent_banner', link: 'https://sverigeshundforetagare.se/cookies/', target: '_blank'
 
-      = render 'admin_only/about_modal' if current_user.admin?
+      - if current_user.admin?
+        = render 'admin_only/about_modal'
+        = render 'admin_only/user_account/update_membership_status_all_modal'

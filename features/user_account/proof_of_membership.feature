@@ -10,9 +10,9 @@ Feature: Member gets their customized SHF membership card (proof of membership)
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
-      | email                   | admin | member | membership_number | first_name  | last_name |
-      | emma@mutts.se           |       | true   | 1001              | Emma        | Edmond    |
-      | member-expired@mutts.se |       | false  | 999               | ExpiredLars | Member    |
+      | email                   | admin | membership_status | member | membership_number | first_name  | last_name |
+      | emma@mutts.se           |       | current_member    | true   | 1001              | Emma        | Edmond    |
+      | member-expired@mutts.se |       |                   | false  | 999               | ExpiredLars | Member    |
 
     Given the following business categories exist
       | name  | description                     |
@@ -30,6 +30,10 @@ Feature: Member gets their customized SHF membership card (proof of membership)
       | user_email              | start_date | expire_date | payment_type | status | hips_id |
       | emma@mutts.se           | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
       | member-expired@mutts.se | 2016-10-1  | 2016-12-31  | member_fee   | betald | none    |
+
+    And the following memberships exist:
+      | email         | first_day | last_day   |
+      | emma@mutts.se | 2017-10-1 | 2017-12-31 |
 
 
   @time_adjust

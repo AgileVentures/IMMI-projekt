@@ -1,6 +1,8 @@
 - content_for :stylesheet_for_view do
   = stylesheet_link_tag 'image-actions-custom-menu', media: 'all'
 
+-# FIXME show admin_only info (payments, edit status ). Make it look similar to show_for_member/applicant?
+
 %header.entry-header
   :ruby
     username          = user_name_for_display(@user)

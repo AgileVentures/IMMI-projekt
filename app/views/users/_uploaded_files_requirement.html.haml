@@ -1,0 +1,24 @@
+-# This partial expects these locals:
+-#
+-#  user - the user the membership guidelines checklist belongs to
+-#
+-# if there are uploaded files, then requirement is complete. (display checkmark, etc.)
+-#   list files
+-# else
+-#   requirement instruction: Upload 1 or more files to show you have continued your education in your areas
+-#
+-#  button to upload files
+
+
+- if user.file_uploaded_during_this_membership_term?
+  %p.done= complete_check_icon(html_options: {class: 'is-complete'}) + t('users.uploaded_files_requirement.have_been_uploaded')
+  .row.justify-content-center.uploaded-files
+    .col-11
+      = render partial: 'uploaded_files/small_table_files_list', locals: { uploaded_files: user.files_uploaded_during_this_membership }
+
+- else
+  %p= t('users.uploaded_files_requirement.need_to_upload')
+
+.row.justify-content-center
+  .col-4
+    = render partial: 'upload_file_btn', locals: { user: user }

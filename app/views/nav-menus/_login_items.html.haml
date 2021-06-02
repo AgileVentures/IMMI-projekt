@@ -1,7 +1,7 @@
 - if user_signed_in?
   %li.login.dropdown#menu-menu-login
     %a.nav-link.dropdown-toggle{ href: '#', "aria-expanded" => "false", "aria-haspopup" => "true", "data-toggle" => "dropdown" }
-      = t('hello', name: current_user.first_name)
+      = nav_menu_login_title(current_user)
     %ul.dropdown-menu
       %li
         = link_to t('devise.registrations.edit.title'), edit_user_registration_path, class: 'nav-link'

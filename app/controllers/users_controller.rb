@@ -12,6 +12,9 @@ class UsersController < ApplicationController
   before_action :authorize_user, only: [:show]
   before_action :allow_iframe_request, only: [:proof_of_membership]
 
+  ARE_MEMBERS_CLAUSE = 'member = true'.freeze
+  ARE_NOT_MEMBERS_CLAUSE = 'member = false'.freeze
+
   #================================================================================
 
   def show
@@ -42,21 +45,25 @@ class UsersController < ApplicationController
 
     action_params, @items_count, items_per_page = process_pagination_params('user')
 
-    if action_params then
+    if action_params
       @filter_are_members = action_params[:membership_filter] == '1'
       @filter_are_not_members = action_params[:membership_filter] == '2'
     end
     @filter_ignore_membership = !(@filter_are_members || @filter_are_not_members)
 
-    membership_filter = 'member = true' if @filter_are_members
-    membership_filter = 'member = false' if @filter_are_not_members
+    membership_filter = if @filter_are_members
+                          ARE_MEMBERS_CLAUSE
+                        elsif @filter_are_not_members
+                          ARE_NOT_MEMBERS_CLAUSE
+                        else
+                          ''
+                        end
 
     @q = User.ransack(action_params)
 
     @users = @q.result.includes(:shf_application).where(membership_filter).page(params[:page]).per_page(items_per_page)
 
     render partial: 'users_list', locals: { q: @q, users: @users, items_count: @items_count } if request.xhr?
-
   end
 
 
@@ -73,18 +80,39 @@ class UsersController < ApplicationController
   end
 
 
-  # Change the membership status
+  # Manually change the membership status and/or last day and/or notes
+  # FIXME: This does too much.  Let the admin change/add a membership note any time, separately from this.
   def edit_status
     raise 'Unsupported request' unless request.xhr?
     authorize User
 
-    payment = @user.most_recent_membership_payment
+    admin_change_note = ''
+    last_day_param = Date.new(membership_params['last_day(1i)'].to_i, membership_params['last_day(2i)'].to_i, membership_params['last_day(3i)'].to_i)
 
-    # Note: If there are not any payments (payment is nil),
-    # but the status has been changed (ex: admin changes status from 'not a member' to is a member),
-    # this will not update the information.
-    @user.update!(user_params) && (payment ?
-                                       payment.update!(payment_params) : true)
+    if @user.current_member?
+      current_membership = @user.current_membership
+      if user_params[:member] == 'true'
+        if last_day_param < Date.current
+          admin_change_note << end_membership_and_note(@user, current_membership, last_day_param)
+        elsif last_day_param != current_membership.last_day
+          admin_change_note << change_membership_last_day_and_note(current_membership, last_day_param)
+        end
+      else
+        admin_change_note << end_membership_yesterday_and_note(@user, current_membership)
+      end
+    else
+      if user_params[:member] == 'true'
+        @user.start_membership!(date: Date.current)
+        current_membership = @user.current_membership
+        admin_change_note << t('memberships.auto_added_notes.started_on', first_day: Date.current )
+        if last_day_param != current_membership.last_day
+          admin_change_note << change_membership_last_day_and_note(current_membership, last_day_param)
+        end
+      end
+    end
+    admin_change_note = "| #{t('memberships.auto_added_notes.changed_by_admin', changed_timestamp: Time.zone.now)}: #{admin_change_note} |" unless admin_change_note.blank?
+    membership_note = membership_params.fetch(:notes, '') + admin_change_note
+    current_membership.update!(notes: membership_note) if current_membership
 
     if @user.member?
       render partial: 'show_for_member', locals: { user: @user, current_user: @current_user, app_config: @app_configuration }
@@ -149,9 +177,15 @@ class UsersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
-    params.require(:user).permit(:name, :email, :member, :password,
+    params.require(:user).permit(:name, :email, :member, :membership_status,
+                                 :password,
                                  :password_confirmation,
                                  :date_membership_packet_sent)
+  end
+
+
+  def membership_params
+    params.require(:membership).permit(:member_number, :first_day, :last_day, :notes)
   end
 
 
@@ -165,4 +199,29 @@ class UsersController < ApplicationController
     @user = @current_user
   end
 
+
+  def end_membership_yesterday_and_note(user, membership)
+    end_membership_and_note(user, membership, Date.current - 1.day)
+  end
+
+
+  def end_membership_and_note(user, membership, last_day)
+    return unless membership
+
+    note = t('memberships.auto_added_notes.ended_on', new_last_day: last_day, original_last_day: membership.last_day)
+    user.update!(membership_status: :not_a_member, member: false)
+    membership.update!(last_day: last_day)
+    MembershipStatusUpdater.instance.user_updated(membership.user)
+    note
+  end
+
+
+  def change_membership_last_day_and_note(membership, new_last_day)
+    return unless membership
+
+    note = t('memberships.auto_added_notes.last_day_changed',  original_last_day: membership.last_day, new_last_day: new_last_day)
+    membership.update!(last_day: new_last_day)
+    MembershipStatusUpdater.instance.user_updated(membership.user)
+    note
+  end
 end

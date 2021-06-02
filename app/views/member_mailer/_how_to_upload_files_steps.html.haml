@@ -1,0 +1,18 @@
+:ruby
+  # This partial shows the steps for how to pay the H-Markt licensing fee,
+  # the link to log in (with a reminder about the email to use), and a link
+  # to the company that needs the H-markt paid (that's the page where it's paid).
+  # Note that it does not include a step to log in. That should be explained
+  # elsewhere, in case this is shown with other steps that also require logging in --
+  # in which case the step(s) for logging in can be shown just once.
+  #
+  # The partial expects these locals:
+  #   login_menu_title - the title of the login menu for the user (usually the first name)
+  #   uploaded_files_menu_item - the menu item text for the uploaded files page in the login menu
+  #
+%li.step-1.upload-files
+  = I18n.t('mailers.upload_files_step1', login_menu_title: login_menu_title)
+%li.step-2.upload-files
+  = I18n.t('mailers.upload_files_step2', uploaded_files_menu_item: uploaded_files_menu_item)
+%li.step-3.upload-files
+  = I18n.t('mailers.upload_files_step3')

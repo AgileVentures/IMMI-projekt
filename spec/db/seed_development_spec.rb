@@ -2,8 +2,6 @@ require 'rails_helper'
 require 'create_membership_seq_if_needed'
 
 require File.join(Rails.root, 'db/require_all_seeders_and_helpers.rb')
-
-
 require File.join(__dir__, 'shared_specs_db_seeding')
 
 # NOTE: We must stub AppConfigurationSeeder.seed so that Paperclip does not try to spawn processes.
@@ -32,7 +30,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
 
     RSpec::Mocks.with_temporary_scope do
 
-      allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
+      allow(Seeders::AppConfigurationSeeder).to receive(:seed).and_return(true)
 
       allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
 
@@ -43,6 +41,8 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
       allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
       allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
       allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
+
+      allow(Membership).to receive(:term_length).and_return(10)  # so AppConfiguration is not called
 
       # must stub this way so the rest of ENV is preserved
       stub_const('ENV', ENV.to_hash.merge({ ENV_ADMIN_EMAIL_KEY    => admin_email,
@@ -84,8 +84,14 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
                                               ENV_ADMIN_EMAIL_KEY      => admin_email,
                                               ENV_ADMIN_PASSWORD_KEY   => admin_pwd }))
 
-        allow(SeedHelper::AppConfigurationSeeder).to receive(:seed).and_return(true)
+        allow(AdminOnly::AppConfiguration).to receive(:instance).and_return(MockAppConfig)
+        allow(AdminOnly::AppConfiguration).to receive(:config_to_use).and_return(MockAppConfig)
+        allow(Seeders::AppConfigurationSeeder).to receive(:tell).and_return(false)
+        allow(Seeders::AppConfigurationSeeder).to receive(:log_str).and_return(false)
+        allow(Seeders::AppConfigurationSeeder).to receive(:seed).and_return(true)
         allow(SeedHelper::UsersFactory ).to receive(:seed_predefined_users).and_return(true)
+
+        allow(Membership).to receive(:term_length).and_return(10)  # so AppConfiguration is not called
 
         SHFProject::Application.load_seed
       end

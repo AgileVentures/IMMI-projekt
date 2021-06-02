@@ -26,8 +26,7 @@ class RequirementsForMemberUnpaidMoreThanXMonths < AbstractRequirements
     num_months = args[:num_months]
     return false unless RequirementsForMembershipLapsed.requirements_met?({ user: user })
 
-    user.payment_expire_date(Payment::PAYMENT_TYPE_MEMBER) < Time.zone.now.months_ago(num_months).to_date
-
+    user.membership_expire_date < Time.zone.now.months_ago(num_months).to_date
   end
 
 end

@@ -1,20 +1,11 @@
--# This partial shows the text explaining how to pay the H-Markt licensing fee,
--# the link to log in (with a reminder about the email to use), and a link
--# to the company that needs the H-markt paid (that's the page where it's paid).
--#
--# The partial expects these locals:
--#   email - the email address for logging in
--#   company - the company (object); used for displaying the name and the url
--#
-%p.how-to-pay{ style: 'font-weight:bold;' }= t('mailers.how_to_pay_hmarkt')
-
-%ol
-  %li.step-1.login
-    = "Log in."
-    = render 'mailers_shared/login_here_with_email', email: email
-  %li.step-2.pay-hmarkt
-    = I18n.t('mailers.pay_hmarkt_step')
-    = I18n.t('mailers.here_is_co_page')
-    = link_to(company.name,  company_url(company), target: '_blank')
-    %br= I18n.t('mailers.h_brand_exp_shown')
-
+:ruby
+  # This partial shows the text explaining how to pay the H-Markt licensing fee,
+  # the link to log in (with a reminder about the email to use), and a link
+  # to the company that needs the H-markt paid (that's the page where it's paid).
+  #
+  # The partial expects these locals:
+  #   email - the email address for logging in
+  #   company - the company (object); used for displaying the name and the url
+  #
+= render 'mailers_shared/how_to_instruction', title: t('mailers.how_to_pay_hmarkt'),
+  steps_li_html: render('how_to_pay_hmarkt_steps', email: email, company: company)

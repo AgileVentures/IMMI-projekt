@@ -51,7 +51,10 @@ RSpec.describe CompanyEmailAlert do
   let(:member1_c2_exp_jun6) do
     shf_accepted_app = create(:shf_application, :accepted, company_number: c2_2_members.company_number)
     member = shf_accepted_app.user
-
+    member.memberships << create(:membership, user: member,
+                                 first_day: jun6 - 364,
+                                 last_day: jun6)
+    member.membership_status = :current_member
     create(:membership_fee_payment,
            :successful,
            user:        member,
@@ -64,7 +67,10 @@ RSpec.describe CompanyEmailAlert do
   let(:member2_c2_exp_jun1) do
     shf_accepted_app = create(:shf_application, :accepted, company_number: c2_2_members.company_number)
     member = shf_accepted_app.user
-
+    member.memberships << create(:membership, user: member,
+                                 first_day: jun1 - 364,
+                                 last_day: jun1)
+    member.membership_status = :current_member
     create(:membership_fee_payment,
            :successful,
            user:        member,

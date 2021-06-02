@@ -1,0 +1,10 @@
+-# This partial shows the text explaining how to edit companies,
+-# the link to log in (with a reminder about the email to use),
+-# and a list of the names of the companies given, if any
+-#
+-# The partial expects these locals:
+-#   email - the email address for logging in
+-#   company_names [optional] - list of company names to display
+-#
+= render 'mailers_shared/how_to_instruction', title: t('mailers.how_to_edit_companies.title'),
+  steps_li_html: render('how_to_edit_companies_steps', email: email)

@@ -41,6 +41,8 @@ class UserChecklistsController < ApplicationController
     authorize_user_checklist
     @checklist_root = @user_checklist.root
     @overall_progress = @checklist_root.percent_complete
+    check_membership_status_if_complete(@user_checklist.root, @overall_progress)
+
     if @overall_progress == 100
       # set the root to complete?
       render :membership_guidelines_completed # TODO revise the partial: generalize to work for any User checklist
@@ -64,6 +66,8 @@ class UserChecklistsController < ApplicationController
 
       # toggle the date_completed and update any parents needed
       user_checklist.all_changed_by_completion_toggle
+
+      check_membership_status_if_complete(user_checklist.root, user_checklist.root.percent_complete)
 
       { checklist_id: user_checklist.id,
         date_completed: user_checklist.date_completed,
@@ -146,6 +150,9 @@ class UserChecklistsController < ApplicationController
   # Note this only returns information for the given UserChecklist that was changed.
   #  This does not return any information about any children that might have been changed.
   #
+  # If the root of the checklist is 100% complete, send a message to the MembershipStatusUpdater
+  #  so that the membership status can be checked and updated if need be.
+  #
   # @return Hash - info about the user checklist item that was changed
   #      user_checklist_id: id of the user checklist item changed,
   #      date_completed: Date of when the user checklist item was completed (blank if not complete),
@@ -165,6 +172,8 @@ class UserChecklistsController < ApplicationController
         user_checklist.set_uncomplete_including_children
       end
       new_percent_complete = user_checklist.root.percent_complete
+      check_membership_status_if_complete(user_checklist.root, new_percent_complete)
+
       date_str = user_checklist.date_completed.blank? ? '' : user_checklist.date_completed.to_time.to_date
 
       { user_checklist_id: user_checklist_id,
@@ -181,6 +190,12 @@ class UserChecklistsController < ApplicationController
   # TODO - this should be from AppConfiguration
   def membership_guideline_root_user_checklist(uc_user)
     UserChecklist.find_by(name: 'Medlemsåtagande', user: uc_user)
+  end
+
+  # If the root of the checklist is 100% complete, send a message to the MembershipStatusUpdater
+  #  so that the membership status can be checked and updated if need be.
+  def check_membership_status_if_complete(checklist_root, percent_complete)
+    MembershipStatusUpdater.instance.checklist_completed(checklist_root) if percent_complete == 100
   end
 
 

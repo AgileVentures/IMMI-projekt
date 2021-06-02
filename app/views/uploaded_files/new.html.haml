@@ -5,6 +5,7 @@
   = form_for [:user, @uploaded_file] do |f|
     != model_errors_helper(@uploaded_file)
 
+    = hidden_field_tag('_from_user_acct_page', @request_from_acct_pg)
     .form-group
       .custom-file
         = f.file_field :actual_file,
@@ -19,6 +20,7 @@
 
     .form-group
       = f.submit t('save'), class: 'btn btn-primary mb-2 form-control'
+  -# FIXME: cannot save if no file has been selected.
 
   %hr
   .text-center

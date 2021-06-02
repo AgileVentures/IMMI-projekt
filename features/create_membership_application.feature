@@ -53,7 +53,7 @@ Feature: Create a new membership application
 
   @selenium
   Scenario: Successful app, no files uploaded, user sees success message and files delivery reminder
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -76,7 +76,7 @@ Feature: Create a new membership application
 
   @selenium
   Scenario: Successful app, with files uploaded, user sees success message
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -105,7 +105,7 @@ Feature: Create a new membership application
 
   @selenium
   Scenario: Successful app, files to be sent via email, user sees success message and reminder to deliver files
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -133,7 +133,7 @@ Feature: Create a new membership application
 
   @selenium
   Scenario: Successful App, two companies, no file upload, message: success, but need to deliver files
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -161,7 +161,7 @@ Feature: Create a new membership application
 
   @selenium
   Scenario: User creates App with two companies, corrects an error in company number
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -183,7 +183,7 @@ Feature: Create a new membership application
 
   @selenium
   Scenario: A user can submit a new Membership Application with multiple categories
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -349,7 +349,7 @@ Feature: Create a new membership application
     Then I should see "overall grooming"
     Then I am Logged out
     Given I am logged in as "mandalorian@random.com"
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on t("menus.nav.users.apply_for_membership") link
     Then I should be on the "new application" page
     And I should not see "overall grooming"

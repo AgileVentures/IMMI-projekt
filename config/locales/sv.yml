@@ -152,7 +152,7 @@ sv:
 
       company:
         one: &company_one Företag
-        other: Företag
+        other: &companies Företag
 
       shf_document:
         one: Dokument
@@ -335,6 +335,19 @@ sv:
         name: *name
         description: *description
 
+      membership:
+        first_day: Startdatum
+        last_day: &membership_last_day Slutdatum
+        member_number: *membership_number
+        notes: Anteckningar
+        status:
+          current_member: Aktiv medlem
+          expires_soon: Går ut snart
+          in_grace_period: Gått ut (fortfarande möjlighet att förnya)
+          former_member: Före detta medlem
+          not_a_member: Inte medlem
+
+
     errors:
       models:
 
@@ -504,7 +517,7 @@ sv:
       description: *description
 
     new:
-      title: Upload a file
+      title: &upload_new_file Ladda upp
       description: *description
       submit: *submit
       index_title: *uploaded_files_index_title
@@ -545,6 +558,11 @@ sv:
       admin_index_title: *uploaded_files_admin_index_title
       delete: "Radera %{file_name}"
 
+    small_table_files_list:
+      associated_with_application: *application
+      date_uploaded: Uppladdad
+      description: *description
+      file_name: filnamn
 
   shf_applications:
     new:
@@ -647,16 +665,16 @@ sv:
       title: Om ansökan och medlemskap
       member:
         title: Välkommen
-        using_the_logo: Det är viktigt att vi alla följer vår grafiska profil,
+        using_the_logo: &membership_logo_use Det är viktigt att vi alla följer vår grafiska profil,
                         att loggan nyttjas på ett enhetligt sätt och inga egna
                         versioner skapas av dig som är medlem. Detta för att
                         skapa igenkänning, tydlighet gentemot kund. Och skydda
                         oss mot förfalskningar av H-märket.
-        upload_this_image: 'Vi önskar att du lägger upp nedanstående bild på din
+        upload_this_image: &put_membership_logo_on_your_website 'Vi önskar att du lägger upp nedanstående bild på din
                           hemsida. Samt länkar denna bild till: "https://www.sverigeshundforetagare.se"'
-        using_the_h_mark: 'Vi önskar även att du pryder din hemsida med H-märket.
+        using_the_h_mark: &h_mark_use 'Vi önskar även att du pryder din hemsida med H-märket.
                           För att visa att ni är just H-märkta med allt vad det innebär.
-                          Bilden nedan nyttjas i detta syfte och länkas till: "https://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
+                          H-märkningsbilden används för detta ändamål och länkad till: "https://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"'
         ffs: Du hittar ditt h-märke och ditt behörighetsbevis under ditt konto.
       waiting_for_approval:
         title: Hej, kul att du vill bli medlem
@@ -834,7 +852,6 @@ sv:
       hbrand_status_paid: Får använda H-märkesbilden. (H-märkespremie betald)
       hbrand_status_not_paid: Får inte använda H-märkesbilden. (H-märkespremie ej betald)
       edit_branding_status: Redigera Status
-      branding_license: Betald H-märkespremie
       term_paid_through: *term_paid_through
       no_payment_due_now: *no_payment_due_now
       hbrand_term_payment: H-märkespremiebetalning
@@ -1008,6 +1025,7 @@ sv:
 
   users:
     edit_user_account: &edit_user_account Redigera kontot för %{name}
+    membership_status: Medlemsstatus
 
     index:
       title: Alla Användare
@@ -1038,6 +1056,7 @@ sv:
       membership_fee_payment: betalning av medlemskap
       membership_fee: medlemskapsavgift
       membership_term: medlemperiod
+      membership_term_last_day: *membership_last_day
       payment_tooltip: När du betalar din medlemsavgift förlängs ditt medlemskap i ett år.
       membership_expire_date_tooltip: &membership_expire_date_tooltip Efter detta datum går perioden för ditt medlemskap ut.
       term_expire_date_tooltip: *membership_expire_date_tooltip
@@ -1066,6 +1085,7 @@ sv:
 
     show_for_member:
       membership_number: *membership_number
+      no_membership_number: (inget medlemsnummer)
 
     show_for_applicant:
       title: "Steg mot medlemskap:"
@@ -1081,21 +1101,38 @@ sv:
       app_status_accepted: Din ansökan är godkänd och klar.
       app_status_rejected: Din ansökan är avböjd.
       pay_membership: *pay_membership
-      when_can_pay: När din ansökan är godkänd och du har skrivit under medlemsåtagandet (kryssat i alla rutor) kan du betala.
+      when_can_pay: &when_can_pay När din ansökan är godkänd och du har skrivit under medlemsåtagandet (kryssat i alla rutor) kan du betala.
 
+    renewal:
+      title_time_to_renew: "Det är dags att förnya ditt medlemskap!"
+      title_renewal_overdue: Ditt betaldatum har passerat.
+      renewal_overdue_warning: "Du kan fortfarande förnya ditt medlemskap utan att ansöka på nytt genom att följa stegen nedan."
+      instructions: "Nedan följer de steg du behöver göra för att fortsätta vara medlem:"
+      steps_to_renew: "Steg för att förnya ditt medlemskap:"
+      pay_membership: *pay_membership
+      pay_button_disabled_info: När du har slutfört stegen ovan kan du betala ditt medlemskap.
 
     ethical_guidelines_link_or_checklist:
       agree_to_guidelines: Skriv under medlemsåtagandet
       agreed_to: Skrivit under
       membership_guidelines: Alla medlemsåtaganden
 
+    uploaded_files_requirement:
+      have_been_uploaded: Underlag har laddats upp under medlemsperioden
+      need_to_upload: Du behöver ladda upp underlag som visar att du har genomfört fortbildning under året och därmed uppfyller de krav som ställs på en medlem i Sveriges Hundföretagare.
+      upload_file: *upload_new_file
+      upload_another: *uploaded_file_other
+
     show_member_images_row_cols:
       email: *email
       proof_of_membership: &proof_of_membership Behörighetsbevis
+      using_membership_logo: *membership_logo_use
+      put_membership_logo_on_site: *put_membership_logo_on_your_website
       proof_of_membership_describe: &proof_of_membership_describe Detta är ditt behörighetsbevis.
       proof_of_membership_photo_needed: &proof_of_membership_photo_needed 'Om du saknar profilbild (ser "Photo
                                            Unavailable"), ladda upp en bild av dig själv (utan hund) här '
       company_h_brand: &company_h_brand Företaget H-märke för %{company}
+      using_h_mark: *h_mark_use
       company_h_brand_describe: &company_h_brand_describe Detta är ditt företags H-märke.
 
       use_guidelines: &use_guidelines riktlinjer
@@ -1116,6 +1153,9 @@ sv:
       show_image: &show_image Visa bild
       copy_image_url: &copy_image_url Kopiera bildadress
       copied:  &copied Kopierat
+
+    show_uploaded_files_section_row_cols:
+      title: Uppladdade filer
 
     proof_of_membership:
       proof_title: *proof_of_membership
@@ -1194,6 +1234,7 @@ sv:
     payments_list:
       payment_date: Payment date
       status: *payment_status
+      for: för
       type: *payment_type
       start_date: *start_date
       end_date: *expire_date
@@ -1256,6 +1297,14 @@ sv:
     set_uc_and_kids_date_completed:
       not_found: *user_checklist_not_found
       missing-checklist-param-error: *missing-checklist-param-error
+
+
+  memberships:
+    auto_added_notes:
+      changed_by_admin: "Ändrad av admin %{changed_timestamp}"
+      started_on: "Medlemskap startat den %{first_day}."
+      ended_on: "Medlemskap slutdatum ändrat till %{new_last_day} och avslutades. Föregående slutdatum var %{original_last_day}."
+      last_day_changed: "Slutdatum för medlemskap ändrat från %{original_last_day} till %{new_last_day}."
 
 
   admin:
@@ -1454,6 +1503,9 @@ sv:
     dashboard:
       title: ADMIN DASHBOARD
 
+      members: &members Företagsmedlemmar
+      companies: *companies
+
       payments:
         export_all_payments: &dash_export_all_payments Export all payments
         export_payments_year: &dash_export_payments_year Export payments covering year
@@ -1467,6 +1519,8 @@ sv:
           app_approved_no_payment: "Applications approved but no membership payment yet"
           companies_no_branding_payment: "companies Branding license fee not yet paid"
           companies_incomplete: "companies with information not yet complete"
+          current_members: *members
+          current_companies: *companies
 
         activity:
           tab-title: Aktivitet
@@ -1484,7 +1538,7 @@ sv:
           title: *users
 
         members:
-          tab-title: &members Företagsmedlemmar
+          tab-title: *members
           title: *members
           total_members: *members
 
@@ -1552,6 +1606,16 @@ sv:
       update:
         success: Användarens information uppdaterad.
         error: Ett problem hindrade användarinformationen från att uppdateras.
+
+      update_membership_status_all_modal:
+        title: "Confirm: Update membership status for all"
+        body: Do you really want to update the membership status for all users?  This will take a few minutes. Note that no emails will be sent.
+        confirm_do_updates: Yes, update all
+
+      update_membership_status_all:
+        reason_update_happened: Admin Ran Update All M.Statuses
+        success: Membership status for all members was updated. You can check the MembershipStatusUpdater log for the results.
+        error: There was a problem updating membership status for all users.  Please review the logs for details.
 
 
     master_checklists:
@@ -1740,7 +1804,8 @@ sv:
   mailers:
     login_here: "Klicka här för att gå till inloggningssidan."
     your_login_email_is: "Din e-post för att logga in är: "
-
+    log_in: &log_in Logga in
+    renewal_reqs: &renewal_requirements "Du kan förnya ditt medlemskap genom att skriva under medlemsåtagandet, ladda upp dokumentation på fortbildning samt betala medlemsavgiften."
     how_to_pay_membership: "Så här betalar du medlemsavgiften:"
     pay_membership_step: "När du är inloggad hittar du betalknappen på ditt konto."
     here_is_acct_page: "Här är en länk till ditt konto: "
@@ -1748,7 +1813,20 @@ sv:
     how_to_pay_hmarkt: "Så här betalar du H-märkespremien:"
     pay_hmarkt_step: "När du är inloggad ser du när din H-märkningspremie går ut och hur du betalar på din företagssida."
     here_is_co_page: "Här är länken där du kan redigera ditt företag: "
+    find_co_in_my_cos: Du hittar sidan för ditt företag genom att gå till menyn "Mina företag" och klicka på det företag du vill se.
     h_brand_exp_shown: "Du ser när din H-märkningspremie går ut på din företagssida."
+
+    how_to_edit_companies:
+      title: "Hur du redigerar ditt/dina företag:"
+      go_to_my_cos_menu: Väl inloggad, leta upp "Mina företag" och klicka där.
+      see_click_co_name: Du kommer att se alla företag du tillhör, listade efter namn. Klicka på det företagsnamn du vill redigera.
+      view_then_edit: Du kommer då att se information om företaget. Längst ner ser du en knapp för att redigera företaget. Klicka på den.
+      cos_you_can_edit: "Detta är de företag du kan redigera:"
+
+    how_to_upload_files: "Hur du laddar upp filer:"
+    upload_files_step1: "Logga in. Gå till sidan som visar alla dina uppladdade filer genom att klicka på '%{login_menu_title}."
+    upload_files_step2: Klicka på menyalternativet "% {uploaded_files_menu_item}". Det tar dig till sidan med alla dina uppladdade filer. Du kan även ladda upp nya filer där.
+    upload_files_step3: (Dina uppladdade filer listas också på din kontosida-.)
 
 
     application_mailer:
@@ -1837,6 +1915,7 @@ sv:
 
     member_mailer:
       member_account_link: "%{account_link} (Du kan behöva logga in först innan länken fungerar. Your login is %{login_email}.)"
+      login_to_fix: För att åtgärda ovanstående behöver du logga in.
 
       app_no_uploaded_files:
         subject: Din ansökan till Sveriges Hundföretagare saknar underlag
@@ -1860,6 +1939,14 @@ sv:
         message_text:
           expire_alert_html: "Observera att din nuvarande medlemsperiod löper ut den "
           extend_membership: "Du kan förlänga ditt medlemskap i ytterligare 12 månader genom att betala medlemsavgiften."
+          renewal_reqs: *renewal_requirements
+
+      membership_will_expire_renewal_reqs_reminder:
+        subject: Ditt medlemskap löper ut snart
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Observera att din nuvarande medlemsperiod löper ut den "
+          renewal_reqs: *renewal_requirements
 
       h_branding_fee_will_expire:
         subject: Det är snart dags att betala din H-märkningspremie
@@ -1895,6 +1982,7 @@ sv:
         message_text:
           expire_alert_html: "Ditt medlemsskap gick ut <span class='date-warning'> %{expire_date}.</span>"
           renew_membership: Du kan förnya ditt medlemskap och fortsätta dra nytta av medlemsfördelarna genom att logga in och betala.
+          renewal_reqs: *renewal_requirements
           pay_on_acct_page: &pay_on_acct_page "Du betalar via "
 
       first_membership_fee_owed:
@@ -1902,6 +1990,16 @@ sv:
         greeting: *email_greeting
         message_text: "Du har blivit godkänd för att bli medlem, men du måste betala medlemsavgift för att kunna dra nytta av de förmåner, erbjudande och rabatter som ingår i medlemskapet. Du kan enkelt betala genom att följa stegen nedan."
 
+      membership_renewed:
+        subject:  &subject_welcome "Tack för att du förnya ditt Sveriges Hundföretagare-medlemskap"
+        greeting: *email_greeting
+        message_text:
+          awesome: "Toppen!"
+          renewed_last_day: "Du har nu förnyat ditt medlemskap. Den sista dagen för ditt medlemskap är nu "
+          companies_you_belong_to: "Här är det eller de företag du tillhör:"
+          thanks: Tack för att du är med ännu ett år.
+          company-incomplete: Ofullständig information om företag
+          company-license-expired: H-märkespremien har löpt ut eller är obetald
 
 
   devise:
@@ -1939,7 +2037,7 @@ sv:
 
     sessions:
       new:
-        log_in: &log_in Logga in
+        log_in: *log_in
         title: *log_in
         remember_me: Kom ihåg mig
         submit_button_label: *log_in
@@ -2045,6 +2143,7 @@ sv:
         dashboard: Dashboard
         design_guide: Design Guide
         all_uploaded_files: All Uploaded Files
+        update_all_membership_status:  Update Membership Status...
 
         categories:
           submenu_title: Kategorier

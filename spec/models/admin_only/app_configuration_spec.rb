@@ -8,7 +8,10 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
   include_context 'unstub Paperclip file commands'
 
   # do not use the mock; use the real thing
-  before(:each) { allow(AdminOnly::AppConfiguration).to receive(:config_to_use).and_call_original }
+  before(:each) do
+    allow(AdminOnly::AppConfiguration).to receive(:config_to_use).and_call_original
+    allow(AdminOnly::AppConfiguration).to receive(:instance).and_call_original
+  end
 
 
   let(:app_configuration) { create(:app_configuration) }
@@ -60,6 +63,8 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
     it { is_expected.to have_db_column :site_meta_image_width }
     it { is_expected.to have_db_column :singleton_guard }
     it { is_expected.to have_db_column :payment_too_soon_days }
+    it { is_expected.to have_db_column :membership_term_duration }
+    it { is_expected.to have_db_column :membership_expiring_soon_days }
   end
 
 
@@ -104,14 +109,12 @@ RSpec.describe AdminOnly::AppConfiguration, type: :model do
             expect(app_configuration).not_to be_valid
           end
         end
-
       end
 
       it 'site meta image must be present' do
         is_expected.to validate_attachment_presence('site_meta_image')
       end
     end
-
   end
 
 
