@@ -255,19 +255,15 @@ RSpec.describe AdminOnly::DataGatherer do
       expect(subject.apps_approved_member_fee_not_paid.count).to eq 0
     end
 
-    it "some paid, some expired, some not paid" do
+    it "some members, some lapsed members, some not paid" do
 
-      # expired
-      2.times do
-        create_member_with_member_and_branding_payments_expiring(Time.zone.today - 1.day)
-      end
+      # In the grace period: they are overdue to renew
+      4.times { create(:member, last_day: Date.current - 3.years, membership_status: :in_grace_period) }
 
-      3.times do
-        create_member_with_member_and_branding_payments_expiring(Time.zone.today + 1.year)
-      end
+      3.times { create(:member) }
 
-      # approved members that have not paid:
-      4.times { create(:member_with_membership_app) }
+      # approved applicants that have not paid:
+      2.times { create(:user_with_membership_app, application_status: :accepted) }
 
       expect(subject.apps_approved_member_fee_not_paid.count).to eq 6
     end
@@ -501,23 +497,13 @@ RSpec.describe AdminOnly::DataGatherer do
     end
 
     it '@apps_approved_member_fee_not_paid is updated' do
-
       expect(subject.apps_approved_member_fee_not_paid.count).to eq 0
 
-      # expired
-      2.times do
-        create_member_with_member_and_branding_payments_expiring(Time.zone.today - 1.day)
-      end
-
-      3.times do
-        create_member_with_member_and_branding_payments_expiring(Time.zone.today + 1.year)
-      end
-
-      # approved members that have not paid:
-      4.times { create(:member_with_membership_app) }
+      3.times { create(:shf_application, :accepted) }
+      2.times { create(:member) }
 
       subject.send(:refresh_data)
-      expect(subject.apps_approved_member_fee_not_paid.count).to eq 6
+      expect(subject.apps_approved_member_fee_not_paid.count).to eq 3
     end
 
     it '@companies_branding_not_paid is updated' do

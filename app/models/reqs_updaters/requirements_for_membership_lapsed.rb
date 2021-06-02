@@ -16,8 +16,7 @@
 # @file requirements_membership_lapsed.rb
 #
 #--------------------------
-
-
+#
 class RequirementsForMembershipLapsed < AbstractRequirements
 
   def self.has_expected_arguments?(args)
@@ -25,16 +24,13 @@ class RequirementsForMembershipLapsed < AbstractRequirements
   end
 
 
-  # A Membership has lapsed if the (former) member has an approved application
-  # AND had a past membership payment AND that payment term has expired
+  # A Membership has lapsed if
+  #   they are now in the (renewal) grace period
+  # OR
+  #   they are a former member
   def self.requirements_met?(args)
     user = args[:user]
-
-    most_recent_payment = user.payment_expire_date(Payment::PAYMENT_TYPE_MEMBER)
-
-    user.has_approved_shf_application? &&
-        (!most_recent_payment.nil?) &&
-        most_recent_payment.past?
+    user.in_grace_period? || user.former_member?
   end
 
 end

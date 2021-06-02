@@ -86,22 +86,26 @@ RSpec.describe AdminMailer, type: :mailer do
 
     let(:mon_ago_5) { Time.zone.now - 5.months }
 
-    let(:past_member1) do
-      memb = create(:member_with_expiration_date, expiration_date: mon_ago_5, first_name: 'Member1')
+    let!(:past_member1) do
+      memb = create(:member, expiration_date: mon_ago_5, first_name: 'Member1')
       memb.companies.first.update(website: 'website1')
       memb.issue_membership_number
       memb
     end
 
-    let(:past_member2) do
-      memb = create(:member_with_expiration_date, expiration_date: mon_ago_5, first_name: 'Member2')
+    let!(:company_2) { create(:company, name: 'Co 2') }
+    let!(:past_member2) do
+      memb = create(:member, expiration_date: mon_ago_5, first_name: 'Member2',
+                    company_number: company_2.company_number)
       memb.companies.first.update(website: 'website2')
       memb.issue_membership_number
       memb
     end
 
-    let(:past_member3) do
-      memb = create(:member_with_expiration_date, expiration_date: mon_ago_5, first_name: 'Member3')
+    let!(:company_3) { create(:company, name: 'Co 3') }
+    let!(:past_member3) do
+      memb = create(:member, expiration_date: mon_ago_5, first_name: 'Member3',
+                    company_number: company_3.company_number)
       memb.companies.first.update(website: 'website3')
       memb.issue_membership_number
       memb

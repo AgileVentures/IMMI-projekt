@@ -1,5 +1,15 @@
 require 'observer'
 
+# ===============================================================================================
+# @class Payment
+#
+# @responsibility  A payment made by someone (the 'payor') for an individual membership or
+#   for a Company H-markt license. ()
+
+# TODO: add a payor (= a User). target = the object this is for ( a User or Company )
+# TODO: have subclasses for the 2 types of payments (UserMembership, CoHMarktLicense)
+#
+#
 class Payment < ApplicationRecord
 
   include Observable
@@ -9,8 +19,8 @@ class Payment < ApplicationRecord
   #  before_destroy :delete_observers  # TODO is this needed?
 
 
-  belongs_to :user
-  belongs_to :company, optional: true # used for branding_fee
+  belongs_to :user  # This is the payor.  Might also be the target for the individual membership if company is nil
+  belongs_to :company, optional: true # used for branding_fee; the target for the H-Markt license, a.k.a. "branding fee"
 
   validates_presence_of :user, :payment_type, :status, :start_date, :expire_date
   validates_presence_of :hips_id, on: :update
@@ -81,6 +91,7 @@ class Payment < ApplicationRecord
 
   def add_observers
     add_observer MembershipStatusUpdater.instance, :payment_made
+    add_observer AdminAlerter.instance, :payment_made
   end
 
 
@@ -139,5 +150,14 @@ class Payment < ApplicationRecord
 
   def branding_license_payment?
     self.payment_type == branding_license_payment_type
+  end
+
+
+  # TODO this is a smell.  Should have different subclasses of Payments
+  def target_entity
+    return user if membership_payment?
+    return company if branding_license_payment?
+
+    nil
   end
 end

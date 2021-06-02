@@ -11,10 +11,10 @@ Feature: Member pays branding license fee for a company
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email                               | admin | member | membership_number | first_name |
-      | emma@mutts.com                      |       | true   | 1001              | Emma       |
-      | lars-member@co-with-no-payments.com | false | true   | 1002              | Lars       |
-      | admin@shf.se                        | true  | false  |                   | Admin      |
+      | email                               | admin | membership_status | member | membership_number | first_name |
+      | emma@mutts.com                      |       | current_member    | true   | 1001              | Emma       |
+      | lars-member@co-with-no-payments.com | false | current_member    | true   | 1002              | Lars       |
+      | admin@shf.se                        | true  |                   | false  |                   | Admin      |
 
     Given the following companies exist:
       | name                     | company_number | email                         | region    |
@@ -37,6 +37,13 @@ Feature: Member pays branding license fee for a company
       | user_email     | start_date | expire_date | payment_type | status | hips_id | company_number |
       | emma@mutts.com | 2018-01-01 | 2018-12-31  | branding_fee | betald | none    | 2120000142     |
 
+
+    And the following memberships exist:
+      | email                               | first_day  | last_day   |
+      | emma@mutts.com                      | 2018-01-01 | 2019-12-31 |
+      | lars-member@co-with-no-payments.com | 2018-01-01 | 2018-12-31 |
+
+  # -------------------------------------------------------------------------------------------
 
   @time_adjust @selenium
   Scenario: Member pays the first branding fee for a company

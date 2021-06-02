@@ -81,7 +81,6 @@ begin
   seed_model_with_seeder(AdminOnly::FileDeliveryMethod, Seeders::FileDeliveryMethodsSeeder)
   seed_model_with_seeder(BusinessCategory, Seeders::BusinessCategoriesSeeder)
 
-
   init_generated_seeding_info
 
   ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Admin User') do |log|
@@ -110,7 +109,7 @@ begin
   if Rails.env.development? || Rails.env.staging? || ENV['HEROKU_STAGING']
 
     # -----------------------------------------
-    # Master and User checklists
+    # Master and User checklists, AppConfiguration
 
     ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Applications') do |log|
       log.info('Creating Ethical guidelines checklists for each user...')
@@ -118,6 +117,18 @@ begin
       Seeders::MasterChecklistTypesSeeder.seed
       Seeders::MasterChecklistsSeeder.seed
 
+      # Seed the AppConfiguration
+      #   MasterChecklists must be seeded first so that the Membership guidelines checklist exists
+
+      if AdminOnly::AppConfiguration.count == 0
+        log.info('Seeding AppConfiguration...')
+        Seeders::AppConfigurationSeeder.seed
+      else
+        log.info(MSG_NO_APPCONFIG)
+        log.info(MSG_APPCONFIG_NEEDS_SITEMETAIMAGE) unless AdminOnly::AppConfiguration.last.site_meta_image.exists?
+      end
+
+      # TODO: should this be here, or come after all users have been seeded?
       User.all.each do |user|
         AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user) unless user.admin?
       end
@@ -130,6 +141,8 @@ begin
     users = {}
 
     ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Users') do |log|
+
+      SeedHelper::UsersFactory.seed_predefined_users
 
       number_of_users = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
       log.info("Creating #{number_of_users} additional users. (This number can be set with ENV['SHF_SEED_USERS'])...")
@@ -162,17 +175,6 @@ begin
       end
     end
 
-
-    ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'AppConfiguration') do |log|
-
-      if AdminOnly::AppConfiguration.count == 0
-        log.info('Seeding AppConfiguration...')
-        SeedHelper::AppConfigurationSeeder.seed
-      else
-        log.info(MSG_NO_APPCONFIG)
-        log.info(MSG_APPCONFIG_NEEDS_SITEMETAIMAGE) unless AdminOnly::AppConfiguration.last.site_meta_image.exists?
-      end
-    end
 
   end
 

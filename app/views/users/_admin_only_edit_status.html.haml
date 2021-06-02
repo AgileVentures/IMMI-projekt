@@ -1,0 +1,15 @@
+- if current_user.admin?
+  .admin-only
+    .row.mt-2
+      .col
+        .membership-status-title= t('users.show.membership_status')
+        .membership-status= user.membership_status
+    .row.ml-2
+      .col
+        - if user.admin_can_edit_status?
+          = render partial: 'payor/admin_note_and_edit_status_row',
+                 locals: { entity: user,
+                 target_id: '#edit-status-modal',
+                 button_text: t('users.show.edit_member_status') }
+        - else
+          %p.small.admin-cant-edit-status= t('payors.admin_cant_edit')

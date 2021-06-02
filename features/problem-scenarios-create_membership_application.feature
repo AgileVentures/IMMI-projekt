@@ -61,7 +61,7 @@ Feature: Create a new membership application [CI PROBLEM SCENARIOS]
 
   @selenium @skip_ci_test
   Scenario: User creates App with two companies, creates one company, corrects error in company number
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -93,7 +93,7 @@ Feature: Create a new membership application [CI PROBLEM SCENARIOS]
 
   @selenium @skip_ci_test
   Scenario: A user cannot submit a new Membership Application with no category [SAD PATH]
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -124,7 +124,7 @@ Feature: Create a new membership application [CI PROBLEM SCENARIOS]
 
   @selenium @skip_ci_test
   Scenario: Two users can submit a new Membership Application (with empty membership numbers)
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.new.phone_number | shf_applications.new.contact_email |
@@ -149,7 +149,7 @@ Feature: Create a new membership application [CI PROBLEM SCENARIOS]
     And I should see t("shf_applications.create.success_with_app_files_missing")
 
     Given I am logged in as "applicant_2@random.com"
-    Given I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |

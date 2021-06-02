@@ -7,6 +7,8 @@
   %p
     = I18n.t('app_approved_and_next', scope: message_scope)
 
+  = render 'mailers_shared/login_here_with_email', email: @recipient_email
+
   = render 'mailers_shared/how_to_pay_membership', user: @shf_app.user
 
   - unless @branding_fee_paid

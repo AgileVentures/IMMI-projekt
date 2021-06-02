@@ -32,7 +32,9 @@ module AdminOnly
 
     # Read-only (info comes from the db)
     attr :total_members,
+         :current_members,
          :total_companies,
+         :current_companies,
          :total_users,
          :app_states_translated,
          :shf_apps_state_counts,
@@ -101,7 +103,7 @@ module AdminOnly
     #
     def refresh_data
       @total_companies = Company.all.count
-
+      @current_companies = Company.in_good_standing
 
       # membership applications by state
       ShfApplication.all_states.each do |app_state|
@@ -110,7 +112,7 @@ module AdminOnly
       @app_states_translated = ShfApplication.group(:state).count.transform_keys {
           |k| I18n.t "activerecord.attributes.shf_application.state/#{k}"
       }
-      @apps_without_uploads = ShfApplication.no_uploaded_files
+      @apps_without_uploads = ShfApplication.decided_with_no_uploaded_files
       @apps_approved_member_fee_not_paid = User.all.select(&method(:membership_fee_due?))
 
       @companies_branding_not_paid = Company.all.reject(&:branding_license?)
@@ -118,6 +120,7 @@ module AdminOnly
 
       @total_users = User.all.count
       @total_members = User.members.count
+      @current_members = User.current_member
 
       @translated_users = User.group(:member).count.transform_keys {
           |k| I18n.t "activerecord.attributes.member.#{k}"

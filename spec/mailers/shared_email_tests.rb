@@ -131,6 +131,7 @@ RSpec.shared_examples 'it shows the user the login page and their login email' d
 end
 
 # Assumes that 'email_created' exists e.g. via a let(:..) (which might be within a block)
+#  and 'company' exists  e.g. via a let(:..) (which might be within a block)
 RSpec.shared_examples 'it shows how to login and the page to pay the H-markt fee' do
   it_behaves_like 'it shows the user the login page and their login email'
 
@@ -142,14 +143,9 @@ RSpec.shared_examples 'it shows how to login and the page to pay the H-markt fee
     expect(email_created).to have_body_text(I18n.t('mailers.pay_hmarkt_step'))
   end
 
-  it 'has a link to the company page' do
-    expect(email_created).to have_body_text(I18n.t('mailers.here_is_co_page'))
-    expect(email_created).to have_body_text("<a target=\"_blank\" href=\"#{company_url(company)}\">#{company.name}</a>")
-  end
-
-  it 'has a line explaining that they can see the H-markt expiration on the company page' do
-    expect(email_created).to have_body_text(I18n.t('mailers.h_brand_exp_shown'))
-  end
+  # it 'has a line explaining that they can see the H-markt expiration on the company page' do
+  #   expect(email_created).to have_body_text(I18n.t('mailers.h_brand_exp_shown'))
+  # end
 end
 
 # Assumes that 'email_created' exists e.g. via a let(:..) (which might be within a block)
@@ -176,6 +172,14 @@ RSpec.shared_examples 'it shows how to login and the page to upload files' do
 
   it 'says there will be a button to the app where you can upload files' do
     expect(email_created).to have_body_text(I18n.t('mailers.shf_application_mailer.will_see_app_button'))
+  end
+end
+
+
+# Assumes that 'email_created' exists e.g. via a let(:..) (which might be within a block)
+RSpec.shared_examples 'it shows what is required to renew the membership' do
+  it 'renewal_reqs is in the body' do
+    expect(email_created).to have_body_text(I18n.t('mailers.renewal_reqs'))
   end
 end
 

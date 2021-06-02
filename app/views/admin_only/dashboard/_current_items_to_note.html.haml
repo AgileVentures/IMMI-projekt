@@ -18,3 +18,7 @@
     %p
       = styled_total(companies_info_not_completed.count,
                    t('companies_incomplete', scope: i18n_scope))
+
+    %hr
+    %p= styled_total(current_members.count, t('current_members', scope: i18n_scope))
+    %p= styled_total(current_companies.count, t('current_companies', scope: i18n_scope))

@@ -1,0 +1,15 @@
+:ruby
+  # This partial shows steps for how to edit companies,
+  # including the the link to log in (with a reminder about the email to use),
+  # Note that it does not include a step to log in. That should be explained
+  # elsewhere, in case this is shown with other steps that also require logging in --
+  # in which case the step(s) for logging in can be shown just once.
+  #
+  # The partial expects these locals:
+  #   email - the email address for logging in
+  #
+%li.step-1.edit-companies
+  = I18n.t('mailers.how_to_edit_companies.go_to_my_cos_menu')
+  %ul.step-1-substeps
+    %li= I18n.t('mailers.how_to_edit_companies.see_click_co_name')
+    %li= I18n.t('mailers.how_to_edit_companies.view_then_edit')

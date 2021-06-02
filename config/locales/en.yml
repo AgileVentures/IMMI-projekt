@@ -153,7 +153,7 @@ en:
 
       company:
         one: &company_one Company
-        other: Companies
+        other: &companies Companies
 
       shf_document:
         one: Document
@@ -242,6 +242,7 @@ en:
       member:
         true: Member
         false: Not member
+
 
       address:
         street: &street Street
@@ -334,6 +335,17 @@ en:
         name: *name
         description: *description
 
+      membership:
+        first_day: First day
+        last_day: &membership_last_day Last day
+        member_number: *membership_number
+        notes: Notes
+        status:
+          current_member: Current
+          expires_soon: Expires Soon
+          in_grace_period: Renewal Overdue (In Grace Period)
+          former_member: Former Member
+          not_a_member: Not a Member
 
     errors:
 
@@ -498,7 +510,7 @@ en:
       description: *description
 
     new:
-      title: Upload a file
+      title: &upload_new_file Upload a file
       description: *description
       submit: *submit
       index_title: *uploaded_files_index_title
@@ -539,6 +551,11 @@ en:
       admin_index_title: *uploaded_files_admin_index_title
       delete: "Radera %{file_name}"
 
+    small_table_files_list:
+      associated_with_application: "Application"
+      date_uploaded: "Uploaded"
+      description: *description
+      file_name: file name
 
   shf_applications:
     new:
@@ -643,17 +660,16 @@ en:
       title: About Application and Membership
       member:
         title: Welcome
-        using_the_logo: "It is important that we all follow our graphic identity,
+        using_the_logo: &membership_logo_use "It is important that we all follow our graphic identity,
                          that the logo is used in a uniform manner,
                           that you do not create your own version.
                           This is to promote recognition and clarity among customers.
                          This also guards against counterfeits of the H mark."
-        upload_this_image: "We'd like you to put the image below on your website
-                            and link this image to:"
-        using_the_h_mark: "We'd also like you to put the H-mark on your homepage.
+        upload_this_image: &put_membership_logo_on_your_website "We'd like you to put the image below on your website
+                            and link this image to: https://www.sverigeshundforetagare.se"
+        using_the_h_mark: &h_mark_use "We'd also like you to put the H-mark on your homepage.
                         This shows that you have achieved the H-mark and so
-                        provide more value. The H-mark image is below.
-                        It should be linked to:"
+                        provide more value. Link the H-mark image to: https://sverigeshundforetagare.se/agare/h-markt-av-sveriges-hundforetagare/"
         ffs: You find the image in your account.
 
       user:
@@ -832,7 +848,6 @@ en:
       hbrand_fee: H-Brand license fee
       hbrand_term: H-Brand license term
       edit_branding_status: Edit Branding Status
-      branding_license: H-Branding License
       payment_tooltip: Paying the H-Branding fee will extend the branding license for one year.
       branding_fee_expire_date_tooltip: &branding_fee_expire_date_tooltip Branding license expires after this date
       term_expire_date_tooltip : *branding_fee_expire_date_tooltip
@@ -999,7 +1014,8 @@ en:
     all_business_categories: All categories
 
   users:
-    edit_user_account: &edit_user_account Edit the account for %{name}
+    edit_user_account: &edit_user_account "Edit the account for %{name}"
+    membership_status: Membership status
 
     index:
       title: All Users
@@ -1030,6 +1046,7 @@ en:
       membership_fee_payment: membership payment
       membership_fee: membership fee
       membership_term: membership term
+      membership_term_last_day: *membership_last_day
       payment_tooltip: Paying the membership fee will extend your membership for one year.
       membership_expire_date_tooltip: &membership_expire_date_tooltip Membership expires after this date
       term_expire_date_tooltip : *membership_expire_date_tooltip
@@ -1057,36 +1074,57 @@ en:
 
     show_for_member:
       membership_number: *membership_number
+      no_membership_number: (no membership number)
 
     show_for_applicant:
-      title: "Steps to SHF Membership:"
-      welcome: "Welcome to Sveriges Hundföretagare!"
-      welcome_want_to_have_benefits: "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
+        title: "Steps to SHF Membership:"
+        welcome: "Welcome to Sveriges Hundföretagare!"
+        welcome_want_to_have_benefits: "Do you want to be included in a context that confirms that your qualifications, dedication and dog knowledge are counted?"
 
-      apply_4_membership: *apply_for_membership
-      my_application: &my_application My Application
-      submit_application: Fill out and submit your application.
-      app_status_new: "Thanks for submitting your application. We'll start reviewing it soon. You can always email us with questions."
-      app_status_under_review: "Thanks for submitting your application. We're reviewing it. You'll get an email letting you know the status."
-      app_status_waiting_for_applicant: We are waiting for information from you.
-      app_status_ready_for_review: "Thanks for submitting your application and information. We'll start reviewing it soon. You can always email us with questions."
-      app_status_accepted: Your application has been accepted.
-      app_status_rejected: Your application has been denied.
+        apply_4_membership: *apply_for_membership
+        my_application: &my_application My Application
+        submit_application: Fill out and submit your application.
+        app_status_new: "Thanks for submitting your application. We'll start reviewing it soon. You can always email us with questions."
+        app_status_under_review: "Thanks for submitting your application. We're reviewing it. You'll get an email letting you know the status."
+        app_status_waiting_for_applicant: We are waiting for information from you.
+        app_status_ready_for_review: "Thanks for submitting your application and information. We'll start reviewing it soon. You can always email us with questions."
+        app_status_accepted: Your application has been accepted.
+        app_status_rejected: Your application has been denied.
+        pay_membership: *pay_membership
+        when_can_pay:  &when_can_pay Once your application has been accepted and you've agreed to the guidelines, you can make your payment.
+
+
+    renewal:
+      title_time_to_renew: "It's time to renew!"
+      title_renewal_overdue: "You are overdue to renew."
+      renewal_overdue_warning: "Your membership has lapsed! But you can still renew without resubmitting a new application. Just follow the steps below."
+      instructions: "You need to renew your membership! Here are the steps you must complete so you can keep enjoying the benefits of SHF membership:"
+      steps_to_renew: "Steps to renew your membership:"
+      pay_button_disabled_info: "Once you have completed the steps above, you can make your payment."
       pay_membership: *pay_membership
-      when_can_pay: Once your application has been accepted and you've agreed to the guidelines, you can make your payment.
+
 
     ethical_guidelines_link_or_checklist:
       agree_to_guidelines: Agree to All Membership Guidelines
       agreed_to: Agreed to
       membership_guidelines: All Membership Guidelines
 
+    uploaded_files_requirement:
+      have_been_uploaded: Files have been uploaded during your membership term
+      need_to_upload: You need to upload at least 1 file to show that you have continued your professional education and still meet SHF membership requirements.
+      upload_file: *upload_new_file
+      upload_another: Upload another file
+
     show_member_images_row_cols:
       email: *email
       proof_of_membership: &proof_of_membership Proof of Membership
+      using_membership_logo: *membership_logo_use
+      put_membership_logo_on_site: *put_membership_logo_on_your_website
       proof_of_membership_describe: &proof_of_membership_describe This image is your proof of membership in SHF.
       proof_of_membership_photo_needed: &proof_of_membership_photo_needed 'If you see "Photo Unavailable" then please
                                            upload a photo of yourself here: '
       company_h_brand: &company_h_brand Company H-Brand for %{company}
+      using_h_mark: *h_mark_use
       company_h_brand_describe: &company_h_brand_describe This image is your company's H-Brand.
 
       image_how_to_use_html: &image_how_to_use_html "You can download the image, take a screenshot,
@@ -1105,6 +1143,9 @@ en:
       use_this_image_link_html: "<span style='font-weight: bold'>
                                   Use this link in an external website
                                   (will return a JPG image):</span>"
+
+    show_uploaded_files_section_row_cols:
+      title: Uploaded Files
 
     proof_of_membership:
       proof_title: *proof_of_membership
@@ -1183,6 +1224,7 @@ en:
     payments_list:
       payment_date: Payment date
       type: *payment_type
+      for: for
       status: *payment_status
       start_date: *start_date
       end_date: *expire_date
@@ -1251,6 +1293,15 @@ en:
     set_uc_and_kids_date_completed:
       not_found: *user_checklist_not_found
       missing-checklist-param-error: *missing-checklist-param-error
+
+
+  memberships:
+
+    auto_added_notes:
+      changed_by_admin: "Changed by Admin %{changed_timestamp}"
+      started_on: "Membership started on %{first_day}."
+      ended_on: "Membership last day changed to %{new_last_day} and ended. Original last day was %{original_last_day}."
+      last_day_changed: "Membership last day changed from %{original_last_day} to %{new_last_day}."
 
 
   admin:
@@ -1447,6 +1498,9 @@ en:
     dashboard:
       title: ADMIN DASHBOARD
 
+      members: &members Företagsmedlemmar
+      companies: *companies
+
       payments:
         export_all_payments: &dash_export_all_payments Export all payments
         export_payments_year: &dash_export_payments_year Export payments covering year
@@ -1461,6 +1515,8 @@ en:
           app_approved_no_payment: "Applications approved but no membership payment yet"
           companies_no_branding_payment: "companies Branding license fee not yet paid"
           companies_incomplete: "companies with information not yet complete"
+          current_members: *members
+          current_companies: *companies
 
         activity:
           tab-title: Activity
@@ -1478,7 +1534,7 @@ en:
           title: *users
 
         members:
-          tab-title: &members Members
+          tab-title: *members
           title: *members
           total_members: *members
 
@@ -1540,10 +1596,19 @@ en:
         copy_image_url: *copy_image_url
         copied: *copied
 
-
       update:
         error: A problem kept the user account from being updated.
         success: The user account was updated.
+
+      update_membership_status_all_modal:
+        title: "Confirm: Update membership status for all"
+        body: "Do you really want to update the membership status for all users?  This will take a few minutes. Note that no emails will be sent."
+        confirm_do_updates: Yes, update all
+
+      update_membership_status_all:
+        reason_update_happened: Admin Ran Update All M.Statuses
+        success: Membership status for all members was updated. You can check the MembershipStatusUpdater log for the results.
+        error: There was a problem updating membership status for all users.  Please review the logs for details.
 
 
     master_checklists:
@@ -1732,16 +1797,29 @@ en:
   mailers:
     login_here: "Click here to go to the login page."
     your_login_email_is: "Your login email is "
-
+    log_in: &log_in Log in
+    renewal_reqs: &renewal_requirements "You can renew your membership by signing the membership commitment, uploading documentation on continuing education and paying the membership fee."
     how_to_pay_membership: "How to Pay Your Membership Fee:"
-    pay_membership_step: "Once you are logged in, go to your account page to pay."
+    pay_membership_step: "Log in, then go to your account page to pay."
     here_is_acct_page: "Here is your account page: "
 
     how_to_pay_hmarkt: "How to Pay the H-Markt License Fee:"
     pay_hmarkt_step: &co_pay_after_loggedin "Once you are logged in, go to the company page where you will see the button to pay."
     here_is_co_page: "Here is the company page: "
+    find_co_in_my_cos: You will find the page for a company by going to the 'My Companies' menu and clicking on the company you want to see.
     h_brand_exp_shown: "The H-markt license expiration date will be on the company page."
 
+    how_to_edit_companies:
+      title: "How to Edit Your Company(-ies):"
+      go_to_my_cos_menu: "Once you are logged in, go to the 'My Companies' menu at the top and click on it."
+      see_click_co_name: You will see all of the companies you belong to, listed by name.  Click on the Company name you want to edit.
+      view_then_edit: You will then see the information about the company. At the bottom you will see a button to edit the company. Click it to edit the company.
+      cos_you_can_edit: "These are the companies you can edit:"
+
+    how_to_upload_files: "How to Upload Files:"
+    upload_files_step1: "Log in. Go the page that shows all of your uploaded files by (1) going to your login menu. Your login menu is at the far right and says '%{login_menu_title}'."
+    upload_files_step2: Click on the menu item labelled '%{uploaded_files_menu_item}'. That takes you to the page with all of your uploaded files. You can upload files there.
+    upload_files_step3: (Your uploaded files are also listed on your account page.)
 
     application_mailer:
       greeting: &email_greeting "Hello %{greeting_name}"
@@ -1831,6 +1909,7 @@ en:
 
     member_mailer:
       member_account_link: "%{account_link} (You may need to login first before the link works. Your login is %{login_email}.)"
+      login_to_fix: To fix the above, you must log in.
 
       app_no_uploaded_files:
         subject: Please upload qualification files to your Sveriges Hundföretagare application
@@ -1854,6 +1933,14 @@ en:
         message_text:
           expire_alert_html: "Please note that your current membership period will expire on "
           extend_membership: "You can extend your membership for another 12 months by paying the membership fee."
+          renewal_reqs: *renewal_requirements
+
+      membership_will_expire_renewal_reqs_reminder:
+        subject: Your membership will expire soon
+        greeting: *email_greeting
+        message_text:
+          expire_alert_html: "Please note that your current membership period will expire on "
+          renewal_reqs: *renewal_requirements
 
       h_branding_fee_will_expire:
         subject: The H-Branding fee for your company will be due soon
@@ -1878,7 +1965,7 @@ en:
           expire_alert_html: "Your SHF membership term ended on <span class='date-warning'> %{expire_date}.</span>"
           renew_membership: You can renew your membership and keep taking advantage of SHF member benefits by logging in and paying your membership fee.
           pay_on_acct_page: &pay_on_acct_page "Go to your account page to pay:"
-
+          renewal_reqs: *renewal_requirements
 
       co_info_incomplete:
         subject: Please complete the company information
@@ -1896,6 +1983,18 @@ en:
         subject: "Approved, but haven't paid yet?"
         greeting: *email_greeting
         message_text: "You have been approved to become a member, but you must pay a membership fee in order to take advantage of the benefits, offers and discounts included in the membership. You can easily pay by following the steps below."
+
+      membership_renewed:
+        subject: &subject_welcome "Thanks for renewing your SHF membership!"
+        greeting: *email_greeting
+        message_text:
+          awesome: "Awesome!"
+          renewed_last_day: "You have now renewed your membership. The last day of your membership is now "
+          companies_you_belong_to: "As a reminder, here are the companies you belong to:"
+          thanks: Thanks for joining us for another year.
+          company-incomplete: Incomplete info for company
+          company-license-expired: H-Markt license has expired
+
 
 
   devise:
@@ -1933,7 +2032,7 @@ en:
 
     sessions:
       new:
-        log_in: &log_in Log In
+        log_in: *log_in
         title: *log_in
         remember_me: Remember me
         submit_button_label: *log_in
@@ -2039,6 +2138,8 @@ en:
         master_checklists: Master Checklists
         dashboard: Dashboard
         all_uploaded_files: All Uploaded Files
+        update_all_membership_status:  Update Membership Status...
+
 
         categories:
           submenu_title: Categories

@@ -6,11 +6,11 @@ Feature: Who can and cannot see a user account page
     And the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email                   | admin | membership_number | member | first_name | last_name  |
-      | emma-member@example.com |       | 1001              | true   | Emma       | IsAMember  |
-      | lars-member@example.com |       | 101               | true   |            |            |
-      | admin@shf.se            | true  |                   |        |            |            |
-      | applied@example.com     |       |                   | false  | Applied    | NotAMember |
+      | email                   | admin | membership_status | membership_number | member | first_name | last_name  |
+      | emma-member@example.com |       | current_member    | 1001              | true   | Emma       | IsAMember  |
+      | lars-member@example.com |       | current_member    | 101               | true   |            |            |
+      | admin@shf.se            | true  |                   |                   |        |            |            |
+      | applied@example.com     |       | not_a_member      |                   | false  | Applied    | NotAMember |
 
 
     And the following regions exist:
@@ -38,6 +38,11 @@ Feature: Who can and cannot see a user account page
       | emma-member@example.com | 2018-01-1  | 2018-12-31  | member_fee   | betald | none    |
       | lars-member@example.com | 2018-05-05 | 2019-05-04  | member_fee   | betald | none    |
 
+
+    And the following memberships exist:
+      | email                   | first_day  | last_day   |
+      | emma-member@example.com | 2018-01-1  | 2018-12-31 |
+      | lars-member@example.com | 2018-05-05 | 2019-05-04 |
 
     And the following membership packets have been sent:
       | user_email              | date_sent  |

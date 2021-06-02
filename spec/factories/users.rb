@@ -16,6 +16,7 @@ FactoryBot.define do
     last_sign_in_at { nil }
     created_at { DateTime.now.utc }
     updated_at { DateTime.now.utc }
+    membership_status { 'not_a_member' }
 
     factory :user_with_ethical_guidelines_checklist do
       after(:create) do |user, _evaluator|
@@ -49,66 +50,92 @@ FactoryBot.define do
 
       transient do
         company_number { nil }
+        application_status { :new }
       end
 
       after(:build) do |user, evaluator|
-        # FIXME this should not be a list. Fix tests that use this
+        # TODO should be a list in prep for when we implement applicants can have more than 1 ShfApplication
         create_list(:shf_application, 1,
                     user: user,
+                    state: evaluator.application_status,
                     contact_email: evaluator.email,
                     company_number: evaluator.company_number)
       end
     end
 
-    factory :member_with_membership_app do
 
-      # FIXME this attribute no long means anything.
+    # Create a Membership for the user
+    #   and create a membership payment for the member
+    # Can specify the first_day or last_day of the membership
+    #
+    #   ex:  create(:member_with_expiration_date, expiration_date: Date.new(2018, 6, 24))
+    factory :member do
       member { true }
 
       transient do
         company_number { 5562728336 }
+        first_day { nil }
+        last_day { nil }
+        expiration_date { nil }
+        has_uploaded_docs { true } # Do they have uploaded documents for the current membership term?
+        contact_email { email }
       end
 
-      after(:build) do |member, evaluator|
+      after(:create) do |member, evaluator|
+
         create_list(:shf_application, 1, :accepted, user: member,
                     company_number: evaluator.company_number,
-                    contact_email: evaluator.email) # FIXME this should not be a list. Fix tests that use this
-      end
+                    contact_email: evaluator.contact_email)
 
-      after(:create) do | member, _evaluator|
+        if evaluator.first_day.nil?
+          # in case expiration_date was used. TODO switch these all to use first_day and last_day
+          given_last_day = !!evaluator.last_day ? evaluator.last_day : evaluator.expiration_date
+
+          if given_last_day.nil?
+            actual_first_day = Date.current
+            actual_last_day = Membership.last_day_from_first(actual_first_day)
+          else
+            actual_last_day = !!evaluator.last_day ? evaluator.last_day : evaluator.expiration_date
+            actual_first_day = Membership.first_day_from_last(actual_last_day)
+          end
+        else
+          actual_first_day = evaluator.first_day
+          actual_last_day = Membership.last_day_from_first(actual_first_day)
+        end
+
+        Membership.create(user: member,
+                          first_day: actual_first_day,
+                          last_day: actual_last_day)
+        member.membership_status = 'current_member' if MembershipsManager.new.has_membership_on?(member, Date.current)
+        create(:membership_fee_payment, user: member,
+               start_date: actual_first_day,
+               expire_date: actual_last_day)
+
         create(:membership_guidelines_master_checklist ) unless AdminOnly::MasterChecklist.latest_membership_guideline_master
         AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(member)
-      end
-    end
 
-
-
-    # create a payment for the member with the given expiration date
-    # ex:  create(:member_with_expiration_date, expiration_date: Date.new(2018, 6, 24))
-    #  Note: this does not create any UserChecklists for the member. That
-    #   can be done separately.
-    #
-    factory :member_with_expiration_date do
-
-      member { true }
-
-      transient do
-        expiration_date { Date.current }
-      end
-
-      after(:create) do | member, evaluator |
-        create(:shf_application, :accepted, user: member)
-
-        create(:membership_fee_payment, user: member,
-               start_date: evaluator.expiration_date - 364,
-               expire_date: evaluator.expiration_date)
-
-        create(:membership_guidelines_master_checklist) unless AdminOnly::MasterChecklist.latest_membership_guideline_master
-        AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(member)
+        # must use the '&' below in case the membership_guidelines_list_for method is stubbed
         UserChecklistManager.membership_guidelines_list_for(member)&.set_complete_including_children
+
+        # uploaded files
+        if evaluator.has_uploaded_docs
+          uploaded_file = create(:uploaded_file, :txt, user: member)
+          member.uploaded_files << uploaded_file
+        end
+
+      end
+
+      # member_with_membership_app should be replaced with just 'member'
+      factory :member_with_membership_app do
+      end
+
+      # member_with_expiration_date should be replaced with just 'member'
+      factory :member_with_expiration_date do
+        # transient do
+        #   expiration_date { Date.current }
+        # end
       end
     end
 
   end
-
 end

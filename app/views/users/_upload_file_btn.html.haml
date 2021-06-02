@@ -1,0 +1,9 @@
+-# This partial shows a button to upload a file or, if there are already files uploaded, upload another file
+-#
+-# The partial expects these locals:
+-#   user - the user (member) that this information is for
+
+- upload_btn_title = user.uploaded_files.blank? ? t('users.uploaded_files_requirement.upload_file') : t('users.uploaded_files_requirement.upload_another')
+= link_to upload_btn_title,
+          user_new_uploaded_file_path(user_id: user.id, from_acct_pg: true),
+          class: 'btn btn-sm btn-light new-uploaded-file-button'

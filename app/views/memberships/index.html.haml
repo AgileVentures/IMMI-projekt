@@ -1,0 +1,27 @@
+%h1 Listing memberships
+
+%table
+  %thead
+    %tr
+      %th Member number
+      %th Belongs to
+      %th First day
+      %th Last day
+      %th
+      %th
+      %th
+
+  %tbody
+    - @memberships.each do |membership|
+      %tr
+        %td= membership.member_number
+        %td= membership.belongs_to
+        %td= membership.first_day
+        %td= membership.last_day
+        %td= link_to 'Show', membership
+        %td= link_to 'Edit', edit_membership_path(membership)
+        %td= link_to 'Destroy', membership, method: :delete, data: { confirm: 'Are you sure?' }
+
+%br
+
+= link_to 'New Membership', new_membership_path

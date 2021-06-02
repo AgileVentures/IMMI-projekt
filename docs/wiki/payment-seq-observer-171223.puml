@@ -53,7 +53,7 @@ MembershipStatusUpdater -> RequirementsForMembership: satisfied?(user)
 
 activate RequirementsForMembership
 
-RequirementsForMembership -> User: membership_current?
+RequirementsForMembership -> User: payments_current?
 RequirementsForMembership -> User: has_approved_shf_application?
 RequirementsForMembership <- RequirementsForMembership: requirements_met?
 deactivate RequirementsForMembership

@@ -14,7 +14,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
 
     Given the following users exist:
       | email              | admin |
-      | emma@happymutts.se |       |
+      | member@mutts.se |       |
       | admin@shf.com      | true  |
 
 
@@ -32,24 +32,31 @@ Feature: Applicant gets an email when membership has been granted. (They are now
 
     And the following applications exist:
       | user_email         | company_number | categories | state    |
-      | emma@happymutts.se | 5562252998     | Groomer    | accepted |
+      | member@mutts.se | 5562252998     | Groomer    | accepted |
 
+
+    And these files have been uploaded:
+      | user_email      | file name | description                               |
+      | member@mutts.se | image.png | Image of a class completion certification |
+
+  # ============================================================================================
 
   @time_adjust
   Scenario: Applicant pays all fees, membership is granted; applicant gets email
     Given the date is set to "2018-01-01"
     And the App Configuration is not mocked and is seeded
-    When I am in "emma@happymutts.se" browser
-    And I am logged in as "emma@happymutts.se"
+    When I am in "member@mutts.se" browser
+    And I am logged in as "member@mutts.se"
     And I have agreed to all of the Membership Guidelines
-    And I am on the "user details" page for "emma@happymutts.se"
+    And I am on the "user details" page for "member@mutts.se"
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     And I should see t("payments.success.success")
     And I should see "2018-12-31"
-    Then "emma@happymutts.se" should receive an email
-    And I am logged in as "emma@happymutts.se"
+    And I should be a member
+    Then "member@mutts.se" should receive an email
+    And I am logged in as "member@mutts.se"
     And I open the email
     And I should see t("mailers.member_mailer.membership_granted.subject") in the email subject
     And I should see t("mailers.member_mailer.membership_granted.message_text.welcome") in the email body
@@ -66,26 +73,26 @@ Feature: Applicant gets an email when membership has been granted. (They are now
   @time_adjust   @selenium
   Scenario: [SAD PATH] Applicant does not pay all fees, membership is not granted; no email is sent (2017)
     Given the date is set to "2017-12-31"
-    When I am in "emma@happymutts.se" browser
-    And I am logged in as "emma@happymutts.se"
+    When I am in "member@mutts.se" browser
+    And I am logged in as "member@mutts.se"
     And I have agreed to all of the Membership Guidelines
-    And I am on the "user details" page for "emma@happymutts.se"
+    And I am on the "user details" page for "member@mutts.se"
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
     And I abandon the payment by going back to the previous page
     And I should not see t("payments.success.success")
-    Then "emma@happymutts.se" should receive no emails
+    Then "member@mutts.se" should receive no emails
 
 
   @time_adjust   @selenium
   Scenario: [SAD PATH] Applicant does not pay all fees, membership is not granted; no email is sent (post 2017)
     Given the date is set to "2018-01-01"
-    When I am in "emma@happymutts.se" browser
-    And I am logged in as "emma@happymutts.se"
+    When I am in "member@mutts.se" browser
+    And I am logged in as "member@mutts.se"
     And I have agreed to all of the Membership Guidelines
-    And I am on the "user details" page for "emma@happymutts.se"
+    And I am on the "user details" page for "member@mutts.se"
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
     And I abandon the payment by going back to the previous page
     And I should not see t("payments.success.success")
-    Then "emma@happymutts.se" should receive no emails
+    Then "member@mutts.se" should receive no emails

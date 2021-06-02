@@ -40,15 +40,15 @@ Feature: Show company page - display different info depending on role
       | Company8                              | 7736362901     | hello@company-8.com        | Stockholm    | Alingsås | Harplinge | street_address |
 
     And the following users exist:
-      | email                            | admin | member |
-      | member-1@addr-all-visible-1.com  |       | true   |
-      | member@company-2.com             |       | true   |
-      | applicant-6@addr-not-visible.com |       | false  |
-      | member-6@addr-not-visible.com    |       | true   |
-      | member-no-payments@company-3.com |       | true   |
-      | member-no-payments@company-2.com |       | true   |
-      | member-2@addr-all-visible-1.com  |       | true   |
-      | admin@shf.se                     | true  | false  |
+      | email                            | admin | membership_status | member |
+      | member-1@addr-all-visible-1.com  |       | current_member    | true   |
+      | member@company-2.com             |       | current_member    | true   |
+      | applicant-6@addr-not-visible.com |       |                   | false  |
+      | member-6@addr-not-visible.com    |       | current_member    | true   |
+      | member-no-payments@company-3.com |       | current_member    | true   |
+      | member-no-payments@company-2.com |       | current_member    | true   |
+      | member-2@addr-all-visible-1.com  |       | current_member    | true   |
+      | admin@shf.se                     | true  |                   | false  |
 
 
     And the following business categories exist
@@ -86,8 +86,15 @@ Feature: Show company page - display different info depending on role
       | admin@shf.se                     | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7661057765     |
       | admin@shf.se                     | 2017-01-01 | 2017-12-31  | branding_fee | betald | none    | 7736362901     |
 
+    And the following memberships exist:
+      | email                           | first_day  | last_day   |
+      | member-1@addr-all-visible-1.com | 2019-01-01 | 2019-12-31 |
+      | member@company-2.com            | 2019-10-1  | 2019-12-31 |
+      | member-6@addr-not-visible.com   | 2019-10-1  | 2019-12-31 |
+      | member-2@addr-all-visible-1.com | 2019-01-01 | 2019-12-31 |
 
-    # -----------------------------------
+   # --------------------------------------------------------------------------------------------
+
   Scenario: Show company details to a visitor, but don't show the org nr.
     Given I am Logged out
     When I am the page for company number "5560360793"

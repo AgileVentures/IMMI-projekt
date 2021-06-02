@@ -1,0 +1,20 @@
+-# this partial expects these locals:
+  uploaded_files - a list of UploadedFiles to show
+
+#uploaded-files
+
+  %table.table.table-hover.table-sm
+    %thead
+      %tr
+        %th.file_name=  t('.file_name')
+        %th.description= t('.description')
+        %th.date-uploaded= t('.date_uploaded')
+        %th.application= t('.associated_with_application')
+
+    %tbody
+      - local_assigns.fetch(:uploaded_files, []).each do |uploaded_file|
+        %tr
+          %td.file_name= link_to uploaded_file.actual_file_file_name, user_uploaded_file_path(current_user, uploaded_file)
+          %td.description= uploaded_file.description
+          %td.date-uploaded= uploaded_file.created_at
+          %td.application= link_to(app_state_and_date(uploaded_file.shf_application), uploaded_file.shf_application) if uploaded_file.shf_application

@@ -1,4 +1,5 @@
-Feature: export member information to a CSV file so I can use it in other systems
+Feature: Admin export member information to a CSV file
+
   As an Admin
   So that I can use the member information in other systems (Mailchimp, postal mail),
   I need to be able to export member information (names, email, addresses) to a CSV file

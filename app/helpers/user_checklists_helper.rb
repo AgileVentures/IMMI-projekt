@@ -10,11 +10,11 @@ module UserChecklistsHelper
   def fa_is_complete_checkbox(user_checklist, options = {})
 
     checkbox_icon = 'square' # default
-    title = "is not completed" # FIXME I18n.t
+    title = I18n.t('activerecord.attributes.user_checklist.not_completed')
 
     if user_checklist.all_completed?
       checkbox_icon = 'check-square'
-      title = "is completed"
+      title = I18n.t('activerecord.attributes.user_checklist.completed')
     end
     html_options = { title: "#{user_checklist.name} #{title}" }.merge(options)
 
@@ -23,6 +23,7 @@ module UserChecklistsHelper
 
 
   # Checkbox for whether or not a UserChecklist is completed.
+  #  TODO: is this used?
   #
   # @param [UserChecklist] user_checklist - the user checklist that may or may not be completed
   #

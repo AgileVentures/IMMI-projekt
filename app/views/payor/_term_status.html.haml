@@ -11,16 +11,10 @@
 -#   payment_action_path - path to go to when a payment action (button/link) is clicked
 -#   admin_edit_status_text - text to show on the button for editting the entity's status (for admins)
 -#   admin_edit_target_id - the id for the body of the modal to display to the admin, starting with '#'  ex: '#adminEditMembershipStatus'
--#
--#  TODO  should this be a layout (or parts of it)?
 
 -# Must make sure that status_label and status_text are not nil so that .html_safe can be called on them
--# if status_label isn't defined or if it is nil
-- if local_assigns.fetch(:status_label, nil).nil?
-  - status_label = t('payors.status').capitalize
--# if status_label isn't defined or if it is nil
-- if local_assigns.fetch(:status_text, nil).nil?
-  - status_text = '?'
+- status_label = local_assigns.fetch(:status_label, t('payors.status').capitalize)
+- status_text = local_assigns.fetch(:status_text, '?')
 
 #term-status
   - if defined?(error) && error
@@ -29,10 +23,7 @@
 
   .status-details
     .row.mt-2.justify-content-between
-      .flex.status
-        = succeed ':' do
-          %span.label= status_label.html_safe
-        %span.value= status_text.html_safe
+      .flex.status= field_or_default(status_label, status_text, tag: :span)
 
     .row.mt-2.justify-content-between
       - if entity_expire_date(entity)
@@ -68,10 +59,4 @@
            target_id: admin_edit_target_id,
            button_text: admin_edit_status_text }
 
-
-        .row
-          .col.mt-2
-            %h4.section-title= t('.admin_user_payments_title')
-        .row
-          .col
-            = render 'payments/payments_list', {payments: entity.payments}
+    = render partial: 'users/admin_only_payments', locals: { entity: entity }

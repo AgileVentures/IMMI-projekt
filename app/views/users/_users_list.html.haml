@@ -1,6 +1,10 @@
 #users_list
+  .row.justify-content-end
+    .col-10
+      = membership_status_legend
+
   .table-responsive
-    %table.table.table-hover.table-sm
+    %table.table.table-hover.table-sm.users
       %thead
         %tr
           %th= sort_link(q, :padded_membership_number, t('users.users_list.membership_number'), {}, { class: 'users_pagination', remote: true } )
@@ -12,10 +16,11 @@
             = fas_tooltip(t('.applications_tooltip'))
           %th= sort_link(q, :date_membership_packet_sent, t('users.users_list.member_packet'), {}, { class: 'users_pagination member-packet', remote: true } )
           %th= sort_link(q, :member, t('.member'), {}, { class: 'users_pagination', remote: true })
-          %th= t('.expire_date')
+          %th.expire-date= t('.expire_date')
           %th
       %tbody.panel-body
         = render partial: 'user', collection: users
+
   = render partial: 'application/paginate_footer',
            locals: { entities: @users,
                      paginate_class: 'users_pagination',

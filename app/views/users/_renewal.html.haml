@@ -1,0 +1,34 @@
+- content_for :stylesheet_for_view do
+  = stylesheet_link_tag 'progress-bar', media: 'all'
+
+.renewal-section
+  .row
+    .col.intro
+      - if user.membership_expired_in_grace_period?
+        .alert.alert-danger
+          %h3.section-title.overdue= t('.title_renewal_overdue')
+          .instructions
+            %p= t('.renewal_overdue_warning')
+      - else
+        %h3.section-title= t('.title_time_to_renew')
+        .instructions
+          %p= t('.instructions')
+  .row
+    .col
+      .next-steps
+        %h4.steps-title= t('.steps_to_renew')
+        %ol.steps
+
+          %li.step.membership-ethical-guidelines= render partial: 'ethical_guidelines_link_or_checklist', locals: { user: user }
+
+          %li.step.upload-qualification-file= render partial: 'uploaded_files_requirement.html.haml', locals: { user: user }
+
+          %li.step.pay-membership-fee
+            - if current_user.allowed_to_pay_renewal_member_fee?
+              = link_to( t('.pay_membership'), payments_path(user_id: user.id, type: user.class::THIS_PAYMENT_TYPE),
+                    { method: :post, class: payment_button_classes })
+            - else
+              = link_to t('.pay_membership'), '#', class: 'btn btn-sm disabled btn-primary'
+              %p.step-info= t('.pay_button_disabled_info')
+
+  %hr

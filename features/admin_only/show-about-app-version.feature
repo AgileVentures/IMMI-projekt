@@ -11,11 +11,20 @@ Feature: Admin can see what version is running in an 'About' modal
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
-      | first_name      | last_name | email              | admin | member |
-      | adminFirstname  | admin     | admin@shf.se       | true  | false  |
-      | memberFirstname | member    | member@example.com | false | true   |
-      | userFirstname   | user      | user@example.com   | false | false  |
+      | first_name      | last_name | email              | admin | membership_status | member |
+      | adminFirstname  | admin     | admin@shf.se       | true  |                   | false  |
+      | memberFirstname | member    | member@example.com | false | current_member    | true   |
+      | userFirstname   | user      | user@example.com   | false |                   | false  |
 
+    And the following companies exist:
+      | name                 | company_number | email                  |
+      | No More Snarky Barky | 5560360793     | snarky@snarkybarky.com |
+
+    And the following applications exist:
+      | user_email         | company_number | state    |
+      | member@example.com | 5560360793     | accepted |
+
+  # ------------------------------------------------------------------------------------------------
 
   Scenario: Show About modal
     Given I am logged in as "admin@shf.se"
@@ -37,6 +46,7 @@ Feature: Admin can see what version is running in an 'About' modal
   Scenario: Members cannot see 'About' in the login menu
     Given I am logged in as "member@example.com"
     And I am on the "home" page
+    And I am now a member
     Then I should not see t("about") in the login menu
 
   Scenario: Users (applicants) cannot see 'About' in the login menu

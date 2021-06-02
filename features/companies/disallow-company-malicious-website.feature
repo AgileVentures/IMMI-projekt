@@ -4,14 +4,13 @@ Feature: Don't allow malicious code in Company website value
   Don't allow me to save malicious code in the company website field
 
 
-
   Background:
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email          | admin | member |
-      | emma@mutts.com |       | true   |
-      | admin@shf.se   | true  |        |
+      | email          | admin | membership_status | member |
+      | emma@mutts.com |       | current_member    | true   |
+      | admin@shf.se   | true  |                   |        |
 
     Given the following payments exist
       | user_email     | start_date | expire_date | payment_type | status | hips_id |
@@ -24,8 +23,8 @@ Feature: Don't allow malicious code in Company website value
       | Norrbotten   |
 
     And the following kommuns exist:
-      | name      |
-      | Bromölla  |
+      | name     |
+      | Bromölla |
 
     And the following companies exist:
       | name                 | company_number | email                  |
@@ -35,6 +34,13 @@ Feature: Don't allow malicious code in Company website value
     And the following applications exist:
       | user_email     | company_number | state    |
       | emma@mutts.com | 5560360793     | accepted |
+
+
+    And the following memberships exist:
+      | email          | first_day | last_day   |
+      | emma@mutts.com | 2017-10-1 | 2017-12-31 |
+
+  # -----------------------------------------------------------------------------------------------
 
   @time_adjust
   Scenario Outline: Malicious website entry not accepted
@@ -47,13 +53,12 @@ Feature: Don't allow malicious code in Company website value
     And I should see "<ok_part>"
 
     Scenarios:
-      | malicious_entry                                    | malicious_part                               | ok_part       |
-      | <script>alert('XSS!')</script>                     | <script>alert('XSS!')</script>               |               |
-      | javascript://alert('XSS!')                         | javascript://                                | alert('XSS!') |
-      | <meta%20http-equiv='refresh'%20content='0;'>       | <meta%20http-equiv='refresh'%20content='0;'> |               |
-      | >'><script>alert('XSS)</script>&                   | <script>                                     |               |
-      | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | '><STYLE>@import'javascript:alert('XSS')';</STYLE> |         |
-
+      | malicious_entry                                    | malicious_part                                     | ok_part       |
+      | <script>alert('XSS!')</script>                     | <script>alert('XSS!')</script>                     |               |
+      | javascript://alert('XSS!')                         | javascript://                                      | alert('XSS!') |
+      | <meta%20http-equiv='refresh'%20content='0;'>       | <meta%20http-equiv='refresh'%20content='0;'>       |               |
+      | >'><script>alert('XSS)</script>&                   | <script>                                           |               |
+      | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | '><STYLE>@import'javascript:alert('XSS')';</STYLE> |               |
 
 
   Scenario Outline: Cannot create a company with a malicious website
@@ -68,9 +73,9 @@ Feature: Don't allow malicious code in Company website value
     And I should see "<ok_part>"
 
     Scenarios:
-      | malicious_entry                                    | malicious_part                               | ok_part       |
-      | <script>alert('XSS!')</script>                     | <script>alert('XSS!')</script>               |               |
-      | javascript://alert('XSS!')                         | javascript://                                | alert('XSS!') |
-      | <meta%20http-equiv='refresh'%20content='0;'>       | <meta%20http-equiv='refresh'%20content='0;'> |               |
-      | >'><script>alert('XSS)</script>&                   | <script>                                     |               |
-      | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | '><STYLE>@import'javascript:alert('XSS')';</STYLE>  |        |
+      | malicious_entry                                    | malicious_part                                     | ok_part       |
+      | <script>alert('XSS!')</script>                     | <script>alert('XSS!')</script>                     |               |
+      | javascript://alert('XSS!')                         | javascript://                                      | alert('XSS!') |
+      | <meta%20http-equiv='refresh'%20content='0;'>       | <meta%20http-equiv='refresh'%20content='0;'>       |               |
+      | >'><script>alert('XSS)</script>&                   | <script>                                           |               |
+      | '><STYLE>@import'javascript:alert('XSS')';</STYLE> | '><STYLE>@import'javascript:alert('XSS')';</STYLE> |               |

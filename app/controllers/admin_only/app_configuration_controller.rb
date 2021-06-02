@@ -58,9 +58,10 @@ module AdminOnly
                   :twitter_card_type,
                   :facebook_app_id,
                   :site_meta_image,
+                  :membership_expired_grace_period_duration,
+                  :membership_term_duration,
                   :payment_too_soon_days,
-                  :membership_guideline_list_id,
-                  :membership_expired_grace_period)
+                  :membership_guideline_list_id)
     end
   end
 

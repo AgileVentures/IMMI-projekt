@@ -96,7 +96,7 @@ Feature: SHF Application access (who can/cannot see them)
   @admin @selenium
   Scenario: Admin can see an application with multiple business categories given
     Given I am logged in as "emma_waits@waiting.se"
-    Given I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on t("menus.nav.users.my_application") link
     And I select "Trainer" Category
     And I select "Psychologist" Category

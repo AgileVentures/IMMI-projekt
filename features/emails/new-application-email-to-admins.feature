@@ -31,7 +31,7 @@ Feature: When a new application is received, all admins get an email notificatio
   @selenium
   Scenario: User submits a new application and email is sent to all 3 admins
     Given I am logged in as "emma@happymutts.com"
-    Given I am on the "user instructions" page
+    And I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
 
     And I fill in the translated form with data:
@@ -42,16 +42,17 @@ Feature: When a new application is received, all admins get an email notificatio
 
     And I select files delivery radio button "upload_later"
 
-    And I click on t("shf_applications.new.submit_button_label")
+    When I click on t("shf_applications.new.submit_button_label")
     Then I should be on the "user account" page
 
     And I should see t("shf_applications.create.success_with_app_files_missing")
 
-    And I am logged out
+    Given I am logged out
     And I am logged in as "admin1@shf.se"
     Then "admin1@shf.se" should receive an email
-    And I open the email
-    And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
+
+    When I open the email
+    Then I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
     And I should see t("mailers.admin_mailer.new_application_received.message_text.new_app_arrived") in the email body
     And I should see t("mailers.admin_mailer.new_application_received.message_text.from") in the email body
     And I should see t("mailers.admin_mailer.new_application_received.message_text.view_app_here") in the email body
@@ -60,13 +61,16 @@ Feature: When a new application is received, all admins get an email notificatio
     And I should see "http://localhost:3000/ansokan/1" in the email body
     And I should see ""Sveriges Hundföretagare" <from@example.org>" in the email "from" header
     And I should see ""Sveriges Hundföretagare" <reply@example.org>" in the email "reply-to" header
+
     When I follow "http://localhost:3000/ansokan/1" in the email
     Then I should see t("shf_applications.show.title", user_full_name: 'Emma HappyMutts')
-    And I am logged out
-    And I am logged in as "admin2@shf.se"
+
+    Given I am logged out
+    When I am logged in as "admin2@shf.se"
     Then "admin2@shf.se" should receive an email
-    And I open the email
-    And I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
+
+    When I open the email
+    Then I should see t("mailers.admin_mailer.new_application_received.subject") in the email subject
     And I should see t("mailers.admin_mailer.new_application_received.message_text.new_app_arrived") in the email body
     And I should see t("mailers.admin_mailer.new_application_received.message_text.from") in the email body
     And I should see t("mailers.admin_mailer.new_application_received.message_text.view_app_here") in the email body
@@ -94,7 +98,7 @@ Feature: When a new application is received, all admins get an email notificatio
   @selenium
   Scenario: User submits a new application app with bad info so it is not created, so no email sent [SAD PATH]
     Given I am logged in as "emma@happymutts.com"
-    Given I am on the "user instructions" page
+    Given I am on the "user account" page
     And I click on first t("menus.nav.users.apply_for_membership") link
     And I fill in the translated form with data:
       | shf_applications.show.company_number | shf_applications.new.phone_number | shf_applications.new.contact_email |

@@ -62,23 +62,23 @@ Feature: Companies are listed in order of date last updated
     #  payments here in the Background section, the combination of the data is UNKNOWN.
     #
     And the following users exist:
-      | email         | admin | member | updated_at | agreed_to_membership_guidelines |
-      | u1@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u2@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u3@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u4@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u5@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u6@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u7@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u8@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u9@mutts.com  |       | true   | 2019-12-01 | true                            |
-      | u10@mutts.com |       | true   | 2019-12-01 | true                            |
-      | u11@mutts.com |       | true   | 2019-12-01 | true                            |
-      | u12@mutts.com |       | true   | 2019-12-01 | true                            |
-      | u13@mutts.com |       | true   | 2019-12-01 | true                            |
-      | u14@mutts.com |       | true   | 2019-12-01 | true                            |
-      | u15@mutts.com |       | true   | 2019-12-01 | true                            |
-      | admin@shf.se  | true  |        | 2019-12-01 | true                            |
+      | email         | admin | membership_status | member | updated_at | agreed_to_membership_guidelines |
+      | u1@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u2@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u3@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u4@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u5@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u6@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u7@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u8@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u9@mutts.com  |       | current_member    | true   | 2019-12-01 | true                            |
+      | u10@mutts.com |       | current_member    | true   | 2019-12-01 | true                            |
+      | u11@mutts.com |       | current_member    | true   | 2019-12-01 | true                            |
+      | u12@mutts.com |       | current_member    | true   | 2019-12-01 | true                            |
+      | u13@mutts.com |       | current_member    | true   | 2019-12-01 | true                            |
+      | u14@mutts.com |       | current_member    | true   | 2019-12-01 | true                            |
+      | u15@mutts.com |       | current_member    | true   | 2019-12-01 | true                            |
+      | admin@shf.se  | true  |                   |        | 2019-12-01 | true                            |
 
     And the following payments exist
       | user_email    | start_date | expire_date | payment_type | status | hips_id | company_name |
@@ -131,10 +131,28 @@ Feature: Companies are listed in order of date last updated
       | u14@mutts.com | Company14    | accepted | Groomer    |
       | u15@mutts.com | Company15    | accepted | Groomer    |
 
+    And the following memberships exist:
+      | email         | first_day  | last_day   |
+      | u1@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u2@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u3@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u4@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u5@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u6@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u7@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u8@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u9@mutts.com  | 2019-07-08 | 2020-07-07 |
+      | u10@mutts.com | 2019-07-08 | 2020-07-07 |
+      | u11@mutts.com | 2019-07-08 | 2020-07-07 |
+      | u12@mutts.com | 2019-07-08 | 2020-07-07 |
+      | u13@mutts.com | 2019-07-08 | 2020-07-07 |
+      | u14@mutts.com | 2019-07-08 | 2020-07-07 |
+      | u15@mutts.com | 2019-07-08 | 2020-07-07 |
+
 
     # Note: For some reason, this statement to set the date must come _last._
     Given the date is set to "2020-02-01"
-
+ # -----------------------------------------------------------------------------------------------
 
   Scenario: Visitor sees companies ordered by date last updated
     Given I am logged out

@@ -14,7 +14,7 @@ RSpec.describe UsersHelper, type: :helper do
     create(:payment, user: user, status: Payment::ORDER_PAYMENT_STATUS['successful'])
   end
 
-  describe '#most_recent_login_time' do
+  describe 'most_recent_login_time' do
 
     it 'returns nil if the user has never logged in' do
       expect(helper.most_recent_login_time(user)).to be_nil
@@ -77,14 +77,14 @@ RSpec.describe UsersHelper, type: :helper do
     end
   end
 
-  describe '#proof_of_membership_jpg_url' do
+  describe 'proof_of_membership_jpg_url' do
     it 'returns user POM GET url with ".jpg" appended' do
       expect(proof_of_membership_jpg_url(user)).to eq proof_of_membership_url(user) + '.jpg'
     end
   end
 
-  describe '#short_proof_of_membership_url' do
-    it 'calls #proof_of_membership_jpg_url and returns value returned by #get_short_proof_of_membership_url' do
+  describe 'short_proof_of_membership_url' do
+    it 'calls proof_of_membership_jpg_url and returns value returned by #get_short_proof_of_membership_url' do
       url = proof_of_membership_jpg_url(user.id)
       allow(user).to receive(:get_short_proof_of_membership_url).with(url).and_return(url)
       expect(short_proof_of_membership_url(user)).to eq(url)
@@ -92,7 +92,7 @@ RSpec.describe UsersHelper, type: :helper do
   end
 
 
-  describe '#membership_packet_str' do
+  describe 'membership_packet_str' do
 
     let(:i18n_scope) { 'users.show_info_for_admin_only' }
 
@@ -120,7 +120,7 @@ RSpec.describe UsersHelper, type: :helper do
   end
 
 
-  describe '#membership_packet_status_str' do
+  describe 'membership_packet_status_str' do
 
     let(:i18n_scope) { 'users.show_info_for_admin_only' }
 
@@ -137,5 +137,52 @@ RSpec.describe UsersHelper, type: :helper do
 
   it 'member_packet_sent_checkbox' do
     expect(member_packet_sent_checkbox(create(:user))).to match(/<input type="checkbox" name="date_membership_packet_sent" id="date_membership_packet_sent" value="false" class="checkbox.membership-packet" data-remote="true" data-method="post" data-url="\/anvandare\/(\d+)\/toggle_membership_package_sent\s*/)
+  end
+
+
+  describe 'expire_date_css_class' do
+    it 'makes the status dasherized: becomes lowercase and has dashes for spaces' do
+      expect(helper.expire_date_css_class(:this_is_some_status_as_symbol)).to eq('this-is-some-status-as-symbol')
+    end
+  end
+
+
+  describe 'membership_status_legend' do
+
+    it 'gets the list of membership statuses from User' do
+      expect(User).to receive(:membership_statuses_incl_informational).and_return([])
+      helper.membership_status_legend
+    end
+
+    it 'legend title is Membership status' do
+      expect(helper).to receive(:legend).with(hash_including(title: t('users.membership_status')))
+      helper.membership_status_legend
+    end
+
+    describe 'legend entries' do
+      let(:result) { helper.membership_status_legend }
+
+      it "includes 'expires soon' (an informational status) as a status" do
+        expect(result).to match(/#{t('activerecord.attributes.membership.status.expires_soon')}/)
+      end
+
+      membership_statuses = User.membership_statuses_incl_informational
+      membership_statuses.each do |status|
+
+        it "legend entry title for #{status} is surrounded by span with legend-item" do
+          # use escape so any () that may be in the title are escaped
+          title = Regexp.escape(t("activerecord.attributes.membership.status.#{status}"))
+          expect(result).to match(/<span class="([^"])*legend-item([^"])*">#{title}/)
+        end
+
+        it 'span CSS classes include membership-status' do
+          expect(result).to match(/<span class="([^"])*membership-status([^"])*">/)
+        end
+
+        it "span CSS classes include the class dasherized (dashes instead of underscores)" do
+          expect(result).to match(/<span class="([^"])*#{status.to_s.dasherize}([^"])*">/)
+        end
+      end
+    end
   end
 end

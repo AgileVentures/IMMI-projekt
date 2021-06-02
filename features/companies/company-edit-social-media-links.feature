@@ -5,9 +5,9 @@ Feature: Edit the social media urls (links) for a company
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email            | admin | member |
-      | member@mutts.com |       | true   |
-      | admin@shf.se     | true  | true   |
+      | email            | admin | membership_status | member |
+      | member@mutts.com |       | current_member    | true   |
+      | admin@shf.se     | true  |                   | true   |
 
     And the following companies exist:
       | name    | company_number | email              |
@@ -22,8 +22,13 @@ Feature: Edit the social media urls (links) for a company
       | member@mutts.com | 2019-1-1   | 2019-12-31  | member_fee   | betald | none    |                |
       | member@mutts.com | 2019-1-1   | 2019-12-31  | branding_fee | betald | none    | 2120000142     |
 
+    And the following memberships exist:
+      | email            | first_day | last_day   |
+      | member@mutts.com | 2019-1-1  | 2019-12-31 |
+
     Given the date is set to "2019-10-10"
 
+  # -----------------------------------------------------------------------------------------------
 
   Scenario: All social media urls are changed successfully
     Given I am logged in as "member@mutts.com"

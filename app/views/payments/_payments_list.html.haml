@@ -5,9 +5,10 @@
 .payments-list
   %table.table.table-hover.table-sm
     %thead
-      %tr
+      %tr{style: 'text-align: left;'}
         %th.payment-date= t('.payment_date')
         %th.type= t('.type')
+        %th.payor-name= t('.for')
         %th.status= t('.status')
         %th.term-start-date= t('.start_date')
         %th.term-end-date= t('.end_date')
@@ -17,8 +18,9 @@
     - payments_list.each do | payment |
       %tr.payment
         %td.payment-date= payment.created_at
-        %td.type= payment.payment_type
-        %td.status= payment.status
+        %td.type= t("payment.payment_type.#{payment.payment_type}")
+        %td.payor-name= entity_name(payment.target_entity)
+        %td.status= t("payment.status_from_payment_processor.#{payment.status}")
         %td.term-start-date= payment.start_date
         %td.term-end-date= payment.expire_date
         %td.notes= payment.notes

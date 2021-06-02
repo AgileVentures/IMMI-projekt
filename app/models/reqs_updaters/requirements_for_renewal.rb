@@ -18,31 +18,17 @@
 #
 #--------------------------
 
-class RequirementsForRenewal < AbstractRequirements
+class RequirementsForRenewal < AbstractReqsForMembership
 
-  def self.has_expected_arguments?(args)
-    args_have_keys?(args, [:user])
-  end
-
-  def self.requirements_met?(args)
-    requirements_excluding_payments_met?(args[:user]) &&
-      payment_requirements_met?(args[:user])
-  end
-
-  def self.requirements_excluding_payments_met?(user)
-    user.can_renew_today? &&
+  def self.requirements_excluding_payments_met?(user, date = Date.current)
+    # can change membership status to renew (aasm gem)
+    user.may_renew? &&
+      user.valid_date_for_renewal?(date) &&
       user.has_approved_shf_application? &&
-      membership_guidelines_checklist_done?(user) # &&
-      #doc_uploaded_during_this_membership_term?(user)
+      membership_guidelines_checklist_done?(user) &&
+      doc_uploaded_during_this_membership_term?(user)
   end
 
-  # @return [Boolean] - if a user must have a completed Membership Guidelines checklist,
-  #   return true if has been completed  (false if not completed)
-  # else if the user does not have to have a completed Membership Guidelines checklist,
-  #   return true (we assume it's fine)
-  def self.membership_guidelines_checklist_done?(user)
-    UserChecklistManager.completed_membership_guidelines_checklist?(user)
-  end
 
   # @return [Boolean] - Has the user uploaded at least 1 document since the start of this membership term?
   # FIXME - in the last year of the membership term or during the payment term?
@@ -52,10 +38,6 @@ class RequirementsForRenewal < AbstractRequirements
   end
 
   def self.max_days_can_still_renew
-    AdminOnly::AppConfiguration.config_to_use.membership_expired_grace_period
-  end
-
-  def self.payment_requirements_met?(user)
-    user.payments_current?
+    ActiveSupport::Duration.parse(AdminOnly::AppConfiguration.config_to_use.membership_expired_grace_period_duration).days
   end
 end

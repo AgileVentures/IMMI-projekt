@@ -12,6 +12,17 @@
   font-weight: bold;
 }
 
+.users.show {
+  // TODO: this is the opposite of how bold is used to show a Company
+  .field-label {
+    font-weight: normal;
+  }
+
+  .field-value {
+    font-weight: bold;
+  }
+}
+
 .panel.admin-set-new-password-form {
   margin-left: 2em;
   margin-right: 2em;
@@ -70,7 +81,6 @@
   }
 }
 
-
 .steps {
   .step {
     margin-top: 1rem;
@@ -81,7 +91,107 @@
   }
 }
 
-
-.is-complete{
+.is-complete {
   color: $checkbox-complete-color;
+}
+
+$highlight-yellow: #ffffe0;
+
+.renewal-section {
+
+  $renewal-lmargin: 1em;
+
+  margin-top: 1rem;
+
+  .intro {
+    .alert.alert-danger,
+    .alert.alert-warning {
+      margin-bottom: 0;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    h3.section-title {
+      margin-bottom: 0;
+      margin-top: 1rem;
+    }
+  }
+
+  .instructions {
+    margin-left: $renewal-lmargin;
+  }
+
+  .warn {
+    color: $warn-red-text;
+    font-weight: bold;
+  }
+
+  .next-steps {
+    margin-left: $renewal-lmargin;
+    margin-top: 1em;
+
+    .steps-title {
+      color: $warn-red-text;
+      font-weight: bold;
+    }
+
+    .upload-qualification-file {
+
+      .uploaded-files {
+        font-size: smaller;
+
+        .table-sm {
+          margin-bottom: 0;
+        }
+      }
+    }
+  }
+
+}
+
+
+
+td.expire-date span.expire-date-background,
+td.is-member span.membership-status {
+  padding-left: 3pt;
+  padding-right: 3pt;
+}
+
+
+.expire-date-background.current-member,
+.membership-status.current-member {
+  background-color: $yes-background-green;
+}
+
+.expire-date-background.expires-soon,
+.membership-status.expires-soon {
+  background-color: $maybe-background-yellow;
+}
+
+.expire-date-background.in-grace-period,
+.membership-status.in-grace-period {
+  background-color: $in-grace-period-color;
+}
+
+.expire-date-background.former-member,
+.membership-status.former-member {
+  background-color: $past-member-color;
+  font-style: italic;
+}
+
+// No formatting for not-a-member
+// .expire-date-background.not-a-member,
+// .membership-status.not-a-member {
+//}
+
+
+.legend {
+  border: solid thin $legend-border-color;
+  font-size: smaller;
+  padding: 0.3em;
+
+  .legend-item {
+    font-size: smaller;
+    margin-left: 1em;
+  }
 }

@@ -105,37 +105,19 @@ RSpec.describe MembershipLapsedAlert, type: :model do
 
 
       context 'RequirementsForMembershipLapsed is satisfied' do
-
-        let(:membership_app) do
-          app = create(:shf_application, :accepted)
-          app.update(created_at: dec_1_2017)
-          app
-        end
-
-        let(:former_member) { membership_app.user }
-
-
-        def create_expired_payment
-          create(:payment, :successful, user: former_member,
-                 payment_type: Payment::PAYMENT_TYPE_MEMBER,
-                 start_date: dec_1_2017,
-                 expire_date: User.expire_date_for_start_date(dec_1_2017))
-        end
-
+        let(:lapsed_member) { create(:member, membership_status: :in_grace_period, first_day: dec_1_2017) }
 
         it 'false when the day is not in the config list of days to send the alert' do
-          create_expired_payment
-          Timecop.freeze(dec_2_2018) do
-            expect(described_class.instance.send_alert_this_day?(timing, config, former_member)).to be_falsey
+          travel_to(dec_2_2018) do
+            expect(described_class.instance.send_alert_this_day?(timing, config, lapsed_member)).to be_falsey
           end
         end
 
         it 'true when the day is in the config list of days to send the alert' do
-          create_expired_payment
           listed_days = [dec_1_2018, dec_3_2018, dec_5_2018]
           listed_days.each do |alert_day|
-            Timecop.freeze(alert_day) do
-              expect(described_class.instance.send_alert_this_day?(timing, config, former_member)).to be_truthy
+            travel_to(alert_day) do
+              expect(described_class.instance.send_alert_this_day?(timing, config, lapsed_member)).to be_truthy
             end
           end
         end

@@ -1,0 +1,18 @@
+:ruby
+  # This partial shows the steps for how to pay the HMarkt (company branding) fee,
+  # how to find a company in the list of 'My Companies', and the page for a
+  # specific company.
+  # Note that it does not include a step to log in. That should be explained
+  # elsewhere, in case this is shown with other steps that also require logging in --
+  # in which case the step(s) for logging in can be shown just once.
+  #
+  # The partial expects these locals:
+  #   email - the email address for logging in
+  #   company - the company (object); used for displaying the name and the url
+  #
+%li.step-1.pay-hmarkt
+  = I18n.t('mailers.pay_hmarkt_step')
+  = I18n.t('mailers.find_co_in_my_cos')
+  - unless company.nil?
+    = I18n.t('mailers.here_is_co_page')
+    = link_to(company.name,  company_url(company), target: '_blank')

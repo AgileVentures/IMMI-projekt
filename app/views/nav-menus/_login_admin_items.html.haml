@@ -17,6 +17,10 @@
   %li
     = link_to t('about') + '...', '#', class: nav_link_class, data: { toggle: 'modal', target: '#about-info-modal' }
 
+  %li
+    = link_to t('menus.nav.admin.update_all_membership_status'),
+     admin_only_update_membership_status_all_path, class: nav_link_class,
+     data: { toggle: 'modal', target: '#update-membership-status-all-modal' }
 
   - unless @user.nil?
     %li

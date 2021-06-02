@@ -12,7 +12,7 @@ require 'shared_context/named_dates'
 # user_pays_every_nov30 - current member with membership app; paid membership fee Nov 30 last year; paid branding fee Nov 30 last year; paid membership fee Nov 30 THIS_YEAR; paid branding fee Nov 30 THIS_YEAR;
 # user_paid_only_lastyear_dec_2 - member with membership app; paid membership fee Dec 2 last year; paid branding fee Dec 2 last year
 # user_paid_lastyear_nov_29 - member with membership app; paid membership fee Nov 29 last year; paid branding fee Nov 29 last year
-# user_unsuccessful_this_year - member with membership app; unsuccessful membership fee Nov 29 THIS_YER; unsuccessful branding fee Nov 29 THIS_YEAR; successful membership fee Nov 30 last year; successful branding fee Nov 30 last year
+# user_unsuccessful_this_year - member with membership app; unsuccessful membership fee Nov 29 THIS_YEAR; unsuccessful branding fee Nov 29 THIS_YEAR; successful membership fee Nov 30 last year; successful branding fee Nov 30 last year
 # user_membership_expires_EOD_jan29 - member with membership app; membership term and branding fee term expire end of day (EOD) Jan 29 next year
 # user_membership_expires_EOD_jan30 - member with membership app; membership term and branding fee term expire end of day (EOD) Jan 30 next year
 # user_membership_expires_EOD_jan31 - member with membership app; membership term and branding fee term expire end of day (EOD) Jan 31 next year
@@ -55,43 +55,23 @@ RSpec.shared_context 'create users' do
 
 
   let(:member_paid_up) do
-    user = build(:member_with_membership_app)
+    user = create(:member_with_membership_app)
     user.payments << create(:membership_fee_payment)
     user.save!
     user
   end
 
-  let(:member_expired) do
-    user = build(:member_with_membership_app)
-    user.payments << create(:expired_membership_fee_payment)
-    user.save!
-    user
-  end
 
-  # member that paid successfully _last_ year but UNsuccessfully _this_ year
+  let(:member_expired) { create(:member, expiration_date: Date.current - 1.day) }
+
+
+
+  # member that paid successfully Nov 30 _last_ year but UNsuccessfully _this_ year
   let(:user_unsuccessful_this_year) do
-    u    = create(:member_with_membership_app)
+    u = create_member_with_payments_on([lastyear_nov_30])
     u_co = u.shf_application.companies.first
 
-    # success on nov 30 last year
-    Timecop.freeze(lastyear_nov_30) do
-      create(:membership_fee_payment,
-             :successful,
-             user:        u,
-             company:     u_co,
-             start_date:  lastyear_nov_30,
-             expire_date: User.expire_date_for_start_date(lastyear_nov_30),
-             notes:       'lastyear_nov_30 success membership')
-      create(:h_branding_fee_payment,
-             :successful,
-             user:        u,
-             company:     u_co,
-             start_date:  lastyear_nov_30,
-             expire_date: Company.expire_date_for_start_date(lastyear_nov_30),
-             notes:       'lastyear_nov_30 success branding')
-    end
-
-    # failed on nov 29
+    # failed payments on nov 29 THIS_YEAR
     Timecop.freeze(nov_29) do
       create(:membership_fee_payment,
              :expired,
@@ -108,7 +88,6 @@ RSpec.shared_context 'create users' do
              expire_date: Company.expire_date_for_start_date(nov_29),
              notes:       'nov_29 failed (expired) branding')
     end
-
     u
   end
 
@@ -123,13 +102,31 @@ RSpec.shared_context 'create users' do
   #
   # @return [User] - the member created
   def create_member_with_payments_on(payment_start_dates = [Date.today])
-    new_member = create(:member_with_membership_app)
+    # make the member with the first payment start date:
+    first_payment_start_date = payment_start_dates.first
+    new_member = create(:member, first_day: first_payment_start_date)
     new_member_co = new_member.shf_application.companies.first
+    branding_fee_expiry = Company.expire_date_for_start_date(first_payment_start_date)
 
-    payment_start_dates.each do | payment_start_date |
+    # The most recent payment is used for calculations, which is based on created_at
+    # So we must be sure to set it to the first payment date
+    first_membership_payment = new_member.payments.member_fee.first
+    first_membership_payment.update(created_at: first_payment_start_date)
 
-      Timecop.freeze(payment_start_date) do
+    travel_to(first_payment_start_date) do
+      create(:h_branding_fee_payment,
+             :successful,
+             user:        new_member,
+             company:     new_member_co,
+             start_date:  first_payment_start_date,
+             expire_date: branding_fee_expiry,
+             notes:       "branding license starts #{first_payment_start_date.to_date}, expires #{branding_fee_expiry.to_date}")
+    end
 
+    # make any other Memberships and payments with the remaining payment start dates given:
+    (payment_start_dates - [first_payment_start_date]).each do | payment_start_date |
+      travel_to(payment_start_date) do
+        new_member.memberships << create(:membership, user: new_member, first_day: payment_start_date)
         membership_fee_expiry = User.expire_date_for_start_date(payment_start_date)
         create(:membership_fee_payment,
                :successful,

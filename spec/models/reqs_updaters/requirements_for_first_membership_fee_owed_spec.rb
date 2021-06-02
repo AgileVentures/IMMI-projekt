@@ -48,7 +48,7 @@ RSpec.describe RequirementsForFirstMembershipFeeOwed, type: :model do
       it 'membership term has expired and application was approved before the last membership payment made' do
 
         start_date_last_year = Time.zone.today - 1.year - 1.month
-        past_member = create(:member_with_membership_app)
+        past_member = create(:member, first_day: start_date_last_year)
         past_member.shf_application.when_approved = start_date_last_year
 
         create(:membership_fee_payment,
@@ -57,10 +57,9 @@ RSpec.describe RequirementsForFirstMembershipFeeOwed, type: :model do
                start_date: start_date_last_year,
                expire_date: User.expire_date_for_start_date(start_date_last_year))
 
-        expect(past_member.membership_current?).to be_falsey
+        expect(past_member.payments_current?).to be_falsey
         expect(subject.requirements_met?({ user: past_member })).to be_falsey
       end
-
     end
 
 

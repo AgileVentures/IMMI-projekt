@@ -9,4 +9,7 @@
     = t('expire_alert_html', scope: message_scope)
     %span.date-warning= "#{@expire_date}."
 
+
+  = render 'mailers_shared/login_here_with_email', email: @recipient_email
+
   = render 'how_to_pay_hmarkt', email: @recipient_email, company: @company

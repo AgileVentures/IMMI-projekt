@@ -3,27 +3,40 @@
 
 = render partial: 'show_login_email_row_cols', locals: { user: user }
 
+- show_renewal_info = user.today_is_valid_renewal_date?
+
 .membership
-  .row.section-title
-    .col.mt-2
-      %h3.section-title
-        = succeed ':' do
-          = t("membership").capitalize
   .row
-    .col
-      = field_or_none(t('.membership_number'), user.membership_number,
-                      label_class: 'standard-label',
-                      value_class: 'membership-number')
+    .col-md-4.membership-number
+      = field_or_default(t('.membership_number'), user.membership_number,
+        default: t('.no_membership_number'),
+        tag: :div)
 
-  = render partial: 'membership_term_status', locals: { user: user }
+    .col.memberhip-status
+      = field_or_none(t('payors.status').capitalize,
+        t("activerecord.attributes.membership.status.#{user.membership_status}"),
+        tag: :div)
 
+  .row
+    .col.membership-expiration-date
+      = membership_last_day_and_value(user.most_recent_membership,
+       value_class: expire_date_css_class(user.membership_status_incl_informational))
+
+  = render partial: 'admin_only_edit_status', locals: { user: user }
+
+  = render partial: 'admin_only_payments', locals: { entity: user }
+
+
+= render partial: 'renewal', locals: { user: user } if show_renewal_info
 
 = render partial: 'show_application_section_row_cols', locals: { user: user }
 
 = render partial: 'shf_applications/show_business_categories',
                   locals: { shf_application: user.shf_application }
 
-%p.membership-guidelines-checklist= render partial: 'ethical_guidelines_link_or_checklist', locals: {user: user}
+%p.membership-guidelines-checklist= render partial: 'ethical_guidelines_link_or_checklist', locals: {user: user} unless show_renewal_info
+
+= render partial: 'show_uploaded_files_section_row_cols',  locals: { user: user }
 
 %hr
 

@@ -196,15 +196,17 @@ RSpec.describe EmailAlert, type: :model do
       MemberMailer.undef_method(:fake_mailer_method)
     end
 
-
     before(:each) do
       Rails.configuration.action_mailer.delivery_method = :mailgun
       ApplicationMailer.mailgun_client.enable_test_mode!
+
+      allow(Memberships::MembershipActions).to receive(:for_user)
+                                                        .and_return(true)
     end
 
     after(:each) { ApplicationMailer.mailgun_client.disable_test_mode! }
 
-    let(:entity) { create(:member_with_membership_app) }
+    let(:entity) { build(:member) }
 
 
     it 'sends alert email to user and logs a message' do

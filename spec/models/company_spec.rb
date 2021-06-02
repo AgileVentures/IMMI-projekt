@@ -31,6 +31,9 @@ RSpec.describe Company, type: :model, focus: true do
   let(:payment_date_2017) { Time.zone.local(2017, 10, 1) }
   let(:payment_date_2018) { Time.zone.local(2018, 11, 21) }
   let(:payment_date_2020) { Time.zone.local(2020, 3, 15) }
+  let(:jan1_2010) { Date.new(2010, 1, 1) }
+  let(:dec_12_2018) { Date.new(2018, 12, 1) }
+  let(:jan1_2019) { Date.new(2019, 1, 1) }
 
   let(:company_emp_cats) { create(:company) }
 
@@ -331,9 +334,8 @@ RSpec.describe Company, type: :model, focus: true do
 
     describe '.with_members' do
 
-      it 'calls User.current_members to get all current members (members in good standing)' do
-        expect(User).to receive(:current_members).and_return([])
-
+      it 'calls User.current_member to get all current members' do
+        expect(User).to receive(:current_member).and_return([])
         described_class.with_members
       end
 
@@ -341,7 +343,7 @@ RSpec.describe Company, type: :model, focus: true do
         FactoryBot.create(:user_with_membership_app)
         FactoryBot.create(:user_with_membership_app)
 
-        allow(User).to receive(:current_members).and_return([])
+        allow(User).to receive(:current_member).and_return([])
         expect(Company.with_members).to be_empty
       end
 
@@ -354,7 +356,7 @@ RSpec.describe Company, type: :model, focus: true do
           member2 = FactoryBot.create(:user_with_membership_app)
           co2 = member2.shf_application.companies.first
 
-          expect(User).to receive(:current_members).and_return([member1, member2])
+          expect(User).to receive(:current_member).and_return([member1, member2])
 
           expect(Company.with_members).to match_array([co1, co2])
         end
@@ -364,7 +366,7 @@ RSpec.describe Company, type: :model, focus: true do
           co1 = member1.shf_application.companies.first
           member2 = FactoryBot.create(:user_with_membership_app,
                                       company_number: co1.company_number)
-          allow(User).to receive(:current_members).and_return([member1, member2])
+          allow(User).to receive(:current_member).and_return([member1, member2])
 
           expect(Company.with_members).to contain_exactly(co1)
         end
@@ -423,14 +425,14 @@ RSpec.describe Company, type: :model, focus: true do
 
           it 'has members in good standing (current members)'do
             co1_user = co1_current.shf_applications.first.user
-            allow(User).to receive(:current_members).and_return([co1_user])
+            allow(User).to receive(:current_member).and_return([co1_user])
 
             expect(described_class.searchable).to contain_exactly(co1_current)
           end
 
           it 'has no members in good standing (no current members)' do
             complete_and_paid_co_user = co1_current.shf_applications.first.user
-            allow(complete_and_paid_co_user).to receive(:membership_current?).and_return(false)
+            allow(complete_and_paid_co_user).to receive(:payments_current?).and_return(false)
 
             expect(described_class.searchable).to be_empty
           end
@@ -740,52 +742,80 @@ RSpec.describe Company, type: :model, focus: true do
   describe 'current_members' do
 
     it 'is empty if no members' do
-      company = create(:company)
-      expect(company.current_members).to be_empty
+      expect(build(:company).current_members).to be_empty
     end
 
     it 'is empty if all members expiration date has past' do
+      dec31_2018 = jan1_2019 - 1.day
 
-      mem1_shf = create(:shf_application, :accepted)
-      mem1_exp = mem1_shf.user
-      mem1_co  = mem1_shf.companies.first
-
+      member_1_exp = create(:member, last_day: dec31_2018, membership_status: :in_grace_period)
+      member_1_co = member_1_exp.shf_application.companies.first
       create(:payment,
              :successful,
-             user: mem1_exp,
-             company: mem1_co,
+             user: member_1_exp,
+             company: member_1_co,
              payment_type:   Payment::PAYMENT_TYPE_MEMBER,
-             notes:          'these are notes for branding payment1, mem1_co',
-             start_date:     payment_date_2017,
-             expire_date:    payment_date_2017 + 365)
+             notes:          'these are notes for member_1_exp co branding payment1',
+             start_date:     dec31_2018 - 365,
+             expire_date:    dec31_2018)
 
+      member_2_exp = create(:member, last_day: dec31_2018, membership_status: :in_grace_period,
+                            company_number: member_1_co.company_number)
+      create(:payment,
+             :successful,
+             user: member_2_exp,
+             company: member_1_co,
+             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
+             notes:          'these are notes for member_2_exp co branding payment1',
+             start_date:     dec31_2018 - 365,
+             expire_date:    dec31_2018)
 
-      travel_to(Date.new(2019, 1, 1)) do
-        expect(mem1_co.current_members).to be_empty
+      travel_to(jan1_2019) do
+        expect(member_1_co.users.to_a).to match_array([member_1_exp, member_2_exp])
+        expect(member_1_co.current_members).to be_empty
       end
     end
 
     it 'only returns members with current membership' do
+      grace_period_date = jan1_2019 - 2.years
 
-      ShfApplication.all_states.reject { |s| s == :accepted }.each do |a_state|
-        create(:shf_application, state: a_state)
-      end
-
-      mem1_shf = create(:shf_application, :accepted)
-      mem1_exp = mem1_shf.user
-      mem1_co  = mem1_shf.companies.first
-
+      member_1 = create(:member, first_day: dec_12_2018)
+      mem1_co  = member_1.shf_application.companies.first
       create(:payment,
              :successful,
-             user: mem1_exp,
+             user: member_1,
              company: mem1_co,
              payment_type:   Payment::PAYMENT_TYPE_MEMBER,
              notes:          'these are notes for branding payment1,mem1_co',
-             start_date:     Date.new(2018, 12, 1),
-             expire_date:    Date.new(2018, 12, 1) + 365)
+             start_date:     dec_12_2018,
+             expire_date:    dec_12_2018 + 364)
 
-      travel_to(Date.new(2019, 1, 1)) do
-        expect(mem1_co.current_members).to match_array([mem1_exp])
+      member_2_former = create(:member, first_day: jan1_2010, membership_status: :former_member)
+      create(:payment,
+             :successful,
+             user: member_2_former,
+             company: mem1_co,
+             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
+             notes:          'these are notes for member_2_former branding payment, mem1_co',
+             start_date:     jan1_2010,
+             expire_date:    jan1_2010 + 364)
+
+      member_3_grace_period = create(:member, first_day: grace_period_date, membership_status: :in_grace_period)
+      create(:payment,
+             :successful,
+             user: member_3_grace_period,
+             company: mem1_co,
+             payment_type:   Payment::PAYMENT_TYPE_MEMBER,
+             notes:          'these are notes for member_3_grace_period branding payment, mem1_co',
+             start_date:     grace_period_date,
+             expire_date:    grace_period_date + 364)
+
+      ShfApplication.all_states.reject { |s| s == :accepted }.each do |a_state|
+        create(:shf_application, state: a_state, company_number: mem1_co.company_number)
+      end
+
+      travel_to(jan1_2019) do
+        expect(mem1_co.current_members).to match_array([member_1])
       end
     end
 
@@ -823,6 +853,19 @@ RSpec.describe Company, type: :model, focus: true do
         create(:shf_application, :rejected, company_number: co.company_number)
 
         expect(co.accepted_applicants).to match_array([user1, user2])
+      end
+    end
+  end
+
+
+  describe 'error_if_has_applications?' do
+    it 'false if there are no applications in any state other than being destroyed' do
+      skip
+    end
+
+    context 'there are applications in a state other than being destroyed' do
+      it 'throws an abort error with the error message' do
+        skip
       end
     end
   end
@@ -1067,7 +1110,50 @@ RSpec.describe Company, type: :model, focus: true do
     end
   end
 
-  context '.categories_names' do
+
+  describe 'any_visible_addresses?' do
+    it 'true if there are any visible addresses' do
+      skip
+    end
+  end
+
+
+  describe 'addresses_region_names' do
+    it 'get all region names used by addresses, with no duplicates' do
+      skip
+    end
+
+    it 'do not include regions if their addresses are not visible at that level' do
+      skip
+    end
+  end
+
+
+  describe 'kommuns_names' do
+    it 'get all kommun names used by addresses, with no duplicates' do
+      skip
+    end
+
+
+    it 'do not include kommuns if their addresses are not visible at that level' do
+      skip
+    end
+  end
+
+
+  describe 'cities_names' do
+    it 'get all city names used by addresses, with no duplicates' do
+      skip
+    end
+
+
+    it 'do not include cities if their addresses are not visible at that level' do
+      skip
+    end
+  end
+
+
+  describe '.categories_names' do
 
     let(:cat1_subcat1) { cat1.children.create(name: 'cat1_subcat1') }
     let(:cat1_subcat2) { cat1.children.create(name: 'cat1_subcat2') }
@@ -1247,22 +1333,22 @@ RSpec.describe Company, type: :model, focus: true do
 
 
   describe 'earliest_current_member_fee_paid' do
-    #current_members.empty? ? nil : current_members.map(&:membership_start_date).sort.first'
 
     it 'is nil if there are no current members' do
       expect( (create(:company)).earliest_current_member_fee_paid ).to be_nil
     end
 
-
     it 'is the earliest membership_fee paid date for all current members' do
-
       dec_3 = Date.new(2018, 12, 3)
       dec_5 = Date.new(2018, 12, 5)
 
       member_paid_dec_3_shf_app = create(:shf_application, :accepted)
       member_paid_dec_3 = member_paid_dec_3_shf_app.user
+      member_paid_dec_3.memberships << create(:membership, user: member_paid_dec_3,
+                                   first_day: dec_3,
+                                   last_day: dec_3 + 364)
+      member_paid_dec_3.membership_status = :current_member
       co_with_1_member_expires  = member_paid_dec_3_shf_app.companies.first
-
       create(:payment,
              :successful,
              user: member_paid_dec_3,
@@ -1274,7 +1360,10 @@ RSpec.describe Company, type: :model, focus: true do
 
       member_paid_dec_5_shf_app = create(:shf_application, :accepted, company_number: co_with_1_member_expires.company_number)
       member_paid_dec_5 = member_paid_dec_5_shf_app.user
-
+      member_paid_dec_5.memberships << create(:membership, user: member_paid_dec_5,
+                                              first_day: dec_5,
+                                              last_day: dec_5 + 364)
+      member_paid_dec_5.membership_status = :current_member
       create(:payment,
              :successful,
              user: member_paid_dec_5,
@@ -1300,8 +1389,8 @@ RSpec.describe Company, type: :model, focus: true do
       travel_to( day_before_member_dec_3_expiry_time ) do
 
         # update membership status based on today's date
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
+        MembershipStatusUpdater.instance.user_updated(member_paid_dec_3, send_email: false)
+        MembershipStatusUpdater.instance.user_updated(member_paid_dec_5, send_email: false)
 
         expect(co_with_1_member_expires.current_members.size).to eq 2
         expect( co_with_1_member_expires.earliest_current_member_fee_paid ).to eq member_dec_3_start_time
@@ -1310,13 +1399,12 @@ RSpec.describe Company, type: :model, focus: true do
 
       travel_to( member_dec_3_expiry_time) do
         # update membership status based on today's date
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_3)
-        MembershipStatusUpdater.instance.user_updated(member_paid_dec_5)
+        MembershipStatusUpdater.instance.user_updated(member_paid_dec_3, send_email: false)
+        MembershipStatusUpdater.instance.user_updated(member_paid_dec_5, send_email: false)
 
         expect(co_with_1_member_expires.current_members.size).to eq 1
         expect( co_with_1_member_expires.earliest_current_member_fee_paid ).to eq member_dec_5_start_time
       end
-
     end
 
   end # describe 'earliest_current_member_fee_paid'
@@ -1338,6 +1426,62 @@ RSpec.describe Company, type: :model, focus: true do
       expect(RequirementsForCoInfoComplete).to receive(:missing_info)
                                                  .with({company: co})
       co.missing_information
+    end
+  end
+
+  describe 'in_good_standing?' do
+    let(:co) { build(:company) }
+
+    context 'required information for a company is complete' do
+      before(:each) { allow(co).to receive(:information_complete?).and_return(true) }
+
+      it 'true if branding license payment is current' do
+        allow(co).to receive(:branding_license_current?).and_return(true)
+        expect(co.in_good_standing?).to be_truthy
+      end
+
+      it 'false if branding license payment is not current' do
+        allow(co).to receive(:branding_license_current?).and_return(false)
+        expect(co.in_good_standing?).to be_falsey
+      end
+    end
+
+    it 'false if required information for a company is not complete' do
+      allow(co).to receive(:information_complete?).and_return(false)
+      expect(co.in_good_standing?).to be_falsey
+    end
+  end
+
+
+  describe 'information_complete?' do
+    it 'is the result of RequirementsForCoInfoComplete.requirements_met?' do
+      co = build(:company)
+      expect(RequirementsForCoInfoComplete).to receive(:requirements_met?).with(company: co)
+      co.information_complete?
+    end
+  end
+
+
+  describe 'searchable?' do
+    let(:co) { build(:company) }
+
+    context 'has a current branding license' do
+      before(:each) { allow(co).to receive(:branding_license_current?).and_return(true) }
+
+      it 'true if there are any current members' do
+        allow(co).to receive(:current_members).and_return([build(:user)])
+        expect(co.searchable?).to be_truthy
+      end
+
+      it 'false if there are no current members' do
+        allow(co).to receive(:current_members).and_return([])
+        expect(co.searchable?).to be_falsey
+      end
+    end
+
+    it 'false if there is no current branding license' do
+      allow(co).to receive(:branding_license_current?).and_return(false)
+      expect(co.searchable?).to be_falsey
     end
   end
 

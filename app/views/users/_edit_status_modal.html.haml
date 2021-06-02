@@ -1,3 +1,5 @@
+-# FIXME: This is really a modal for editting a Membership.
+-# TODO:  Add first_day.  Disable first, last days if the membership is set to not a member (member == false)
 .modal#edit-status-modal{ tabindex: '-1', role: 'dialog' }
   .modal-dialog{ role: 'document' }
     .modal-content
@@ -24,16 +26,16 @@
                 = rb.radio_button + ' ' + rb.text  + ' '
 
             %hr
-            = fields_for :payment, user.most_recent_membership_payment do |pf|
-              %label #{t('activerecord.attributes.payment.expire_date')}:
-              = pf.date_select(:expire_date,
+            = fields_for :membership, user.current_membership do |current_membership|
+              %label #{t('activerecord.attributes.membership.last_day')}:
+              = current_membership.date_select(:last_day,
                                { start_year: Time.current.year,
                                  end_year: Time.current.year + 2},
                                { class: 'form-control select-box form-control-sm' })
               %hr
-              = pf.label :notes,
-                         "#{t('activerecord.attributes.payment.notes')}:"
-              = pf.text_area :notes, class: 'form-control'
+              = current_membership.label :notes,
+                         "#{t('activerecord.attributes.membership.notes')}:"
+              = current_membership.text_area :notes, class: 'form-control'
 
         .modal-footer
           = f.submit t('users.user.submit_button_label'), class: "btn btn-primary form-control",

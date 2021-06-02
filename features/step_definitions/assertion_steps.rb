@@ -19,6 +19,22 @@ Then "I should{negate} see {capture_string}" do |negate, content|
   end
 end
 
+
+# It's not currently possible to have an optional parameter in Gherkin, so have to have this explicit expression. 2021-04-05 cucumber-expressions v10.3.0
+Then "I should{negate} see css class {capture_string}" do |negated, expected_text|
+  options = {}
+  options[:count] = 1
+  expect(page).send (negated ? :not_to : :to ), have_css(".#{expected_text}", options)
+end
+
+# It's not currently possible to have an optional parameter in Gherkin, so have to have this explicit expression. 2021-04-05 cucumber-expressions v10.3.0
+Then "I should{negate} see css class {capture_string} {digits} time(s)" do |negated, expected_text, num_times|
+  options = {}
+  options[:count] = num_times
+  expect(page).send (negated ? :not_to : :to ), have_css(".#{expected_text}", options)
+end
+
+
 Then "I should see raw HTML {capture_string}" do |html|
   expect(page.body).to match html
 end

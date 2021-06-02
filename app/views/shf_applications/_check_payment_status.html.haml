@@ -1,5 +1,6 @@
 - need_to_pay = false
 
+-# FIXME: this logic belongs either in a helper or the User
 - if ! current_user.most_recent_membership_payment
   -# User has never paid
 
@@ -8,7 +9,7 @@
   %p= t('shf_applications.information.check_payment_status.approved')
   %h4= t('shf_applications.information.check_payment_status.pay_m_here')
 
-- elsif ! current_user.membership_current?
+- elsif ! current_user.payments_current? # FIXME should this only check payments? or should it be checking membership status?
   -# User has paid but payment has expired
 
   - need_to_pay = true

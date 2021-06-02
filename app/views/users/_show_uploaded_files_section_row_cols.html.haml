@@ -1,0 +1,24 @@
+-# This partial shows the uploaded files for a user in Bootstrap .rows and .cols.
+-#
+-# The partial expects these locals:
+-#   user - the user (member) that this information is for
+
+.uploaded-files
+  - if user.uploaded_files.blank?
+    .row.section-title
+      .col.mt-2
+        %h3= "#{ t('.title') }:  #{ t('none_n') }"
+
+  - else
+    .row.section-title
+      .col.mt-2
+        %h3= t('.title')
+
+    .row.uploaded-files
+      .col.mt-2
+        = render partial: 'uploaded_files/small_table_files_list',
+          locals: { uploaded_files:  user.uploaded_files  }
+
+  .row.justify-content-center
+    .col-md-3
+      = render partial: 'upload_file_btn', locals: { user: user }

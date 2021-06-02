@@ -70,7 +70,7 @@
     .row
       .col-sm-10
         = field_or_none(t('.membership_expired_grace_period'),
-            @app_configuration.membership_expired_grace_period,
+            @app_configuration.membership_expired_grace_period_duration,
             tag_options: {class: 'membership-expired-grace-period'})
 
   %hr

@@ -15,10 +15,10 @@ Feature: Admin sees additional info on User Account pages
 
 
     Given the following users exist:
-      | email                   | admin | membership_number | member | first_name | last_name |
-      | emma-member@example.com |       | 1001              | true   | Emma       | IsAMember |
-      | lars-member@example.com |       | 101               | true   |            |           |
-      | admin@shf.se            | true  |                   |        |            |           |
+      | email                   | admin | membership_status | membership_number | member | first_name | last_name |
+      | emma-member@example.com |       | current_member    | 1001              | true   | Emma       | IsAMember |
+      | lars-member@example.com |       | current_member    | 101               | true   |            |           |
+      | admin@shf.se            | true  |                   |                   |                   |        |            |
 
     And the following users have agreed to the Membership Ethical Guidelines:
       | email                   |
@@ -49,13 +49,18 @@ Feature: Admin sees additional info on User Account pages
     And the following payments exist
       | user_email              | start_date | expire_date | payment_type | status | hips_id |
       | emma-member@example.com | 2018-01-1  | 2018-12-31  | member_fee   | betald | none    |
-      | emma-member@example.com | 2018-01-1  | 2018-12-31  | branding_fee   | betald | none    |
+      | emma-member@example.com | 2018-01-1  | 2018-12-31  | branding_fee | betald | none    |
       | lars-member@example.com | 2018-05-05 | 2019-05-04  | member_fee   | betald | none    |
 
 
     And the following membership packets have been sent:
       | user_email              | date_sent  |
       | lars-member@example.com | 2018-05-06 |
+
+    And the following memberships exist:
+      | email                   | first_day | last_day   |
+      | emma-member@example.com | 2018-01-1 | 2018-12-31 |
+      | lars-member@example.com | 2018-05-5 | 2019-05-04 |
 
     And I am logged in as "admin@shf.se"
 
@@ -72,9 +77,9 @@ Feature: Admin sees additional info on User Account pages
     And I should see t("payments.payments_list.notes")
     And I should see t("payments.payments_list.hips_id")
 
-    And I should see "betald" in the row for "member_fee"
-    And I should see "2018-01-01" in the row for "member_fee"
-    And I should see "2018-12-31" in the row for "member_fee"
-    And I should see "betald" in the row for "branding_fee"
-    And I should see "2018-01-01" in the row for "branding_fee"
-    And I should see "2018-12-31" in the row for "branding_fee"
+    And I should see "betald" in the row for t("payment.payment_type.member_fee")
+    And I should see "2018-01-01" in the row for t("payment.payment_type.member_fee")
+    And I should see "2018-12-31" in the row for t("payment.payment_type.member_fee")
+    And I should see "betald" in the row for t("payment.payment_type.branding_fee")
+    And I should see "2018-01-01" in the row for t("payment.payment_type.branding_fee")
+    And I should see "2018-12-31" in the row for t("payment.payment_type.branding_fee")

@@ -12,10 +12,10 @@ Feature: Who can see a member's Proof of Membership image html page, or download
     Given the App Configuration is not mocked and is seeded
 
     Given the following users exist
-      | email                | admin | member | membership_number | first_name | last_name |
-      | admin@shf.se         | true  |        |                   | Admin      | Admin     |
-      | member-emma@mutts.se |       | true   | 1001              | Emma       | Member    |
-      | member-lars@mutts.se |       | true   | 1002              | Lars       | Member    |
+      | email                | admin | member | membership_status | membership_number | first_name | last_name |
+      | admin@shf.se         | true  |        |                   |                   | Admin      | Admin     |
+      | member-emma@mutts.se |       | true   | current_member    | 1001              | Emma       | Member    |
+      | member-lars@mutts.se |       | true   | current_member    | 1002              | Lars       | Member    |
 
 
     Given the following business categories exist
@@ -33,6 +33,11 @@ Feature: Who can see a member's Proof of Membership image html page, or download
       | user_email           | start_date | expire_date | payment_type | status | hips_id |
       | member-emma@mutts.se | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
       | member-lars@mutts.se | 2017-10-1  | 2017-12-31  | member_fee   | betald | none    |
+
+    And the following memberships exist:
+      | email                | first_day | last_day   |
+      | member-emma@mutts.se | 2017-01-1 | 2017-12-31 |
+      | member-lars@mutts.se | 2017-01-1 | 2017-12-31 |
 
 
   Scenario: An admin can see a member's proof of membership image

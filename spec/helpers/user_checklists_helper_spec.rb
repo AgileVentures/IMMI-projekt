@@ -10,7 +10,7 @@ RSpec.describe UserChecklistsHelper, type: :helper do
       let(:resulting_html) { helper.fa_is_complete_checkbox(not_completed_checklist) }
 
       it 'title says the <name of the checklist> is not complete' do
-        expect(resulting_html).to match(/<i title="#{not_completed_checklist.name} is not completed"(.*)><\/i>/)
+        expect(resulting_html).to match(/<i title="#{not_completed_checklist.name} #{I18n.t('activerecord.attributes.user_checklist.not_completed')}"(.*)><\/i>/)
       end
 
       it 'icon is fa-square (style = far)' do
@@ -24,7 +24,7 @@ RSpec.describe UserChecklistsHelper, type: :helper do
       let(:resulting_html) { helper.fa_is_complete_checkbox(completed_checklist) }
 
       it 'title says the <name of the checklist> is completed' do
-        expect(resulting_html).to match(/<i(.*)title="#{completed_checklist.name} is completed"(.*)><\/i>/)
+        expect(resulting_html).to match(/<i(.*)title="#{completed_checklist.name} #{I18n.t('activerecord.attributes.user_checklist.completed')}"(.*)><\/i>/)
       end
 
       it 'icon is fa-check-square (style = far)' do

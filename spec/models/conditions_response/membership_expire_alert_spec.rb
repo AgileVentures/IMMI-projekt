@@ -24,12 +24,12 @@ RSpec.describe MembershipExpireAlert do
 
       context 'user is a member' do
 
-        let(:is_a_member) { instance_double("User", membership_current?: true) }
+        let(:is_a_member) { instance_double("User", payments_current?: true, current_member?: true) }
 
         it 'checks to see if today is the right number of days away' do
           allow(is_a_member).to receive(:membership_expire_date).and_return(DateTime.new(2018, 12, 31))
 
-          expect(is_a_member).to receive(:membership_current?).and_return(true)
+          expect(is_a_member).to receive(:current_member?).and_return(true)
           expect(described_class).to receive(:days_today_is_away_from)
                                          .with(is_a_member.membership_expire_date, timing)
                                          .and_return(30)
@@ -46,10 +46,10 @@ RSpec.describe MembershipExpireAlert do
       context 'not a member (membership has expired)' do
 
         it 'only needs to check the membership status and return false right away' do
-          not_a_member = instance_double("User", membership_current?: false)
+          not_a_member = instance_double("User", payments_current?: false, current_member?: false)
           allow(not_a_member).to receive(:membership_expire_date).and_return(DateTime.new(2018, 12, 31))
 
-          expect(not_a_member).to receive(:membership_current?).and_return(false)
+          expect(not_a_member).to receive(:current_member?).and_return(false)
           expect(described_class).not_to receive(:days_today_is_away_from)
           expect(subject).not_to receive(:send_on_day_number?)
 
@@ -84,17 +84,19 @@ RSpec.describe MembershipExpireAlert do
 
           let(:membership_expiry) { DateTime.new(2020, 12, 1, 6) }
 
-          let(:mock_not_member) { instance_double("User") }
-          let(:mock_member1) { instance_double("User", membership_expire_date: membership_expiry) }
-          let(:mock_member2) { instance_double("User", membership_expire_date: membership_expiry) }
+          let(:mock_not_member) { instance_double("User", current_member?: false) }
+          let(:mock_member1) { instance_double("User", membership_expire_date: membership_expiry, current_member?: true) }
+          let(:mock_member2) { instance_double("User", membership_expire_date: membership_expiry, current_member?: true) }
 
           before(:each) do
             allow(subject).to receive(:entities_to_check).and_return([mock_not_member,
                                                                       mock_member1,
                                                                       mock_member2])
-            allow(mock_not_member).to receive(:membership_current?).and_return(false)
-            allow(mock_member1).to receive(:membership_current?).and_return(true)
-            allow(mock_member2).to receive(:membership_current?).and_return(true)
+            allow(mock_not_member).to receive(:payments_current?).and_return(false)
+            allow(mock_member1).to receive(:current_member?).and_return(true)
+            allow(mock_member1).to receive(:payments_current?).and_return(true)
+            allow(mock_member2).to receive(:current_member?).and_return(true)
+            allow(mock_member2).to receive(:payments_current?).and_return(true)
           end
 
           context '10 days before expiration date' do

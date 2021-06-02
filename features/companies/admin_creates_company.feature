@@ -17,11 +17,11 @@ Feature: Admin can create a company
     Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist:
-      | email                      | admin | member | agreed_to_membership_guidelines |
-      | applicant_1@happymutts.com |       | true   | true                            |
-      | member_1@happymutts.com    |       | true   | true                            |
-      | applicant_3@happymutts.com |       |        | true                            |
-      | admin@shf.se               | true  |        |                                 |
+      | email                      | admin | membership_status | member | agreed_to_membership_guidelines |
+      | applicant_1@happymutts.com |       |                   |        | true                            |
+      | member_1@happymutts.com    |       | current_member    | true   | true                            |
+      | applicant_3@happymutts.com |       |                   |        | true                            |
+      | admin@shf.se               | true  |                   |        |                                 |
 
     Given the following regions exist:
       | name         |
@@ -64,6 +64,18 @@ Feature: Admin can create a company
       | Trainer      |
       | Awesome      |
 
+
+    And the following users have agreed to the Membership Ethical Guidelines:
+      | email                   |
+      | member_1@happymutts.com |
+
+    And the following memberships exist:
+      | email                   | first_day  | last_day   |
+      | member_1@happymutts.com | 2017-01-01 | 2017-12-31 |
+
+  # -----------------------------------------------------------------------------------------------
+
+
   Scenario: Admin sees all companies listed
     Given I am logged in as "admin@shf.se"
     When I am on the "all companies" page
@@ -99,20 +111,25 @@ Feature: Admin can create a company
     And I check the checkbox with id "company_show_dinkurs_events"
     And I click on t("submit")
     Then I should see t("companies.create.success")
-    Then I click on t("companies.show.add_address")
+    When I click on t("companies.show.add_address")
     And I fill in the translated form with data:
       | companies.show.street | companies.show.post_code | companies.show.city |
       | Ålstensgatan 4        | 123 45                   | Bromma              |
-    And I select "Stockholm" in select list t("companies.operations_region")
-    And I select "Bromölla" in select list t("companies.show.kommun")
-    Then I click on t("submit")
-    And I should see t("addresses.create.success_sole_address")
+    And I wait 3 seconds
+    Then I should see t("activerecord.attributes.address.region")
+    When I select "Stockholm" in select list t("activerecord.attributes.address.region")
+    And I select "Bromölla" in select list t("activerecord.attributes.address.kommun")
+    And I click on t("submit")
+
+    Then I should see t("addresses.create.success_sole_address")
     And I should see "1" address
     And I should not see the radio button with id "cb_address_3" unchecked
     And I should see "Happy Mutts"
     And I should see "123 45"
     And I should see "Bromma"
     And I should see "Bromölla"
+    And I should not see t("events.show.no_events")
+    And I should not see t("events.show_not")
     And I should see "3" events
     And I should not see t("events.show_not")
     And the "http://www.gladajyckar.se" should go to "http://www.gladajyckar.se"

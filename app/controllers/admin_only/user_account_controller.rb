@@ -1,11 +1,10 @@
 module AdminOnly
 
-
   class UserAccountController < AdminOnlyController
 
     include SetAppConfiguration
 
-    before_action :get_user
+    before_action :get_user, except: [:update_membership_status_all]
     before_action :set_app_config, only: [:edit, :update]
 
 
@@ -26,8 +25,41 @@ module AdminOnly
     end
 
 
-    private
+    def update_membership_status_all
+      begin
 
+        membership_updater = MembershipStatusUpdater.instance
+        reason_update_happened = t('.reason_update_happened')
+        do_send_email_option = false
+
+        users = User.where(membership_status: User.membership_statuses - [:former_member])
+        users.each do |user|
+          unless user.admin?
+            membership_updater.check_grant_renew_and_status(user,
+                                                            nil,
+                                                            reason_update_happened,
+                                                            send_email: do_send_email_option)
+          end
+        end
+
+        respond_to do |format|
+          format.html { redirect_to users_url, notice: t('.success') }
+          format.js { render json: { status: :ok } }
+        end
+
+      rescue => e
+        helpers.flash_message(:alert, t('.error'))
+        redirect_to(request.referer.present? ? :back : root_path)
+      end
+    end
+
+
+    def update_membership_status_all_success
+
+    end
+
+
+    private
 
     def get_user
       @user = User.find(params[:user_id])
@@ -50,8 +82,8 @@ module AdminOnly
       end
 
       params.require(:user)
-          .permit(:membership_number,
-                  :date_membership_packet_sent)
+            .permit(:membership_number,
+                    :date_membership_packet_sent)
     end
 
   end

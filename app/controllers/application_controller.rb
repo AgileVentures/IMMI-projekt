@@ -158,8 +158,7 @@ class ApplicationController < ActionController::Base
   def after_sign_in_path_for(signed_in_user)
     return admin_root_path if signed_in_user.admin?
 
-    # FIXME - is this logic too simple? what about a member with membership fee past due 2 days?
-    signed_in_user.member? ? information_path : user_path(signed_in_user)
+    user_path(signed_in_user)
   end
 
 

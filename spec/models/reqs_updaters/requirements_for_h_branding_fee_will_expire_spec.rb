@@ -136,7 +136,7 @@ RSpec.describe RequirementsForHBrandingFeeWillExpire, type: :model do
     context 'does not have current members' do
 
       let(:membership_expired) {
-        member = create(:member_with_membership_app)
+        member = create(:member, first_day: jan_1)
         create(:membership_fee_payment,
                :successful,
                user:        member,
@@ -158,12 +158,8 @@ RSpec.describe RequirementsForHBrandingFeeWillExpire, type: :model do
           membership_expired
           expect(subject.requirements_met?({ company: co_memberships_expired })).to be_falsey
         end
-
       end
-
     end
 
-
-  end # describe '.requirements_met?'
-
+  end
 end

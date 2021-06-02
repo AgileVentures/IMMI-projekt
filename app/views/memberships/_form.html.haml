@@ -1,0 +1,22 @@
+= form_for @membership do |f|
+  - if @membership.errors.any?
+    #error_explanation
+      %h2= "#{pluralize(@membership.errors.count, "error")} prohibited this membership from being saved:"
+      %ul
+        - @membership.errors.full_messages.each do |message|
+          %li= message
+
+  .field
+    = f.label :member_number
+    = f.text_field :member_number
+  .field
+    = f.label :belongs_to
+    = f.text_field :belongs_to
+  .field
+    = f.label :first_day
+    = f.date_select :first_day
+  .field
+    = f.label :last_day
+    = f.date_select :last_day
+  .actions
+    = f.submit 'Save'

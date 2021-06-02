@@ -31,6 +31,14 @@ end
 And("I should{negate} see CSS class {capture_string} with text {capture_string} in the table with id {capture_string}") do | negatation, css_class, text, table_id|
   table =  page.find_by_id(table_id)
   expect(page).to have_table(table)
-
   expect(table).send (negatation ? :not_to : :to), have_xpath("tbody/tr/td[ (#{xpath_for_element_with_class(css_class)}) and (descendant::text()[contains(.,'#{text}')]) ]")
+end
+
+Then('css class {capture_string} should{negate} appear {digits} times in the table with the {capture_string} css class') do |expected_css_class, negated, num_times, table_class|
+  # table_class = 'users'
+  options = {}
+  options[:count] = num_times
+  table =  page.find('table', class: [table_class])
+  expect(table).not_to be_nil
+  expect(table).send (negated ? :not_to : :to), have_css(".#{expected_css_class}", count: num_times)
 end

@@ -4,7 +4,11 @@ include PoliciesHelper
 RSpec.describe CompanyPolicy do
 
   let(:user_1) { create(:user, email: 'user_1@random.com') }
-  let(:member) { create(:member_with_membership_app, email: 'member@random.com')}
+  let(:member) do
+    memb = create(:member_with_membership_app, email: 'member@random.com')
+    allow(memb).to receive(:member_in_good_standing?).and_return(true)
+    memb
+  end
   let(:admin)  { create(:user, email: 'admin@sfh.com', admin: true) }
   let(:visitor) { build(:visitor) }
   let(:company) { create(:company, company_number: '5712213304')}

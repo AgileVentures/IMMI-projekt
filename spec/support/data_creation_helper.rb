@@ -57,17 +57,11 @@ module DataCreationHelper
 
 
   # create a member with a membership fee payment, branding fee paid  return the member
-  def create_member_with_member_and_branding_payments_expiring(member_pay_expires = Time.zone.today + 1.year, payment_create_date: Time.zone.now)
-    u = create(:member_with_membership_app)
+  def create_member_with_member_and_branding_payments_expiring(member_pay_expires = Time.zone.today + 1.year,
+                                                               payment_create_date: Time.zone.now,
+                                                               membership_status: :current_member)
+    u = create(:member, last_day: member_pay_expires, membership_status: membership_status)
     u.shf_application.update(created_at: payment_create_date, updated_at: payment_create_date)
-
-    create(:payment,
-           user: u,
-           payment_type: Payment::PAYMENT_TYPE_MEMBER,
-           status: SUCCESSFUL_PAYMENT,
-           expire_date: member_pay_expires,
-           created_at: payment_create_date,
-           updated_at: payment_create_date)
 
     create(:payment,
             user: u,
@@ -76,6 +70,7 @@ module DataCreationHelper
             expire_date: member_pay_expires,
             created_at: payment_create_date,
             updated_at: payment_create_date)
+    u.payments.each { |payment| payment.update(created_at: payment_create_date, updated_at: payment_create_date) }
     u
   end
 
