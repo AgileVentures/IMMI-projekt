@@ -374,7 +374,8 @@ RSpec.describe Backup, type: :model do
       expected_entries = [File.join(@faux_app_dir, 'public'),
                           File.join(@faux_app_dir, 'public', 'blorf.txt'),
                           File.join(@faux_app_dir, 'public','storage'),
-                          File.join(@faux_app_dir, 'public','storage', 'paperclip_files')]
+                          File.join(@faux_app_dir, 'public','storage','paperclip_files'),
+                          File.join(@faux_app_dir, 'public','storage','paperclip_files','uploaded_files')]
       expect_tar_has_these_entries(File.join(@backup_dir, actual_app_public_backup_file), expected_entries)
 
       config_backup_ts_fn = "#{config_basefn}.#{timestamp}"
