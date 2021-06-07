@@ -15,12 +15,14 @@ RSpec.shared_context 'expect tar file has entries' do
     # directories _should_ have a trailing '/', which is how tar will store directories
     expected.each do | exp_file |
       exp_file_base = File.basename(exp_file)
-      if File.extname(exp_file_base).empty? && !(exp_file_base.match(/^\.(.*)/))
-        exp_file.gsub!(/$/, '/')
+      if File.extname(exp_file_base).empty? && !(exp_file_base.match(/^\.(.*)/)) # if a directory name and it doesn't start with .
+        exp_file.gsub!(/$/, '/') # append '/'
       end
     end
 
-    expect(backup_files).to match_array(expected)
+    expect(backup_files).to match_array(expected), "Expected this: #{expected}\n got this: #{backup_files}\n" +
+      "  missing elements: #{expected - backup_files}\n" +
+      "  extra   elements: #{backup_files - expected}\n"
   end
 
 end
