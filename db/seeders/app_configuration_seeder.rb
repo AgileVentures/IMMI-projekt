@@ -53,9 +53,10 @@ module Seeders
 
       app_config.email_admin_new_app_received_enabled = true
 
-      app_config.payment_too_soon_days = 60
-      app_config.membership_expired_grace_period_duration = 'P2Y' # 2 years
+      # Membership durations and related times
       app_config.membership_term_duration ='P1Y'  # 1 year
+      app_config.membership_expired_grace_period_duration = 'P2Y' # 2 years
+      app_config.payment_too_soon_days = 60
       app_config.membership_expiring_soon_days = 31
 
       membership_guideline_list_root = AdminOnly::MasterChecklist.find_by(displayed_text: 'Medlemsåtagande')
