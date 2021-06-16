@@ -6,8 +6,7 @@ Feature: Update the membership status for all users
   I need to be able to update the membership status for all users
 
   Background:
-#    Given the App Configuration is not mocked and is seeded
-    And the Membership Ethical Guidelines Master Checklist exists
+    Given the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
       | email         | password | admin | membership_status | member | first_name | last_name     | membership_number |
