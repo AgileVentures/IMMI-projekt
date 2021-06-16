@@ -1520,6 +1520,9 @@ sv:
         membership_guideline_list: *membership_guideline_list
         required_field: *required_field
 
+      show_timing:
+        missing: *missing
+
       update:
         success: Programdata uppdaterades framgångsrikt
         error: Det gick inte att uppdatera konfigurationsdata

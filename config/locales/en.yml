@@ -1516,6 +1516,9 @@ en:
         membership_guideline_list: *membership_guideline_list
         required_field: *required_field
 
+      show_timing:
+        missing: *missing
+
       update:
         success: Application configuration was updated successfully
         error: There was a problem with updating configuration data
