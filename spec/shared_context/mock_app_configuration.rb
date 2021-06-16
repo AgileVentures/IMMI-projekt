@@ -124,11 +124,11 @@ class MockAppConfig
   end
 
   def self.membership_expired_grace_period_duration
-    'P90D'
+    ActiveSupport::Duration.parse('P90D')
   end
 
   def self.membership_term_duration
-    'P1Y'
+    ActiveSupport::Duration.parse('P1Y')
   end
 
   def self.membership_expiring_soon_days

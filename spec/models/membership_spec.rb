@@ -128,15 +128,6 @@ RSpec.describe Membership, type: :model do
   end
 
 
-  describe '.term_length' do
-    it 'gets the duration string from AppConfiguration and turns it into a Duration' do
-      expect(AdminOnly::AppConfiguration.config_to_use).to receive(:membership_term_duration)
-                                                              .and_return('P90D')
-      expect(described_class.term_length).to eq 90.days
-    end
-  end
-
-
   describe '.first_day_from_last' do
     it '= last_day - term_length + 1' do
       expect(described_class).to receive(:term_length).and_return(10.days)

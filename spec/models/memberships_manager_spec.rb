@@ -38,8 +38,8 @@ RSpec.describe MembershipsManager, type: :model do
   describe '.grace_period' do
     it 'gets the value from AppConfiguration and returns the number of days (Duration)' do
       expect( AdminOnly::AppConfiguration.config_to_use).to receive(:membership_expired_grace_period_duration)
-                                                              .and_return('P90D')
-      expect(described_class.grace_period).to eq 90.days
+                                                              .and_return(ActiveSupport::Duration.parse('P90D'))
+      expect(described_class.grace_period.iso8601).to eq 'P90D'
     end
   end
 

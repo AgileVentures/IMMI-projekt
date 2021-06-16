@@ -49,7 +49,7 @@ class MembershipsManager
 
   # @return [Duration] - the number of days after the end of a membership that a user can renew
   def self.grace_period
-    ActiveSupport::Duration.parse(AdminOnly::AppConfiguration.config_to_use.membership_expired_grace_period_duration)
+    AdminOnly::AppConfiguration.config_to_use.membership_expired_grace_period_duration
   end
 
 
