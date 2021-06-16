@@ -36,8 +36,4 @@ class RequirementsForRenewal < AbstractReqsForMembership
   def self.doc_uploaded_during_this_membership_term?(user)
     user.file_uploaded_during_this_membership_term?
   end
-
-  def self.max_days_can_still_renew
-    ActiveSupport::Duration.parse(AdminOnly::AppConfiguration.config_to_use.membership_expired_grace_period_duration).days
-  end
 end

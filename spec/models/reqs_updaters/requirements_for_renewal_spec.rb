@@ -18,8 +18,6 @@ RSpec.describe RequirementsForRenewal, type: :model do
 
     describe '.requirements_excluding_payments_met?' do
 
-      before(:each) { allow(subject).to receive(:max_days_can_still_renew).and_return(10) }
-
       it 'checks state machine to confirm membership_status is in the correct state to call the renew event' do
         expect(user).to receive(:may_renew?).and_return(true)
         subject.requirements_excluding_payments_met?(user)
@@ -111,15 +109,6 @@ RSpec.describe RequirementsForRenewal, type: :model do
         end
       end
     end
-
-
-    describe '.max_days_can_still_renew' do
-      it 'gets the membership_expired_grace_period_duration from the Application Configuration and converts it to days' do
-        expect(AdminOnly::AppConfiguration.config_to_use).to receive(:membership_expired_grace_period_duration).and_return('P5D')
-        described_class.max_days_can_still_renew
-      end
-    end
-
   end
 
 
