@@ -1,6 +1,5 @@
 # Steps dealing with AdminOnly::AppConfiguration
 
-
 # This step can be used to make sure that an actual valid
 # Application Configuration (AdminOnly::AppConfiguration)
 # is used.  A valid AppConfiguration is created (all required data is there)
@@ -58,11 +57,47 @@ And("the {capture_string} file is missing from the application configuration") d
 end
 
 
+And("the membership term is {int} year(s), {int} month(s), and {int} day(s)") do |years, months, days|
+  date_str = "P#{years}Y#{months}M#{days}D"
+  AdminOnly::AppConfiguration.config_to_use
+                             .update_attribute(:membership_term_duration, date_str)
+end
+
+
+And("the grace period is {int} year(s), {int} month(s), and {int} day(s)") do |years, months, days|
+  date_str = "P#{years}Y#{months}M#{days}D"
+  AdminOnly::AppConfiguration.config_to_use
+                             .update_attribute(:membership_expired_grace_period_duration, date_str)
+end
+
+
+And("the payment window is {int} days") do |days|
+  AdminOnly::AppConfiguration.config_to_use.update_attribute(:payment_too_soon_days, days)
+end
+
+
+
+And("the term ending warning window is {int} days") do |days|
+  AdminOnly::AppConfiguration.config_to_use.update_attribute(:membership_expiring_soon_days, days)
+end
+
+
+# --------------------------------------------------------------------------------------------------
+
+And("I should see a duration of {int} year(s), {int} month(s), and {int} day(s)") do |years, months, days|
+  years_str = I18n.t('datetime.distance_in_words.x_years', count: years)
+  months_str = I18n.t('datetime.distance_in_words.x_months', count: months)
+  days_str = I18n.t('datetime.distance_in_words.x_days', count: days)
+  step "I should see \"#{[years_str, months_str, days_str].to_sentence}\""
+end
+
+
 And("I should see the number of days that it is too early to pay is {digits}") do |num_days_too_soon|
-  too_soon_info = "#{I18n.t('admin_only.app_configuration.show.payment_too_soon_days')}: #{num_days_too_soon}"
+  too_soon_info = "#{I18n.t('admin_only.app_configuration.show.payment_too_soon_days_title')}: #{num_days_too_soon}"
   step "I should see \"#{too_soon_info}\""
 end
 
-And("the grace period is {digits} days") do |grace_period_days|
-  AdminOnly::AppConfiguration.config_to_use.update_attribute(:membership_expired_grace_period_duration, "P#{grace_period_days}D")
+And("I should see the number of days to warn that the term is ending is {digits}") do |num_days_before_end|
+  too_soon_info = "#{I18n.t('admin_only.app_configuration.show.membership_expiring_soon_days_title')}: #{num_days_before_end}"
+  step "I should see \"#{too_soon_info} #{I18n.t('days')}\""
 end
