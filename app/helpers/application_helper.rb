@@ -407,4 +407,30 @@ module ApplicationHelper
     legend_classes = ['legend-item']
     tag.span display_string.html_safe, class: (legend_classes | css_classes)
   end
+
+
+  # Durations
+
+  # @return [String] - I18n string showing the years, months, days, hours, minutes, seconds
+  #   Note that the DateHelper :distance_of_time_in_words will
+  #   round and approximate times, so you might end up with "about...".
+  #   We want the exact duration with no rounding.
+  def duration_i18n(duration, options = {})
+    options = {
+      scope: :'datetime.distance_in_words'
+    }.merge!(options)
+
+    translated_parts = []
+    I18n.with_options locale: options[:locale], scope: options[:scope] do |locale|
+      translated_parts << locale.t(:x_years, count: duration.parts[:years]) if duration.parts.key?(:years)
+      translated_parts << locale.t(:x_months, count: duration.parts[:months]) if duration.parts.key?(:months)
+      translated_parts << locale.t(:x_weeks, count: duration.parts[:weeks]) if duration.parts.key?(:weeks)
+      translated_parts << locale.t(:x_days, count: duration.parts[:days]) if duration.parts.key?(:days)
+      translated_parts << locale.t(:x_hours, count: duration.parts[:hours]) if duration.parts.key?(:hours)
+      translated_parts << locale.t(:x_minutes, count: duration.parts[:minutes]) if duration.parts.key?(:minutes)
+      translated_parts << locale.t(:x_seconds, count: duration.parts[:seconds]) if duration.parts.key?(:seconds)
+    end
+
+    translated_parts.to_sentence
+  end
 end
