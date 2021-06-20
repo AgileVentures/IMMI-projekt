@@ -26,6 +26,9 @@ module SeedHelper
 
   FIRST_MEMBERSHIP_NUMBER    = 100 unless defined?(FIRST_MEMBERSHIP_NUMBER)
 
+  PERCENT_WITH_SENT_PACKETS = 60 unless defined?(PERCENT_WITH_SENT_PACKETS)
+
+
   class SeedAdminENVError < StandardError
   end
 
@@ -70,67 +73,24 @@ module SeedHelper
   end
 
 
-  def make_applications(users)
-
-    # make at least one accepted membership application
-    user = users.delete_at(0)
-    return if user == nil
-    make_n_save_app(user, MA_ACCEPTED_STATE)
-
-    small_number_of_users = users.count < 3 ? 0 : [1, (0.1 * users.count).round].max
-
-    users_with_no_application = small_number_of_users
-
-    users_with_application = users.count - users_with_no_application
-
-    return if users_with_application == 0
-
-    users[0..users_with_application - 1].each.with_index do |each_user|
-      make_application(each_user)
-    end
-
-  end
-
-
-  #---
-  # Create a membership application.
+  # @return [Symbol] - a randomly chosen ShfApplication state, excluding :accepted and :being_destroyed
   #
-  # with about a 30% chance, make an accepted application
-  # with about a 70% chance, make an application with a status chosen randomly (but not yet accepted)
-  #
-
-  def make_application(user)
-
-    if Random.new.rand(1.0) < 0.3
-      # set the state to accepted for about 30% of the applications
-      state = MA_ACCEPTED_STATE
-    else
-      # set a random state for the rest of the applications (except accepted and being destroyed)
-      states = ShfApplication.aasm.states.map(&:name) -
-          [MA_ACCEPTED_STATE, MA_BEING_DESTROYED_STATE]
-
-      state = FFaker.fetch_sample(states)
-    end
-
-    make_n_save_app(user, state)
-
+  def random_application_not_accepted_state
+    states = ShfApplication.aasm.states.map(&:name) -
+      [MA_ACCEPTED_STATE, MA_BEING_DESTROYED_STATE]
+    FFaker.fetch_sample(states)
   end
 
 
   # Create a SHF Application for the user and set the application
   # to the given :state.
-  # If the company for co_number does not yet exist, create it. (find_or_create!(company_number: ...))
-  #
-  # If the application is accepted, then also create payments
-  # (a membership payment and H-brand payment for the company)
-  # AND create the Membership Guidelines user checklist for the user
-  #   and make it all completed (user has checked all of them).
+  # If the company for co_number does not yet exist, create it. (find_or_create!(company_number: ...)).
   #
   # Set the file delivery method for the user and then finally
   # set when the membership packet was sent to the user (as
   # applicable depending on the application state).
   #
-  # save the user.
+  # save the user
   #
   # @param user [User] - the user
   # @param state [String] - the state to put the Shf Application in
@@ -145,62 +105,26 @@ module SeedHelper
     @upload_later = nil
     @email = nil
 
+    # Create a basic application and assign some random business categories
+    app = make_app(user)
 
-    # create a basic app. This will assign some random business categories
-    ma = make_app(user)
+    app.companies = [] # We ensure that this association is present
 
-    ma.companies = [] # We validate that this association is present
+    app.state = state
 
-    ma.state = state
-
-    ma.file_delivery_method = get_delivery_method_for_app(state)
-    ma.file_delivery_selection_date = Date.current
+    app.file_delivery_method = get_delivery_method_for_app(state)
+    app.file_delivery_selection_date = Date.current
 
     # make a full company object (instance) for the membership application
-    ma.companies << find_or_make_new_company(co_number)
+    app.companies << find_or_make_new_company(co_number)
 
-    # Create payment records for accepted app and associated company
-    if ma.state == MA_ACCEPTED_STATE_STR
-
-      start_date, expire_date = User.next_membership_payment_dates(user.id)
-
-      membership_payment = Payment.create(payment_type: Payment::PAYMENT_TYPE_MEMBER,
-                                          user_id:      user.id,
-                                          hips_id:      'none',
-                                          status:       Payment::SUCCESSFUL,
-                                          start_date:   start_date,
-                                          expire_date:  expire_date)
-      user.payments << membership_payment
-
-      start_date, expire_date = Company.next_branding_payment_dates(ma.companies[0].id)
-
-      # Create the Ethical Guidelines checklist. Have 85% complete it
-      guidelines_list = UserChecklistManager.find_or_create_membership_guidelines_list_for(user)
-      guidelines_list.set_complete_including_children(start_date) if FFaker::Random.rand(100) < 86
-
-      # Do not send email
-      unless user.admin?
-        MembershipStatusUpdater.instance.payment_made(membership_payment, send_email: false)
-        MembershipStatusUpdater.instance.update_membership_status(user, send_email: false)
-      end
-
-      ma.companies[0].payments << Payment.create(payment_type: Payment::PAYMENT_TYPE_BRANDING,
-                                                 user_id:      user.id,
-                                                 company_id:   ma.companies[0].id,
-                                                 hips_id:      'none',
-                                                 status:       Payment::SUCCESSFUL,
-                                                 start_date:   start_date,
-                                                 expire_date:  expire_date)
-    end
-
-    user.shf_application = ma
-
+    user.shf_application = app
     user.save!
 
     set_membership_packet_sent user
-
     user
   end
+
 
   def get_delivery_method_for_app(state)
     klass = AdminOnly::FileDeliveryMethod
@@ -219,7 +143,6 @@ module SeedHelper
   end
 
 
-  PERCENT_WITH_SENT_PACKETS = 60
 
   # If the user is a member, set a date for when the membership
   # packet was sent -- about <PERCENT_WITH_SENT_PACKETS>% of the time.
@@ -244,7 +167,6 @@ module SeedHelper
 
 
   def find_or_make_new_company(company_number)
-
     Company.find_or_create_by!(company_number: company_number) do | co |
 
       # make a full company instance and address
@@ -257,29 +179,23 @@ module SeedHelper
       address_factory.make_n_save_a_new_address(co)
       co
     end
-
   end
 
 
   def make_app(user)
-
-    r = Random.new
-
-    #business_categories = BusinessCategory.all.to_a
-
     # for 1 in 8 apps, use a different contact email than the user's email
-    email = (Random.new.rand(1..8) == 0) ? FFaker::InternetSE.disposable_email : user.email
+    email = (Random.rand(1..8) == 0) ? FFaker::InternetSE.disposable_email : user.email
 
-    ma = ShfApplication.new(contact_email: email, user: user)
+    app = ShfApplication.new(contact_email: email, user: user)
 
     # add 1 to 3 business_categories, picked at random from them
-    cats = FFaker.fetch_sample(business_categories, { count: (r.rand(1..3)) })
+    cats = FFaker.fetch_sample(business_categories, { count: (Random.rand(1..3)) })
 
     cats.each do |category|
-      ma.business_categories << category
+      app.business_categories << category
     end
 
-    ma
+    app
   end
 
 
@@ -302,4 +218,4 @@ module SeedHelper
     @address_factory ||= AddressFactory.new(regions, kommuns)
   end
 
-end # module SeedHelper
+end
