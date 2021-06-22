@@ -17,6 +17,15 @@ module Seeders
     SEEDED_CLASS = AdminOnly::AppConfiguration
     APP_CONFIG_FILES_DIR = File.join(__dir__, 'app_config_files')
 
+    # Membership durations, number of days
+    MEMBERSHIP_TERM_DURATION_STR = 'P1Y' # 1 year
+    GRACE_PD_DURATION_STR = 'P2Y' # 2 years
+    PAYMENT_TOO_SOON_DAYS = 60
+    TERM_EXP_SOON_DAYS = 31
+
+    # Guidelines checklist
+    GUIDELINES_ROOT_TEXT = 'Medlemsåtagande'
+
     # ----------------------------------------------------------------
 
     def self.seed(log: nil)
@@ -53,12 +62,12 @@ module Seeders
 
       app_config.email_admin_new_app_received_enabled = true
 
-      app_config.payment_too_soon_days = 60
-      app_config.membership_expired_grace_period_duration = 'P2Y' # 2 years
-      app_config.membership_term_duration ='P1Y'  # 1 year
-      app_config.membership_expiring_soon_days = 31
+      app_config.membership_term_duration = MEMBERSHIP_TERM_DURATION_STR
+      app_config.membership_expired_grace_period_duration = GRACE_PD_DURATION_STR
+      app_config.payment_too_soon_days = PAYMENT_TOO_SOON_DAYS
+      app_config.membership_expiring_soon_days = TERM_EXP_SOON_DAYS
 
-      membership_guideline_list_root = AdminOnly::MasterChecklist.find_by(displayed_text: 'Medlemsåtagande')
+      membership_guideline_list_root = AdminOnly::MasterChecklist.find_by(displayed_text: GUIDELINES_ROOT_TEXT)
       app_config.membership_guideline_list = membership_guideline_list_root
 
       app_config.save!
