@@ -90,6 +90,9 @@ class ShfApplication < ApplicationRecord
   # ---------------------
   # AASM (State machine)
 
+  # FIXME - should 'being_destroyed' really be a state? These represent business (domain) states, not implementations.
+  #   If an application is in the 'being_destroyed' state in the db, then that represents an error (it was not able to be destroyed successfully),
+  #   not a state/status that exists in the 'real world' (business/domain).
   aasm column: 'state' do
 
     state :new, initial: true
