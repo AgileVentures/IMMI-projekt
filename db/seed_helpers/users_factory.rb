@@ -196,7 +196,7 @@ module SeedHelpers
     def make_random_applicant(num_applicants = 1)
       return if num_applicants == 0
 
-      num_applicants.times do |i|
+      num_applicants.times do
         make_predefined_with(firstname: FFaker::NameSE.first_name,
                              lastname: name_with_random(APPLICANT_LNAME)) do |applicant|
           @shf_application_factory.make_n_save_app(applicant, random_application_not_accepted_state)
