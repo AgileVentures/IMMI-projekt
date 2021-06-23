@@ -53,7 +53,7 @@ class MembershipsManager
   end
 
 
-  # @return [Duration] - the number of days before the end of a membership that means 'soon'
+  # @return [Integer] - the number of days before the end of a membership that means 'soon'
   #   as in 'your membership is expiring soon'
   def self.is_expiring_soon_amount
     AdminOnly::AppConfiguration.config_to_use.membership_expiring_soon_days.to_i.days
