@@ -35,6 +35,14 @@ MSG_NO_APPCONFIG = 'No AppConfiguration seeded.  One already exists.' unless def
 MSG_APPCONFIG_NEEDS_SITEMETAIMAGE = ' ... but there is no site meta image! You need to set one on the edit app configuration page (as an admin).' unless defined?(MSG_APPCONFIG_NEEDS_SITEMETAIMAGE)
 # ----------------------------------------------------------------------------------------
 
+
+def env_invalid_blank(env_key)
+  env_val = nil
+  raise SeedAdminENVError, SEED_ERROR_MSG if ENV[env_key].nil? || (env_val = ENV.fetch(env_key)).blank?
+  env_val
+end
+
+
 def log_msg(severity, activity_msg, text)
   ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, activity_msg) do |log|
     log.record(severity, text)
@@ -72,6 +80,7 @@ def log_totals_created(log)
   end
 end
 
+
 # ----------------------------------------------------------------------------------------
 
 
@@ -91,7 +100,9 @@ begin
   seed_model_with_seeder(AdminOnly::FileDeliveryMethod, Seeders::FileDeliveryMethodsSeeder)
   seed_model_with_seeder(BusinessCategory, Seeders::BusinessCategoriesSeeder)
 
-  init_generated_seeding_info
+  # init_generated_seeding_info
+
+  static_data = SeedHelpers::StaticDataFactory.new
 
   ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Admin User') do |log|
     log.info('Creating admin user')
@@ -139,15 +150,12 @@ begin
     end
 
     # -----------------------------------------
-    # Users (of all types:  users, applicants, members)
+    # Users of all types:  users, applicants, members
     ActivityLogger.open(SEEDING_LOG_FILE_NAME, SEEDING_LOG_FACILITY, 'Users') do |log|
+      number_of_random_users_and_members = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
 
-      SeedHelper::UsersFactory.seed_predefined_users
-
-      number_of_users = (ENV['SHF_SEED_USERS'] || SEED_USERS).to_i
-      log.info("Creating #{number_of_users} additional users. (This number can be set with ENV['SHF_SEED_USERS'])...")
-      SeedHelper::UsersFactory.seed_random_users(number_of_users)
-
+      # The admin has already been created.  That counts as 1 User
+      SeedHelpers::UsersFactory.new(static_data, log).seed_users_and_members(number_of_random_users_and_members - 1)
       log_totals_created(log)
     end
   end
