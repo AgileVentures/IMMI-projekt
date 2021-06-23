@@ -17,7 +17,6 @@ require_relative('../seed_helpers.rb')
 module SeedHelpers
   class StaticDataFactory
 
-    attr_reader :regions, :kommuns, :business_categories
     attr_writer :address_factory
 
     # Initialize the instance vars
