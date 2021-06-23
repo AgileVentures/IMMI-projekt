@@ -10,7 +10,7 @@ When(/^the system is seeded with initial data$/) do
   allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
   allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
 
-  allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+  allow_any_instance_of(SeedHelpers::AddressFactory).to receive(:tell).and_return(false)
 
   SHFProject::Application.load_tasks
   SHFProject::Application.load_seed

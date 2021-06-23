@@ -1,8 +1,11 @@
 require 'smarter_csv'
 
+require_relative('../seed_helpers.rb')
+require_relative '../require_all_seeders_and_helpers'
+
 require_relative File.join(Rails.root, 'lib/fake_addresses/csv_fake_addresses_reader')
 
-module SeedHelper
+module SeedHelpers
 
   #--------------------------
   #
@@ -68,7 +71,7 @@ module SeedHelper
     # If there are no more already constructed addresses,
     # create a new address from scratch.
     #
-    # Note that an address from the already constructed addresses must be save
+    # Note that an address from the already constructed addresses must be saved
     # _without_ validation.  Otherwise it will be geocoded, which defeats the
     # whole purpose of using an already constructed address.
     #

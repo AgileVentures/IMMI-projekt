@@ -3,6 +3,10 @@ require 'create_membership_seq_if_needed'
 
 require File.join(Rails.root, 'db/require_all_seeders_and_helpers.rb')
 require File.join(__dir__, 'shared_specs_db_seeding')
+require_relative '../shared_context/mock_app_configuration.rb'
+
+# TODO lots of redundant stubbing and mocking (e.g. in before(:all), etc). I'm unclear exactly when
+#    they are or are not applied. This is working, but needs to be cleaned up.
 
 # NOTE: We must stub AppConfigurationSeeder.seed so that Paperclip does not try to spawn processes.
 # Some of those spawned processes will Fail (or even SEGFAULT!).
@@ -15,7 +19,7 @@ ENV_ADMIN_PASSWORD_KEY      = 'SHF_ADMIN_PWD' unless defined?(ENV_ADMIN_PASSWORD
 ENV_NUM_SEEDED_USERS_KEY    = 'SHF_SEED_USERS' unless defined?(ENV_NUM_SEEDED_USERS_KEY)
 ENV_SEED_FAKE_CSV_FNAME_KEY = 'SHF_SEED_FAKE_ADDR_CSV_FILE' unless defined?(ENV_SEED_FAKE_CSV_FNAME_KEY)
 
-SEED_USERS                  = 4
+SEED_6_USERS = 6
 
 
 RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
@@ -29,26 +33,14 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     create_user_membership_num_seq_if_needed
 
     RSpec::Mocks.with_temporary_scope do
-
-      allow(Seeders::AppConfigurationSeeder).to receive(:seed).and_return(true)
-
-      allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
-
-      allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
-      allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
-      allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
-
-      allow(Seeders::MasterChecklistTypesSeeder).to receive(:seed).and_return([])
-      allow(Seeders::MasterChecklistsSeeder).to receive(:seed).and_return([])
-      allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
-
-      allow(Membership).to receive(:term_length).and_return(10)  # so AppConfiguration is not called
-
-      # must stub this way so the rest of ENV is preserved
-      stub_const('ENV', ENV.to_hash.merge({ ENV_ADMIN_EMAIL_KEY    => admin_email,
-                                            ENV_ADMIN_PASSWORD_KEY => admin_pwd }))
-
-      allow(SeedHelper::UsersFactory ).to receive(:seed_predefined_users).and_return(true)
+      stub_rails_env('development') # Stub this so seeding will happen
+      no_logging
+      mock_the_app_configuration
+      stub_app_config_seeder
+      stub_checklist_seeding
+      stub_membership_terms_and_days
+      stub_admin_email_and_password(admin_email, admin_pwd)
+      allow_any_instance_of(SeedHelpers::UsersFactory).to receive(:seed_users_and_members).and_return(true)
       SHFProject::Application.load_tasks
     end
   end
@@ -58,47 +50,38 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
   end
 
   before(:each) do
-    allow(SeedHelper::UsersFactory).to receive(:seed_predefined_users).and_return([])
+    dont_seed_predefined_users_members
   end
 
 
   describe 'seeding basic info: users, companies, etc.' do
 
-    describe 'initial state before extra info is added' do
-      it_behaves_like 'admin, business categories, kommuns, and regions are seeded', 'development', admin_email, admin_pwd
-    end
-
     # seed with a minimum of 4 users to cover: admin, no application, single
     # application, double application
-
     before(:all) do
       RSpec::Mocks.with_temporary_scope do
-        allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new('development'))
-        allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
-        allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
-
+        stub_rails_env('development') # Stub this so seeding will happen
+        no_logging
+        stub_admin_email_and_password(admin_email, admin_pwd,
+                                      { ENV_NUM_SEEDED_USERS_KEY => SEED_6_USERS })
+        mock_the_app_configuration
+        stub_app_config_seeder
+        stub_membership_terms_and_days
         allow(Seeders::UserChecklistsSeeder).to receive(:seed).and_return([])
 
-        # must stub this way so the rest of ENV is preserved
-        stub_const('ENV', ENV.to_hash.merge({ ENV_NUM_SEEDED_USERS_KEY => SEED_USERS,
-                                              ENV_ADMIN_EMAIL_KEY      => admin_email,
-                                              ENV_ADMIN_PASSWORD_KEY   => admin_pwd }))
-
-        allow(AdminOnly::AppConfiguration).to receive(:instance).and_return(MockAppConfig)
-        allow(AdminOnly::AppConfiguration).to receive(:config_to_use).and_return(MockAppConfig)
-        allow(Seeders::AppConfigurationSeeder).to receive(:tell).and_return(false)
-        allow(Seeders::AppConfigurationSeeder).to receive(:log_str).and_return(false)
-        allow(Seeders::AppConfigurationSeeder).to receive(:seed).and_return(true)
-        allow(SeedHelper::UsersFactory ).to receive(:seed_predefined_users).and_return(true)
-
-        allow(Membership).to receive(:term_length).and_return(10)  # so AppConfiguration is not called
-
+        dont_seed_predefined_users_members
+        dont_make_completed_membership_guidelines
+        dont_upload_files_for_membership_app
         SHFProject::Application.load_seed
       end
     end
 
+    describe 'initial state before extra info is added' do
+      it_behaves_like 'admin, business categories, kommuns, and regions are seeded', 'development', admin_email, admin_pwd
+    end
+
     it 'users are in the db' do
-      expect(User.all.size).to eq(SEED_USERS)
+      expect(User.count).to eq(SEED_6_USERS)
     end
 
     it 'addresses are in the db' do
@@ -110,10 +93,10 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     end
 
     it 'memberships applications are in the db' do
-      expect(ShfApplication.all.size).to eq(SEED_USERS - 1)
+      expect(ShfApplication.count).to eq(SEED_6_USERS - 2)
     end
 
-  end # describe 'seeding basic info: users, companies, etc.'
+  end
 
 
   describe 'addresses' do
@@ -139,15 +122,59 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     FAKE_ADDRESSES_CSV_FILENAME = "fake-addresses-10-#{Time.now.to_i}.csv" unless defined?(FAKE_ADDRESSES_CSV_FILENAME)
 
 
+
+    shared_examples 'it creates new addresses min max times with csv file' do |num_users, a_email, a_pwd, min_times, max_times, csv_filename|
+
+      it "seed #{num_users}, calls Geocode.search at least #{min_times} and at most #{max_times} times" do
+
+        RSpec::Mocks.with_temporary_scope do
+          DatabaseCleaner.strategy = :transaction
+          DatabaseCleaner.start
+          no_logging
+
+          # Stub this so seeding will happen
+          stub_rails_env('development')
+          other_env_info = { ENV_NUM_SEEDED_USERS_KEY    => num_users,
+                             ENV_SEED_FAKE_CSV_FNAME_KEY => csv_filename }
+          stub_admin_email_and_password(a_email, a_pwd, other_env_info)
+
+          mock_the_app_configuration
+          stub_app_config_seeder
+          stub_checklist_seeding
+          dont_seed_predefined_users_members
+          stub_membership_terms_and_days
+          dont_make_completed_membership_guidelines
+          dont_upload_files_for_membership_app
+
+          if min_times == 0
+            expect_any_instance_of(SeedHelpers::AddressFactory).to receive(:create_a_new_address).never
+          else
+            expect_any_instance_of(SeedHelpers::AddressFactory).to receive(:create_a_new_address)
+                                                                     .at_least(min_times).times
+          end
+
+          expect_any_instance_of(SeedHelpers::AddressFactory).to receive(:create_a_new_address)
+                                                                   .at_most(max_times).times if max_times > 0
+
+          SHFProject::Application.load_tasks
+          SHFProject::Application.load_seed
+
+          expect(User.count).to eq num_users
+        end
+      end
+    end
+
+    # ---------------------------------------------------------------------------------------------
+
+
     before(:all) do
-      SHFProject::Application.load_tasks
       create_empty_file(SEED_DB_DIR, EMPTY_CSV_FILENAME)
       create_csv_file(SEED_DB_DIR, FAKE_ADDRESSES_CSV_FILENAME, FAKE_ADDRESSES)
     end
 
     before(:each) do
       create_user_membership_num_seq_if_needed
-      allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
+      DatabaseCleaner.clean_with :transaction
     end
 
     after(:all) do
@@ -156,18 +183,19 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
       remove_file(SEED_DB_DIR, FAKE_ADDRESSES_CSV_FILENAME)
     end
 
-    # We can't know exactly how many addresses are created because some randomness is used
 
+
+    # We can't know exactly how many addresses are created because some randomness is used
     context 'all addresses are created and geocoded' do
-      it_behaves_like 'it calls geocode min max times with csv file', NUM_USERS, admin_email, admin_pwd, 5, 10, EMPTY_CSV_FILENAME
+      it_behaves_like 'it creates new addresses min max times with csv file', NUM_USERS, admin_email, admin_pwd, 5, 10, EMPTY_CSV_FILENAME
     end
 
     context 'get all addresses from a CSV file (no geocoding)' do
-      it_behaves_like 'it calls geocode min max times with csv file', NUM_USERS, admin_email, admin_pwd, 0, 0, FAKE_ADDRESSES_CSV_FILENAME
+      it_behaves_like 'it creates new addresses min max times with csv file', NUM_USERS, admin_email, admin_pwd, 0, 0, FAKE_ADDRESSES_CSV_FILENAME
     end
 
     context 'not enough addresses are in the CSV file; create the remaining ones needed' do
-      it_behaves_like 'it calls geocode min max times with csv file', 16, admin_email, admin_pwd, 5, 5, FAKE_ADDRESSES_CSV_FILENAME
+      it_behaves_like 'it creates new addresses min max times with csv file', 16, admin_email, admin_pwd, 3, 5, FAKE_ADDRESSES_CSV_FILENAME
     end
 
 
