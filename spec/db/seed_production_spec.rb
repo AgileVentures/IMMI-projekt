@@ -26,7 +26,7 @@ RSpec.describe 'Production db is seeded with minimal info' do
 
         allow_any_instance_of(ActivityLogger).to receive(:show).and_return(false)
         allow(Seeders::YamlSeeder).to receive(:tell).and_return(false)
-        allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+        allow_any_instance_of(SeedHelpers::AddressFactory).to receive(:tell).and_return(false)
 
         # must stub this way so the rest of ENV is preserved
         stub_const('ENV', ENV.to_hash.merge({ENV_ADMIN_EMAIL_KEY => admin_email,
