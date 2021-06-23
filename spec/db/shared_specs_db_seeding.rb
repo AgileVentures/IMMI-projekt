@@ -83,8 +83,7 @@ RSpec.shared_examples 'admin, business categories, kommuns, and regions are seed
       RSpec::Mocks.with_temporary_scope do
         allow(Rails).to receive(:env).and_return(ActiveSupport::StringInquirer.new("#{rails_env}"))
 
-        # TODO: Simple transaction DB cleanup is not enough here, could be worth
-        #       finding out why.
+        # TODO: Simple transaction DB cleanup is not enough here. Why?
         DatabaseCleaner.clean_with :truncation
         no_logging
         stub_admin_email_and_password(admin_email, admin_pwd)

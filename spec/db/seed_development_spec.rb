@@ -5,6 +5,8 @@ require File.join(Rails.root, 'db/require_all_seeders_and_helpers.rb')
 require File.join(__dir__, 'shared_specs_db_seeding')
 require_relative '../shared_context/mock_app_configuration.rb'
 
+# TODO lots of redundant stubbing and mocking (e.g. in before(:all), etc). I'm unclear exactly when
+#    they are or are not applied. This is working, but needs to be cleaned up.
 
 # NOTE: We must stub AppConfigurationSeeder.seed so that Paperclip does not try to spawn processes.
 # Some of those spawned processes will Fail (or even SEGFAULT!).
@@ -31,7 +33,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     create_user_membership_num_seq_if_needed
 
     RSpec::Mocks.with_temporary_scope do
-      stub_rails_env('development')
+      stub_rails_env('development') # Stub this so seeding will happen
       no_logging
       mock_the_app_configuration
       stub_app_config_seeder
@@ -58,7 +60,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
     # application, double application
     before(:all) do
       RSpec::Mocks.with_temporary_scope do
-        stub_rails_env('development')
+        stub_rails_env('development') # Stub this so seeding will happen
         no_logging
         stub_admin_email_and_password(admin_email, admin_pwd,
                                       { ENV_NUM_SEEDED_USERS_KEY => SEED_6_USERS })
@@ -121,7 +123,7 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
 
 
 
-    shared_examples 'it creates new addresses min max times with csv file' do |num_users, admin_email, admin_pwd, min_times, max_times, csv_filename|
+    shared_examples 'it creates new addresses min max times with csv file' do |num_users, a_email, a_pwd, min_times, max_times, csv_filename|
 
       it "seed #{num_users}, calls Geocode.search at least #{min_times} and at most #{max_times} times" do
 
@@ -130,10 +132,11 @@ RSpec.describe 'Dev DB is seeded with users, members, apps, and companies' do
           DatabaseCleaner.start
           no_logging
 
+          # Stub this so seeding will happen
           stub_rails_env('development')
           other_env_info = { ENV_NUM_SEEDED_USERS_KEY    => num_users,
                              ENV_SEED_FAKE_CSV_FNAME_KEY => csv_filename }
-          stub_admin_email_and_password(admin_email, admin_pwd, other_env_info)
+          stub_admin_email_and_password(a_email, a_pwd, other_env_info)
 
           mock_the_app_configuration
           stub_app_config_seeder
