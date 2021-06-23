@@ -12,7 +12,7 @@ Feature: Membership status updated due to payments or expiration
   Background:
 
     Given the App Configuration is not mocked and is seeded
-    And the grace period is 4 days
+    And the grace period is 0 years, 0 months, and 4 days
 
     And the Membership Ethical Guidelines Master Checklist exists
 

@@ -9,7 +9,7 @@ Feature: Membership status is color-coded for admin's list of all users
   Background:
     Given the App Configuration is not mocked and is seeded
     Given the Membership Ethical Guidelines Master Checklist exists
-    And the grace period is 600 days
+    And the grace period is 0 years, 0 months, and 600 days
 
     Given the following users exist:
       | email                         | admin | membership_status | membership_number | member |
