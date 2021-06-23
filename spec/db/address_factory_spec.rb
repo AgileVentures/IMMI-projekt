@@ -6,7 +6,7 @@ require_relative File.join(Rails.root, 'db/seed_helpers/address_factory')
 ENV_SEED_FAKE_CSV_FNAME_KEY = 'SHF_SEED_FAKE_ADDR_CSV_FILE' unless defined?(ENV_SEED_FAKE_CSV_FNAME_KEY)
 
 
-RSpec.describe SeedHelper::AddressFactory do
+RSpec.describe SeedHelpers::AddressFactory do
 
   SEED_DB_DIR = File.join(Rails.root, 'db') unless defined?(SEED_DB_DIR)
   EMPTY_CSV_FILENAME = 'fake-addresses-empty.csv' unless defined?(EMPTY_CSV_FILENAME)
@@ -48,7 +48,7 @@ RSpec.describe SeedHelper::AddressFactory do
     create(:kommun, name: 'Norsjö')
     create(:kommun, name: 'Flen')
 
-    SeedHelper::AddressFactory.new(Region.all, Kommun.all)
+    SeedHelpers::AddressFactory.new(Region.all, Kommun.all)
 
   end
 
@@ -77,7 +77,7 @@ RSpec.describe SeedHelper::AddressFactory do
       it 'gets the CSV filename from the ENV value and adds the db directory' do
         RSpec::Mocks.with_temporary_scope do
           stub_const('ENV', ENV.to_hash.merge({ ENV_SEED_FAKE_CSV_FNAME_KEY => 'fake_addresses.csv' }))
-          allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+          allow_any_instance_of(SeedHelpers::AddressFactory).to receive(:tell).and_return(false)
 
           expect(address_factory.fake_addresses_csv_filename).to eq File.join(Rails.root, 'db', 'fake_addresses.csv')
         end
@@ -92,7 +92,7 @@ RSpec.describe SeedHelper::AddressFactory do
 
       RSpec::Mocks.with_temporary_scope do
         stub_const('ENV', ENV.to_hash.merge({ ENV_SEED_FAKE_CSV_FNAME_KEY => AF_FAKE_ADDRESSES_CSV_FILENAME }))
-        allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+        allow_any_instance_of(SeedHelpers::AddressFactory).to receive(:tell).and_return(false)
 
         expect(address_factory.already_constructed_addresses.size).to eq 4
         classes_read = address_factory.already_constructed_addresses.map(&:class).uniq
@@ -130,7 +130,7 @@ RSpec.describe SeedHelper::AddressFactory do
 
       it 'if there are no already constructed addresses, an Address is created and geocoded' do
         allow(address_factory).to receive(:already_constructed_addresses).and_return([])
-        allow_any_instance_of(SeedHelper::AddressFactory).to receive(:tell).and_return(false)
+        allow_any_instance_of(SeedHelpers::AddressFactory).to receive(:tell).and_return(false)
 
         expect(address_factory).to receive(:create_a_new_address).and_call_original
         expect(Geocoder).to receive(:search).at_least(1).times
