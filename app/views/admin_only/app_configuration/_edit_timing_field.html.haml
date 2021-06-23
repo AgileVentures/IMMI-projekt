@@ -7,12 +7,12 @@
   #   min [Integer] - (optional) minimum value allowed (defaults to 0)
   #   max [Integer] - (optional) maximum value allowed
   #
-- field_name = css_class.underscore.to_sym
-- min_value = local_assigns.fetch(:min, 0)
-- max_value = local_assigns.fetch(:max, nil)
-- field_options = { min: min_value, class: "form-control number #{css_class}" }
-- field_options.merge({ max: max_value }) if max_value
-%div.timing-days{class: css_class}
+  field_name = css_class.underscore.to_sym
+  min_value = local_assigns.fetch(:min, 0)
+  max_value = local_assigns.fetch(:max, nil)
+  field_options = { min: min_value, class: "form-control number #{css_class}" }
+  field_options.merge({ max: max_value }) if max_value
+%div.timing-days{ class: css_class }
   .form-row
     .col-sm-12
       .form-inline
