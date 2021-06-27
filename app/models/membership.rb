@@ -82,7 +82,7 @@ class Membership < ApplicationRecord
   #   where the definition of a first membership is (see above in the class block comment)
   #   Ignore this membership (self)
   def first_membership?(time_period: FIRST_MEMBERSHIP_TIMELIMIT)
-    (any_membership_within(time_period).reject{|membership| membership == self}).empty?
+    (any_membership_within(time_period).reject { |membership| membership == self }).empty?
   end
 
   # @return [ActiveRecord::Relation] - a list of any memberships for the user
