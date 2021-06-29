@@ -34,7 +34,7 @@ namespace :shf do
       time_range = min_expire_date..max_expire_date
 
       ActivityLogger.open(LogfileNamer.name_for("SHF-one-time-task-#{task_name_end}"), 'OneTimeRakeTask', task_name_end) do |log|
-        log.info("#{log_msg_starter}.")
+        log.info(log_msg_starter)
         begin
           num_payments_changed = 0
           payments_in_range  = payments_to_change(time_range)
