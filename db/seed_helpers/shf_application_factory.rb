@@ -38,7 +38,7 @@ module SeedHelpers
     #   the company associated with the user; needed for the application
     #
     # @return [User] - the user
-    def make_n_save_app(user, state, co_number = get_company_number)
+    def make_n_save_app(user, state, co_number = get_company_number, acceptance_date: Date.current)
       # Reset instance vars so AR records will be reloaded when run in TEST
       # (rspec DB tests load tasks but there is no "reload" available)
       @files_uploaded = nil
@@ -51,9 +51,10 @@ module SeedHelpers
       app.companies = [] # We ensure that this association is present
 
       app.state = state
+      app.update(when_approved: acceptance_date) if app.accepted?
 
       app.file_delivery_method = get_delivery_method_for_app(state)
-      app.file_delivery_selection_date = Date.current
+      app.file_delivery_selection_date = acceptance_date
 
       # make a full company object (instance) for the membership application
       app.companies << find_or_make_new_company(co_number)

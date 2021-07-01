@@ -164,12 +164,13 @@ module SeedHelpers
     # separate from payments.
     def make_predefined_in_grace_period_members
       grace_pd_first_day = Date.current - MembershipsManager.grace_period + 1.day
+      firstname_start = 'GracePeriod-since'
       make_member_paid_through(grace_pd_first_day, lastname: GRACEPERIODMEMBER_LNAME,
-                               firstname_prefix: 'GracePeriod-plus-1day')
+                               firstname_prefix: firstname_start)
       make_member_paid_through(grace_pd_first_day + 1.month, lastname: GRACEPERIODMEMBER_LNAME,
-                               firstname_prefix: 'GracePeriod-plus-1month')
+                               firstname_prefix: firstname_start)
       make_member_paid_through(Date.today - 1.day, lastname: GRACEPERIODMEMBER_LNAME,
-                               firstname_prefix: 'GracePeriod-since')
+                               firstname_prefix: firstname_start)
     end
 
 
@@ -252,13 +253,15 @@ module SeedHelpers
       make_predefined_with(lastname: lastname, number: number, firstname: "#{firstname_prefix}-#{term_last_day.iso8601}") do |member|
         term_first_day = term_first_day.nil? ? Membership.first_day_from_last(term_last_day) : term_first_day
 
-        @shf_application_factory.make_n_save_app(member, MA_ACCEPTED_STATE)
+        @shf_application_factory.make_n_save_app(member, MA_ACCEPTED_STATE, acceptance_date: term_first_day)
         member.reload
 
-        make_completed_membership_guidelines_for(member, term_first_day)
+        make_completed_membership_guidelines_for(member, term_first_day - 1)
         upload_membership_application_file(member, member.shf_application,
                                            MEMBERSHIP_APP_UPLOADED_FNAME,
-                                           term_first_day)
+                                           term_first_day - 1)
+
+        # FIXME: make the application acceptance date = the term first day
 
         # Make payments
         member.payments << new_membership_payment(member, term_first_day, term_last_day)
@@ -349,7 +352,9 @@ module SeedHelpers
                                              actual_file: f,
                                              actual_file_file_name: uploaded_filename)
         membership_app.uploaded_files << uploaded_file
-        uploaded_file.update(created_at: file_created_at)
+
+        uploaded_file.update(actual_file_updated_at: file_created_at,
+          created_at: file_created_at, updated_at: file_created_at)
       end
     end
 
