@@ -511,6 +511,7 @@ class User < ApplicationRecord
 
 
   # TODO this doesn't belong in User.  but not sure yet where it does belong.
+  # FIXME - what if someone is in the grace period? is logic correct?
   def file_uploaded_during_this_membership_term?
     return false unless current_member? || in_grace_period?
 
@@ -518,7 +519,7 @@ class User < ApplicationRecord
       file_uploaded_on_or_after?(current_membership.first_day)
     else
       # is in_grace_period
-      file_uploaded_on_or_after?(most_recent_membership.first_day)
+      file_uploaded_on_or_after?(most_recent_membership.first_day)  # FIXME is this correct?
     end
   end
 
