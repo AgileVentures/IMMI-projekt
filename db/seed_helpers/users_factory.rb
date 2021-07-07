@@ -337,9 +337,12 @@ module SeedHelpers
 
 
     # Create the Ethical Guidelines checklist and complete it
-    def make_completed_membership_guidelines_for(user, term_first_day)
+    def make_completed_membership_guidelines_for(user, completion_date)
       guidelines_list = UserChecklistManager.find_or_create_membership_guidelines_list_for(user)
-      guidelines_list.set_complete_including_children(term_first_day)
+      guidelines_list.set_complete_including_children(completion_date)
+      # set created_at date to the completion_date because UserChecklistManager checks it
+      guidelines_list.update(created_at: completion_date)
+      guidelines_list.descendants.update_all(created_at: completion_date)
     end
 
 
