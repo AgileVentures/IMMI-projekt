@@ -62,6 +62,12 @@ Feature: Applicant home (account) page - version 1.0
       | user_email                        | start_date | expire_date | payment_type | status | hips_id |
       | app-guidelines-payment@random.com | 2020-02-02 | 2021-02-01  | member_fee   | betald | none    |
 
+    And the following users have agreed to the Membership Ethical Guidelines:
+      | email                      | date agreed to |
+      | guidelines-done@random.com | 2020-03-01     |
+      | app-guidelines@random.com  | 2020-03-01     |
+
+
   # ---------------------------------------------------------------------------------------------
 
   Scenario: After logging in, a newly registered user is taken to their account page
@@ -87,7 +93,6 @@ Feature: Applicant home (account) page - version 1.0
     And the link button t("users.show.pay_membership") should be disabled
 
 
-
   Scenario: App has been submitted (not reviewed yet) shows new status for the application
     Given I am logged in as "submitted-app@random.com"
     When I am on the "user account" page
@@ -104,7 +109,6 @@ Feature: Applicant home (account) page - version 1.0
     And I should see t("users.show_for_applicant.app_status_accepted")
     And I should see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
     And the link button t("users.show.pay_membership") should be disabled
-
 
 
   Scenario: App has been rejected
@@ -155,7 +159,7 @@ Feature: Applicant home (account) page - version 1.0
     Given I am logged in as "guidelines-done@random.com"
     When I am on the "user account" page
     Then I should see t("users.show_for_applicant.apply_4_membership") link
-    And I should see t("users.ethical_guidelines_link_or_checklist.agreed_to")
+    And I should see t("users.ethical_guidelines_link_or_checklist.agreed_to", date: '2020-03-01')
     And the link button t("users.show.pay_membership") should be disabled
 
 
@@ -163,7 +167,7 @@ Feature: Applicant home (account) page - version 1.0
     Given I am logged in as "app-guidelines@random.com"
     When I am on the "user account" page
     Then I should see t("users.show_for_applicant.app_status_accepted")
-    And I should see t("users.ethical_guidelines_link_or_checklist.agreed_to")
+    And I should see t("users.ethical_guidelines_link_or_checklist.agreed_to", date: '2020-03-01')
     And I should see t("users.show.pay_membership") link
 
 
