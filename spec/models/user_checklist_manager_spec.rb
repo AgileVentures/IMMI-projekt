@@ -393,7 +393,6 @@ RSpec.describe UserChecklistManager do
           expect(described_class.checklist_done_on_or_after_latest_membership_start?(u)).to be_truthy
         end
       end
-   end
-
+    end
   end
 end
