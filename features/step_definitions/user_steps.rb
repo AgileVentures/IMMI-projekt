@@ -1,16 +1,16 @@
 # Steps for creating and working with users
 
-def user_agrees_to_membership_guidelines(user)
+def user_agrees_to_membership_guidelines(user, agreed_date = Date.current)
   begin
-    user_guidelines = if (found_guidelines = UserChecklistManager.membership_guidelines_list_for(user))
-                        found_guidelines
-                      else
-                        AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user) unless UserChecklistManager.membership_guidelines_list_for(user)
-                      end
-    user_guidelines.set_complete_including_children
+    user_guidelines = UserChecklistManager.find_or_create_membership_guidelines_list_for(user)
+    user_guidelines.set_complete_including_children(agreed_date)
+    # Also set the created_at date to agreed_date because the logic in UserChecklistManager.completed_membership_guidelines_checklist?
+    #   depends on it
+    user_guidelines.update(created_at: agreed_date)
+    user_guidelines.descendants.update_all(created_at: agreed_date)
 
   rescue => e
-    raise e, "Could not create the Member Guidelines UserChecklist or set it to completed for user #{user}\n #{e.inspect} "
+    raise e, "Could not create the Member Guidelines UserChecklist or set it to completed for user #{user}, agreed to date #{agreed_date}\n #{e.inspect} "
   end
 end
 
@@ -52,7 +52,9 @@ And("the following users have agreed to the Membership Ethical Guidelines:") do 
   table.hashes.each do |item|
     user_email = item.delete('email') || ''
     user = User.find_by(email: user_email)
-    user_agrees_to_membership_guidelines(user)
+    agreed_date_str = item.delete('date agreed to') || ''
+    agreed_date = agreed_date_str.blank? ? Date.current : Date.parse(agreed_date_str)
+    user_agrees_to_membership_guidelines(user, agreed_date)
   end
 end
 
