@@ -34,12 +34,37 @@ RSpec.describe UserChecklistManager do
     end
 
     context 'user is not in the grace period' do
+
+      it 'is always false if the user is a former member' do
+        former_member = build(:user, membership_status: :former_member)
+        expect(described_class).not_to receive(:find_on_or_after_latest_membership_start)
+        expect(described_class).not_to receive(:membership_guidelines_list_for)
+        expect( described_class.completed_membership_guidelines_checklist?(former_member)).to be_falsey
+      end
+
+      let(:not_in_grace_user) { build(:user) }
+      before(:each) { allow(not_in_grace_user).to receive(:in_grace_period?).and_return(false) }
+
       it 'the latest checklist must be completed' do
-        not_in_grace_user = build(:user)
-        allow(not_in_grace_user).to receive(:in_grace_period?).and_return(false)
         expect(described_class).to receive(:membership_guidelines_list_for)
                                      .with(not_in_grace_user)
         described_class.completed_membership_guidelines_checklist?(not_in_grace_user)
+      end
+
+      it 'true if all are completed' do
+        completed = create(:user_checklist, :completed, num_completed_children: 2)
+        allow(described_class).to receive(:membership_guidelines_list_for)
+                                    .with(not_in_grace_user)
+                                    .and_return(completed)
+        expect(described_class.completed_membership_guidelines_checklist?(not_in_grace_user)).to be_truthy
+      end
+
+      it 'false if all are not completed' do
+        not_completed = create(:user_checklist, num_children: 2)
+        allow(described_class).to receive(:membership_guidelines_list_for)
+                                    .with(not_in_grace_user)
+                                    .and_return(not_completed)
+        expect(described_class.completed_membership_guidelines_checklist?(not_in_grace_user)).to be_falsey
       end
     end
 
@@ -192,15 +217,16 @@ RSpec.describe UserChecklistManager do
 
       # make 2 and expect the most recently created one to be returned
       travel_to(Time.now - 2.days) do
-        create(:user_checklist, user: user, name: 'older list')
+        create(:user_checklist, :completed, user: user, name: 'older list')
       end
 
-      create(:user_checklist, user: user, name: 'more recent list')
+      create(:user_checklist, :completed, user: user, name: 'more recent list')
 
       allow(UserChecklist).to receive(:membership_guidelines_for_user).and_return(user.checklists)
 
       expect(described_class.membership_guidelines_list_for(user)).to eq UserChecklist.find_by(name: 'more recent list')
     end
+
 
   end
 

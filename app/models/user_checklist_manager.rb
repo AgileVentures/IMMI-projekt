@@ -15,9 +15,12 @@
 
 class UserChecklistManager
 
+  # former members MUST complete the guidelines again. (They have not completed the current version)
   def self.completed_membership_guidelines_checklist?(user)
-    if user.in_grace_period? || user.former_member?
+    if user.in_grace_period?
       find_on_or_after_latest_membership_start(user)&.all_completed?
+    elsif user.former_member?
+      false
     else
       membership_guidelines_list_for(user)&.all_completed?
     end
