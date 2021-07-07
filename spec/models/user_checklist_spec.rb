@@ -1,6 +1,5 @@
 require 'rails_helper'
 
-
 RSpec.describe UserChecklist, type: :model do
   let(:all_complete_list) { create(:user_checklist, :completed, num_completed_children: 3) }
 
@@ -46,6 +45,14 @@ RSpec.describe UserChecklist, type: :model do
   end
 
   describe 'Scopes (including those as class methods)' do
+    # create a Master for Membership Guidelines
+    # TODO get this from AppConfiguration later / stub (the membership guidelines list type, etc.)
+    let(:membership_guidelines_type_name) { AdminOnly::MasterChecklistType::MEMBER_GUIDELINES_LIST_TYPE }
+
+    # TODO get this from AppConfiguration later / stub (the membership guidelines list type, etc.)
+    let(:guideline_list_type) { create(:master_checklist_type, name: membership_guidelines_type_name) }
+    let(:guideline_master) { create(:master_checklist, master_checklist_type: guideline_list_type) }
+
     describe '.completed' do
       it 'empty if no UserChecklist is completed' do
         create(:user_checklist)
@@ -94,18 +101,9 @@ RSpec.describe UserChecklist, type: :model do
     end
 
     describe '.membership_guidelines_for_user' do
-      let(:membership_guidelines_type_name) { AdminOnly::MasterChecklistType::MEMBER_GUIDELINES_LIST_TYPE }
-
       let(:user1) { create(:user, first_name: 'User1') }
 
-      # TODO get this from AppConfiguration later / stub (the membership guidelines list type, etc.)
-      let(:guideline_list_type) { create(:master_checklist_type, name: membership_guidelines_type_name) }
-      let(:guideline_master) { create(:master_checklist, master_checklist_type: guideline_list_type) }
-
       before(:each) do
-        # create a Master for Membership Guidelines
-        # TODO get this from AppConfiguration later / stub (the membership guidelines list type, etc.)
-
         create(:user_checklist, :completed, user: user1,
                master_checklist: guideline_master,
                num_completed_children: 3)
@@ -143,6 +141,47 @@ RSpec.describe UserChecklist, type: :model do
 
         expect(described_class.membership_guidelines_for_user(user1).count).to eq 2
         expect(described_class.membership_guidelines_for_user(user1).last).to eq second_list
+      end
+    end
+
+    describe '.most_recent_completed_top_level_guideline' do
+      let(:user1) { build(:user, first_name: 'User1') }
+      let(:completed_checklist) { build(:user_checklist, :completed, user: user1) }
+      let(:found_top_level) { double("#{described_class}::ActiveRecord_Relation") }
+
+      before(:each) do
+        allow(described_class).to receive(:top_level_for_current_membership_guidelines)
+                                     .and_return(found_top_level)
+        allow(found_top_level).to receive(:completed_by_user).and_return(found_top_level)
+        allow(found_top_level).to receive(:order).and_return(found_top_level)
+        allow(found_top_level).to receive(:last).and_return(completed_checklist)
+      end
+
+      it 'gets all top level guideline checklists' do
+        expect(described_class).to receive(:top_level_for_current_membership_guidelines)
+                                     .and_return(found_top_level)
+
+        described_class.most_recent_completed_top_level_guideline(user1)
+      end
+
+      it 'gets those completed by the user' do
+        expect(found_top_level).to receive(:completed_by_user)
+                                     .with(user1)
+                                     .and_return(found_top_level)
+        described_class.most_recent_completed_top_level_guideline(user1)
+      end
+
+      it 'orders by the date_completed' do
+        expect(found_top_level).to receive(:order)
+                                     .with(:date_completed)
+                                     .and_return(found_top_level)
+        described_class.most_recent_completed_top_level_guideline(user1)
+      end
+
+      it 'gets the last one which == the most recently completed' do
+        expect(found_top_level).to receive(:last)
+                                     .and_return(completed_checklist)
+        expect(described_class.most_recent_completed_top_level_guideline(user1)).to eq(completed_checklist)
       end
     end
   end
@@ -209,7 +248,6 @@ RSpec.describe UserChecklist, type: :model do
       expect(three_complete_two_uncomplete_list.all_that_are_completed.size + three_complete_two_uncomplete_list.all_that_are_uncompleted.size).to eq(6)
     end
   end
-
 
   describe 'percent_complete' do
     context 'no children' do
@@ -365,7 +403,6 @@ RSpec.describe UserChecklist, type: :model do
       end
     end
   end
-
 
   describe 'all_changed_by_completion_toggle' do
     describe 'is set to completed if it is not complete' do
@@ -741,7 +778,6 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   describe 'set_complete_including_children' do
     # Would be good to stub things so these tests don't hit the db so much
     it 'sets self to complete' do
@@ -808,7 +844,6 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   describe 'set_uncomplete_including_children' do
     # Would be good to stub things so these tests don't hit the db so much
     it 'sets self to uncomplete' do
@@ -847,7 +882,6 @@ RSpec.describe UserChecklist, type: :model do
     end
   end
 
-
   describe 'set_complete_update_parent' do
     let(:given_date_completed) { Time.parse("2020-10-31") }
 
@@ -880,7 +914,6 @@ RSpec.describe UserChecklist, type: :model do
       end
     end
   end
-
 
   describe 'set_uncomplete_update_parent' do
     it 'returns empty list if the checklist is already uncomplete' do

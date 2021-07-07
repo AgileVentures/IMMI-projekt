@@ -84,6 +84,20 @@ class UserChecklist < ApplicationRecord
     where(master_checklist: AdminOnly::MasterChecklist.latest_membership_guideline_master)
   end
 
+  # Get the most recently completed top level guidelines for the user
+  def self.most_recent_completed_top_level_guideline(user)
+    UserChecklist.top_level_for_current_membership_guidelines
+                 .completed_by_user(user)
+                 .order(:date_completed).last
+  end
+
+  # Get the top level guidelines created on or after the date for the user, ordered by created_at
+  def self.most_recently_created_top_level_guidelines(user, date = Date.current)
+    UserChecklist.top_level_for_current_membership_guidelines
+                 .for_user(user)
+                 .where('created_at >= ?', date)
+                 .order(:created_at)
+  end
   # --------------------------------------------------------------------------------------
 
   # Add .includes to the query used to get all descendants to help avoid N+1 queries
