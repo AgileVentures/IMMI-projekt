@@ -19,7 +19,8 @@
         %h4.steps-title= t('.steps_to_renew')
         %ol.steps
 
-          %li.step.membership-ethical-guidelines= render partial: 'ethical_guidelines_link_or_checklist', locals: { user: user }
+          %li.step.membership-ethical-guidelines= render partial: 'ethical_guidelines_link_or_checklist',
+            locals: { user: user, find_or_create_method: :find_or_create_on_or_after_latest_membership_start }
 
           %li.step.upload-qualification-file= render partial: 'uploaded_files_requirement.html.haml', locals: { user: user }
 

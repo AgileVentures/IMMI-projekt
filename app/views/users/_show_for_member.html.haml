@@ -34,7 +34,8 @@
 = render partial: 'shf_applications/show_business_categories',
                   locals: { shf_application: user.shf_application }
 
-%p.membership-guidelines-checklist= render partial: 'ethical_guidelines_link_or_checklist', locals: {user: user} unless show_renewal_info
+%p.membership-guidelines-checklist= render partial: 'ethical_guidelines_link_or_checklist',
+  locals: {user: user, find_or_create_method: :find_or_create_membership_guidelines_list_for } unless show_renewal_info
 
 = render partial: 'show_uploaded_files_section_row_cols',  locals: { user: user }
 
