@@ -42,8 +42,8 @@ RSpec.describe RequirementsForRenewal, type: :model do
           context 'user has an approved SHF application' do
             before(:each) { allow(user).to receive(:has_approved_shf_application?).and_return(true) }
 
-            context 'user has agreed to the membership guidelines' do
-              before(:each) { allow(subject).to receive(:membership_guidelines_checklist_done?).and_return(true) }
+            context 'user has agreed to the membership guidelines on or after the start of the most recent membership' do
+              before(:each) { allow(subject).to receive(:checklist_done_on_or_after_latest_membership_start?).and_return(true) }
 
               it 'true if documents have been uploaded during the current membership term' do
                 allow(subject).to receive(:doc_uploaded_during_this_membership_term?).and_return(true)
@@ -58,8 +58,8 @@ RSpec.describe RequirementsForRenewal, type: :model do
               end
             end
 
-            it 'false if the user has not agreed to the membership guidelines' do
-              allow(subject).to receive(:membership_guidelines_checklist_done?).and_return(false)
+            it 'false if the user has not agreed to the membership guidelines on or after the start of the most recent membership' do
+              expect(subject).to receive(:checklist_done_on_or_after_latest_membership_start?).and_return(false)
 
               expect(subject).not_to receive(:doc_uploaded_during_this_membership_term?)
               expect(subject.requirements_excluding_payments_met?(user)).to be_falsey
@@ -109,6 +109,16 @@ RSpec.describe RequirementsForRenewal, type: :model do
         end
       end
     end
+
+
+    describe '.checklist_done_on_or_after_latest_membership_start?' do
+
+      it 'calls the UserChecklistManager to see if a checklist was done on or after the start of the latest membership for the user' do
+        expect(UserChecklistManager).to receive(:checklist_done_on_or_after_latest_membership_start?)
+                                          .with(user)
+        described_class.checklist_done_on_or_after_latest_membership_start?(user)
+      end
+    end
   end
 
 
@@ -151,7 +161,8 @@ RSpec.describe RequirementsForRenewal, type: :model do
 
         context 'membership guidelines ARE agreed to' do
           before(:each) do
-            allow(UserChecklistManager).to receive(:completed_membership_guidelines_checklist?).and_return(true)
+            allow(subject).to receive(:checklist_done_on_or_after_latest_membership_start?)
+                              .and_return(true)
             allow_any_instance_of(UserChecklist).to receive(:set_complete_including_children)
           end
 
@@ -166,10 +177,6 @@ RSpec.describe RequirementsForRenewal, type: :model do
                 # set today to a day that the member can renew early
                 travel_to(last_day - days_can_renew_early + 2) do
                   expect(current_member.valid_date_for_renewal?(Date.current)).to be_truthy
-                  expect(current_member.has_approved_shf_application?).to be_truthy
-                  expect(current_member.membership_guidelines_checklist_done?).to be_truthy
-                  expect(subject.doc_uploaded_during_this_membership_term?(current_member)).to be_truthy
-
                   expect(subject.requirements_excluding_payments_met?(current_member)).to be_truthy
                   expect(subject.payment_requirements_met?(current_member)).to be_truthy
 
@@ -181,9 +188,6 @@ RSpec.describe RequirementsForRenewal, type: :model do
                 # set today to a day that is too early to renew
                 travel_to(last_day - days_can_renew_early - 2) do
                   expect(current_member.today_is_valid_renewal_date?).to be_falsey
-                  expect(current_member.membership_guidelines_checklist_done?).to be_truthy
-                  expect(subject.doc_uploaded_during_this_membership_term?(current_member)).to be_truthy
-
                   expect(subject.requirements_met?({ user: current_member })).to be_falsey
                 end
               end
@@ -222,11 +226,8 @@ RSpec.describe RequirementsForRenewal, type: :model do
 
               travel_to(last_day - 3) do
                 expect(approved_and_paid.today_is_valid_renewal_date?).to be_truthy
-                expect(approved_and_paid.membership_guidelines_checklist_done?).to be_truthy
 
-                expect(approved_and_paid.has_approved_shf_application?).to be_truthy
                 expect(subject.doc_uploaded_during_this_membership_term?(approved_and_paid)).to be_falsey
-
                 expect(subject.requirements_excluding_payments_met?(approved_and_paid)).to be_falsey
                 expect(subject.payment_requirements_met?(approved_and_paid)).to be_truthy
 
