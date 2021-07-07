@@ -69,7 +69,8 @@ RSpec.describe MembershipsManager, type: :model do
   end
 
 
-  describe 'most_recent_membership' do
+
+  describe '.most_recent_membership' do
     let(:membership_ending_2021_12_31) {  build(:membership, last_day: Date.new(2021, 12, 31)) }
 
     before(:each) do
@@ -80,24 +81,33 @@ RSpec.describe MembershipsManager, type: :model do
 
     it "gets the user's memberships" do
       expect(user).to receive(:memberships).and_return(mock_memberships)
-      subject.most_recent_membership(user)
+      described_class.most_recent_membership(user)
     end
 
     it 'returns nil if there are no memberships for the user' do
       allow(mock_memberships).to receive(:empty?).and_return(true)
-      expect(subject.most_recent_membership(user)).to be_nil
+      expect(described_class.most_recent_membership(user)).to be_nil
     end
 
     it 'sorts them with the most_recent_membership method' do
-      allow(subject).to receive(:most_recent_membership_method)
+      allow(described_class).to receive(:most_recent_membership_method)
                           .and_return(:some_method)
       expect(mock_memberships).to receive(:order).with(:some_method)
-      subject.most_recent_membership(user)
+      described_class.most_recent_membership(user)
     end
 
     it 'returns the last one' do
       expect(mock_memberships).to receive(:last).and_return(membership_ending_2021_12_31)
-      expect(subject.most_recent_membership(user)).to eq membership_ending_2021_12_31
+      expect(described_class.most_recent_membership(user)).to eq membership_ending_2021_12_31
+    end
+  end
+
+
+  describe 'most_recent_membership' do
+    it 'calls the class method' do
+      u = build(:user)
+      expect(described_class).to receive(:most_recent_membership).with(u)
+      subject.most_recent_membership(u)
     end
   end
 

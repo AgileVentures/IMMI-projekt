@@ -76,15 +76,19 @@ class MembershipsManager
   end
 
 
-  # ---------------------------------------------------------------------------------
-
   # @return [nil | Membership] - nil if no Memberships,
   # else the one with the latest last day
-  def most_recent_membership(user)
+  def self.most_recent_membership(user)
     memberships = user.memberships
     return nil if memberships.empty?
 
     memberships.order(most_recent_membership_method)&.last
+  end
+
+  # ---------------------------------------------------------------------------------
+
+  def most_recent_membership(user)
+    self.class.most_recent_membership(user)
   end
 
 
