@@ -96,7 +96,7 @@ Feature:  Member home (account) page
     And I should see t("users.show.is_a_member")
     And I should see t("users.show.membership_term_last_day")
     And the user is paid through "2018-12-31"
-#   TODO And user membership last day is "2018-12-31"
+    And the last day of membership for "emma-member@example.com" should be 2018-12-31
 
 
   # =======================

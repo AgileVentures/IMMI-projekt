@@ -14,6 +14,7 @@
 - else
   - user_checklist = UserChecklistManager.send(find_or_create, user).root
   - first_incomplete = UserChecklistManager.first_incomplete_membership_guideline_section_for(user)
+
   = link_to t('users.ethical_guidelines_link_or_checklist.agree_to_guidelines'), user_user_checklist_progress_path(user, first_incomplete), class: 'btn btn-sm btn-primary'
 
   - progress_percent = user_checklist.percent_complete
