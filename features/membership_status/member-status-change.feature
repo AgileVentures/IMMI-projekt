@@ -17,11 +17,11 @@ Feature: Membership status updated due to payments or expiration
     And the Membership Ethical Guidelines Master Checklist exists
 
     Given the following users exist
-      | email                             | admin | membership_status | member | membership_number | agreed_to_membership_guidelines |
-      | emma@mutts.com                    |       | current_member    | true   | 1001              | true                            |
-      | bob-former-member@snarkybarky.com |       | former_member     | true   | 1002              | true                            |
-      | lars@newapp.com                   |       | not_a_member      | false  |                   | true                            |
-      | admin@shf.se                      | true  |                   | false  |                   |                                 |
+      | email                             | admin | membership_status | member | membership_number |
+      | emma@mutts.com                    |       | current_member    | true   | 1001              |
+      | bob-former-member@snarkybarky.com |       | former_member     | true   | 1002              |
+      | lars@newapp.com                   |       | not_a_member      | false  |                   |
+      | admin@shf.se                      | true  |                   | false  |                   |
 
     Given the following companies exist:
       | name                 | company_number | email                  | region    |
@@ -55,6 +55,11 @@ Feature: Membership status updated due to payments or expiration
       | user_email     | file name | description                               |
       | emma@mutts.com | image.png | Image of a class completion certification |
 
+    And the following users have agreed to the Membership Ethical Guidelines:
+      | email                             | date agreed to |
+      | emma@mutts.com                    | 2017-12-31     |
+      | bob-former-member@snarkybarky.com | 2018-02-27     |
+
 
 
   # TODO should these be put into already existing .feature files?
@@ -67,6 +72,7 @@ Feature: Membership status updated due to payments or expiration
     And I am logged in as "emma@mutts.com"
     When I am on the "user details" page for "emma@mutts.com"
     Then I should see "1001"
+    And my membership expiration date should be 2018-12-31
     When I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     Then I should see t("payments.success.success")
@@ -117,17 +123,12 @@ Feature: Membership status updated due to payments or expiration
 
 
   @time_adjust
-  Scenario: Membership payment after grace period (after expiration)
+  Scenario: Cannot pay membership fee after grace period (is now a former member)
     Given the date is set to "2021-01-01"
     And I am logged in as "bob-former-member@snarkybarky.com"
-    And I am on the "user details" page for "bob-former-member@snarkybarky.com"
+    And I am on the "user account" page for "bob-former-member@snarkybarky.com"
     And I am not a member
-    When I click on t("menus.nav.members.pay_membership")
-    And I complete the membership payment
-    Then I should see t("payments.success.success")
-    And I should be a member
-    And my membership expiration date should be 2021-12-31
-    And I should see "2021-12-31"
+    Then the link button t("users.show.pay_membership") should be disabled
 
 
   # H-BRANDING (LICENSE) PAYMENT
