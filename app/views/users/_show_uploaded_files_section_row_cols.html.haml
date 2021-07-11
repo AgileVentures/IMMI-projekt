@@ -21,4 +21,5 @@
 
   .row.justify-content-center
     .col-md-3
-      = render partial: 'upload_file_btn', locals: { user: user }
+      - upload_btn_title = user.uploaded_files.blank? ? t('users.uploaded_files_requirement.upload_file') : t('users.uploaded_files_requirement.upload_another')
+      = render partial: 'upload_file_btn',  locals: { user: user, text: upload_btn_title }

@@ -36,6 +36,12 @@ module AdminOnly
     # This ensures that only one AppSettings row is created
     validates_inclusion_of :singleton_guard, in: [0]
 
+    validates_presence_of :membership_term_duration
+    validates_presence_of :membership_expired_grace_period_duration
+    validates_presence_of :membership_expiring_soon_days
+    validates_presence_of :payment_too_soon_days
+
+
     has_attached_file :chair_signature,
                       url: :url_for_images,
                       default_url: 'chair_signature.png',
@@ -113,6 +119,21 @@ module AdminOnly
     after_save :update_site_meta_image_info
 
     after_update :clear_image_caches
+
+
+    # Convert the string stored in the DB to a Duration (required for Rails version < 6)
+    # TODO: Rails 6 will read and store the value as a Duration (no conversion to/from String required)
+    def membership_term_duration
+      ::ActiveSupport::Duration.parse(self[:membership_term_duration])
+    end
+
+
+    # Convert the string stored in the DB to a Duration (required for Rails version < 6)
+    # TODO: Rails 6 will read and store the value as a Duration (no conversion to/from String required)
+    def membership_expired_grace_period_duration
+      ::ActiveSupport::Duration.parse(self[:membership_expired_grace_period_duration])
+    end
+
 
     def clear_image_caches
       if saved_change_to_shf_logo_file_name?

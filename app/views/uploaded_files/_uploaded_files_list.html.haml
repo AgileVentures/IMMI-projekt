@@ -1,26 +1,29 @@
+-# must do this because Rails 5.x is inconsistent about using locals v. local_assigns, especially with .js files
+- search_parameters = local_assigns.fetch(:search_params, nil)
+- uploaded_fs = local_assigns.fetch(:uploaded_files, [])
 #uploaded-files
   .table-responsive
     %table.table.table-hover.table-sm
       %thead
         %tr
           - if current_user.admin?
-            %th.owner= sort_link(search_params, :user_full_name,
+            %th.owner= sort_link(search_parameters, :user_full_name,
                 t('.owner'), {}, { class: 'applications_pagination', remote: true })
-          %th.file_name= sort_link(search_params, :actual_file_file_name,
+          %th.file_name= sort_link(search_parameters, :actual_file_file_name,
                 t('.file_name'), {},{ class: 'applications_pagination', remote: true })
-          %th.description= sort_link(search_params, :description,
+          %th.description= sort_link(search_parameters, :description,
                 t('.description'), {}, { class: 'applications_pagination', remote: true })
           %th.application= t('.associated_with_application')
-          %th.file-size= sort_link(search_params, :actual_file_file_size,
+          %th.file-size= sort_link(search_parameters, :actual_file_file_size,
                 "#{t('.file_size')} kb", {}, { class: 'applications_pagination', remote: true })
-          %th.updated-at= sort_link(search_params, :actual_file_updated_at,
+          %th.updated-at= sort_link(search_parameters, :actual_file_updated_at,
                 "#{t('.updated_at')} (UTC)", {}, { class: 'applications_pagination', remote: true })
           %th.view= t('view')
           %th.edit= t('edit')
           %th.delete= t('delete')
 
       %tbody.uploaded-files
-        - uploaded_files.each do |uploaded_file|
+        - uploaded_fs.each do |uploaded_file|
           %tr.uploaded_file
             - if current_user.admin?
               %td.owner= link_to uploaded_file.user.full_name, uploaded_file.user

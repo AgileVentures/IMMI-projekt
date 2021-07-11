@@ -7,7 +7,7 @@ Feature: A user can edit their company only if they are a current member
 
   Background:
     Given the App Configuration is not mocked and is seeded
-    And the grace period is 4 days
+    And the grace period is 0 years, 0 months, and 4 days
 
     And the Membership Ethical Guidelines Master Checklist exists
 

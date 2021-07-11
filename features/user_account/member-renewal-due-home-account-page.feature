@@ -25,10 +25,10 @@ Feature:  Member home (account) page when renewal is due or close to it
       | admin@shf.se                           | true  |                   |                   |        |              |                          |
 
     And the following users have agreed to the Membership Ethical Guidelines:
-      | email                                  |
-      | member-all-reqs-met@example.com        |
-      | member-no-docs-uploaded@example.com    |
-      | member-lapsed-all-reqs-met@example.com |
+      | email                                  | agreed to date |
+      | member-all-reqs-met@example.com        |                |
+      | member-no-docs-uploaded@example.com    |                |
+      | member-lapsed-all-reqs-met@example.com | 2018-06-01     |
 
     And the following regions exist:
       | name      |

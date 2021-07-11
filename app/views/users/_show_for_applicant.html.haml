@@ -33,7 +33,8 @@
             = link_to t('.apply_4_membership'), new_shf_application_path, class: 'btn btn-primary btn-sm'
 
 
-        %li.step.membership-ethical-guidelines= render partial: 'ethical_guidelines_link_or_checklist', locals: {user: user}
+        %li.step.membership-ethical-guidelines= render partial: 'ethical_guidelines_link_or_checklist.html.haml',
+          locals: { user: user, find_or_create_method: :find_or_create_membership_guidelines_list_for }
 
         %li.step.pay-membership-fee
           - if user.allowed_to_pay_member_fee?

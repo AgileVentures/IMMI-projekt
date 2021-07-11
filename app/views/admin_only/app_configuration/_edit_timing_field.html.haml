@@ -1,0 +1,24 @@
+:ruby
+  # This partial expects these locals:
+  #   form [Form] - form this belongs to
+  #   title [String] - title/name of the field
+  #   css_class [String] - CSS class for the form-row and number field
+  #   description [String] - (optional) description of the field
+  #   min [Integer] - (optional) minimum value allowed (defaults to 0)
+  #   max [Integer] - (optional) maximum value allowed
+  #
+  field_name = css_class.underscore.to_sym
+  min_value = local_assigns.fetch(:min, 0)
+  max_value = local_assigns.fetch(:max, nil)
+  field_options = { min: min_value, class: "form-control number #{css_class}" }
+  field_options.merge({ max: max_value }) if max_value
+%div.timing-days{ class: css_class }
+  .form-row
+    .col-sm-12
+      .form-inline
+        = form.label field_name, "#{title}:",
+          class: 'control-label field-label'
+        = form.number_field field_name, field_options
+        = t('days')
+  - unless description.empty?
+    %p.description= description

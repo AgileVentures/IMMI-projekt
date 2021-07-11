@@ -1,0 +1,25 @@
+:ruby
+  # This partial expects these locals:
+  #   duration [ActiveSupport::Duration] - the duration to display
+  #   duration_name [Symbol or String] - base name of the duration. '_duration' will be added,
+  #     then the duration part (ex: _day, _month, _year)
+  #
+  duration_base = local_assigns.fetch(:duration_name, '')
+  duration_appended = "#{duration_base}_duration"
+  duration_years = "#{duration_appended}_years".to_sym
+  duration_months =  "#{duration_appended}_months".to_sym
+  duration_days =  "#{duration_appended}_days".to_sym
+= number_field_tag duration_years,
+            duration.parts[:years],
+            class: 'form-control number', min: 0, max: 11
+= label_tag duration_years, t('years'), class: 'control-label field-label'
+
+= number_field_tag duration_months,
+            duration.parts[:months],
+            class: 'form-control number', min: 0, max: 11
+= label_tag duration_months, t('months'), class: 'control-label field-label'
+
+= number_field_tag duration_days,
+            duration.parts[:days],
+            class: 'form-control number', min: 0, max: 365
+= label_tag duration_days, t('days'), class: 'control-label field-label'

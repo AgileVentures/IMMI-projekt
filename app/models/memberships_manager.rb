@@ -49,7 +49,7 @@ class MembershipsManager
 
   # @return [Duration] - the number of days after the end of a membership that a user can renew
   def self.grace_period
-    ActiveSupport::Duration.parse(AdminOnly::AppConfiguration.config_to_use.membership_expired_grace_period_duration)
+    AdminOnly::AppConfiguration.config_to_use.membership_expired_grace_period_duration
   end
 
 
@@ -76,15 +76,19 @@ class MembershipsManager
   end
 
 
-  # ---------------------------------------------------------------------------------
-
   # @return [nil | Membership] - nil if no Memberships,
   # else the one with the latest last day
-  def most_recent_membership(user)
+  def self.most_recent_membership(user)
     memberships = user.memberships
     return nil if memberships.empty?
 
     memberships.order(most_recent_membership_method)&.last
+  end
+
+  # ---------------------------------------------------------------------------------
+
+  def most_recent_membership(user)
+    self.class.most_recent_membership(user)
   end
 
 

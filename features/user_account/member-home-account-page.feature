@@ -58,6 +58,10 @@ Feature:  Member home (account) page
       | email                   | first_day | last_day   | notes |
       | emma-member@example.com | 2018-01-1 | 2018-12-31 |       |
 
+    And the following users have agreed to the Membership Ethical Guidelines:
+      | email                   | date agreed to |
+      | emma-member@example.com | 2018-01-1      |
+
     Given I am logged in as "emma-member@example.com"
     And I am on the "user account" page for "emma-member@example.com"
     Then I am a current member

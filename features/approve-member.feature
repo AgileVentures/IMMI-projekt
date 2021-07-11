@@ -42,6 +42,8 @@ Feature: Admin approves a member
       | hans@happymutts.se    | 5562252998     | dog grooming | under_review |
       | anna@nosnarkybarky.se | 5560360793     | rehab        | under_review |
 
+    # ====================================================================================
+
   @selenium
   Scenario: Admin approves, no company exists so one is created
     Given I am logged in as "admin@shf.com"
@@ -76,7 +78,7 @@ Feature: Admin approves a member
     Then I am in "anna@nosnarkybarky.se" browser
     And I am logged in as "anna@nosnarkybarky.se"
     And I have agreed to all of the Membership Guidelines
-    And I am on the "user details" page for "anna@nosnarkybarky.se"
+    And I am on the "user account" page for "anna@nosnarkybarky.se"
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
     And I should see t("payments.success.success")

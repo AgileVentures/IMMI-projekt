@@ -11,6 +11,38 @@
     font-weight: bold;
   }
 
+  .description {
+    font-size: smaller;
+    font-weight: normal;
+    margin-top: -0.5rem;
+  }
+
+  .empty-warning {
+    color: $missing-info-color;
+    font-weight: bold;
+  }
+
+  .membership-expired-grace-period,
+  .membership-term-duration {
+    .duration {
+      margin-left: 2rem;
+    }
+  }
+
+  .duration {
+    .field-label {
+      font-weight: normal;
+      margin-right: 1.5rem;
+    }
+  }
+
+  .durations-timings {
+    .number {
+      margin-right: 0.5rem;
+      text-align: right;
+    }
+  }
+
   .card {
     margin: 3px;
 
@@ -70,11 +102,40 @@
     margin-top: 2rem;
   }
 
+  .description {
+    margin-top: 0;
+  }
+
   .form-check {
     line-height: 1em;
   }
 
-  .payment-too-soon-days {
-    width: 5em;
+  .form-row {
+    margin-top: 1rem;
+  }
+
+  .field-label {
+    margin-right: 0.5rem;
+  }
+
+
+
+  .durations-timings {
+
+    .form-control {
+      padding: 0.25rem;
+    }
+
+    .number {
+      margin-right: 0.5rem;
+    }
+
+    .timing-days {
+      input {
+        text-align: right;
+        width: 4rem;
+      }
+    }
+
   }
 }

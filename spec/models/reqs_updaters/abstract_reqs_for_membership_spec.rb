@@ -11,7 +11,7 @@ RSpec.describe AbstractReqsForMembership, type: :model do
   let(:subject) { AbstractReqsForMembership }
   let(:user) { build(:user) }
   let(:yesterday) { Date.current - 1.day }
-  let(:jan_1) { Date.new(2017,1,1) }
+  let(:jan_1) { Date.new(2017, 1, 1) }
 
   describe '.has_expected_arguments?' do
 
@@ -32,17 +32,16 @@ RSpec.describe AbstractReqsForMembership, type: :model do
   describe '.requirements_excluding_payments_met?' do
 
     it 'subclasses must define this; raises NoMethodError' do
-      expect{subject.requirements_excluding_payments_met?({})}.to raise_error NoMethodError
+      expect { subject.requirements_excluding_payments_met?({ }) }.to raise_error NoMethodError
     end
   end
-
 
   describe '.requirements_met?' do
 
     it 'for a specific date: passes that date to the methods called' do
       expect(subject).to receive(:requirements_excluding_payments_met?)
-                            .with(user, yesterday)
-                            .and_return(true)
+                           .with(user, yesterday)
+                           .and_return(true)
       expect(subject).to receive(:payment_requirements_met?)
                            .with(user, yesterday)
                            .and_return(true)
@@ -58,7 +57,6 @@ RSpec.describe AbstractReqsForMembership, type: :model do
     end
   end
 
-
   describe '.payment_requirements_met?' do
 
     it 'result = user.payments_current_as_of?' do
@@ -73,14 +71,13 @@ RSpec.describe AbstractReqsForMembership, type: :model do
     it 'for a specific date: it passes that date to payments_current_as_of?' do
       u = build(:user)
       expect(u).to receive(:payments_current_as_of?)
-                   .with(yesterday).and_return(true)
+                     .with(yesterday).and_return(true)
       expect(subject.payment_requirements_met?(u, yesterday)).to be_truthy
       expect(u).to receive(:payments_current_as_of?)
-                   .with(yesterday).and_return(false)
+                     .with(yesterday).and_return(false)
       expect(subject.payment_requirements_met?(u, yesterday)).to be_falsey
     end
   end
-
 
   describe '.membership_guidelines_checklist_done?' do
     it 'calls UserChecklistManager to see if the user has completed the Ethical guidelines checklist' do
@@ -89,6 +86,4 @@ RSpec.describe AbstractReqsForMembership, type: :model do
       subject.membership_guidelines_checklist_done?(user)
     end
   end
-
-
 end

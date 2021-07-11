@@ -1,18 +1,20 @@
--# This partial expects these locals:
--#
--#  user - the user the membership guidelines checklist belongs to
-
+:ruby
+  # This partial expects these locals:
+  #  user - the user the membership guidelines checklist belongs to
+  #  find_or_create_method - method used to find or create the membership guidelines checklist
+  #    defaults to :find_or_create_membership_guidelines_list_for
+- find_or_create = local_assigns.fetch(:find_or_create_method, :find_or_create_membership_guidelines_list_for)
 - if UserChecklistManager.completed_membership_guidelines_checklist?(user)
   %p
     = complete_check_icon(html_options: {class: 'is-complete'})
-    = t('.agreed_to') + ' '
+    = t('users.ethical_guidelines_link_or_checklist.agreed_to', date: UserChecklistManager.membership_guidelines_list_for(user)&.date_completed.to_date.to_s) + ' '
     = link_to  'https://sverigeshundforetagare.se/medlemsatagande/', target: '_blank' do
-      = t('.membership_guidelines')
+      = t('users.ethical_guidelines_link_or_checklist.membership_guidelines')
       %sup= external_link_icon
 - else
-  - user_checklist = UserChecklistManager.find_or_create_membership_guidelines_list_for(user).root
+  - user_checklist = UserChecklistManager.send(find_or_create, user).root
   - first_incomplete = UserChecklistManager.first_incomplete_membership_guideline_section_for(user)
-  = link_to t('.agree_to_guidelines'), user_user_checklist_progress_path(user, first_incomplete), class: 'btn btn-sm btn-primary'
+  = link_to t('users.ethical_guidelines_link_or_checklist.agree_to_guidelines'), user_user_checklist_progress_path(user, first_incomplete), class: 'btn btn-sm btn-primary'
 
   - progress_percent = user_checklist.percent_complete
   .completed-progress-bar

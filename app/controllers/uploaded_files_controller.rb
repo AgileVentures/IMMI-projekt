@@ -8,7 +8,7 @@ class UploadedFilesController < ApplicationController
   def index
     uploaded_files_for_current_user = policy_scope(UploadedFile)
     @search_params = uploaded_files_for_current_user.ransack(params[:q])
-    @uploaded_files = @search_params.result.includes(:user).includes(:shf_application).order(:user_id)
+    @uploaded_files = @search_params.result.includes(:user).includes(:shf_application) #.order(:user_id)
 
     respond_to :js, :html
   end

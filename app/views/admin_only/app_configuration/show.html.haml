@@ -6,7 +6,6 @@
   .row
     .col-sm-4
       %h2 Site Meta Information
-
   .section
     .row
       .col-sm-10
@@ -52,7 +51,6 @@
   .row
     .col-sm-4
       %h2 Settings
-
   .section
     .row
       .col-sm-10
@@ -62,22 +60,46 @@
             ?
           = yes_no_span( @app_configuration.email_admin_new_app_received_enabled )
 
+  .row
+    .col
+      %h3= t('.durations.title')
+  .section.durations-timings
     .row
-      .col-sm-10
-        = field_or_none(t('.payment_too_soon_days'),
-            @app_configuration.payment_too_soon_days,
-            tag_options: {class: 'payment-too-soon-days'})
+      .col-sm-12
+        - title = t('.durations.membership_term_duration')
+        = field_or_default(title,
+          duration_i18n(@app_configuration.membership_term_duration),
+          default: content_tag( :p, "#{title}: #{t('.missing')}",
+          class: 'empty-warning') )
+
     .row
-      .col-sm-10
-        = field_or_none(t('.membership_expired_grace_period'),
-            @app_configuration.membership_expired_grace_period_duration,
-            tag_options: {class: 'membership-expired-grace-period'})
+      .col-sm-12
+        - title = t('.durations.membership_expired_grace_period_duration_title')
+        = field_or_default(title,
+         duration_i18n( @app_configuration.membership_expired_grace_period_duration),
+          default: content_tag( :p, "#{title}: #{t('.missing')}",
+          class: 'empty-warning'),
+          tag_options: {class: 'membership-expired-grace-period-duration'} )
+        %p.description= t('.durations.membership_expired_grace_period_duration')
+
+    .row
+      .col-sm-12
+        = render('show_timing', title:  t('.payment_too_soon_days_title'),
+          value: "#{@app_configuration.payment_too_soon_days} #{t('days')}",
+          description: t('.payment_too_soon_days'),
+          css_class: 'payment-too-soon-days')
+
+    .row
+      .col-sm-12
+        = render('show_timing', title:  t('.membership_expiring_soon_days_title'),
+          value: "#{@app_configuration.membership_expiring_soon_days} #{t('days')}",
+          description: t('.membership_expiring_soon_days'),
+          css_class: 'membership-expiring-soon-days')
 
   %hr
   .row
     .col-sm-4
       %h2 Checklists
-
   .section
     .row
       .col
@@ -91,7 +113,6 @@
   .row
     .col-sm-4
       %h2 Images
-
   .section
     .row
       - @app_configuration.image_attributes.sort.each do | image_attribute |

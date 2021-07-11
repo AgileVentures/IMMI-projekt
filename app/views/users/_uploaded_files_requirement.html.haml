@@ -9,16 +9,17 @@
 -#
 -#  button to upload files
 
-
 - if user.file_uploaded_during_this_membership_term?
+  - upload_btn_title = t('users.uploaded_files_requirement.upload_another')
   %p.done= complete_check_icon(html_options: {class: 'is-complete'}) + t('users.uploaded_files_requirement.have_been_uploaded')
   .row.justify-content-center.uploaded-files
     .col-11
       = render partial: 'uploaded_files/small_table_files_list', locals: { uploaded_files: user.files_uploaded_during_this_membership }
 
 - else
+  - upload_btn_title = t('users.uploaded_files_requirement.upload_file')
   %p= t('users.uploaded_files_requirement.need_to_upload')
 
 .row.justify-content-center
   .col-4
-    = render partial: 'upload_file_btn', locals: { user: user }
+    = render partial: 'upload_file_btn', locals: { user: user, text: upload_btn_title }

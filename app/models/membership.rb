@@ -43,9 +43,9 @@ class Membership < ApplicationRecord
     where(user: user).starting_on_or_after(first_day)
   end
 
-  # @return [ActiveSupport::Duration] - the membership term length as a Duration. Must use a duration so we can handle leap years.
+  # @return [ActiveSupport::Duration] - the membership term length as a Duration
   def self.term_length
-    ActiveSupport::Duration.parse(AdminOnly::AppConfiguration.config_to_use.membership_term_duration)
+    AdminOnly::AppConfiguration.config_to_use.membership_term_duration
   end
 
 

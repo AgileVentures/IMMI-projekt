@@ -1,0 +1,13 @@
+:ruby
+  # This partial expects:
+  #   title [String] - the title/name for the field
+  #   value [String] - the value to display for the field
+  #   description [String] - description/explanation for the field
+  #   css_class [String] - CSS class for the field
+  #
+= field_or_default(title, value,
+        default: content_tag( :p, "#{title}: #{t('.missing')}",
+        class: 'empty-warning'),
+        tag_options: {class: css_class} )
+- unless description.empty?
+  %p.description= description

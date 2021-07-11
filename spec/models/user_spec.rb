@@ -135,7 +135,7 @@ RSpec.describe User, type: :model do
         it 'creates a membership with last day = expiration date' do
           expiry = Date.current + 100
           new_member = create(:member_with_expiration_date, expiration_date: expiry)
-          expect(MembershipsManager.new.most_recent_membership(new_member).last_day).to eq(expiry)
+          expect(MembershipsManager.most_recent_membership(new_member).last_day).to eq(expiry)
         end
 
         it 'sets membership status to current_member if the member has a Membership that covers Date.current' do

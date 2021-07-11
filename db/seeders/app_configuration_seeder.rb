@@ -62,6 +62,7 @@ module Seeders
 
       app_config.email_admin_new_app_received_enabled = true
 
+      # Membership durations and related times
       app_config.membership_term_duration = MEMBERSHIP_TERM_DURATION_STR
       app_config.membership_expired_grace_period_duration = GRACE_PD_DURATION_STR
       app_config.payment_too_soon_days = PAYMENT_TOO_SOON_DAYS

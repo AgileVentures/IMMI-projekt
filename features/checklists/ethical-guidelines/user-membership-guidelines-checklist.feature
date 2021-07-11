@@ -13,6 +13,7 @@ Feature: User completes all, some, or none of the Membership Ethical Guidelines 
   @selenium @javascript
   Scenario: User checks all guidelines - completes the list
     Given I am logged in as "new_user@example.com"
+    And the date is set to "2021-02-03"
     And I am on the "user account" page for "new_user@example.com"
     When I click on t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines") link
     Then I should be on the "first unchecked membership guideline" page for "new_user@example.com"
@@ -46,7 +47,7 @@ Feature: User completes all, some, or none of the Membership Ethical Guidelines 
 
     When I am on the "user account" page for "new_user@example.com"
     And I should not see t("users.ethical_guidelines_link_or_checklist.agree_to_guidelines")
-    And I should see t("users.ethical_guidelines_link_or_checklist.agreed_to")
+    And I should see t("users.ethical_guidelines_link_or_checklist.agreed_to", date: '2021-02-03')
 
 
   @selenium  @javascript

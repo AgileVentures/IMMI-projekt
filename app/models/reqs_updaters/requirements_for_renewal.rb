@@ -21,11 +21,10 @@
 class RequirementsForRenewal < AbstractReqsForMembership
 
   def self.requirements_excluding_payments_met?(user, date = Date.current)
-    # can change membership status to renew (aasm gem)
     user.may_renew? &&
       user.valid_date_for_renewal?(date) &&
       user.has_approved_shf_application? &&
-      membership_guidelines_checklist_done?(user) &&
+      checklist_done_on_or_after_latest_membership_start?(user) &&
       doc_uploaded_during_this_membership_term?(user)
   end
 
@@ -37,7 +36,8 @@ class RequirementsForRenewal < AbstractReqsForMembership
     user.file_uploaded_during_this_membership_term?
   end
 
-  def self.max_days_can_still_renew
-    ActiveSupport::Duration.parse(AdminOnly::AppConfiguration.config_to_use.membership_expired_grace_period_duration).days
+
+  def self.checklist_done_on_or_after_latest_membership_start?(user)
+    UserChecklistManager.checklist_done_on_or_after_latest_membership_start?(user)
   end
 end

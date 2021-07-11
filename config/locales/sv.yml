@@ -61,7 +61,14 @@ sv:
 
   unknown: okänd
 
+  # Date and Time
   time_ago: '%{amount_of_time} sedan'
+  day: dag
+  days: dagar
+  month: månad
+  months: månader
+  year: år
+  years: år
 
   confirm_are_you_sure: &are_you_sure_confirm Är du säker?
 
@@ -308,8 +315,9 @@ sv:
         og_type: &site_og_type OG type
         twitter_card_type: &site_twitter_card_type Twitter card type
         facebook_app_id: &site_facebook_app_id Facebook Application ID
-        payment_too_soon_days: &payment_too_soon_days Number of days that a user will be warned that a payment is 'too soon'
-        membership_expired_grace_period: &membership_expired_grace_period 'Number of days a member can pay without penalty after their membership expires'
+        payment_too_soon_days: &payment_too_soon_days Number of days before term last day that a member can pay to renew (cannot pay before this)
+        membership_expired_grace_period: &membership_expired_grace_period 'Amount of time a member can pay without penalty after their membership expires'
+        membership_expiring_soon_days: &membership_expiring_soon_days Number of days before membership last day to start warning membership will end soon
 
       user_checklist:
         name: *name
@@ -1469,8 +1477,16 @@ sv:
         twitter_card_type: *site_twitter_card_type
         facebook_app_id: *site_facebook_app_id
         missing: *missing
+        durations:
+          title: &membership_durations Membership durations
+          membership_term_duration: &membership_term_duration Membership Term Length
+          membership_expired_grace_period_duration_title: &membership_expired_grace_period_duration_title Grace Period
+          membership_expired_grace_period_duration: *membership_expired_grace_period
+        payment_too_soon_days_title: &payment_too_soon_days_title Payment window
         payment_too_soon_days: *payment_too_soon_days
-        membership_expired_grace_period: *membership_expired_grace_period
+        membership_expiring_soon_days_title: &membership_expiring_soon_days_title Term ends soon window
+        membership_expiring_soon_days: *membership_expiring_soon_days
+
         membership_guideline_list: &membership_guideline_list Membership Guideline List
         membership_guideline_list_tooltip: &membership_guideline_list_tooltip Choose a top level list that will be used as the Membership Guidelines list. (Only top level lists that are in use are shown.)
         required_field: &required_field obligatoriskt fält
@@ -1491,10 +1507,21 @@ sv:
         twitter_card_type: *site_twitter_card_type
         facebook_app_id: *site_facebook_app_id
         missing: *missing
+        durations:
+          title: *membership_durations
+          membership_term_duration: *membership_term_duration
+          membership_expired_grace_period_duration_title: *membership_expired_grace_period_duration_title
+          membership_expired_grace_period_duration: *membership_expired_grace_period
+        payment_too_soon_days_title: *payment_too_soon_days_title
         payment_too_soon_days: *payment_too_soon_days
-        membership_expired_grace_period: *membership_expired_grace_period
+        membership_expiring_soon_days_title: *membership_expiring_soon_days_title
+        membership_expiring_soon_days: *membership_expiring_soon_days
+
         membership_guideline_list: *membership_guideline_list
         required_field: *required_field
+
+      show_timing:
+        missing: *missing
 
       update:
         success: Programdata uppdaterades framgångsrikt

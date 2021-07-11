@@ -16,17 +16,48 @@
 class UserChecklistManager
 
   def self.completed_membership_guidelines_checklist?(user)
-    find_or_create_membership_guidelines_list_for(user)&.all_completed?
+    if user.in_grace_period? || user.former_member?
+      find_on_or_after_latest_membership_start(user)&.all_completed?
+    else
+      membership_guidelines_list_for(user)&.all_completed?
+    end
+  end
+
+
+  def self.find_or_create_on_or_after_latest_membership_start(user)
+    latest_membership_start = MembershipsManager.most_recent_membership(user)&.first_day
+    return create_for_user_if_needed(user) unless latest_membership_start
+
+    found_guideline = UserChecklist.most_recently_created_top_level_guidelines(user, latest_membership_start).uncompleted.last
+    create_for_user_if_needed(user, guideline: found_guideline)
+  end
+
+
+  def self.find_on_or_after_latest_membership_start(user)
+    latest_membership_start = MembershipsManager.most_recent_membership(user)&.first_day
+    return nil unless latest_membership_start
+
+    UserChecklist.most_recently_created_top_level_guidelines(user, latest_membership_start).last
   end
 
 
   def self.find_or_create_membership_guidelines_list_for(user)
-    found_guidelines = membership_guidelines_list_for(user)
-    found_guidelines.nil? ? AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user) : found_guidelines
+    create_for_user_if_needed(user, guideline: membership_guidelines_list_for(user))
   end
 
+
+  def self.create_for_user_if_needed(user, guideline: nil)
+    guideline.nil? ? create_for_user(user) : guideline
+  end
+
+
+  def self.create_for_user(user)
+    AdminOnly::UserChecklistFactory.create_member_guidelines_checklist_for(user)
+  end
+
+
   # @return [ nil | UserChecklist] - return nil if there aren't any,
-  #   else return the most recently created one.
+  #   else return the most recently created top level checklist
   #   _membership_guidelines_for_user_ returns only top level checklist (the roots of any nested checklists)
   def self.membership_guidelines_list_for(user)
     UserChecklist.membership_guidelines_for_user(user)&.last
@@ -63,5 +94,14 @@ class UserChecklistManager
     return [] unless guideline_list.present?
 
     guideline_list.descendants&.send(completed_method).to_a&.sort_by { |kid| "#{kid.ancestry}-#{kid.list_position}" }
+  end
+
+
+  def self.checklist_done_on_or_after_latest_membership_start?(user)
+    latest_membership_start = MembershipsManager.most_recent_membership(user)&.first_day
+    return false unless latest_membership_start
+
+    most_recent_completed = UserChecklist.most_recent_completed_top_level_guideline(user)
+    (!!most_recent_completed && most_recent_completed.date_completed >= latest_membership_start)
   end
 end

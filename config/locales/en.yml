@@ -61,7 +61,14 @@ en:
 
   unknown: unknown
 
+  # Date and Times
   time_ago: '%{amount_of_time} ago'
+  day: day
+  days: days
+  month: month
+  months: months
+  year: year
+  years: years
 
   confirm_are_you_sure: &are_you_sure_confirm Are you sure?
 
@@ -302,8 +309,9 @@ en:
         og_type: &site_og_type OG type
         twitter_card_type: &site_twitter_card_type Twitter card type
         facebook_app_id: &site_facebook_app_id Facebook Application ID
-        payment_too_soon_days: &payment_too_soon_days Number of days that a user will be warned that a payment is 'too soon'
+        payment_too_soon_days: &payment_too_soon_days Number of days before term last day that a member can pay to renew (cannot pay before this)
         membership_expired_grace_period: &membership_expired_grace_period 'Number of days a member can pay without penalty after their membership expires'
+        membership_expiring_soon_days: &membership_expiring_soon_days Number of days before membership last day to start warning membership will end soon
 
       task_attempt:
         task_name: Task name
@@ -1464,10 +1472,19 @@ en:
         twitter_card_type: *site_twitter_card_type
         facebook_app_id: *site_facebook_app_id
         missing: *missing
+        durations:
+          title: &membership_durations Membership durations
+          membership_term_duration: &membership_term_duration Membership Term length
+          membership_expired_grace_period_duration_title: &membership_expired_grace_period_duration_title Grace Period
+          membership_expired_grace_period_duration: *membership_expired_grace_period
+        payment_too_soon_days_title: &payment_too_soon_days_title Payment window
         payment_too_soon_days: *payment_too_soon_days
+        membership_expiring_soon_days_title: &membership_expiring_soon_days_title Term ends soon window
+        membership_expiring_soon_days: *membership_expiring_soon_days
+
         membership_guideline_list: &membership_guideline_list Membership Guideline List
         membership_guideline_list_tooltip: &membership_guideline_list_tooltip Choose a top level list that will be used as the Membership Guidelines list. (Only top level lists that are in use are shown.)
-        membership_expired_grace_period: *membership_expired_grace_period
+
         required_field: &required_field required field
 
       show:
@@ -1486,13 +1503,24 @@ en:
         twitter_card_type: *site_twitter_card_type
         facebook_app_id: *site_facebook_app_id
         missing: *missing
+        durations:
+          title: *membership_durations
+          membership_term_duration: *membership_term_duration
+          membership_expired_grace_period_duration_title: *membership_expired_grace_period_duration_title
+          membership_expired_grace_period_duration: *membership_expired_grace_period
+        payment_too_soon_days_title: *payment_too_soon_days_title
         payment_too_soon_days: *payment_too_soon_days
-        membership_expired_grace_period: *membership_expired_grace_period
+        membership_expiring_soon_days_title: *membership_expiring_soon_days_title
+        membership_expiring_soon_days: *membership_expiring_soon_days
+
         membership_guideline_list: *membership_guideline_list
         required_field: *required_field
 
+      show_timing:
+        missing: *missing
+
       update:
-        success: Application data updated successfully
+        success: Application configuration was updated successfully
         error: There was a problem with updating configuration data
 
     dashboard:
