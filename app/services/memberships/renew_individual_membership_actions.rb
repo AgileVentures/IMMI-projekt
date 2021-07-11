@@ -14,7 +14,7 @@
 module Memberships
   class RenewIndividualMembershipActions < MembershipActions
 
-    LOGMSG_MEMBERSHIP_RENEWED = 'Membership renewed'
+    LOGMSG_MEMBERSHIP_RENEWED = 'Membership renewed' unless defined? LOGMSG_MEMBERSHIP_RENEWED
 
 
     def self.other_keyword_args_valid?(other_keyword_args)

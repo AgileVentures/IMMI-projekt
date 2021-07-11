@@ -12,8 +12,8 @@
 module Memberships
   class MembershipActions
 
-    SEND_EMAIL_DEFAULT = true
-    LOGMSG_INVALID_KEYWORD_ARGS = 'Invalid keyword args sent to Membership Action'
+    SEND_EMAIL_DEFAULT = true unless defined? SEND_EMAIL_DEFAULT
+    LOGMSG_INVALID_KEYWORD_ARGS = 'Invalid keyword args sent to Membership Action' unless defined? LOGMSG_INVALID_KEYWORD_ARGS
 
 
     # This is the main strategy (algorithm) for writing to the log(s) and doing the actions

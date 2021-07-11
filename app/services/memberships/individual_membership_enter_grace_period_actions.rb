@@ -13,7 +13,7 @@
 module Memberships
   class IndividualMembershipEnterGracePeriodActions < MembershipActions
 
-    LOGMSG_MEMBERSHIP_ENTERGRACEPERIOD = 'Membership entered grace period'
+    LOGMSG_MEMBERSHIP_ENTERGRACEPERIOD = 'Membership entered grace period' unless defined? LOGMSG_MEMBERSHIP_ENTERGRACEPERIOD
 
 
     def self.other_keyword_args_valid?(_other_keyword_args)
