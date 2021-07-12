@@ -6,10 +6,6 @@ LOGMSG_CHECKLIST_COMPLETED = 'Checklist completed' unless defined? LOGMSG_CHECKL
 
 LOGMSG_USER_UPDATED = 'User updated' unless defined? LOGMSG_USER_UPDATED
 
-LOGMSG_MEMBERSHIP_GRANTED = 'Membership granted' unless defined? LOGMSG_MEMBERSHIP_GRANTED
-LOGMSG_MEMBERSHIP_RENEWED = 'Membership renewed' unless defined? LOGMSG_MEMBERSHIP_RENEWED
-LOGMSG_MEMBERSHIP_REVOKED = 'Membership revoked' unless defined? LOGMSG_MEMBERSHIP_REVOKED
-
 #--------------------------
 #
 # @class MembershipStatusUpdater
@@ -96,9 +92,9 @@ class MembershipStatusUpdater
     update_membership_status(user, user, logmsg_user_updated, send_email: send_email)
   end
 
-
   # end of Notifications received from observed classes
   # -----------------------------------------------------------------------------------
+
 
   def check_grant_renew_and_status(given_user, notifier = nil, reason_update_happened = nil,
                                    send_email: send_email_default)

@@ -13,7 +13,7 @@
 module Memberships
   class BecomeFormerIndividualMemberActions < MembershipActions
 
-    LOGMSG_MEMBERSHIP_FORMER = 'Membership now a former membership'
+    LOGMSG_MEMBERSHIP_FORMER = 'Membership now a former membership' unless defined? LOGMSG_MEMBERSHIP_FORMER
 
 
     def self.other_keyword_args_valid?(_other_keyword_args)

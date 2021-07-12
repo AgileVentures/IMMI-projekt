@@ -1,0 +1,63 @@
+require 'active_support/logger'
+
+namespace :shf do
+
+  namespace :one_time do
+
+    def payments_to_change(time_range)
+      Payment.completed.where(expire_date: time_range).distinct.order(:expire_date)
+    end
+
+
+    def change_payment_expire_day_and_notes(payment, new_expire_date, task_name)
+      changed_by_task_str = "Changed by rake task #{task_name} on #{Time.now} : "
+      last_day_changed_str = "Payment expire_date changed to #{new_expire_date.iso8601}. Original expire_date was #{payment.expire_date.iso8601}."
+
+      new_note = payment.notes.to_s + ' | ' +
+         changed_by_task_str + last_day_changed_str
+      payment.update!(expire_date: new_expire_date)
+      payment.update!(notes: new_note)
+      payment
+    end
+
+
+    # Note that this was applied _before_ Membership models were implemented.  Payments tracked
+    # the start date and end (expire) date for membership.  Thus only Payments are changed.
+    desc "change Payments expire_date to 2021-Oct-31 for members and companies with expire_date 2021-01-01 to 2021-10-30"
+    task change_payments_expire_date_to_2021_10_31: [:environment] do |this_task|
+      task_name_end = this_task.to_s.split(':').last # the task name without the namespace(s)
+
+      new_expire_date = Date.new(2021, 10, 31)
+      min_expire_date = Date.new(2021, 01, 01)
+      max_expire_date = Date.new(2021, 10, 30)
+
+      log_msg_starter = "Change Membership last_days and Company branding license expire_dates to #{new_expire_date.iso8601}"
+
+      time_range = min_expire_date..max_expire_date
+
+      ActivityLogger.open(LogfileNamer.name_for("SHF-one-time-task-#{task_name_end}"), 'OneTimeRakeTask', task_name_end) do |log|
+        log.info(log_msg_starter)
+        begin
+          num_payments_changed = 0
+          payments_in_range  = payments_to_change(time_range)
+          payments_in_range.each do |payment|
+            unless payment.user_id.blank?
+              change_payment_expire_day_and_notes(payment, new_expire_date, this_task.to_s)
+              MembershipStatusUpdater.instance.payment_made(payment, send_email: false)
+              num_payments_changed += 1
+            end
+          end
+          log.info(" #{num_payments_changed} Payments updated")
+
+        rescue => error
+          error_message = ">> ERROR! Could not change membership last_day/expire_date: #{error.message}\n #{error.backtrace.join("\n")}"
+          log.error error_message
+          raise error, error_message
+        end
+
+        log.info("\n#{log_msg_starter} successful and complete.")
+      end
+    end
+  end
+
+end

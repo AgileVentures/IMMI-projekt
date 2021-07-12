@@ -15,7 +15,7 @@
 module Memberships
   class NewIndividualMembershipActions < MembershipActions
 
-    LOGMSG_MEMBERSHIP_GRANTED = 'New membership granted'
+    LOGMSG_MEMBERSHIP_GRANTED = 'New membership granted' unless defined? LOGMSG_MEMBERSHIP_GRANTED
 
 
     def self.other_keyword_args_valid?(other_keyword_args)

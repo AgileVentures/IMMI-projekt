@@ -71,12 +71,14 @@ class User < ApplicationRecord
   successful_payment_with_type_and_expire_date = "payments.status = '#{Payment::SUCCESSFUL}' AND" +
     " payments.payment_type = ? AND payments.expire_date = ?"
 
+  # FIXME: this should use the Membership(s) for the users
   scope :membership_expires_in_x_days, -> (num_days) { includes(:payments)
                                                          .where(successful_payment_with_type_and_expire_date,
                                                                 Payment::PAYMENT_TYPE_MEMBER,
                                                                 (Date.current + num_days))
                                                          .order('payments.expire_date')
                                                          .references(:payments) }
+
 
   scope :company_hbrand_expires_in_x_days, -> (num_days) { includes(:payments)
                                                              .where(successful_payment_with_type_and_expire_date,
