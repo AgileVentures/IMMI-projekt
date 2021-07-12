@@ -82,7 +82,7 @@ namespace :shf do
                                                             task_source: rakefilename)
                 log.info("A SuccessfulTaskAttempt was recorded for the one-time task #{ev_task.name} (previously run).")
               end
-              OneTimeTasker::TasksRunner.rename_rakefile(rakefilename) # this logs the files renamed
+              OneTimeTasker::TasksRunner.rename_rakefile(rakefilename, log) # this logs the files renamed AE CHANGED 20210704- added log param
             end
           end
 
