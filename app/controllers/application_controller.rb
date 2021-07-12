@@ -146,7 +146,11 @@ class ApplicationController < ActionController::Base
     @locale = I18n.default_locale
     @locale = params[:locale].to_s if params[:locale].present?
     I18n.locale = @locale
-    @language_change_allowed = request.get? || (self.is_a? Devise::SessionsController)
+    if params[:disable_language_change]
+      @language_change_allowed = false
+    else
+      @language_change_allowed = request.get? || (self.is_a? Devise::SessionsController)
+    end
   end
 
 

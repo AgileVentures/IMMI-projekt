@@ -1,21 +1,7 @@
-- content_for :javascript_for_view do
-  = javascript_include_tag HIPS_JS_CDN
-
 %header.entry-header
   - payment_type = t("payment.payment_type.#{@payment.payment_type}")
   = content_title(t('.title', payment_type: payment_type, user_name: @payment.user.full_name))
   .post-title-divider
-    %span
+    %hr
 
-#hips-checkout
-
-:javascript
-  Hips.checkout({
-          token: "#{@hips_id}",
-          target: "#hips-checkout",
-          style: {
-            'mainColor': "#{HIPS_FORM_MAIN_COLOR}",
-            'secondColor': "#{HIPS_FORM_SECONDARY_COLOR}",
-            'font': "#{HIPS_FORM_FONT}"
-          }
-         });
+= @html_snippet.html_safe

@@ -55,7 +55,6 @@ Feature: Member pays membership fee
     Then I should see t("users.renewal.renewal_overdue_warning")
     When I click on t("users.renewal.pay_membership")
     And I complete the membership payment
-    Then I should see t("payments.success.success")
     And my membership expiration date should be 2020-01-01
     And I should be a current member
 
@@ -79,16 +78,5 @@ Feature: Member pays membership fee
     Then I should see "1001"
     When I click on t("menus.nav.members.pay_membership")
     And I abandon the payment by going back to the previous page
-    Then I should not see t("payments.success.success")
-    And my membership expiration date should be 2018-12-31
-
-
-  Scenario: Member incurs error in payment processing so no payment is made
-    Given the date is set to "2018-12-30"
-    And I am logged in as "emma@mutts.com"
-    When I am on the "user account" page
-    Then I should see "1001"
-    When I click on t("menus.nav.members.pay_membership")
-    And I incur an error in payment processing
-    Then I should see t("payments.error.error")
+    Then I should not see t("payments.confirmation.success_html")
     And my membership expiration date should be 2018-12-31

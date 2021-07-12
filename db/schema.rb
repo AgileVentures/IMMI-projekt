@@ -270,6 +270,8 @@ ActiveRecord::Schema.define(version: 2021_04_04_015347) do
     t.date "start_date"
     t.date "expire_date"
     t.text "notes"
+    t.string "payment_processor"
+    t.string "klarna_id"
     t.index ["company_id"], name: "index_payments_on_company_id"
     t.index ["user_id"], name: "index_payments_on_user_id"
   end

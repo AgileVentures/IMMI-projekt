@@ -1,0 +1,85 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.playground.klarna.com/checkout/v3/orders/
+    body:
+      encoding: UTF-8
+      string: '{"locale":"sv-se","options":{"color_button":"#003a78","color_button_text":"#ffffff","color_header":"#232525","allowed_customer_types":["person","organization"]},"attachment":{"body":"{\"customer_account_info\":[{\"unique_account_identifier\":\"1\"}]}","content_type":"application/vnd.klarna.internal.emd-v2+json"},"purchase_country":"SE","purchase_currency":"SEK","order_amount":30000,"order_tax_amount":0,"merchant_reference1":"1","merchant_reference2":"1","order_lines":[{"type":"digital","name":"Medlemsavgift","quantity":1,"unit_price":30000,"tax_rate":0,"total_amount":30000,"total_tax_amount":0}],"merchant_urls":{"terms":"https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket","checkout":"https://d182a091021b.ngrok.io/anvandare/1/betalning/member_fee","confirmation":"https://d182a091021b.ngrok.io/anvandare/1/betalning/''{checkout.order.id}''","push":"https://d182a091021b.ngrok.io/anvandare/betalning/klarna_push?id=1\u0026klarna_id=''{checkout.order.id}''"}}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic UEszNzUyOV85Mzk3ZDI0NWYxOTI6b1FEWnR3WWxKSXFWUmkxUg==
+  response:
+    status:
+      code: 201
+      message: Created
+    headers:
+      Date:
+      - Mon, 10 May 2021 09:40:03 GMT
+      Content-Type:
+      - application/json
+      Content-Length:
+      - '5575'
+      Connection:
+      - keep-alive
+      Server:
+      - openresty
+      Cache-Control:
+      - max-age=0, no-cache, no-store
+      Pragma:
+      - no-cache
+      Klarna-Correlation-Id:
+      - e365aa68-42a3-4b57-8018-8a987af059a7
+      Location:
+      - https://api.playground.klarna.com/checkout/v3/orders/2b712d8d-4942-69ba-86a6-fc6f67ba759c
+      Render-Time:
+      - '33'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: '{"order_id":"2b712d8d-4942-69ba-86a6-fc6f67ba759c","status":"checkout_incomplete","purchase_country":"se","purchase_currency":"SEK","locale":"sv-SE","billing_address":{"country":"se"},"customer":{"type":"person"},"shipping_address":{"country":"se"},"order_amount":30000,"order_tax_amount":0,"order_lines":[{"type":"digital","name":"Medlemsavgift","quantity":1,"unit_price":30000,"tax_rate":0,"total_amount":30000,"total_discount_amount":0,"total_tax_amount":0}],"merchant_urls":{"terms":"https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket","checkout":"https://d182a091021b.ngrok.io/anvandare/1/betalning/member_fee","confirmation":"https://d182a091021b.ngrok.io/anvandare/1/betalning/''{checkout.order.id}''","push":"https://d182a091021b.ngrok.io/anvandare/betalning/klarna_push?id=1&klarna_id=''{checkout.order.id}''"},"merchant_reference1":"1","merchant_reference2":"1","html_snippet":"<div
+        id=\"klarna-checkout-container\" style=\"overflow: hidden;\">\n  <div id=\"klarna-unsupported-page\">\n  <style
+        type=\"text/css\">\n  @-webkit-keyframes klarnaFadeIn{from{opacity:0}to{opacity:1}}@-moz-keyframes
+        klarnaFadeIn{from{opacity:0}to{opacity:1}}@keyframes klarnaFadeIn{from{opacity:0}to{opacity:1}}#klarna-unsupported-page{opacity:0;opacity:1\\9;-webkit-animation:klarnaFadeIn
+        ease-in 1;-moz-animation:klarnaFadeIn ease-in 1;animation:klarnaFadeIn ease-in
+        1;-webkit-animation-fill-mode:forwards;-moz-animation-fill-mode:forwards;animation-fill-mode:forwards;-webkit-animation-duration:.1s;-moz-animation-duration:.1s;animation-duration:.1s;-webkit-animation-delay:5s;-moz-animation-delay:5s;animation-delay:5s;text-align:center;padding-top:64px}#klarna-unsupported-page
+        .heading{font-family: \"Klarna Headline\", Helvetica, Arial, sans-serif;color:
+        rgb(23, 23, 23);font-size: 36px;letter-spacing: -0.2px;-webkit-font-smoothing:
+        antialiased;}#klarna-unsupported-page .subheading{font-family: \"Klarna Text\",
+        \"Klarna Sans\", Helvetica, Arial, sans-serif;color: rgb(23, 23, 23);-webkit-font-smoothing:
+        antialiased;line-height: 28px;font-weight: 400;font-size: 19px;max-width:
+        640px;margin: 20px auto;}#klarna-unsupported-page .reload {cursor: pointer;outline:
+        none;-webkit-tap-highlight-color: rgba(255, 255, 255, 0);border-width: 1px;background-color:
+        rgb(38, 37, 37);border-color: rgb(38, 37, 37);padding: 15px 24px;margin-top:
+        15px;color: rgb(255, 255, 255);font-family: \"Klarna Text\", \"Klarna Sans\",
+        Helvetica, Arial, sans-serif;font-weight: 500;text-rendering: geometricprecision;font-size:
+        100%;}\n  </style>\n  <h1 class=\"heading\">Something went wrong</h1>\n  <p
+        class=\"subheading\">Sorry for any inconvenience, please try reloading the
+        checkout page or try again later.</p>\n  <p class=\"subheading\">If the problem
+        persists it maybe be because you are using an old version of the web browser
+        which is not safe nor compatible with modern web sites. For a smoother checkout
+        experience, please install a newer browser.</p>\n  <button class=\"reload\"
+        onclick=\"reloadCheckoutHandler && reloadCheckoutHandler()\">Reload checkout</button>\n  </div>\n  <script
+        type=\"text/javascript\">\n  /* <![CDATA[ */\n  var reloadCheckoutHandler;\n  (function(w,k,i,d,n,c,l){\n    w[k]=w[k]||function(){(w[k].q=w[k].q||[]).push(arguments)};\n    l=w[k].config={\n      container:w.document.getElementById(i),\n      ORDER_URL:''https://js.playground.klarna.com/eu/kco/checkout/orders/2b712d8d-4942-69ba-86a6-fc6f67ba759c'',\n      AUTH_HEADER:''KlarnaCheckout
+        x06h1nadqucrwv8mk2ie'',\n      LOCALE:''sv-SE'',\n      ORDER_STATUS:''checkout_incomplete'',\n      MERCHANT_NAME:''Your
+        business name'',\n      GUI_OPTIONS:[],\n      ALLOW_SEPARATE_SHIPPING_ADDRESS:false,\n      PURCHASE_COUNTRY:''swe'',\n      PURCHASE_CURRENCY:''SEK'',\n      TESTDRIVE:true,\n      BOOTSTRAP_SRC:''https://js.playground.klarna.com/kcoc/210506-a1c94f2/checkout.bootstrap.js'',\n      CLIENT_EVENT_HOST:''https://eu.playground.klarnaevt.com''\n    };\n    n=d.createElement(''script'');\n    c=d.getElementById(i);\n    n.async=!0;\n    n.src=l.BOOTSTRAP_SRC;\n    c.appendChild(n);\n    try{\n      ((w.Image
+        && (new w.Image))||(d.createElement && d.createElement(''img''))||{}).src
+        =\n        l.CLIENT_EVENT_HOST + ''/v1/checkout/snippet/load'' +\n        ''?sid=''
+        + l.ORDER_URL.split(''/'').slice(-1) +\n        ''&order_status='' + w.encodeURIComponent(l.ORDER_STATUS)
+        +\n        ''&timestamp='' + (new Date).getTime();\n    }catch(e){}\n    reloadCheckoutHandler
+        = function () {\n        try{\n            ((w.Image && (new w.Image))||(d.createElement
+        && d.createElement(''img''))||{}).src =\n            l.CLIENT_EVENT_HOST+''/v1/checkout/snippet/reload?sid=''+l.ORDER_URL.split(''/'').slice(-1)+\n            ''&order_status=''+w.encodeURIComponent(l.ORDER_STATUS)+''&timestamp=''+(new
+        Date()).getTime();\n            window.location.reload();\n        }catch(e){}\n    }\n  })(this,''_klarnaCheckout'',''klarna-checkout-container'',document);\n  /*
+        ]]> */\n  </script>\n  <noscript>\nPlease <a href=\"http://enable-javascript.com\">enable
+        JavaScript</a>.\n  </noscript>\n</div>","started_at":"2021-05-10T09:40:03Z","last_modified_at":"2021-05-10T09:40:03Z","options":{"allow_separate_shipping_address":false,"color_button":"#003a78","color_button_text":"#ffffff","color_header":"#232525","date_of_birth_mandatory":false,"require_validate_callback_success":false,"allowed_customer_types":["person","organization"]},"attachment":{"content_type":"application/vnd.klarna.internal.emd-v2+json","body":"{\"customer_account_info\":[{\"unique_account_identifier\":\"1\"}]}"},"external_payment_methods":[],"external_checkouts":[]}'
+  recorded_at: Mon, 10 May 2021 09:40:03 GMT
+recorded_with: VCR 6.0.0

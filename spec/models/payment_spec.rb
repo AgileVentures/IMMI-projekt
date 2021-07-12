@@ -11,7 +11,7 @@ RSpec.describe Payment, type: :model do
     allow(mock_log).to receive(:close)
   end
 
-  let(:success) { Payment::ORDER_PAYMENT_STATUS['successful'] }
+  let(:success) { Payment::ORDER_PAYMENT_STATUS['checkout_complete'] }
   let(:created) { Payment::ORDER_PAYMENT_STATUS[nil] }
 
   let(:member_pymt1) do
@@ -55,6 +55,9 @@ RSpec.describe Payment, type: :model do
     it { is_expected.to have_db_column :start_date }
     it { is_expected.to have_db_column :expire_date }
     it { is_expected.to have_db_column :notes }
+    it { is_expected.to have_db_column :hips_id }
+    it { is_expected.to have_db_column :klarna_id }
+    it { is_expected.to have_db_column :payment_processor }
   end
 
   describe 'Associations' do
@@ -70,6 +73,7 @@ RSpec.describe Payment, type: :model do
                             .in_array(Payment::ORDER_PAYMENT_STATUS.values) }
     it { is_expected.to validate_presence_of :start_date }
     it { is_expected.to validate_presence_of :expire_date }
+    it { is_expected.to validate_presence_of(:klarna_id).on(:update) }
   end
 
   describe 'Scopes' do
@@ -286,33 +290,18 @@ RSpec.describe Payment, type: :model do
       expect(described_class.order_to_payment_status(nil)).to eq 'skapad'
     end
 
-    it "returns payment status 'pending' for 'pending' order status" do
-      expect(described_class.order_to_payment_status('pending')).to eq 'avvaktan'
+    it "returns payment status 'incomplete' for 'checkout_incomplete' order status" do
+      expect(described_class.order_to_payment_status('checkout_incomplete')).to eq 'ofullständig'
     end
 
-    it "returns payment status 'paid' for 'successful' order status" do
-      expect(described_class.order_to_payment_status('successful')).to eq 'betald'
-    end
-
-    it "returns payment status 'expired' for 'expired' order status" do
-      expect(described_class.order_to_payment_status('expired')).to eq 'utgånget'
-    end
-
-    it "returns payment status 'awaiting payments' for 'awaiting_payments' order status" do
-      expect(described_class.order_to_payment_status('awaiting_payments'))
-          .to eq 'Väntar på betalning'
+    it "returns payment status 'paid' for 'checkout_complete' order status" do
+      expect(described_class.order_to_payment_status('checkout_complete')).to eq 'betald'
     end
   end
 
   describe '#successfully_completed' do
 
     context 'member fee' do
-
-      it 'status is SUCCESSFUL' do
-        expect(member_pymt2.status).to eq Payment::CREATED
-        member_pymt2.successfully_completed
-        expect(member_pymt2.status).to eq Payment::SUCCESSFUL
-      end
 
       it 'notifies MembershipStatusUpdater (observer)' do
         membership_updater_dbl = double("membership_updater")
@@ -324,12 +313,6 @@ RSpec.describe Payment, type: :model do
     end
 
     context 'branding fee' do
-
-      it 'status is SUCCESSFUL' do
-        expect(brand_pymt2.status).to eq Payment::CREATED
-        brand_pymt2.successfully_completed
-        expect(brand_pymt2.status).to eq Payment::SUCCESSFUL
-      end
 
       it 'notifies MembershipStatusUpdater (observer)' do
         membership_updater_dbl = double("membership_updater")

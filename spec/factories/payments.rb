@@ -7,7 +7,8 @@ FactoryBot.define do
     status { Payment::CREATED }
     start_date { Time.zone.today }
     expire_date { Time.zone.today + 1.year - 1.day }
-    hips_id { 'none' }
+    klarna_id { 'none' }
+    payment_processor { 'Klarna' }
     notes { nil }
     updated_at { Time.zone.now }
   end

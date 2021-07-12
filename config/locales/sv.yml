@@ -1233,8 +1233,9 @@ sv:
       title: *page_title
       something_wrong: 'Något gick fel - kontakta systemadministratören på %{admin_email}'
 
-    success:
-      success: Betalning framgångsrikt genomförd - tack!
+    confirmation:
+      success_html: Betalning framgångsrikt genomförd - tack!
+                    (Återgå till %{account_page_link})
 
     error:
       error: Det uppstod ett fel vid hantering av din betalning

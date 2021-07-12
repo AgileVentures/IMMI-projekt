@@ -71,7 +71,6 @@ Feature: Whole process of a new user creating a login, applying, being approved,
     And I am on the "user account" page for "new_user@example.com"
     When I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
-    Then I should see t("payments.success.success")
 
     Then I am in "admin@shf.se" browser
     And I am on the "all users" page

@@ -75,7 +75,7 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     And I am on the "user account" page
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
-    And I should see t("payments.success.success")
+    Then I am on the "user account" page
     And "membership@example.org" should receive an email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
     And my membership expiration date should be 2021-01-04
 
@@ -89,7 +89,7 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     And I should see t("payors.due")
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "NewCompany Needs H-brand payment"
-    Then I should see t("payments.success.success")
+    Then I am on the "user account" page
     And company number "2120000142" is paid through "2021-01-04"
     And "membership@example.org" should receive an email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
 
@@ -103,7 +103,6 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     Then I should see t("users.show_for_applicant.pay_membership")
     When I click on t("users.show_for_applicant.pay_membership")
     And I complete the membership payment
-    Then I should see t("payments.success.success")
     And "membership@example.org" should receive no email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")
 
 
@@ -122,7 +121,6 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     And I should see t("payors.due")
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "NewCompany Needs H-brand payment"
-    Then I should see t("payments.success.success")
     And company number "2120000142" is paid through "2021-11-30"
     And my membership expiration date should be 2020-12-31
 
@@ -132,7 +130,6 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     And I should see t("payors.due")
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "AlreadyInGoodStanding"
-    Then I should see t("payments.success.success")
     And company number "5562252998" is paid through "2021-12-31"
     And my membership expiration date should be 2020-12-31
     And I am logged out
@@ -146,5 +143,4 @@ Feature: Membership chair gets an email when a first-time-ever membership has be
     Then I should see t("users.show_for_applicant.pay_membership")
     When I click on t("users.show_for_applicant.pay_membership")
     And I complete the membership payment
-    Then I should see t("payments.success.success")
     And "membership@example.org" should receive no email with subject t("mailers.admin_mailer.new_membership_granted_co_hbrand_paid.subject")

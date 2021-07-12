@@ -81,7 +81,9 @@ Feature: Admin approves a member
     And I am on the "user account" page for "anna@nosnarkybarky.se"
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
-    And I should see t("payments.success.success")
+
+    Then I am on the "user account" page
+    And I should see "No More Snarky Barky"
 
     #Then I should see t("my_company", count: "1.to_i")
     # ^^ removed because it went from visible (in expanded menu) to invisible
@@ -129,8 +131,10 @@ Feature: Admin approves a member
     And I am on the "user details" page for "emma@happymutts.se"
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
-    And I should see t("payments.success.success")
 
+    Then I am on the "user account" page
+    And I should see t("activerecord.attributes.membership.status.current_member")
+    
     Then I am in "admin@shf.com" browser
     And I reload the page
 

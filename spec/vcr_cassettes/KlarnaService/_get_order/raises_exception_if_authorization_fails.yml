@@ -1,0 +1,44 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://api.playground.klarna.com/checkout/v3/orders/
+    body:
+      encoding: UTF-8
+      string: '{"locale":"sv-se","options":{"color_button":"#003a78","color_button_text":"#ffffff","color_header":"#232525","allowed_customer_types":["person","organization"]},"attachment":{"body":"{\"customer_account_info\":[{\"unique_account_identifier\":\"1\"}]}","content_type":"application/vnd.klarna.internal.emd-v2+json"},"purchase_country":"SE","purchase_currency":"SEK","order_amount":30000,"order_tax_amount":0,"merchant_reference1":"1","merchant_reference2":"1","order_lines":[{"type":"digital","name":"Medlemsavgift","quantity":1,"unit_price":30000,"tax_rate":0,"total_amount":30000,"total_tax_amount":0}],"merchant_urls":{"terms":"https://hitta.sverigeshundforetagare.se/dokument/innehall/hmarket","checkout":"https://d182a091021b.ngrok.io/anvandare/1/betalning/member_fee","confirmation":"https://d182a091021b.ngrok.io/anvandare/1/betalning/''{checkout.order.id}''","push":"https://d182a091021b.ngrok.io/anvandare/betalning/klarna_push?id=1\u0026klarna_id=''{checkout.order.id}''"}}'
+    headers:
+      Content-Type:
+      - application/json
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+      Authorization:
+      - Basic UEszNzUyOV85Mzk3ZDI0NWYxOTI6d3JvbmdfcGFzc3dvcmQ=
+  response:
+    status:
+      code: 401
+      message: Unauthorized
+    headers:
+      Date:
+      - Sun, 09 May 2021 13:30:53 GMT
+      Content-Type:
+      - text/html
+      Content-Length:
+      - '176'
+      Connection:
+      - keep-alive
+      Server:
+      - openresty
+      Www-Authenticate:
+      - Basic realm="very closed site"
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubDomains
+    body:
+      encoding: UTF-8
+      string: "<html>\r\n<head><title>401 Authorization Required</title></head>\r\n<body>\r\n<center><h1>401
+        Authorization Required</h1></center>\r\n<hr><center>openresty</center>\r\n</body>\r\n</html>\r\n"
+  recorded_at: Sun, 09 May 2021 13:30:53 GMT
+recorded_with: VCR 6.0.0

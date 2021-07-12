@@ -85,7 +85,7 @@ When(/^I fill in the( translated)? form with data:$/) do |translated, table|
     #   the field might not be ready to accept text, or
     #   the placement of the cursor might be off.
     #  Clicking in the field may help with the timing.
-    location_label = translated ? i18n_content("#{label}") : label
+    location_label = translated ? i18n_content(label) : label
     find(:fillable_field, location_label).click
     fill_in location_label, with: value
   end

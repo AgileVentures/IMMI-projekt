@@ -5,44 +5,6 @@ RSpec.describe 'selective loading of external assets on specific pages' do
   before(:each) { view.lookup_context.prefixes +=
                    ['application', 'companies', 'shf_documents'] }
 
-  describe 'hips.js' do
-
-    let(:member_payment) do
-      create(:payment, status: Payment::ORDER_PAYMENT_STATUS['successful'],
-                       expire_date: Time.zone.today + 1.day)
-    end
-
-    it 'is loaded on payments/create' do
-      allow(view).to receive(:current_user) { Visitor.new }
-      assign(:payment, member_payment)
-      assign(:hips_id, '12345')
-
-      render template: 'payments/create', layout: 'layouts/application'
-
-      expect(rendered).to have_xpath("//head/script[contains(@src,'hips.js')]",
-                                     visible: false)
-    end
-
-    it 'is not loaded on other pages' do
-      allow(view).to receive(:current_user) { Visitor.new }
-
-      stub_template 'companies/_companies_list' => ''
-      stub_template 'companies/_map_companies' => ''
-      stub_template 'companies/_search_form' => ''
-
-      assign(:all_mappable_companies, [])
-      assign(:all_displayed_companies, Company.all)
-      assign(:one_page_of_displayed_companies, [])
-      assign(:search_params, Company.ransack(nil))
-      assign(:companies, Company.ransack(nil).result.page(params[:page]).per_page(10))
-
-      render template: 'companies/index', layout: 'layouts/application'
-
-      expect(rendered).not_to have_xpath("//head/script[contains(@src,'hips.js')]",
-                                         visible: false)
-    end
-  end
-
   describe 'ckeditor.js' do
     let(:document) { create(:shf_document, :txt) }
     let(:company)  { create(:company) }

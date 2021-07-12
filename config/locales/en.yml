@@ -1223,8 +1223,10 @@ en:
       title: *page_title
       something_wrong: 'Something went wrong - contact the system administrator at %{admin_email}'
 
-    success:
-      success: Payment successfully processed - thank you!
+    confirmation:
+      success_html: Payment successfully processed - thank you!
+                    (Return to your %{account_page_link})
+
 
     error:
       error: There was an error in processing your payment

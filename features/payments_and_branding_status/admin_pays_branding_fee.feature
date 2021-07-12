@@ -42,7 +42,6 @@ Feature: Admin pays branding license fee for a company
     Then I should see "HappyMutts"
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "HappyMutts"
-    Then I should see t("payments.success.success")
     And company number "2120000142" is paid through "2019-12-30"
 
     # Note that you must go to the page _after_ the date has been set for this example so that the browser (via cucumber and Timecop) thinks the date it 2018-12-31.
@@ -53,13 +52,5 @@ Feature: Admin pays branding license fee for a company
     And I am the page for company number "2120000142"
     When I click on t("menus.nav.company.pay_branding_fee")
     And I abandon the payment by going back to the previous page
-    Then I should not see t("payments.success.success")
-    And company number "2120000142" is paid through "2018-12-31"
-
-  @time_adjust @selenium
-  Scenario: Admin incurs error in payment processing
-    Given the date is set to "2018-12-31"
-    Then company number "2120000142" is paid through "2018-12-31"
-    And I incur an error in branding payment processing for "HappyMutts"
-    Then I should see t("payments.error.error")
+    And I should not see t("payments.confirmation.success_html")
     And company number "2120000142" is paid through "2018-12-31"

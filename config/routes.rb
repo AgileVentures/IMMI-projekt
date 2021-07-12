@@ -216,14 +216,14 @@ Rails.application.routes.draw do
   post 'anvandare/:user_id/betalning/:type', to: 'payments#create',
        as: :payments
 
-  get 'anvandare/:user_id/betalning/:id', to: 'payments#success',
-      as: :payment_success  # user redirect from HIPS
+  get 'anvandare/:user_id/betalning/:id', to: 'payments#confirmation',
+      as: :payment_confirmation
 
-  get 'anvandare/:user_id/betalning/:id/error', to: 'payments#error',
-      as: :payment_error  # user redirect from HIPS
+  post 'anvandare/betalning/klarna_push', to: 'payments#klarna_push',
+       as: :payment_klarna_push
 
   post 'anvandare/betalning/webhook', to: 'payments#webhook',
-       as: :payment_webhook
+       as: :payment_webhook  # Legacy HIPS
   # ----------------------------------------------------------
 
   # ------- Address as a nested resource within company -----

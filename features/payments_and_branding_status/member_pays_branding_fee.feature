@@ -54,7 +54,6 @@ Feature: Member pays branding license fee for a company
     And I should see t("payors.due")
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "NewCompanyWithNoPayments"
-    Then I should see t("payments.success.success")
     And company number "5560360793" is paid through "2019-12-29"
 
 
@@ -67,7 +66,6 @@ Feature: Member pays branding license fee for a company
     And I should see t("payors.due_by", due_date: '2018-12-31')
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "HappyMutts"
-    Then I should see t("payments.success.success")
     And company number "2120000142" is paid through "2019-12-31"
 
 
@@ -80,7 +78,6 @@ Feature: Member pays branding license fee for a company
     And I should see t("payors.too_early")
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "HappyMutts"
-    Then I should see t("payments.success.success")
     And company number "2120000142" is paid through "2019-12-31"
 
 
@@ -93,7 +90,6 @@ Feature: Member pays branding license fee for a company
     And I should see t("payors.past_due")
     When I click on t("menus.nav.company.pay_branding_fee")
     And I complete the branding payment for "HappyMutts"
-    Then I should see t("payments.success.success")
     And company number "2120000142" is paid through "2020-02-01"
 
 
@@ -107,15 +103,4 @@ Feature: Member pays branding license fee for a company
     And I am the page for company number "2120000142"
     When I click on t("menus.nav.company.pay_branding_fee")
     And I abandon the payment by going back to the previous page
-    Then I should not see t("payments.success.success")
-    And company number "2120000142" is paid through "2018-12-31"
-
-  @time_adjust @selenium
-  Scenario: Member incurs error in payment processing
-    Given the date is set to "2018-12-30"
-    And I am logged in as "emma@mutts.com"
-    And I am the page for company number "2120000142"
-    Then company number "2120000142" is paid through "2018-12-31"
-    And I incur an error in branding payment processing for "HappyMutts"
-    Then I should see t("payments.error.error")
     And company number "2120000142" is paid through "2018-12-31"

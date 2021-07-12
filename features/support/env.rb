@@ -126,8 +126,8 @@ def path_with_locale(visit_path)
   "/#{I18n.locale}#{visit_path}"
 end
 
-def i18n_content(content, locale=I18n.locale)
-  I18n.t(content, locale)
+def i18n_content(content, parameters={})
+  I18n.t(content, parameters)
 end
 
 

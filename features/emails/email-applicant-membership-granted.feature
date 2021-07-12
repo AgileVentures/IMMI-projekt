@@ -52,7 +52,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
     And I complete the membership payment
-    And I should see t("payments.success.success")
+    Then I am on the "user account" page
     And I should see "2018-12-31"
     And I should be a member
     Then "member@mutts.se" should receive an email
@@ -80,7 +80,7 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
     And I abandon the payment by going back to the previous page
-    And I should not see t("payments.success.success")
+    And I should not see t("payments.confirmation.success_html")
     Then "member@mutts.se" should receive no emails
 
 
@@ -94,5 +94,5 @@ Feature: Applicant gets an email when membership has been granted. (They are now
     And I should see t("menus.nav.members.pay_membership")
     Then I click on t("menus.nav.members.pay_membership")
     And I abandon the payment by going back to the previous page
-    And I should not see t("payments.success.success")
+    And I should not see t("payments.confirmation.success_html")
     Then "member@mutts.se" should receive no emails

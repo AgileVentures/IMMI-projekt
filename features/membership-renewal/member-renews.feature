@@ -83,7 +83,6 @@ Feature: Member renews their membership
     And the link button t("users.show.pay_membership") should not be disabled
     When I click on t("users.show.pay_membership")
     And I complete the membership payment
-    Then I should see t("payments.success.success")
     And the user is paid through "<new_paid_thru_date>"
 
     Scenarios:
@@ -103,7 +102,6 @@ Feature: Member renews their membership
     And the link button t("users.show.pay_membership") should not be disabled
     When I click on t("users.show.pay_membership")
     And I complete the membership payment
-    Then I should see t("payments.success.success")
     And the user is paid through "2020-01-04"
 
 
