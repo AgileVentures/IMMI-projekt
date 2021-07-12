@@ -40,7 +40,7 @@ module SeedHelpers
     PAID_THRU_FNAME = 'PaidThrough'
 
     GRACEPERIODMEMBER_LNAME = 'InGracePeriod'
-    GRACEPERIODMEMEBER_FNAME_PREFIX = 'Försenad-Exp'
+    GRACEPERIODMEMEBER_FNAME_PREFIX = 'Forsenad-Exp'
 
     FORMERMEMBER_LNAME = 'FormerMember'
     FORMERMEMBER_FNAME_PREFIX = 'TidigareMedlem-Exp'
@@ -64,7 +64,7 @@ module SeedHelpers
     # --------------------------------------------------------------------------------------------
 
 
-    def initialize(static_data = SeedHelper::StaticDataFactory.new, log = nil)
+    def initialize(static_data = SeedHelpers::StaticDataFactory.new, log = nil)
       @static_data = static_data
       @log = log
       @shf_application_factory = ::SeedHelpers::ShfApplicationFactory.new(static_data, log)
