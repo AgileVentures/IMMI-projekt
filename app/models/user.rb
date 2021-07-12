@@ -58,6 +58,8 @@ class User < ApplicationRecord
 
   validates :first_name, :last_name, presence: true, unless: :updating_without_name_changes
   validates :membership_number, uniqueness: true, allow_blank: true
+  validates :email, email: true
+
 
   THIS_PAYMENT_TYPE = Payment::PAYMENT_TYPE_MEMBER
   MOST_RECENT_UPLOAD_METHOD = :created_at
