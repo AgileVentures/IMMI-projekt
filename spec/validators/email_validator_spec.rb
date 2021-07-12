@@ -34,7 +34,7 @@ RSpec.describe EmailValidator do
   it_behaves_like 'invalid email adds to error messages', 'email.com'
   it_behaves_like 'invalid email adds to error messages', 'email@.com'
   it_behaves_like 'invalid email adds to error messages', 'no spaces@example.com'
-  it_behaves_like 'invalid email adds to error messages', 'nö-äccæñts-or-ün-ascii-chars@example.com'
+  it_behaves_like 'invalid email adds to error messages', 'nö-äccæñts-or-ün-åscii-charsåäöÅÄÖ@example.com'
   it_behaves_like 'invalid email adds to error messages', '日本人@日人日本人@example.com'
 
 
