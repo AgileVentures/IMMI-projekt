@@ -31,7 +31,7 @@
         = f.text_field :phone_number,  class: 'form-control'
       .col.form-group
         = f.label :email, t('companies.show.email'), class: 'required'
-        = f.text_field :email,  class: 'form-control'
+        = f.email_field :email,  class: 'form-control'
     .row
       .col.form-group
         = f.label :website, t('companies.website_include_http')
