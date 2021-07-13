@@ -27,7 +27,7 @@ RSpec.describe EmailValidator do
       expect { some_model.valid? }
         .to change(some_model.errors, :messages)
               .from({})
-              .to a_hash_including(test_attr: [error_msg])
+              .to a_hash_including(test_attr: ["#{error_msg}: #{invalid_email}"])
     end
   end
 
