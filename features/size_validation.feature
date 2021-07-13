@@ -9,7 +9,7 @@ Feature: Applicant uploads too large a file for their application
 
     Given the following users exist:
       | email                 | admin |
-      | hans@new_applicant.se |       |
+      | hans@new-applicant.se |       |
       | emma@happymutts.se    |       |
 
     And the following business categories exist
@@ -28,7 +28,7 @@ Feature: Applicant uploads too large a file for their application
 
   @selenium
   Scenario: New application - Uploads a file that is too large
-    Given I am logged in as "hans@new_applicant.se"
+    Given I am logged in as "hans@new-applicant.se"
     And I am on the "submit new membership application" page
 
     When I fill in the form with data:
@@ -44,7 +44,7 @@ Feature: Applicant uploads too large a file for their application
 
   @selenium
   Scenario: New application - Uploads a file that is too large then uploads ok file
-    Given I am logged in as "hans@new_applicant.se"
+    Given I am logged in as "hans@new-applicant.se"
     And I am on the "submit new membership application" page
 
     When I fill in the form with data:
@@ -64,7 +64,7 @@ Feature: Applicant uploads too large a file for their application
 
   @selenium
   Scenario: New application - Uploads a file just under the size limit
-    Given I am logged in as "hans@new_applicant.se"
+    Given I am logged in as "hans@new-applicant.se"
     And I am on the "submit new membership application" page
     When I fill in the form with data:
       | shf_application_company_number | shf_application_phone_number | shf_application_contact_email |

@@ -6,7 +6,6 @@ class EmailValidator < ActiveModel::EachValidator
   # mailto: a URI and so does not allow characters that an email address does.
 
   def validate_each(object, attribute, value)
-
     if value.to_s !~ URI::MailTo::EMAIL_REGEXP
       object.errors[attribute] << "#{I18n.t('errors.messages.invalid')}: #{value}"
     end
