@@ -86,7 +86,7 @@ Capybara.register_driver :selenium_browser do |app|
       browser: :chrome
   )
 end
-# register this driver so that ShowMeTheCookies knows which adapater to use for it
+# register this driver so that ShowMeTheCookies knows which adapter to use for it
 #   have to use the same driver name (symbol)
 ShowMeTheCookies.register_adapter(:selenium_browser, ShowMeTheCookies::SeleniumChrome)
 

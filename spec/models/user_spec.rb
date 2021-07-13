@@ -183,6 +183,18 @@ RSpec.describe User, type: :model do
     it { is_expected.to(validate_presence_of :first_name) }
     it { is_expected.to(validate_presence_of :last_name) }
     it { is_expected.to validate_uniqueness_of :membership_number }
+
+    it 'email' do
+      u = build(:user)
+      expect(u).to allow_values('this@example.com', 'this_too@that.example.com',
+                          'and-this-1@example.com').for(:email)
+      expect(u).not_to allow_value(
+                              'no spaces?!? or punt,uation@example.com',
+                              'nö-äccæñts-or-ün-ascii-chars@example.com',
+                              '日本人@日人日本人@example.com'
+                            ).for(:email)
+    end
+
     it do
       is_expected.to validate_attachment_content_type(:member_photo)
                        .allowing('image/png', 'image/jpeg')
@@ -214,6 +226,7 @@ RSpec.describe User, type: :model do
       end
     end
   end
+
 
   describe 'Associations' do
     it { is_expected.to have_many :uploaded_files }

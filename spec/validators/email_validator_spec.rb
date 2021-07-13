@@ -14,24 +14,29 @@ RSpec.describe EmailValidator do
     end
   end
 
-  it 'adds error message when email is invalid' do
-    record.test_attr = 'email.com'
-    expect { record.valid? }
-      .to change(record.errors, :messages).from({})
-      .to a_hash_including(test_attr: [error_msg])
+  shared_examples 'invalid email adds to error messages' do | invalid_email|
 
-    record.errors.clear
-    record.test_attr = 'email@.com'
-    expect { record.valid? }
-      .to change(record.errors, :messages).from({})
-      .to a_hash_including(test_attr: [error_msg])
+    it "#{invalid_email} adds to error messages" do
+      some_model = ValidatorHelper.test_model_class.new
+      some_model.class_eval do
+        validates :test_attr, email: true
+      end
 
-    record.errors.clear
-    record.test_attr = 'email.mail.com'
-    expect { record.valid? }
-      .to change(record.errors, :messages).from({})
-      .to a_hash_including(test_attr: [error_msg])
+      some_model.errors.clear
+      some_model.test_attr = invalid_email
+      expect { some_model.valid? }
+        .to change(some_model.errors, :messages)
+              .from({})
+              .to a_hash_including(test_attr: ["#{error_msg}: #{invalid_email}"])
+    end
   end
+
+  it_behaves_like 'invalid email adds to error messages', 'email.com'
+  it_behaves_like 'invalid email adds to error messages', 'email@.com'
+  it_behaves_like 'invalid email adds to error messages', 'no spaces@example.com'
+  it_behaves_like 'invalid email adds to error messages', 'nö-äccæñts-or-ün-åscii-charsåäöÅÄÖ@example.com'
+  it_behaves_like 'invalid email adds to error messages', '日本人@日人日本人@example.com'
+
 
   it 'does not add error message if email is valid' do
     record.test_attr = 'email@mail.com'

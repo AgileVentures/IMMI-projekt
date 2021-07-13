@@ -93,7 +93,8 @@ RSpec.describe ShfApplication, type: :model do
     it { is_expected.to validate_presence_of(:file_delivery_method).on(:create) }
 
     it { is_expected.to allow_value('user@example.com').for(:contact_email) }
-    it { is_expected.not_to allow_value('userexample.com').for(:contact_email) }
+    it { is_expected.not_to allow_value('userexample@.com').for(:contact_email) }
+    it { is_expected.not_to allow_value('exåmple@example.com').for(:contact_email) }
 
     describe 'uniqueness of user across all applications' do
       subject { FactoryBot.build(:shf_application) }

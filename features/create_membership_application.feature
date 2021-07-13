@@ -224,7 +224,6 @@ Feature: Create a new membership application
     And I select files delivery radio button "files_uploaded"
 
     When I click on t("shf_applications.new.submit_button_label")
-
     Then I should see error <model_attribute> <error>
     And I should receive no emails
     And "admin@shf.se" should receive no emails
@@ -234,8 +233,10 @@ Feature: Create a new membership application
       | c_email       | phone      | model_attribute                                                   | error                            |
       |               | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.blank")       |
       |               | 0706898525 | t("activerecord.attributes.shf_application.business_categories")  | t("errors.messages.blank")       |
-      | kicki@imminu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.invalid")     |
-      # | kickiimmi.nu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.invalid")     |
+
+# The following 2 scenarios cannot happen.  No submission will happen because javascript will not validate the contact email field (form field = f.email_field
+#      | kicki@.imminu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.invalid")     |
+#      | kåt@voof.se  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")        | t("errors.messages.invalid")     |
 
   @selenium
   Scenario Outline: Apply for membership with uploads, errors should show please upload again message [SAD PATH]
@@ -301,26 +302,23 @@ Feature: Create a new membership application
     And I click on t("companies.create.create_submit")
     Then I should not see t("shf_applications.uploads.please_upload_again")
 
+
   @selenium
   Scenario Outline: Cannot change locale if there are errors in the new application
     Given I am on the "new application" page
 
     And I fill in the translated form with data:
       | shf_applications.new.contact_email | shf_applications.new.phone_number |
-      | <c_email>                          | <phone>                           |
+      | hello@voof.se                         | 0706898525                          |
 
     And I select files delivery radio button "files_uploaded"
 
     And I click on t("shf_applications.new.submit_button_label")
 
-    Then I should see error <model_attribute> <error>
+    Then I should see error t("activerecord.attributes.shf_application.companies") t("activerecord.errors.models.shf_application.attributes.companies.blank")
     And I should not see t("show_in_swedish") image
     And I should not see t("show_in_english") image
     And I should see t("cannot_change_language") image
-
-    Scenarios:
-      | c_email       | phone      | model_attribute                                             | error                            |
-      | kicki@imminu  | 0706898525 | t("activerecord.attributes.shf_application.contact_email")  | t("errors.messages.invalid")     |
 
 
   Scenario: A member with existing application cannot submit a new application
